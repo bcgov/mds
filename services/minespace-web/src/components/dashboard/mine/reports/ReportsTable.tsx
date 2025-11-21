@@ -1,6 +1,10 @@
 import React, { FC } from "react";
 import { Badge, TablePaginationConfig } from "antd";
-import { formatComplianceCodeValueOrLabel } from "@mds/common/redux/utils/helpers";
+import {
+  formatComplianceCodeValueOrLabel,
+  dateSorter,
+  nullableStringSorter,
+} from "@mds/common/redux/utils/helpers";
 import { getMineReportDefinitionHash } from "@mds/common/redux/slices/complianceReportsSlice";
 import {
   renderActionsColumn,
@@ -17,6 +21,7 @@ import { EditOutlined } from "@ant-design/icons";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { Feature } from "@mds/common/utils";
 import { PERMIT_VIEW } from "@/constants/routes";
+import * as Strings from "@mds/common/constants/strings";
 
 interface ReportsTableProps {
   mineReports: IMineReport[];
@@ -24,6 +29,10 @@ interface ReportsTableProps {
   isLoaded: boolean;
   backendPaginated?: boolean;
   columns?: ColumnsType<IMineReport>;
+  handleTableChange?: any;
+  filters?: any;
+  sortField?: string;
+  sortDir?: string;
 }
 
 const DEFAULT_PAGE_SIZE = 10;
@@ -48,7 +57,6 @@ export const ReportsTable: FC<ReportsTableProps> = (props) => {
   const mineReportDefinitionHash = useSelector(getMineReportDefinitionHash);
   const { isFeatureEnabled } = useFeatureFlag();
   const showOverdueLabel = isFeatureEnabled(Feature.REPORT_MANAGEMENT_V2);
-
   const actions = [
     {
       key: "view",
@@ -81,8 +89,8 @@ export const ReportsTable: FC<ReportsTableProps> = (props) => {
     return actionList.filter((action) => action.key !== "submit");
   };
 
-  let defaultColumns: ColumnsType<IMineReport> = [
-    renderTextColumn("report_name", "Report Name/Permit Condition", !props.backendPaginated),
+  let defaultColumns: any = [
+    renderTextColumn("report_name", "Report Name/Permit Condition", true),
     {
       title: "Code Section",
       key: "code_section",
@@ -98,19 +106,25 @@ export const ReportsTable: FC<ReportsTableProps> = (props) => {
         ) : null;
       },
     },
-    renderTextColumn("submission_year", "Compliance Year", !props.backendPaginated, null, 50),
-    renderTextColumn("due_date", "Due", true, null, 100),
-    renderTextColumn(["latest_submission", "received_date"], "Submitted", true),
+    renderTextColumn("submission_year", "Compliance Year", true),
+    renderTextColumn("due_date", "Due", true),
+    renderTextColumn("received_date", "Submitted", true),
     {
       title: "Status",
       dataIndex: "mine_report_status_code",
-      sorter: (a, b) => a.mine_report_status_code.localeCompare(b.mine_report_status_code),
+      sortField: "mine_report_status_code",
+      sorter: nullableStringSorter("mine_report_status_code"),
       render: (text: MINE_REPORT_SUBMISSION_CODES, report: IMineReport) => {
         if (report.is_overdue && showOverdueLabel) {
           return <Badge status="error" text="Overdue" />;
         }
 
-        return <Badge status={reportStatusSeverity(text)} text={MINE_REPORT_STATUS_HASH[text]} />;
+        return (
+          <Badge
+            status={reportStatusSeverity(text)}
+            text={MINE_REPORT_STATUS_HASH[text] || Strings.EMPTY_FIELD}
+          />
+        );
       },
     },
   ];
@@ -122,6 +136,8 @@ export const ReportsTable: FC<ReportsTableProps> = (props) => {
           title: "Permit #",
           dataIndex: "permit_number",
           key: "permit_number",
+          sortField: "permit_number",
+          sorter: nullableStringSorter("permit_number"),
           render: (text: string | null | undefined, record) => {
             if (!text) return "—";
             const permitLink = PERMIT_VIEW.dynamicRoute(record.mine_guid, record.permit_guid);
@@ -143,6 +159,16 @@ export const ReportsTable: FC<ReportsTableProps> = (props) => {
     position: ["bottomCenter"],
   };
 
+  const mineReportHandleTableChange =
+    (updateReportList, tableFilters) => (pagination, filters, sorter) => {
+      const params = {
+        ...tableFilters,
+        sort_field: sorter.order ? sorter.field : undefined,
+        sort_dir: sorter.order ? sorter.order.replace("end", "") : undefined,
+      };
+      updateReportList(params);
+    };
+
   return (
     <CoreTable
       size={"small"}
@@ -151,6 +177,7 @@ export const ReportsTable: FC<ReportsTableProps> = (props) => {
       rowKey={(record) => record.mine_report_guid}
       emptyText="This mine has no report data."
       dataSource={props.mineReports}
+      onChange={mineReportHandleTableChange(props.handleTableChange, props.filters)}
       pagination={props.backendPaginated ? false : pagination}
     />
   );

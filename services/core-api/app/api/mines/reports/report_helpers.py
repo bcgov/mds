@@ -7,7 +7,18 @@ from app.api.mines.reports.models.mine_report import MineReport
 from app.api.mines.reports.models.mine_report_category import MineReportCategory
 from app.api.mines.reports.models.mine_report_category_xref import MineReportCategoryXref
 from app.api.mines.reports.models.mine_report_definition import MineReportDefinition
+from sqlalchemy import case
+from app.api.mines.permits.permit_conditions.models.permit_condition_category import PermitConditionCategory
+from app.api.mines.reports.models.mine_report_permit_requirement import MineReportPermitRequirement
+from app.api.mines.permits.permit.models.permit import Permit
+import uuid
 
+def is_guid(value) -> bool:
+    try:
+        uuid.UUID(value)
+        return True
+    except (ValueError, TypeError):
+        return False
 
 class ReportFilterHelper:
     @classmethod
@@ -27,6 +38,7 @@ class ReportFilterHelper:
             "mine_report_status": 'MineReportSubmissionStatusCode',
             "created_by_idir": 'MineReport',
             "mine_name": 'Mine',
+            "permit_number": 'MineReport',
         }
 
         sort_field = {
@@ -40,6 +52,7 @@ class ReportFilterHelper:
             "mine_report_status": 'mine_report_status_description',
             "created_by_idir": 'created_by_idir',
             "mine_name": 'mine_name',
+            "permit_number": 'permit_number',
         }
 
         conditions = []
@@ -72,9 +85,15 @@ class ReportFilterHelper:
                                                 args["report_type"]))
 
         if args["report_name"]:
-            conditions.append(
-                ReportFilterHelper.build_filter('MineReportDefinition', 'mine_report_definition_guid', 'in',
-                                                args["report_name"]))
+            report_name = args["report_name"][0]
+            if is_guid(report_name):
+                conditions.append(
+                    ReportFilterHelper.build_filter('MineReportDefinition', 'mine_report_definition_guid', 'in',
+                                                    args["report_name"]))
+            else:
+                conditions.append(
+                    ReportFilterHelper.build_filter('MineReportPermitRequirement', 'mine_report_permit_requirement_id', 'in',
+                                                    args["report_name"]))
 
         if args["status"]:
             query = query.filter(MineReport.mine_report_status_code.in_(args["status"]))
@@ -120,6 +139,9 @@ class ReportFilterHelper:
         if mine_guid:
             query = query.filter(MineReport.mine_guid == mine_guid)
 
+        if args.get('permit_guid'):
+            query = query.filter(MineReport.permit_guid == args["permit_guid"])
+
         filtered_query = apply_filters(query, conditions)
 
         if args['sort_field'] == 'mine_report_status_code' or args['sort_field'] == 'mine_report_status':
@@ -129,7 +151,29 @@ class ReportFilterHelper:
             else:
                 filtered_query = filtered_query.order_by(
                     desc(MineReport.mine_report_status_description))
-
+        elif args['sort_field'] == 'report_name':
+            filtered_query = (
+                filtered_query
+                .outerjoin(MineReport.mine_report_definition)
+                .outerjoin(MineReport.permit_condition_category)
+                .outerjoin(MineReport.mine_report_permit_requirement)
+            )
+            order_clause = case(
+                (MineReport.mine_report_definition_id.isnot(None), 
+                MineReportDefinition.report_name),
+                (MineReport.permit_condition_category_code.isnot(None),
+                PermitConditionCategory.description),
+                else_=MineReportPermitRequirement.report_name
+            )
+            filtered_query = filtered_query.order_by(
+                asc(order_clause) if args['sort_dir'] == 'asc' else desc(order_clause)
+            )
+        elif args['sort_field'] == 'permit_number':
+            filtered_query = filtered_query.outerjoin(MineReport.permit)
+            order_clause = Permit.permit_no
+            filtered_query = filtered_query.order_by(
+                asc(order_clause) if args['sort_dir'] == 'asc' else desc(order_clause)
+            )
         else:
             if args['sort_field'] and args['sort_dir']:
                 sort_criteria = [{

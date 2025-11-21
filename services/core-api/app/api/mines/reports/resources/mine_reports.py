@@ -92,6 +92,7 @@ class MineReportListResource(Resource, UserMixin):
         'mine_reports_type': "Report type filter(s). Can repeat to include multiple.",
         'upcoming': "If 'true', restrict to upcoming reports (due after today) and apply 'time_range' window.",
         'time_range': "Upcoming window from today when 'upcoming' is true: one of '90d', '6m', '1y'. Default: '1y'",
+        'permit_guid': "The permit number",
     })
     @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
     def get(self, mine_guid):
@@ -113,9 +114,11 @@ class MineReportListResource(Resource, UserMixin):
             'status': request.args.getlist('status', type=str),
             'major': request.args.get('major', type=str),
             'region': request.args.getlist('region', type=str),
+            'permit_guid': request.args.get('permit_guid', type=str),
         }
 
         mrd_category = request.args.get('mine_report_definition_category')
+
         if mrd_category:
             return MineReport.find_by_mine_guid_and_category(mine_guid, mrd_category)
 
@@ -192,7 +195,7 @@ class MineReportListResource(Resource, UserMixin):
 
         if not records:
             raise BadRequest('Unable to fetch reports')
-
+        
         return {
             'records': records.all(),
             'current_page': pagination_details.page_number,

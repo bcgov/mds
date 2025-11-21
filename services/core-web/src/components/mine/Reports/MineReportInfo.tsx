@@ -2,9 +2,7 @@ import React, { FC, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useHistory, useLocation, useParams } from "react-router-dom";
 import { Button, Divider, Dropdown, MenuProps, Row } from "antd";
-import moment from "moment";
 import queryString from "query-string";
-import { isEmpty } from "lodash";
 import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
 import { getMineReports, getReportsPageData } from "@mds/common/redux/selectors/reportSelectors";
 import { getMineReportDefinitionOptions } from "@mds/common/redux/slices/complianceReportsSlice";
@@ -12,7 +10,7 @@ import * as Strings from "@mds/common/constants/strings";
 import * as Permission from "@/constants/permissions";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import MineReportTable from "@/components/mine/Reports/MineReportTable";
-import ReportFilterForm from "@/components/Forms/reports/ReportFilterForm";
+import ReportFilterForm from "@mds/common/components/reports/ReportFilterForm";
 import * as routes from "@/constants/routes";
 import PlusOutlined from "@ant-design/icons/PlusOutlined";
 import { RequestReportForm } from "@/components/Forms/reports/RequestReportForm";
@@ -25,6 +23,7 @@ import {
   deleteMineReport,
   fetchMineReports,
 } from "@mds/common/redux/slices/reportSlice";
+import { handleFiltering } from "@mds/common/utils";
 
 const defaultParams: MineReportParams = {
   report_name: undefined,
@@ -46,7 +45,6 @@ export const MineReportInfo: FC = () => {
   const mineReports = useSelector(getMineReports);
   const mineReportDefinitionOptions = useSelector(getMineReportDefinitionOptions);
   const pageData = useSelector(getReportsPageData);
-
   const { id: mineGuid } = useParams<{ id: string }>();
   const [stateParams, setStateParams] = useState<MineReportParams>(defaultParams);
   const [filteredReports, setFilteredReports] = useState([]);
@@ -72,76 +70,13 @@ export const MineReportInfo: FC = () => {
 
   useEffect(() => {
     setFilteredReports(mineReports);
+    const newParams = { ...stateParams, page: "1" };
+    setStateParams(newParams);
   }, [mineReports]);
-
-  const handleFiltering = (reports, params: MineReportParams) => {
-    const reportDefinitionGuids = params.report_type
-      ? mineReportDefinitionOptions
-          .filter((option) =>
-            option.categories
-              .map((category) => category.mine_report_category)
-              .includes(params.report_type)
-          )
-          .map((definition) => definition.mine_report_definition_guid)
-      : mineReportDefinitionOptions.map((definition) => definition.mine_report_definition_guid);
-
-    let report_type: boolean;
-
-    return reports.filter((report) => {
-      if (mine_reports_type === "CRR") {
-        report_type =
-          !params.report_type || reportDefinitionGuids.includes(report.mine_report_definition_guid);
-      } else {
-        report_type =
-          !params.report_type || report.permit_condition_category_code === params.report_type;
-      }
-
-      const report_name =
-        !params.report_name || report.mine_report_definition_guid === params.report_name;
-      const compliance_year =
-        !params.compliance_year ||
-        Number(report.submission_year) === Number(params.compliance_year);
-      const due_date_start =
-        !params.due_date_start ||
-        moment(report.due_date, Strings.DATE_FORMAT) >=
-          moment(params.due_date_start, Strings.DATE_FORMAT);
-      const due_date_end =
-        !params.due_date_end ||
-        moment(report.due_date, Strings.DATE_FORMAT) <=
-          moment(params.due_date_end, Strings.DATE_FORMAT);
-      const received_date_start =
-        !params.received_date_start ||
-        moment(report.received_date, Strings.DATE_FORMAT) >=
-          moment(params.received_date_start, Strings.DATE_FORMAT);
-      const received_date_end =
-        !params.received_date_end ||
-        moment(report.received_date, Strings.DATE_FORMAT) <=
-          moment(params.received_date_end, Strings.DATE_FORMAT);
-      const requested_by =
-        !params.requested_by ||
-        report.created_by_idir.toLowerCase().includes(params.requested_by.toLowerCase());
-      const received_only =
-        !params.received_only || params.received_only === "false" || report.received_date;
-      const status =
-        isEmpty(params.status) || params.status.includes(report.mine_report_status_code);
-      return (
-        report_name &&
-        report_type &&
-        compliance_year &&
-        due_date_start &&
-        due_date_end &&
-        received_date_start &&
-        received_date_end &&
-        received_only &&
-        requested_by &&
-        status
-      );
-    });
-  };
 
   const renderDataFromURL = (params) => {
     const parsedParams = queryString.parse(params);
-    const reports = handleFiltering(mineReports, parsedParams);
+    const reports = handleFiltering(mineReports, parsedParams, mineReportDefinitionOptions, mine_reports_type, true);
     setFilteredReports(reports);
     setStateParams(parsedParams);
   };
@@ -184,7 +119,7 @@ export const MineReportInfo: FC = () => {
     const newParams = { ...stateParams, page, per_page };
     setStateParams(newParams);
     handleReportFilterSubmit(newParams);
-    handleFiltering(mineReports, { ...stateParams, page, per_page });
+    handleFiltering(mineReports, { ...stateParams, page, per_page }, mineReportDefinitionOptions, mine_reports_type, true);
   };
 
   const handleReportFilterReset = () => {

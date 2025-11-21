@@ -25,7 +25,7 @@ export const PermitReportCodeRequirement: FC<{
   amendment: IPermitAmendment;
   summary?: boolean;
 }> = ({ amendment, summary = false }) => {
-  const reports = amendment?.mine_report_permit_requirements.filter( report => report.permit_condition_ids.length > 0 ) || [];
+  const reports = amendment?.mine_report_permit_requirements.filter(report => report.permit_condition_ids.length > 0) || [];
   const reportOptions = createDropDownList(
     uniqBy(reports, "report_name"),
     "report_name",
@@ -71,7 +71,6 @@ export const RenderPRRFields: FC<{
   const permitMineGuid = permits[0]?.mine_guid;
   const [loaded, setLoaded] = useState(permits.length > 0 && permitMineGuid === mineGuid);
   const isCore = useAppSelector(getIsCore);
-
   const formValues = useAppSelector(getFormValues(formName)) as IMineReportSubmission;
   const latestAmendment = useAppSelector(getLatestAmendmentByPermitGuid(formValues?.permit_guid));
   const { isFeatureEnabled } = useFeatureFlag();

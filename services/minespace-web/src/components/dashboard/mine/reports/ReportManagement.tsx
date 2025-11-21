@@ -21,8 +21,32 @@ import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 import { getMineReportStatsByMineGuid } from "@mds/common/redux/slices/mineReportStatsSlice";
 import { fetchMineReports } from "@mds/common/redux/slices/reportSlice";
 import { Feature, isFeatureEnabled } from "@mds/common/utils";
+import ReportFilterForm from "@mds/common/components/reports/ReportFilterForm";
+import { MineReportParams } from "@mds/common/interfaces/reports";
+import { getMineReportDefinitionOptions } from "@mds/common/redux/slices/complianceReportsSlice";
+import { handleFiltering } from "@mds/common/utils";
+import { fetchPermits } from "@mds/common/redux/actionCreators/permitActionCreator";
 
 const REPORTS_PAGE_SIZE = 20;
+
+const defaultParams: MineReportParams = {
+  report_name: undefined,
+  report_type: undefined,
+  compliance_year: undefined,
+  due_date_start: undefined,
+  due_date_end: undefined,
+  received_date_start: undefined,
+  received_date_end: undefined,
+  received_only: "false",
+  requested_by: undefined,
+  status: [],
+  sort_field: "received_date",
+  sort_dir: "desc",
+  mine_reports_type: [
+    Strings.MINE_REPORTS_TYPE.codeRequiredReports,
+    Strings.MINE_REPORTS_TYPE.permitRequiredReports,
+  ],
+};
 
 const ReportManagement: FC = () => {
   const dispatch = useAppDispatch();
@@ -35,19 +59,26 @@ const ReportManagement: FC = () => {
   );
 
   const mineReports: IMineReport[] = useAppSelector(getMineReports);
-  const pageData = useAppSelector(getReportsPageData) as any;
+  const pageData = useAppSelector(getReportsPageData);
   const stats = useAppSelector(getMineReportStatsByMineGuid(mine.mine_guid));
   const showPendingReports = isFeatureEnabled(Feature.REPORT_MANAGEMENT_V2);
+  const [stateParams, setStateParams] = useState<MineReportParams>(defaultParams);
+  const mine_reports_type = [
+    Strings.MINE_REPORTS_TYPE.codeRequiredReports,
+    Strings.MINE_REPORTS_TYPE.permitRequiredReports,
+  ];
+  const mineReportDefinitionOptions = useAppSelector(getMineReportDefinitionOptions);
 
   useEffect(() => {
     setIsLoaded(true);
-    onAllReportsPageChange(1);
+    dispatch(fetchPermits(mine?.mine_guid));
+    onAllReportsPageChange(1, 20);
   }, [mine.mine_guid]);
 
   useEffect(() => {
-    if (mineReports && mineReports.length > 0) {
-      setAllReports(mineReports);
-    }
+    setAllReports(mineReports);
+    const newParams = { ...stateParams, page: "1" };
+    setStateParams(newParams);
   }, [mineReports]);
 
   const activePermits = stats?.active_permits ?? "";
@@ -63,20 +94,46 @@ const ReportManagement: FC = () => {
     );
   };
 
-  const onAllReportsPageChange = (page: number) => {
+  const handleReportFilterSubmit = (params) => {
+    const paramsWithCopy = { ...params };
+    setStateParams(paramsWithCopy);
+    history.replace(routes.MINE_REPORTS.dynamicRoute(mine.mine_guid, paramsWithCopy));
+    dispatch(
+      fetchMineReports({
+        mineGuid: mine.mine_guid,
+        reportsType: mine_reports_type,
+        params: paramsWithCopy,
+      })
+    );
+  };
+
+  const onAllReportsPageChange = (page, per_page) => {
     setIsLoaded(false);
-    Promise.resolve(
-      dispatch(
-        fetchMineReports({
-          mineGuid: mine.mine_guid,
-          reportsType: [
-            Strings.MINE_REPORTS_TYPE.codeRequiredReports,
-            Strings.MINE_REPORTS_TYPE.permitRequiredReports,
-          ],
-          params: { page, per_page: REPORTS_PAGE_SIZE },
-        })
-      )
-    ).then(() => setIsLoaded(true));
+    const newParams = { ...stateParams, page, per_page };
+    setStateParams(newParams);
+    handleReportFilterSubmit(newParams);
+    handleFiltering(
+      mineReports,
+      { ...stateParams, page, per_page },
+      mineReportDefinitionOptions,
+      mine_reports_type,
+      false
+    );
+    setIsLoaded(true);
+  };
+
+  const handleReportFilterReset = () => {
+    setStateParams({
+      ...defaultParams,
+    });
+    history.replace(routes.MINE_REPORTS.dynamicRoute(mine.mine_guid, defaultParams));
+    dispatch(
+      fetchMineReports({
+        mineGuid: mine.mine_guid,
+        reportsType: mine_reports_type,
+        params: defaultParams,
+      })
+    );
   };
 
   return (
@@ -155,10 +212,23 @@ const ReportManagement: FC = () => {
                     />
                   </div>
 
+                  <div className="advanced-search__container">
+                    <ReportFilterForm
+                      onSubmit={handleReportFilterSubmit}
+                      onReset={handleReportFilterReset}
+                      initialValues={stateParams}
+                      mineReportType={""}
+                    />
+                  </div>
+
                   <ReportsTable
                     openReport={openReport}
                     mineReports={allReports}
                     isLoaded={isLoaded}
+                    handleTableChange={handleReportFilterSubmit}
+                    filters={stateParams}
+                    sortField={stateParams.sort_field}
+                    sortDir={stateParams.sort_dir}
                     backendPaginated
                   />
                   <Row justify="center" className="margin-large--bottom">

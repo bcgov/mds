@@ -55,6 +55,10 @@ const ProjectSubmissionStatusPage = React.lazy(
   () => import("@mds/common/components/projectSummary/ProjectSubmissionStatusPage")
 );
 
+const ReportManagementPage = React.lazy(
+  () => import("@/components/dashboard/mine/reports/ReportManagement")
+);
+
 export const HOME = {
   route: "/",
   component: LandingPage,
@@ -357,6 +361,14 @@ export const REPORT_VIEW_EDIT = {
     `/mines/${mineGuid}/reports/${reportGuid}`,
   component: ReportPage,
   helpKey: "Report",
+};
+
+export const MINE_REPORTS = {
+  route: "/mines/:id/dashboard/reports",
+  dynamicRoute: (id, filterParams) =>
+    `/mines/${id}/dashboard/reports?${queryString.stringify(filterParams)}`,
+  component: ReportManagementPage,
+  helpKey: "Mine-Reports",
 };
 
 export const VIEW_MINE_PERMIT_AMENDMENT = {
