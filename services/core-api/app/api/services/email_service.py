@@ -236,6 +236,10 @@ class EmailService():
             List of created EmailTracking records
         """
         tracking_records = []
+
+        if not recipients:
+            return tracking_records
+
         for recipient_email in recipients:
             tracking_record = EmailTracking.create(
                 recipient_email=recipient_email,
