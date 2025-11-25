@@ -85,7 +85,8 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
         lazy='select',
         primaryjoin=
         "and_(PermitConditions.permit_amendment_id == PermitAmendment.permit_amendment_id, PermitConditions.deleted_ind == False)",
-        order_by='asc(PermitConditions.display_order)'
+        order_by='asc(PermitConditions.display_order)',
+        overlaps="conditions,permit_amendment"
     )
     permit_conditions_last_updated_date = db.Column(db.DateTime)
     permit_conditions_last_updated_by = db.Column(db.String(60))
