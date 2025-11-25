@@ -641,27 +641,6 @@ export class ProcessPermit extends Component {
       });
     }
 
-    // Previous permit amendment document titles
-    const previousAmendment = this.createPermitGenObject(
-      this.props.noticeOfWork,
-      this.props.draftPermit,
-      this.props.draftAmendment
-    ).previous_amendment;
-    if (!isEmpty(previousAmendment)) {
-      titlesMissing = previousAmendment.related_documents?.filter(
-        ({ preamble_title }) => !preamble_title
-      ).length;
-      if (titlesMissing !== 0) {
-        validationMessages.push({
-          message: `The previous amendment has ${titlesMissing} documents that require a title.`,
-          route: route.NOTICE_OF_WORK_APPLICATION.dynamicRoute(
-            this.props.noticeOfWork.now_application_guid,
-            "draft-permit/#preamble"
-          ),
-        });
-      }
-    }
-
     // Inspector signature
     const signature = this.props.noticeOfWork?.issuing_inspector?.signature;
     if (!signature) {
