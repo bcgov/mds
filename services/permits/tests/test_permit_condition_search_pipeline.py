@@ -67,3 +67,18 @@ def test_blob_upload_pipeline_validates(mock_components):
 
     except Exception as e:
         pytest.fail(f"Pipeline validation failed with error: {str(e)}")
+
+def test_pipeline_uses_blob_service_endpoint_config(mock_components):
+    with patch("app.pipelines.permit_condition_search.permit_condition_search_pipeline.config") as mock_config:
+        # Setup mock config
+        mock_config.storage.connection_string = "test_conn"
+        mock_config.storage.container_name = "test_container"
+        mock_config.storage.blob_service_endpoint = "https://custom.endpoint.com"
+        mock_config.search.api_key.resolve_value.return_value = "test_key"
+        mock_config.search.endpoint.resolve_value.return_value = "test_endpoint"
+
+        # Test indexing pipeline
+        create_permit_condition_search_indexing_pipeline()
+                
+        call_args = AzureBlobUploader.__init__.call_args
+        assert call_args.kwargs.get("blob_service_endpoint") == "https://custom.endpoint.com"
