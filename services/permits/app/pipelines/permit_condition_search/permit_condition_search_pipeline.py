@@ -79,6 +79,8 @@ def create_permit_condition_search_indexing_pipeline():
     """
     index_pipeline = Pipeline()
 
+    assert config.storage.connection_string, "Storage connection string must be provided to create the blob uploader"
+
     blob_uploader = AzureBlobUploader(
         connection_string=config.storage.connection_string,
         container_name=config.storage.container_name,
