@@ -204,10 +204,6 @@ export const phoneNumber = (value) =>
   value && !Validate.checkPhone(value) ? "Invalid phone number e.g. xxx-xxx-xxxx" : undefined;
 
 export const postalCodeWithCountry = memoize((address_type_code = "CAN") => (value) => {
-  console.log("inside postalCodeWithCountry!");
-  console.log(address_type_code)
-  console.log(value)
-
   const code_type = address_type_code === "USA" ? "zip code" : "postal code";
   if (!["CAN", "USA"].includes(address_type_code)) {
     return undefined;
