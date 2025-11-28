@@ -103,13 +103,13 @@ class Address(SoftDeleteMixin, AuditMixin, Base):
             address_type_code = self.address_type_code
             post_code = value     
 
-        if post_code and address_type_code not in ['USA', 'INT']:
+        if post_code and address_type_code == 'CAN':
             post_code = normalize_canadian_postal_code(post_code)
         
         if post_code and len(post_code) > 10:
             raise AssertionError('post_code must not exceed 10 characters.')
 
-        if not post_code or address_type_code not in ['CAN', 'USA', None]:
+        if not post_code or address_type_code not in ['CAN', 'USA']:
             return value          
 
         # this Canada postal code regex accepts American postal codes.
