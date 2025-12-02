@@ -5,7 +5,7 @@ from werkzeug.exceptions import NotFound
 
 from app.api.activity.models.activity_notification import ActivityType, ActivityRecipients
 from app.api.activity.utils import trigger_notification
-from app.api.constants import MAJOR_MINES_OFFICE_EMAIL, PROJECT_EMA_EMAILS, PERM_RECL_EMAIL, PROJECT_EMA_EMAILS
+from app.api.constants import MAJOR_MINES_OFFICE_EMAIL, PROJECT_EMA_EMAILS, PERM_RECL_EMAIL
 from app.api.email_tracking.models.email_tracking import EmailTracking
 from app.api.mines.documents.models.mine_document import MineDocument
 from app.api.mines.documents.models.mine_document_bundle import MineDocumentBundle
