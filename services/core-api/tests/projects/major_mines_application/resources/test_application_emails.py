@@ -258,7 +258,18 @@ def test_send_mma_submit_email(mock_send_template_email, test_client,
     assert core_call.args[0] == subject
     assert core_call.args[1] == core_recipients
     assert core_call.args[2] == 'email/projects/mma_submit_email.html'
-    assert core_call.args[3] == core_context
+    
+    # Verify context with sorted document lists
+    core_call_context = core_call.args[3]
+    assert core_call_context['project'] == core_context['project']
+    assert core_call_context['view_link'] == core_context['view_link']
+    assert core_call_context['button_text'] == core_context['button_text']
+    assert core_call_context['brand_type'] == core_context['brand_type']
+    assert sorted(core_call_context['primary_documents']) == sorted(core_context['primary_documents'])
+    assert sorted(core_call_context['appendix_documents']) == sorted(core_context['appendix_documents'])
+    assert sorted(core_call_context['spatial_documents']) == sorted(core_context['spatial_documents'])
+    assert sorted(core_call_context['supporting_documents']) == sorted(core_context['supporting_documents'])
+    
     assert core_call.kwargs['reference_id'] == major_mine_application.major_mine_application_guid
     assert core_call.kwargs['reference_table'] == 'major_mine_application'
     
@@ -268,6 +279,17 @@ def test_send_mma_submit_email(mock_send_template_email, test_client,
     assert minespace_call.args[0] == subject
     assert minespace_call.args[1] == minespace_recipients
     assert minespace_call.args[2] == 'email/projects/mma_submit_email.html'
-    assert minespace_call.args[3] == minespace_context
+    
+    # Verify context with sorted document lists
+    minespace_call_context = minespace_call.args[3]
+    assert minespace_call_context['project'] == minespace_context['project']
+    assert minespace_call_context['view_link'] == minespace_context['view_link']
+    assert minespace_call_context['button_text'] == minespace_context['button_text']
+    assert minespace_call_context['brand_type'] == minespace_context['brand_type']
+    assert sorted(minespace_call_context['primary_documents']) == sorted(minespace_context['primary_documents'])
+    assert sorted(minespace_call_context['appendix_documents']) == sorted(minespace_context['appendix_documents'])
+    assert sorted(minespace_call_context['spatial_documents']) == sorted(minespace_context['spatial_documents'])
+    assert sorted(minespace_call_context['supporting_documents']) == sorted(minespace_context['supporting_documents'])
+    
     assert minespace_call.kwargs['reference_id'] == major_mine_application.major_mine_application_guid
     assert minespace_call.kwargs['reference_table'] == 'major_mine_application'
