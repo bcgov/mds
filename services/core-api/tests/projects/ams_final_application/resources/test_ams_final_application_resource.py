@@ -2,8 +2,10 @@ import json
 import uuid
 
 import pytest
+from unittest.mock import patch
 from app import auth
 from app.api.utils.include.user_info import User
+from app.api.projects.ams_final_application.models.ams_final_application import AmsAppNotificationEvent
 from tests.factories import (
     AmsFinalApplicationFactory,
     MineFactory,
@@ -595,9 +597,21 @@ def test_put_ams_final_app_minespace_edit_toggle(test_client, db_session, auth_h
     assert put_resp.status_code == 200
     assert put_resp_data['editable'] == False
 
+    put_data2 = {
+        'ams_final_application_guid': final_app.ams_final_application_guid,
+        'editable': True,
+    }
+
+    put_resp2 = test_client.put(
+        f'/projects/{final_app.project_summary_authorization.project_summary_guid}/ams-final-application/{final_app.project_summary_authorization_guid}/minespace-edit',
+        headers=auth_headers['full_auth_header'], json=put_data2
+    )
+
+    put_resp_data2 = json.loads(put_resp2.data.decode())
+    assert put_resp_data2['editable'] == True
+
 
 def test_minespace_edit_toggle_proponent_forbidden(test_client, db_session, auth_headers):
-    """Proponent should NOT be able to toggle edit flag (403 expected)."""
     final_app = AmsFinalApplicationFactory(is_submitted=False)
     _enable_real_user_mode()
     header = _proponent_header(auth_headers)
@@ -616,7 +630,6 @@ def test_minespace_edit_toggle_proponent_forbidden(test_client, db_session, auth
 
 
 def test_proponent_cannot_update_when_editing_disabled(test_client, db_session, auth_headers):
-    """After editable is toggled off by staff, a proponent update attempt should fail with 400."""
     # Create draft final application
     final_app = AmsFinalApplicationFactory(is_submitted=False)
 
@@ -668,3 +681,123 @@ def test_proponent_cannot_update_when_editing_disabled(test_client, db_session, 
     blocked_data = json.loads(blocked_resp.data.decode())
     assert blocked_resp.status_code == 400
     assert 'cannot currently be editted' in blocked_data['message']
+
+
+@patch("app.api.projects.ams_final_application.models.ams_final_application.AmsFinalApplication.send_notifications")
+def test_submit_triggers_submit_notification(mock_send_notifications, test_client, db_session, auth_headers):
+    final_app = AmsFinalApplicationFactory(is_submitted=False)
+    
+    documents = [
+        {
+            'document_manager_guid': d.document_manager_guid,
+            'document_name': d.document_name,
+            'mine_document_guid': d.mine_document_guid,
+            'ams_final_application_document_type_code': d.ams_final_application_document_type_code
+        }
+        for d in list(final_app.documents)
+    ]
+    
+    put_data = {
+        'ams_final_application_guid': final_app.ams_final_application_guid,
+        'project_summary_authorization_guid': final_app.project_summary_authorization_guid,
+        'submitter_name': final_app.submitter_name,
+        'is_agent': final_app.is_agent,
+        'pre_submitted_files': final_app.pre_submitted_files,
+        'documents': documents,
+        'is_submitting': True
+    }
+    
+    put_resp = test_client.put(
+        f'/projects/{final_app.project_summary_authorization.project_summary_guid}/ams-final-application/{final_app.project_summary_authorization_guid}',
+        headers=auth_headers['full_auth_header'], json=put_data
+    )
+    
+    assert put_resp.status_code == 200
+    mock_send_notifications.assert_called_once_with(AmsAppNotificationEvent.SUBMIT)
+
+
+@patch("app.api.projects.ams_final_application.models.ams_final_application.AmsFinalApplication.send_notifications")
+def test_resubmit_triggers_resubmit_notification(mock_send_notifications, test_client, db_session, auth_headers):
+    final_app = AmsFinalApplicationFactory(is_submitted=True)
+    
+    documents = [
+        {
+            'document_manager_guid': d.document_manager_guid,
+            'document_name': d.document_name,
+            'mine_document_guid': d.mine_document_guid,
+            'ams_final_application_document_type_code': d.ams_final_application_document_type_code
+        }
+        for d in list(final_app.documents)
+    ]
+    
+    put_data = {
+        'ams_final_application_guid': final_app.ams_final_application_guid,
+        'project_summary_authorization_guid': final_app.project_summary_authorization_guid,
+        'submitter_name': 'Updated Submitter',
+        'is_agent': final_app.is_agent,
+        'pre_submitted_files': final_app.pre_submitted_files,
+        'documents': documents,
+        'is_submitting': True
+    }
+    
+    put_resp = test_client.put(
+        f'/projects/{final_app.project_summary_authorization.project_summary_guid}/ams-final-application/{final_app.project_summary_authorization_guid}',
+        headers=auth_headers['full_auth_header'], json=put_data
+    )
+    
+    assert put_resp.status_code == 200
+    mock_send_notifications.assert_called_once_with(AmsAppNotificationEvent.RESUBMIT)
+
+
+@patch("app.api.projects.ams_final_application.models.ams_final_application.AmsFinalApplication.send_notifications")
+def test_edit_toggle_off_triggers_edit_off_notification(mock_send_notifications, test_client, db_session, auth_headers):
+    final_app = AmsFinalApplicationFactory(is_submitted=False, editable=True)
+    
+    put_data = {
+        'ams_final_application_guid': final_app.ams_final_application_guid,
+        'editable': False,
+    }
+    
+    put_resp = test_client.put(
+        f'/projects/{final_app.project_summary_authorization.project_summary_guid}/ams-final-application/{final_app.project_summary_authorization_guid}/minespace-edit',
+        headers=auth_headers['full_auth_header'], json=put_data
+    )
+    
+    assert put_resp.status_code == 200
+    mock_send_notifications.assert_called_once_with(AmsAppNotificationEvent.EDIT_OFF)
+
+
+@patch("app.api.projects.ams_final_application.models.ams_final_application.AmsFinalApplication.send_notifications")
+def test_edit_toggle_on_triggers_edit_on_notification(mock_send_notifications, test_client, db_session, auth_headers):
+    final_app = AmsFinalApplicationFactory(is_submitted=False, editable=False)
+    
+    put_data = {
+        'ams_final_application_guid': final_app.ams_final_application_guid,
+        'editable': True,
+    }
+    
+    put_resp = test_client.put(
+        f'/projects/{final_app.project_summary_authorization.project_summary_guid}/ams-final-application/{final_app.project_summary_authorization_guid}/minespace-edit',
+        headers=auth_headers['full_auth_header'], json=put_data
+    )
+    
+    assert put_resp.status_code == 200
+    mock_send_notifications.assert_called_once_with(AmsAppNotificationEvent.EDIT_ON)
+
+
+@patch("app.api.projects.ams_final_application.models.ams_final_application.AmsFinalApplication.send_notifications")
+def test_edit_toggle_no_change_no_notification(mock_send_notifications, test_client, db_session, auth_headers):
+    final_app = AmsFinalApplicationFactory(is_submitted=False, editable=True)
+    
+    put_data = {
+        'ams_final_application_guid': final_app.ams_final_application_guid,
+        'editable': True,
+    }
+    
+    put_resp = test_client.put(
+        f'/projects/{final_app.project_summary_authorization.project_summary_guid}/ams-final-application/{final_app.project_summary_authorization_guid}/minespace-edit',
+        headers=auth_headers['full_auth_header'], json=put_data
+    )
+    
+    assert put_resp.status_code == 200
+    mock_send_notifications.assert_not_called()

@@ -136,7 +136,124 @@ class EmailPreviewResource(Resource, UserMixin):
             return {**base_data, **template_data}
             
         elif 'project' in template_name:
-            if 'section' in template_name:
+            if 'ams_app_submit' in template_name:
+                template_data = {
+                    'mine': {
+                        'mine_name': 'Highland Valley Copper',
+                        'mine_no': 'HVC001'
+                    },
+                    'project': {
+                        'project_title': 'Water Treatment Facility Expansion'
+                    },
+                    'authorization': {
+                        'authorization_type': 'Effluent Discharge Permit'
+                    },
+                    'submitted_date': 'November 26, 2024',
+                    'document_groups': [
+                        {
+                            'type_description': 'Application Instruction Document',
+                            'documents': [
+                                'Application_Instructions_v2.pdf',
+                                'Submission_Checklist.pdf'
+                            ]
+                        },
+                        {
+                            'type_description': 'Clause Form',
+                            'documents': [
+                                'Clause_Form_Schedule_A.pdf'
+                            ]
+                        },
+                        {
+                            'type_description': 'Discharge Factor Form',
+                            'documents': [
+                                'Discharge_Factor_Form_Effluent.pdf'
+                            ]
+                        },
+                        {
+                            'type_description': 'Information Requirements Table',
+                            'documents': [
+                                'Information_Requirements_Table.xlsx'
+                            ]
+                        },
+                        {
+                            'type_description': 'Location Map',
+                            'documents': [
+                                'Location_Map.pdf',
+                                'Regional_Context_Map.pdf'
+                            ]
+                        },
+                        {
+                            'type_description': 'Notification and Engagement',
+                            'documents': [
+                                'First_Nations_Notification_Records.pdf',
+                                'Public_Engagement_Summary.pdf'
+                            ]
+                        },
+                        {
+                            'type_description': 'Qualified Professional Declaration Form',
+                            'documents': [
+                                'QP_Declaration_Environmental_Engineer.pdf',
+                                'QP_Declaration_Geotechnical.pdf'
+                            ]
+                        },
+                        {
+                            'type_description': 'Site Plan',
+                            'documents': [
+                                'Site_Plan_Sheet_1.pdf',
+                                'Site_Plan_Sheet_2.pdf'
+                            ]
+                        },
+                        {
+                            'type_description': 'Supporting Document',
+                            'documents': [
+                                'Environmental_Impact_Assessment.pdf',
+                                'Community_Engagement_Report.pdf'
+                            ]
+                        },
+                        {
+                            'type_description': 'Technical Assessment Report',
+                            'documents': [
+                                'Technical_Assessment_Report.pdf',
+                                'TAR_Appendix_A_Water_Quality.pdf',
+                                'TAR_Appendix_B_Monitoring_Plan.pdf'
+                            ]
+                        }
+                    ],
+                    'view_link': 'https://minespace.gov.bc.ca/projects/456/authorizations',
+                    'button_text': 'View AMS Application in MineSpace',
+                    'brand_type': 'minespace'
+                }
+                return {**base_data, **template_data}
+            elif 'mma_submit' in template_name:
+                template_data = {
+                    'project': {
+                        'project_title': 'New Copper Expansion Project'
+                    },
+                    'primary_documents': [
+                        'Application_Form.pdf',
+                        'Executive_Summary.pdf',
+                        'Project_Description.pdf'
+                    ],
+                    'appendix_documents': [
+                        'Appendix_A_Environmental_Data.pdf',
+                        'Appendix_B_Technical_Specifications.pdf',
+                        'Appendix_C_Financial_Analysis.pdf'
+                    ],
+                    'spatial_documents': [
+                        'Site_Map.pdf',
+                        'Geographic_Information_System_Files.zip'
+                    ],
+                    'supporting_documents': [
+                        'Community_Consultation_Report.pdf',
+                        'Archaeological_Assessment.pdf',
+                        'Traffic_Impact_Study.pdf'
+                    ],
+                    'view_link': 'https://minespace.gov.bc.ca/projects/456/major-mine-application/entry',
+                    'button_text': 'View Major Mine Application in MineSpace',
+                    'brand_type': 'minespace'
+                }
+                return {**base_data, **template_data}
+            elif 'section' in template_name:
                 template_data = {
                     'message': 'Project Section Submitted for Review',
                     'project': {

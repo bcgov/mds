@@ -180,6 +180,11 @@ PROJECT_SUMMARY_EMAILS = [
     MAJOR_MINES_OFFICE_EMAIL, MDS_EMAIL,'Magda.Kingsley@gov.bc.ca', 
     'Kelsey.Norlund@gov.bc.ca', 'Kristy.Emery@gov.bc.ca', 'Samuel.Barnes@gov.bc.ca'
 ]
+PROJECT_EMA_EMAILS = [
+    "ENV.MiningAuthorizations@gov.bc.ca",
+    "ENVSECoal@gov.bc.ca",
+    "PermitAdministration.VictoriaEPD@gov.bc.ca"
+]
 
 PERM_RECL_EMAIL = 'permrecl@gov.bc.ca'
 

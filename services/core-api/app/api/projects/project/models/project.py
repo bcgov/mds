@@ -9,6 +9,7 @@ from app.api.projects.project_contact.models.project_contact import ProjectConta
 from app.api.parties.party.models.address import Address
 from app.api.mines.mine.models.mine import Mine
 from app.api.parties.party.models.party import Party
+from app.api.projects.project_summary.models.project_summary_authorization_type import ProjectSummaryAuthorizationType
 from cerberus import Validator
 import json
 from werkzeug.exceptions import BadRequest
@@ -195,6 +196,21 @@ class Project(AuditMixin, Base):
         if not v.validate(contact):
             return json.dumps(v.errors)
         return True
+    
+    def has_ema_auths(self):
+        if self.project_summary:
+            ema_types = ProjectSummaryAuthorizationType.get_by_group_id("ENVIRONMENTAL_MANAGEMENT_ACT")
+            ema_type_codes = {type.project_summary_authorization_type for type in ema_types}
+            return any(auth_type in ema_type_codes for auth_type in self.project_summary.authorization_types)
+        return False
+    
+    def has_mines_act_auths(self):
+        if self.project_summary:
+            ma_types = ProjectSummaryAuthorizationType.get_by_group_id("MINES_ACT")
+            ma_type_codes = {type.project_summary_authorization_type for type in ma_types}
+            return any(auth_type in ma_type_codes for auth_type in self.project_summary.authorization_types)
+        return False
+
 
     @classmethod
     def create(cls,

@@ -1,6 +1,6 @@
 import json
 
-from app.api.constants import MDS_EMAIL, PERM_RECL_EMAIL, PROJECT_SUMMARY_EMAILS
+from app.api.constants import MDS_EMAIL, PERM_RECL_EMAIL, PROJECT_SUMMARY_EMAILS, PROJECT_EMA_EMAILS
 from app.api.mines.documents.models.mine_document import MineDocument
 from app.api.mines.documents.models.mine_document_bundle import MineDocumentBundle
 from app.api.mines.mine.models.mine import Mine
@@ -28,6 +28,9 @@ from app.api.utils.common_validation_schemas import (
     primary_address_schema,
     project_summary_base_schema,
 )
+from app.api.activity.models.activity_notification import ActivityType
+from app.api.activity.models.activity_notification import ActivityRecipients
+from app.api.activity.utils import trigger_notification
 from app.api.utils.feature_flag import Feature, is_feature_enabled
 from app.api.utils.models_mixins import AuditMixin, Base, SoftDeleteMixin
 from app.config import Config
@@ -207,6 +210,12 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             return self.project.proponent_project_id
         return None
 
+    @hybrid_property
+    def authorization_types(self):
+        if len(self.authorizations) > 0:
+            return list(set(x.project_summary_authorization_type for x in self.authorizations))
+        return []
+        
     @classmethod
     def find_by_project_summary_guid(cls, project_summary_guid):
         return cls.query.filter_by(
@@ -929,6 +938,48 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
 
         return errors_found
 
+    def send_status_notification(self, prev_status, mine):
+        if prev_status == self.status_code:
+            return
+        
+        message = ''
+        activity_recipients = ActivityRecipients.all_users
+        extra_data = {'project': {'project_guid': str(self.project.project_guid)}}
+
+        has_ema_auths = self.project.has_ema_auths()
+        has_mines_act_auths = self.project.has_mines_act_auths()
+
+        noun = "EMA major project description" if has_ema_auths and not has_mines_act_auths else "major project description"
+
+        if self.status_code == 'ASG':
+            message = f'{self.project.project_title} for {self.project.mine_name} has been assigned'
+            activity_recipients = ActivityRecipients.core_users
+
+        if self.status_code == 'CHR':
+            message = f'Changes have been requested by the ministry for {self.project.project_title} at {self.project.mine_name}'
+
+        if self.status_code == 'UNR':
+            message = f'{self.project.project_title} for {self.project.mine_name} is now under review'
+
+        if self.status_code == 'OHD':
+            message = f'The project description {self.project.project_title} for {self.project.mine_name} has been updated to On Hold'
+
+        if self.status_code == 'WDN':
+            message = f'The project description {self.project.project_title} for {self.project.mine_name} has been withdrawn'
+
+        if self.status_code == 'COM':
+            message = f'The status of the project description {self.project.project_title} for {self.project.mine_name} has been completed'
+
+        if prev_status == 'DFT' and self.status_code == 'SUB':
+            message = f'A new {noun} for ({self.project.project_title}) has been submitted for ({self.project.mine_name})'
+        # use same message for EMA-only "update" notifications
+        elif not has_mines_act_auths and has_ema_auths:
+            message = f'Updates to {noun} for ({self.project.project_title}) has been submitted for ({self.project.mine_name})'
+        
+        self.send_project_summary_email(mine, message)
+        trigger_notification(message, ActivityType.major_mine_desc_submitted, self.project.mine, 'ProjectSummary',
+                                self.project_summary_guid, extra_data, None, activity_recipients)
+
     def get_ams_tracking_details(self, ams_tracking_results, project_summary_authorization_guid):
         if not ams_tracking_results:
             return None
@@ -1313,6 +1364,9 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
 
     def send_project_summary_document_email(self, mine) -> None:
         if is_feature_enabled(Feature.MINE_APPLICATION_FILE_UDPATE_ALERTS):
+            has_ema_auths = self.project.has_ema_auths()
+            has_mines_act_auths = self.project.has_mines_act_auths()            
+
             message = f'File(s) in project {self.project.project_title} has been updated for mine {mine.mine_name}'
             project_lead_email = self.project_lead_email
 
@@ -1324,6 +1378,11 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             email_recipients = emails.get(self.status_code)
 
             if email_recipients is not None:
+                # within the email recipients check to still only send updates for same statuses
+                if has_ema_auths and not has_mines_act_auths:
+                    message = f'Updates to EMA major project description for ({self.project.project_title}) has been submitted for ({mine.mine_name})'
+                    email_recipients = PROJECT_EMA_EMAILS
+
                 ministry_template = "email/projects/ministry_project_summary_email.html"
                 subject = f'Project Description Documents Notification for {mine.mine_name}'
                 cc = [MDS_EMAIL]
@@ -1364,7 +1423,13 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
 
         send_ms_email = self.status_code != "DFT" and self.status_code != "ASG"
         
-        ministry_recipients = ministry_emails.get(self.status_code)
+        ministry_recipients = ministry_emails.get(self.status_code) or []
+
+        if not self.project.has_mines_act_auths():
+            ministry_recipients = []
+        if self.project.has_ema_auths():
+            ministry_recipients = ministry_recipients + PROJECT_EMA_EMAILS
+
         cc = [MDS_EMAIL]
         minespace_recipients = [contact.email for contact in self.contacts if contact.is_primary]
 
