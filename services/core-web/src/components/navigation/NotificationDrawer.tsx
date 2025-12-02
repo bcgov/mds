@@ -141,13 +141,14 @@ const NotificationDrawer = () => {
           notification.notification_document.metadata.entity_guid,
           "documents"
         );
-      case "AMSApplication":
+      case "AMSApplication": {
         const { project, project_summary, project_summary_authorization }: any = notification.notification_document.metadata;
         return AMS_FINAL_APPLICATION.dynamicRoute(
           project.project_guid,
           project_summary.project_summary_guid,
           project_summary_authorization.project_summary_authorization_guid
         )
+      }
       default:
         return null;
     }

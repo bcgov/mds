@@ -164,7 +164,7 @@ const NotificationDrawer = () => {
           ),
           state: {},
         };
-      case "AMSApplication":
+      case "AMSApplication": {
         const { project, project_summary, project_summary_authorization }: any =
           notification.notification_document.metadata;
         return {
@@ -175,6 +175,7 @@ const NotificationDrawer = () => {
           ),
           state: {},
         };
+      }
       default:
         return null;
     }
