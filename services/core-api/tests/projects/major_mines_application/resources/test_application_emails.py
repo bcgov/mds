@@ -241,36 +241,33 @@ def test_send_mma_submit_email(mock_send_template_email, test_client,
 
     # Validate response
     assert put_resp.status_code == 200
-
-    # Find the two mma_submit_email calls among all the email calls
-    mma_submit_calls = [
-        call_args for call_args in mock_send_template_email.call_args_list
-        if 'mma_submit_email.html' in str(call_args)
+    
+    # Extract the CORE and MineSpace calls
+    core_email_calls = [
+        c for c in mock_send_template_email.call_args_list
+        if c.kwargs.get('reference_email_type') == 'mma_submit_email_core'
+    ]
+    minespace_email_calls = [
+        c for c in mock_send_template_email.call_args_list
+        if c.kwargs.get('reference_email_type') == 'mma_submit_email_minespace'
     ]
     
-    # Should have exactly 2 calls for mma_submit_email (CORE and MineSpace)
-    assert len(mma_submit_calls) == 2
-    
     # Verify CORE email call
-    core_call = call(
-        subject,
-        core_recipients,
-        'email/projects/mma_submit_email.html',
-        core_context,
-        reference_id=major_mine_application.major_mine_application_guid,
-        reference_table='major_mine_application',
-        reference_email_type='mma_submit_email_core'
-    )
-    assert core_call in mock_send_template_email.call_args_list
+    assert len(core_email_calls) == 1
+    core_call = core_email_calls[0]
+    assert core_call.args[0] == subject
+    assert core_call.args[1] == core_recipients
+    assert core_call.args[2] == 'email/projects/mma_submit_email.html'
+    assert core_call.args[3] == core_context
+    assert core_call.kwargs['reference_id'] == major_mine_application.major_mine_application_guid
+    assert core_call.kwargs['reference_table'] == 'major_mine_application'
     
     # Verify MineSpace email call
-    minespace_call = call(
-        subject,
-        minespace_recipients,
-        'email/projects/mma_submit_email.html',
-        minespace_context,
-        reference_id=major_mine_application.major_mine_application_guid,
-        reference_table='major_mine_application',
-        reference_email_type='mma_submit_email_minespace'
-    )
-    assert minespace_call in mock_send_template_email.call_args_list
+    assert len(minespace_email_calls) == 1
+    minespace_call = minespace_email_calls[0]
+    assert minespace_call.args[0] == subject
+    assert minespace_call.args[1] == minespace_recipients
+    assert minespace_call.args[2] == 'email/projects/mma_submit_email.html'
+    assert minespace_call.args[3] == minespace_context
+    assert minespace_call.kwargs['reference_id'] == major_mine_application.major_mine_application_guid
+    assert minespace_call.kwargs['reference_table'] == 'major_mine_application'
