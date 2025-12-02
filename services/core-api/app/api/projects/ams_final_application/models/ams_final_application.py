@@ -259,11 +259,6 @@ class AmsFinalApplication(HistoryMixin, SoftDeleteMixin, DraftMixin, AuditMixin,
         subject = f'AMS Final Application Updated - {project.project_title}'
         
         extra_data = {
-            'project_guid': str(project.project_guid),
-            'project_summary_guid': str(project_summary.project_summary_guid),
-            'project_summary_authorization_guid': str(self.project_summary_authorization_guid)
-        }
-        extra_data = {
             'project': {'project_guid': str(project.project_guid)},
             'project_summary': {'project_summary_guid': str(project_summary.project_summary_guid)},
             'project_summary_authorization': {'project_summary_authorization_guid': str(self.project_summary_authorization_guid)}
