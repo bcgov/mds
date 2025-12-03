@@ -255,7 +255,7 @@ class AmsFinalApplication(HistoryMixin, SoftDeleteMixin, DraftMixin, AuditMixin,
         project = project_summary.project
         mine = project.mine
         
-        message = f'Updates to EMA major project final application for {project.project_title} has been submitted for {mine.mine_name}'
+        message = f'Updates to EMA major project final application for {project.project_title} have been submitted for {mine.mine_name}'
         subject = f'AMS Final Application Updated - {project.project_title}'
         
         extra_data = {

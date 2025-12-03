@@ -155,7 +155,7 @@ def test_send_notifications_resubmit(mock_send_template_email, db_session):
     final_app.send_notifications(AmsAppNotificationEvent.RESUBMIT)
     
     subject = f'AMS Final Application Updated - {project.project_title}'
-    message = f'Updates to EMA major project final application for {project.project_title} has been submitted for {mine.mine_name}'
+    message = f'Updates to EMA major project final application for {project.project_title} have been submitted for {mine.mine_name}'
     
     base_context = {
         'message': message,
