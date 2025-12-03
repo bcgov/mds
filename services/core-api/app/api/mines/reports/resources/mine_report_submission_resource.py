@@ -273,16 +273,18 @@ class ReportSubmissionResource(Resource, UserMixin):
             submitter_name=data.get('submitter_name', None)
         )
 
-        mine_report_contacts = self.get_mine_report_submission_contacts(
-            contacts, mine_report_id, report_submission.mine_report_submission_id)
-        report_submission.mine_report_contacts = mine_report_contacts
-
         # Mark previous submission as not latest BEFORE saving new one to reduce race condition window
         if previous_submission:
             previous_submission.is_latest = False
             previous_submission.save()
         
         report_submission.save()
+        
+        mine_report_contacts = self.get_mine_report_submission_contacts(
+            contacts, mine_report_id, report_submission.mine_report_submission_id)
+        if mine_report_contacts:
+            report_submission.mine_report_contacts = mine_report_contacts
+            report_submission.save()
 
         if create_initial_report:
             mine_report.send_crr_and_prr_add_notification_email(is_proponent, report_type)
