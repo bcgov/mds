@@ -938,7 +938,7 @@ class MineFactory(BaseFactory):
 
     class Params:
         minimal = factory.Trait(
-            mine_no=None,
+            mine_no='123456',
             mine_note=None,
             mine_region='NE',
             latitude=None,
@@ -1995,7 +1995,7 @@ class AmsFinalApplicationFactory(BaseFactory):
         model = AmsFinalApplication
 
     class Params:
-        project_summary_authorization = factory.SubFactory(ProjectSummaryAuthorizationFactory)
+        project_summary_authorization = factory.SubFactory(ProjectSummaryAmsAuthorizationFactory)
         is_submitted = factory.Trait(
             submitted_timestamp=TODAY,
             is_draft=False
