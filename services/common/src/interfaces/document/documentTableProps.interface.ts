@@ -1,7 +1,7 @@
 import { FileOperations, MineDocument } from "@mds/common/models/documents/document";
 import { ColumnType } from "antd/es/table";
 import { IMineDocument } from "../mineDocument.interface";
-import { ReactNode } from "react";
+import { ReactElement, ReactNode } from "react";
 
 export interface GenericDocTableProps<T> {
   additionalColumnProps?: { key: string; colProps: any }[];
@@ -21,7 +21,7 @@ export interface GenericDocTableProps<T> {
   onArchivedDocuments?: (docs?: T[]) => void | Promise<void>;
   onReplaceDocument?: (document: T) => void | Promise<void>;
   removeDocument?: (event, doc_guid: string, mine_guid: string) => void | Promise<void>;
-  replaceAlertMessage?: string;
+  replaceAlertMessage?: string | ReactNode;
   showVersionHistory?: boolean;
   userRoles?: string[];
   view?: "standard" | "minimal";

@@ -60,20 +60,34 @@ const EnvApplicationPage = () => {
         }
     }, [amsFinalApp]);
 
-    const handleSaveData = (values, _newActiveTab) => {
+    const handleSaveData = async (values, _newActiveTab) => {
         const payload = {
             projectSummaryGuid,
             projectSummaryAuthorizationGuid,
             application: values
         };
+
         if (values.ams_final_application_guid) {
-            return dispatch(updateAmsFinalApp(payload)).then((resp) => { });
+            const projectTitle = projectSummary?.project_summary_title;
+            return await dispatch(updateAmsFinalApp(payload)).then((resp) => {
+                if (!_newActiveTab) {
+                    history.push({
+                        pathname: GLOBAL_ROUTES?.ENVIRONMENTAL_MANAGEMENT_ACT_FINAL_APPLICATION_SUCCESS.dynamicRoute(
+                            projectGuid, projectSummaryGuid, projectSummaryAuthorizationGuid),
+                        state: { projectTitle },
+                    });
+                }
+            });
         } else {
-            return dispatch(createAmsFinalApp(payload)).then((resp) => { });
+            return await dispatch(createAmsFinalApp(payload)).then((resp) => { });
         }
     }
 
     const handleTabChange = (newTab: string) => {
+        if (!newTab) {
+            return;
+        }
+
         return history.push(
             GLOBAL_ROUTES?.AMS_FINAL_APPLICATION.dynamicRoute(
                 projectGuid, projectSummaryGuid, projectSummaryAuthorizationGuid, newTab
@@ -82,7 +96,7 @@ const EnvApplicationPage = () => {
     };
 
     const allTabs = {
-        "basic-information": <EnvBasicInformationTab />,
+        "basic-information": <EnvBasicInformationTab trackingNumber={trackingNumber} />,
         "documents": <EnvDocumentsTab />,
         "declaration": <EnvDeclarationTab />
     };
@@ -115,6 +129,8 @@ const EnvApplicationPage = () => {
                         forceRedux={true}
                         handleTabChange={handleTabChange}
                         activeTab={tab}
+                        confirmOnSubmit={true}
+                        confirmSubmissionText={"Are you sure you want to submit your application package? Once submitted, the Ministry will be notified and your application will enter the formal screening process."}
                     >
                         {Object.entries(allTabs).map(([key, component]) => {
                             return <Step key={key}>{component}</Step>

@@ -235,8 +235,9 @@ const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({
       <Typography.Title level={4}>Application Files</Typography.Title>
       <Typography.Title level={5}>Upload primary application document</Typography.Title>
       <Typography.Paragraph>
-        Please upload the main document for the submission. If your single document contains all
-        supporting information you may not need to include separate supporting documentation.
+        Please upload the main document for the submission. If your document contains all required
+        information you may not need to include separate supporting documentation under the headings
+        below.
       </Typography.Paragraph>
       <Field
         id={MAJOR_MINES_APPLICATION_DOCUMENT_TYPE.PRIMARY}
@@ -282,8 +283,16 @@ const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({
       <Typography.Title level={5}>Upload Appendix Documents</Typography.Title>
       <Typography.Paragraph>
         Appendix documents must be uploaded as separate files and assigned one of the provided
-        document labels. Using the correct label ensures accurate categorization and can
+        documents labels. Using the correct label ensures accurate categorization and can
         significantly improve review time.
+      </Typography.Paragraph>
+      <Typography.Paragraph>
+        Document Labels:
+        <br />
+        Indigenous Nations Engagement, Baseline Information, Mine Plan, Reclamation and Closure
+        Plan, Water Quality Mitigation and Water Modeling, Effluent Discharges to the Environment,
+        Environmental Effects Assessment, Environmental Monitoring, Management Plans, Reclamation
+        Liability Cost Estimate
       </Typography.Paragraph>
 
       <FieldArray
@@ -361,7 +370,14 @@ const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({
       <br />
       <Typography.Title level={5}>Supporting Documents</Typography.Title>
       <Typography.Paragraph>
-        Additional documentation that supports your application can be uploaded here.
+        Additional documentation that supports your application can be uploaded here and assigned
+        one of the provided documents labels.
+      </Typography.Paragraph>
+      <Typography.Paragraph>
+        Document Labels:
+        <br />
+        Qualified Professional Declaration Form, Information Requirements Table of Concordance,
+        Supporting Document, Confidential Information.
       </Typography.Paragraph>
 
       <FieldArray

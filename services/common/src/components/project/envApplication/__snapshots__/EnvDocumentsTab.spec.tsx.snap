@@ -12,6 +12,62 @@ exports[`EnvDocumentsTab renders properly 1`] = `
       Documents
     </h3>
     <div
+      class="ant-typography"
+    >
+      Please upload your Environmental Management Act waste discharge final application for screening. The application must include all documents and information as listed in the Application Instruction Document (AID) and Information Requirements Table (IRT) issued for this application. Incomplete submissions may lead to delays or rejection of your application.
+    </div>
+    <div
+      class="ant-typography"
+    >
+      If you did not receive an AID or IRT it is recommended that you consult with Ministry staff to confirm information requirements prior to submission.
+    </div>
+    <div
+      class="ant-typography"
+    >
+      When uploading your application files, you will be required to 
+      <b>
+        tag each file by type
+      </b>
+      , which supports efficient screening and review.
+    </div>
+    <div
+      class="ant-typography"
+    >
+      Update the document tags:
+      <br />
+      <ul
+        style="list-style-type: disc;"
+      >
+        <li>
+          <i>
+            Clause Form
+          </i>
+           to 
+          <b>
+            Clause Amendment Form
+          </b>
+        </li>
+        <li>
+          <i>
+            Information Requirements Table
+          </i>
+           to 
+          <b>
+            Information Requirements Table of Concordance
+          </b>
+        </li>
+        <li>
+          <i>
+            Notification and Engagement
+          </i>
+           to 
+          <b>
+            Notification and Engagement Report
+          </b>
+        </li>
+      </ul>
+    </div>
+    <div
       class="ant-form-item ant-form-item-with-help"
     >
       <div

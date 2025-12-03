@@ -10,13 +10,10 @@ const terms = (
         <li>In this section:
             <div style={{ paddingLeft: "15px" }}>
                 <div>
-                    “Applicant” means the applicant as identified in section 2 of this
-                    application form;
+                    "Applicant” means the applicant as identified in the project description;
                 </div>
                 <div>
-                    “Authorization” means the permit, approval, operational certificate, or
-                    amended permit, approval, operational certificate, sought pursuant to this
-                    application;
+                    “Authorization” means the permit, or approval, or amended permit, or approval, sought pursuant to this application;
                 </div>
                 <div>
                     “Director” means any statutory decision maker under EMA;

@@ -15,6 +15,9 @@ const MajorMineApplicationPage = React.lazy(
 const MajorMineApplicationSuccessPage = React.lazy(
   () => import("@/components/pages/Project/MajorMineApplicationSuccessPage")
 );
+const EMAApplicationSuccessPage = React.lazy(
+  () => import("@mds/common/components/project/EMAApplicationSuccessPage")
+);
 const MineDashboard = React.lazy(() => import("@/components/dashboard/mine/MineDashboard"));
 const MinesPage = React.lazy(() => import("@/components/pages/MinesPage"));
 const ProjectPage = React.lazy(() => import("@/components/pages/Project/ProjectPage"));
@@ -126,6 +129,15 @@ export const EDIT_PROJECT = {
     `/projects/${projectGuid}/${activeTab}/${link}`,
   component: ProjectPage,
   helpKey: "Edit-Project",
+};
+
+export const ENVIRONMENTAL_MANAGEMENT_ACT_FINAL_APPLICATION_SUCCESS = {
+  route:
+    "/projects/:projectGuid/project-summary/:projectSummaryGuid/ema-application/:projectSummaryAuthorizationGuid/success",
+  dynamicRoute: (projectGuid, projectSummaryGuid, projectSummaryAuthorizationGuid) =>
+    `/projects/${projectGuid}/project-summary/${projectSummaryGuid}/ema-application/${projectSummaryAuthorizationGuid}/success`,
+  component: EMAApplicationSuccessPage,
+  helpKey: "Ema-Final-Application-Submitted",
 };
 
 export const AMS_FINAL_APPLICATION = {
