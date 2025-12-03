@@ -22,7 +22,6 @@ interface SteppedFormProps extends Omit<FormWrapperProps, "onSubmit"> {
   sectionChangeText?: string; // Save & Continue
   nextText?: string; // "Next"
   disableTabsOnError?: boolean;
-
   confirmOnSubmit?: boolean;
   confirmSubmissionOkText?: string;
   confirmSubmissionCancelText?: string;
