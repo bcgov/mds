@@ -73,7 +73,7 @@ const EnvApplicationPage = () => {
                 if (!_newActiveTab) {
                     history.push({
                         pathname: GLOBAL_ROUTES?.ENVIRONMENTAL_MANAGEMENT_ACT_FINAL_APPLICATION_SUCCESS.dynamicRoute(
-                            projectGuid, projectSummaryGuid, projectSummaryAuthorizationGuid),
+                            projectGuid),
                         state: { projectTitle },
                     });
                 }

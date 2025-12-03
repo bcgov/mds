@@ -290,9 +290,9 @@ export const EDIT_PROJECT = {
 };
 
 export const ENVIRONMENTAL_MANAGEMENT_ACT_FINAL_APPLICATION_SUCCESS = {
-  route: "/projects/:projectGuid/project-summary/:projectSummaryGuid/ema-application/:projectSummaryAuthorizationGuid/success",
-  dynamicRoute: (projectGuid, projectSummaryGuid, projectSummaryAuthorizationGuid) =>
-    `/projects/${projectGuid}/project-summary/${projectSummaryGuid}/ema-application/${projectSummaryAuthorizationGuid}/success`,
+  route: "/projects/:projectGuid/ema-application/success",
+  dynamicRoute: (projectGuid) =>
+    `/projects/${projectGuid}/ema-application/success`,
   component: EmaApplicationSuccessPage,
   helpKey: "Ema-Final-Application-Submitted",
 }

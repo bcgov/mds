@@ -3,7 +3,6 @@ import { Link, useParams } from "react-router-dom";
 import { Row, Col, Typography, Button, Divider } from "antd";
 import CheckCircleOutlined from "@ant-design/icons/CheckCircleOutlined";
 import ArrowLeftOutlined from "@ant-design/icons/ArrowLeftOutlined";
-import { useHistory } from "react-router-dom";
 
 interface EnvironmentalManagementActApplicationSuccessPageProps {
     location?: {
@@ -19,22 +18,9 @@ export const EMAApplicationSuccessPage: React.FC<EnvironmentalManagementActAppli
         projectTitle,
     } = state
 
-    const { projectGuid, projectSummaryGuid, projectSummaryAuthorizationGuid } = useParams<{
+    const { projectGuid } = useParams<{
         projectGuid: string;
-        projectSummaryGuid: string;
-        projectSummaryAuthorizationGuid: string;
     }>();
-    const history = useHistory();
-
-    const viewApplicationButton = () => {
-        history.push(
-            GLOBAL_ROUTES?.AMS_FINAL_APPLICATION.dynamicRoute(
-                projectGuid,
-                projectSummaryGuid,
-                projectSummaryAuthorizationGuid,
-            )
-        );
-    };
 
     const renderContent = () => {
         return (
@@ -57,9 +43,9 @@ export const EMAApplicationSuccessPage: React.FC<EnvironmentalManagementActAppli
                             <Button type="primary">Back to Project Overview</Button>
                         </Link>
                     </p>
-                    <p>
-                        <Button onClick={viewApplicationButton}>View Application</Button>
-                    </p>
+                    <Link to={GLOBAL_ROUTES?.EDIT_PROJECT.dynamicRoute(projectGuid, "ema-applications")}>
+                        <Button>View EMA Applications Overview</Button>
+                    </Link>
                 </div>
             </div>
         );
