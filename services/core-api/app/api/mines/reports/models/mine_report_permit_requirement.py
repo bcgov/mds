@@ -63,7 +63,8 @@ class MineReportPermitRequirement(SoftDeleteMixin, AuditMixin, HistoryMixin, Bas
         secondary='mine_report_req_permit_condition_xref',
         secondaryjoin='and_(MineReportReqPermitConditionXref.permit_condition_id == PermitConditions.permit_condition_id, MineReportReqPermitConditionXref.deleted_ind==False)',
         lazy='joined',
-        backref=backref('mine_report_permit_requirements', lazy='joined')
+        backref=backref('mine_report_permit_requirements', lazy='joined', overlaps='mine_report_permit_requirement,mine_report_permit_requirement,mine_report_req_permit_conditions'),
+        overlaps="mine_report_permit_requirement,mine_report_permit_requirement,mine_report_req_permit_conditions"
     )
     
     @hybrid_property
@@ -209,7 +210,7 @@ class StandardReportPermitRequirement(MineReportPermitRequirement):
 
     mine_report_req_permit_conditions: list[StandardReportReqPermitConditionXref] = db.relationship(
         StandardReportReqPermitConditionXref,
-        overlaps="mine_report_permit_requirement",
+        overlaps="mine_report_permit_requirement,mine_report_permit_requirements,mine_report_req_permit_conditions,permit_conditions",
         lazy='joined',
         primaryjoin='and_(StandardReportPermitRequirement.mine_report_permit_requirement_id == StandardReportReqPermitConditionXref.mine_report_permit_requirement_id, StandardReportReqPermitConditionXref.deleted_ind==False)',
     )
@@ -218,7 +219,8 @@ class StandardReportPermitRequirement(MineReportPermitRequirement):
         secondary='mine_report_req_permit_condition_xref',
         secondaryjoin='and_(StandardReportReqPermitConditionXref.standard_permit_condition_id == StandardPermitConditions.standard_permit_condition_id, StandardReportReqPermitConditionXref.deleted_ind==False)',
         lazy='joined',
-        backref=backref('mine_report_permit_requirements', lazy='joined')
+        backref=backref('mine_report_permit_requirements', lazy='joined', overlaps='mine_report_permit_requirement,mine_report_permit_requirement,mine_report_permit_requirements,mine_report_req_permit_conditions,permit_conditions'),
+        overlaps="mine_report_permit_requirements,mine_report_permit_requirement,mine_report_req_permit_conditions"
     )
 
     def update_permit_conditions(self, new_permit_condition_ids) -> None:
