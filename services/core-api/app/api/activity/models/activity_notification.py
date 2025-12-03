@@ -74,6 +74,24 @@ def validate_document(document):
                         }
                     }
                 },
+                'project_summary': {
+                    'required': False,
+                    'type': 'dict',
+                    'schema': {
+                        'project_summary_guid': {
+                            'type': 'string'
+                        }
+                    }
+                },
+                'project_summary_authorization': {
+                    'required': False,
+                    'type': 'dict',
+                    'schema': {
+                        'project_summary_authorization_guid': {
+                            'type': 'string'
+                        }
+                    }
+                },
                 'mine_tailings_storage_facility': {
                     'required': False,
                     'type': 'dict',
@@ -115,6 +133,7 @@ class ActivityType(str, Enum):
     project_app_status_updated = 'project_app_status_updated'
     project_app_documents_updated = 'project_app_documents_updated'
     report_requested = 'report_requested'
+    ams_application_updated = 'ams_application_updated'
 
     def __str__(self):
         return self.value

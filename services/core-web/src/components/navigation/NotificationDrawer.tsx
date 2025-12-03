@@ -12,6 +12,7 @@ import { getUserInfo } from "@mds/common/redux/selectors/authenticationSelectors
 import { useHistory } from "react-router-dom";
 import { storeActivities } from "@mds/common/redux/actions/activityActions";
 import {
+  AMS_FINAL_APPLICATION,
   MINE_TAILINGS_DETAILS,
   NOTICE_OF_DEPARTURE,
   EDIT_PROJECT_SUMMARY,
@@ -140,6 +141,14 @@ const NotificationDrawer = () => {
           notification.notification_document.metadata.entity_guid,
           "documents"
         );
+      case "AMSApplication": {
+        const { project, project_summary, project_summary_authorization }: any = notification.notification_document.metadata;
+        return AMS_FINAL_APPLICATION.dynamicRoute(
+          project.project_guid,
+          project_summary.project_summary_guid,
+          project_summary_authorization.project_summary_authorization_guid
+        )
+      }
       default:
         return null;
     }

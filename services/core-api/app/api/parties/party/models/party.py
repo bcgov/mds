@@ -92,7 +92,6 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
         'PartyVerifiableCredentialConnection',
         lazy='select',
         uselist=False,
-        remote_side=[party_guid],
         primaryjoin=
         'and_(PartyVerifiableCredentialConnection.party_guid == Party.party_guid, PartyVerifiableCredentialConnection.deleted_ind==False, PartyVerifiableCredentialConnection.connection_state==\'active\')',
         overlaps='digital_wallet_invitations')

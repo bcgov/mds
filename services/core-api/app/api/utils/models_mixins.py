@@ -524,7 +524,7 @@ class HistoryMixin(object):
 class DocumentXrefMixin(object):
     @declared_attr
     def mine_document(cls):
-        return db.relationship('MineDocument', lazy='select')
+        return db.relationship('MineDocument', lazy='select', overlaps=f"{cls.__tablename__}")
     
     @declared_attr
     def mine_document_guid(cls):

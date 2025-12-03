@@ -161,9 +161,11 @@ class ReportSubmissionResource(Resource, UserMixin):
             submitter_name=getattr(previous_submission, "submitter_name"),
         )
         
-        report_submission.save()
+        # Mark previous submission as not latest BEFORE saving new one to reduce race condition window
         previous_submission.is_latest = False
         previous_submission.save()
+        
+        report_submission.save()
         return report_submission
 
     @api.expect(parser)
@@ -245,10 +247,11 @@ class ReportSubmissionResource(Resource, UserMixin):
         create_timestamp = None
         create_user = None
         previous_submission = None
-        if not is_proponent and not is_first_submission:
+        if not is_first_submission:
             previous_submission = MineReportSubmission.find_latest_by_mine_report_guid(str(mine_report_guid))
-            create_timestamp = getattr(previous_submission, 'create_timestamp')
-            create_user = getattr(previous_submission, 'create_user')
+            if previous_submission:
+                create_timestamp = getattr(previous_submission, 'create_timestamp')
+                create_user = getattr(previous_submission, 'create_user')
 
         report_submission = MineReportSubmission(
             create_timestamp=create_timestamp,
@@ -270,14 +273,18 @@ class ReportSubmissionResource(Resource, UserMixin):
             submitter_name=data.get('submitter_name', None)
         )
 
-        mine_report_contacts = self.get_mine_report_submission_contacts(
-            contacts, mine_report_id, report_submission.mine_report_submission_id)
-        report_submission.mine_report_contacts = mine_report_contacts
-
-        report_submission.save()
+        # Mark previous submission as not latest BEFORE saving new one to reduce race condition window
         if previous_submission:
             previous_submission.is_latest = False
             previous_submission.save()
+        
+        report_submission.save()
+        
+        mine_report_contacts = self.get_mine_report_submission_contacts(
+            contacts, mine_report_id, report_submission.mine_report_submission_id)
+        if mine_report_contacts:
+            report_submission.mine_report_contacts = mine_report_contacts
+            report_submission.save()
 
         if create_initial_report:
             mine_report.send_crr_and_prr_add_notification_email(is_proponent, report_type)

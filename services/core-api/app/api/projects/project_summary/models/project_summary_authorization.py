@@ -50,6 +50,12 @@ class ProjectSummaryAuthorization(SoftDeleteMixin, AuditMixin, Base):
         foreign_keys=[project_summary_guid],
         lazy='joined'
     )
+    
+    authorization_type = db.relationship(
+        'ProjectSummaryAuthorizationType',
+        foreign_keys=[project_summary_authorization_type],
+        lazy='joined'
+    )
 
     def __repr__(self):
         return f'{self.__class__.__name__} {self.project_summary_authorization_guid}'

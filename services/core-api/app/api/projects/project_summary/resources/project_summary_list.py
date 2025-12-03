@@ -153,11 +153,15 @@ class ProjectSummaryListPostResource(Resource, UserMixin):
 
         try:
             project_summary.save()
-            if project_summary.status_code == 'SUB':
-                if is_minespace_user():
-                    project_summary.send_project_summary_email(mine)
+            if project_summary.status_code == 'SUB':                
                 # Trigger notification for newly submitted Project Summary
-                message = f'A Major Mine Description called ({new_project.project_title}) has been submitted for ({new_project.mine_name})'
+                noun = 'A Major Mine description'
+                if new_project.has_ema_auths() and not new_project.has_mines_act_auths():
+                    noun = 'A new EMA major project description'
+                message = f'{noun} called ({new_project.project_title}) has been submitted for ({new_project.mine_name})'
+                if is_minespace_user():
+                    project_summary.send_project_summary_email(mine, message)
+                
                 extra_data = {'project': {'project_guid': str(new_project.project_guid)}}
                 trigger_notification(message, ActivityType.major_mine_desc_submitted, new_project.mine, 'ProjectSummary', project_summary.project_summary_guid, extra_data)
         except Exception as e:

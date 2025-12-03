@@ -57,6 +57,21 @@
 {% endif %}
 {% endmacro %}
 
+<!-- Document List Component -->
+{% macro document_list(documents, brand='minespace') %}
+{%- set text_color = BRAND_COLORS[brand].text -%}
+<tr>
+    <td style="vertical-align: top; font-family: sans-serif; font-size: 16px; font-weight: 400; line-height: 20px; color: {{ text_color }}; margin: 0; margin-bottom: 15px;"
+        valign="top">
+        <ul style="margin: 0; margin-bottom: 15px; padding-left: 20px;">
+            {% for document in documents %}
+            <li>{{ document }}</li>
+            {% endfor %}
+        </ul>
+    </td>
+</tr>
+{% endmacro %}
+
 <!-- Inline Link Component -->
 {% macro inline_link(url, text, brand="minespace") -%}
 {%- set link_color = BRAND_COLORS[brand].primary -%}
