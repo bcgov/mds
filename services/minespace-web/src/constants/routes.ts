@@ -15,7 +15,7 @@ const MajorMineApplicationPage = React.lazy(
 const MajorMineApplicationSuccessPage = React.lazy(
   () => import("@/components/pages/Project/MajorMineApplicationSuccessPage")
 );
-const EMAApplicationSuccessPage = React.lazy(
+const EmaApplicationSuccessPage = React.lazy(
   () => import("@mds/common/components/project/EMAApplicationSuccessPage")
 );
 const MineDashboard = React.lazy(() => import("@/components/dashboard/mine/MineDashboard"));
@@ -134,7 +134,7 @@ export const EDIT_PROJECT = {
 export const ENVIRONMENTAL_MANAGEMENT_ACT_FINAL_APPLICATION_SUCCESS = {
   route: "/projects/:projectGuid/ema-application/success",
   dynamicRoute: (projectGuid) => `/projects/${projectGuid}/ema-application/success`,
-  component: EMAApplicationSuccessPage,
+  component: EmaApplicationSuccessPage,
   helpKey: "Ema-Final-Application-Submitted",
 };
 
