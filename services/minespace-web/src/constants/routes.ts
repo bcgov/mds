@@ -16,7 +16,7 @@ const MajorMineApplicationSuccessPage = React.lazy(
   () => import("@/components/pages/Project/MajorMineApplicationSuccessPage")
 );
 const EmaApplicationSuccessPage = React.lazy(
-  () => import("@mds/common/components/project/EMAApplicationSuccessPage")
+  () => import("@mds/common/components/project/EmaApplicationSuccessPage")
 );
 const MineDashboard = React.lazy(() => import("@/components/dashboard/mine/MineDashboard"));
 const MinesPage = React.lazy(() => import("@/components/pages/MinesPage"));
