@@ -17,47 +17,97 @@ exports[`MajorMineApplicationGetStarted renders properly 1`] = `
       <div
         class="ant-typography"
       >
-        Basic information about what a major mine submission is will go here
+        Submit Your Authorization Application Documents
       </div>
-      <h4
-        class="ant-typography"
-      >
-        Basic Information
-      </h4>
       <div
         class="ant-typography"
       >
-        Information what is needed for this section
+        This is where you submit your application documents related to your
+         
+        <b>
+          <i>
+            Mines Act authorization
+          </i>
+        </b>
+        .
+        <br />
+        Your submission must include:
+        <ul
+          style="list-style-type: disc;"
+        >
+          <li>
+            A 
+            <b>
+              primary document
+            </b>
+             that outlines the core details of your application.
+          </li>
+          <li>
+            <b>
+              Appendix files
+            </b>
+             including engagement information, mine plans, technical reports, studies, or assessments that support your application.
+          </li>
+          <li>
+            <b>
+              Spatial files
+            </b>
+             formatted according to the prescribed standards.
+          </li>
+          <li
+            style="padding-left: 24px; text-indent: -20px;"
+          >
+            <b>
+              Supporting documents
+            </b>
+             such as Information Requirements Tables of Concordance, Professional Qualifications, confidential information and additional supporting information related to your application.
+          </li>
+        </ul>
       </div>
-      <h4
-        class="ant-typography"
-      >
-        Upload Primary Document
-      </h4>
       <div
         class="ant-typography"
       >
-        Information what is needed for this section
+        If you are submitting a
+         
+        <b>
+          joint 
+          <i>
+            Mines Act / Environmental Management Act
+          </i>
+        </b>
+         
+        (EMA) application, please also include any files that are relevant to the entire application package as identified in the Joint Application Instruction Document. This ensures coordinated review and alignment with the Joint Application Information Requirements (JAIR).
       </div>
-      <h4
-        class="ant-typography"
-      >
-        Upload Spatial Components
-      </h4>
       <div
         class="ant-typography"
       >
-        Information what is needed for this section
+        When uploading your documents, you will be required to 
+        <b>
+          tag each file by type
+        </b>
+        , which supports efficient processing and review.
       </div>
-      <h4
-        class="ant-typography"
-      >
-        Upload Supporting Documents
-      </h4>
       <div
         class="ant-typography"
       >
-        Information what is needed for this section
+        For more information on the coordinated authorizations process and expectations for major mines, refer to the
+         
+        <a
+          href="https://www2.gov.bc.ca/assets/gov/farming-natural-resources-and-industry/mineral-exploration-mining/documents/permitting/mmpo/major_mines_auth_guide.pdf"
+          target="_blank"
+        >
+          Major Mines Authorizations Guide
+        </a>
+         
+        and the
+         
+        <a
+          href="https://www2.gov.bc.ca/assets/gov/farming-natural-resources-and-industry/mineral-exploration-mining/documents/permitting/joint_application_information_requirements.pdf"
+          target="_blank"
+        >
+          JAIR Guidance Document
+        </a>
+        .
       </div>
     </div>
   </div>

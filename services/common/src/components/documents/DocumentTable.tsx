@@ -27,7 +27,7 @@ import FileOutlined from "@ant-design/icons/FileOutlined";
 import InboxOutlined from "@ant-design/icons/InboxOutlined";
 import SyncOutlined from "@ant-design/icons/SyncOutlined";
 import { openDocument } from "@mds/common/components/syncfusion/DocumentViewer";
-import { Button, Col, Row } from "antd";
+import { Button, Col, Row, Typography } from "antd";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import DocumentTableProps from "@mds/common/interfaces/document/documentTableProps.interface";
 import ArchiveDocumentModal from "./ArchiveDocumentModal";
@@ -51,7 +51,8 @@ export const DocumentTable: FC<DocumentTableProps> = ({
   canArchiveDocuments = false,
   canReplaceDocuments = true,
   removeDocument,
-  replaceAlertMessage = "The replaced file will not reviewed as part of the submission.  The new file should be in the same format as the original file.",
+  replaceAlertMessage = <Typography.Text>The replaced file will <b>not</b> be reviewed as part of the application submission package.
+    To ensure successful replacement, the new file must be the <b>same file type</b> as the original. Please verify the file format before proceeding.</Typography.Text>,
   ...props
 }: DocumentTableProps) => {
   // differences from bringing over from CORE (vs the MS version): this file has doc compression & bulk actions

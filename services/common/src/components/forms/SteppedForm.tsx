@@ -22,6 +22,10 @@ interface SteppedFormProps extends Omit<FormWrapperProps, "onSubmit"> {
   sectionChangeText?: string; // Save & Continue
   nextText?: string; // "Next"
   disableTabsOnError?: boolean;
+  confirmOnSubmit?: boolean;
+  confirmSubmissionOkText?: string;
+  confirmSubmissionCancelText?: string;
+  confirmSubmissionText?: string;
 }
 
 const SteppedForm: FC<SteppedFormProps> = ({
@@ -43,6 +47,10 @@ const SteppedForm: FC<SteppedFormProps> = ({
   nextText = "Next",
   disableTabsOnError = true,
   forceRedux,
+  confirmOnSubmit = false,
+  confirmSubmissionText = "",
+  confirmSubmissionOkText = "Confirm Submission",
+  confirmSubmissionCancelText = "Cancel",
 }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [tabIndex, setTabIndex] = useState(0);
@@ -215,13 +223,30 @@ const SteppedForm: FC<SteppedFormProps> = ({
                 </Button>
               )}
               {isEditMode && isLast && (
-                <Button
-                  type="primary"
-                  onClick={(e) => handleNextClick(e, null)}
-                  disabled={isSubmitting}
-                >
-                  {submitText || "Submit"}
-                </Button>
+                confirmOnSubmit ? (
+                  <Popconfirm
+                    placement="topRight"
+                    title={confirmSubmissionText}
+                    onConfirm={(e) => handleNextClick(e, null)}
+                    okText={confirmSubmissionOkText}
+                    cancelText={confirmSubmissionCancelText}
+                  >
+                    <Button
+                      type="primary"
+                      disabled={isSubmitting}
+                    >
+                      {submitText || "Submit"}
+                    </Button>
+                  </Popconfirm>
+                ) : (
+                  <Button
+                    type="primary"
+                    onClick={(e) => handleNextClick(e, null)}
+                    disabled={isSubmitting}
+                  >
+                    {submitText || "Submit"}
+                  </Button>
+                )
               )}
             </Row>
           </div>

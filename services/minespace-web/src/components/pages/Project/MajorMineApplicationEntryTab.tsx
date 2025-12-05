@@ -88,9 +88,14 @@ export const MajorMineApplicationEntryTab: FC<MajorMineApplicationEntryTabProps>
         <br />
         {entryGraphic}
         <br />
-        <Typography.Paragraph>
-          <Typography.Title level={5}>Start new Major Mine Application</Typography.Title>
-          The next stage in your project is the submission of a Major Mine Application.
+        <Typography.Title level={5}>Start new Major Mine Application</Typography.Title>
+        <Typography.Paragraph style={{ width: "50%", margin: "0 auto 1em auto" }}>
+          Please proceed to upload all required documents for your <i>Mines Act</i> application. If
+          your application package is a Joint Application, including{" "}
+          <i>Environmental Management Act</i> (EMA) authorizations, and any of those files are
+          relevant to the entire application package as identified in the Joint Application
+          Instruction Document, please submit them here as well. This ensures that all related
+          documentation is reviewed together for a more efficient assessment.
         </Typography.Paragraph>
         <Typography.Paragraph>
           Start the submission process by clicking the button below.

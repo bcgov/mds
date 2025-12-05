@@ -346,6 +346,12 @@ exports[`DashboardRoutes  renders properly 1`] = `
   <Route
     component={[Function]}
     exact={true}
+    key="/projects/:projectGuid/ema-application/success"
+    path="/projects/:projectGuid/ema-application/success"
+  />
+  <Route
+    component={[Function]}
+    exact={true}
     key="/projects/:projectGuid/project-summary/:projectSummaryGuid/application/:projectSummaryAuthorizationGuid/:tab"
     path="/projects/:projectGuid/project-summary/:projectSummaryGuid/application/:projectSummaryAuthorizationGuid/:tab"
   />
