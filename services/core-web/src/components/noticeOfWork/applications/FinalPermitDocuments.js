@@ -22,6 +22,7 @@ const propTypes = {
   editPreambleFileMetadata: PropTypes.bool,
   disableCategoryFilter: PropTypes.bool,
   showInUnifiedView: PropTypes.bool,
+  showBCMIWarning: PropTypes.bool,
 };
 
 const defaultProps = {
@@ -31,6 +32,7 @@ const defaultProps = {
   editPreambleFileMetadata: false,
   disableCategoryFilter: false,
   showInUnifiedView: false,
+  showBCMIWarning: false,
 };
 
 export class FinalPermitDocuments extends Component {
@@ -114,9 +116,17 @@ export class FinalPermitDocuments extends Component {
     return (
       <div>
         <div className="inline-flex between">
-          <div>
+          <div style={{ width: "75%" }}>
             {!this.props.adminView && <h4>Permit Package</h4>}
             <p>All files in this list will appear in the Preamble on the permit.</p>
+            <br />
+            {this.props?.showBCMIWarning &&
+              <p>
+                <b>Warning</b>: Files uploaded here will be visible to the proponent and may be publicly posted on external websites
+                including BC Mines Information Website without further review. Please ensure all attachments comply with
+                FOIPPA (Freedom of Information and Protection of Privacy Act) requirements and do not include personal or sensitive information.
+              </p>
+            }
           </div>
           <div>
             <PermitPackage isAdminView={this.props.adminView} />

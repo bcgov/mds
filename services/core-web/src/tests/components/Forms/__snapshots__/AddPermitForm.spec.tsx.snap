@@ -1332,6 +1332,12 @@ exports[`AddPermitForm renders properly 1`] = `
           class="ant-divider ant-divider-horizontal"
           role="separator"
         />
+        <p>
+          <b>
+            Warning
+          </b>
+          : Files uploaded here will be visible to the proponent and may be publicly posted on external websites including BC Mines Information Website without further review. Please ensure all attachments comply with FOIPPA (Freedom of Information and Protection of Privacy Act) requirements and do not include personal or sensitive information.
+        </p>
         <div
           class="whirlpool-container"
         >
