@@ -199,7 +199,7 @@ class Project(AuditMixin, Base):
     
     def has_ema_auths(self):
         if self.project_summary:
-            ema_types = ProjectSummaryAuthorizationType.get_by_group_id("ENVIRONMENTAL_MANAGEMENT_ACT")
+            ema_types = ProjectSummaryAuthorizationType.get_by_group_id("ENVIRONMENTAL_MANAGMENT_ACT")
             ema_type_codes = {type.project_summary_authorization_type for type in ema_types}
             return any(auth_type in ema_type_codes for auth_type in self.project_summary.authorization_types)
         return False
