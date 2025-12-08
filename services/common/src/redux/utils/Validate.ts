@@ -1,7 +1,7 @@
 import * as Strings from "@mds/common/constants/strings";
-import { IOption } from "@mds/common/interfaces/";
+import { removeNullValues } from "@mds/common/constants/utils";
 
-import { memoize } from "lodash";
+import { isEmpty, memoize } from "lodash";
 import moment from "moment-timezone";
 
 /**
@@ -156,11 +156,11 @@ export const spatialDocumentBundle = (files: any[]) => {
 export const notnone = (value) => (value === "None" ? "Please select an item" : undefined);
 
 export const maxLength = memoize((max) => (value) =>
-    value && value.length > max ? `Must be ${max} characters or less` : undefined
+  value && value.length > max ? `Must be ${max} characters or less` : undefined
 );
 
 export const minLength = memoize((min) => (value) =>
-    value && value.length < min ? `Must be ${min} characters or more` : undefined
+  value && value.length < min ? `Must be ${min} characters or more` : undefined
 );
 
 export const exactLength = memoize((min) => (value) =>
@@ -223,9 +223,9 @@ export const currency = (value) =>
   value && !Validate.checkCurrency(value) ? "Invalid dollar amount" : undefined;
 
 export const validateStartDate = memoize((previousStartDate) => (value) =>
-    value <= previousStartDate
-      ? "New manager's start date cannot be on or before the previous manager's start date."
-      : undefined
+  value <= previousStartDate
+    ? "New manager's start date cannot be on or before the previous manager's start date."
+    : undefined
 );
 
 export const alertStartDateNotBeforeHistoric = memoize((mineAlerts) => (value) => {
@@ -244,9 +244,9 @@ export const max = memoize((maxValue) => (value) =>
 );
 
 export const alertNotInFutureIfCurrentActive = memoize((mineAlert) => (value) =>
-    value && mineAlert.start_date && new Date(value) >= new Date()
-      ? "Start date cannot be in the future if there is a current active alert.  Please update or remove current alert first"
-      : undefined
+  value && mineAlert.start_date && new Date(value) >= new Date()
+    ? "Start date cannot be in the future if there is a current active alert.  Please update or remove current alert first"
+    : undefined
 );
 
 export const dateNotInFuture = (value) =>
@@ -255,6 +255,27 @@ export const dateNotInFuture = (value) =>
 export const dateNotInFutureTZ = (value) => {
   return value && !moment(value).isBefore() ? "Date cannot be in the future" : undefined;
 };
+
+export const partyHasAddress = memoize(
+  (dropdownOptions: { value: any; address: any }[], message: string) =>
+    (value) => {
+      if (!value) {
+        return undefined;
+      }
+
+      const selectedOption = dropdownOptions?.find((opt) => opt.value === value);
+      if (!selectedOption) {
+        return undefined;
+      }
+
+      const address = selectedOption.address;
+      const firstAddress = Array.isArray(address) ? address[0] : address;
+
+      const hasProperties = Boolean(firstAddress) && !isEmpty(removeNullValues(firstAddress));
+      return hasProperties ? undefined : message;
+    },
+  (dropdownOptions, message) => `${dropdownOptions.map((o) => o.value).join()}-${message}`
+);
 
 export const dateTimezoneRequired = memoize((timezoneField) => (_value, allValues) => {
   const formTimezone = allValues[timezoneField];
@@ -266,12 +287,12 @@ export const dateInFuture = (value) =>
 
 // NOTE: modified from version in CORE- change from <= to <
 export const dateNotBeforeOther = memoize((other: string, otherLabel?: string) => (value: string) => {
-    const invalid = value && other && value < other;
-    if (!invalid) {
-      return undefined;
-    }
-    const otherFormattedDate = moment(other).format("ddd MMM D YYYY");
-    const otherDateText = otherLabel ? `${otherLabel} (${otherFormattedDate})` : otherFormattedDate;
+  const invalid = value && other && value < other;
+  if (!invalid) {
+    return undefined;
+  }
+  const otherFormattedDate = moment(other).format("ddd MMM D YYYY");
+  const otherDateText = otherLabel ? `${otherLabel} (${otherFormattedDate})` : otherFormattedDate;
   return `Date cannot be before ${otherDateText}`
 }, (other, otherLabel) => `${other}_${otherLabel}`);
 
@@ -286,23 +307,23 @@ export const dateNotBeforeStrictOther = memoize(
 export const timeNotBeforeOther = memoize(
   (comparableDate, baseDate, baseTime) => (comparableTime) =>
     baseTime &&
-    baseDate &&
-    comparableDate &&
-    comparableTime &&
-    baseDate === comparableDate &&
-    comparableTime < baseTime
+      baseDate &&
+      comparableDate &&
+      comparableTime &&
+      baseDate === comparableDate &&
+      comparableTime < baseTime
       ? `Time cannot be before ${baseTime.format("H:mm")} hrs.`
       : undefined
 );
 
 // NOTE: modified from version in CORE- change from >= to >
 export const dateNotAfterOther = memoize((other: string, otherLabel?: string) => (value: string) => {
-    const invalid = value && other && value > other;
-    if (!invalid) {
-      return undefined;
-    }
-    const otherFormattedDate = moment(other).format("ddd MMM D YYYY");
-    const otherDateText = otherLabel ? `${otherLabel} (${otherFormattedDate})` : otherFormattedDate;
+  const invalid = value && other && value > other;
+  if (!invalid) {
+    return undefined;
+  }
+  const otherFormattedDate = moment(other).format("ddd MMM D YYYY");
+  const otherDateText = otherLabel ? `${otherLabel} (${otherFormattedDate})` : otherFormattedDate;
 
   return `Date cannot be after ${otherDateText}`
 }, (other, otherLabel) => `${other}_${otherLabel}`);
@@ -311,9 +332,9 @@ export const yearNotInFuture = (value) =>
   value && value > new Date().getFullYear() ? "Year cannot be in the future" : undefined;
 
 export const validateIncidentDate = memoize((reportedDate) => (value) =>
-    value <= reportedDate
-      ? "Incident date and time cannot occur before reporting occurence."
-      : undefined
+  value <= reportedDate
+    ? "Incident date and time cannot occur before reporting occurence."
+    : undefined
 );
 
 export const decimalPlaces = memoize((places) => (value) => {
@@ -404,7 +425,7 @@ export const validateIfApplicationTypeCorrespondsToPermitNumber = (
       Strings.APPLICATION_TYPES_BY_PERMIT_PREFIX[permit.permit_prefix].includes(applicationType)
       ? undefined
       : `The ${isAdminAmendment ? "Type of Administrative Amendment" : "Type of Notice of Work"
-        } does not match to the selected permit.`;
+      } does not match to the selected permit.`;
   }
   return undefined;
 };
