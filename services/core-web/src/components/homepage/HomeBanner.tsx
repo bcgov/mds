@@ -1,7 +1,7 @@
 import React from "react";
 import { Typography, Col, Row } from "antd";
 
-import SearchBar from "@/components/search/SearchBar";
+import GlobalSearch from "@/components/search/GlobalSearch";
 import { BACKGROUND } from "@/constants/assets";
 
 const HomeBanner = () => {
@@ -24,8 +24,8 @@ const HomeBanner = () => {
         </Typography.Title>
         <Row id="home-banner-search-container">
           <Col span={18}>
-            <SearchBar
-              placeholderText="Search by Mines, Contacts, Permits or Documents Name..."
+            <GlobalSearch
+              placeholder="Search by Mines, Contacts, Permits or Documents Name..."
               size="large"
             />
           </Col>

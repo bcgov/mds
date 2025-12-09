@@ -1,3 +1,9 @@
+from app.api.mines.response_models import (
+    MINE_TSF_MODEL,
+    MINE_TYPE_MODEL,
+    MINE_VERIFIED_MODEL,
+    MINE_WORK_INFORMATION_MODEL,
+)
 from app.api.parties.response_models import (
     PARTY_BUSINESS_ROLE_APPT,
     PARTY_ORGBOOK_ENTITY,
@@ -50,6 +56,11 @@ MINE_SEARCH_MODEL = api.model(
         'mine_permit': fields.List(fields.Nested(PERMIT_SEARCH_MODEL)),
         'mine_status': fields.Nested(MINE_STATUS_MODEL),
         'mms_alias': fields.String,
+        'major_mine_ind': fields.Boolean,
+        'mine_type': fields.List(fields.Nested(MINE_TYPE_MODEL)),
+        'mine_tailings_storage_facilities': fields.List(fields.Nested(MINE_TSF_MODEL)),
+        'mine_work_information': fields.Nested(MINE_WORK_INFORMATION_MODEL),
+        'verified_status': fields.Nested(MINE_VERIFIED_MODEL),
     })
 
 PARTY_ADDRESS = api.model(

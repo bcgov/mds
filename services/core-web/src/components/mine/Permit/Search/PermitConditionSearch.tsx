@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Layout, Typography, Row, Col, Card, Skeleton } from 'antd';
 import SearchBox from './components/SearchBox';
 import SearchResults, { SelectedFilter } from './components/SearchResults';
-import MarkdownViewer from './components/MarkdownViewer';
+import AiResponseViewer from './components/AiResponseViewer';
 import { useAppDispatch, useAppSelector } from '@mds/common/redux/rootState';
 import { selectSearchResults, selectSearchLoading, selectSearchQuery, selectSearchFilters, selectAiLoading, searchPermitConditions, } from '@mds/common/redux/slices/permitSearchSlice';
 import PermitConditionSearchSplashScreen from './components/PermitConditionSearchSplashScreen';
@@ -69,6 +69,7 @@ const PermitConditionSearch: React.FC = () => {
                                         title="AI-Generated Response"
                                         loading={false} // Don't use Card's loading state
                                         className={`permit-search__ai-response ${isAIResponseExpanded ? 'permit-search__ai-response--expanded' : ''}`}
+                                        bodyStyle={{ padding: 0 }}
                                     >
                                         <FontAwesomeIcon
                                             icon={isAIResponseExpanded ? faCompress : faExpand}
@@ -76,14 +77,18 @@ const PermitConditionSearch: React.FC = () => {
                                             className="expand-button"
                                             titleId="expand-button"
                                             title={isAIResponseExpanded ? "Compress" : "Expand"}
+                                            style={{ zIndex: 10 }}
                                         />
                                         {aiLoading ? (
-                                            <Skeleton active paragraph={{ rows: 3 }} />
+                                            <div style={{ padding: '24px' }}>
+                                                <Skeleton active paragraph={{ rows: 3 }} />
+                                            </div>
                                         ) : (
                                             results?.prompt?.answers?.map((result) => (
-                                                <MarkdownViewer
+                                                <AiResponseViewer
                                                     key={`prompt-${result.substring(0, 20)}`}
-                                                    markdown={result}
+                                                    answer={result}
+                                                    documents={results.documents}
                                                 />
                                             ))
                                         )}

@@ -2,7 +2,6 @@ version: "3"
 include:
   - ./services/permits/docker-compose.yaml
 services:
-
   ####################### Keycloak for Cypress #######################
   keycloak:
     build:
@@ -24,7 +23,7 @@ services:
   ####################### Open Telemetry #######################
   otelcollector:
     image: otel/opentelemetry-collector
-    command: [ --config=/etc/otel-collector-config.yaml ]
+    command: [--config=/etc/otel-collector-config.yaml]
     volumes:
       - ./otel-collector-config.yaml:/etc/otel-collector-config.yaml
     ports:
@@ -67,10 +66,9 @@ services:
       - ./services/postgres/postgresql.conf:/config/postgresql.conf
       - ./services/postgres/pg_hba.conf:/config/pg_hba.conf
       - postgres_data:/var/lib/postgresql/data
-    command:
-      postgres -c 'config_file=/config/postgresql.conf' -c 'hba_file=/config/pg_hba.conf'
+    command: postgres -c 'config_file=/config/postgresql.conf' -c 'hba_file=/config/pg_hba.conf'
     healthcheck:
-      test: [ "CMD", "pg_isready" ]
+      test: ["CMD", "pg_isready"]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -84,12 +82,12 @@ services:
       context: services/postgres
       dockerfile: Dockerfile_update
     environment:
-    - PGUSER=mds
-    - POSTGRES_PASSWORD=test
-    - POSTGRES_INITDB_ARGS=-U mds
+      - PGUSER=mds
+      - POSTGRES_PASSWORD=test
+      - POSTGRES_INITDB_ARGS=-U mds
     volumes:
-    - postgres_data_bkp:/var/lib/postgresql/13/data
-    - postgres_data:/var/lib/postgresql/16/data
+      - postgres_data_bkp:/var/lib/postgresql/13/data
+      - postgres_data:/var/lib/postgresql/16/data
 
   ####################### Flyway Migration Definition #######################
   flyway:
@@ -118,6 +116,40 @@ services:
     depends_on:
       - postgres
   ####################### Backend Definition #######################
+
+  pgsync:
+    build:
+      context: services/pgsync
+    container_name: mds_pgsync
+    platform: linux/amd64
+    environment:
+      - PG_HOST=postgres
+      - PG_PORT=5432
+      - PG_USER=mds
+      - PG_PASSWORD=test
+      - PG_DATABASE=mds
+      - ELASTICSEARCH_HOST=elasticsearch
+      - ELASTICSEARCH_PORT=9200
+      - ELASTICSEARCH_SCHEME=https
+      - ELASTICSEARCH_USER=elastic
+      - ELASTICSEARCH_PASSWORD=changeme
+      - ELASTICSEARCH_VERIFY_CERTS=false
+      - ELASTICSEARCH_CA_CERTS=/certs/ca/ca.crt
+      - PGSYNC_CHECKPOINT_PATH=/tmp
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_DB=0
+      - REDIS_AUTH=redis-password
+    volumes:
+      - ./services/pgsync:/config
+      - certs:/certs
+    depends_on:
+      postgres:
+        condition: service_healthy
+      elasticsearch:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
   backend:
     restart: always
     user: 1000:1000
@@ -131,6 +163,7 @@ services:
       - ./migrations:/migrations
       - ./services/core-api:/app
       - core_api_logs:/var/log/core-api
+      - certs:/certs
     depends_on:
       - flyway
       - nris_backend
@@ -139,12 +172,13 @@ services:
       - filesystem_provider
       - postgres
       - redis
+      - pgsync
       - jaeger
       - otelcollector
       - keycloak
       - core_api_celery
     healthcheck:
-      test: [ "CMD", "curl", "localhost:5000/health" ]
+      test: ["CMD", "curl", "localhost:5000/health"]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -159,6 +193,7 @@ services:
       - 5556:5555
     volumes:
       - ./services/core-api:/app
+      - certs:/certs
     depends_on:
       - postgres
       - redis
@@ -173,7 +208,7 @@ services:
     ports:
       - "6379:6379"
     healthcheck:
-      test: [ "CMD", "redis-cli", "ping" ]
+      test: ["CMD", "redis-cli", "ping"]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -186,7 +221,7 @@ services:
     platform: linux/amd64
     build:
       context: services/core-web
-    command: [ "npm", "run", "serve" ]
+    command: ["npm", "run", "serve"]
     volumes:
       - ./services/core-web/src:/app/src
     ports:
@@ -195,7 +230,7 @@ services:
       - backend
     env_file: ./services/core-web/.env
     healthcheck:
-      test: [ "CMD", "curl", "localhost:3000/health" ]
+      test: ["CMD", "curl", "localhost:3000/health"]
       interval: 15s
       timeout: 5s
       retries: 5
@@ -209,7 +244,7 @@ services:
     platform: linux/amd64
     build:
       context: services/minespace-web
-    command: [ "npm", "run", "serve" ]
+    command: ["npm", "run", "serve"]
     volumes:
       - ./services/minespace-web/src:/app/src
     ports:
@@ -218,7 +253,7 @@ services:
       - backend
     env_file: ./services/minespace-web/.env
     healthcheck:
-      test: [ "CMD", "curl", "localhost:3020/health" ]
+      test: ["CMD", "curl", "localhost:3020/health"]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -239,7 +274,7 @@ services:
       - nris_migrate
     env_file: ./services/nris-api/backend/.env
     healthcheck:
-      test: [ "CMD", "curl", "localhost:5500/health" ]
+      test: ["CMD", "curl", "localhost:5500/health"]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -269,6 +304,7 @@ services:
   ####################### Syncfusion Filesystem Provider Definition #######################
   filesystem_provider:
     container_name: filesystem_provider
+    platform: linux/amd64
     build:
       context: services/filesystem-provider
     ports:
@@ -329,7 +365,7 @@ services:
     restart: always
     container_name: docgen_api
     image: bcgovimages/common-document-generation-service:2.4.1
-    command: [ "npm", "run", "start" ]
+    command: ["npm", "run", "start"]
     environment:
       - SERVER_PORT=3030
       - APP_PORT=3030
