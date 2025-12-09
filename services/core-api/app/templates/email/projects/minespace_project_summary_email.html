@@ -2,10 +2,10 @@
 {% from "email/_components/email_macros.html" import paragraph, button_link, inline_link %}
 
 {% set brand = 'minespace' %}
-{% set title = message %}
+{% set page_title = message %}
 
 {% block content %}
-{{ paragraph('A project description has been submitted for ' + mine.mine_name + ' (Mine no: ' + mine.mine_no + ') in
+{{ paragraph('Project description data has been submitted for ' + mine.mine_name + ' (Mine no: ' + mine.mine_no + ') in
 Minespace. The Major Mines Office will be in contact with you regarding your submission.', margin_top=16, brand=brand)
 }}
 
