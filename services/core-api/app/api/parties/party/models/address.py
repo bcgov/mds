@@ -8,6 +8,10 @@ from sqlalchemy.ext.hybrid import hybrid_property
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 from app.extensions import db
 
+def normalize_canadian_postal_code(post_code: str) -> str:
+    if not post_code:
+        return post_code
+    return post_code.upper().replace(" ", "").replace("-", "")
 
 class Address(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = 'address'
@@ -98,11 +102,14 @@ class Address(SoftDeleteMixin, AuditMixin, Base):
         else:
             address_type_code = self.address_type_code
             post_code = value     
+
+        if post_code and address_type_code == 'CAN':
+            post_code = normalize_canadian_postal_code(post_code)
         
         if post_code and len(post_code) > 10:
             raise AssertionError('post_code must not exceed 10 characters.')
 
-        if not address_type_code or not post_code or address_type_code not in ['CAN', 'USA']:
+        if not post_code or address_type_code not in ['CAN', 'USA']:
             return value          
 
         # this Canada postal code regex accepts American postal codes.
@@ -113,4 +120,5 @@ class Address(SoftDeleteMixin, AuditMixin, Base):
 
             current_app.logger.error(f'Failed post_code validation for address {self.address_id}. post_code: {post_code}, address_type_code: {address_type_code}')
             raise AssertionError('Invalid post_code format.')
-        return value
+
+        return post_code if key == 'post_code' else value
