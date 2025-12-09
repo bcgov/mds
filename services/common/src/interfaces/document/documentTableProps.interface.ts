@@ -21,7 +21,7 @@ export interface GenericDocTableProps<T> {
   onArchivedDocuments?: (docs?: T[]) => void | Promise<void>;
   onReplaceDocument?: (document: T) => void | Promise<void>;
   removeDocument?: (event, doc_guid: string, mine_guid: string) => void | Promise<void>;
-  replaceAlertMessage?: string;
+  replaceAlertMessage?: string | ReactNode;
   showVersionHistory?: boolean;
   userRoles?: string[];
   view?: "standard" | "minimal";

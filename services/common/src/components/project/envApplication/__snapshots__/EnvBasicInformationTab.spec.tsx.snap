@@ -6,6 +6,21 @@ exports[`EnvBasicInformationTab renders properly 1`] = `
     class="ant-form ant-form-vertical common-form common-form-ADD_EDIT_AMS_FINAL_APPLICATION form-edit"
     id="ADD_EDIT_AMS_FINAL_APPLICATION"
   >
+    <div
+      class="ant-typography"
+    >
+      This process is for the final application submission for your waste discharge application for tracking number 
+    </div>
+    <div
+      class="ant-typography"
+    >
+      If you are submitting a joint Mines Act (MA) / Environmental Management Act (EMA) application, please upload any files that are relevant to the Joint Application package under the MA Application Tab. This ensures coordinated review and alignment with the Joint Application Information Requirements.
+    </div>
+    <div
+      class="ant-typography"
+    >
+      Files specific to the EMA application: Application Instruction Document, Discharge Factors Form, Clause Amendment Form, Location Map, Information Requirements Table, or Technical Assessment Report for ancillary EMA permit applications (air, refuse), should be uploaded here.
+    </div>
     <h3
       class="ant-typography"
     >

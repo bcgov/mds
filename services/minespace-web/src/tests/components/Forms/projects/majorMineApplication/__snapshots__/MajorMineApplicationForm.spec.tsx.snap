@@ -153,7 +153,7 @@ exports[`MajorMineApplicationForm renders properly 1`] = `
       <div
         class="ant-typography"
       >
-        Please upload the main document for the submission. If your single document contains all supporting information you may not need to include separate supporting documentation.
+        Please upload the main document for the submission. If your document contains all required information you may not need to include separate supporting documentation under the headings below.
       </div>
       <div
         class="whirlpool-container"
@@ -255,7 +255,14 @@ exports[`MajorMineApplicationForm renders properly 1`] = `
       <div
         class="ant-typography"
       >
-        Appendix documents must be uploaded as separate files and assigned one of the provided document labels. Using the correct label ensures accurate categorization and can significantly improve review time.
+        Appendix documents must be uploaded as separate files and assigned one of the provided documents labels. Using the correct label ensures accurate categorization and can significantly improve review time.
+      </div>
+      <div
+        class="ant-typography"
+      >
+        Document Labels:
+        <br />
+        Indigenous Nations Engagement, Baseline Information, Mine Plan, Reclamation and Closure Plan, Water Quality Mitigation and Water Modeling, Effluent Discharges to the Environment, Environmental Effects Assessment, Environmental Monitoring, Management Plans, Reclamation Liability Cost Estimate
       </div>
       <div>
         <div
@@ -1371,7 +1378,14 @@ exports[`MajorMineApplicationForm renders properly 1`] = `
       <div
         class="ant-typography"
       >
-        Additional documentation that supports your application can be uploaded here.
+        Additional documentation that supports your application can be uploaded here and assigned one of the provided documents labels.
+      </div>
+      <div
+        class="ant-typography"
+      >
+        Document Labels:
+        <br />
+        Qualified Professional Declaration Form, Information Requirements Table of Concordance, Supporting Document, Confidential Information.
       </div>
       <div>
         <div

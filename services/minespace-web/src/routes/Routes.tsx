@@ -38,6 +38,15 @@ const Routes = () => (
       />
       <Route
         exact
+        path={routes.ENVIRONMENTAL_MANAGEMENT_ACT_FINAL_APPLICATION_SUCCESS.route}
+        component={ColumnWrapper()(
+          AuthenticationGuard()(
+            routes.ENVIRONMENTAL_MANAGEMENT_ACT_FINAL_APPLICATION_SUCCESS.component
+          )
+        )}
+      />
+      <Route
+        exact
         path={routes.MAJOR_MINE_APPLICATION_SUCCESS.route}
         component={ColumnWrapper()(
           AuthenticationGuard()(routes.MAJOR_MINE_APPLICATION_SUCCESS.component)
