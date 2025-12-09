@@ -122,10 +122,6 @@ export class PermitAmendmentForm extends Component {
       this.props.initialValues.permit_prefix === "C" ||
       this.props.initialValues.permit_prefix === "M";
 
-    const showWarning =
-      this.props?.title?.includes("Edit") ||
-      this.props?.title?.includes("Add Permit Amendment");
-
     return (
       <FormWrapper
         onSubmit={this.props.onSubmit}
@@ -230,16 +226,12 @@ export class PermitAmendmentForm extends Component {
                 />
               </Form.Item>
             )}
-            {showWarning && (
-              <>
-                <p>
-                  <b>Warning</b>: Files uploaded here will be visible to the proponent and may be publicly posted on external websites
-                  including BC Mines Information Website without further review. Please ensure all attachments comply with
-                  FOIPPA (Freedom of Information and Protection of Privacy Act) requirements and do not include personal or sensitive information.
-                </p>
-                <br />
-              </>
-            )}
+            <p>
+              <b>Warning</b>: Files uploaded here will be visible to the proponent and may be publicly posted on external websites
+              including BC Mines Information Website without further review. Please ensure all attachments comply with
+              FOIPPA (Freedom of Information and Protection of Privacy Act) requirements and do not include personal or sensitive information.
+            </p>
+            <br />
             <Form.Item label="Upload files">
               <Field
                 id="PermitDocumentFileUpload"
