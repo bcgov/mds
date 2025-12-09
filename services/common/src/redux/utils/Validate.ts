@@ -1,7 +1,7 @@
 import * as Strings from "@mds/common/constants/strings";
-import { IOption } from "@mds/common/interfaces/";
+import { removeNullValues } from "@mds/common/constants/utils";
 
-import { memoize } from "lodash";
+import { isEmpty, memoize } from "lodash";
 import moment from "moment-timezone";
 
 /**
@@ -255,6 +255,27 @@ export const dateNotInFuture = (value) =>
 export const dateNotInFutureTZ = (value) => {
   return value && !moment(value).isBefore() ? "Date cannot be in the future" : undefined;
 };
+
+export const partyHasAddress = memoize(
+  (dropdownOptions: { value: any; address: any }[], message: string) =>
+    (value) => {
+      if (!value) {
+        return undefined;
+      }
+
+      const selectedOption = dropdownOptions?.find((opt) => opt.value === value);
+      if (!selectedOption) {
+        return undefined;
+      }
+
+      const address = selectedOption.address;
+      const firstAddress = Array.isArray(address) ? address[0] : address;
+
+      const hasProperties = Boolean(firstAddress) && !isEmpty(removeNullValues(firstAddress));
+      return hasProperties ? undefined : message;
+    },
+  (dropdownOptions, message) => `${dropdownOptions.map((o) => o.value).join()}-${message}`
+);
 
 export const dateTimezoneRequired = memoize((timezoneField) => (_value, allValues) => {
   const formTimezone = allValues[timezoneField];
