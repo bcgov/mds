@@ -254,8 +254,9 @@ class EmailPreviewResource(Resource, UserMixin):
                 }
                 return {**base_data, **template_data}
             elif 'section' in template_name:
+                message = 'The status of the Application for the project Mine Life Extension Project for Copper Mountain Mine has been updated to Withdrawn.'
                 template_data = {
-                    'message': 'Project Section Submitted for Review',
+                    'message': message,
                     'project': {
                         'mine_name': 'Copper Mountain Mine',
                         'mine_no': 'CU003',
