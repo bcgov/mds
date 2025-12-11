@@ -467,7 +467,7 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
                   placeholder="Select Mine Manager"
                   partyLabel="Mine Manager"
                   required={!isHistoric}
-                  validate={isHistoric ? [partyHasAddress(mineManagersDropdown, partyValidationMessage)] : [required, partyHasAddress(mineManagersDropdown, partyValidationMessage)]}
+                  validate={isHistoric ? [] : [required, partyHasAddress(mineManagersDropdown, partyValidationMessage)]}
                   component={renderConfig.SELECT}
                   data={mineManagersDropdown}
                   disabled={disabled}
@@ -481,7 +481,7 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
                   component={renderConfig.SELECT}
                   placeholder="Select Permittee"
                   required
-                  validate={[required, partyHasAddress(permitteeDropdown, partyValidationMessage)]}
+                  validate={isHistoric ? [required] : [required, partyHasAddress(permitteeDropdown, partyValidationMessage)]}
                   data={permitteeDropdown}
                   disabled={disabled || !mines_permit_guid}
                 />
