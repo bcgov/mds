@@ -157,7 +157,7 @@ def test_send_mma_submit_email(mock_send_template_email, test_client,
         project_summary_authorization_type='MINES_ACT_PERMIT'
     )
     auth.save()
-    
+    assert major_mine_application.project.has_mines_act_auth() == True
     # Add various document types to test document grouping
     documents = [
         {
