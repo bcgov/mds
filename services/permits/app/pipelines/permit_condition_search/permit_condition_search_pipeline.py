@@ -1,7 +1,5 @@
 import logging
 import os
-from datetime import datetime
-from typing import List
 
 import yaml
 from app.pipelines.permit_condition_search.components.azure_blob_upload import (
@@ -21,12 +19,11 @@ from app.pipelines.permit_condition_search.stores.ai_search_document_store impor
 )
 from azure.search.documents.indexes.models import VectorSearch
 from haystack import AsyncPipeline, Pipeline
-from haystack.components.builders import ChatPromptBuilder, PromptBuilder
+from haystack.components.builders import ChatPromptBuilder
 from haystack.components.embedders import AzureOpenAITextEmbedder
 from haystack.components.extractors.llm_metadata_extractor import (
     AzureOpenAIChatGenerator,
 )
-from haystack.components.generators import AzureOpenAIGenerator
 from haystack.dataclasses import ChatMessage
 from haystack_integrations.components.retrievers.azure_ai_search import (
     AzureAISearchHybridRetriever,
@@ -85,14 +82,16 @@ def create_permit_condition_search_indexing_pipeline():
     blob_uploader = AzureBlobUploader(
         connection_string=config.storage.connection_string,
         container_name=config.storage.container_name,
+        blob_service_endpoint=config.storage.blob_service_endpoint,
     )
 
     api_key = config.search.api_key.resolve_value()
-
     assert api_key is not None, "API key must be provided to create the indexer"
+    search_endpoint = config.search.endpoint.resolve_value()
+    assert search_endpoint is not None, "Search endpoint must be provided to create the indexer"
 
     indexer_runner = IndexerRunner(
-        search_endpoint=config.search.endpoint.resolve_value(),
+        search_endpoint=search_endpoint,
         search_api_key=api_key,
     )
 
@@ -112,6 +111,7 @@ def create_blob_uploader_pipeline():
     blob_uploader = AzureBlobUploader(
         connection_string=config.storage.connection_string,
         container_name=config.storage.container_name,
+        blob_service_endpoint=config.storage.blob_service_endpoint,
     )
 
     blob_uploader_pipeline.add_component("blob_uploader", blob_uploader)
