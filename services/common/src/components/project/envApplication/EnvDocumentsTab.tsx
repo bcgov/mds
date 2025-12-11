@@ -127,18 +127,9 @@ const EnvDocumentsTab = () => {
             <Typography.Paragraph>
                 When uploading your application files, you will be required to <b>tag each file by type</b>, which supports efficient screening and review.
             </Typography.Paragraph>
-            <Typography.Paragraph>
-                Update the document tags:
-                <br />
-                <ul style={{ listStyleType: "disc" }}>
-                    <li><i>Clause Form</i> to <b>Clause Amendment Form</b></li>
-                    <li><i>Information Requirements Table</i> to <b>Information Requirements Table of Concordance</b></li>
-                    <li><i>Notification and Engagement</i> to <b>Notification and Engagement Report</b></li>
-                </ul>
-            </Typography.Paragraph>
             <Field
                 name="pre_submitted_files"
-                label="Check those that were submitted as part of the Project Description"
+                label="Please check any of the following forms that were submitted as during the Project Description phase of this application"
                 component={RenderGroupCheckbox}
                 options={preSubmittedOptions}
                 normalize={normalizeGroupCheckBox}

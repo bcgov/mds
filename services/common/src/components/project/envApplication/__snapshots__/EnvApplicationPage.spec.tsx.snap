@@ -202,7 +202,12 @@ exports[`EnvApplicationPage renders properly 1`] = `
                 <div
                   class="ant-typography"
                 >
-                  Files specific to the EMA application: Application Instruction Document, Discharge Factors Form, Clause Amendment Form, Location Map, Information Requirements Table, or Technical Assessment Report for ancillary EMA permit applications (air, refuse), should be uploaded here.
+                  For joint applications, files specific to the EMA application: Application Instruction Document, Discharge Factors Form, Clause Amendment Form, Location Map, Information Requirements Table, should be uploaded on the following documents page.
+                </div>
+                <div
+                  class="ant-typography"
+                >
+                  For EMA only applications please upload all documents for your final application on the following documents page.
                 </div>
                 <h3
                   class="ant-typography"
