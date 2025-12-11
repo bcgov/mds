@@ -33,6 +33,7 @@ class AzureSearchConfig:
 class AzureStorageConfig:
     connection_string: str
     container_name: str
+    blob_service_endpoint: Optional[str] = None
 
 @dataclass
 class ElasticsearchConfig:
@@ -75,7 +76,8 @@ class Config:
         # Azure Storage configuration
         storage = AzureStorageConfig(
             connection_string=os.environ["AZURE_STORAGE_CONNECTION_STRING"],
-            container_name=os.environ["AZURE_STORAGE_CONTAINER"]
+            container_name=os.environ["AZURE_STORAGE_CONTAINER"],
+            blob_service_endpoint=os.environ.get("AZURE_STORAGE_BLOB_SERVICE_ENDPOINT")
         )
 
         # Elasticsearch configuration

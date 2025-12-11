@@ -8,15 +8,17 @@ logger = logging.getLogger(__name__)
 
 @component
 class AzureBlobUploader:
-    def __init__(self, connection_string: str, container_name: str):
+    def __init__(self, connection_string: str, container_name: str, blob_service_endpoint: str | None = None):
         """
         Initialize the blob uploader
         Args:
             connection_string: Azure Storage connection string
             container_name: Azure Storage container name
+            blob_service_endpoint: Optional override for the blob service endpoint
         """
         self.connection_string = connection_string
         self.container_name = container_name
+        self.blob_service_endpoint = blob_service_endpoint
         
         if not self.connection_string:
             raise ValueError("connection_string cannot be empty")
@@ -28,7 +30,15 @@ class AzureBlobUploader:
         """
         Uploads a file to Azure Blob Storage in the indexing folder
         """
+        # BlobService
         blob_service_client = BlobServiceClient.from_connection_string(self.connection_string)
+
+        if self.blob_service_endpoint:
+            blob_service_client = BlobServiceClient(
+                account_url=self.blob_service_endpoint,
+                credential=blob_service_client.credential
+            )
+
         container_client = blob_service_client.get_container_client(self.container_name)
         
         # Upload to an 'indexing' folder in the container
