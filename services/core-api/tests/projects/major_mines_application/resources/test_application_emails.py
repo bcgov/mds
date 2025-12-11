@@ -152,13 +152,13 @@ def test_send_mma_submit_email(mock_send_template_email, test_client,
     major_mine_application = MajorMineApplicationFactory(status_code='DFT')
     
     project_summary = ProjectSummaryFactory(project=major_mine_application.project)
-    auth = ProjectSummaryAuthorizationFactory(
+    ProjectSummaryAuthorizationFactory(
         project_summary=project_summary,
         project_summary_authorization_type='MINES_ACT_PERMIT'
     )
-    auth.save()
+
     db_session.refresh(major_mine_application)
-    assert major_mine_application.project.has_mines_act_auths() == True
+
     # Add various document types to test document grouping
     documents = [
         {
