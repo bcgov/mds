@@ -22,9 +22,12 @@ const EnvBasicInformationTab: React.FC<EnvBasicInformationTabProps> = ({
                 This ensures coordinated review and alignment with the Joint Application Information Requirements.
             </Typography.Paragraph>
             <Typography.Paragraph>
-                Files specific to the EMA application: Application Instruction Document, Discharge Factors Form,
-                Clause Amendment Form, Location Map, Information Requirements Table,
-                or Technical Assessment Report for ancillary EMA permit applications (air, refuse), should be uploaded here.
+                For joint applications, files specific to the EMA application: Application Instruction Document,
+                Discharge Factors Form, Clause Amendment Form, Location Map, Information Requirements Table,
+                should be uploaded on the following documents page.
+            </Typography.Paragraph>
+            <Typography.Paragraph>
+                For EMA only applications please upload all documents for your final application on the following documents page.
             </Typography.Paragraph>
             <Typography.Title level={3}>Basic Information</Typography.Title>
             <Field
