@@ -299,7 +299,7 @@ from app.api.utils.access_decorators import (
      (AssignUserToPermitConditionCategory, 'post', [EDIT_STANDARD_PERMIT_CONDITIONS]),
      (AssignUserToPermitConditionCategory, 'put', [VIEW_ALL]),
      (StandardPermitConditionsListResource, 'post', [EDIT_STANDARD_PERMIT_CONDITIONS]),
-     (StandardPermitConditionsListResource, 'get', [EDIT_STANDARD_PERMIT_CONDITIONS]),
+     (StandardPermitConditionsListResource, 'get', [EDIT_PERMIT]),
      (StandardPermitConditionsResource, 'put', [EDIT_STANDARD_PERMIT_CONDITIONS]),
      (StandardPermitConditionsResource, 'delete', [EDIT_STANDARD_PERMIT_CONDITIONS]),
      (ProjectSummaryListGetResource, 'get', [VIEW_ALL, MINESPACE_PROPONENT]),
