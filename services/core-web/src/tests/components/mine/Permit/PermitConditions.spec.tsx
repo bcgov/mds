@@ -28,7 +28,7 @@ const initialState = {
   },
   [AUTHENTICATION]: {
     systemFlag: SystemFlagEnum.core,
-    userAccessData: [USER_ROLES.role_admin, USER_ROLES.role_edit_permits],
+    userAccessData: [USER_ROLES.role_admin, USER_ROLES.role_edit_permits, USER_ROLES.role_edit_template_conditions],
   },
 };
 
