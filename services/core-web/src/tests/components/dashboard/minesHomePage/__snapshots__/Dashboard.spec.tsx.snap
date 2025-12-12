@@ -1301,7 +1301,7 @@ exports[`Dashboard renders properly 1`] = `
                     </span>
                     <br />
                     <a
-                      href="https://nrm.sp.gov.bc.ca/sites/EMPR/mtb/_layouts/15/start.aspx#/"
+                      href="https://bcgov.sharepoint.com/sites/EMLI-MINESGIS/SitePages/Mining-GIS-Requests-Portal-Home.aspx"
                       rel="noopener noreferrer"
                       target="_blank"
                     >

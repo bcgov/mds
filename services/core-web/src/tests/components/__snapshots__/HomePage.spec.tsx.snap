@@ -242,12 +242,6 @@ exports[`HomePage renders properly 1`] = `
             >
               Data and Mapping request portal
             </a>
-             or email 
-            <a
-              href="mailto:EMLIAnalytics@gov.bc.ca"
-            >
-              EMLIAnalytics@gov.bc.ca
-            </a>
             .
           </div>
           <div
