@@ -45,7 +45,7 @@ const Contact: FC<ContactProps> = ({
 }) => {
   const [title, setTitle] = useState(partyRelationshipTitle ?? "");
   const [subTitle, setSubTitle] = useState(partyRelationshipSubTitle ?? "");
-  const canEdit = editPermission ? useAppSelector(userHasRole(editPermission)) : false;
+  const canEdit = useAppSelector(userHasRole(editPermission));
 
   useEffect(() => {
     switch (partyRelationship.mine_party_appt_type_code) {
