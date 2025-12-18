@@ -3,7 +3,6 @@ import {
   addPartyRelationship,
   fetchParties,
   fetchPartyRelationships,
-  removePartyRelationship,
   updatePartyRelationship,
 } from "@mds/common/redux/actionCreators/partiesActionCreator";
 import { getPartyRelationships } from "@mds/common/redux/selectors/partiesSelectors";
