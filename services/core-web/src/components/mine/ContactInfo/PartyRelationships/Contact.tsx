@@ -9,7 +9,7 @@ import { DocumentLink } from "@mds/common/components/documents/DocumentLink";
 import { useAppSelector } from "@mds/common/redux/rootState";
 import { userHasRole } from "@mds/common/redux/selectors/authenticationSelectors";
 
-export interface ContactProps {
+interface ContactProps {
   partyRelationship: IPartyAppt;
   partyRelationshipTitle: string;
   partyRelationshipSubTitle?: string;
@@ -23,17 +23,13 @@ export interface ContactProps {
     mine: IMine
   ) => void;
   onSubmitEditPartyRelationship?: (partyRelationship: IPartyAppt) => void;
-  removePartyRelationship?: (
-    event: React.MouseEvent<HTMLButtonElement>,
-    mine_party_appt_guid: string
-  ) => void;
   otherDetails?: any;
   isEditable?: boolean;
   editPermission?: string;
   compact?: boolean;
 }
 
-export const Contact: FC<ContactProps> = ({
+const Contact: FC<ContactProps> = ({
   partyRelationship,
   partyRelationshipTitle,
   partyRelationshipSubTitle,
@@ -42,7 +38,6 @@ export const Contact: FC<ContactProps> = ({
   permits,
   openEditPartyRelationshipModal,
   onSubmitEditPartyRelationship,
-  removePartyRelationship,
   otherDetails,
   isEditable,
   editPermission,
