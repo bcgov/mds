@@ -72,7 +72,7 @@ services:
       timeout: 5s
       retries: 5
   pgsync:
-    image: query/pgsync
+    image: toluaina1/pgsync
     container_name: mds_pgsync
     environment:
       - PG_HOST=postgres
@@ -84,16 +84,17 @@ services:
       - ELASTICSEARCH_PORT=9200
       - ELASTICSEARCH_SCHEME=https
       - ELASTICSEARCH_USER=elastic
-      - ELASTICSEARCH_PASSWORD=changeme
+      - ELASTICSEARCH_PASSWORD=elastic
       - ELASTICSEARCH_VERIFY_CERTS=false
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - REDIS_DB=0
-      - REDIS_AUTH=
+      - REDIS_AUTH=redis-password
+      - REDIS_CHECKPOINT=true
+      - CONSOLE_LOGGING_HANDLER_MIN_LEVEL=DEBUG
     volumes:
-      - ./services/pgsync:/config
-    command: >
-      bash -c "pgsync --config /config/schema.json --daemon"
+      - ./services/pgsync/schema.json:/app/schema.json
+    command: ["-c", "schema.json", "--daemon"]
     depends_on:
       postgres:
         condition: service_healthy
