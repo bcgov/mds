@@ -1,219 +1,775 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef, useMemo, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
-import { Modal, Input, List, Typography, Button, Empty } from "antd";
-import { SearchOutlined, FileSearchOutlined, EnterOutlined } from "@ant-design/icons";
-import { throttle } from "lodash";
+import { useHistory, useLocation } from "react-router-dom";
+import { Modal, Input, Typography, Button, List, Space, Row, Col, Avatar, Divider, Tag, Switch } from "antd";
+import { AimOutlined } from "@ant-design/icons";
+import {
+  SearchOutlined,
+  FileSearchOutlined,
+  EnterOutlined,
+  EnvironmentOutlined,
+  TeamOutlined,
+  FileProtectOutlined,
+  ClockCircleOutlined,
+  DeleteOutlined,
+  HistoryOutlined,
+  UserOutlined,
+  BankOutlined,
+  ExceptionOutlined,
+  AlertOutlined,
+} from "@ant-design/icons";
 import { fetchSearchBarResults } from "@mds/common/redux/actionCreators/searchActionCreator";
-import { getSearchBarResults } from "@mds/common/redux/reducers/searchReducer";
+import { getSearchBarResults, getSearchBarFacets } from "@mds/common/redux/reducers/searchReducer";
 import * as router from "@/constants/routes";
-import { MINE, PROFILE_NOCIRCLE, DOC } from "@/constants/assets";
 import { ISearchResult, ISimpleSearchResult } from "@mds/common/interfaces";
 
-const { Text } = Typography;
+const { Text, Title } = Typography;
+
+const RECENT_SEARCHES_KEY = "mds_recent_searches";
+const MAX_RECENT_SEARCHES = 5;
 
 interface GlobalSearchProps {
-    placeholder?: string;
-    containerStyle?: React.CSSProperties;
-    size?: "small" | "middle" | "large";
+  placeholder?: string;
+  size?: "small" | "middle" | "large";
 }
 
-const GlobalSearch: React.FC<GlobalSearchProps> = ({
-    placeholder = "Search Core...",
-    containerStyle = {},
-    size = "middle"
-}) => {
-    const [isModalVisible, setIsModalVisible] = useState(false);
-    const [searchTerm, setSearchTerm] = useState("");
-    const [selectedIndex, setSelectedIndex] = useState(0);
-    const dispatch = useDispatch();
-    const searchResults = useSelector(getSearchBarResults);
-    const history = useHistory();
-    const inputRef = useRef<any>(null);
+const TYPE_CONFIG: Record<string, { icon: React.ReactNode; label: string; color: string; types: string[] }> = {
+  mine: { icon: <EnvironmentOutlined />, label: "Mines", color: "#2e7d32", types: ["mine"] },
+  contact: { icon: <UserOutlined />, label: "People", color: "#1565c0", types: ["person", "party"] },
+  organization: { icon: <BankOutlined />, label: "Organizations", color: "#f57c00", types: ["organization"] },
+  permit: { icon: <FileProtectOutlined />, label: "Permits", color: "#e65100", types: ["permit"] },
+  explosives_permit: { icon: <AlertOutlined />, label: "Explosives", color: "#d32f2f", types: ["explosives_permit"] },
+  nod: { icon: <ExceptionOutlined />, label: "NODs", color: "#7b1fa2", types: ["nod"] },
+};
 
-    const handleOpen = () => {
-        setIsModalVisible(true);
-        setTimeout(() => inputRef.current?.focus(), 100);
+const RESULT_TYPE_CONFIG: Record<string, { icon: React.ReactNode; label: string; color: string }> = {
+  mine: { icon: <EnvironmentOutlined />, label: "Mine", color: "#2e7d32" },
+  person: { icon: <UserOutlined />, label: "Person", color: "#1565c0" },
+  organization: { icon: <BankOutlined />, label: "Organization", color: "#f57c00" },
+  party: { icon: <TeamOutlined />, label: "Contact", color: "#1565c0" },
+  permit: { icon: <FileProtectOutlined />, label: "Permit", color: "#e65100" },
+  explosives_permit: { icon: <AlertOutlined />, label: "Explosives Permit", color: "#d32f2f" },
+  nod: { icon: <ExceptionOutlined />, label: "NOD", color: "#7b1fa2" },
+};
+
+const COMMANDS: Record<string, { action: string; description: string; aliases: string[] }> = {
+  mine: { action: "filter:mine", description: "Toggle Mines filter", aliases: ["mines", "m"] },
+  contact: { action: "filter:contact", description: "Toggle People filter", aliases: ["contacts", "people", "person", "p"] },
+  organization: { action: "filter:organization", description: "Toggle Organizations filter", aliases: ["organizations", "orgs", "org", "o"] },
+  permit: { action: "filter:permit", description: "Toggle Permits filter", aliases: ["permits"] },
+  explosives: { action: "filter:explosives_permit", description: "Toggle Explosives filter", aliases: ["explosives_permit", "exp", "e"] },
+  nod: { action: "filter:nod", description: "Toggle NODs filter", aliases: ["nods", "n"] },
+  here: { action: "scope:mine", description: "Toggle scope to current mine", aliases: ["this", "scope"] },
+  clear: { action: "clear:filters", description: "Clear all filters", aliases: ["reset", "c"] },
+};
+
+const GlobalSearch: React.FC<GlobalSearchProps> = ({ placeholder = "Search Core..." }) => {
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [recentSearches, setRecentSearches] = useState<string[]>([]);
+  const [activeFilters, setActiveFilters] = useState<string[]>([]);
+  const [scopeToMine, setScopeToMine] = useState(false);
+  const [commandMode, setCommandMode] = useState(false);
+  const [commandInput, setCommandInput] = useState("");
+  
+  const dispatch = useDispatch();
+  const searchResults = useSelector(getSearchBarResults);
+  const facets = useSelector(getSearchBarFacets);
+  const history = useHistory();
+  const location = useLocation();
+  const inputRef = useRef<any>(null);
+
+  // Extract mine_guid from URL if on a mine page
+  const currentMineGuid = useMemo(() => {
+    const match = location.pathname.match(/\/mine-dashboard\/([a-f0-9-]+)/i);
+    return match ? match[1] : null;
+  }, [location.pathname]);
+
+  const isOnMinePage = !!currentMineGuid;
+
+  useEffect(() => {
+    const stored = localStorage.getItem(RECENT_SEARCHES_KEY);
+    if (stored) {
+      try {
+        setRecentSearches(JSON.parse(stored));
+      } catch {
+        setRecentSearches([]);
+      }
+    }
+  }, []);
+
+  const saveRecentSearch = (term: string) => {
+    if (!term.trim()) return;
+    const updated = [term, ...recentSearches.filter((s) => s !== term)].slice(0, MAX_RECENT_SEARCHES);
+    setRecentSearches(updated);
+    localStorage.setItem(RECENT_SEARCHES_KEY, JSON.stringify(updated));
+  };
+
+  const removeRecentSearch = (term: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    const updated = recentSearches.filter((s) => s !== term);
+    setRecentSearches(updated);
+    localStorage.setItem(RECENT_SEARCHES_KEY, JSON.stringify(updated));
+  };
+
+  const handleOpen = () => {
+    setIsModalVisible(true);
+    setTimeout(() => inputRef.current?.focus(), 50);
+  };
+
+  const handleClose = useCallback(() => {
+    setIsModalVisible(false);
+    setSearchTerm("");
+    setSelectedIndex(0);
+    setActiveFilters([]);
+    setScopeToMine(false);
+    setCommandMode(false);
+    setCommandInput("");
+  }, []);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+        e.preventDefault();
+        handleOpen();
+      }
     };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
 
-    const handleClose = () => {
-        setIsModalVisible(false);
-        setSearchTerm("");
-        setSelectedIndex(0);
-    };
+  const getSearchTypes = (filters: string[]) => {
+    if (filters.length === 0) return null;
+    return filters.flatMap((f) => TYPE_CONFIG[f]?.types || []);
+  };
 
-    // Keyboard shortcut to open search
-    useEffect(() => {
-        const handleKeyDown = (e: KeyboardEvent) => {
-            if ((e.metaKey || e.ctrlKey) && e.key === "k") {
-                e.preventDefault();
-                handleOpen();
-            }
-        };
-        window.addEventListener("keydown", handleKeyDown);
-        return () => window.removeEventListener("keydown", handleKeyDown);
-    }, []);
+  const getMineGuidForSearch = () => scopeToMine && currentMineGuid ? currentMineGuid : null;
 
-    const fetchResults = useCallback(
-        throttle((term: string) => {
-            if (term.length >= 2) {
-                dispatch(fetchSearchBarResults(term));
-            }
-        }, 1000),
-        [dispatch]
+  const findCommand = (input: string): { key: string; command: typeof COMMANDS[string] } | null => {
+    const cmd = input.toLowerCase().trim();
+    for (const [key, command] of Object.entries(COMMANDS)) {
+      if (key === cmd || command.aliases.includes(cmd)) {
+        return { key, command };
+      }
+    }
+    return null;
+  };
+
+  const getMatchingCommands = (input: string) => {
+    const cmd = input.toLowerCase().trim();
+    if (!cmd) return Object.entries(COMMANDS);
+    return Object.entries(COMMANDS).filter(([key, command]) => 
+      key.startsWith(cmd) || command.aliases.some(a => a.startsWith(cmd))
     );
+  };
 
-    const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value;
+  const executeCommand = (action: string, followUpSearch?: string) => {
+    const [type, target] = action.split(":");
+    let newFilters = activeFilters;
+    let newScopeToMine = scopeToMine;
+    
+    if (type === "filter") {
+      newFilters = activeFilters.includes(target) 
+        ? activeFilters.filter((f) => f !== target) 
+        : [...activeFilters, target];
+      setActiveFilters(newFilters);
+    } else if (type === "scope" && isOnMinePage) {
+      newScopeToMine = !scopeToMine;
+      setScopeToMine(newScopeToMine);
+    } else if (type === "clear") {
+      newFilters = [];
+      newScopeToMine = false;
+      setActiveFilters([]);
+      setScopeToMine(false);
+    }
+    
+    setCommandMode(false);
+    setCommandInput("");
+    setSelectedIndex(0);
+    
+    // If there's a follow-up search term, set it and trigger search
+    if (followUpSearch && followUpSearch.trim()) {
+      const term = followUpSearch.trim();
+      setSearchTerm(term);
+      const mineGuid = newScopeToMine && currentMineGuid ? currentMineGuid : null;
+      dispatch(fetchSearchBarResults(term, getSearchTypes(newFilters), mineGuid));
+    } else if (searchTerm) {
+      // Re-run existing search with new filters
+      const mineGuid = newScopeToMine && currentMineGuid ? currentMineGuid : null;
+      dispatch(fetchSearchBarResults(searchTerm, getSearchTypes(newFilters), mineGuid));
+    }
+  };
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    
+    // If already in command mode, update command input
+    if (commandMode) {
+      // If they cleared the input or typed something without /, exit command mode
+      if (value === "" || (!value.startsWith("/") && commandInput === "")) {
+        setCommandMode(false);
+        setCommandInput("");
         setSearchTerm(value);
-        setSelectedIndex(0);
-        fetchResults(value);
-    };
+        return;
+      }
+      // Update command input (value is the command text without /)
+      setCommandInput(value);
+      setSelectedIndex(0);
+      return;
+    }
+    
+    // Detect command mode entry
+    if (value.startsWith("/")) {
+      setCommandMode(true);
+      setCommandInput(value.slice(1));
+      setSelectedIndex(0);
+      return;
+    }
+    
+    setSearchTerm(value);
+    setSelectedIndex(0);
+    if (value.length > 0) {
+      dispatch(fetchSearchBarResults(value, getSearchTypes(activeFilters), getMineGuidForSearch()));
+    }
+  };
 
-    const navigateToResult = (item: ISearchResult<ISimpleSearchResult>) => {
-        let routeUrl = "";
-        switch (item.type) {
-            case "mine":
-                routeUrl = router.MINE_GENERAL.dynamicRoute(item.result.id);
-                break;
-            case "party":
-                routeUrl = router.PARTY_PROFILE.dynamicRoute(item.result.id);
-                break;
-            case "permit":
-                routeUrl = router.SEARCH_RESULTS.dynamicRoute({ q: item.result.value });
-                break;
-            default:
-                break;
-        }
-        if (routeUrl) {
-            history.push(routeUrl);
-            handleClose();
-        }
-    };
+  const toggleFilter = (filterKey: string) => {
+    const newFilters = activeFilters.includes(filterKey) 
+      ? activeFilters.filter((f) => f !== filterKey) 
+      : [...activeFilters, filterKey];
+    setActiveFilters(newFilters);
+    setSelectedIndex(0);
+    if (searchTerm.length > 0) {
+      dispatch(fetchSearchBarResults(searchTerm, getSearchTypes(newFilters), getMineGuidForSearch()));
+    }
+  };
 
-    const handleEnter = () => {
-        if (searchResults && searchResults.length > 0) {
-            navigateToResult(searchResults[selectedIndex]);
-        } else if (searchTerm.length > 0) {
-            history.push(router.SEARCH_RESULTS.dynamicRoute({ q: searchTerm }));
-            handleClose();
-        }
-    };
+  const toggleScopeToMine = (checked: boolean) => {
+    setScopeToMine(checked);
+    const mineGuid = checked && currentMineGuid ? currentMineGuid : null;
+    // Trigger search immediately - use "*" as wildcard if no search term
+    const term = searchTerm || "*";
+    dispatch(fetchSearchBarResults(term, getSearchTypes(activeFilters), mineGuid));
+  };
 
-    const handleKeyDown = (e: React.KeyboardEvent) => {
-        if (e.key === "ArrowDown") {
+  const navigateToResult = (item: ISearchResult<ISimpleSearchResult>) => {
+    saveRecentSearch(item.result.value);
+    let routeUrl = "";
+    switch (item.type) {
+      case "mine":
+        routeUrl = router.MINE_GENERAL.dynamicRoute(item.result.id);
+        break;
+      case "person":
+      case "organization":
+      case "party":
+        routeUrl = router.PARTY_PROFILE.dynamicRoute(item.result.id);
+        break;
+      case "permit":
+      case "explosives_permit":
+      case "nod":
+        routeUrl = router.SEARCH_RESULTS.dynamicRoute({ q: item.result.value });
+        break;
+    }
+    if (routeUrl) {
+      handleClose();
+      history.push(routeUrl);
+    }
+  };
+
+  const handleEnter = () => {
+    if (searchResults?.length > 0) {
+      navigateToResult(searchResults[selectedIndex]);
+    } else if (searchTerm.length > 0) {
+      saveRecentSearch(searchTerm);
+      handleClose();
+      history.push(router.SEARCH_RESULTS.dynamicRoute({ q: searchTerm }));
+    }
+  };
+
+  const handleRecentSearchClick = (term: string) => {
+    setSearchTerm(term);
+    dispatch(fetchSearchBarResults(term, getSearchTypes(activeFilters), getMineGuidForSearch()));
+  };
+
+  const parseCommandInput = (input: string): { commandPart: string; searchPart: string } => {
+    const spaceIndex = input.indexOf(" ");
+    if (spaceIndex === -1) {
+      return { commandPart: input, searchPart: "" };
+    }
+    return { 
+      commandPart: input.slice(0, spaceIndex), 
+      searchPart: input.slice(spaceIndex + 1) 
+    };
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (commandMode) {
+      const { commandPart, searchPart } = parseCommandInput(commandInput);
+      const matchingCommands = getMatchingCommands(commandPart);
+      const totalCommands = matchingCommands.length;
+      
+      switch (e.key) {
+        case "ArrowDown":
+          e.preventDefault();
+          setSelectedIndex((prev) => (prev + 1) % (totalCommands || 1));
+          break;
+        case "ArrowUp":
+          e.preventDefault();
+          setSelectedIndex((prev) => (prev - 1 + (totalCommands || 1)) % (totalCommands || 1));
+          break;
+        case "Enter":
+          e.preventDefault();
+          if (matchingCommands.length > 0) {
+            executeCommand(matchingCommands[selectedIndex][1].action, searchPart);
+          }
+          break;
+        case "Tab":
+          e.preventDefault();
+          // Tab autocompletes the command but keeps the search part
+          if (matchingCommands.length > 0) {
+            const selectedCmd = matchingCommands[selectedIndex][0];
+            setCommandInput(selectedCmd + (searchPart ? " " + searchPart : " "));
+          }
+          break;
+        case "Escape":
+          e.preventDefault();
+          setCommandMode(false);
+          setCommandInput("");
+          setSearchTerm("");
+          break;
+        case "Backspace":
+          if (commandInput === "") {
             e.preventDefault();
-            setSelectedIndex((prev) => (prev + 1) % (searchResults.length || 1));
-        } else if (e.key === "ArrowUp") {
-            e.preventDefault();
-            setSelectedIndex((prev) => (prev - 1 + (searchResults.length || 1)) % (searchResults.length || 1));
-        } else if (e.key === "Enter") {
-            e.preventDefault();
-            handleEnter();
-        } else if (e.key === "Escape") {
-            handleClose();
-        }
-    };
+            setCommandMode(false);
+            setSearchTerm("");
+          }
+          break;
+      }
+      return;
+    }
 
-    const getIcon = (type: string) => {
-        switch (type) {
-            case "mine":
-                return <img className="icon-svg-filter" src={MINE} alt="Mine" height={20} />;
-            case "party":
-                return <img className="icon-svg-filter" src={PROFILE_NOCIRCLE} alt="Contact" height={20} />;
-            case "permit":
-                return <img className="icon-svg-filter" src={DOC} alt="Permit" height={20} />;
-            default:
-                return <FileSearchOutlined />;
+    const totalItems = searchResults?.length || recentSearches.length || 0;
+    switch (e.key) {
+      case "ArrowDown":
+        e.preventDefault();
+        setSelectedIndex((prev) => (prev + 1) % (totalItems || 1));
+        break;
+      case "ArrowUp":
+        e.preventDefault();
+        setSelectedIndex((prev) => (prev - 1 + (totalItems || 1)) % (totalItems || 1));
+        break;
+      case "Enter":
+        e.preventDefault();
+        if (!searchTerm && recentSearches.length > 0) {
+          handleRecentSearchClick(recentSearches[selectedIndex]);
+        } else {
+          handleEnter();
         }
-    };
+        break;
+      case "Escape":
+        handleClose();
+        break;
+    }
+  };
+
+  const highlightMatch = (text: string, search: string) => {
+    if (!search || !text) return text;
+    const regex = new RegExp(`(${search.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")})`, "gi");
+    const parts = text.split(regex);
+    return parts.map((part, i) => (regex.test(part) ? <mark key={i}>{part}</mark> : part));
+  };
+
+  const groupedResults = useMemo(() => {
+    if (!searchResults?.length) return null;
+    const groups: Record<string, ISearchResult<ISimpleSearchResult>[]> = {};
+    searchResults.forEach((result) => {
+      if (!groups[result.type]) groups[result.type] = [];
+      groups[result.type].push(result);
+    });
+    return groups;
+  }, [searchResults]);
+
+  const renderResultItem = (item: ISearchResult<ISimpleSearchResult>, index: number) => {
+    const config = RESULT_TYPE_CONFIG[item.type] || { icon: <FileSearchOutlined />, label: item.type, color: "#8c8c8c" };
+    const isSelected = index === selectedIndex;
 
     return (
-        <>
-            <Button
-                className="global-search-trigger"
-                onClick={handleOpen}
-                icon={<SearchOutlined />}
-                size={size}
-                style={{ width: "100%", textAlign: "left", color: "#bfbfbf", backgroundColor: "white", borderColor: "#d9d9d9", ...containerStyle }}
-            >
-                {placeholder} <span style={{ float: "right", fontSize: "12px", opacity: 0.7 }}>⌘K</span>
-            </Button>
-
-            <Modal
-                visible={isModalVisible}
-                onCancel={handleClose}
-                footer={null}
-                closable={false}
-                maskClosable={true}
-                className="global-search-modal"
-                width={600}
-                style={{ top: 50 }}
-                bodyStyle={{ padding: 0 }}
-            >
-                <div style={{ padding: "16px", borderBottom: "1px solid #f0f0f0" }}>
-                    <Input
-                        ref={inputRef}
-                        prefix={<SearchOutlined style={{ fontSize: "18px", color: "#bfbfbf" }} />}
-                        placeholder="Search for mines, contacts, permits..."
-                        value={searchTerm}
-                        onChange={handleSearchChange}
-                        onKeyDown={handleKeyDown}
-                        bordered={false}
-                        style={{ fontSize: "16px" }}
-                        allowClear
-                    />
-                </div>
-
-                <div style={{ maxHeight: "400px", overflowY: "auto" }}>
-                    {searchTerm && searchResults && searchResults.length > 0 ? (
-                        <List
-                            itemLayout="horizontal"
-                            dataSource={searchResults}
-                            renderItem={(item, index) => (
-                                <List.Item
-                                    className={`search-result-item ${index === selectedIndex ? "selected" : ""}`}
-                                    onClick={() => navigateToResult(item)}
-                                    style={{
-                                        padding: "12px 24px",
-                                        cursor: "pointer",
-                                        backgroundColor: index === selectedIndex ? "#e6f7ff" : "transparent"
-                                    }}
-                                    onMouseEnter={() => setSelectedIndex(index)}
-                                >
-                                    <List.Item.Meta
-                                        avatar={getIcon(item.type)}
-                                        title={<Text strong={index === selectedIndex}>{item.result.value}</Text>}
-                                        description={<Text type="secondary" style={{ fontSize: "12px" }}>{item.type.toUpperCase()}</Text>}
-                                    />
-                                    {index === selectedIndex && <EnterOutlined style={{ color: "#1890ff" }} />}
-                                </List.Item>
-                            )}
-                        />
-                    ) : searchTerm ? (
-                        <div style={{ padding: "24px", textAlign: "center" }}>
-                            <Empty description="No results found" image={Empty.PRESENTED_IMAGE_SIMPLE} />
-                            <Button type="link" onClick={() => {
-                                history.push(router.SEARCH_RESULTS.dynamicRoute({ q: searchTerm }));
-                                handleClose();
-                            }}>
-                                See all results for "{searchTerm}"
-                            </Button>
-                        </div>
-                    ) : (
-                        <div style={{ padding: "24px", color: "#bfbfbf", textAlign: "center" }}>
-                            Type to start searching...
-                        </div>
-                    )}
-                </div>
-                <div style={{ padding: "8px 16px", background: "#fafafa", borderTop: "1px solid #f0f0f0", display: "flex", justifyContent: "space-between", fontSize: "12px", color: "#8c8c8c" }}>
-                    <span><Text keyboard>↵</Text> to select</span>
-                    <span><Text keyboard>↑↓</Text> to navigate</span>
-                    <span><Text keyboard>esc</Text> to close</span>
-                </div>
-            </Modal>
-        </>
+      <List.Item
+        key={`${item.type}-${item.result.id}`}
+        className={`global-search__result-item ${isSelected ? "global-search__result-item--selected" : ""}`}
+        onClick={() => navigateToResult(item)}
+        onMouseEnter={() => setSelectedIndex(index)}
+      >
+        <List.Item.Meta
+          avatar={
+            <Avatar
+              icon={config.icon}
+              style={{ backgroundColor: `${config.color}20`, color: config.color }}
+            />
+          }
+          title={<Text strong={isSelected}>{highlightMatch(item.result.value, searchTerm)}</Text>}
+          description={
+            <Text type="secondary">
+              {config.label}
+              {item.result.description && <span style={{ marginLeft: 8 }}>• {item.result.description}</span>}
+              {item.result.highlight && (
+                <span 
+                  style={{ marginLeft: 8, fontStyle: "italic" }}
+                  dangerouslySetInnerHTML={{ __html: `• ${item.result.highlight}` }}
+                />
+              )}
+            </Text>
+          }
+        />
+        {isSelected && <EnterOutlined style={{ color: "#5e46a1" }} />}
+      </List.Item>
     );
+  };
+
+  const getFacetCount = (filterKey: string): number => {
+    if (filterKey === "mine") return facets.mine;
+    if (filterKey === "contact") return facets.person;
+    if (filterKey === "organization") return facets.organization;
+    if (filterKey === "permit") return facets.permit;
+    if (filterKey === "explosives_permit") return facets.explosives_permit;
+    if (filterKey === "nod") return facets.nod;
+    return 0;
+  };
+
+  const renderFilters = () => (
+    <div style={{ padding: "8px 16px", borderBottom: "1px solid #f0f0f0" }}>
+      <Space size={[4, 4]} wrap>
+        {isOnMinePage && (
+          <Tag
+            onClick={() => toggleScopeToMine(!scopeToMine)}
+            style={{
+              cursor: "pointer",
+              backgroundColor: scopeToMine ? "#5e46a115" : "transparent",
+              borderColor: scopeToMine ? "#5e46a1" : "#d9d9d9",
+              color: scopeToMine ? "#5e46a1" : "#595959",
+              margin: 0,
+              fontWeight: scopeToMine ? 600 : 400,
+            }}
+          >
+            <Space size={4}>
+              <AimOutlined />
+              <span>This Mine</span>
+            </Space>
+          </Tag>
+        )}
+        {isOnMinePage && <Divider type="vertical" style={{ margin: "0 4px", height: 20 }} />}
+        {Object.entries(TYPE_CONFIG).map(([key, config]) => {
+          const isActive = activeFilters.includes(key);
+          const count = getFacetCount(key);
+          
+          return (
+            <Tag
+              key={key}
+              onClick={() => toggleFilter(key)}
+              style={{
+                cursor: "pointer",
+                backgroundColor: isActive ? `${config.color}15` : "transparent",
+                borderColor: isActive ? config.color : "#d9d9d9",
+                color: isActive ? config.color : "#595959",
+                margin: 0,
+              }}
+            >
+              <Space size={4}>
+                {config.icon}
+                <span>{config.label}</span>
+                {searchTerm && <span style={{ opacity: 0.6 }}>({count})</span>}
+              </Space>
+            </Tag>
+          );
+        })}
+      </Space>
+    </div>
+  );
+
+  const handleViewAll = () => {
+    saveRecentSearch(searchTerm);
+    handleClose();
+    history.push(router.SEARCH_RESULTS.dynamicRoute({ q: searchTerm }));
+  };
+
+  const getCommandIcon = (action: string) => {
+    if (action.startsWith("filter:")) {
+      const filterKey = action.split(":")[1];
+      return TYPE_CONFIG[filterKey]?.icon || <SearchOutlined />;
+    }
+    if (action === "scope:mine") return <AimOutlined />;
+    if (action === "clear:filters") return <DeleteOutlined />;
+    return <SearchOutlined />;
+  };
+
+  const isCommandActive = (action: string): boolean => {
+    if (action.startsWith("filter:")) {
+      return activeFilters.includes(action.split(":")[1]);
+    }
+    if (action === "scope:mine") return scopeToMine;
+    return false;
+  };
+
+  const renderCommands = () => {
+    const { commandPart, searchPart } = parseCommandInput(commandInput);
+    const matchingCommands = getMatchingCommands(commandPart);
+    
+    return (
+      <div className="global-search__commands">
+        <Divider orientation="left" plain style={{ margin: "8px 0", fontSize: 12 }}>
+          <Space>
+            <SearchOutlined />
+            Commands
+            {searchPart && (
+              <Text type="secondary" style={{ fontWeight: "normal" }}>
+                → will search "{searchPart}"
+              </Text>
+            )}
+          </Space>
+        </Divider>
+        <List
+          dataSource={matchingCommands}
+          renderItem={([key, command], index) => {
+            const isSelected = index === selectedIndex;
+            const isActive = isCommandActive(command.action);
+            const isDisabled = command.action === "scope:mine" && !isOnMinePage;
+            
+            return (
+              <List.Item
+                key={key}
+                className={`global-search__result-item ${isSelected ? "global-search__result-item--selected" : ""}`}
+                onClick={() => !isDisabled && executeCommand(command.action, searchPart)}
+                onMouseEnter={() => setSelectedIndex(index)}
+                style={{ opacity: isDisabled ? 0.5 : 1, cursor: isDisabled ? "not-allowed" : "pointer" }}
+              >
+                <List.Item.Meta
+                  avatar={
+                    <Avatar
+                      icon={getCommandIcon(command.action)}
+                      size="small"
+                      style={{ 
+                        backgroundColor: isActive ? "#5e46a120" : "#f5f5f5", 
+                        color: isActive ? "#5e46a1" : "#8c8c8c" 
+                      }}
+                    />
+                  }
+                  title={
+                    <Space>
+                      <Text strong={isSelected} code>/{key}</Text>
+                      {isActive && <Tag color="purple" style={{ margin: 0, fontSize: 10 }}>ON</Tag>}
+                      {isDisabled && <Text type="secondary" style={{ fontSize: 11 }}>(not on mine page)</Text>}
+                    </Space>
+                  }
+                  description={<Text type="secondary" style={{ fontSize: 12 }}>{command.description}</Text>}
+                />
+                {isSelected && <Text keyboard style={{ fontSize: 11 }}>↵</Text>}
+              </List.Item>
+            );
+          }}
+          split={false}
+          locale={{ emptyText: <Text type="secondary">No matching commands</Text> }}
+        />
+        <div style={{ padding: "8px 16px", borderTop: "1px solid #f0f0f0" }}>
+          <Text type="secondary" style={{ fontSize: 11 }}>
+            Type <Text code>/command search term</Text> to filter and search. <Text keyboard>Tab</Text> autocompletes, <Text keyboard>Enter</Text> executes.
+          </Text>
+        </div>
+      </div>
+    );
+  };
+
+  const renderResults = () => {
+    if (commandMode) {
+      return renderCommands();
+    }
+    // Show results if we have a search term OR if scoped to mine (wildcard search)
+    const hasActiveSearch = searchTerm || scopeToMine;
+    
+    if (hasActiveSearch && groupedResults) {
+      let globalIndex = 0;
+      return (
+        <div className="global-search__results">
+          {Object.entries(groupedResults).map(([type, results]) => {
+            const config = RESULT_TYPE_CONFIG[type] || { label: type };
+            return (
+              <div key={type}>
+                <Divider orientation="left" plain style={{ margin: "8px 0", fontSize: 12 }}>
+                  {config.label}s
+                </Divider>
+                <List
+                  dataSource={results}
+                  renderItem={(item) => renderResultItem(item, globalIndex++)}
+                  split={false}
+                />
+              </div>
+            );
+          })}
+          <div style={{ padding: "12px 20px", borderTop: "1px solid #f0f0f0" }}>
+            <Button type="link" block onClick={handleViewAll} style={{ color: "#5e46a1" }}>
+              View all results for "{searchTerm}"
+            </Button>
+          </div>
+        </div>
+      );
+    }
+
+    if (hasActiveSearch && searchResults?.length === 0) {
+      return (
+        <div className="global-search__empty">
+          <Space direction="vertical" align="center" style={{ width: "100%", padding: 32 }}>
+            <SearchOutlined style={{ fontSize: 48, color: "#d9d9d9" }} />
+            <Title level={5}>No results found</Title>
+            <Text type="secondary">
+              {scopeToMine && !searchTerm
+                ? "No items found for this mine"
+                : activeFilters.length > 0
+                ? "Try removing some filters or adjusting your search"
+                : "Try adjusting your search or browse all results"}
+            </Text>
+            {searchTerm && (
+              <Button
+                type="primary"
+                onClick={() => {
+                  saveRecentSearch(searchTerm);
+                  history.push(router.SEARCH_RESULTS.dynamicRoute({ q: searchTerm }));
+                  handleClose();
+                }}
+              >
+                See all results for "{searchTerm}"
+              </Button>
+            )}
+          </Space>
+        </div>
+      );
+    }
+
+    if (!hasActiveSearch && recentSearches.length > 0) {
+      return (
+        <div className="global-search__recent">
+          <Divider orientation="left" plain style={{ margin: "8px 0", fontSize: 12 }}>
+            <Space>
+              <HistoryOutlined />
+              Recent Searches
+            </Space>
+          </Divider>
+          <List
+            dataSource={recentSearches}
+            renderItem={(term, index) => (
+              <List.Item
+                className={`global-search__result-item ${index === selectedIndex ? "global-search__result-item--selected" : ""}`}
+                onClick={() => handleRecentSearchClick(term)}
+                onMouseEnter={() => setSelectedIndex(index)}
+                extra={
+                  <DeleteOutlined
+                    onClick={(e) => removeRecentSearch(term, e)}
+                    style={{ color: "#bfbfbf", cursor: "pointer", padding: 4 }}
+                  />
+                }
+              >
+                <List.Item.Meta
+                  avatar={<ClockCircleOutlined style={{ color: "#bfbfbf" }} />}
+                  title={term}
+                />
+              </List.Item>
+            )}
+            split={false}
+          />
+        </div>
+      );
+    }
+
+    return (
+      <Space direction="vertical" style={{ width: "100%", padding: "16px 20px" }}>
+        <Text type="secondary">
+          <SearchOutlined /> Quick Actions
+        </Text>
+        <Row gutter={[8, 8]}>
+          {[
+            { icon: <EnvironmentOutlined />, label: "Browse Mines", color: "#2e7d32", route: router.MINE_HOME_PAGE.dynamicRoute({ page: "1", per_page: "25" }) },
+            { icon: <TeamOutlined />, label: "Browse Contacts", color: "#1565c0", route: router.CONTACT_HOME_PAGE.dynamicRoute({ page: "1", per_page: "25" }) },
+            { icon: <FileSearchOutlined />, label: "Reports", color: "#7b1fa2", route: router.REPORTING_DASHBOARD.route },
+          ].map((action) => (
+            <Col span={8} key={action.label}>
+              <Button
+                type="text"
+                block
+                onClick={() => { history.push(action.route); handleClose(); }}
+                style={{ height: "auto", padding: "12px 8px" }}
+              >
+                <Space direction="vertical" size={4}>
+                  <Avatar
+                    icon={action.icon}
+                    style={{ backgroundColor: `${action.color}20`, color: action.color }}
+                  />
+                  <Text style={{ fontSize: 12 }}>{action.label}</Text>
+                </Space>
+              </Button>
+            </Col>
+          ))}
+        </Row>
+      </Space>
+    );
+  };
+
+  return (
+    <>
+      <Button
+        className="global-search-trigger"
+        onClick={handleOpen}
+        icon={<SearchOutlined />}
+      >
+        <span className="search-placeholder">{placeholder}</span>
+        <span className="search-shortcut">
+          <Text keyboard>⌘</Text>
+          <Text keyboard>K</Text>
+        </span>
+      </Button>
+
+      <Modal
+        open={isModalVisible}
+        onCancel={handleClose}
+        footer={
+          <Row justify="space-between" style={{ fontSize: 12, color: "#8c8c8c" }}>
+            <Space size="middle">
+              <span><Text keyboard>↵</Text> select</span>
+              <span><Text keyboard>↑↓</Text> navigate</span>
+              <span><Text keyboard>/</Text> commands</span>
+              <span><Text keyboard>esc</Text> close</span>
+            </Space>
+          </Row>
+        }
+        closable={false}
+        maskClosable
+        keyboard
+        className="global-search-modal"
+        width={580}
+        style={{ top: 80 }}
+        destroyOnClose
+      >
+        <Input
+          ref={inputRef}
+          prefix={
+            commandMode ? (
+              <Text code style={{ color: "#5e46a1", fontSize: 14, marginRight: 4 }}>/</Text>
+            ) : (
+              <SearchOutlined style={{ color: "#5e46a1", fontSize: 18 }} />
+            )
+          }
+          placeholder={commandMode ? "Type command name..." : "Search for mines, contacts, permits... (type / for commands)"}
+          value={commandMode ? commandInput : searchTerm}
+          onChange={handleSearchChange}
+          onKeyDown={handleKeyDown}
+          bordered={false}
+          allowClear
+          size="large"
+          style={{ borderBottom: "1px solid #f0f0f0", borderRadius: 0 }}
+        />
+        {renderFilters()}
+        {renderResults()}
+      </Modal>
+    </>
+  );
 };
 
 export default GlobalSearch;

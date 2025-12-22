@@ -19,6 +19,8 @@ SEARCH_RESULT_MODEL = api.model('SearchResult', {
 SIMPLE_SEARCH_MODEL = api.model('SimpleSearchResult', {
     'id': fields.String,
     'value': fields.String,
+    'description': fields.String,
+    'highlight': fields.String,
 })
 
 MINE_MODEL = api.model('Mine_simple ', {
@@ -143,14 +145,45 @@ SEARCH_RESULTS_LIST_MODEL = api.model(
         'permit_documents': fields.List(fields.Nested(PERMIT_DOCUMENT_SEARCH_RESULT_MODEL)),
     })
 
+SEARCH_FACET_BUCKET_MODEL = api.model(
+    'SearchFacetBucket', {
+        'key': fields.String,
+        'count': fields.Integer,
+    })
+
+SEARCH_FACETS_MODEL = api.model(
+    'SearchFacets', {
+        'mine_region': fields.List(fields.Nested(SEARCH_FACET_BUCKET_MODEL)),
+        'mine_classification': fields.List(fields.Nested(SEARCH_FACET_BUCKET_MODEL)),
+        'mine_operation_status': fields.List(fields.Nested(SEARCH_FACET_BUCKET_MODEL)),
+        'mine_tenure': fields.List(fields.Nested(SEARCH_FACET_BUCKET_MODEL)),
+        'mine_commodity': fields.List(fields.Nested(SEARCH_FACET_BUCKET_MODEL)),
+        'has_tsf': fields.List(fields.Nested(SEARCH_FACET_BUCKET_MODEL)),
+        'verified_status': fields.List(fields.Nested(SEARCH_FACET_BUCKET_MODEL)),
+        'permit_status': fields.List(fields.Nested(SEARCH_FACET_BUCKET_MODEL)),
+        'type': fields.List(fields.Nested(SEARCH_FACET_BUCKET_MODEL)),
+    })
+
 SEARCH_RESULT_RETURN_MODEL = api.model(
     'SearchResultReturn', {
         'search_terms': fields.List(fields.String),
         'search_results': fields.Nested(SEARCH_RESULTS_LIST_MODEL),
+        'facets': fields.Nested(SEARCH_FACETS_MODEL),
+    })
+
+SIMPLE_SEARCH_FACETS_MODEL = api.model(
+    'SimpleSearchFacets', {
+        'mine': fields.Integer,
+        'person': fields.Integer,
+        'organization': fields.Integer,
+        'permit': fields.Integer,
+        'nod': fields.Integer,
+        'explosives_permit': fields.Integer,
     })
 
 SIMPLE_SEARCH_RESULT_RETURN_MODEL = api.model(
     'SimpleSearchResultReturn', {
         'search_terms': fields.List(fields.String),
         'search_results': fields.List(fields.Nested(SIMPLE_SEARCH_RESULT_MODEL)),
+        'facets': fields.Nested(SIMPLE_SEARCH_FACETS_MODEL),
     })

@@ -24,4 +24,4 @@ class ElasticSearchService:
     @classmethod
     def search(cls, index_name, query, size=10):
         client = cls.get_client()
-        return client.search(index=index_name, body=query, size=size)
+        return client.search(index=index_name, body=query, size=size, ignore_unavailable=True)

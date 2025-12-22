@@ -27,14 +27,20 @@ export const fetchSearchResults = (searchTerm, searchTypes) => (dispatch) => {
     .finally(() => dispatch(hideLoading()));
 };
 
-export const fetchSearchBarResults = (searchTerm) => (dispatch) => {
+export const fetchSearchBarResults = (searchTerm, searchTypes = null, mineGuid = null) => (dispatch) => {
   dispatch(request(NetworkReducerTypes.GET_SEARCH_BAR_RESULTS));
   dispatch(showLoading());
+  
+  let url = `${ENVIRONMENT.apiUrl + API.SIMPLE_SEARCH}?search_term=${encodeURIComponent(searchTerm)}`;
+  if (searchTypes && searchTypes.length > 0) {
+    url += `&search_types=${encodeURIComponent(searchTypes.join(','))}`;
+  }
+  if (mineGuid) {
+    url += `&mine_guid=${encodeURIComponent(mineGuid)}`;
+  }
+  
   return CustomAxios()
-    .get(
-      `${ENVIRONMENT.apiUrl + API.SIMPLE_SEARCH}?search_term=${searchTerm}`,
-      createRequestHeader()
-    )
+    .get(url, createRequestHeader())
     .then((response) => {
       dispatch(success(NetworkReducerTypes.GET_SEARCH_BAR_RESULTS));
       dispatch(searchActions.storeSearchBarResults(response.data));

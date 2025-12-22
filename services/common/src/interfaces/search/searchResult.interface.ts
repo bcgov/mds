@@ -13,6 +13,8 @@ export interface ISearchResult<T> {
 export interface ISimpleSearchResult {
   id: string;
   value: string;
+  description?: string;
+  highlight?: string;
 }
 
 export interface ISearchResultList {
