@@ -153,6 +153,7 @@ SEARCH_FACET_BUCKET_MODEL = api.model(
 
 SEARCH_FACETS_MODEL = api.model(
     'SearchFacets', {
+        # Mine facets
         'mine_region': fields.List(fields.Nested(SEARCH_FACET_BUCKET_MODEL)),
         'mine_classification': fields.List(fields.Nested(SEARCH_FACET_BUCKET_MODEL)),
         'mine_operation_status': fields.List(fields.Nested(SEARCH_FACET_BUCKET_MODEL)),
@@ -160,7 +161,21 @@ SEARCH_FACETS_MODEL = api.model(
         'mine_commodity': fields.List(fields.Nested(SEARCH_FACET_BUCKET_MODEL)),
         'has_tsf': fields.List(fields.Nested(SEARCH_FACET_BUCKET_MODEL)),
         'verified_status': fields.List(fields.Nested(SEARCH_FACET_BUCKET_MODEL)),
+        # Permit facets
         'permit_status': fields.List(fields.Nested(SEARCH_FACET_BUCKET_MODEL)),
+        'is_exploration': fields.List(fields.Nested(SEARCH_FACET_BUCKET_MODEL)),
+        # Party facets
+        'party_type': fields.List(fields.Nested(SEARCH_FACET_BUCKET_MODEL)),
+        # Explosives permit facets
+        'explosives_permit_status': fields.List(fields.Nested(SEARCH_FACET_BUCKET_MODEL)),
+        'explosives_permit_closed': fields.List(fields.Nested(SEARCH_FACET_BUCKET_MODEL)),
+        # NOD facets
+        'nod_type': fields.List(fields.Nested(SEARCH_FACET_BUCKET_MODEL)),
+        'nod_status': fields.List(fields.Nested(SEARCH_FACET_BUCKET_MODEL)),
+        # NoW facets
+        'now_application_status': fields.List(fields.Nested(SEARCH_FACET_BUCKET_MODEL)),
+        'now_type': fields.List(fields.Nested(SEARCH_FACET_BUCKET_MODEL)),
+        # Type facet
         'type': fields.List(fields.Nested(SEARCH_FACET_BUCKET_MODEL)),
     })
 

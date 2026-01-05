@@ -16,27 +16,42 @@
             "children": [
                 {
                     "table": "mine_status",
-                    "columns": ["mine_status_guid", "effective_date"],
+                    "columns": [
+                        "mine_status_guid",
+                        "effective_date"
+                    ],
                     "label": "mine_status",
                     "relationship": {
                         "type": "one_to_many",
                         "variant": "object",
                         "foreign_key": {
-                            "child": ["mine_guid"],
-                            "parent": ["mine_guid"]
+                            "child": [
+                                "mine_guid"
+                            ],
+                            "parent": [
+                                "mine_guid"
+                            ]
                         }
                     },
                     "children": [
                         {
                             "table": "mine_status_xref",
-                            "columns": ["mine_operation_status_code", "mine_operation_status_reason_code", "description"],
+                            "columns": [
+                                "mine_operation_status_code",
+                                "mine_operation_status_reason_code",
+                                "description"
+                            ],
                             "label": "status_xref",
                             "relationship": {
                                 "type": "one_to_one",
                                 "variant": "object",
                                 "foreign_key": {
-                                    "child": ["mine_status_xref_guid"],
-                                    "parent": ["mine_status_xref_guid"]
+                                    "child": [
+                                        "mine_status_xref_guid"
+                                    ],
+                                    "parent": [
+                                        "mine_status_xref_guid"
+                                    ]
                                 }
                             }
                         }
@@ -44,27 +59,43 @@
                 },
                 {
                     "table": "mine_type",
-                    "columns": ["mine_type_guid", "mine_tenure_type_code", "active_ind"],
+                    "columns": [
+                        "mine_type_guid",
+                        "mine_tenure_type_code",
+                        "active_ind"
+                    ],
                     "label": "mine_types",
                     "relationship": {
                         "type": "one_to_many",
                         "variant": "object",
                         "foreign_key": {
-                            "child": ["mine_guid"],
-                            "parent": ["mine_guid"]
+                            "child": [
+                                "mine_guid"
+                            ],
+                            "parent": [
+                                "mine_guid"
+                            ]
                         }
                     },
                     "children": [
                         {
                             "table": "mine_type_detail_xref",
-                            "columns": ["mine_commodity_code", "mine_disturbance_code", "active_ind"],
+                            "columns": [
+                                "mine_commodity_code",
+                                "mine_disturbance_code",
+                                "active_ind"
+                            ],
                             "label": "mine_type_details",
                             "relationship": {
                                 "type": "one_to_many",
                                 "variant": "object",
                                 "foreign_key": {
-                                    "child": ["mine_type_guid"],
-                                    "parent": ["mine_type_guid"]
+                                    "child": [
+                                        "mine_type_guid"
+                                    ],
+                                    "parent": [
+                                        "mine_type_guid"
+                                    ]
                                 }
                             }
                         }
@@ -72,41 +103,77 @@
                 },
                 {
                     "table": "mine_verified_status",
-                    "columns": ["healthy_ind", "verifying_timestamp"],
+                    "columns": [
+                        "healthy_ind",
+                        "verifying_timestamp"
+                    ],
                     "label": "verified_status",
                     "relationship": {
                         "type": "one_to_one",
                         "variant": "object",
                         "foreign_key": {
-                            "child": ["mine_guid"],
-                            "parent": ["mine_guid"]
+                            "child": [
+                                "mine_guid"
+                            ],
+                            "parent": [
+                                "mine_guid"
+                            ]
                         }
                     }
                 },
                 {
                     "table": "mine_work_information",
-                    "columns": ["work_start_date", "work_stop_date", "deleted_ind"],
+                    "columns": [
+                        "work_start_date",
+                        "work_stop_date",
+                        "deleted_ind"
+                    ],
                     "label": "work_information",
                     "relationship": {
                         "type": "one_to_many",
                         "variant": "object",
                         "foreign_key": {
-                            "child": ["mine_guid"],
-                            "parent": ["mine_guid"]
+                            "child": [
+                                "mine_guid"
+                            ],
+                            "parent": [
+                                "mine_guid"
+                            ]
                         }
                     }
                 },
                 {
                     "table": "mine_tailings_storage_facility",
-                    "columns": ["mine_tailings_storage_facility_guid", "mine_tailings_storage_facility_name"],
+                    "columns": [
+                        "mine_tailings_storage_facility_guid",
+                        "mine_tailings_storage_facility_name"
+                    ],
                     "label": "tailings_storage_facilities",
                     "relationship": {
                         "type": "one_to_many",
                         "variant": "object",
                         "foreign_key": {
-                            "child": ["mine_guid"],
-                            "parent": ["mine_guid"]
+                            "child": [
+                                "mine_guid"
+                            ],
+                            "parent": [
+                                "mine_guid"
+                            ]
                         }
+                    }
+                },
+                {
+                    "table": "permit",
+                    "columns": [
+                        "permit_guid",
+                        "permit_no",
+                        "permit_status_code"
+                    ],
+                    "label": "permits",
+                    "relationship": {
+                        "type": "one_to_many",
+                        "variant": "object",
+                        "through_tables": ["mine_permit_xref"]
                     }
                 }
             ]
@@ -143,15 +210,36 @@
             "children": [
                 {
                     "table": "mine_permit_xref",
-                    "columns": ["mine_guid"],
+                    "columns": [
+                        "mine_guid"
+                    ],
                     "label": "mine_guids",
                     "relationship": {
                         "type": "one_to_many",
                         "variant": "scalar",
                         "foreign_key": {
-                            "child": ["permit_id"],
-                            "parent": ["permit_id"]
+                            "child": [
+                                "permit_id"
+                            ],
+                            "parent": [
+                                "permit_id"
+                            ]
                         }
+                    }
+                },
+                {
+                    "table": "party",
+                    "columns": [
+                        "party_guid",
+                        "first_name",
+                        "party_name",
+                        "email"
+                    ],
+                    "label": "permittees",
+                    "relationship": {
+                        "type": "one_to_many",
+                        "variant": "object",
+                        "through_tables": ["mine_party_appt"]
                     }
                 }
             ]
@@ -178,14 +266,22 @@
             "children": [
                 {
                     "table": "mine",
-                    "columns": ["mine_guid", "mine_name", "mine_no"],
+                    "columns": [
+                        "mine_guid",
+                        "mine_name",
+                        "mine_no"
+                    ],
                     "label": "mine",
                     "relationship": {
                         "type": "one_to_one",
                         "variant": "object",
                         "foreign_key": {
-                            "child": ["mine_guid"],
-                            "parent": ["mine_guid"]
+                            "child": [
+                                "mine_guid"
+                            ],
+                            "parent": [
+                                "mine_guid"
+                            ]
                         }
                     }
                 }
@@ -207,13 +303,19 @@
             "children": [
                 {
                     "table": "mine",
-                    "columns": ["mine_name"],
+                    "columns": [
+                        "mine_name"
+                    ],
                     "relationship": {
                         "type": "one_to_one",
                         "variant": "object",
                         "foreign_key": {
-                            "child": ["mine_guid"],
-                            "parent": ["mine_guid"]
+                            "child": [
+                                "mine_guid"
+                            ],
+                            "parent": [
+                                "mine_guid"
+                            ]
                         }
                     }
                 }
@@ -240,27 +342,40 @@
             "children": [
                 {
                     "table": "mine",
-                    "columns": ["mine_name", "mine_no"],
+                    "columns": [
+                        "mine_name",
+                        "mine_no"
+                    ],
                     "label": "mine",
                     "relationship": {
                         "type": "one_to_one",
                         "variant": "object",
                         "foreign_key": {
-                            "child": ["mine_guid"],
-                            "parent": ["mine_guid"]
+                            "child": [
+                                "mine_guid"
+                            ],
+                            "parent": [
+                                "mine_guid"
+                            ]
                         }
                     }
                 },
                 {
                     "table": "permit",
-                    "columns": ["permit_no"],
+                    "columns": [
+                        "permit_no"
+                    ],
                     "label": "permit",
                     "relationship": {
                         "type": "one_to_one",
                         "variant": "object",
                         "foreign_key": {
-                            "child": ["permit_guid"],
-                            "parent": ["permit_guid"]
+                            "child": [
+                                "permit_guid"
+                            ],
+                            "parent": [
+                                "permit_guid"
+                            ]
                         }
                     }
                 }
@@ -294,21 +409,33 @@
                         "type": "one_to_one",
                         "variant": "object",
                         "foreign_key": {
-                            "child": ["now_application_id"],
-                            "parent": ["now_application_id"]
+                            "child": [
+                                "now_application_id"
+                            ],
+                            "parent": [
+                                "now_application_id"
+                            ]
                         }
                     }
                 },
                 {
                     "table": "mine",
-                    "columns": ["mine_guid", "mine_name", "mine_no"],
+                    "columns": [
+                        "mine_guid",
+                        "mine_name",
+                        "mine_no"
+                    ],
                     "label": "mine",
                     "relationship": {
                         "type": "one_to_one",
                         "variant": "object",
                         "foreign_key": {
-                            "child": ["mine_guid"],
-                            "parent": ["mine_guid"]
+                            "child": [
+                                "mine_guid"
+                            ],
+                            "parent": [
+                                "mine_guid"
+                            ]
                         }
                     }
                 }

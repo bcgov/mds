@@ -175,6 +175,17 @@ full_additional_search_targets = {
         'id_field': 'explosives_permit_guid',
         'value_field': 'permit_number',
         'score_multiplier': 500
+    },
+    'now_application': {
+        'model': NOWApplicationIdentity,
+        'primary_column': NOWApplicationIdentity.now_application_guid,
+        'description': 'Notice of Work Applications',
+        'entities_to_return': [NOWApplicationIdentity.now_application_guid, NOWApplicationIdentity.now_number],
+        'columns_to_search': [NOWApplicationIdentity.now_number],
+        'has_deleted_ind': False,
+        'id_field': 'now_application_guid',
+        'value_field': 'now_number',
+        'score_multiplier': 500
     }
 }
 
