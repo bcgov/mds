@@ -10,7 +10,32 @@ import { ISearchResult, ISearchResultList, ISimpleSearchResult } from "@mds/comm
 const initialState = {
   searchOptions: [],
   searchResults: [],
-  searchFacets: { mine_region: [], mine_classification: [], permit_status: [], type: [] },
+  searchFacets: { 
+    // Mine facets
+    mine_region: [], 
+    mine_classification: [], 
+    mine_operation_status: [],
+    mine_tenure: [],
+    mine_commodity: [],
+    has_tsf: [],
+    verified_status: [],
+    // Permit facets
+    permit_status: [], 
+    is_exploration: [],
+    // Party facets
+    party_type: [],
+    // Explosives permit facets
+    explosives_permit_status: [],
+    explosives_permit_closed: [],
+    // NOD facets
+    nod_type: [],
+    nod_status: [],
+    // NoW facets
+    now_application_status: [],
+    now_type: [],
+    // Type facet
+    type: [] 
+  },
   searchBarResults: [],
   searchBarFacets: { mine: 0, person: 0, organization: 0, permit: 0, nod: 0, explosives_permit: 0 },
   searchTerms: [],

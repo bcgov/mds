@@ -72,6 +72,7 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ placeholder = "Search Core.
   const [scopeToMine, setScopeToMine] = useState(false);
   const [commandMode, setCommandMode] = useState(false);
   const [commandInput, setCommandInput] = useState("");
+  const [quickFilter, setQuickFilter] = useState<string | null>(null); // Filter applied via shortcut
   
   const dispatch = useDispatch();
   const searchResults = useSelector(getSearchBarResults);
@@ -126,6 +127,7 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ placeholder = "Search Core.
     setScopeToMine(false);
     setCommandMode(false);
     setCommandInput("");
+    setQuickFilter(null);
   }, []);
 
   useEffect(() => {
@@ -139,9 +141,11 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ placeholder = "Search Core.
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
-  const getSearchTypes = (filters: string[]) => {
-    if (filters.length === 0) return null;
-    return filters.flatMap((f) => TYPE_CONFIG[f]?.types || []);
+  const getSearchTypes = (filters: string[], includeQuickFilter?: string | null) => {
+    const allFilters = includeQuickFilter ? [...filters, includeQuickFilter] : filters;
+    const uniqueFilters = [...new Set(allFilters)];
+    if (uniqueFilters.length === 0) return null;
+    return uniqueFilters.flatMap((f) => TYPE_CONFIG[f]?.types || []);
   };
 
   const getMineGuidForSearch = () => scopeToMine && currentMineGuid ? currentMineGuid : null;
@@ -204,33 +208,64 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ placeholder = "Search Core.
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     
-    // If already in command mode, update command input
-    if (commandMode) {
-      // If they cleared the input or typed something without /, exit command mode
-      if (value === "" || (!value.startsWith("/") && commandInput === "")) {
-        setCommandMode(false);
-        setCommandInput("");
-        setSearchTerm(value);
-        return;
+    // Check if input starts with / - this means command mode
+    if (value.startsWith("/")) {
+      if (!commandMode) {
+        setCommandMode(true);
       }
-      // Update command input (value is the command text without /)
-      setCommandInput(value);
+      
+      const cmdContent = value.slice(1); // Everything after /
+      const { commandPart, searchPart } = parseCommandInput(cmdContent);
+      
+      // Auto-apply filter: if user just typed a space and there's a matching command
+      if (cmdContent.endsWith(" ") && !searchPart && commandPart) {
+        const matchingCommands = getMatchingCommands(commandPart.trim());
+        if (matchingCommands.length > 0) {
+          const action = matchingCommands[0][1].action;
+          // Only set quickFilter for filter commands
+          if (action.startsWith("filter:")) {
+            const filterKey = action.split(":")[1];
+            setQuickFilter(filterKey);
+            setCommandMode(false);
+            setCommandInput("");
+            setSearchTerm("");
+            setTimeout(() => inputRef.current?.focus(), 0);
+            return;
+          } else if (action === "scope:mine" && isOnMinePage) {
+            setScopeToMine(true);
+            setCommandMode(false);
+            setCommandInput("");
+            setSearchTerm("");
+            setTimeout(() => inputRef.current?.focus(), 0);
+            return;
+          } else if (action === "clear:filters") {
+            setActiveFilters([]);
+            setQuickFilter(null);
+            setScopeToMine(false);
+            setCommandMode(false);
+            setCommandInput("");
+            setSearchTerm("");
+            setTimeout(() => inputRef.current?.focus(), 0);
+            return;
+          }
+        }
+      }
+      
+      setCommandInput(cmdContent);
       setSelectedIndex(0);
       return;
     }
     
-    // Detect command mode entry
-    if (value.startsWith("/")) {
-      setCommandMode(true);
-      setCommandInput(value.slice(1));
-      setSelectedIndex(0);
-      return;
+    // If we were in command mode but / is gone, exit command mode
+    if (commandMode) {
+      setCommandMode(false);
+      setCommandInput("");
     }
     
     setSearchTerm(value);
     setSelectedIndex(0);
     if (value.length > 0) {
-      dispatch(fetchSearchBarResults(value, getSearchTypes(activeFilters), getMineGuidForSearch()));
+      dispatch(fetchSearchBarResults(value, getSearchTypes(activeFilters, quickFilter), getMineGuidForSearch()));
     }
   };
 
@@ -241,7 +276,7 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ placeholder = "Search Core.
     setActiveFilters(newFilters);
     setSelectedIndex(0);
     if (searchTerm.length > 0) {
-      dispatch(fetchSearchBarResults(searchTerm, getSearchTypes(newFilters), getMineGuidForSearch()));
+      dispatch(fetchSearchBarResults(searchTerm, getSearchTypes(newFilters, quickFilter), getMineGuidForSearch()));
     }
   };
 
@@ -250,7 +285,7 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ placeholder = "Search Core.
     const mineGuid = checked && currentMineGuid ? currentMineGuid : null;
     // Trigger search immediately - use "*" as wildcard if no search term
     const term = searchTerm || "*";
-    dispatch(fetchSearchBarResults(term, getSearchTypes(activeFilters), mineGuid));
+    dispatch(fetchSearchBarResults(term, getSearchTypes(activeFilters, quickFilter), mineGuid));
   };
 
   const navigateToResult = (item: ISearchResult<ISimpleSearchResult>) => {
@@ -289,7 +324,7 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ placeholder = "Search Core.
 
   const handleRecentSearchClick = (term: string) => {
     setSearchTerm(term);
-    dispatch(fetchSearchBarResults(term, getSearchTypes(activeFilters), getMineGuidForSearch()));
+    dispatch(fetchSearchBarResults(term, getSearchTypes(activeFilters, quickFilter), getMineGuidForSearch()));
   };
 
   const parseCommandInput = (input: string): { commandPart: string; searchPart: string } => {
@@ -329,7 +364,7 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ placeholder = "Search Core.
           // Tab autocompletes the command but keeps the search part
           if (matchingCommands.length > 0) {
             const selectedCmd = matchingCommands[selectedIndex][0];
-            setCommandInput(selectedCmd + (searchPart ? " " + searchPart : " "));
+            setCommandInput(selectedCmd + " " + searchPart);
           }
           break;
         case "Escape":
@@ -337,13 +372,6 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ placeholder = "Search Core.
           setCommandMode(false);
           setCommandInput("");
           setSearchTerm("");
-          break;
-        case "Backspace":
-          if (commandInput === "") {
-            e.preventDefault();
-            setCommandMode(false);
-            setSearchTerm("");
-          }
           break;
       }
       return;
@@ -369,6 +397,13 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ placeholder = "Search Core.
         break;
       case "Escape":
         handleClose();
+        break;
+      case "Backspace":
+        // Clear quickFilter when backspacing with empty input
+        if (searchTerm === "" && quickFilter) {
+          e.preventDefault();
+          setQuickFilter(null);
+        }
         break;
     }
   };
@@ -572,7 +607,7 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ placeholder = "Search Core.
         />
         <div style={{ padding: "8px 16px", borderTop: "1px solid #f0f0f0" }}>
           <Text type="secondary" style={{ fontSize: 11 }}>
-            Type <Text code>/command search term</Text> to filter and search. <Text keyboard>Tab</Text> autocompletes, <Text keyboard>Enter</Text> executes.
+            <Text keyboard>Space</Text> applies filter, <Text keyboard>Tab</Text> autocompletes, <Text keyboard>Enter</Text> executes with search term
           </Text>
         </div>
       </div>
@@ -750,14 +785,23 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ placeholder = "Search Core.
         <Input
           ref={inputRef}
           prefix={
-            commandMode ? (
-              <Text code style={{ color: "#5e46a1", fontSize: 14, marginRight: 4 }}>/</Text>
-            ) : (
+            <Space size={4}>
               <SearchOutlined style={{ color: "#5e46a1", fontSize: 18 }} />
-            )
+              {quickFilter && (
+                <Tag
+                  color="blue"
+                  closable
+                  onClose={(e) => { e.preventDefault(); setQuickFilter(null); }}
+                  style={{ margin: 0, marginLeft: 4 }}
+                >
+                  {TYPE_CONFIG[quickFilter]?.icon}
+                  <span style={{ marginLeft: 4 }}>{TYPE_CONFIG[quickFilter]?.label || quickFilter}</span>
+                </Tag>
+              )}
+            </Space>
           }
-          placeholder={commandMode ? "Type command name..." : "Search for mines, contacts, permits... (type / for commands)"}
-          value={commandMode ? commandInput : searchTerm}
+          placeholder={quickFilter ? "Search within filter..." : "Search for mines, contacts, permits... (type / for commands)"}
+          value={commandMode ? `/${commandInput}` : searchTerm}
           onChange={handleSearchChange}
           onKeyDown={handleKeyDown}
           bordered={false}

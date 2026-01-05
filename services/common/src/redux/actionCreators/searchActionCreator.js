@@ -7,12 +7,27 @@ import * as API from "@mds/common/constants/API";
 import { createRequestHeader } from "../utils/RequestHeaders";
 import CustomAxios from "../customAxios";
 
-export const fetchSearchResults = (searchTerm, searchTypes) => (dispatch) => {
+export const fetchSearchResults = (searchTerm, searchTypes, filters = {}) => (dispatch) => {
   dispatch(request(NetworkReducerTypes.GET_SEARCH_RESULTS));
   dispatch(showLoading());
+  
+  // Build query params including filters
+  const params = {
+    search_term: searchTerm,
+    search_types: searchTypes,
+    ...filters
+  };
+  
+  // Remove undefined/null/empty values
+  Object.keys(params).forEach(key => {
+    if (params[key] === undefined || params[key] === null || params[key] === '') {
+      delete params[key];
+    }
+  });
+  
   return CustomAxios()
     .get(
-      ENVIRONMENT.apiUrl + API.SEARCH({ search_term: searchTerm, search_types: searchTypes }),
+      ENVIRONMENT.apiUrl + API.SEARCH(params),
       createRequestHeader()
     )
     .then((response) => {
