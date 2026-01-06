@@ -11,7 +11,7 @@ import {
   fetchImportedNoticeOfWorkApplication,
   updateNoticeOfWorkApplication,
 } from "@mds/common/redux/actionCreators/noticeOfWorkActionCreator";
-import { getDropdownInspectors } from "@mds/common/redux/selectors/partiesSelectors";
+import { getDropdownInspectors } from "@mds/common/redux/slices/partiesSlice";
 import {
   getNoticeOfWork,
   getOriginalNoticeOfWork,

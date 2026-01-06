@@ -5,13 +5,13 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import queryString from "query-string";
 import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
-import { fetchParties, createParty } from "@mds/common/redux/actionCreators/partiesActionCreator";
+import { fetchParties, createParty } from "@mds/common/redux/slices/partiesSlice";
 import {
   getDropdownProvinceOptions,
   getPartyRelationshipTypeHash,
   getPartyRelationshipTypesList,
 } from "@mds/common/redux/selectors/staticContentSelectors";
-import { getParties, getPartyPageData } from "@mds/common/redux/selectors/partiesSelectors";
+import { getParties, getPartyPageData } from "@mds/common/redux/slices/partiesSlice";
 import * as Strings from "@mds/common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import * as FORM from "@/constants/forms";

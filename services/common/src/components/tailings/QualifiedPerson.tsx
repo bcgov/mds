@@ -2,7 +2,7 @@ import { Alert, Col, Empty, Row, Typography } from "antd";
 import { change, Field, getFormValues } from "@mds/common/components/forms/form";
 import React, { FC, useContext } from "react";
 import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
-import { getPartyRelationships } from "@mds/common/redux/selectors/partiesSelectors";
+import { getPartyRelationships } from "@mds/common/redux/slices/partiesSlice";
 import {
   dateInFuture,
   dateNotInFuture,

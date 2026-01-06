@@ -1,10 +1,6 @@
 import React, { FC, useEffect } from "react";
-import {
-  createParty,
-  updateParty,
-  fetchParties,
-} from "@mds/common/redux/actionCreators/partiesActionCreator";
-import { getParties } from "@mds/common/redux/selectors/partiesSelectors";
+import { createParty, updateParty, fetchParties } from "@mds/common/redux/slices/partiesSlice";
+import { getParties } from "@mds/common/redux/slices/partiesSlice";
 import { Field, isDirty, getFormValues, change } from "@mds/common/components/forms/form";
 import { Col, Row, Typography, Divider } from "antd";
 import { debounce } from "lodash";
@@ -51,7 +47,7 @@ export const AddContactFormDetails: FC<AddContactFormDetailsProps> = (props) => 
       props.onSubmit(party);
     } else if (isFormDirty) {
       // Selected party has been updated, update it
-      const response = await dispatch(updateParty(payload, values.party_guid));
+      const response = await dispatch(updateParty({ data: payload, partyGuid: values.party_guid }));
 
       if (!response) return;
 

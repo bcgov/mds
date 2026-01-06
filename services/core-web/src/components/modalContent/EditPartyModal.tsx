@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { getParties } from "@mds/common/redux/selectors/partiesSelectors";
+import { getParties } from "@mds/common/redux/slices/partiesSlice";
 import EditFullPartyForm, {
   EditFullPartyFormValues,
 } from "@/components/Forms/parties/EditFullPartyForm";

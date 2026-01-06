@@ -16,7 +16,7 @@ import {
   getNoticeOfWorkReviews,
 } from "@mds/common/redux/selectors/noticeOfWorkSelectors";
 import { getGeneratableNoticeOfWorkApplicationDocumentTypeOptions } from "@mds/common/redux/selectors/staticContentSelectors";
-import { getDropdownInspectors } from "@mds/common/redux/selectors/partiesSelectors";
+import { getDropdownInspectors } from "@mds/common/redux/slices/partiesSlice";
 import CustomPropTypes from "@/customPropTypes";
 import * as FORM from "@/constants/forms";
 import { modalConfig } from "@/components/modalContent/config";

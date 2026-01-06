@@ -21,7 +21,7 @@ import {
 } from "@mds/common/redux/utils/Validate";
 import { normalizePhone, normalizeDatetime } from "@common/utils/helpers";
 import * as Strings from "@mds/common/constants/strings";
-import { getDropdownInspectors } from "@mds/common/redux/selectors/partiesSelectors";
+import { getDropdownInspectors } from "@mds/common/redux/slices/partiesSlice";
 import {
   getDropdownIncidentStatusCodeOptions,
   getDropdownIncidentFollowupActionOptions,

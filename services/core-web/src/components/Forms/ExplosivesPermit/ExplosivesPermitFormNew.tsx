@@ -29,7 +29,7 @@ import {
   required,
 } from "@mds/common/redux/utils/Validate";
 import { createDropDownList, formatDate } from "@common/utils/helpers";
-import { getAllPartyRelationships } from "@mds/common/redux/selectors/partiesSelectors";
+import { getAllPartyRelationships } from "@mds/common/redux/slices/partiesSlice";
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 import { getIsFormLoading } from "@mds/common/redux/reducers/modalReducer";
 import { renderConfig } from "@/components/common/config";

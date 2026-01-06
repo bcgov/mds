@@ -16,7 +16,7 @@ import {
     fetchSearchResults as fetchSearchResultsAction,
     clearAllSearchResults as clearAllSearchResultsAction,
 } from "@mds/common/redux/actionCreators/searchActionCreator";
-import { fetchPartyById as fetchPartyByIdAction, updateParty as updatePartyAction } from "@mds/common/redux/actionCreators/partiesActionCreator";
+import { fetchPartyById as fetchPartyByIdAction, updateParty as updatePartyAction } from "@mds/common/redux/slices/partiesSlice";
 import { storeSubsetSearchResults as storeSubsetSearchResultsAction } from "@mds/common/redux/actions/searchActions";
 import { TRASHCAN, PROFILE_NOCIRCLE } from "@/constants/assets";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
@@ -309,7 +309,7 @@ export const VerifyNoWContacts: React.FC<VerifyNoWContactsProps> = (props) => {
     const clearAllSearchResults = () => dispatch(clearAllSearchResultsAction());
     const storeSubsetSearchResults = (r: any) => dispatch(storeSubsetSearchResultsAction(r));
     const fetchPartyById = (pg: string) => dispatch(fetchPartyByIdAction(pg));
-    const updateParty = (values: any, guid: string) => dispatch(updatePartyAction(values, guid));
+    const updateParty = (values: any, guid: string) => dispatch(updatePartyAction({ data: values, partyGuid: guid }));
     const change = (form: string, field: string, value: any) => dispatch(reduxFormChange(form, field, value));
 
     const [rolesUsedOnce, setRolesUsedOnce] = useState<string[]>([]);

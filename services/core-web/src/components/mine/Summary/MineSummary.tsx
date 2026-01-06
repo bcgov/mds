@@ -3,7 +3,7 @@ import { Card, Col, Divider, Row } from "antd";
 import moment from "moment";
 import { Link, useParams } from "react-router-dom";
 import { formatDate } from "@common/utils/helpers";
-import { getPartyRelationships } from "@mds/common/redux/selectors/partiesSelectors";
+import { getPartyRelationships } from "@mds/common/redux/slices/partiesSlice";
 import { getPartyRelationshipTypes } from "@mds/common/redux/selectors/staticContentSelectors";
 import { getMineComplianceInfo } from "@mds/common/redux/selectors/complianceSelectors";
 import { getMines } from "@mds/common/redux/selectors/mineSelectors";
