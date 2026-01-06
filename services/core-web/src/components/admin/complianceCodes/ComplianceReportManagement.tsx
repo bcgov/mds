@@ -123,8 +123,8 @@ const ComplianceReportManagement: FC = () => {
         message: "Error",
         description: "Report definition not found",
       });
+      return;
     }
-    console.log("reportDefinition", reportDefinition);
     record.compliance_articles = [reportDefinition.compliance_articles[0]];
     dispatch(
       openModal({

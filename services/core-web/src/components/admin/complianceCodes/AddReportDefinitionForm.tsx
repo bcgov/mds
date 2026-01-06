@@ -118,7 +118,7 @@ const AddReportDefinitionForm: FC<{
 
       <div className="ant-modal-footer">
         <RenderCancelButton />
-        {isEditMode ? <RenderSubmitButton buttonText="Save Report" disableOnClean={false} /> : null}
+        <RenderSubmitButton buttonText="Save Report" disableOnClean={false} />
       </div>
     </FormWrapper>
   );
