@@ -52,6 +52,7 @@ describe("Project Management", () => {
         ...initialState,
         [AUTHENTICATION]: {
           ...initialState[AUTHENTICATION],
+          userInfo: { preferred_username: "USERNAME" },
           systemFlag: SystemFlagEnum.ms,
         }
       }}>
@@ -60,7 +61,7 @@ describe("Project Management", () => {
           isEditMode={false}
           handleSaveData={asyncSave}
           handleTabChange={() => { }}
-          activeTab={"basic-information"}
+          activeTab={"document-upload"}
         />
       </ReduxWrapper>
     );
