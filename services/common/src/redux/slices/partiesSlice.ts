@@ -19,10 +19,14 @@ import {
   IPartyApptFetchParams,
   IAddRelationshipDocument,
   ICreateOrgBookEntity,
-  IPartyOrgBookEntity,
   IMergeParties,
 } from "@mds/common/interfaces";
-import { createItemMap, createItemIdsArray, createDropDownList, createLabelHash } from "@mds/common/redux/utils/helpers";
+import {
+  createItemMap,
+  createItemIdsArray,
+  createDropDownList,
+  createLabelHash,
+} from "@mds/common/redux/utils/helpers";
 import { PARTIES } from "@mds/common/constants/reducerTypes";
 import { RootState } from "@mds/common/redux/rootState";
 import { createSelector } from "@reduxjs/toolkit";
@@ -42,8 +46,8 @@ interface PartiesState {
   partyPageData: IPageData<IParty>;
   addPartyFormState: IAddPartyFormState;
   lastCreatedParty: IParty;
-  inspectors: IPartyAppt[];
-  projectLeads: IPartyAppt[];
+  inspectors: IParty[];
+  projectLeads: IParty[];
   engineersOfRecordOptions: IOption[];
   engineersOfRecord: IPartyAppt[];
   qualifiedPersons: IPartyAppt[];
@@ -236,7 +240,10 @@ const partiesSlice = createAppSlice({
       }
     ),
     updatePartyRelationship: create.asyncThunk(
-      async (payload: { data: Partial<IUpdatePartyAppointment>; successMessage?: string }, thunkApi) => {
+      async (
+        payload: { data: Partial<IUpdatePartyAppointment>; successMessage?: string },
+        thunkApi
+      ) => {
         const { data, successMessage } = payload;
         thunkApi.dispatch(showLoading("modal"));
         const sanitizedPayload = removeNullValues(data);
@@ -353,7 +360,7 @@ const partiesSlice = createAppSlice({
       }
     ),
     fetchInspectors: create.asyncThunk(
-      async (_, thunkApi) => {
+      async () => {
         const response = await CustomAxios().get(
           ENVIRONMENT.apiUrl +
             API.PARTIES_LIST_QUERY({
@@ -371,7 +378,7 @@ const partiesSlice = createAppSlice({
       }
     ),
     fetchProjectLeads: create.asyncThunk(
-      async (_, thunkApi) => {
+      async () => {
         const response = await CustomAxios().get(
           ENVIRONMENT.apiUrl +
             API.PARTIES_LIST_QUERY({
@@ -495,7 +502,10 @@ export const getProjectLeadsList = (state: RootState) =>
 export const getInspectorsHash = createSelector([getInspectorsList], createLabelHash);
 export const getProjectLeadsHash = createSelector([getProjectLeadsList], createLabelHash);
 
-export const getMatchingPartyRelationships = (mine_party_appt_type_code: string, related_guid = "") =>
+export const getMatchingPartyRelationships = (
+  mine_party_appt_type_code: string,
+  related_guid = ""
+) =>
   createSelector([getPartyRelationships], (relationships) => {
     return relationships.filter((mpa) => {
       return (
