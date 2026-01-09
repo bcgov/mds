@@ -1,14 +1,9 @@
 import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
-import {
-  loadBulkStaticContent,
-  fetchInspectors,
-  fetchProjectLeads,
-} from "@mds/common/redux/actionCreators/staticContentActionCreator";
+import { loadBulkStaticContent } from "@mds/common/redux/actionCreators/staticContentActionCreator";
 import * as genericActions from "@mds/common/redux/actions/genericActions";
 import { ENVIRONMENT } from "@mds/common/constants/environment";
 import * as API from "@mds/common/constants/API";
-import * as String from "@mds/common/constants/strings";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 
 const dispatch = jest.fn();
@@ -43,60 +38,6 @@ describe("`loadBulkStaticContent` action creator", () => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
-    });
-  });
-});
-
-describe("`fetchInspectors` action creator", () => {
-  const url =
-    ENVIRONMENT.apiUrl +
-    API.PARTIES_LIST_QUERY({
-      per_page: "all",
-      business_role: String.BUSINESS_ROLES.inspector,
-    });
-  it("Request successful, dispatches `success` with correct response", () => {
-    const mockResponse = { data: { success: true } };
-    mockAxios.onGet(url).reply(200, mockResponse);
-    return fetchInspectors()(dispatch).then(() => {
-      expect(requestSpy).toHaveBeenCalledTimes(1);
-      expect(successSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(3);
-    });
-  });
-
-  it("Request failure, dispatches `error` with correct response", () => {
-    mockAxios.onGet(url, MOCK.createMockHeader()).reply(418, MOCK.ERROR);
-    return fetchInspectors()(dispatch).then(() => {
-      expect(requestSpy).toHaveBeenCalledTimes(1);
-      expect(errorSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(2);
-    });
-  });
-});
-
-describe("`fetchProjectLeads` action creator", () => {
-  const url =
-    ENVIRONMENT.apiUrl +
-    API.PARTIES_LIST_QUERY({
-      per_page: "all",
-      business_role: String.BUSINESS_ROLES.projectLead,
-    });
-  it("Request successful, dispatches `success` with correct response", () => {
-    const mockResponse = { data: { success: true } };
-    mockAxios.onGet(url).reply(200, mockResponse);
-    return fetchProjectLeads()(dispatch).then(() => {
-      expect(requestSpy).toHaveBeenCalledTimes(1);
-      expect(successSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(3);
-    });
-  });
-
-  it("Request failure, dispatches `error` with correct response", () => {
-    mockAxios.onGet(url, MOCK.createMockHeader()).reply(418, MOCK.ERROR);
-    return fetchProjectLeads()(dispatch).then(() => {
-      expect(requestSpy).toHaveBeenCalledTimes(1);
-      expect(errorSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(2);
     });
   });
 });

@@ -360,7 +360,7 @@ const partiesSlice = createAppSlice({
       }
     ),
     fetchInspectors: create.asyncThunk(
-      async () => {
+      async (_: never) => {
         const response = await CustomAxios().get(
           ENVIRONMENT.apiUrl +
             API.PARTIES_LIST_QUERY({
@@ -378,7 +378,7 @@ const partiesSlice = createAppSlice({
       }
     ),
     fetchProjectLeads: create.asyncThunk(
-      async () => {
+      async (_: never) => {
         const response = await CustomAxios().get(
           ENVIRONMENT.apiUrl +
             API.PARTIES_LIST_QUERY({
