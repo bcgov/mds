@@ -1,10 +1,25 @@
-import os
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
-from azure.storage.blob import BlobServiceClient
+from azure.storage.blob import (
+    BlobServiceClient,
+    ContainerSasPermissions,
+    generate_container_sas,
+)
 from haystack import component, logging
 
 logger = logging.getLogger(__name__)
+
+
+def _parse_connection_string(connection_string: str) -> dict:
+    """Parse connection string into components."""
+    parts = {}
+    for part in connection_string.split(";"):
+        if "=" in part:
+            key, value = part.split("=", 1)
+            parts[key] = value
+    return parts
+
 
 @component
 class AzureBlobUploader:
@@ -30,14 +45,28 @@ class AzureBlobUploader:
         """
         Uploads a file to Azure Blob Storage in the indexing folder
         """
-        # BlobService
-        blob_service_client = BlobServiceClient.from_connection_string(self.connection_string)
-
-        if self.blob_service_endpoint:
-            blob_service_client = BlobServiceClient(
-                account_url=self.blob_service_endpoint,
-                credential=blob_service_client.credential
-            )
+        conn_parts = _parse_connection_string(self.connection_string)
+        account_name = conn_parts.get("AccountName", "")
+        account_key = conn_parts.get("AccountKey", "")
+        
+        if not account_name or not account_key:
+            raise ValueError("Connection string must contain AccountName and AccountKey")
+        
+        account_url = self.blob_service_endpoint or f"https://{account_name}.blob.core.windows.net"
+        
+        # Generate a short-lived SAS token for this upload
+        sas_token = generate_container_sas(
+            account_name=account_name,
+            container_name=self.container_name,
+            account_key=account_key,
+            permission=ContainerSasPermissions(write=True, create=True),
+            expiry=datetime.now(timezone.utc) + timedelta(minutes=10)
+        )
+        
+        blob_service_client = BlobServiceClient(
+            account_url=account_url,
+            credential=sas_token
+        )
 
         container_client = blob_service_client.get_container_client(self.container_name)
         
