@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from "react";
-import { Button, Input, notification, Row, Typography } from "antd";
+import { Button, Input, Row, Typography } from "antd";
 import queryString from "query-string";
 import PlusOutlined from "@ant-design/icons/PlusOutlined";
 import CoreTable from "@mds/common/components/common/CoreTable";
@@ -115,27 +115,17 @@ const ComplianceReportManagement: FC = () => {
   };
 
   const openViewModal = (record) => {
-    const reportDefinition = reportDefinitions.find(
-      (r) => r.mine_report_definition_guid === record.mine_report_definition_guid
-    );
-    if (!reportDefinition) {
-      notification.error({
-        message: "Error",
-        description: "Report definition not found",
-      });
-      return;
-    }
-    record.compliance_articles = [reportDefinition.compliance_articles[0]];
+    record.compliance_articles = [record.compliance_articles[0]];
     dispatch(
       openModal({
         props: {
           title: `View Report`,
           isEditMode: false,
           initialValues: {
-            ...reportDefinition,
-            mine_report_due_date_type_code: reportDefinition.mine_report_due_date_type,
-            mine_report_due_date_months: reportDefinition.due_date_period_months,
-            report_type: reportDefinition.is_prr_only ? "PRR" : "CRR",
+            ...record,
+            mine_report_due_date_type_code: record.mine_report_due_date_type,
+            mine_report_due_date_months: record.due_date_period_months,
+            report_type: record.is_prr_only ? "PRR" : "CRR",
           },
         },
         content: AddReportDefinitionForm,
