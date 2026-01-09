@@ -23,8 +23,10 @@ import {
   getPartyIds,
   getPartyPageData,
   getLastCreatedParty,
+  getDropdownInspectors,
+  getDropdownProjectLeads,
 } from "./partiesSlice";
-import * as MOCK from "@mds/common/tests/mocks/dataMocks";
+import moment from "moment";
 
 export const showLoadingMock = jest
   .fn()
@@ -245,6 +247,117 @@ describe("partiesSlice", () => {
           },
         };
         expect(getLastCreatedParty(state as any)).toEqual({ party_guid: "123" });
+      });
+
+      it("getDropdownInspectors filters active and inactive correctly", () => {
+        const today = moment().utc();
+        const activeInspector = {
+          party_guid: "ins-1",
+          name: "Active Inspector",
+          business_role_appts: [
+            {
+              start_date: today.clone().subtract(1, "day").toISOString(),
+              end_date: null,
+            },
+          ],
+        };
+        const activeInspectorFutureEnd = {
+          party_guid: "ins-2",
+          name: "Active Inspector Future",
+          business_role_appts: [
+            {
+              start_date: today.clone().subtract(1, "day").toISOString(),
+              end_date: today.clone().add(1, "day").toISOString(),
+            },
+          ],
+        };
+        const inactiveInspector = {
+          party_guid: "ins-3",
+          name: "Inactive Inspector",
+          business_role_appts: [
+            {
+              start_date: today.clone().subtract(5, "days").toISOString(),
+              end_date: today.clone().subtract(1, "day").toISOString(),
+            },
+          ],
+        };
+        const activeAndInactiveInspector = {
+          party_guid: "ins-4",
+          name: "Active and Inactive",
+          business_role_appts: [
+            {
+              start_date: today.clone().subtract(10, "days").toISOString(),
+              end_date: today.clone().subtract(5, "days").toISOString(),
+            },
+            {
+              start_date: today.clone().subtract(1, "day").toISOString(),
+              end_date: null,
+            },
+          ],
+        };
+
+        const state = {
+          PARTIES: {
+            inspectors: [
+              activeInspector,
+              activeInspectorFutureEnd,
+              inactiveInspector,
+              activeAndInactiveInspector,
+            ],
+          },
+        };
+
+        const result = getDropdownInspectors(state as any);
+        expect(result).toHaveLength(2);
+        expect(result[0].groupName).toBe("Active");
+        expect(result[0].opt).toHaveLength(3);
+        expect(result[0].opt).toEqual(
+          expect.arrayContaining([
+            { value: "ins-1", label: "Active Inspector" },
+            { value: "ins-2", label: "Active Inspector Future" },
+            { value: "ins-4", label: "Active and Inactive" },
+          ])
+        );
+
+        expect(result[1].groupName).toBe("Inactive");
+        expect(result[1].opt).toHaveLength(1);
+        expect(result[1].opt).toEqual([{ value: "ins-3", label: "Inactive Inspector" }]);
+      });
+
+      it("getDropdownProjectLeads filters active and inactive correctly", () => {
+        const today = moment().utc();
+        const activeLead = {
+          party_guid: "pl-1",
+          name: "Active Lead",
+          business_role_appts: [
+            {
+              start_date: today.clone().subtract(1, "day").toISOString(),
+              end_date: null,
+            },
+          ],
+        };
+        const inactiveLead = {
+          party_guid: "pl-2",
+          name: "Inactive Lead",
+          business_role_appts: [
+            {
+              start_date: today.clone().subtract(5, "days").toISOString(),
+              end_date: today.clone().subtract(1, "day").toISOString(),
+            },
+          ],
+        };
+
+        const state = {
+          PARTIES: {
+            projectLeads: [activeLead, inactiveLead],
+          },
+        };
+
+        const result = getDropdownProjectLeads(state as any);
+        expect(result[0].groupName).toBe("Active");
+        expect(result[0].opt).toEqual([{ value: "pl-1", label: "Active Lead" }]);
+        expect(result[1].groupName).toBe("Inactive");
+        expect(result[1].opt).toEqual([{ value: "pl-2", label: "Inactive Lead" }]);
       });
   });
 });
