@@ -57,7 +57,7 @@
     "react-redux-loading-bar": "5.0.0",
     "react-responsive": "8.0.1",
     "react-responsive-carousel": "3.1.49",
-    "react-router-dom": "5.3.3",
+    "react-router-dom": "6.30.2",
     "react-scroll": "1.7.12",
     "react-sortable-hoc": "2.0.0",
     "redux": "5.0.0",
