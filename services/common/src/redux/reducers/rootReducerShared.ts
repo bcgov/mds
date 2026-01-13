@@ -16,7 +16,6 @@ import {
   noticeOfDepartureReducer,
   noticeOfWorkReducer,
   orgbookReducer,
-  partiesReducer,
   permitReducer,
   projectReducer,
   searchReducer,
@@ -26,6 +25,7 @@ import {
   verifiableCredentialReducer,
   workInformationReducer,
 } from "../reducers";
+import partiesReducer, { partiesReducerType } from "@mds/common/redux/slices/partiesSlice";
 import reportSubmissionReducer from "@mds/common/components/reports/reportSubmissionSlice";
 import verifiableCredentialsReducer from "@mds/common/redux/slices/verifiableCredentialsSlice";
 
@@ -67,15 +67,14 @@ export const sharedReducer = {
   ...noticeOfDepartureReducer,
   ...noticeOfWorkReducer,
   ...orgbookReducer,
-  ...partiesReducer,
+  ...varianceReducer,
+  ...verifiableCredentialReducer,
+  ...workInformationReducer,
   ...permitReducer,
   ...projectReducer,
   ...searchReducer,
   ...securitiesReducer,
   ...staticContentReducer,
-  ...varianceReducer,
-  ...verifiableCredentialReducer,
-  ...workInformationReducer,
   form: formReducer,
   loadingBar: loadingBarReducer,
   reportSubmission: reportSubmissionReducer,
@@ -98,5 +97,6 @@ export const sharedReducer = {
   [mineReportStatsReducerType]: mineReportStatsReducer,
   [minespaceReducerType]: minespaceReducer,
   [reportReducerType]: reportReducer,
+  [partiesReducerType]: partiesReducer,
   ...networkReducers
 };

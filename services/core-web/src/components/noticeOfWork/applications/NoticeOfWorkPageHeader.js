@@ -11,7 +11,7 @@ import PropTypes from "prop-types";
 import * as Strings from "@mds/common/constants/strings";
 import * as router from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
-import { getInspectorsHash } from "@mds/common/redux/selectors/partiesSelectors";
+import { getInspectorsHash } from "@mds/common/redux/slices/partiesSlice";
 import { getNoticeOfWorkApplicationStatusOptionsHash } from "@mds/common/redux/selectors/staticContentSelectors";
 import { connect } from "react-redux";
 

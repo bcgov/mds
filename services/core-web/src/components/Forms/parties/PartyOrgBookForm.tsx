@@ -7,7 +7,7 @@ import {
   createPartyOrgBookEntity,
   deletePartyOrgBookEntity,
   fetchPartyById,
-} from "@mds/common/redux/actionCreators/partiesActionCreator";
+} from "@mds/common/redux/slices/partiesSlice";
 import { ORGBOOK_ENTITY_URL } from "@/constants/routes";
 import { IOrgbookCredential, IParty } from "@mds/common/interfaces";
 import OrgBookSearch from "@mds/common/components/parties/OrgBookSearch";
@@ -31,8 +31,11 @@ export const PartyOrgBookForm: FC<PartyOrgBookFormProps> = ({ party }) => {
   const handleAssociateButtonClick = async () => {
     setIsAssociating(true);
     await dispatch(
-      createPartyOrgBookEntity(party.party_guid, {
-        credential_id: credential.id.toString(),
+      createPartyOrgBookEntity({
+        partyGuid: party.party_guid,
+        data: {
+          credential_id: credential.id.toString(),
+        },
       })
     );
     await dispatch(fetchPartyById(party.party_guid));

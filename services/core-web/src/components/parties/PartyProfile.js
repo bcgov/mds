@@ -22,10 +22,10 @@ import {
   fetchPartyById,
   updateParty,
   deleteParty,
-} from "@mds/common/redux/actionCreators/partiesActionCreator";
+} from "@mds/common/redux/slices/partiesSlice";
 import { fetchMineBasicInfoList } from "@mds/common/redux/actionCreators/mineActionCreator";
 import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
-import { getParties } from "@mds/common/redux/selectors/partiesSelectors";
+import { getParties } from "@mds/common/redux/slices/partiesSlice";
 import { getMineBasicInfoListHash } from "@mds/common/redux/selectors/mineSelectors";
 import {
   getDropdownProvinceOptions,
@@ -110,7 +110,7 @@ export class PartyProfile extends Component {
 
   editParty = (values) => {
     const { id } = this.props.match.params;
-    return this.props.updateParty(values, id).then(() => {
+    return this.props.updateParty({ data: values, partyGuid: id }).then(() => {
       this.props.fetchPartyById(id);
       this.props.closeModal();
     });

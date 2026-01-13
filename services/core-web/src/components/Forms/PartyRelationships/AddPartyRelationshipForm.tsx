@@ -17,7 +17,7 @@ import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton"
 import { IMine, IMinePartyAppt, IParty, IPermit } from "@mds/common/interfaces";
 import { useAppSelector } from "@mds/common/redux/rootState";
 import { getPartyRelationshipTypeHash } from "@mds/common/redux/selectors/staticContentSelectors";
-import { getMatchingPartyRelationships } from "@mds/common/redux/selectors/partiesSelectors";
+import { getMatchingPartyRelationships } from "@mds/common/redux/slices/partiesSlice";
 import { MinePartyAppointmentTypeCodeEnum } from "@mds/common/constants/enums";
 
 interface IPartyRelationshipPayload extends IMinePartyAppt, IParty { };

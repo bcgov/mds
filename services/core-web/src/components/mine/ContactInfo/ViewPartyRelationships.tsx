@@ -4,8 +4,8 @@ import {
   fetchParties,
   fetchPartyRelationships,
   updatePartyRelationship,
-} from "@mds/common/redux/actionCreators/partiesActionCreator";
-import { getPartyRelationships } from "@mds/common/redux/selectors/partiesSelectors";
+} from "@mds/common/redux/slices/partiesSlice";
+import { getPartyRelationships } from "@mds/common/redux/slices/partiesSlice";
 import {
   getPartyRelationshipTypes,
   getPartyRelationshipTypesList,
@@ -88,18 +88,20 @@ export const ViewPartyRelationships: FC<ViewPartyRelationshipsProps> = ({ mine }
       union_rep_company: values.union_rep_company,
     });
 
-    return dispatch(addPartyRelationship(payload)).then(
-      async ({ data: { mine_party_appt_guid } }) => {
+    return dispatch(addPartyRelationship({ data: payload })).then(
+      async (action: any) => {
+        const { mine_party_appt_guid } = action.payload;
         await Promise.all(
           uploadedFiles.map(([document_manager_guid, document_name]) =>
             dispatch(
-              addDocumentToRelationship(
-                { mineGuid: mine.mine_guid, minePartyApptGuid: mine_party_appt_guid },
-                {
+              addDocumentToRelationship({
+                mineGuid: mine.mine_guid,
+                minePartyApptGuid: mine_party_appt_guid,
+                data: {
                   document_manager_guid,
                   document_name,
-                }
-              )
+                },
+              })
             )
           )
         );
@@ -204,7 +206,7 @@ export const ViewPartyRelationships: FC<ViewPartyRelationshipsProps> = ({ mine }
 
     payload = formatValuesEndCurrent(payload as IPartyAppt);
 
-    return dispatch(updatePartyRelationship(payload)).then(() => {
+    return dispatch(updatePartyRelationship({ data: payload })).then(() => {
       dispatch(
         fetchPartyRelationships({
           mine_guid: mine.mine_guid,

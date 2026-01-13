@@ -22,7 +22,7 @@ import Loading from "@mds/common/components/common/Loading";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { Feature } from "@mds/common/utils";
 import ProjectContacts from "../projects/ProjectContacts";
-import { getProjectLeads } from "@mds/common/redux/selectors/partiesSelectors";
+import { getProjectLeads } from "@mds/common/redux/slices/partiesSlice";
 import { getMinistryContactsByRegion } from "@mds/common/redux/slices/minespaceSlice";
 import { fetchAmsFinalAppsByProjectSummary, updateAmsFinalAppMineSpaceEditability } from "@mds/common/redux/slices/amsFinalApplicationSlice";
 import { USER_ROLES } from "@mds/common/constants/environment";
