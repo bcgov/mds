@@ -47,8 +47,8 @@ class ActivityDetailBase(AuditMixin, Base):
 
     _etl_activity_details = db.relationship('ETLActivityDetail', load_on_pending=True, back_populates='activity_detail')
     
-    activitySummaryBuildingDetailXrefChild = db.relationship('ActivitySummaryBuildingDetailXref', backref='activity_detail', cascade='all,delete-orphan', overlaps='building_detail_associations,building_details,detail')
-    activitySummaryStagingAreaDetailXrefChild = db.relationship('ActivitySummaryStagingAreaDetailXref', backref='activity_detail', cascade='all,delete-orphan', overlaps='detail,staging_area_detail_associations,staging_area_details')
+    activitySummaryBuildingDetailXrefChild = db.relationship('ActivitySummaryBuildingDetailXref', foreign_keys='ActivitySummaryBuildingDetailXref.activity_detail_id', backref=db.backref('activity_detail', overlaps='building_detail_associations,building_details,detail'), cascade='all,delete-orphan', overlaps='building_detail_associations,building_details,detail')
+    activitySummaryStagingAreaDetailXrefChild = db.relationship('ActivitySummaryStagingAreaDetailXref', foreign_keys='ActivitySummaryStagingAreaDetailXref.activity_detail_id', backref=db.backref('activity_detail', overlaps='detail,staging_area_detail_associations,staging_area_details'), cascade='all,delete-orphan', overlaps='detail,staging_area_detail_associations,staging_area_details')
 
     # Here be dragons...
     # This is a polymorphic association that is used to determine the type of the activity detail.

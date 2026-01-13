@@ -2,13 +2,13 @@
 {% from "email/_components/email_macros.html" import paragraph, button_link, info_block %}
 
 {% set brand = 'minespace' %}
-{% set title = message %}
+{% set page_title = message %}
 
 {% block content %}
 {{ paragraph(info_block('Mine Name', project.mine_name) +
 info_block('Mine Number', project.mine_no) +
 info_block('Project Title', project.project_title) +
-info_block('Submitted', project.submitted), align='center', brand=brand) }}
+info_block('Submitted', project.submitted), brand=brand) }}
 
 {{ button_link(minespace_link, 'View ' + project_section + ' in Minespace', brand=brand, margin_top=32) }}
 {% endblock %}

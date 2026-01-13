@@ -560,6 +560,12 @@ export const WASTE_DISCHARGE_AUTHORIZATION_PROCESS =
 export const AMS_ENVIRONMENT_PUBLIC_DOCUMENT_SEARCH_URL =
   "https://j200.gov.bc.ca/pub/ams/Default.aspx?PossePresentation=DocumentSearch";
 
+export const MAJOR_MINE_AUTH_GUIDE_URL =
+  "https://www2.gov.bc.ca/assets/gov/farming-natural-resources-and-industry/mineral-exploration-mining/documents/permitting/mmpo/major_mines_auth_guide.pdf";
+
+export const JOINT_APPLICATION_INFORMATION_REQUIREMENTS_GUIDE_URL =
+  "https://www2.gov.bc.ca/assets/gov/farming-natural-resources-and-industry/mineral-exploration-mining/documents/permitting/joint_application_information_requirements.pdf";
+
 export const MINES_ACT_INCLUDES_EMA_AUTH_TEXT =
   "This application package includes authorization documents related to the ";
 

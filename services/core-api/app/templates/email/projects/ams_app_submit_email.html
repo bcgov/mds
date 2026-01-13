@@ -1,0 +1,24 @@
+{% extends "email/_base/email_base.html" %}
+{% from "email/_components/email_macros.html" import paragraph, button_link, info_block, document_list %}
+
+{% set brand = brand_type %}
+{% set page_title = 'AMS Final Application Submitted for ' + project.project_title %}
+
+{% block content %}
+{{ paragraph(info_block('Mine Name', mine.mine_name) +
+info_block('Mine Number', mine.mine_no) +
+info_block('Project Title', project.project_title) +
+info_block('Authorization Type', authorization.authorization_type) +
+info_block('Authorization #', authorization.auth_no) +
+info_block('Submitted', submitted_date), brand=brand) }}
+
+{{ paragraph('The following documents have been submitted with this AMS Final Application:', brand=brand) }}
+
+{% for group in document_groups %}
+{{ paragraph(('<strong>' + group.type_description + ':</strong>') | safe, margin_bottom=5, brand=brand) }}
+{{ document_list(group.documents, brand=brand) }}
+{% endfor %}
+
+{{ button_link(view_link, button_text, brand=brand, margin_top=32) }}
+
+{% endblock %}

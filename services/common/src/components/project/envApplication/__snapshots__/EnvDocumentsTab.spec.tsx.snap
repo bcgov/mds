@@ -12,6 +12,25 @@ exports[`EnvDocumentsTab renders properly 1`] = `
       Documents
     </h3>
     <div
+      class="ant-typography"
+    >
+      Please upload your Environmental Management Act waste discharge final application for screening. The application must include all documents and information as listed in the Application Instruction Document (AID) and Information Requirements Table (IRT) issued for this application. Incomplete submissions may lead to delays or rejection of your application.
+    </div>
+    <div
+      class="ant-typography"
+    >
+      If you did not receive an AID or IRT it is recommended that you consult with Ministry staff to confirm information requirements prior to submission.
+    </div>
+    <div
+      class="ant-typography"
+    >
+      When uploading your application files, you will be required to 
+      <b>
+        tag each file by type
+      </b>
+      , which supports efficient screening and review.
+    </div>
+    <div
       class="ant-form-item ant-form-item-with-help"
     >
       <div
@@ -23,9 +42,9 @@ exports[`EnvDocumentsTab renders properly 1`] = `
           <label
             class=""
             for="ADD_EDIT_AMS_FINAL_APPLICATION_pre_submitted_files"
-            title="Check those that were submitted as part of the Project Description"
+            title="Please check any of the following forms that were submitted as during the Project Description phase of this application"
           >
-            Check those that were submitted as part of the Project Description
+            Please check any of the following forms that were submitted as during the Project Description phase of this application
           </label>
         </div>
         <div
@@ -438,9 +457,9 @@ exports[`EnvDocumentsTab renders properly 1`] = `
                         </span>
                         <span
                           class="ant-select-selection-item"
-                          title="Clause Form"
+                          title="Clause Amendment Form"
                         >
-                          Clause Form
+                          Clause Amendment Form
                         </span>
                       </div>
                       <span

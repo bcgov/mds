@@ -11,14 +11,14 @@ import { retryOnFail } from "./retry";
 import { COMPLETE_MULTIPART_UPLOAD } from "../constants/API";
 import { ENVIRONMENT } from "../constants/environment";
 
-/**
- * Encodes the given metadata to be sent to the document manager.
- * @param metadata The metadata to encode
- * @returns The encoded metadata
- */
 const encodeUploadMetadata = (metadata: { [key: string]: string }) => {
   return Object.entries(metadata)
-    .map(([k, v]) => `${k} ${btoa(v)}`)
+    .map(([k, v]) => {
+      // Convert UTF-8 string to bytes, then to base64
+      const bytes = new TextEncoder().encode(v);
+      const binString = Array.from(bytes, (byte) => String.fromCodePoint(byte)).join("");
+      return `${k} ${btoa(binString)}`;
+    })
     .join(",");
 };
 
@@ -143,7 +143,7 @@ export class FileUploadHelper {
   private _createMultipartUpload = async (): Promise<MultipartDocumentUpload> => {
     const headers = createRequestHeader({
       "Upload-Length": `${this.file.size}`,
-      Filename: this.file.name,
+      Filename: encodeURIComponent(this.file.name),
       "Upload-Metadata": encodeUploadMetadata(this.config.metadata),
       "Upload-Protocol": "s3-multipart",
     });

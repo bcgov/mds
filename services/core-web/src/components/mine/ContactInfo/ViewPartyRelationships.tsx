@@ -3,7 +3,6 @@ import {
   addPartyRelationship,
   fetchParties,
   fetchPartyRelationships,
-  removePartyRelationship,
   updatePartyRelationship,
 } from "@mds/common/redux/actionCreators/partiesActionCreator";
 import { getPartyRelationships } from "@mds/common/redux/selectors/partiesSelectors";
@@ -20,7 +19,6 @@ import React, { FC } from "react";
 import Loading from "@/components/common/Loading";
 import NullScreen from "@/components/common/NullScreen";
 import AddButton from "@/components/common/buttons/AddButton";
-import { Contact } from "@/components/mine/ContactInfo/PartyRelationships/Contact";
 import { InactiveContact } from "@/components/mine/ContactInfo/PartyRelationships/InactiveContact";
 import { modalConfig } from "@/components/modalContent/config";
 import * as ModalContent from "@/constants/modalContent";
@@ -45,6 +43,7 @@ import {
 } from "@mds/common/redux/selectors/authenticationSelectors";
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 import { useHistory } from "react-router-dom";
+import Contact from "@/components/mine/ContactInfo/PartyRelationships/Contact";
 
 interface ViewPartyRelationshipsProps {
   mine: IMine;
@@ -217,22 +216,6 @@ export const ViewPartyRelationships: FC<ViewPartyRelationshipsProps> = ({ mine }
     });
   };
 
-  const handleRemovePartyRelationship = (
-    event: React.MouseEvent<HTMLButtonElement>,
-    mine_party_appt_guid: string
-  ) => {
-    event.preventDefault();
-    dispatch(removePartyRelationship(mine_party_appt_guid)).then(() => {
-      dispatch(
-        fetchPartyRelationships({
-          mine_guid: mine.mine_guid,
-          relationships: "party",
-          include_permit_contacts: "true",
-        })
-      );
-    });
-  };
-
   // Since the end date is stored at yyyy-mm-dd, comparing current Date() to
   // the the start of the next day ensures appointments ending today are displayed.
   const renderInactiveRelationships = (partyRelationships: IPartyAppt[]) => {
@@ -354,7 +337,6 @@ export const ViewPartyRelationships: FC<ViewPartyRelationshipsProps> = ({ mine }
           permits={permits}
           openEditPartyRelationshipModal={openEditPartyRelationshipModal}
           onSubmitEditPartyRelationship={onSubmitEditPartyRelationship}
-          removePartyRelationship={handleRemovePartyRelationship}
           isEditable
         />
       </Col>

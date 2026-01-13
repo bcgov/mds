@@ -1,5 +1,6 @@
 
 from datetime import timedelta
+
 from app.pipelines.permit_condition_search.config import config
 from azure.core.credentials import AzureKeyCredential
 from azure.search.documents.indexes import SearchIndexerClient
@@ -83,7 +84,8 @@ def create_indexer():
                 parsing_mode=BlobIndexerParsingMode.DELIMITED_TEXT,
                 first_line_contains_headers=True,
                 query_timeout=None
-            )
+            ),
+            execution_environment='private'
         ),
         schedule=IndexingSchedule(interval=timedelta(minutes=5)),
         output_field_mappings=[

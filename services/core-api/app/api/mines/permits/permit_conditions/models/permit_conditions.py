@@ -83,8 +83,9 @@ class PermitConditions(SoftDeleteMixin, AuditMixin, Base):
         "PermitConditions",
         lazy="joined",
         order_by="asc(PermitConditions.display_order)",
-        backref=backref("parent", remote_side=[permit_condition_id]),
-        foreign_keys=[parent_permit_condition_id]
+        backref=backref("parent", remote_side=[permit_condition_id], overlaps="parent_permit_condition"),
+        foreign_keys=[parent_permit_condition_id],
+        overlaps="parent_permit_condition"
     )
 
     condition_tag_xrefs = db.relationship(

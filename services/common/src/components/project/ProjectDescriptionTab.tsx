@@ -358,11 +358,12 @@ const ProjectDescriptionTab = () => {
   ]);
 
   const handleViewProjectDescriptionClicked = () => {
+    const isEditableStatus = !['DFT', 'CHR'].includes(project.project_summary.status_code)
     const url = GLOBAL_ROUTES?.EDIT_PROJECT_SUMMARY.dynamicRoute(
       project.project_summary.project_guid,
       project.project_summary.project_summary_guid,
       "basic-information",
-      true
+      isEditableStatus
     );
     history.push(url);
   };

@@ -138,7 +138,7 @@ const MajorMineApplicationTab: FC = () => {
               description={
                 <div>
                   <Typography.Text>
-                    <b>{Strings.MINES_ACT_INCLUDES_EMA_AUTH_TEXT}<i>Mines Act</i></b>
+                    <b>{Strings.MINES_ACT_INCLUDES_EMA_AUTH_TEXT}<i>Environmental Management Act</i></b>
                     <br />
                     {Strings.MINES_ACT_ENSURE_REVIEW_EMA_AUTH_TEXT}
                   </Typography.Text>
