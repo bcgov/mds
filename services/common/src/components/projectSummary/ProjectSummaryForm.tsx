@@ -138,7 +138,7 @@ export const ProjectSummaryForm: FC<ProjectSummaryFormProps> = ({
     <SteppedForm
       name={FORM.ADD_EDIT_PROJECT_SUMMARY}
       initialValues={initialValues}
-      isEditMode={isEditMode}
+      isEditMode={isCore ? isEditMode : (isEditMode || !docFieldsDisabled)}
       handleSaveData={handleSaveData}
       handleTabChange={handleTabChange}
       transformPayload={handleTransformPayload}
