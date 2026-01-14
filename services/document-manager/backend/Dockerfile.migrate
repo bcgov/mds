@@ -1,4 +1,4 @@
-FROM python:3.12.8-bookworm
+FROM python:3.12.12-bookworm
 
 # Update installation utility
 RUN apt-get update
