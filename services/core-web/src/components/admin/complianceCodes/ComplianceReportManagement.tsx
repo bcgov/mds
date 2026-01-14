@@ -115,7 +115,22 @@ const ComplianceReportManagement: FC = () => {
   };
 
   const openViewModal = (record) => {
-    console.log("record", record);
+    record.compliance_articles = [record.compliance_articles[0]];
+    dispatch(
+      openModal({
+        props: {
+          title: `View Report`,
+          isEditMode: false,
+          initialValues: {
+            ...record,
+            mine_report_due_date_type_code: record.mine_report_due_date_type,
+            mine_report_due_date_months: record.due_date_period_months,
+            report_type: record.is_prr_only ? "PRR" : "CRR",
+          },
+        },
+        content: AddReportDefinitionForm,
+      })
+    );
   };
 
   const actions = [
