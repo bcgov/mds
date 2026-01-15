@@ -1,3 +1,5 @@
+import logging
+
 import regex
 from app.api.search.elasticsearch.elastic_search_service import ElasticSearchService
 from app.api.search.response_models import SIMPLE_SEARCH_RESULT_RETURN_MODEL
@@ -7,6 +9,8 @@ from app.api.utils.search import SearchResult, simple_search_targets
 from app.extensions import api
 from flask import current_app, request
 from flask_restx import Resource
+
+logger = logging.getLogger(__name__)
 
 
 class SimpleSearchResource(Resource, UserMixin):
@@ -28,7 +32,7 @@ class SimpleSearchResource(Resource, UserMixin):
         type_to_index = {
             'mine': 'mines',
             'party': 'parties',
-            'permit': 'permits',
+            'permit': 'mine_permits',
             'notice_of_departure': 'notices_of_departure',
             'explosives_permit': 'explosives_permits',
             'now_application': 'now_applications'
@@ -84,21 +88,18 @@ class SimpleSearchResource(Resource, UserMixin):
                 current_app.logger.info(f"Scoped search for mine_guid: {mine_guid}, indices: {indices_string}")
                 # Search for mine_guid in multiple locations across different indices:
                 # - mines index: mine_guid direct field
-                # - permits: mine.mine_guid nested field
-                # - nod/explosives/documents: mine_guid direct field
-                # - parties: mine_appointments.mine_guid or mine_appointments.mine.mine_guid
+                # - permits: mine_guids array field (from mine_permit_xref)
+                # - nod/explosives/documents/now: mine_guid direct field or mine.mine_guid nested
                 # Use both raw and .keyword variants for compatibility
                 base_filters.append({
                     "bool": {
                         "should": [
                             {"term": {"mine_guid": mine_guid}},
                             {"term": {"mine_guid.keyword": mine_guid}},
+                            {"term": {"mine_guids": mine_guid}},
+                            {"term": {"mine_guids.keyword": mine_guid}},
                             {"term": {"mine.mine_guid": mine_guid}},
                             {"term": {"mine.mine_guid.keyword": mine_guid}},
-                            {"term": {"mine_appointments.mine_guid": mine_guid}},
-                            {"term": {"mine_appointments.mine_guid.keyword": mine_guid}},
-                            {"term": {"mine_appointments.mine.mine_guid": mine_guid}},
-                            {"term": {"mine_appointments.mine.mine_guid.keyword": mine_guid}},
                         ],
                         "minimum_should_match": 1
                     }
@@ -296,10 +297,26 @@ class SimpleSearchResource(Resource, UserMixin):
                             desc_parts.append(phone_no)
                         description = " | ".join(desc_parts)
                     elif type == 'permit':
-                        value = source.get('permit_no', '')
+                        current_app.logger.info(source)
+                        value = source.get('permit_no') or source.get('permit_number', '')
                         permit_status = source.get('permit_status_code', '')
+                        
+                        # Get permittees
+                        permittees = source.get('permittees', [])
+                        current_permittee = ''
+                        if permittees:
+                            first_permittee = permittees[0] if isinstance(permittees, list) else permittees
+                            if first_permittee:
+                                first_name = first_permittee.get('first_name', '')
+                                party_name = first_permittee.get('party_name', '')
+                                current_permittee = f"{first_name} {party_name}".strip() if first_name else party_name
+                        
+                        desc_parts = []
+                        if current_permittee:
+                            desc_parts.append(current_permittee)
                         if permit_status:
-                            description = f"Status: {permit_status}"
+                            desc_parts.append(f"Status: {permit_status}")
+                        description = " | ".join(desc_parts)
                     elif type == 'notice_of_departure':
                         result_type = 'nod'
                         value = source.get('nod_title', '') or source.get('nod_no', '')
@@ -353,7 +370,20 @@ class SimpleSearchResource(Resource, UserMixin):
                     # Filter by result type if search_types specified
                     if allowed_types and result_type not in allowed_types:
                         continue
-                        
+                    
+                    # Extract mine_guid if available (needed for navigation)
+                    mine_guid = None
+                    if type == 'mine':
+                        mine_guid = source.get('mine_guid')
+                    elif type == 'permit':
+                        mine_guids = source.get('mine_guids')
+                        if mine_guids and isinstance(mine_guids, list) and len(mine_guids) > 0:
+                            mine_guid = mine_guids[0]
+                    elif type in ['notice_of_departure', 'explosives_permit', 'now_application']:
+                        mine_info = source.get('mine')
+                        if mine_info and isinstance(mine_info, dict):
+                            mine_guid = mine_info.get('mine_guid')
+
                     # Boost if starts with or exact match (skip for wildcard searches)
                     if value and search_term and search_term != "*":
                         if value.lower().startswith(search_term.lower()):
@@ -378,7 +408,8 @@ class SimpleSearchResource(Resource, UserMixin):
                             'id': source.get(type_config['id_field']),
                             'value': value,
                             'description': description,
-                            'highlight': highlight_text
+                            'highlight': highlight_text,
+                            'mine_guid': mine_guid
                         }
                     ))
                     
@@ -397,10 +428,21 @@ class SimpleSearchResource(Resource, UserMixin):
         search_results = search_results[0:4]
 
         # Get facet counts (unfiltered) using aggregations
-        facets = {'mine': 0, 'person': 0, 'organization': 0, 'permit': 0, 'nod': 0, 'explosives_permit': 0, 'now_application': 0}
+        facets = {'mine': 0, 'person': 0, 'organization': 0, 'permit': 0, 'nod': 0, 'explosives_permit': 0, 'now_application': 0, 'mine_documents': 0, 'permit_documents': 0}
         all_indices = ",".join([type_to_index[t] for t in simple_search_targets.keys() if t in type_to_index])
         
         if all_indices and search_term:
+            # Build filter that handles missing deleted_ind field (like NoW applications)
+            deleted_filter = {
+                "bool": {
+                    "should": [
+                        {"term": {"deleted_ind": False}},
+                        {"bool": {"must_not": {"exists": {"field": "deleted_ind"}}}}
+                    ],
+                    "minimum_should_match": 1
+                }
+            }
+            
             # Build facet query with aggregations
             if len(search_term) < 3:
                 facet_query = {
@@ -411,7 +453,7 @@ class SimpleSearchResource(Resource, UserMixin):
                                 {"multi_match": {"query": search_term, "fields": ["*"]}}
                             ],
                             "minimum_should_match": 1,
-                            "filter": [{"term": {"deleted_ind": False}}]
+                            "filter": [deleted_filter]
                         }
                     },
                     "aggs": {
@@ -430,7 +472,7 @@ class SimpleSearchResource(Resource, UserMixin):
                     "query": {
                         "bool": {
                             "must": [{"multi_match": {"query": search_term, "fields": ["*"], "fuzziness": "AUTO"}}],
-                            "filter": [{"term": {"deleted_ind": False}}]
+                            "filter": [deleted_filter]
                         }
                     },
                     "aggs": {
@@ -455,7 +497,7 @@ class SimpleSearchResource(Resource, UserMixin):
                     
                     if index_name == 'mines':
                         facets['mine'] = doc_count
-                    elif index_name == 'permits':
+                    elif index_name == 'mine_permits':
                         facets['permit'] = doc_count
                     elif index_name == 'notices_of_departure':
                         facets['nod'] = doc_count
@@ -463,6 +505,11 @@ class SimpleSearchResource(Resource, UserMixin):
                         facets['explosives_permit'] = doc_count
                     elif index_name == 'now_applications':
                         facets['now_application'] = doc_count
+                    elif index_name == 'documents':
+                        facets['mine_documents'] = doc_count
+                        # Since we don't have separate index for permit documents yet, assume all are mine documents or split if possible
+                        # For now, just setting mine_documents. If permit documents are in same index, we need logic to distinguish.
+                        # Assuming 'documents' index contains mine documents.
                     elif index_name == 'parties':
                         # Split by party_type_code
                         party_buckets = bucket.get('by_party_type', {}).get('buckets', [])

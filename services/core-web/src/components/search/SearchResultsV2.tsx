@@ -22,6 +22,13 @@ import {
   SearchOutlined,
   FilterOutlined,
   ClearOutlined,
+  EnvironmentOutlined,
+  UserOutlined,
+  BankOutlined,
+  FileProtectOutlined,
+  AlertOutlined,
+  FileSearchOutlined,
+  ExceptionOutlined,
 } from "@ant-design/icons";
 import { getSearchResults, getSearchFacets, getSearchTerms } from "@mds/common/redux/selectors/searchSelectors";
 import {
@@ -36,9 +43,78 @@ import { MineResultsTable } from "./MineResultsTable";
 import { PermitResultsTable } from "./PermitResultsTable";
 import { ContactResultsTable } from "./ContactResultsTable";
 import { DocumentResultsTable } from "./DocumentResultsTable";
+import { GenericResultsTable } from "./GenericResultsTable";
+import { PageTracker } from "@common/utils/trackers";
+import "@/styles/components/SearchResults.scss";
 
 const { Text } = Typography;
 const { Panel } = Collapse;
+
+// Facet groups organized by entity type
+const FACET_GROUPS = [
+  {
+    key: "mine",
+    label: "Mine Filters",
+    icon: <EnvironmentOutlined />,
+    color: "#2e7d32",
+    facets: ["mine_region", "mine_classification", "mine_operation_status", "mine_tenure", "mine_commodity", "has_tsf", "verified_status"]
+  },
+  {
+    key: "permit",
+    label: "Permit Filters",
+    icon: <FileProtectOutlined />,
+    color: "#e65100",
+    facets: ["permit_status", "is_exploration"]
+  },
+  {
+    key: "party",
+    label: "Contact Filters",
+    icon: <UserOutlined />,
+    color: "#1565c0",
+    facets: ["party_type"]
+  },
+  {
+    key: "explosives_permit",
+    label: "Explosives Filters",
+    icon: <AlertOutlined />,
+    color: "#d32f2f",
+    facets: ["explosives_permit_status", "explosives_permit_closed"]
+  },
+  {
+    key: "now_application",
+    label: "NoW Filters",
+    icon: <FileSearchOutlined />,
+    color: "#0288d1",
+    facets: ["now_application_status", "now_type"]
+  },
+  {
+    key: "nod",
+    label: "NOD Filters",
+    icon: <ExceptionOutlined />,
+    color: "#7b1fa2",
+    facets: ["nod_type", "nod_status"]
+  },
+];
+
+// Facet display labels
+const FACET_LABELS: Record<string, string> = {
+  mine_region: "Region",
+  mine_classification: "Classification",
+  mine_operation_status: "Operation Status",
+  mine_tenure: "Tenure Type",
+  mine_commodity: "Commodity",
+  has_tsf: "Tailings Storage Facility",
+  verified_status: "Verification Status",
+  permit_status: "Status",
+  is_exploration: "Exploration",
+  party_type: "Type",
+  explosives_permit_status: "Status",
+  explosives_permit_closed: "Status",
+  nod_type: "Type",
+  nod_status: "Status",
+  now_application_status: "Status",
+  now_type: "Type",
+};
 
 interface FacetBucket {
   key: string;
@@ -112,12 +188,45 @@ export const SearchResults: React.FC<SearchResultsProps> = (props) => {
     return apiFilters;
   }, []);
 
+
+
+  // Map tab keys to backend search types and apply automatic filters
+  const mapTabToSearchType = (tabKey: string | undefined, currentFilters: Record<string, string[]>): { types: string | undefined; filters: Record<string, string[]> } => {
+    if (!tabKey || tabKey === "all") return { types: undefined, filters: currentFilters };
+    
+    const tabToTypeMap: Record<string, string> = {
+      "mine": "mine",
+      "people": "party",
+      "organization": "party",
+      "permit": "permit",
+      "explosives_permit": "explosives_permit",
+      "now_application": "now_application",
+      "notice_of_departure": "notice_of_departure",
+      "document": "mine_documents,permit_documents",
+    };
+    
+    const newFilters = { ...currentFilters };
+    
+    // Add automatic party_type filter for people/organization tabs
+    if (tabKey === "people") {
+      newFilters.party_type = ["Person"];
+    } else if (tabKey === "organization") {
+      newFilters.party_type = ["Organization"];
+    }
+    
+    return { 
+      types: tabToTypeMap[tabKey],
+      filters: newFilters
+    };
+  };
+
   // Trigger search with current filters
   const triggerSearch = useCallback((searchTerm: string, searchTypes?: string, filters?: Record<string, string[]>) => {
     if (!searchTerm) return;
     setIsSearching(true);
-    const apiFilters = getFiltersForApi(filters || {});
-    props.fetchSearchResults(searchTerm, searchTypes, apiFilters);
+    const { types, filters: enhancedFilters } = mapTabToSearchType(searchTypes, filters || {});
+    const apiFilters = getFiltersForApi(enhancedFilters);
+    props.fetchSearchResults(searchTerm, types, apiFilters);
   }, [props.fetchSearchResults, getFiltersForApi]);
 
   const handleSearch = useCallback((searchParams: string, resetFilters = true) => {
@@ -201,43 +310,47 @@ export const SearchResults: React.FC<SearchResultsProps> = (props) => {
   const permits = props.searchResults.permit || [];
   const mineDocuments = props.searchResults.mine_documents || [];
   const permitDocuments = props.searchResults.permit_documents || [];
+  const explosivesPermits = props.searchResults.explosives_permit || [];
+  const nowApplications = props.searchResults.now_application || [];
+  const nods = props.searchResults.notice_of_departure || [];
 
   // Transform results to format expected by table components
   const mineResults = mines.map((item: any) => item.result);
   const partyResults = parties.map((item: any) => item.result);
+  
+  // Separate people and organizations
+  const peopleResults = partyResults.filter((p: any) => p.party_type_code === "PER");
+  const organizationResults = partyResults.filter((p: any) => p.party_type_code === "ORG");
+  
   const permitResults = permits.map((item: any) => item.result);
   const documentResults = [...mineDocuments, ...permitDocuments].map((item: any) => item.result);
+  const explosivesPermitResults = explosivesPermits.map((item: any) => item.result);
+  const nowApplicationResults = nowApplications.map((item: any) => item.result);
+  const nodResults = nods.map((item: any) => item.result);
 
-  const totalResults = mines.length + parties.length + permits.length + mineDocuments.length + permitDocuments.length;
+  const totalResults = mines.length + parties.length + permits.length + mineDocuments.length + permitDocuments.length + 
+                       explosivesPermits.length + nowApplications.length + nods.length;
 
-  // Facet configuration from ES aggregations
-  const facetConfig = [
-    // Mine facets
-    { key: "mine_region", label: "Mine Region", data: props.searchFacets?.mine_region || [] },
-    { key: "mine_classification", label: "Classification", data: props.searchFacets?.mine_classification || [] },
-    { key: "mine_operation_status", label: "Operation Status", data: props.searchFacets?.mine_operation_status || [] },
-    { key: "mine_tenure", label: "Tenure Type", data: props.searchFacets?.mine_tenure || [] },
-    { key: "mine_commodity", label: "Commodity", data: props.searchFacets?.mine_commodity || [] },
-    { key: "has_tsf", label: "Tailings Storage Facility", data: props.searchFacets?.has_tsf || [] },
-    { key: "verified_status", label: "Verification Status", data: props.searchFacets?.verified_status || [] },
-    // Permit facets
-    { key: "permit_status", label: "Permit Status", data: props.searchFacets?.permit_status || [] },
-    { key: "is_exploration", label: "Exploration", data: props.searchFacets?.is_exploration || [] },
-    // Party facets
-    { key: "party_type", label: "Contact Type", data: props.searchFacets?.party_type || [] },
-    // Explosives permit facets
-    { key: "explosives_permit_status", label: "Explosives Status", data: props.searchFacets?.explosives_permit_status || [] },
-    { key: "explosives_permit_closed", label: "Explosives Closed", data: props.searchFacets?.explosives_permit_closed || [] },
-    // NOD facets
-    { key: "nod_type", label: "NOD Type", data: props.searchFacets?.nod_type || [] },
-    { key: "nod_status", label: "NOD Status", data: props.searchFacets?.nod_status || [] },
-    // NoW facets
-    { key: "now_application_status", label: "NoW Status", data: props.searchFacets?.now_application_status || [] },
-    { key: "now_type", label: "NoW Type", data: props.searchFacets?.now_type || [] },
-  ].filter((f) => f.data.length > 0);
+  // Build grouped facets from API facets
+  const groupedFacets = useMemo(() => {
+    return FACET_GROUPS.map((group) => {
+      const facets = group.facets
+        .map((facetKey) => ({
+          key: facetKey,
+          label: FACET_LABELS[facetKey] || facetKey,
+          data: (props.searchFacets as any)?.[facetKey] || [],
+        }))
+        .filter((f) => f.data.length > 0);
+
+      return {
+        ...group,
+        facets: facets,
+      };
+    }).filter((group) => group.facets.length > 0);
+  }, [props.searchFacets]);
 
   const renderFilters = () => (
-    <Card size="small" style={{ marginBottom: 16, position: "sticky", top: 16 }}>
+    <Card size="small" style={{ marginBottom: 16 }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
         <Text strong>
           <FilterOutlined style={{ marginRight: 8 }} />
@@ -270,27 +383,42 @@ export const SearchResults: React.FC<SearchResultsProps> = (props) => {
         </div>
       )}
 
-      {facetConfig.length > 0 ? (
-        <Collapse ghost expandIconPosition="end" defaultActiveKey={facetConfig.slice(0, 2).map((f) => f.key)}>
-          {facetConfig.map((facet) => (
-            <Panel header={<Text type="secondary" style={{ fontSize: 13 }}>{facet.label}</Text>} key={facet.key}>
-              <div style={{ maxHeight: 200, overflowY: "auto" }}>
-                {facet.data
-                  .sort((a, b) => b.count - a.count)
-                  .map((bucket) => (
-                    <div key={bucket.key} style={{ marginBottom: 4 }}>
-                      <Checkbox
-                        checked={selectedFilters[facet.key]?.includes(bucket.key)}
-                        onChange={(e) => handleFilterChange(facet.key, bucket.key, e.target.checked)}
-                      >
-                        <span style={{ fontSize: 13 }}>
-                          {bucket.key}{" "}
-                          <Text type="secondary" style={{ fontSize: 11 }}>({bucket.count})</Text>
-                        </span>
-                      </Checkbox>
-                    </div>
-                  ))}
-              </div>
+      {groupedFacets.length > 0 ? (
+        <Collapse ghost expandIconPosition="end" defaultActiveKey={groupedFacets.slice(0, 1).map((g) => g.key)}>
+          {groupedFacets.map((group) => (
+            <Panel 
+              header={
+                <Space>
+                  <span style={{ color: group.color }}>{group.icon}</span>
+                  <Text type="secondary" style={{ fontSize: 13 }}>{group.label}</Text>
+                </Space>
+              } 
+              key={group.key}
+            >
+              {group.facets.map((facet) => (
+                <div key={facet.key} style={{ marginBottom: 8 }}>
+                  <Text strong style={{ fontSize: 12, display: "block", marginBottom: 4 }}>
+                    {facet.label}
+                  </Text>
+                  <div style={{ maxHeight: 200, overflowY: "auto", paddingLeft: 8 }}>
+                    {facet.data
+                      .sort((a: FacetBucket, b: FacetBucket) => b.count - a.count)
+                      .map((bucket: FacetBucket) => (
+                        <div key={bucket.key} style={{ marginBottom: 4 }}>
+                          <Checkbox
+                            checked={selectedFilters[facet.key]?.includes(bucket.key)}
+                            onChange={(e) => handleFilterChange(facet.key, bucket.key, e.target.checked)}
+                          >
+                            <span style={{ fontSize: 13 }}>
+                              {bucket.key}{" "}
+                              <Text type="secondary" style={{ fontSize: 11 }}>({bucket.count})</Text>
+                            </span>
+                          </Checkbox>
+                        </div>
+                      ))}
+                  </div>
+                </div>
+              ))}
             </Panel>
           ))}
         </Collapse>
@@ -300,11 +428,23 @@ export const SearchResults: React.FC<SearchResultsProps> = (props) => {
     </Card>
   );
 
+  const renderEmptyState = () => (
+    <Empty
+      description={
+        <span>
+          No results in this category
+        </span>
+      }
+      image={Empty.PRESENTED_IMAGE_SIMPLE}
+      style={{ padding: "40px 0" }}
+    />
+  );
+
   const tabItems = [
     {
       key: "all",
       label: `All (${totalResults})`,
-      children: (
+      children: totalResults === 0 ? renderEmptyState() : (
         <>
           {mineResults.length > 0 && (
             <MineResultsTable
@@ -315,12 +455,22 @@ export const SearchResults: React.FC<SearchResultsProps> = (props) => {
               showAdvancedLookup={false}
             />
           )}
-          {partyResults.length > 0 && (
+          {peopleResults.length > 0 && (
             <ContactResultsTable
-              header={`Contacts (${partyResults.length})`}
+              header={`People (${peopleResults.length})`}
               highlightRegex={highlightRegex}
               query={params.q || ""}
-              searchResults={partyResults}
+              searchResults={peopleResults}
+              partyRelationshipTypeHash={props.partyRelationshipTypeHash}
+              showAdvancedLookup={false}
+            />
+          )}
+          {organizationResults.length > 0 && (
+            <ContactResultsTable
+              header={`Organizations (${organizationResults.length})`}
+              highlightRegex={highlightRegex}
+              query={params.q || ""}
+              searchResults={organizationResults}
               partyRelationshipTypeHash={props.partyRelationshipTypeHash}
               showAdvancedLookup={false}
             />
@@ -330,6 +480,49 @@ export const SearchResults: React.FC<SearchResultsProps> = (props) => {
               header={`Permits (${permitResults.length})`}
               highlightRegex={highlightRegex}
               searchResults={permitResults}
+            />
+          )}
+          {explosivesPermitResults.length > 0 && (
+            <GenericResultsTable
+              header={`Explosives Permits (${explosivesPermitResults.length})`}
+              searchResults={explosivesPermitResults}
+              highlightRegex={highlightRegex}
+              getRecordKey={(record: any) => record.explosives_permit_guid}
+              columns={[
+                { title: "Application #", dataIndex: "application_number", key: "application_number" },
+                { title: "Status", dataIndex: "application_status", key: "application_status" },
+                { title: "Mine", dataIndex: "mine_name", key: "mine_name", link: (record: any) => router.MINE_PERMITS.dynamicRoute(record.mine_guid) },
+                { title: "Closed", dataIndex: "is_closed", key: "is_closed", customRender: (text: boolean) => text ? "Yes" : "No" },
+              ]}
+            />
+          )}
+          {nowApplicationResults.length > 0 && (
+            <GenericResultsTable
+              header={`Notices of Work (${nowApplicationResults.length})`}
+              searchResults={nowApplicationResults}
+              highlightRegex={highlightRegex}
+              getRecordKey={(record: any) => record.now_application_guid}
+              columns={[
+                { title: "NoW #", dataIndex: "now_number", key: "now_number", link: (record: any) => router.NOTICE_OF_WORK_APPLICATION.dynamicRoute(record.now_application_guid, "verification") },
+                { title: "Status", dataIndex: "now_application_status_code", key: "status" },
+                { title: "Type", dataIndex: "notice_of_work_type_code", key: "type" },
+                { title: "Mine", dataIndex: "mine_name", key: "mine_name", link: (record: any) => router.MINE_GENERAL.dynamicRoute(record.mine_guid) },
+              ]}
+            />
+          )}
+          {nodResults.length > 0 && (
+            <GenericResultsTable
+              header={`Notices of Departure (${nodResults.length})`}
+              searchResults={nodResults}
+              highlightRegex={highlightRegex}
+              getRecordKey={(record: any) => record.nod_guid}
+              columns={[
+                { title: "NOD #", dataIndex: "nod_no", key: "nod_no", link: (record: any) => router.NOTICE_OF_DEPARTURE.dynamicRoute(record.mine_guid, record.nod_guid) },
+                { title: "Title", dataIndex: "nod_title", key: "nod_title" },
+                { title: "Type", dataIndex: "nod_type", key: "nod_type" },
+                { title: "Status", dataIndex: "nod_status", key: "nod_status" },
+                { title: "Mine", dataIndex: "mine_name", key: "mine_name", link: (record: any) => router.MINE_GENERAL.dynamicRoute(record.mine_guid) },
+              ]}
             />
           )}
           {documentResults.length > 0 && (
@@ -345,7 +538,7 @@ export const SearchResults: React.FC<SearchResultsProps> = (props) => {
     {
       key: "mine",
       label: `Mines (${mines.length})`,
-      children: (
+      children: mineResults.length === 0 ? renderEmptyState() : (
         <MineResultsTable
           header=""
           highlightRegex={highlightRegex}
@@ -356,14 +549,28 @@ export const SearchResults: React.FC<SearchResultsProps> = (props) => {
       ),
     },
     {
-      key: "party",
-      label: `Contacts (${parties.length})`,
-      children: (
+      key: "people",
+      label: `People (${peopleResults.length})`,
+      children: peopleResults.length === 0 ? renderEmptyState() : (
         <ContactResultsTable
           header=""
           highlightRegex={highlightRegex}
           query={params.q || ""}
-          searchResults={partyResults}
+          searchResults={peopleResults}
+          partyRelationshipTypeHash={props.partyRelationshipTypeHash}
+          showAdvancedLookup={true}
+        />
+      ),
+    },
+    {
+      key: "organization",
+      label: `Organizations (${organizationResults.length})`,
+      children: organizationResults.length === 0 ? renderEmptyState() : (
+        <ContactResultsTable
+          header=""
+          highlightRegex={highlightRegex}
+          query={params.q || ""}
+          searchResults={organizationResults}
           partyRelationshipTypeHash={props.partyRelationshipTypeHash}
           showAdvancedLookup={true}
         />
@@ -372,7 +579,7 @@ export const SearchResults: React.FC<SearchResultsProps> = (props) => {
     {
       key: "permit",
       label: `Permits (${permits.length})`,
-      children: (
+      children: permitResults.length === 0 ? renderEmptyState() : (
         <PermitResultsTable
           header=""
           highlightRegex={highlightRegex}
@@ -381,9 +588,64 @@ export const SearchResults: React.FC<SearchResultsProps> = (props) => {
       ),
     },
     {
+      key: "explosives_permit",
+      label: `Explosives (${explosivesPermits.length})`,
+      children: explosivesPermitResults.length === 0 ? renderEmptyState() : (
+        <GenericResultsTable
+          header=""
+          searchResults={explosivesPermitResults}
+          highlightRegex={highlightRegex}
+          getRecordKey={(record: any) => record.explosives_permit_guid}
+          columns={[
+            { title: "Application #", dataIndex: "application_number", key: "application_number" },
+            { title: "Status", dataIndex: "application_status", key: "application_status" },
+            { title: "Mine", dataIndex: "mine_name", key: "mine_name", link: (record: any) => router.MINE_PERMITS.dynamicRoute(record.mine_guid) },
+            { title: "Closed", dataIndex: "is_closed", key: "is_closed", customRender: (text: boolean) => text ? "Yes" : "No" },
+          ]}
+        />
+      ),
+    },
+    {
+      key: "now_application",
+      label: `NoW (${nowApplications.length})`,
+      children: nowApplicationResults.length === 0 ? renderEmptyState() : (
+        <GenericResultsTable
+          header=""
+          searchResults={nowApplicationResults}
+          highlightRegex={highlightRegex}
+          getRecordKey={(record: any) => record.now_application_guid}
+          columns={[
+            { title: "NoW #", dataIndex: "now_number", key: "now_number", link: (record: any) => router.NOTICE_OF_WORK_APPLICATION.dynamicRoute(record.now_application_guid, "verification") },
+            { title: "Status", dataIndex: "now_application_status_code", key: "status" },
+            { title: "Type", dataIndex: "notice_of_work_type_code", key: "type" },
+            { title: "Mine", dataIndex: "mine_name", key: "mine_name", link: (record: any) => router.MINE_GENERAL.dynamicRoute(record.mine_guid) },
+          ]}
+        />
+      ),
+    },
+    {
+      key: "notice_of_departure",
+      label: `NODs (${nods.length})`,
+      children: nodResults.length === 0 ? renderEmptyState() : (
+        <GenericResultsTable
+          header=""
+          searchResults={nodResults}
+          highlightRegex={highlightRegex}
+          getRecordKey={(record: any) => record.nod_guid}
+          columns={[
+            { title: "NOD #", dataIndex: "nod_no", key: "nod_no", link: (record: any) => router.NOTICE_OF_DEPARTURE.dynamicRoute(record.mine_guid, record.nod_guid) },
+            { title: "Title", dataIndex: "nod_title", key: "nod_title" },
+            { title: "Type", dataIndex: "nod_type", key: "nod_type" },
+            { title: "Status", dataIndex: "nod_status", key: "nod_status" },
+            { title: "Mine", dataIndex: "mine_name", key: "mine_name", link: (record: any) => router.MINE_GENERAL.dynamicRoute(record.mine_guid) },
+          ]}
+        />
+      ),
+    },
+    {
       key: "document",
       label: `Documents (${documentResults.length})`,
-      children: (
+      children: documentResults.length === 0 ? renderEmptyState() : (
         <DocumentResultsTable
           header=""
           highlightRegex={highlightRegex}
@@ -396,77 +658,63 @@ export const SearchResults: React.FC<SearchResultsProps> = (props) => {
   const activeTab = params.t || "all";
 
   return (
-    <div className="search-results-page">
-      <div className="search-results-page__header">
-        <Row justify="center">
-          <Col xs={22} lg={18}>
-            <div style={{ marginBottom: 24 }}>
-              <Input.Search
-                placeholder="Search for mines, contacts, permits..."
-                allowClear
-                enterButton={<SearchOutlined />}
-                size="large"
-                value={searchInputValue}
-                onChange={(e) => setSearchInputValue(e.target.value)}
-                onSearch={onSearch}
-                style={{ maxWidth: 600 }}
-              />
-            </div>
-          </Col>
-        </Row>
+    <div className="landing-page search-results-page">
+      <PageTracker title="Search Results" />
+      <div className="landing-page__header">
+        <div className="inline-flex between center-mobile">
+          <div>
+            <h1>Search Results</h1>
+          </div>
+        </div>
+        <div style={{ marginTop: 16, maxWidth: 600 }}>
+          <Input.Search
+            placeholder="Search for mines, contacts, permits..."
+            allowClear
+            enterButton={<SearchOutlined />}
+            size="large"
+            value={searchInputValue}
+            onChange={(e) => setSearchInputValue(e.target.value)}
+            onSearch={onSearch}
+          />
+        </div>
       </div>
 
-      <div className="search-results-page__content">
-        <Row justify="center">
-          <Col xs={24} lg={20} xl={18}>
-            {isSearching ? (
-              <div style={{ textAlign: "center", padding: 48 }}>
-                <Spin size="large" />
-                <div style={{ marginTop: 16 }}>
-                  <Text type="secondary">Searching...</Text>
-                </div>
+      <div className="landing-page__content">
+        <div className="tab__content">
+          {isSearching ? (
+            <div style={{ textAlign: "center", padding: 48 }}>
+              <Spin size="large" />
+              <div style={{ marginTop: 16 }}>
+                <Text type="secondary">Searching...</Text>
               </div>
-            ) : totalResults === 0 && !hasActiveFilters ? (
-              <Empty
-                description={<span>No results found for "<strong>{params.q}</strong>"</span>}
-                style={{ padding: 48 }}
-              >
-                <Button type="primary" onClick={() => history.push(router.HOME_PAGE.route)}>
-                  Back to Home
-                </Button>
-              </Empty>
-            ) : totalResults === 0 && hasActiveFilters ? (
-              <Row gutter={24}>
-                <Col xs={24} md={7} lg={6}>
-                  {renderFilters()}
-                </Col>
-                <Col xs={24} md={17} lg={18}>
-                  <Empty
-                    description={<span>No results match your filters</span>}
-                    style={{ padding: 48 }}
-                  >
-                    <Button onClick={clearAllFilters}>Clear Filters</Button>
-                  </Empty>
-                </Col>
-              </Row>
-            ) : (
-              <Row gutter={24}>
-                <Col xs={24} md={7} lg={6}>
-                  {renderFilters()}
-                </Col>
-                <Col xs={24} md={17} lg={18}>
-                  <div style={{ marginBottom: 16 }}>
-                    <Text type="secondary">
-                      Showing <strong>{totalResults}</strong> results for "<strong>{params.q}</strong>"
-                      {hasActiveFilters && " (filtered)"}
-                    </Text>
-                  </div>
-                  <Tabs activeKey={activeTab} onChange={onTabChange} items={tabItems} size="middle" />
-                </Col>
-              </Row>
-            )}
-          </Col>
-        </Row>
+            </div>
+          ) : (
+            <Row gutter={24}>
+              <Col xs={24} md={7} lg={6}>
+                {renderFilters()}
+              </Col>
+              <Col xs={24} md={17} lg={18}>
+                <div style={{ marginBottom: 16 }}>
+                  <Text type="secondary">
+                    {totalResults === 0 ? (
+                      <>No results for "<strong>{params.q}</strong>"{hasActiveFilters && " (filtered)"}</>
+                    ) : (
+                      <>Showing <strong>{totalResults}</strong> results for "<strong>{params.q}</strong>"{hasActiveFilters && " (filtered)"}</>
+                    )}
+                  </Text>
+                </div>
+                <Tabs 
+                  activeKey={activeTab} 
+                  onChange={onTabChange} 
+                  items={tabItems} 
+                  size="large"
+                  animated={{ inkBar: false, tabPane: false }}
+                  className="search-results-tabs"
+                />
+              </Col>
+            </Row>
+          )}
+        </div>
       </div>
     </div>
   );

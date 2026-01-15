@@ -1,0 +1,41 @@
+@use "../base.scss" as *;
+
+.search-results-tabs {
+  .ant-tabs-nav {
+    &::before {
+      border-bottom: 1px solid #f0f0f0;
+    }
+  }
+
+  .ant-tabs-nav-list {
+    flex-wrap: wrap !important;
+    gap: 0;
+  }
+
+  .ant-tabs-tab {
+    flex-shrink: 0;
+    margin: 0 16px 0 0 !important;
+    padding: 8px 0 !important;
+    
+    &:last-child {
+      margin-right: 0 !important;
+    }
+  }
+
+  // Ensure tabs can wrap to next line
+  .ant-tabs-nav-wrap {
+    overflow: visible !important;
+  }
+  
+  .ant-tabs-nav-operations {
+    display: none !important; // Hide the dropdown arrows that Ant Design adds
+  }
+}
+
+.search-results-page {
+  // Inherits from .landing-page styles
+  // Explicitly set background to match other pages
+  background-color: $secondary-background-colour !important;
+  
+  // tab__content padding comes from layout.scss
+}

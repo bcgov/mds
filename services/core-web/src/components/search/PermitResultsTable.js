@@ -32,7 +32,8 @@ export const PermitResultsTable = (props) => {
       title: "Permit No.",
       key: "permit_no",
       render: (record) => {
-        if (isFeatureEnabled(Feature.DIGITIZED_PERMITS)) {
+        const hasMine = record.mine && record.mine.length > 0 && record.mine[0]?.mine_guid;
+        if (isFeatureEnabled(Feature.DIGITIZED_PERMITS) && hasMine) {
           return (
             <Link
               to={router.VIEW_MINE_PERMIT.dynamicRoute(
@@ -54,12 +55,15 @@ export const PermitResultsTable = (props) => {
       title: "Mine(s)",
       key: "mine_guid",
       render: (record) => {
+        if (!record.mine || record.mine.length === 0) {
+          return "-";
+        }
         return record.mine.map((mine) => (
           <Link
             to={router.MINE_PERMITS.dynamicRoute(mine.mine_guid)}
             key={"mine-link-" + mine.mine_guid}
           >
-            <Highlight search={props.highlightRegex}>{mine.mine_name}</Highlight>
+            <Highlight search={props.highlightRegex}>{mine.mine_name || mine.mine_guid}</Highlight>
           </Link>
         ));
       },

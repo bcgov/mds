@@ -31,6 +31,7 @@ const MAX_RECENT_SEARCHES = 5;
 interface GlobalSearchProps {
   placeholder?: string;
   size?: "small" | "middle" | "large";
+  enableShortcut?: boolean;
 }
 
 const TYPE_CONFIG: Record<string, { icon: React.ReactNode; label: string; color: string; types: string[] }> = {
@@ -39,7 +40,9 @@ const TYPE_CONFIG: Record<string, { icon: React.ReactNode; label: string; color:
   organization: { icon: <BankOutlined />, label: "Organizations", color: "#f57c00", types: ["organization"] },
   permit: { icon: <FileProtectOutlined />, label: "Permits", color: "#e65100", types: ["permit"] },
   explosives_permit: { icon: <AlertOutlined />, label: "Explosives", color: "#d32f2f", types: ["explosives_permit"] },
-  nod: { icon: <ExceptionOutlined />, label: "NODs", color: "#7b1fa2", types: ["nod"] },
+  now_application: { icon: <FileSearchOutlined />, label: "NoW", color: "#0288d1", types: ["now_application"] },
+  nod: { icon: <ExceptionOutlined />, label: "NODs", color: "#7b1fa2", types: ["nod", "notice_of_departure"] },
+  document: { icon: <FileSearchOutlined />, label: "Documents", color: "#455a64", types: ["mine_documents", "permit_documents"] },
 };
 
 const RESULT_TYPE_CONFIG: Record<string, { icon: React.ReactNode; label: string; color: string }> = {
@@ -49,7 +52,11 @@ const RESULT_TYPE_CONFIG: Record<string, { icon: React.ReactNode; label: string;
   party: { icon: <TeamOutlined />, label: "Contact", color: "#1565c0" },
   permit: { icon: <FileProtectOutlined />, label: "Permit", color: "#e65100" },
   explosives_permit: { icon: <AlertOutlined />, label: "Explosives Permit", color: "#d32f2f" },
+  now_application: { icon: <FileSearchOutlined />, label: "Notice of Work", color: "#0288d1" },
   nod: { icon: <ExceptionOutlined />, label: "NOD", color: "#7b1fa2" },
+  notice_of_departure: { icon: <ExceptionOutlined />, label: "NOD", color: "#7b1fa2" },
+  mine_documents: { icon: <FileSearchOutlined />, label: "Document", color: "#455a64" },
+  permit_documents: { icon: <FileSearchOutlined />, label: "Document", color: "#455a64" },
 };
 
 const COMMANDS: Record<string, { action: string; description: string; aliases: string[] }> = {
@@ -58,12 +65,14 @@ const COMMANDS: Record<string, { action: string; description: string; aliases: s
   organization: { action: "filter:organization", description: "Toggle Organizations filter", aliases: ["organizations", "orgs", "org", "o"] },
   permit: { action: "filter:permit", description: "Toggle Permits filter", aliases: ["permits"] },
   explosives: { action: "filter:explosives_permit", description: "Toggle Explosives filter", aliases: ["explosives_permit", "exp", "e"] },
+  now: { action: "filter:now_application", description: "Toggle Notice of Work filter", aliases: ["now_application", "notice", "work"] },
   nod: { action: "filter:nod", description: "Toggle NODs filter", aliases: ["nods", "n"] },
+  document: { action: "filter:document", description: "Toggle Documents filter", aliases: ["documents", "docs", "doc", "d"] },
   here: { action: "scope:mine", description: "Toggle scope to current mine", aliases: ["this", "scope"] },
   clear: { action: "clear:filters", description: "Clear all filters", aliases: ["reset", "c"] },
 };
 
-const GlobalSearch: React.FC<GlobalSearchProps> = ({ placeholder = "Search Core..." }) => {
+const GlobalSearch: React.FC<GlobalSearchProps> = ({ placeholder = "Search Core...", enableShortcut = true }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -73,7 +82,7 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ placeholder = "Search Core.
   const [commandMode, setCommandMode] = useState(false);
   const [commandInput, setCommandInput] = useState("");
   const [quickFilter, setQuickFilter] = useState<string | null>(null); // Filter applied via shortcut
-  
+
   const dispatch = useDispatch();
   const searchResults = useSelector(getSearchBarResults);
   const facets = useSelector(getSearchBarFacets);
@@ -131,15 +140,25 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ placeholder = "Search Core.
   }, []);
 
   useEffect(() => {
+    if (!enableShortcut) return;
+
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === "k") {
         e.preventDefault();
-        handleOpen();
+        
+        // Check if any global search modal is already open
+        const isAnyModalOpen = document.querySelector('.global-search-modal');
+        
+        if (isModalVisible) {
+          handleClose();
+        } else if (!isAnyModalOpen) {
+          handleOpen();
+        }
       }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, []);
+  }, [isModalVisible, handleClose, enableShortcut]);
 
   const getSearchTypes = (filters: string[], includeQuickFilter?: string | null) => {
     const allFilters = includeQuickFilter ? [...filters, includeQuickFilter] : filters;
@@ -163,7 +182,7 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ placeholder = "Search Core.
   const getMatchingCommands = (input: string) => {
     const cmd = input.toLowerCase().trim();
     if (!cmd) return Object.entries(COMMANDS);
-    return Object.entries(COMMANDS).filter(([key, command]) => 
+    return Object.entries(COMMANDS).filter(([key, command]) =>
       key.startsWith(cmd) || command.aliases.some(a => a.startsWith(cmd))
     );
   };
@@ -172,10 +191,10 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ placeholder = "Search Core.
     const [type, target] = action.split(":");
     let newFilters = activeFilters;
     let newScopeToMine = scopeToMine;
-    
+
     if (type === "filter") {
-      newFilters = activeFilters.includes(target) 
-        ? activeFilters.filter((f) => f !== target) 
+      newFilters = activeFilters.includes(target)
+        ? activeFilters.filter((f) => f !== target)
         : [...activeFilters, target];
       setActiveFilters(newFilters);
     } else if (type === "scope" && isOnMinePage) {
@@ -187,11 +206,11 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ placeholder = "Search Core.
       setActiveFilters([]);
       setScopeToMine(false);
     }
-    
+
     setCommandMode(false);
     setCommandInput("");
     setSelectedIndex(0);
-    
+
     // If there's a follow-up search term, set it and trigger search
     if (followUpSearch && followUpSearch.trim()) {
       const term = followUpSearch.trim();
@@ -207,16 +226,16 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ placeholder = "Search Core.
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    
+
     // Check if input starts with / - this means command mode
     if (value.startsWith("/")) {
       if (!commandMode) {
         setCommandMode(true);
       }
-      
+
       const cmdContent = value.slice(1); // Everything after /
       const { commandPart, searchPart } = parseCommandInput(cmdContent);
-      
+
       // Auto-apply filter: if user just typed a space and there's a matching command
       if (cmdContent.endsWith(" ") && !searchPart && commandPart) {
         const matchingCommands = getMatchingCommands(commandPart.trim());
@@ -250,18 +269,18 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ placeholder = "Search Core.
           }
         }
       }
-      
+
       setCommandInput(cmdContent);
       setSelectedIndex(0);
       return;
     }
-    
+
     // If we were in command mode but / is gone, exit command mode
     if (commandMode) {
       setCommandMode(false);
       setCommandInput("");
     }
-    
+
     setSearchTerm(value);
     setSelectedIndex(0);
     if (value.length > 0) {
@@ -270,8 +289,8 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ placeholder = "Search Core.
   };
 
   const toggleFilter = (filterKey: string) => {
-    const newFilters = activeFilters.includes(filterKey) 
-      ? activeFilters.filter((f) => f !== filterKey) 
+    const newFilters = activeFilters.includes(filterKey)
+      ? activeFilters.filter((f) => f !== filterKey)
       : [...activeFilters, filterKey];
     setActiveFilters(newFilters);
     setSelectedIndex(0);
@@ -300,10 +319,17 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ placeholder = "Search Core.
       case "party":
         routeUrl = router.PARTY_PROFILE.dynamicRoute(item.result.id);
         break;
+      case "now_application":
+        routeUrl = router.NOTICE_OF_WORK_APPLICATION.dynamicRoute(item.result.id, "verification");
+        break;
       case "permit":
+        routeUrl = router.VIEW_MINE_PERMIT.dynamicRoute(item.result.mine_guid, item.result.id);
+        break;
       case "explosives_permit":
+        routeUrl = router.MINE_PERMITS.dynamicRoute(item.result.mine_guid);
+        break;
       case "nod":
-        routeUrl = router.SEARCH_RESULTS.dynamicRoute({ q: item.result.value });
+        routeUrl = router.NOTICE_OF_DEPARTURE.dynamicRoute(item.result.mine_guid, item.result.id);
         break;
     }
     if (routeUrl) {
@@ -332,9 +358,9 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ placeholder = "Search Core.
     if (spaceIndex === -1) {
       return { commandPart: input, searchPart: "" };
     }
-    return { 
-      commandPart: input.slice(0, spaceIndex), 
-      searchPart: input.slice(spaceIndex + 1) 
+    return {
+      commandPart: input.slice(0, spaceIndex),
+      searchPart: input.slice(spaceIndex + 1)
     };
   };
 
@@ -343,7 +369,7 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ placeholder = "Search Core.
       const { commandPart, searchPart } = parseCommandInput(commandInput);
       const matchingCommands = getMatchingCommands(commandPart);
       const totalCommands = matchingCommands.length;
-      
+
       switch (e.key) {
         case "ArrowDown":
           e.preventDefault();
@@ -449,7 +475,7 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ placeholder = "Search Core.
               {config.label}
               {item.result.description && <span style={{ marginLeft: 8 }}>• {item.result.description}</span>}
               {item.result.highlight && (
-                <span 
+                <span
                   style={{ marginLeft: 8, fontStyle: "italic" }}
                   dangerouslySetInnerHTML={{ __html: `• ${item.result.highlight}` }}
                 />
@@ -463,12 +489,14 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ placeholder = "Search Core.
   };
 
   const getFacetCount = (filterKey: string): number => {
-    if (filterKey === "mine") return facets.mine;
-    if (filterKey === "contact") return facets.person;
-    if (filterKey === "organization") return facets.organization;
-    if (filterKey === "permit") return facets.permit;
-    if (filterKey === "explosives_permit") return facets.explosives_permit;
-    if (filterKey === "nod") return facets.nod;
+    if (filterKey === "mine") return facets.mine ?? 0;
+    if (filterKey === "contact") return facets.person ?? 0;
+    if (filterKey === "organization") return facets.organization ?? 0;
+    if (filterKey === "permit") return facets.permit ?? 0;
+    if (filterKey === "explosives_permit") return facets.explosives_permit ?? 0;
+    if (filterKey === "now_application") return facets.now_application ?? 0;
+    if (filterKey === "nod") return facets.nod ?? 0;
+    if (filterKey === "document") return (facets.mine_documents ?? 0) + (facets.permit_documents ?? 0);
     return 0;
   };
 
@@ -497,7 +525,7 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ placeholder = "Search Core.
         {Object.entries(TYPE_CONFIG).map(([key, config]) => {
           const isActive = activeFilters.includes(key);
           const count = getFacetCount(key);
-          
+
           return (
             <Tag
               key={key}
@@ -549,7 +577,7 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ placeholder = "Search Core.
   const renderCommands = () => {
     const { commandPart, searchPart } = parseCommandInput(commandInput);
     const matchingCommands = getMatchingCommands(commandPart);
-    
+
     return (
       <div className="global-search__commands">
         <Divider orientation="left" plain style={{ margin: "8px 0", fontSize: 12 }}>
@@ -569,7 +597,7 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ placeholder = "Search Core.
             const isSelected = index === selectedIndex;
             const isActive = isCommandActive(command.action);
             const isDisabled = command.action === "scope:mine" && !isOnMinePage;
-            
+
             return (
               <List.Item
                 key={key}
@@ -583,9 +611,9 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ placeholder = "Search Core.
                     <Avatar
                       icon={getCommandIcon(command.action)}
                       size="small"
-                      style={{ 
-                        backgroundColor: isActive ? "#5e46a120" : "#f5f5f5", 
-                        color: isActive ? "#5e46a1" : "#8c8c8c" 
+                      style={{
+                        backgroundColor: isActive ? "#5e46a120" : "#f5f5f5",
+                        color: isActive ? "#5e46a1" : "#8c8c8c"
                       }}
                     />
                   }
@@ -620,7 +648,7 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ placeholder = "Search Core.
     }
     // Show results if we have a search term OR if scoped to mine (wildcard search)
     const hasActiveSearch = searchTerm || scopeToMine;
-    
+
     if (hasActiveSearch && groupedResults) {
       let globalIndex = 0;
       return (
@@ -659,8 +687,8 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ placeholder = "Search Core.
               {scopeToMine && !searchTerm
                 ? "No items found for this mine"
                 : activeFilters.length > 0
-                ? "Try removing some filters or adjusting your search"
-                : "Try adjusting your search or browse all results"}
+                  ? "Try removing some filters or adjusting your search"
+                  : "Try adjusting your search or browse all results"}
             </Text>
             {searchTerm && (
               <Button

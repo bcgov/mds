@@ -37,7 +37,7 @@ const initialState = {
     type: [] 
   },
   searchBarResults: [],
-  searchBarFacets: { mine: 0, person: 0, organization: 0, permit: 0, nod: 0, explosives_permit: 0 },
+  searchBarFacets: { mine: 0, person: 0, organization: 0, permit: 0, nod: 0, explosives_permit: 0, now_application: 0, mine_documents: 0, permit_documents: 0 },
   searchTerms: [],
   searchSubsetResults: [],
 };
@@ -88,7 +88,7 @@ export const getSearchOptions = (state) => state[SEARCH].searchOptions;
 export const getSearchResults = (state): ISearchResultList => state[SEARCH].searchResults;
 export const getSearchFacets = (state) => state[SEARCH].searchFacets;
 export const getSearchBarResults = (state): ISearchResult<ISimpleSearchResult>[] => state[SEARCH].searchBarResults;
-export const getSearchBarFacets = (state): { mine: number; person: number; organization: number; permit: number; nod: number; explosives_permit: number } => state[SEARCH].searchBarFacets;
+export const getSearchBarFacets = (state): { mine: number; person: number; organization: number; permit: number; nod: number; explosives_permit: number; now_application: number } => state[SEARCH].searchBarFacets;
 export const getSearchTerms = (state) => state[SEARCH].searchTerms;
 export const getSearchSubsetResults = (state) => state[SEARCH].searchSubsetResults;
 

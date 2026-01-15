@@ -21,6 +21,7 @@ SIMPLE_SEARCH_MODEL = api.model('SimpleSearchResult', {
     'value': fields.String,
     'description': fields.String,
     'highlight': fields.String,
+    'mine_guid': fields.String,
 })
 
 MINE_MODEL = api.model('Mine_simple ', {
@@ -31,7 +32,7 @@ MINE_MODEL = api.model('Mine_simple ', {
 PERMIT_SEARCH_MODEL = api.model(
     'Permit', {
         'permit_guid': fields.String,
-        'mine': fields.List(fields.Nested(MINE_MODEL), attribute=lambda x: x._all_mines),
+        'mine': fields.List(fields.Nested(MINE_MODEL), attribute=lambda x: x.get('mine', []) if isinstance(x, dict) else x._all_mines),
         'permit_no': fields.String,
         'current_permittee': fields.String,
     })
@@ -42,7 +43,7 @@ MINE_PARTY_APPT_MODEL = api.model(
         'start_date': fields.Date,
         'end_date': fields.Date,
         'mine': fields.Nested(MINE_MODEL),
-        'permit_no': fields.String(attribute='permit.permit_no'),
+        'permit_no': fields.String(attribute=lambda x: x.get('permit_no') if isinstance(x, dict) else (x.permit.permit_no if hasattr(x, 'permit') and x.permit else None)),
     })
 
 MINE_STATUS_MODEL = api.model('MineStatus', {
@@ -136,6 +137,50 @@ SIMPLE_SEARCH_RESULT_MODEL = api.inherit('MineSearchResult', SEARCH_RESULT_MODEL
     'result': fields.Nested(SIMPLE_SEARCH_MODEL),
 })
 
+EXPLOSIVES_PERMIT_SEARCH_MODEL = api.model(
+    'ExplosivesPermit', {
+        'explosives_permit_guid': fields.String,
+        'explosives_permit_id': fields.String,
+        'application_number': fields.String,
+        'application_status': fields.String,
+        'mine_guid': fields.String,
+        'mine_name': fields.String,
+        'is_closed': fields.Boolean,
+    })
+
+NOW_APPLICATION_SEARCH_MODEL = api.model(
+    'NowApplication', {
+        'now_application_guid': fields.String,
+        'now_number': fields.String,
+        'mine_guid': fields.String,
+        'mine_name': fields.String,
+        'now_application_status_code': fields.String,
+        'notice_of_work_type_code': fields.String,
+    })
+
+NOD_SEARCH_MODEL = api.model(
+    'NoticeOfDeparture', {
+        'nod_guid': fields.String,
+        'nod_no': fields.String,
+        'nod_title': fields.String,
+        'mine_guid': fields.String,
+        'mine_name': fields.String,
+        'nod_type': fields.String,
+        'nod_status': fields.String,
+    })
+
+EXPLOSIVES_PERMIT_SEARCH_RESULT_MODEL = api.inherit('ExplosivesPermitSearchResult', SEARCH_RESULT_MODEL, {
+    'result': fields.Nested(EXPLOSIVES_PERMIT_SEARCH_MODEL),
+})
+
+NOW_APPLICATION_SEARCH_RESULT_MODEL = api.inherit('NowApplicationSearchResult', SEARCH_RESULT_MODEL, {
+    'result': fields.Nested(NOW_APPLICATION_SEARCH_MODEL),
+})
+
+NOD_SEARCH_RESULT_MODEL = api.inherit('NodSearchResult', SEARCH_RESULT_MODEL, {
+    'result': fields.Nested(NOD_SEARCH_MODEL),
+})
+
 SEARCH_RESULTS_LIST_MODEL = api.model(
     'SearchResultList', {
         'mine': fields.List(fields.Nested(MINE_SEARCH_RESULT_MODEL)),
@@ -143,6 +188,9 @@ SEARCH_RESULTS_LIST_MODEL = api.model(
         'permit': fields.List(fields.Nested(PERMIT_SEARCH_RESULT_MODEL)),
         'mine_documents': fields.List(fields.Nested(MINE_DOCUMENT_SEARCH_RESULT_MODEL)),
         'permit_documents': fields.List(fields.Nested(PERMIT_DOCUMENT_SEARCH_RESULT_MODEL)),
+        'explosives_permit': fields.List(fields.Nested(EXPLOSIVES_PERMIT_SEARCH_RESULT_MODEL)),
+        'now_application': fields.List(fields.Nested(NOW_APPLICATION_SEARCH_RESULT_MODEL)),
+        'notice_of_departure': fields.List(fields.Nested(NOD_SEARCH_RESULT_MODEL)),
     })
 
 SEARCH_FACET_BUCKET_MODEL = api.model(
@@ -194,6 +242,7 @@ SIMPLE_SEARCH_FACETS_MODEL = api.model(
         'permit': fields.Integer,
         'nod': fields.Integer,
         'explosives_permit': fields.Integer,
+        'now_application': fields.Integer,
     })
 
 SIMPLE_SEARCH_RESULT_RETURN_MODEL = api.model(

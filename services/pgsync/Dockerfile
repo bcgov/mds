@@ -1,4 +1,4 @@
-FROM toluaina1/pgsync
+FROM toluaina1/pgsync:7.0.5
 
 USER root
 WORKDIR /app

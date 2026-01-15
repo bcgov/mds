@@ -9,6 +9,7 @@
   background: rgba(255, 255, 255, 0.1) !important;
   border: 1px solid rgba(255, 255, 255, 0.2) !important;
   color: rgba(255, 255, 255, 0.8) !important;
+  margin-bottom: 0;
   border-radius: 8px !important;
   padding: 6px 12px !important;
   height: 36px !important;
@@ -23,7 +24,7 @@
     color: rgba(255, 255, 255, 0.95) !important;
   }
 
-  > .anticon {
+  >.anticon {
     font-size: 14px;
   }
 
@@ -69,7 +70,7 @@
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25),
-                0 0 0 1px rgba(0, 0, 0, 0.05);
+      0 0 0 1px rgba(0, 0, 0, 0.05);
     padding: 0;
   }
 
@@ -87,7 +88,7 @@
   // Input styling
   .ant-input-affix-wrapper {
     padding: 12px 16px;
-    
+
     .ant-input {
       font-size: 16px;
     }
@@ -99,7 +100,7 @@
     padding: 10px 20px 6px;
     background: #fafafa;
     border-bottom: 1px solid #f0f0f0;
-    
+
     .ant-divider-inner-text {
       font-size: 11px;
       font-weight: 600;
@@ -251,8 +252,13 @@
 }
 
 @keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 // Results Container
@@ -655,6 +661,7 @@
   0% {
     background-position: 200% 0;
   }
+
   100% {
     background-position: -200% 0;
   }
@@ -672,8 +679,13 @@
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 // Search Results Page Improvements
@@ -683,7 +695,7 @@
 
   &__header {
     background: linear-gradient(135deg, $darkest-grey 0%, lighten($darkest-grey, 10%) 100%);
-    padding: 40px 0;
+    padding: 60px 0;
 
     .search-title {
       color: #fff;
@@ -715,7 +727,7 @@
             .ant-input {
               height: 100%;
               font-size: 16px;
-              
+
               &::placeholder {
                 color: #bfbfbf;
               }
@@ -758,7 +770,7 @@
       .ant-input-clear-icon {
         font-size: 14px;
         color: #bfbfbf;
-        
+
         &:hover {
           color: #8c8c8c;
         }
@@ -954,7 +966,7 @@
 
       .search-input-wrapper {
         padding: 0 16px;
-        
+
         .ant-input-search {
           .ant-input-wrapper {
             .ant-input-affix-wrapper {

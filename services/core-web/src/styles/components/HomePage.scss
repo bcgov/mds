@@ -7,19 +7,6 @@
   overflow: hidden;
 }
 
-#home-banner-search-container {
-  width: 100%;
-  justify-content: center;
-
-  >.ant-col {
-    flex-basis: 709px;
-  }
-
-  .ant-input-affix-wrapper-lg {
-    height: $nav-height;
-  }
-}
-
 .home-bordered-content {
   box-shadow: none;
   border: 1px solid $light-grey;
