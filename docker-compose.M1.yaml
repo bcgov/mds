@@ -132,7 +132,7 @@ services:
       - ELASTICSEARCH_PORT=9200
       - ELASTICSEARCH_SCHEME=https
       - ELASTICSEARCH_USER=elastic
-      - ELASTICSEARCH_PASSWORD=changeme
+      - ELASTICSEARCH_PASSWORD=elastic
       - ELASTICSEARCH_VERIFY_CERTS=false
       - ELASTICSEARCH_CA_CERTS=/certs/ca/ca.crt
       - PGSYNC_CHECKPOINT_PATH=/tmp

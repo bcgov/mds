@@ -170,6 +170,7 @@ services:
       - otelcollector
       - keycloak
       - core_api_celery
+      - pgsync
     healthcheck:
       test: ["CMD", "curl", "localhost:5000/health"]
       interval: 5s
