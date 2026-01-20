@@ -31,7 +31,7 @@ tuspy==0.2.4
 utm==0.5.0
 uWSGI==2.0.22
 uwsgitop==0.11
-Werkzeug==3.1.4
+Werkzeug==3.1.5
 marshmallow_sqlalchemy==0.23.1
 marshmallow==3.26.1
 python-docx==1.1.0
@@ -58,4 +58,5 @@ Pillow==10.3.0
 setuptools==65.5.1
 requests_toolbelt==1.0.0
 untp_models==0.1.1
-urllib3==2.5.0
+urllib3==2.6.3
+pyasn1>=0.6.2 # not directly required, pinned by Snyk to avoid a vulnerability
