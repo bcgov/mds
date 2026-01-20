@@ -9,7 +9,37 @@ import {
 const baseExpectedValue = {
   searchOptions: [],
   searchResults: [],
+  searchFacets: {
+    mine_region: [],
+    mine_classification: [],
+    mine_operation_status: [],
+    mine_tenure: [],
+    mine_commodity: [],
+    has_tsf: [],
+    verified_status: [],
+    permit_status: [],
+    is_exploration: [],
+    party_type: [],
+    explosives_permit_status: [],
+    explosives_permit_closed: [],
+    nod_type: [],
+    nod_status: [],
+    now_application_status: [],
+    now_type: [],
+    type: []
+  },
   searchBarResults: [],
+  searchBarFacets: {
+    mine: 0,
+    person: 0,
+    organization: 0,
+    permit: 0,
+    nod: 0,
+    explosives_permit: 0,
+    now_application: 0,
+    mine_documents: 0,
+    permit_documents: 0
+  },
   searchTerms: [],
   searchSubsetResults: [],
 };

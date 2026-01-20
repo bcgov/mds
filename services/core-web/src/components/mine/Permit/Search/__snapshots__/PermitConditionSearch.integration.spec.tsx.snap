@@ -507,6 +507,7 @@ exports[`PermitConditionSearch Integration Tests shows and applies filters 1`] =
                   </div>
                   <div
                     class="ant-card-body"
+                    style="padding: 0px;"
                   >
                     <svg
                       aria-labelledby="svg-inline--fa-title-expand-button"
@@ -514,6 +515,7 @@ exports[`PermitConditionSearch Integration Tests shows and applies filters 1`] =
                       data-icon="expand"
                       data-prefix="fas"
                       role="img"
+                      style="z-index: 10;"
                       viewBox="0 0 448 512"
                       xmlns="http://www.w3.org/2000/svg"
                     >
@@ -528,16 +530,109 @@ exports[`PermitConditionSearch Integration Tests shows and applies filters 1`] =
                       />
                     </svg>
                     <div
-                      class="permit-search__markdown"
-                      role="none"
+                      class="ant-tabs ant-tabs-top ant-tabs-card permit-search__ai-tabs"
                     >
                       <div
-                        data-testid="markdown-content"
+                        class="ant-tabs-nav"
+                        role="tablist"
                       >
                         <div
-                          data-testid="markdown-content"
+                          class="ant-tabs-nav-wrap"
                         >
-                          The permit requires monthly water quality monitoring.
+                          <div
+                            class="ant-tabs-nav-list"
+                            style="transform: translate(0px, 0px);"
+                          >
+                            <div
+                              class="ant-tabs-tab ant-tabs-tab-active"
+                              data-node-key="response"
+                            >
+                              <div
+                                aria-controls="rc-tabs-test-panel-response"
+                                aria-selected="true"
+                                class="ant-tabs-tab-btn"
+                                id="rc-tabs-test-tab-response"
+                                role="tab"
+                                tabindex="0"
+                              >
+                                Response
+                              </div>
+                            </div>
+                            <div
+                              class="ant-tabs-ink-bar ant-tabs-ink-bar-animated"
+                              style="left: 0px; width: 0px;"
+                            />
+                          </div>
+                        </div>
+                        <div
+                          class="ant-tabs-nav-operations ant-tabs-nav-operations-hidden"
+                        >
+                          <button
+                            aria-controls="rc-tabs-test-more-popup"
+                            aria-expanded="false"
+                            aria-haspopup="listbox"
+                            aria-hidden="true"
+                            class="ant-tabs-nav-more"
+                            id="rc-tabs-test-more"
+                            style="visibility: hidden; order: 1;"
+                            tabindex="-1"
+                            type="button"
+                          >
+                            <span
+                              aria-label="ellipsis"
+                              class="anticon anticon-ellipsis"
+                              role="img"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                data-icon="ellipsis"
+                                fill="currentColor"
+                                focusable="false"
+                                height="1em"
+                                viewBox="64 64 896 896"
+                                width="1em"
+                              >
+                                <path
+                                  d="M176 511a56 56 0 10112 0 56 56 0 10-112 0zm280 0a56 56 0 10112 0 56 56 0 10-112 0zm280 0a56 56 0 10112 0 56 56 0 10-112 0z"
+                                />
+                              </svg>
+                            </span>
+                          </button>
+                        </div>
+                      </div>
+                      <div
+                        class="ant-tabs-content-holder"
+                      >
+                        <div
+                          class="ant-tabs-content ant-tabs-content-top"
+                        >
+                          <div
+                            aria-hidden="false"
+                            aria-labelledby="rc-tabs-test-tab-response"
+                            class="ant-tabs-tabpane ant-tabs-tabpane-active"
+                            id="rc-tabs-test-panel-response"
+                            role="tabpanel"
+                            tabindex="0"
+                          >
+                            <div
+                              style="padding: 16px;"
+                            >
+                              <div
+                                class="permit-search__markdown"
+                                role="none"
+                              >
+                                <div
+                                  data-testid="markdown-content"
+                                >
+                                  <div
+                                    data-testid="markdown-content"
+                                  >
+                                    The permit requires monthly water quality monitoring.
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>

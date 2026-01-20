@@ -1,7 +1,31 @@
 import json
 import uuid
+import pytest
+from unittest.mock import patch
 
 from tests.factories import MineFactory, PartyFactory
+from app.api.utils.feature_flag import Feature
+
+
+# Feature Flag Fixtures
+# These fixtures ensure that all tests in this module use the V1 (original)
+# search implementation instead of the V2 (Elasticsearch) implementation.
+# This maintains test stability and validates that the legacy code path works correctly.
+
+@pytest.fixture(autouse=True)
+def disable_search_v2_flag():
+    """Mock is_feature_enabled to always return False for search.py"""
+    with patch('app.api.search.search.resources.search.is_feature_enabled') as mock_flag:
+        mock_flag.return_value = False
+        yield mock_flag
+
+
+@pytest.fixture(autouse=True)
+def disable_simple_search_v2_flag():
+    """Mock is_feature_enabled to always return False for simple_search.py"""
+    with patch('app.api.search.search.resources.simple_search.is_feature_enabled') as mock_flag:
+        mock_flag.return_value = False
+        yield mock_flag
 
 
 # GET
@@ -11,8 +35,12 @@ def test_get_no_search_results(test_client, db_session, auth_headers):
     get_data = json.loads(get_resp.data.decode())
     assert get_resp.status_code == 200
     assert get_data['search_terms'] == ['Abbo']
-    assert len(
-        [key for key, value in get_data['search_results'].items() if len(value) is not 0]) == 0
+    # Verify no search results in any category
+    non_empty_categories = [
+        key for key, value in get_data['search_results'].items() if len(value) != 0
+    ]
+    assert len(non_empty_categories) == 0, \
+        f"Expected no results, but found results in: {non_empty_categories}"
 
 
 def test_search_party(test_client, db_session, auth_headers):
@@ -24,10 +52,14 @@ def test_search_party(test_client, db_session, auth_headers):
     assert len(parties) == 1
     assert party.first_name in parties[0]['result']['name']
     assert uuid.UUID(parties[0]['result']['party_guid']) == party.party_guid
-    assert len([
+    # Verify all other search result categories are empty (only party should have results)
+    empty_categories = [
         key for key, value in get_data['search_results'].items()
-        if key is not 'party' and len(value) is 0
-    ]) == 4
+        if key != 'party' and len(value) == 0
+    ]
+    total_categories = len(get_data['search_results'])
+    assert len(empty_categories) == total_categories - 1, \
+        f"Expected {total_categories - 1} empty categories, got {len(empty_categories)}"
     assert get_resp.status_code == 200
 
 

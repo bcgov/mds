@@ -1,11 +1,13 @@
 import logging
 
 import regex
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from app.api.search.elasticsearch.elastic_search_service import ElasticSearchService
 from app.api.search.response_models import SIMPLE_SEARCH_RESULT_RETURN_MODEL
 from app.api.utils.access_decorators import requires_role_view_all
 from app.api.utils.resources_mixins import UserMixin
-from app.api.utils.search import SearchResult, simple_search_targets
+from app.api.utils.search import SearchResult, simple_search_targets, execute_search
+from app.api.utils.feature_flag import Feature, is_feature_enabled
 from app.extensions import api
 from flask import current_app, request
 from flask_restx import Resource
@@ -17,6 +19,51 @@ class SimpleSearchResource(Resource, UserMixin):
     @requires_role_view_all
     @api.marshal_with(SIMPLE_SEARCH_RESULT_RETURN_MODEL, 200)
     def get(self):
+        if is_feature_enabled(Feature.GLOBAL_SEARCH_V2):
+            return self._search_v2()
+        else:
+            return self._search_v1()
+
+    def _search_v1(self):
+        """Original ThreadPoolExecutor-based simple search implementation."""
+        search_results = []
+        app = current_app._get_current_object()
+
+        search_term = request.args.get('search_term', None, type=str)
+
+        # Split incoming search query by space to search by individual words
+        reg_exp = regex.compile(r'\'.*?\' | ".*?" | \S+ ', regex.VERBOSE)
+        search_terms = reg_exp.findall(search_term)
+        search_terms = [term.replace('"', '') for term in search_terms]
+
+        with ThreadPoolExecutor(max_workers=50) as executor:
+            task_list = []
+            for type, type_config in simple_search_targets.items():
+                task_list.append(
+                    executor.submit(execute_search, app, search_results, search_term, search_terms,
+                                    type, type_config, 200))
+            for task in as_completed(task_list):
+                try:
+                    data = task.result()
+                except Exception as exc:
+                    current_app.logger.error(
+                        f'generated an exception: {exc} with search term - {search_term}')
+
+        grouped_results = {}
+        for result in search_results:
+            if (result.result['id'] in grouped_results):
+                grouped_results[result.result['id']].score += result.score
+            else:
+                grouped_results[result.result['id']] = result
+
+        search_results = list(grouped_results.values())
+        search_results.sort(key=lambda x: x.score, reverse=True)
+        search_results = search_results[0:4]
+
+        return {'search_terms': search_terms, 'search_results': search_results}
+
+    def _search_v2(self):
+        """New Elasticsearch-based simple search implementation."""
         search_results = []
         search_term = request.args.get('search_term', None, type=str)
         search_types = request.args.get('search_types', None, type=str)

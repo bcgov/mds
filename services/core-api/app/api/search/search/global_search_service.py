@@ -7,7 +7,7 @@ from app.api.search.elasticsearch.elastic_search_service import ElasticSearchSer
 from .search_constants import TYPE_TO_INDEX, ES_AGGREGATIONS, FACET_KEYS, FILTER_PARAMS, SEARCH_FIELDS
 from .search_filters import build_filter_clauses
 from .search_facets import extract_facets
-from .search_transformers import transform_es_results, enrich_party_appointments
+from .search_transformers import transform_es_results
 
 
 def parse_csv_param(value):
@@ -144,10 +144,6 @@ class GlobalSearchService:
 
             facets = extract_facets(es_results.get('aggregations', {}))
             results = transform_es_results(hits)
-            
-            # Enrich party results with mine/permit names for appointments
-            if 'party' in results and results['party']:
-                results['party'] = enrich_party_appointments(results['party'])
 
             # Ensure all requested types have entries
             for t in search_types:

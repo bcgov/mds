@@ -1,7 +1,6 @@
 import React from "react";
 import { Table, Typography } from "antd";
 import { Link } from "react-router-dom";
-import * as router from "@/constants/routes";
 
 const { Text } = Typography;
 

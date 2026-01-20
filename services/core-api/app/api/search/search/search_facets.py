@@ -26,7 +26,9 @@ def _extract_buckets(aggs, key, nested_path=None):
 
 def _parse_boolean_bucket(bucket, true_label, false_label):
     """Parse a boolean aggregation bucket."""
-    is_true = bucket.get('key_as_string') == 'true' or bucket['key'] is True
+    key = bucket.get('key')
+    key_as_string = bucket.get('key_as_string', '')
+    is_true = key_as_string == 'true' or key == True or key == 1
     return {'key': true_label if is_true else false_label, 'count': bucket['doc_count']}
 
 

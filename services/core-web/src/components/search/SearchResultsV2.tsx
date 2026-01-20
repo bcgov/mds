@@ -45,7 +45,6 @@ import { ContactResultsTable } from "./ContactResultsTable";
 import { DocumentResultsTable } from "./DocumentResultsTable";
 import { GenericResultsTable } from "./GenericResultsTable";
 import { PageTracker } from "@common/utils/trackers";
-import "@/styles/components/SearchResults.scss";
 
 const { Text } = Typography;
 const { Panel } = Collapse;
@@ -149,7 +148,6 @@ interface SearchFacets {
 }
 
 interface SearchResultsProps {
-  location: { search: string };
   fetchSearchOptions: () => any;
   fetchSearchResults: (query: string, tab?: string, filters?: Record<string, string>) => any;
   searchOptions: any[];
@@ -191,9 +189,9 @@ export const SearchResults: React.FC<SearchResultsProps> = (props) => {
 
 
   // Map tab keys to backend search types and apply automatic filters
-  const mapTabToSearchType = (tabKey: string | undefined, currentFilters: Record<string, string[]>): { types: string | undefined; filters: Record<string, string[]> } => {
+  const mapTabToSearchType = useCallback((tabKey: string | undefined, currentFilters: Record<string, string[]>): { types: string | undefined; filters: Record<string, string[]> } => {
     if (!tabKey || tabKey === "all") return { types: undefined, filters: currentFilters };
-    
+
     const tabToTypeMap: Record<string, string> = {
       "mine": "mine",
       "people": "party",
@@ -204,21 +202,21 @@ export const SearchResults: React.FC<SearchResultsProps> = (props) => {
       "notice_of_departure": "notice_of_departure",
       "document": "mine_documents,permit_documents",
     };
-    
+
     const newFilters = { ...currentFilters };
-    
+
     // Add automatic party_type filter for people/organization tabs
     if (tabKey === "people") {
       newFilters.party_type = ["Person"];
     } else if (tabKey === "organization") {
       newFilters.party_type = ["Organization"];
     }
-    
-    return { 
+
+    return {
       types: tabToTypeMap[tabKey],
       filters: newFilters
     };
-  };
+  }, []);
 
   // Trigger search with current filters
   const triggerSearch = useCallback((searchTerm: string, searchTypes?: string, filters?: Record<string, string[]>) => {
@@ -227,7 +225,7 @@ export const SearchResults: React.FC<SearchResultsProps> = (props) => {
     const { types, filters: enhancedFilters } = mapTabToSearchType(searchTypes, filters || {});
     const apiFilters = getFiltersForApi(enhancedFilters);
     props.fetchSearchResults(searchTerm, types, apiFilters);
-  }, [props.fetchSearchResults, getFiltersForApi]);
+  }, [props.fetchSearchResults, getFiltersForApi, mapTabToSearchType]);
 
   const handleSearch = useCallback((searchParams: string, resetFilters = true) => {
     const parsedParams = queryString.parse(searchParams);
@@ -258,12 +256,20 @@ export const SearchResults: React.FC<SearchResultsProps> = (props) => {
     if (!props.searchOptions.length) {
       props.fetchSearchOptions();
     }
-    handleSearch(props.location.search);
-  }, []);
+  }, [props.searchOptions.length, props.fetchSearchOptions]);
 
   useEffect(() => {
-    handleSearch(props.location.search);
-  }, [props.location.search]);
+    const parsedParams = queryString.parse(location.search);
+    const { q, t } = parsedParams;
+    if (q) {
+      setParams({ q: q as string, t: t as string });
+      setSearchInputValue(q as string);
+      setIsSearching(true);
+      const { types, filters: enhancedFilters } = mapTabToSearchType(t as string, {});
+      const apiFilters = getFiltersForApi(enhancedFilters);
+      props.fetchSearchResults(q as string, types, apiFilters);
+    }
+  }, [location.search, props.fetchSearchResults, mapTabToSearchType, getFiltersForApi]);
 
   useEffect(() => {
     if (props.searchResults) {
@@ -275,7 +281,7 @@ export const SearchResults: React.FC<SearchResultsProps> = (props) => {
   const handleFilterChange = (category: string, value: string, checked: boolean) => {
     const newFilters = { ...selectedFilters };
     const current = newFilters[category] || [];
-    
+
     if (checked) {
       newFilters[category] = [...current, value];
     } else {
@@ -286,9 +292,9 @@ export const SearchResults: React.FC<SearchResultsProps> = (props) => {
         newFilters[category] = updated;
       }
     }
-    
+
     setSelectedFilters(newFilters);
-    
+
     // Trigger server-side search with new filters
     if (params.q) {
       triggerSearch(params.q, params.t, newFilters);
@@ -305,31 +311,31 @@ export const SearchResults: React.FC<SearchResultsProps> = (props) => {
   const hasActiveFilters = Object.keys(selectedFilters).length > 0;
 
   // Get results directly from API (server-side filtered)
-  const mines = props.searchResults.mine || [];
-  const parties = props.searchResults.party || [];
-  const permits = props.searchResults.permit || [];
-  const mineDocuments = props.searchResults.mine_documents || [];
-  const permitDocuments = props.searchResults.permit_documents || [];
-  const explosivesPermits = props.searchResults.explosives_permit || [];
-  const nowApplications = props.searchResults.now_application || [];
-  const nods = props.searchResults.notice_of_departure || [];
+  const mines = props.searchResults?.mine || [];
+  const parties = props.searchResults?.party || [];
+  const permits = props.searchResults?.permit || [];
+  const mineDocuments = props.searchResults?.mine_documents || [];
+  const permitDocuments = props.searchResults?.permit_documents || [];
+  const explosivesPermits = props.searchResults?.explosives_permit || [];
+  const nowApplications = props.searchResults?.now_application || [];
+  const nods = props.searchResults?.notice_of_departure || [];
 
   // Transform results to format expected by table components
-  const mineResults = mines.map((item: any) => item.result);
-  const partyResults = parties.map((item: any) => item.result);
-  
-  // Separate people and organizations
-  const peopleResults = partyResults.filter((p: any) => p.party_type_code === "PER");
-  const organizationResults = partyResults.filter((p: any) => p.party_type_code === "ORG");
-  
-  const permitResults = permits.map((item: any) => item.result);
-  const documentResults = [...mineDocuments, ...permitDocuments].map((item: any) => item.result);
-  const explosivesPermitResults = explosivesPermits.map((item: any) => item.result);
-  const nowApplicationResults = nowApplications.map((item: any) => item.result);
-  const nodResults = nods.map((item: any) => item.result);
+  const mineResults = mines.map((item: any) => item.result).filter(Boolean);
+  const partyResults = parties.map((item: any) => item.result).filter(Boolean);
 
-  const totalResults = mines.length + parties.length + permits.length + mineDocuments.length + permitDocuments.length + 
-                       explosivesPermits.length + nowApplications.length + nods.length;
+  // Separate people and organizations
+  const peopleResults = partyResults.filter((p: any) => p?.party_type_code === "PER");
+  const organizationResults = partyResults.filter((p: any) => p?.party_type_code === "ORG");
+
+  const permitResults = permits.map((item: any) => item.result).filter(Boolean);
+  const documentResults = [...mineDocuments, ...permitDocuments].map((item: any) => item.result).filter(Boolean);
+  const explosivesPermitResults = explosivesPermits.map((item: any) => item.result).filter(Boolean);
+  const nowApplicationResults = nowApplications.map((item: any) => item.result).filter(Boolean);
+  const nodResults = nods.map((item: any) => item.result).filter(Boolean);
+
+  const totalResults = mines.length + parties.length + permits.length + mineDocuments.length + permitDocuments.length +
+    explosivesPermits.length + nowApplications.length + nods.length;
 
   // Build grouped facets from API facets
   const groupedFacets = useMemo(() => {
@@ -386,13 +392,13 @@ export const SearchResults: React.FC<SearchResultsProps> = (props) => {
       {groupedFacets.length > 0 ? (
         <Collapse ghost expandIconPosition="end" defaultActiveKey={groupedFacets.slice(0, 1).map((g) => g.key)}>
           {groupedFacets.map((group) => (
-            <Panel 
+            <Panel
               header={
                 <Space>
                   <span style={{ color: group.color }}>{group.icon}</span>
                   <Text type="secondary" style={{ fontSize: 13 }}>{group.label}</Text>
                 </Space>
-              } 
+              }
               key={group.key}
             >
               {group.facets.map((facet) => (
@@ -703,10 +709,10 @@ export const SearchResults: React.FC<SearchResultsProps> = (props) => {
                     )}
                   </Text>
                 </div>
-                <Tabs 
-                  activeKey={activeTab} 
-                  onChange={onTabChange} 
-                  items={tabItems} 
+                <Tabs
+                  activeKey={activeTab}
+                  onChange={onTabChange}
+                  items={tabItems}
                   size="large"
                   animated={{ inkBar: false, tabPane: false }}
                   className="search-results-tabs"

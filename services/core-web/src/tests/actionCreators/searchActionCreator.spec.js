@@ -26,7 +26,8 @@ beforeEach(() => {
 
 describe("`fetchSearchResults` action creator", () => {
   const searchTerm = "abb";
-  const url = ENVIRONMENT.apiUrl + API.SEARCH({ search_term: searchTerm, search_types: null });
+  // Note: null values are filtered out by the action creator before building URL
+  const url = ENVIRONMENT.apiUrl + API.SEARCH({ search_term: searchTerm });
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onGet(url).reply(200, mockResponse);

@@ -12,7 +12,7 @@ from app.extensions import api
 from flask_restx import fields
 
 SEARCH_RESULT_MODEL = api.model('SearchResult', {
-    'score': fields.Integer,
+    'score': fields.Float,
     'type': fields.String,
 })
 

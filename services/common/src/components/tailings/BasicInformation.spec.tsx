@@ -18,6 +18,18 @@ const initialState = {
 
 
 describe("Tailings BasicInformation", () => {
+    const originalTZ = process.env.TZ;
+
+    beforeAll(() => {
+        // Set timezone to America/Vancouver (PST/PDT) to match snapshot
+        process.env.TZ = 'America/Vancouver';
+    });
+
+    afterAll(() => {
+        // Restore original timezone
+        process.env.TZ = originalTZ;
+    });
+
     it("renders properly", () => {
         const { container } = render(
             <ReduxWrapper initialState={initialState}>
