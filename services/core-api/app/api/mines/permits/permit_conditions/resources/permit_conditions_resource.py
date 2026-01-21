@@ -18,7 +18,6 @@ from app.api.mines.permits.permit_conditions.models.permit_condition_category im
 from app.api.mines.mine.models.mine import Mine
 from app.api.utils.include.user_info import User
 
-
 class PermitConditionsListResource(Resource, UserMixin):
     @api.doc(description='Create a permit condition on the specified permit draft')
     @requires_role_edit_permit
@@ -165,7 +164,6 @@ class PermitConditionsResource(Resource, UserMixin):
     @api.expect(PERMIT_CONDITION_MODEL)
     @api.marshal_with(PERMIT_CONDITION_MODEL, code=204)
     def delete(self, mine_guid, permit_guid, permit_amendment_guid, permit_condition_guid):
-
         permit_amendment = get_permit_amendment(permit_amendment_guid)
 
         if permit_amendment.is_generated_in_core and permit_amendment.permit_amendment_status_code != "DFT":
@@ -179,6 +177,26 @@ class PermitConditionsResource(Resource, UserMixin):
         permit_condition.deleted_ind = True
         permit_condition.save(commit=False)
 
+        all_sub_conditions = []
+        stack = [permit_condition]
+        visited = set()
+        while stack:
+            current = stack.pop()
+            if current.permit_condition_id in visited:
+                continue
+            visited.add(current.permit_condition_id)
+            all_sub_conditions.append(current)
+            stack.extend(current.sub_conditions)
+
+        if all_sub_conditions:
+            for sub_condition in all_sub_conditions:
+                mine_report_permit_requirements = sub_condition.mine_report_permit_requirements
+                if mine_report_permit_requirements:
+                    for mine_report_permit_requirement in mine_report_permit_requirements:
+                       mine_report_permit_requirement.delete()
+                       current_app.logger.info(
+                           f'Deleting {mine_report_permit_requirement} as part of the deletion of permit condition {permit_condition}'
+                           )
         conditions = []
         if permit_condition.parent_permit_condition_id is not None:
             conditions = permit_condition.parent.sub_conditions

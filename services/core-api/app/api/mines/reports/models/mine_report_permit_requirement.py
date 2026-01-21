@@ -92,7 +92,7 @@ class MineReportPermitRequirement(SoftDeleteMixin, AuditMixin, HistoryMixin, Bas
     
     @classmethod
     def find_by_report_name(cls, report_name, permit_amendment_id) -> Self | None:
-        return cls.query.filter_by(report_name=report_name, permit_amendment_id=permit_amendment_id).one_or_none()
+        return cls.query.filter_by(report_name=report_name, permit_amendment_id=permit_amendment_id, deleted_ind=False).one_or_none()
 
     @classmethod
     def get_all(cls) -> list[Self] | None:
