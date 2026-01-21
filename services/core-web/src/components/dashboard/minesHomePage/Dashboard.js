@@ -344,7 +344,7 @@ export class Dashboard extends Component {
                       <br />
                       {/* TODO: Change this to be the correct URL, if and when they change EMPR to MCM */}
                       <a
-                        href="https://nrm.sp.gov.bc.ca/sites/EMPR/mtb/_layouts/15/start.aspx#/"
+                        href="https://bcgov.sharepoint.com/sites/EMLI-MINESGIS/SitePages/Mining-GIS-Requests-Portal-Home.aspx"
                         target="_blank"
                         rel="noopener noreferrer"
                       >

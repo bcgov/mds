@@ -79,9 +79,7 @@ const ViewPermit: FC = () => {
     ) + 1 || -1;
   const previousAmendment =
     previousAmendmentIndex > 0 ? permit.permit_amendments[previousAmendmentIndex] : null;
-  const userCanEditConditions = useAppSelector(
-    userHasRole(USER_ROLES.role_edit_template_conditions)
-  );
+  const userCanEditConditions = useAppSelector(userHasRole(USER_ROLES.role_edit_permits));
   const documents = latestAmendment?.related_documents ?? [];
 
   const [activeTab, setActiveTab] = useState(tab ?? tabs[0]);

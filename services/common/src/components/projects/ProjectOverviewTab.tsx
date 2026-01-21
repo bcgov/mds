@@ -7,7 +7,7 @@ import {
     getProjectSummaryPermitTypesHash,
     getProjectSummaryAuthorizationTypesHash,
 } from "@mds/common/redux/selectors/staticContentSelectors";
-import { getProjectLeads } from "@mds/common/redux/selectors/partiesSelectors";
+import { getProjectLeads } from "@mds/common/redux/slices/partiesSlice";
 import * as Strings from "@mds/common/constants/strings";
 import { getProject } from "@mds/common/redux/selectors/projectSelectors";
 import { Feature } from "@mds/common/utils/featureFlag";

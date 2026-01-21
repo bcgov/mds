@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC } from "react";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import { ADD_REPORT_DEFINITION } from "@/constants/forms";
 import { Col, Row, Typography } from "antd";
@@ -12,10 +12,16 @@ import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton"
 import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
 import { maxLength, required, requiredRadioButton } from "@mds/common/redux/utils/Validate";
 import { Field } from "@mds/common/components/forms/form";
+import { IMineReportDefinition } from "@mds/common/interfaces";
 
 const { Title, Paragraph } = Typography;
 
-const AddReportDefinitionForm = ({ handleSubmit, isModal = false }) => {
+const AddReportDefinitionForm: FC<{
+  handleSubmit?: (values: Partial<IMineReportDefinition>) => void | Promise<void>;
+  isModal?: boolean;
+  isEditMode?: boolean;
+  initialValues?: Partial<IMineReportDefinition>;
+}> = ({ handleSubmit, isModal = false, isEditMode = true, initialValues = {} }) => {
   const mineReportDueDateTypes = useAppSelector(getMineReportDueDateTypes);
 
   const dueDatePeriodMonthsOptions = [
@@ -25,7 +31,14 @@ const AddReportDefinitionForm = ({ handleSubmit, isModal = false }) => {
   ];
 
   return (
-    <FormWrapper name={ADD_REPORT_DEFINITION} onSubmit={handleSubmit} isModal={isModal}>
+    <FormWrapper
+      name={ADD_REPORT_DEFINITION}
+      onSubmit={handleSubmit}
+      isModal={isModal}
+      isEditMode={isEditMode}
+      initialValues={initialValues}
+      reduxFormConfig={{ destroyOnUnmount: true }}
+    >
       <Title level={3}>Report Details</Title>
       <Field
         required

@@ -21,7 +21,7 @@ import { IMine } from "@mds/common/interfaces/mine.interface";
 import { Feature } from "@mds/common/utils/featureFlag";
 import { USER_ROLES } from "@mds/common/constants/environment";
 import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
-import { fetchPartyRelationships } from "@mds/common/redux/actionCreators/partiesActionCreator";
+import { fetchPartyRelationships } from "@mds/common/redux/slices/partiesSlice";
 
 const { Paragraph, Title, Text } = Typography;
 

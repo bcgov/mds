@@ -92,7 +92,7 @@ class MajorMineApplication(SoftDeleteMixin, AuditMixin, Base):
             return None
 
     def send_mma_submit_email(self):        
-        core_recipients = [PERM_RECL_EMAIL]
+        core_recipients = [PERM_RECL_EMAIL] if self.project.has_mines_act_auths() else []
         project_lead_email = self.project.project_lead.email if self.project.project_lead else None
         if project_lead_email:
             core_recipients.append(project_lead_email)

@@ -11,7 +11,7 @@ import {
   deletePermit,
   deletePermitAmendment,
 } from "@mds/common/redux/actionCreators/permitActionCreator";
-import { fetchPartyRelationships } from "@mds/common/redux/actionCreators/partiesActionCreator";
+import { fetchPartyRelationships } from "@mds/common/redux/slices/partiesSlice";
 import {
   fetchMineRecordById,
   createMineTypes,

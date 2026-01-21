@@ -3,13 +3,12 @@ import { Card, Col, Divider, Row } from "antd";
 import moment from "moment";
 import { Link, useParams } from "react-router-dom";
 import { formatDate } from "@common/utils/helpers";
-import { getPartyRelationships } from "@mds/common/redux/selectors/partiesSelectors";
+import { getPartyRelationships } from "@mds/common/redux/slices/partiesSlice";
 import { getPartyRelationshipTypes } from "@mds/common/redux/selectors/staticContentSelectors";
 import { getMineComplianceInfo } from "@mds/common/redux/selectors/complianceSelectors";
 import { getMines } from "@mds/common/redux/selectors/mineSelectors";
 import { getUnformattedPermits } from "@mds/common/redux/selectors/permitSelectors";
 import * as String from "@mds/common/constants/strings";
-import { Contact } from "@/components/mine/ContactInfo/PartyRelationships/Contact";
 import * as router from "@/constants/routes";
 import PermitCard from "@/components/mine/Permit/MinePermitCard";
 import { TSFCard } from "@/components/mine/Tailings/MineTSFCard";
@@ -17,6 +16,7 @@ import { DOC, OVERDUEDOC } from "@/constants/assets";
 import MineHeader from "@/components/mine/MineHeader";
 import MineWorkInformation from "@/components/mine/Summary/MineWorkInformation";
 import { useAppSelector } from "@mds/common/redux/rootState";
+import Contact from "@/components/mine/ContactInfo/PartyRelationships/Contact";
 
 /**
  * @class MineSummary.tsx contains all content located under the 'Summary' tab on the MineDashboard.

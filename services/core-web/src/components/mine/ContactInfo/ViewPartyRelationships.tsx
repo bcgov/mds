@@ -3,10 +3,9 @@ import {
   addPartyRelationship,
   fetchParties,
   fetchPartyRelationships,
-  removePartyRelationship,
   updatePartyRelationship,
-} from "@mds/common/redux/actionCreators/partiesActionCreator";
-import { getPartyRelationships } from "@mds/common/redux/selectors/partiesSelectors";
+} from "@mds/common/redux/slices/partiesSlice";
+import { getPartyRelationships } from "@mds/common/redux/slices/partiesSlice";
 import {
   getPartyRelationshipTypes,
   getPartyRelationshipTypesList,
@@ -20,7 +19,6 @@ import React, { FC } from "react";
 import Loading from "@/components/common/Loading";
 import NullScreen from "@/components/common/NullScreen";
 import AddButton from "@/components/common/buttons/AddButton";
-import { Contact } from "@/components/mine/ContactInfo/PartyRelationships/Contact";
 import { InactiveContact } from "@/components/mine/ContactInfo/PartyRelationships/InactiveContact";
 import { modalConfig } from "@/components/modalContent/config";
 import * as ModalContent from "@/constants/modalContent";
@@ -45,6 +43,7 @@ import {
 } from "@mds/common/redux/selectors/authenticationSelectors";
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 import { useHistory } from "react-router-dom";
+import Contact from "@/components/mine/ContactInfo/PartyRelationships/Contact";
 
 interface ViewPartyRelationshipsProps {
   mine: IMine;
@@ -89,18 +88,20 @@ export const ViewPartyRelationships: FC<ViewPartyRelationshipsProps> = ({ mine }
       union_rep_company: values.union_rep_company,
     });
 
-    return dispatch(addPartyRelationship(payload)).then(
-      async ({ data: { mine_party_appt_guid } }) => {
+    return dispatch(addPartyRelationship({ data: payload })).then(
+      async (action: any) => {
+        const { mine_party_appt_guid } = action.payload;
         await Promise.all(
           uploadedFiles.map(([document_manager_guid, document_name]) =>
             dispatch(
-              addDocumentToRelationship(
-                { mineGuid: mine.mine_guid, minePartyApptGuid: mine_party_appt_guid },
-                {
+              addDocumentToRelationship({
+                mineGuid: mine.mine_guid,
+                minePartyApptGuid: mine_party_appt_guid,
+                data: {
                   document_manager_guid,
                   document_name,
-                }
-              )
+                },
+              })
             )
           )
         );
@@ -205,7 +206,7 @@ export const ViewPartyRelationships: FC<ViewPartyRelationshipsProps> = ({ mine }
 
     payload = formatValuesEndCurrent(payload as IPartyAppt);
 
-    return dispatch(updatePartyRelationship(payload)).then(() => {
+    return dispatch(updatePartyRelationship({ data: payload })).then(() => {
       dispatch(
         fetchPartyRelationships({
           mine_guid: mine.mine_guid,
@@ -214,22 +215,6 @@ export const ViewPartyRelationships: FC<ViewPartyRelationshipsProps> = ({ mine }
         })
       );
       dispatch(closeModal());
-    });
-  };
-
-  const handleRemovePartyRelationship = (
-    event: React.MouseEvent<HTMLButtonElement>,
-    mine_party_appt_guid: string
-  ) => {
-    event.preventDefault();
-    dispatch(removePartyRelationship(mine_party_appt_guid)).then(() => {
-      dispatch(
-        fetchPartyRelationships({
-          mine_guid: mine.mine_guid,
-          relationships: "party",
-          include_permit_contacts: "true",
-        })
-      );
     });
   };
 
@@ -354,7 +339,6 @@ export const ViewPartyRelationships: FC<ViewPartyRelationshipsProps> = ({ mine }
           permits={permits}
           openEditPartyRelationshipModal={openEditPartyRelationshipModal}
           onSubmitEditPartyRelationship={onSubmitEditPartyRelationship}
-          removePartyRelationship={handleRemovePartyRelationship}
           isEditable
         />
       </Col>

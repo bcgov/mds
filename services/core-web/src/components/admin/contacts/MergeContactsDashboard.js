@@ -12,7 +12,7 @@ import {
   getPartyRelationshipTypeHash,
   getPartyRelationshipTypesList,
 } from "@mds/common/redux/selectors/staticContentSelectors";
-import { mergeParties } from "@mds/common/redux/actionCreators/partiesActionCreator";
+import { mergeParties } from "@mds/common/redux/slices/partiesSlice";
 import Address from "@/components/common/Address";
 import * as Strings from "@mds/common/constants/strings";
 import * as routes from "@/constants/routes";

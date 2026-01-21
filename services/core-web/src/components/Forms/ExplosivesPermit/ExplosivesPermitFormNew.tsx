@@ -29,7 +29,7 @@ import {
   required,
 } from "@mds/common/redux/utils/Validate";
 import { createDropDownList, formatDate } from "@common/utils/helpers";
-import { getAllPartyRelationships } from "@mds/common/redux/selectors/partiesSelectors";
+import { getAllPartyRelationships } from "@mds/common/redux/slices/partiesSlice";
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 import { getIsFormLoading } from "@mds/common/redux/reducers/modalReducer";
 import { renderConfig } from "@/components/common/config";
@@ -467,7 +467,7 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
                   placeholder="Select Mine Manager"
                   partyLabel="Mine Manager"
                   required={!isHistoric}
-                  validate={isHistoric ? [partyHasAddress(mineManagersDropdown, partyValidationMessage)] : [required, partyHasAddress(mineManagersDropdown, partyValidationMessage)]}
+                  validate={isHistoric ? [] : [required, partyHasAddress(mineManagersDropdown, partyValidationMessage)]}
                   component={renderConfig.SELECT}
                   data={mineManagersDropdown}
                   disabled={disabled}
@@ -481,7 +481,7 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
                   component={renderConfig.SELECT}
                   placeholder="Select Permittee"
                   required
-                  validate={[required, partyHasAddress(permitteeDropdown, partyValidationMessage)]}
+                  validate={isHistoric ? [required] : [required, partyHasAddress(permitteeDropdown, partyValidationMessage)]}
                   data={permitteeDropdown}
                   disabled={disabled || !mines_permit_guid}
                 />

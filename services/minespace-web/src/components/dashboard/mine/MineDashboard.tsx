@@ -9,7 +9,7 @@ import { getMineDashboardRoutes } from "./MineDashboardRoutes";
 import SidebarWrapper, { SidebarNavigation } from "@mds/common/components/common/SidebarWrapper";
 import Loading from "@/components/common/Loading";
 import { fetchMinistryContactsByRegion } from "@mds/common/redux/slices/minespaceSlice";
-import { fetchPartyRelationships } from "@mds/common/redux/actionCreators/partiesActionCreator";
+import { fetchPartyRelationships } from "@mds/common/redux/slices/partiesSlice";
 import NotFoundNotice from "@/components/common/NotFoundNotice";
 import { useAppDispatch } from "@mds/common/redux/rootState";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";

@@ -7,11 +7,11 @@ import {
   fetchParties,
   fetchPartyRelationships,
   updatePartyRelationship,
-} from "@mds/common/redux/actionCreators/partiesActionCreator";
+} from "@mds/common/redux/slices/partiesSlice";
 import { fetchPermits } from "@mds/common/redux/actionCreators/permitActionCreator";
 import { fetchMineRecordById } from "@mds/common/redux/actionCreators/mineActionCreator";
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
-import { getPartyRelationships } from "@mds/common/redux/selectors/partiesSelectors";
+import { getPartyRelationships } from "@mds/common/redux/slices/partiesSlice";
 import { getPartyRelationshipTypesList } from "@mds/common/redux/selectors/staticContentSelectors";
 
 import { getMineById } from "@mds/common/redux/selectors/mineSelectors";
@@ -148,7 +148,7 @@ export const RelationshipProfile: FC = () => {
 
     payload = formatValuesEndCurrent(payload);
 
-    await dispatch(updatePartyRelationship(payload));
+    await dispatch(updatePartyRelationship({ data: payload }));
     dispatch(
       fetchPartyRelationships({
         mine_guid: mine.mine_guid,

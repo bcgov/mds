@@ -3,7 +3,7 @@ import { ENVIRONMENT } from "@mds/common/constants/environment";
 import { request, success, error } from "../actions/genericActions";
 import { NetworkReducerTypes } from "@mds/common/constants/networkReducerTypes";
 import * as staticContentActions from "../actions/staticContentActions";
-import * as partyActions from "../actions/partyActions";
+import { fetchInspectors as fetchInspectorsAction, fetchProjectLeads as fetchProjectLeadsAction } from "@mds/common/redux/slices/partiesSlice";
 import * as String from "@mds/common/constants/strings";
 import * as API from "@mds/common/constants/API";
 import { createRequestHeader } from "../utils/RequestHeaders";
@@ -23,37 +23,9 @@ export const loadBulkStaticContent = () => (dispatch) => {
 };
 
 export const fetchInspectors = () => (dispatch) => {
-  dispatch(request(NetworkReducerTypes.GET_INSPECTORS));
-  return CustomAxios()
-    .get(
-      ENVIRONMENT.apiUrl +
-      API.PARTIES_LIST_QUERY({
-        per_page: "all",
-        business_role: String.BUSINESS_ROLES.inspector,
-      }),
-      createRequestHeader()
-    )
-    .then((response) => {
-      dispatch(success(NetworkReducerTypes.GET_INSPECTORS));
-      dispatch(partyActions.storeInspectors(response.data));
-    })
-    .catch(() => dispatch(error(NetworkReducerTypes.GET_INSPECTORS)));
+  return dispatch(fetchInspectorsAction());
 };
 
 export const fetchProjectLeads = () => (dispatch) => {
-  dispatch(request(NetworkReducerTypes.GET_PROJECT_LEADS));
-  return CustomAxios()
-    .get(
-      ENVIRONMENT.apiUrl +
-      API.PARTIES_LIST_QUERY({
-        per_page: "all",
-        business_role: String.BUSINESS_ROLES.projectLead,
-      }),
-      createRequestHeader()
-    )
-    .then((response) => {
-      dispatch(success(NetworkReducerTypes.GET_PROJECT_LEADS));
-      dispatch(partyActions.storeProjectLeads(response.data));
-    })
-    .catch(() => dispatch(error(NetworkReducerTypes.GET_PROJECT_LEADS)));
+  return dispatch(fetchProjectLeadsAction());
 };

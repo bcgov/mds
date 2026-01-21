@@ -4,9 +4,12 @@ import pytz
 
 from app.api.activity.models.activity_notification import ActivityType, ActivityRecipients
 from app.api.constants import MAJOR_MINES_OFFICE_EMAIL, PERM_RECL_EMAIL, PROJECT_EMA_EMAILS
+from app.api.projects.project.models.project import Project
+from app.api.projects.project_summary.models.project_summary import ProjectSummary
 from app.api.utils.helpers import format_datetime_to_string, parse_status_code_to_text
 from app.config import Config
-from tests.factories import MajorMineApplicationFactory, PartyFactory
+from tests.factories import MajorMineApplicationFactory, PartyFactory, ProjectSummaryFactory, \
+    ProjectSummaryAuthorizationFactory, ProjectFactory
 
 pytz.timezone('Canada/Pacific')
 
@@ -149,8 +152,17 @@ def test_major_mine_application_notifications(mock_send_template_email, mock_tri
 @patch("app.api.services.email_service.EmailService.send_template_email")
 def test_send_mma_submit_email(mock_send_template_email, test_client,
                                db_session, auth_headers):
-    major_mine_application = MajorMineApplicationFactory(status_code='DFT')
+    project = ProjectFactory()
+    major_mine_application = MajorMineApplicationFactory(status_code='DFT', project=project)
     
+    auth = ProjectSummaryAuthorizationFactory(
+        project_summary=project.project_summary,
+        project_summary_authorization_type='MINES_ACT_PERMIT'
+    )
+
+    auth.save()
+    db_session.refresh(major_mine_application)
+
     # Add various document types to test document grouping
     documents = [
         {

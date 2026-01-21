@@ -52,8 +52,8 @@ import { BaseViewInput } from "../forms/BaseInput";
 import {
   fetchPartyById,
   fetchPartyRelationships,
-} from "@mds/common/redux/actionCreators/partiesActionCreator";
-import { getParties, getPartyRelationships } from "@mds/common/redux/selectors/partiesSelectors";
+} from "@mds/common/redux/slices/partiesSlice";
+import { getParties, getPartyRelationships } from "@mds/common/redux/slices/partiesSlice";
 import { uniqBy } from "lodash";
 import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
 import ExportOutlined from "@ant-design/icons/ExportOutlined";

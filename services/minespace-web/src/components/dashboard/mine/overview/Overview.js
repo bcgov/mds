@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import moment from "moment";
 import PropTypes from "prop-types";
 import { Row, Col, Card, Descriptions, Typography } from "antd";
-import { getPartyRelationships } from "@mds/common/redux/selectors/partiesSelectors";
+import { getPartyRelationships } from "@mds/common/redux/slices/partiesSlice";
 import {
   getMineRegionHash,
   getDisturbanceOptionHash,

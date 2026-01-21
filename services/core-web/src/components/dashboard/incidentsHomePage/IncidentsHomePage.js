@@ -17,7 +17,7 @@ import {
   getDropdownIncidentStatusCodeOptions,
   getDropdownIncidentCategoryCodeOptions,
 } from "@mds/common/redux/selectors/staticContentSelectors";
-import { getDropdownInspectors } from "@mds/common/redux/selectors/partiesSelectors";
+import { getDropdownInspectors } from "@mds/common/redux/slices/partiesSlice";
 import { getIncidents, getIncidentPageData } from "@mds/common/redux/selectors/incidentSelectors";
 import {
   fetchIncidents,
