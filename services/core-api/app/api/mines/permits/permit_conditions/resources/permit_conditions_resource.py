@@ -165,7 +165,7 @@ class PermitConditionsResource(Resource, UserMixin):
     @api.expect(PERMIT_CONDITION_MODEL)
     @api.marshal_with(PERMIT_CONDITION_MODEL, code=204)
     def delete(self, mine_guid, permit_guid, permit_amendment_guid, permit_condition_guid):
-        
+
         permit_amendment = get_permit_amendment(permit_amendment_guid)
 
         if permit_amendment.is_generated_in_core and permit_amendment.permit_amendment_status_code != "DFT":
