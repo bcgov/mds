@@ -14,13 +14,18 @@ const Routes = () => (
   <Suspense fallback={<Loading></Loading>}>
     <Switch>
       {/* PUBLIC ROUTES */}
-      <Route exact path={routes.HOME.route} component={ColumnWrapper()(routes.HOME.component)} />
+      <Route exact path={routes.HOME.route} component={routes.HOME.component} />
       <Route
         exact
         path={routes.RETURN_PAGE.route}
         component={ColumnWrapper()(routes.RETURN_PAGE.component)}
       />
       {/* PRIVATE ROUTES */}
+      <Route
+        exact
+        path={routes.NEW_USER.route}
+        component={ColumnWrapper()(AuthenticationGuard()(routes.NEW_USER.component))}
+      />
       <Route
         exact
         path={routes.MINES.route}

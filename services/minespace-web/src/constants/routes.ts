@@ -1,6 +1,9 @@
 import React from "react";
 import queryString from "query-string";
 import ExplosivesPermit from "@/components/dashboard/mine/permits/ExplosivesPermit";
+const MinespaceAccessRequest = React.lazy(
+  () => import("@/components/pages/MinespaceAccessRequest")
+);
 const DamsPage = React.lazy(() => import("@mds/common/components/tailings/dam/DamsPage"));
 const InformationRequirementsTablePage = React.lazy(
   () => import("@/components/pages/Project/InformationRequirementsTablePage")
@@ -66,6 +69,12 @@ export const HOME = {
   route: "/",
   component: LandingPage,
   helpKey: "Home",
+};
+
+export const NEW_USER = {
+  route: "/access-request",
+  component: MinespaceAccessRequest,
+  helpKey: "Minespace-Access-Request",
 };
 
 export const RETURN_PAGE = {

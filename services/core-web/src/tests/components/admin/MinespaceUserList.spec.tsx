@@ -1,11 +1,11 @@
 import React from "react";
 import { render } from "@testing-library/react";
 import { MinespaceUserList } from "@/components/admin/MinespaceUserList";
-import { MINES, MINESPACE_USERS } from "@mds/common/tests/mocks/dataMocks";
+import { MINES, MINESPACE_USERS, MINESPACE_USER_REQUESTS } from "@mds/common/tests/mocks/dataMocks";
 
 describe("MinespaceUserList", () => {
   it("renders properly", () => {
-    const minespaceUsers = MINESPACE_USERS;
+    const minespaceUsers = [...MINESPACE_USERS, ...MINESPACE_USER_REQUESTS];
     const minespaceUserMines = Object.values(MINES.mines);
 
     const { container: component } = render(

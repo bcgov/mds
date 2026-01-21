@@ -937,7 +937,8 @@ export const MINESPACE_USERS: IMinespaceUser[] = [
     family_name: "Underwood",
     display_name: "Ursula Underwood",
     identity_provider: "bceidboth",
-    last_logged_in: "2025-10-31 22:39:29.200932+00"
+    last_logged_in: "2025-10-31 22:39:29.200932+00",
+    user_roles: [],
   },
   {
     user_id: 2,
@@ -949,7 +950,8 @@ export const MINESPACE_USERS: IMinespaceUser[] = [
     family_name: "",
     display_name: "",
     identity_provider: "",
-    last_logged_in: ""
+    last_logged_in: "",
+    user_roles: [],
   },
   {
     user_id: 3,
@@ -961,11 +963,55 @@ export const MINESPACE_USERS: IMinespaceUser[] = [
     family_name: "",
     display_name: "",
     identity_provider: "",
-    last_logged_in: ""
+    last_logged_in: "",
+    user_roles: [],
   },
 ];
 
 export const MINESPACE_RESPONSE = { records: MINESPACE_USERS };
+
+export const MINESPACE_USER_REQUESTS: IMinespaceUser[] = [
+  {
+    user_id: 100,
+    bceid_username: "pending.user@bceid",
+    mines: [],
+    sub: "pending-user-sub@bceidboth",
+    email: "pending.user@email.com",
+    given_name: "Pending",
+    family_name: "User",
+    display_name: "Pending User",
+    identity_provider: "bceidboth",
+    last_logged_in: "2026-01-15 22:39:29.200932+00",
+    user_roles: [],
+    access_request: {
+      minespace_user_request_id: 1,
+      role_requested: "PMT",
+      business_name: "Pending Business",
+      request_status: 0, // Pending
+      submitted_timestamp: "2026-01-15T10:00:00Z",
+    },
+  },
+  {
+    user_id: 101,
+    bceid_username: "rejected.user@bceid",
+    mines: [],
+    sub: "rejected-user-sub@bceidboth",
+    email: "rejected.user@email.com",
+    given_name: "Rejected",
+    family_name: "User",
+    display_name: "Rejected User",
+    identity_provider: "bceidboth",
+    last_logged_in: "2026-01-10 22:39:29.200932+00",
+    user_roles: [],
+    access_request: {
+      minespace_user_request_id: 2,
+      role_requested: "NUL",
+      business_name: "Rejected Business",
+      request_status: 2, // Rejected
+      submitted_timestamp: "2026-01-10T10:00:00Z",
+    },
+  },
+];
 
 export const PAGE_DATA = {
   current_page: 1,

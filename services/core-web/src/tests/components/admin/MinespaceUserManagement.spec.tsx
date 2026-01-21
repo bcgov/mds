@@ -1,29 +1,34 @@
 import React from "react";
 import { render } from "@testing-library/react";
-import { MinespaceUserManagement } from "@/components/admin/MinespaceUserManagement";
+import MinespaceUserManagement from "@/components/admin/MinespaceUserManagement";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
+import { AUTHENTICATION, MINES } from "@mds/common/constants/reducerTypes";
+import { minespaceReducerType } from "@mds/common/redux/slices/minespaceSlice";
+import { USER_ROLES } from "@mds/common/constants/environment";
 
-const props = {
-  mines: MOCK.MINE_NAME_LIST,
-  minespaceUsers: MOCK.MINESPACE_USERS,
-};
-const dispatchProps = {
-  fetchMineNameList: jest.fn(() => Promise.resolve()),
-  fetchMinespaceUsers: jest.fn(() => Promise.resolve()),
-  deleteMinespaceUser: jest.fn(() => Promise.resolve()),
-  closeModal: jest.fn(),
-  openModal: jest.fn(),
-  createMinespaceUser: jest.fn(),
-  updateMinespaceUserMines: jest.fn(),
-  fetchMinespaceUserMines: jest.fn(),
+const initialState = {
+  [AUTHENTICATION]: {
+    isAuthenticated: true,
+    userAccessData: [USER_ROLES.role_admin],
+    userInfo: {
+      preferred_username: "test_admin",
+    },
+  },
+  [minespaceReducerType]: {
+    minespaceUsers: [...MOCK.MINESPACE_USERS, ...MOCK.MINESPACE_USER_REQUESTS],
+    minespaceUserMines: Object.values(MOCK.MINES.mines),
+  },
+  [MINES]: {
+    mineNameList: MOCK.MINE_NAME_LIST.mines,
+  },
 };
 
 describe("MinespaceUserManagement", () => {
   it("renders properly", () => {
     const { container: component } = render(
-      <ReduxWrapper>
-        <MinespaceUserManagement {...props} {...dispatchProps} />
+      <ReduxWrapper initialState={initialState}>
+        <MinespaceUserManagement />
       </ReduxWrapper>
     );
     expect(component).toMatchSnapshot();

@@ -20,6 +20,7 @@ class Feature(Enum):
     VC_W3C = "vc_w3c"
     AMS_AGENT = 'ams_agent'
     RECURRING_REPORTS = 'recurring_reports'
+    MINESPACE_SIGNUP = 'minespace_signup'
 
     def __str__(self):
         return self.value

@@ -1,13 +1,16 @@
 import React, { FC } from "react";
 import CoreTable from "@mds/common/components/common/CoreTable";
-import { renderTextColumn, renderDateColumn, renderActionsColumn } from "@mds/common/components/common/CoreTableCommonColumns";
+import { renderTextColumn, renderDateColumn, renderActionsColumn, renderStatusColumn } from "@mds/common/components/common/CoreTableCommonColumns";
 import { IMineName, IMinespaceUser } from "@mds/common/interfaces";
 import { deleteConfirmWrapper } from "@mds/common/components/common/ActionMenu";
+import { nullableStringSorter } from "@mds/common/redux/utils/helpers";
+import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
+import { Feature } from "@mds/common/utils";
 
 interface MinespaceUserListProps {
   minespaceUsers: IMinespaceUser[];
   minespaceUserMines: IMineName[];
-  handleDelete: (userId) => void | Promise<void>;
+  handleDelete: (userId: number) => void | Promise<void>;
   isLoaded: boolean;
   handleOpenModal: (event, record) => void | Promise<void>;
 }
@@ -20,6 +23,9 @@ export const MinespaceUserList: FC<MinespaceUserListProps> = ({
   handleOpenModal
 }) => {
 
+  const { isFeatureEnabled } = useFeatureFlag();
+  const msNewLoginEnabled = isFeatureEnabled(Feature.MINESPACE_SIGNUP);
+
   const lookupMineName = (mine_guids, mines) =>
     mine_guids.map((mine_guid) => {
       const mine_record = mines.find((mine) => mine.mine_guid === mine_guid);
@@ -29,11 +35,25 @@ export const MinespaceUserList: FC<MinespaceUserListProps> = ({
       };
     }).sort((a, b) => a.mine_name.localeCompare(b.mine_name));
 
+  const lookupMineRoles = (roles = [], mines) => {
+    return roles.map((role) => {
+      const mine_record = mines.find((mine) => mine.mine_guid === role.mine_guid);
+      return {
+        ...role,
+        mine_name: mine_record ? `${mine_record.mine_name}-${mine_record.mine_no}` : "",
+      };
+    }).sort((a, b) => a.mine_name.localeCompare(b.mine_name));
+  };
+
+  const STATUS_MAP = ["Pending", "Approved", "Rejected"];
+
   const getRowData = () =>
     minespaceUsers.map((user) => ({
       key: user.user_id,
       ...user,
       mineNames: lookupMineName(user.mines, minespaceUserMines),
+      mineRoles: lookupMineRoles(user.user_roles, minespaceUserMines),
+      status: STATUS_MAP[user.access_request?.request_status ?? 1]
     }));
 
   const columns = [
@@ -56,6 +76,10 @@ export const MinespaceUserList: FC<MinespaceUserListProps> = ({
         </div>
       ),
     },
+    msNewLoginEnabled && {
+      ...renderStatusColumn({ "Pending": "warning", "Approved": "success", "Rejected": "error" }),
+      sorter: nullableStringSorter("status")
+    },
     renderActionsColumn({
       actions: [
         {
@@ -74,7 +98,7 @@ export const MinespaceUserList: FC<MinespaceUserListProps> = ({
         }
       ],
     })
-  ];
+  ].filter(Boolean);
 
   return (
     <CoreTable

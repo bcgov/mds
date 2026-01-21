@@ -7,7 +7,10 @@ import { Layout, BackTop, Row, Col, Spin } from "antd";
 import { loadBulkStaticContent } from "@mds/common/redux/actionCreators/staticContentActionCreator";
 import { getStaticContentLoadingIsComplete } from "@mds/common/redux/selectors/staticContentSelectors";
 import MediaQuery from "react-responsive";
-import { isAuthenticated } from "@mds/common/redux/selectors/authenticationSelectors";
+import {
+  isAuthenticated,
+  isNewProponent,
+} from "@mds/common/redux/selectors/authenticationSelectors";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import ModalWrapper from "@/components/common/wrappers/ModalWrapper";
@@ -34,11 +37,12 @@ const App: FC = () => {
   const [isIE, setIsIE] = useState(true);
   const [isMobile, setIsMobile] = useState(true);
   const isUserAuthenticated = useAppSelector(isAuthenticated);
+  const isNewUser = useAppSelector(isNewProponent);
   const staticContentLoadingIsComplete = useAppSelector(getStaticContentLoadingIsComplete);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (isUserAuthenticated) {
+    if (isUserAuthenticated && !isNewUser) {
       dispatch(loadBulkStaticContent());
     }
     setIsIE(!!detectIE());
@@ -46,7 +50,7 @@ const App: FC = () => {
   }, []);
 
   useEffect(() => {
-    if (isUserAuthenticated) {
+    if (isUserAuthenticated && !isNewUser) {
       if (!staticContentLoadingIsComplete) {
         dispatch(loadBulkStaticContent());
       }

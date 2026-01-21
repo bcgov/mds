@@ -2,7 +2,7 @@ import { RootState } from "@mds/common/redux/rootState";
 import * as actionTypes from "@mds/common/constants/actionTypes";
 import { MINES } from "@mds/common/constants/reducerTypes";
 import { createItemMap, createItemIdsArray } from "../utils/helpers";
-import { IMine, IMineComment, IMineDocument, IMineSearch, ItemMap } from "@mds/common/interfaces";
+import { IMine, IMineComment, IMineDocument, IMineSearch, ItemMap, MineSearchResultForNewUser } from "@mds/common/interfaces";
 /**
  * @file mineReducer.js
  * all data associated with new mine/existing mine records is handled witnin this reducer.
@@ -19,6 +19,7 @@ interface MineState {
   mineComments: IMineComment[];
   currentUserVerifiedMines: IMine[];
   currentUserUnverifiedMinesMines: IMine[];
+  mineSearchResultsForNewUser: MineSearchResultForNewUser[];
 }
 
 const initialState: MineState = {
@@ -33,6 +34,7 @@ const initialState: MineState = {
   mineComments: [],
   currentUserVerifiedMines: [],
   currentUserUnverifiedMinesMines: [],
+  mineSearchResultsForNewUser: [],
 };
 
 export const mineReducer = (state: MineState = initialState, action) => {
@@ -85,6 +87,11 @@ export const mineReducer = (state: MineState = initialState, action) => {
         ...state,
         mineComments: action.payload.records,
       };
+    case actionTypes.STORE_MINE_SEARCH_RESULTS_FOR_NEW_USER:
+      return {
+        ...state,
+        mineSearchResultsForNewUser: action.payload.mines,
+      };
     default:
       return state;
   }
@@ -108,5 +115,6 @@ export const getCurrentUserVerifiedMines = (state: RootState): IMine[] =>
 export const getCurrentUserUnverifiedMines = (state: RootState): IMine[] =>
   state[MINES].currentUserUnverifiedMinesMines;
 export const getMineComments = (state: RootState): IMineComment[] => state[MINES].mineComments;
+export const getMineSearchResultsForNewUser = (state: RootState) => state[MINES].mineSearchResultsForNewUser;
 
 export default mineReducerObject;

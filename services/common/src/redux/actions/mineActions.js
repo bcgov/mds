@@ -41,6 +41,11 @@ export const storeMineComments = (payload) => ({
   payload,
 });
 
+export const storeMineSearchResultsForNewUser = (payload) => ({
+  type: ActionTypes.STORE_MINE_SEARCH_RESULTS_FOR_NEW_USER,
+  payload,
+});
+
 export const storeEpicInfo = (payload) => ({
   type: ActionTypes.STORE_MINE_EPIC_INFO,
   payload,

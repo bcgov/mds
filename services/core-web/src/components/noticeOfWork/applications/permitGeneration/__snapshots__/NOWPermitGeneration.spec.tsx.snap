@@ -1799,6 +1799,7 @@ exports[`NOWPermitGeneration renders properly 1`] = `
                                     class="ant-form-item-control-input-content"
                                   >
                                     <div
+                                      aria-required="false"
                                       class="ant-select ant-select-sm ant-select-in-form-item ant-select-multiple ant-select-show-arrow ant-select-show-search"
                                       style="width: 100%;"
                                     >
@@ -1822,6 +1823,7 @@ exports[`NOWPermitGeneration renders properly 1`] = `
                                                 aria-controls="mine_disturbance_code_list"
                                                 aria-haspopup="listbox"
                                                 aria-owns="mine_disturbance_code_list"
+                                                aria-required="false"
                                                 autocomplete="off"
                                                 class="ant-select-selection-search-input"
                                                 id="mine_disturbance_code"

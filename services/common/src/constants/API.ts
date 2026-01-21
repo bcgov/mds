@@ -43,6 +43,9 @@ export const DOCUMENT_MANAGER_DOCUMENT = (documentManagerGuid) =>
   `/documents/${documentManagerGuid}`;
 export const MINESPACE_USER = (mine_guid?) => `/users/minespace${mine_guid ? `?${queryString.stringify({ mine_guid })}` : ""}`;
 export const UPDATE_MINESPACE_USER = (id) => `/users/minespace/${id}`;
+export const NEW_MINESPACE_USER_MINES = (params = {}) => `/users/minespace/mines?${queryString.stringify(params)}`;
+export const NEW_MINESPACE_USER_DOCUMENTS = `/users/minespace/documents`;
+export const NEW_MINESPACE_USER_ACCESS_REQUEST = `/users/minespace/access-request`;
 export const PROVINCE_CODES = "/parties/sub-division-codes";
 
 // MCM contacts

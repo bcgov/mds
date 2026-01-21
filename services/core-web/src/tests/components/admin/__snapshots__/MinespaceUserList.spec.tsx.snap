@@ -278,6 +278,67 @@ exports[`MinespaceUserList renders properly 1`] = `
                       Mines
                     </th>
                     <th
+                      aria-label="Status"
+                      class="ant-table-cell ant-table-column-has-sorters"
+                      tabindex="0"
+                    >
+                      <div
+                        class="ant-table-column-sorters"
+                      >
+                        <span
+                          class="ant-table-column-title"
+                        >
+                          Status
+                        </span>
+                        <span
+                          class="ant-table-column-sorter ant-table-column-sorter-full"
+                        >
+                          <span
+                            class="ant-table-column-sorter-inner"
+                          >
+                            <span
+                              aria-label="caret-up"
+                              class="anticon anticon-caret-up ant-table-column-sorter-up"
+                              role="presentation"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                data-icon="caret-up"
+                                fill="currentColor"
+                                focusable="false"
+                                height="1em"
+                                viewBox="0 0 1024 1024"
+                                width="1em"
+                              >
+                                <path
+                                  d="M858.9 689L530.5 308.2c-9.4-10.9-27.5-10.9-37 0L165.1 689c-12.2 14.2-1.2 35 18.5 35h656.8c19.7 0 30.7-20.8 18.5-35z"
+                                />
+                              </svg>
+                            </span>
+                            <span
+                              aria-label="caret-down"
+                              class="anticon anticon-caret-down ant-table-column-sorter-down"
+                              role="presentation"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                data-icon="caret-down"
+                                fill="currentColor"
+                                focusable="false"
+                                height="1em"
+                                viewBox="0 0 1024 1024"
+                                width="1em"
+                              >
+                                <path
+                                  d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
+                                />
+                              </svg>
+                            </span>
+                          </span>
+                        </span>
+                      </div>
+                    </th>
+                    <th
                       class="ant-table-cell actions-column ant-table-cell-fix-right ant-table-cell-fix-right-first"
                       style="position: sticky; right: 0px;"
                     />
@@ -344,6 +405,22 @@ exports[`MinespaceUserList renders properly 1`] = `
                           <br />
                         </span>
                       </div>
+                    </td>
+                    <td
+                      class="ant-table-cell"
+                    >
+                      <span
+                        class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
+                      >
+                        <span
+                          class="ant-badge-status-dot ant-badge-status-success"
+                        />
+                        <span
+                          class="ant-badge-status-text"
+                        >
+                          Approved
+                        </span>
+                      </span>
                     </td>
                     <td
                       class="ant-table-cell actions-column ant-table-cell-fix-right ant-table-cell-fix-right-first"
@@ -433,6 +510,22 @@ exports[`MinespaceUserList renders properly 1`] = `
                       </div>
                     </td>
                     <td
+                      class="ant-table-cell"
+                    >
+                      <span
+                        class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
+                      >
+                        <span
+                          class="ant-badge-status-dot ant-badge-status-success"
+                        />
+                        <span
+                          class="ant-badge-status-text"
+                        >
+                          Approved
+                        </span>
+                      </span>
+                    </td>
+                    <td
                       class="ant-table-cell actions-column ant-table-cell-fix-right ant-table-cell-fix-right-first"
                       style="position: sticky; right: 0px;"
                     >
@@ -518,6 +611,226 @@ exports[`MinespaceUserList renders properly 1`] = `
                           <br />
                         </span>
                       </div>
+                    </td>
+                    <td
+                      class="ant-table-cell"
+                    >
+                      <span
+                        class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
+                      >
+                        <span
+                          class="ant-badge-status-dot ant-badge-status-success"
+                        />
+                        <span
+                          class="ant-badge-status-text"
+                        >
+                          Approved
+                        </span>
+                      </span>
+                    </td>
+                    <td
+                      class="ant-table-cell actions-column ant-table-cell-fix-right ant-table-cell-fix-right-first"
+                      style="position: sticky; right: 0px;"
+                    >
+                      <button
+                        class="ant-btn ant-btn-text ant-dropdown-trigger actions-dropdown-button"
+                        data-cy="menu-actions-button"
+                        type="button"
+                      >
+                        <span>
+                          Actions
+                        </span>
+                        <span
+                          alt="Menu"
+                          aria-label="caret-down"
+                          class="anticon anticon-caret-down"
+                          role="img"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            class=""
+                            data-icon="caret-down"
+                            fill="currentColor"
+                            focusable="false"
+                            height="1em"
+                            viewBox="0 0 1024 1024"
+                            width="1em"
+                          >
+                            <path
+                              d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
+                            />
+                          </svg>
+                        </span>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr
+                    class="ant-table-row ant-table-row-level-0 fade-in"
+                    data-row-key="100"
+                  >
+                    <td
+                      class="ant-table-cell"
+                    >
+                      <div
+                        class="display_name-column"
+                        title="Name"
+                      >
+                        Pending User
+                      </div>
+                    </td>
+                    <td
+                      class="ant-table-cell"
+                    >
+                      <div
+                        class="bceid_username-column"
+                        title="BCeID"
+                      >
+                        pending.user@bceid
+                      </div>
+                    </td>
+                    <td
+                      class="ant-table-cell"
+                    >
+                      <div
+                        class="email-column"
+                        title="Email"
+                      >
+                        pending.user@email.com
+                      </div>
+                    </td>
+                    <td
+                      class="ant-table-cell"
+                    >
+                      <div
+                        title="Last Login"
+                      >
+                        Jan 15 2026
+                      </div>
+                    </td>
+                    <td
+                      class="ant-table-cell"
+                    >
+                      <div
+                        title="Mines"
+                      />
+                    </td>
+                    <td
+                      class="ant-table-cell"
+                    >
+                      <span
+                        class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
+                      >
+                        <span
+                          class="ant-badge-status-dot ant-badge-status-warning"
+                        />
+                        <span
+                          class="ant-badge-status-text"
+                        >
+                          Pending
+                        </span>
+                      </span>
+                    </td>
+                    <td
+                      class="ant-table-cell actions-column ant-table-cell-fix-right ant-table-cell-fix-right-first"
+                      style="position: sticky; right: 0px;"
+                    >
+                      <button
+                        class="ant-btn ant-btn-text ant-dropdown-trigger actions-dropdown-button"
+                        data-cy="menu-actions-button"
+                        type="button"
+                      >
+                        <span>
+                          Actions
+                        </span>
+                        <span
+                          alt="Menu"
+                          aria-label="caret-down"
+                          class="anticon anticon-caret-down"
+                          role="img"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            class=""
+                            data-icon="caret-down"
+                            fill="currentColor"
+                            focusable="false"
+                            height="1em"
+                            viewBox="0 0 1024 1024"
+                            width="1em"
+                          >
+                            <path
+                              d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
+                            />
+                          </svg>
+                        </span>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr
+                    class="ant-table-row ant-table-row-level-0 fade-in"
+                    data-row-key="101"
+                  >
+                    <td
+                      class="ant-table-cell"
+                    >
+                      <div
+                        class="display_name-column"
+                        title="Name"
+                      >
+                        Rejected User
+                      </div>
+                    </td>
+                    <td
+                      class="ant-table-cell"
+                    >
+                      <div
+                        class="bceid_username-column"
+                        title="BCeID"
+                      >
+                        rejected.user@bceid
+                      </div>
+                    </td>
+                    <td
+                      class="ant-table-cell"
+                    >
+                      <div
+                        class="email-column"
+                        title="Email"
+                      >
+                        rejected.user@email.com
+                      </div>
+                    </td>
+                    <td
+                      class="ant-table-cell"
+                    >
+                      <div
+                        title="Last Login"
+                      >
+                        Jan 10 2026
+                      </div>
+                    </td>
+                    <td
+                      class="ant-table-cell"
+                    >
+                      <div
+                        title="Mines"
+                      />
+                    </td>
+                    <td
+                      class="ant-table-cell"
+                    >
+                      <span
+                        class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
+                      >
+                        <span
+                          class="ant-badge-status-dot ant-badge-status-error"
+                        />
+                        <span
+                          class="ant-badge-status-text"
+                        >
+                          Rejected
+                        </span>
+                      </span>
                     </td>
                     <td
                       class="ant-table-cell actions-column ant-table-cell-fix-right ant-table-cell-fix-right-first"
