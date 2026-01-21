@@ -39,6 +39,14 @@ MINESPACE_USER_ACCESS_REQUEST = api.model(
         'ministry_contact': fields.String,
     })
 
+MINE_SEARCH_RESULT = api.model('MineSearchResult', {
+    'mine_guid': fields.String,
+    'mine_name': fields.String,
+    'mine_no': fields.String,
+    'permit_guid': fields.String,
+    'permit_no': fields.String,
+})
+
 MINESPACE_USER_MODEL = api.model(
     'MinespaceUser', {
         'user_id': fields.Integer,

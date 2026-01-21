@@ -175,6 +175,11 @@ from app.api.users.minespace.resources.minespace_user_mine import (
     MinespaceUserMineListResource,
     MinespaceUserMineResource,
 )
+from app.api.users.minespace.resources.new_minespace_user import (
+    NewMinespaceUserResource,
+    NewMinespaceUserDataResource,
+    NewMinespaceUserDocumentResource,
+)
 from app.api.users.resources.user_list_resource import UserListResource
 from app.api.users.resources.user_resource import UserResource
 from app.api.utils.access_decorators import (
@@ -267,8 +272,13 @@ from app.api.utils.access_decorators import (
      (MinespaceUserListResource, 'get', [VIEW_ALL, MINESPACE_PROPONENT]),
      (MinespaceUserListResource, 'post', [MINE_ADMIN]),
      (MinespaceUserResource, 'get', [MINE_ADMIN]), (MinespaceUserResource, 'delete', [MINE_ADMIN]),
+     (MinespaceUserResource, 'put', [MINE_ADMIN]),
      (MinespaceUserMineListResource, 'post', [MINE_ADMIN]),
      (MinespaceUserMineResource, 'delete', [MINE_ADMIN]),
+     (NewMinespaceUserResource, 'get', []),
+     (NewMinespaceUserResource, 'post', []),
+     (NewMinespaceUserDataResource, 'get', []),
+     (NewMinespaceUserDocumentResource, 'post', []),
      (UserResource, 'get', [VIEW_ALL, MINESPACE_PROPONENT]),
      (UserListResource, 'get', [VIEW_ALL]),
      (NOWActivityTypeResource, 'get', [VIEW_ALL]),

@@ -16,19 +16,11 @@ from app.api.users.minespace.models.minespace_user_request import MinespaceUserR
 # Import these models to ensure they're registered with SQLAlchemy (avoid circular import issues)
 from app.api.users.minespace.models.minespace_user_role_xref import MinespaceUserRoleXref
 from app.api.users.minespace.models.minespace_user_roles import MinespaceUserRole
-from app.api.users.response_models import MINESPACE_USER_ACCESS_REQUEST
+from app.api.users.response_models import MINESPACE_USER_ACCESS_REQUEST, MINE_SEARCH_RESULT
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.permits.permit.models.permit import Permit
 from app.api.services.document_manager_service import DocumentManagerService
 from app.api.utils.custom_reqparser import CustomReqparser
-
-MINE_SEARCH_RESULT = api.model('MineSearchResult', {
-    'mine_guid': fields.String,
-    'mine_name': fields.String,
-    'mine_no': fields.String,
-    'permit_guid': fields.String,
-    'permit_no': fields.String,
-})
 
 class NewMinespaceUserResource(Resource, UserMixin):
     @api.doc(description="Get current user's access request")
