@@ -1,0 +1,1455 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MinespaceAccessRequest renders properly for new user 1`] = `
+<div>
+  <div>
+    <form
+      class="ant-form ant-form-vertical common-form common-form-NEW_MINESPACE_USER form-edit"
+      id="NEW_MINESPACE_USER"
+    >
+      <div
+        class="form-section"
+      >
+        <h1
+          class="ant-typography"
+        >
+          Request Access to MineSpace
+        </h1>
+        <div
+          class="ant-typography"
+        >
+          Use this form to apply for access to MineSpace using your Business BCeID account. Your request will be reviewed by the Ministry of Mining and Critical Minerals staff to confirm authorization. Access is granted only to individuals who are permittees or authorized representatives (e.g., mine managers, contractors).
+        </div>
+        <div
+          class="ant-typography"
+        >
+          <b>
+            Important:
+          </b>
+           
+          <em>
+            You must provide at least one mine number from your Mines Act permit. If you cannot locate the permit number in the dropdown list, check “My mine is not in the list” and enter the mine name and/or permit number in the text box provided.
+          </em>
+        </div>
+        <div
+          class="ant-typography"
+        >
+          Typical processing time: 5-10 business days
+        </div>
+        <div
+          class="ant-typography"
+        >
+          <strong>
+            What you'll need:
+          </strong>
+        </div>
+        <ul>
+          <li>
+            Your role and associated business name (as registered with Business BCeiD)
+          </li>
+          <li>
+            Mine number(s) or permit details
+          </li>
+          <li>
+            Authorization from the permittee (letter or contact information)
+          </li>
+        </ul>
+      </div>
+      <div
+        class="hide-required-indicator form-section"
+      >
+        <h2
+          class="ant-typography"
+        >
+          Your User Information (read-only)
+        </h2>
+        <div
+          class="ant-typography"
+        >
+          <strong>
+            Signed in with the wrong account? Log out and sign in with the BCeID account you want to use.
+          </strong>
+        </div>
+        <div
+          class="ant-form-item ant-form-item-with-help"
+        >
+          <div
+            class="ant-row ant-form-item-row"
+          >
+            <div
+              class="ant-col ant-form-item-label"
+            >
+              <label
+                class=""
+                for="NEW_MINESPACE_USER_preferred_username"
+                title=""
+              >
+                <div>
+                  Username
+                   
+                  <span
+                    class="form-item-optional"
+                  >
+                     (optional)
+                  </span>
+                </div>
+              </label>
+            </div>
+            <div
+              class="ant-col ant-form-item-control"
+            >
+              <div
+                class="ant-form-item-control-input"
+              >
+                <div
+                  class="ant-form-item-control-input-content"
+                >
+                  <input
+                    aria-label="preferred_username"
+                    class="ant-input ant-input-disabled"
+                    data-testid="preferred_username"
+                    disabled=""
+                    name="preferred_username"
+                    type="text"
+                    value="test_user"
+                  />
+                </div>
+              </div>
+              <div
+                style="display: flex; flex-wrap: nowrap;"
+              >
+                <div
+                  class="ant-form-item-explain ant-form-item-explain-connected"
+                  id="NEW_MINESPACE_USER_preferred_username_help"
+                  role="alert"
+                >
+                  <div
+                    class=""
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-form-item ant-form-item-with-help"
+        >
+          <div
+            class="ant-row ant-form-item-row"
+          >
+            <div
+              class="ant-col ant-form-item-label"
+            >
+              <label
+                class=""
+                for="NEW_MINESPACE_USER_display_name"
+                title=""
+              >
+                <div>
+                  Full Name
+                   
+                  <span
+                    class="form-item-optional"
+                  >
+                     (optional)
+                  </span>
+                </div>
+              </label>
+            </div>
+            <div
+              class="ant-col ant-form-item-control"
+            >
+              <div
+                class="ant-form-item-control-input"
+              >
+                <div
+                  class="ant-form-item-control-input-content"
+                >
+                  <input
+                    aria-label="display_name"
+                    class="ant-input ant-input-disabled"
+                    data-testid="display_name"
+                    disabled=""
+                    name="display_name"
+                    type="text"
+                    value=""
+                  />
+                </div>
+              </div>
+              <div
+                style="display: flex; flex-wrap: nowrap;"
+              >
+                <div
+                  class="ant-form-item-explain ant-form-item-explain-connected"
+                  id="NEW_MINESPACE_USER_display_name_help"
+                  role="alert"
+                >
+                  <div
+                    class=""
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-form-item ant-form-item-with-help"
+        >
+          <div
+            class="ant-row ant-form-item-row"
+          >
+            <div
+              class="ant-col ant-form-item-label"
+            >
+              <label
+                class=""
+                for="NEW_MINESPACE_USER_email"
+                title=""
+              >
+                <div>
+                  Email Address
+                   
+                  <span
+                    class="form-item-optional"
+                  >
+                     (optional)
+                  </span>
+                </div>
+              </label>
+            </div>
+            <div
+              class="ant-col ant-form-item-control"
+            >
+              <div
+                class="ant-form-item-control-input"
+              >
+                <div
+                  class="ant-form-item-control-input-content"
+                >
+                  <input
+                    aria-label="email"
+                    class="ant-input ant-input-disabled"
+                    data-testid="email"
+                    disabled=""
+                    name="email"
+                    type="text"
+                    value="test@example.com"
+                  />
+                </div>
+              </div>
+              <div
+                style="display: flex; flex-wrap: nowrap;"
+              >
+                <div
+                  class="ant-form-item-explain ant-form-item-explain-connected"
+                  id="NEW_MINESPACE_USER_email_help"
+                  role="alert"
+                >
+                  <div
+                    class=""
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="form-section"
+      >
+        <h2
+          class="ant-typography"
+        >
+          Your Request Details
+        </h2>
+        <div
+          class="ant-form-item ant-form-item-with-help"
+        >
+          <div
+            class="ant-row ant-form-item-row"
+          >
+            <div
+              class="ant-col ant-form-item-label"
+            >
+              <label
+                class="ant-form-item-required"
+                for="NEW_MINESPACE_USER_access_request.role_requested"
+                title=""
+              >
+                <div
+                  style="width: 100%;"
+                >
+                  Your role
+                </div>
+              </label>
+            </div>
+            <div
+              class="ant-col ant-form-item-control"
+            >
+              <div
+                class="ant-form-item-control-input"
+              >
+                <div
+                  class="ant-form-item-control-input-content"
+                >
+                  <div
+                    aria-required="true"
+                    class="ant-select ant-select-in-form-item ant-select-single ant-select-allow-clear ant-select-show-arrow ant-select-show-search"
+                    data-cy="access_request.role_requested"
+                  >
+                    <div
+                      class="ant-select-selector"
+                    >
+                      <span
+                        class="ant-select-selection-search"
+                      >
+                        <input
+                          aria-activedescendant="NEW_MINESPACE_USER_access_request.role_requested_list_0"
+                          aria-autocomplete="list"
+                          aria-controls="NEW_MINESPACE_USER_access_request.role_requested_list"
+                          aria-haspopup="listbox"
+                          aria-owns="NEW_MINESPACE_USER_access_request.role_requested_list"
+                          aria-required="true"
+                          autocomplete="off"
+                          class="ant-select-selection-search-input"
+                          id="NEW_MINESPACE_USER_access_request.role_requested"
+                          role="combobox"
+                          type="search"
+                          value=""
+                        />
+                      </span>
+                      <span
+                        class="ant-select-selection-placeholder"
+                      >
+                        Please select
+                      </span>
+                    </div>
+                    <span
+                      aria-hidden="true"
+                      class="ant-select-arrow"
+                      style="user-select: none;"
+                      unselectable="on"
+                    >
+                      <span
+                        aria-label="down"
+                        class="anticon anticon-down ant-select-suffix"
+                        role="img"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          data-icon="down"
+                          fill="currentColor"
+                          focusable="false"
+                          height="1em"
+                          viewBox="64 64 896 896"
+                          width="1em"
+                        >
+                          <path
+                            d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+                          />
+                        </svg>
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div
+                style="display: flex; flex-wrap: nowrap;"
+              >
+                <div
+                  class="ant-form-item-explain ant-form-item-explain-connected"
+                  id="NEW_MINESPACE_USER_access_request.role_requested_help"
+                  role="alert"
+                >
+                  <div
+                    class=""
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-form-item ant-form-item-with-help"
+        >
+          <div
+            class="ant-row ant-form-item-row"
+          >
+            <div
+              class="ant-col ant-form-item-label"
+            >
+              <label
+                class="ant-form-item-required"
+                for="NEW_MINESPACE_USER_access_request.business_name"
+                title=""
+              >
+                <div
+                  style="width: 100%;"
+                >
+                  Legal Business Name
+                </div>
+              </label>
+            </div>
+            <div
+              class="ant-col ant-form-item-control"
+            >
+              <div
+                class="ant-form-item-control-input"
+              >
+                <div
+                  class="ant-form-item-control-input-content"
+                >
+                  <input
+                    aria-label="access_request.business_name"
+                    class="ant-input"
+                    data-testid="access_request.business_name"
+                    name="access_request.business_name"
+                    type="text"
+                    value=""
+                  />
+                </div>
+              </div>
+              <div
+                style="display: flex; flex-wrap: nowrap;"
+              >
+                <div
+                  class="ant-form-item-explain ant-form-item-explain-connected"
+                  id="NEW_MINESPACE_USER_access_request.business_name_help"
+                  role="alert"
+                >
+                  <div
+                    class=""
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="form-multiselect"
+        >
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-label"
+              >
+                <label
+                  class="ant-form-item-required"
+                  for="NEW_MINESPACE_USER_mines"
+                  title=""
+                >
+                  <div
+                    style="width: 100%;"
+                  >
+                    Mine number(s) from your Mines Act permit
+                  </div>
+                </label>
+              </div>
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <div
+                      aria-required="true"
+                      class="ant-select ant-select-sm ant-select-in-form-item ant-select-multiple ant-select-show-arrow ant-select-show-search"
+                      style="width: 100%;"
+                    >
+                      <div
+                        class="ant-select-selector"
+                      >
+                        <div
+                          class="ant-select-selection-overflow"
+                        >
+                          <div
+                            class="ant-select-selection-overflow-item ant-select-selection-overflow-item-suffix"
+                            style="opacity: 1;"
+                          >
+                            <div
+                              class="ant-select-selection-search"
+                              style="width: 0px;"
+                            >
+                              <input
+                                aria-activedescendant="mines_list_0"
+                                aria-autocomplete="list"
+                                aria-controls="mines_list"
+                                aria-haspopup="listbox"
+                                aria-owns="mines_list"
+                                aria-required="true"
+                                autocomplete="off"
+                                class="ant-select-selection-search-input"
+                                id="mines"
+                                readonly=""
+                                role="combobox"
+                                style="opacity: 0;"
+                                type="search"
+                                unselectable="on"
+                                value=""
+                              />
+                              <span
+                                aria-hidden="true"
+                                class="ant-select-selection-search-mirror"
+                              >
+                                
+                                 
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                        <span
+                          class="ant-select-selection-placeholder"
+                        >
+                          Search by mine number or permit number (minimum 3 characters)
+                        </span>
+                      </div>
+                      <span
+                        aria-hidden="true"
+                        class="ant-select-arrow"
+                        style="user-select: none;"
+                        unselectable="on"
+                      >
+                        <span
+                          aria-label="down"
+                          class="anticon anticon-down ant-select-suffix"
+                          role="img"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            data-icon="down"
+                            fill="currentColor"
+                            focusable="false"
+                            height="1em"
+                            viewBox="64 64 896 896"
+                            width="1em"
+                          >
+                            <path
+                              d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+                            />
+                          </svg>
+                        </span>
+                      </span>
+                    </div>
+                    <div
+                      class="form-item-help mines-form-help"
+                    >
+                      Enter at least one mine number from your Mines Act permit. Example: 88112329. If you can't find it in the list, check "My mine is not in the list" and enter the mine name or permit number. Mineral Title claim or lease numbers are not accepted.
+                    </div>
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="NEW_MINESPACE_USER_mines_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-form-item ant-form-item-with-help"
+        >
+          <div
+            class="ant-row ant-form-item-row"
+          >
+            <div
+              class="ant-col ant-form-item-control"
+            >
+              <div
+                class="ant-form-item-control-input"
+              >
+                <div
+                  class="ant-form-item-control-input-content"
+                >
+                  <label
+                    class="ant-checkbox-wrapper ant-checkbox-wrapper-in-form-item"
+                  >
+                    <span
+                      class="ant-checkbox"
+                    >
+                      <input
+                        class="ant-checkbox-input"
+                        id="NEW_MINESPACE_USER_access_request.mineNotInList"
+                        type="checkbox"
+                        value=""
+                      />
+                      <span
+                        class="ant-checkbox-inner"
+                      />
+                    </span>
+                    <span>
+                      My mine is not in the list
+                    </span>
+                  </label>
+                </div>
+              </div>
+              <div
+                style="display: flex; flex-wrap: nowrap;"
+              >
+                <div
+                  class="ant-form-item-explain ant-form-item-explain-connected"
+                  id="NEW_MINESPACE_USER_access_request.mineNotInList_help"
+                  role="alert"
+                >
+                  <div
+                    class=""
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="form-section"
+      >
+        <h2
+          class="ant-typography"
+        >
+          Authorization
+        </h2>
+        <h3
+          class="ant-typography"
+        >
+          Choice A: Upload Authorization Letter
+        </h3>
+        <div
+          class="form-item-help"
+        >
+          Provide a letter of authorization from the permittee authorizing your access.
+        </div>
+        <div
+          class="whirlpool-container"
+        >
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-label"
+              >
+                <label
+                  class="ant-form-item-required"
+                  for="NEW_MINESPACE_USER_documents"
+                  title=""
+                >
+                  Authorization Letter
+                </label>
+              </div>
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <div
+                      class="filepond--wrapper"
+                    >
+                      <input
+                        accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/rtf,application/vnd.oasis.opendocument.text,application/vnd.oasis.opendocument.text-template,application/vnd.oasis.opendocument.text-web,application/vnd.oasis.opendocument.text-master"
+                        id="documents"
+                        multiple=""
+                        name="file"
+                        type="file"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="NEW_MINESPACE_USER_documents_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <h3
+          class="ant-typography"
+        >
+          Choice B: Provide permittee/authorized administrator contact
+        </h3>
+        <div
+          class="form-item-help"
+        >
+          Enter the permittee's contact information so we can verify your authorization
+        </div>
+        <div
+          class="ant-form-item ant-form-item-with-help"
+        >
+          <div
+            class="ant-row ant-form-item-row"
+          >
+            <div
+              class="ant-col ant-form-item-label"
+            >
+              <label
+                class="ant-form-item-required"
+                for="NEW_MINESPACE_USER_access_request.permittee.business"
+                title=""
+              >
+                <div
+                  style="width: 100%;"
+                >
+                  Business Name
+                </div>
+              </label>
+            </div>
+            <div
+              class="ant-col ant-form-item-control"
+            >
+              <div
+                class="ant-form-item-control-input"
+              >
+                <div
+                  class="ant-form-item-control-input-content"
+                >
+                  <input
+                    aria-label="access_request.permittee.business"
+                    class="ant-input"
+                    data-testid="access_request.permittee.business"
+                    name="access_request.permittee.business"
+                    type="text"
+                    value=""
+                  />
+                </div>
+              </div>
+              <div
+                style="display: flex; flex-wrap: nowrap;"
+              >
+                <div
+                  class="ant-form-item-explain ant-form-item-explain-connected"
+                  id="NEW_MINESPACE_USER_access_request.permittee.business_help"
+                  role="alert"
+                >
+                  <div
+                    class=""
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-form-item ant-form-item-with-help"
+        >
+          <div
+            class="ant-row ant-form-item-row"
+          >
+            <div
+              class="ant-col ant-form-item-label"
+            >
+              <label
+                class="ant-form-item-required"
+                for="NEW_MINESPACE_USER_access_request.permittee.name"
+                title=""
+              >
+                <div
+                  style="width: 100%;"
+                >
+                  Name
+                </div>
+              </label>
+            </div>
+            <div
+              class="ant-col ant-form-item-control"
+            >
+              <div
+                class="ant-form-item-control-input"
+              >
+                <div
+                  class="ant-form-item-control-input-content"
+                >
+                  <input
+                    aria-label="access_request.permittee.name"
+                    class="ant-input"
+                    data-testid="access_request.permittee.name"
+                    name="access_request.permittee.name"
+                    type="text"
+                    value=""
+                  />
+                </div>
+              </div>
+              <div
+                style="display: flex; flex-wrap: nowrap;"
+              >
+                <div
+                  class="ant-form-item-explain ant-form-item-explain-connected"
+                  id="NEW_MINESPACE_USER_access_request.permittee.name_help"
+                  role="alert"
+                >
+                  <div
+                    class=""
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-form-item ant-form-item-with-help"
+        >
+          <div
+            class="ant-row ant-form-item-row"
+          >
+            <div
+              class="ant-col ant-form-item-label"
+            >
+              <label
+                class=""
+                for="NEW_MINESPACE_USER_access_request.permittee.title"
+                title=""
+              >
+                <div>
+                  Title
+                   
+                  <span
+                    class="form-item-optional"
+                  >
+                     (optional)
+                  </span>
+                </div>
+              </label>
+            </div>
+            <div
+              class="ant-col ant-form-item-control"
+            >
+              <div
+                class="ant-form-item-control-input"
+              >
+                <div
+                  class="ant-form-item-control-input-content"
+                >
+                  <input
+                    aria-label="access_request.permittee.title"
+                    class="ant-input"
+                    data-testid="access_request.permittee.title"
+                    name="access_request.permittee.title"
+                    type="text"
+                    value=""
+                  />
+                </div>
+              </div>
+              <div
+                style="display: flex; flex-wrap: nowrap;"
+              >
+                <div
+                  class="ant-form-item-explain ant-form-item-explain-connected"
+                  id="NEW_MINESPACE_USER_access_request.permittee.title_help"
+                  role="alert"
+                >
+                  <div
+                    class=""
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-form-item ant-form-item-with-help"
+        >
+          <div
+            class="ant-row ant-form-item-row"
+          >
+            <div
+              class="ant-col ant-form-item-label"
+            >
+              <label
+                class="ant-form-item-required"
+                for="NEW_MINESPACE_USER_access_request.permittee.email"
+                title=""
+              >
+                <div
+                  style="width: 100%;"
+                >
+                  Email
+                </div>
+              </label>
+            </div>
+            <div
+              class="ant-col ant-form-item-control"
+            >
+              <div
+                class="ant-form-item-control-input"
+              >
+                <div
+                  class="ant-form-item-control-input-content"
+                >
+                  <input
+                    aria-label="access_request.permittee.email"
+                    class="ant-input"
+                    data-testid="access_request.permittee.email"
+                    name="access_request.permittee.email"
+                    type="text"
+                    value=""
+                  />
+                </div>
+              </div>
+              <div
+                style="display: flex; flex-wrap: nowrap;"
+              >
+                <div
+                  class="ant-form-item-explain ant-form-item-explain-connected"
+                  id="NEW_MINESPACE_USER_access_request.permittee.email_help"
+                  role="alert"
+                >
+                  <div
+                    class=""
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-form-item ant-form-item-with-help"
+        >
+          <div
+            class="ant-row ant-form-item-row"
+          >
+            <div
+              class="ant-col ant-form-item-label"
+            >
+              <label
+                class="ant-form-item-required"
+                for="NEW_MINESPACE_USER_access_request.permittee.phone"
+                title=""
+              >
+                <div
+                  style="width: 100%;"
+                >
+                  Phone
+                </div>
+              </label>
+            </div>
+            <div
+              class="ant-col ant-form-item-control"
+            >
+              <div
+                class="ant-form-item-control-input"
+              >
+                <div
+                  class="ant-form-item-control-input-content"
+                >
+                  <input
+                    aria-label="access_request.permittee.phone"
+                    class="ant-input"
+                    data-testid="access_request.permittee.phone"
+                    name="access_request.permittee.phone"
+                    type="text"
+                    value=""
+                  />
+                </div>
+              </div>
+              <div
+                style="display: flex; flex-wrap: nowrap;"
+              >
+                <div
+                  class="ant-form-item-explain ant-form-item-explain-connected"
+                  id="NEW_MINESPACE_USER_access_request.permittee.phone_help"
+                  role="alert"
+                >
+                  <div
+                    class=""
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-form-item ant-form-item-with-help"
+        >
+          <div
+            class="ant-row ant-form-item-row"
+          >
+            <div
+              class="ant-col ant-form-item-label"
+            >
+              <label
+                class=""
+                for="NEW_MINESPACE_USER_access_request.ministry_contact"
+                title=""
+              >
+                <div>
+                  Ministry contact (MCM inspector/staff email) to assist routing
+                   
+                  <span
+                    class="form-item-optional"
+                  >
+                     (optional)
+                  </span>
+                </div>
+              </label>
+            </div>
+            <div
+              class="ant-col ant-form-item-control"
+            >
+              <div
+                class="ant-form-item-control-input"
+              >
+                <div
+                  class="ant-form-item-control-input-content"
+                >
+                  <input
+                    aria-label="access_request.ministry_contact"
+                    class="ant-input"
+                    data-testid="access_request.ministry_contact"
+                    name="access_request.ministry_contact"
+                    type="text"
+                    value=""
+                  />
+                  <div
+                    class="form-item-help access_request.ministry_contact-form-help"
+                  >
+                    If you've spoken with an MCM Inspector or staff member about this request, enter their email to help us process your application.
+                  </div>
+                </div>
+              </div>
+              <div
+                style="display: flex; flex-wrap: nowrap;"
+              >
+                <div
+                  class="ant-form-item-explain ant-form-item-explain-connected"
+                  id="NEW_MINESPACE_USER_access_request.ministry_contact_help"
+                  role="alert"
+                >
+                  <div
+                    class=""
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="form-section"
+      >
+        <h2
+          class="ant-typography"
+        >
+          Privacy and Consent
+        </h2>
+        <h3
+          class="ant-typography"
+        >
+          Terms of Use
+        </h3>
+        <div
+          class="terms-container"
+        >
+          <ol
+            class="bold-first-line"
+          >
+            <li>
+              <div>
+                Purpose of Access
+              </div>
+              <div>
+                MineSpace is provided by the Ministry of Mining and Critical Minerals (Ministry) to support mine management, regulatory compliance, and communication. Access is granted only to individuals who are permittees or authorized representatives (e.g., mine managers).
+              </div>
+            </li>
+            <li>
+              <div>
+                Accuracy of Information
+              </div>
+              <div>
+                You agree to provide accurate, complete, and current information during registration and while using MineSpace. Misrepresentation may result in suspension or termination of access.
+              </div>
+            </li>
+            <li>
+              <div>
+                Authorization
+              </div>
+              <div>
+                If you are requesting access as a mine manager or representative, you confirm that you have been authorized by the permittee to act on their behalf. You may be required to provide supporting documentation or undergo verification.
+              </div>
+            </li>
+            <li>
+              <div>
+                Confidentiality and Security
+              </div>
+              <div>
+                You agree to maintain the confidentiality of your login credentials and any sensitive information accessed through MineSpace. Sharing credentials or unauthorized disclosure of data is strictly prohibited.
+              </div>
+            </li>
+            <li>
+              <div>
+                Compliance with Laws and Regulations
+              </div>
+              <div>
+                You agree to comply with all applicable laws, regulations, and ministry policies when using MineSpace. Misuse of the platform may result in legal action or revocation of access.
+              </div>
+            </li>
+            <li>
+              <div>
+                Ministry Rights
+              </div>
+              <div>
+                The Ministry reserves the right to verify your identity and authorization, monitor platform usage, and revoke access at its discretion without prior notice.
+              </div>
+            </li>
+            <li>
+              <div>
+                Consent to Communication
+              </div>
+              <div>
+                By using MineSpace, you consent to receive electronic communications related to your account, mine permits, and regulatory obligations.
+              </div>
+            </li>
+            <li>
+              <div>
+                Limitation of Liability
+              </div>
+              <div>
+                The Ministry is not liable for any damages resulting from the use or inability to use MineSpace, except as required by law.
+              </div>
+            </li>
+            <li>
+              <div>
+                Acceptance
+              </div>
+              <div>
+                By proceeding, you acknowledge that you have read, understood, and agree to these Terms of Use.
+              </div>
+            </li>
+          </ol>
+        </div>
+        <h3
+          class="ant-typography"
+        >
+          Privacy Collection Notice
+        </h3>
+        <div
+          class="terms-container"
+        >
+          <div
+            class="ant-typography"
+          >
+            <strong>
+              Why we're collecting your information
+            </strong>
+          </div>
+          <div
+            class="ant-typography"
+          >
+            Your personal information (e.g., name, email, business name, BCeID username, mine permit number, and authorization details) is being collected to:
+          </div>
+          <ul>
+            <li>
+              Verify your identity and confirm your eligibility for access to MineSpace.
+            </li>
+            <li>
+              Determine your association with a specific mine or permit.
+            </li>
+            <li>
+              Obtain authorization from the permittee or appropriate ministry staff.
+            </li>
+            <li>
+              Communicate status updates and regulatory requirements.
+            </li>
+          </ul>
+          <div
+            class="ant-typography"
+          >
+            <strong>
+              Legal Authority
+            </strong>
+          </div>
+          <div
+            class="ant-typography"
+          >
+            We are collecting this information under the authority of the
+             
+            <em>
+              Freedom of Information and Protection of Privacy Act
+            </em>
+             (RSBC 1996, c. 165), specifically sections 26(c) and 26(d), which allow public bodies to collect personal information needed to carry out their statutory mandate.
+          </div>
+          <div
+            class="ant-typography"
+          >
+            <strong>
+              How we will use and share your information
+            </strong>
+          </div>
+          <div
+            class="ant-typography"
+          >
+            Your information will be shared with:
+          </div>
+          <ul>
+            <li>
+              The permittee (e.g., mine manager) responsible for granting access.
+            </li>
+            <li>
+              Ministry of Mining and Critical Minerals staff for verification and administrative purposes.
+            </li>
+            <li>
+              Other provincial public bodies if required for compliance or enforcement activities.
+            </li>
+          </ul>
+          <div
+            class="ant-typography"
+          >
+            <strong>
+              What happens if you don't provide all required information
+            </strong>
+          </div>
+          <div
+            class="ant-typography"
+          >
+            If you do not provide at least one valid mine permit number or sufficient authorization details, or refuse to consent to information collection, your application cannot be processed.
+          </div>
+          <div
+            class="ant-typography"
+          >
+            <strong>
+              How long we'll keep your information
+            </strong>
+          </div>
+          <div
+            class="ant-typography"
+          >
+             
+            We will retain your information for the duration of your account and as required to support ongoing regulatory compliance, communication, or audit needs.
+          </div>
+          <div
+            class="ant-typography"
+          >
+            <strong>
+              Your privacy rights
+            </strong>
+          </div>
+          <ul>
+            <li>
+              <b>
+                Access and correction:
+              </b>
+               You have the right to request access to or correction of your personal information under FOIPPA.
+            </li>
+            <li>
+              <b>
+                Complaints:
+              </b>
+               If you feel your privacy rights have been violated, you may contact the Office of the Information and Privacy Commissioner of BC:
+              <ul>
+                <li>
+                  <b>
+                    Email:
+                  </b>
+                   info@oipc.bc.ca
+                </li>
+                <li>
+                  <b>
+                    Phone:
+                  </b>
+                   1 800 663-7867 (toll-free in BC)
+                </li>
+              </ul>
+            </li>
+          </ul>
+          <div
+            class="ant-typography"
+          >
+            <b>
+              Questions or concerns?
+            </b>
+            <div>
+              Contact the Mines Digital Services
+            </div>
+            <div>
+              <b>
+                Email:
+              </b>
+               MDS@gov.bc.ca
+            </div>
+          </div>
+        </div>
+        <h3
+          class="ant-typography"
+        >
+          Consent
+        </h3>
+        <div
+          class="ant-form-item ant-form-item-with-help ant-form-item-checkbox-required"
+        >
+          <div
+            class="ant-row ant-form-item-row"
+          >
+            <div
+              class="ant-col ant-form-item-control"
+            >
+              <div
+                class="ant-form-item-control-input"
+              >
+                <div
+                  class="ant-form-item-control-input-content"
+                >
+                  <label
+                    class="ant-checkbox-wrapper ant-checkbox-wrapper-in-form-item"
+                  >
+                    <span
+                      class="ant-checkbox"
+                    >
+                      <input
+                        aria-required="true"
+                        class="ant-checkbox-input"
+                        id="NEW_MINESPACE_USER_access_request.consent_privacy"
+                        type="checkbox"
+                        value=""
+                      />
+                      <span
+                        class="ant-checkbox-inner"
+                      />
+                    </span>
+                    <span>
+                      I consent to the collection, use, and disclosure of my information as described in the Privacy Notice
+                    </span>
+                  </label>
+                </div>
+              </div>
+              <div
+                style="display: flex; flex-wrap: nowrap;"
+              >
+                <div
+                  class="ant-form-item-explain ant-form-item-explain-connected"
+                  id="NEW_MINESPACE_USER_access_request.consent_privacy_help"
+                  role="alert"
+                >
+                  <div
+                    class=""
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-form-item ant-form-item-with-help ant-form-item-checkbox-required"
+        >
+          <div
+            class="ant-row ant-form-item-row"
+          >
+            <div
+              class="ant-col ant-form-item-control"
+            >
+              <div
+                class="ant-form-item-control-input"
+              >
+                <div
+                  class="ant-form-item-control-input-content"
+                >
+                  <label
+                    class="ant-checkbox-wrapper ant-checkbox-wrapper-in-form-item"
+                  >
+                    <span
+                      class="ant-checkbox"
+                    >
+                      <input
+                        aria-required="true"
+                        class="ant-checkbox-input"
+                        id="NEW_MINESPACE_USER_access_request.consent_electronic"
+                        type="checkbox"
+                        value=""
+                      />
+                      <span
+                        class="ant-checkbox-inner"
+                      />
+                    </span>
+                    <span>
+                      I consent to receive electronic communications related to my MineSpace account and Regulatory obligations.
+                    </span>
+                  </label>
+                </div>
+              </div>
+              <div
+                style="display: flex; flex-wrap: nowrap;"
+              >
+                <div
+                  class="ant-form-item-explain ant-form-item-explain-connected"
+                  id="NEW_MINESPACE_USER_access_request.consent_electronic_help"
+                  role="alert"
+                >
+                  <div
+                    class=""
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button
+        aria-label="Submit"
+        class="ant-btn ant-btn-primary  form-btn"
+        disabled=""
+        type="submit"
+      >
+        <span>
+          Submit
+        </span>
+      </button>
+    </form>
+  </div>
+</div>
+`;
+
+exports[`MinespaceAccessRequest renders properly with existing access request 1`] = `
+<div>
+  <div>
+    <h1
+      class="ant-typography"
+    >
+      Access Request Submitted
+    </h1>
+    <div
+      class="ant-typography"
+    >
+      Your access request has been successfully submitted and is currently under review.
+    </div>
+    <div
+      class="ant-typography"
+    >
+      You will receive an email notification once your request has been processed.
+    </div>
+    <div
+      class="ant-typography"
+    >
+      Submitted on:
+       
+      1/15/2026, 10:00:00 AM
+    </div>
+  </div>
+</div>
+`;
