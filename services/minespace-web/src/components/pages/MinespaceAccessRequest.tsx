@@ -261,7 +261,7 @@ const MinespaceAccessRequest: FC = () => {
     // Merge delegation_letter into documents if present
     const payload = { ...values };
     if (payload.delegation_letter?.length) {
-      payload.documents = [...payload.documents, ...payload.delegation_letter];
+      payload.documents = [...(payload.documents ?? []), ...payload.delegation_letter];
       delete payload.delegation_letter;
     }
     await dispatch(submitNewUserAccessRequest(payload));
