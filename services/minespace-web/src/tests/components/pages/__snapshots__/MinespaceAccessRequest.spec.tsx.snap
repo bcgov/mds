@@ -45,7 +45,7 @@ exports[`MinespaceAccessRequest renders properly for new user 1`] = `
         </div>
         <ul>
           <li>
-            Your role and associated business name (as registered with Business BCeiD)
+            Your role and associated business name (as registered with Business BCeID)
           </li>
           <li>
             Mine number(s) or permit details

@@ -623,7 +623,7 @@ def test_get_minespace_users_include_rejected(test_client, db_session, auth_head
     )
     request1.save()
     
-    # Without include_rejected, user1 should not be returned
+    # Without include_rejected, user1 should not be returned but user2 should
     get_resp = test_client.get(
         '/users/minespace',
         headers=auth_headers['full_auth_header']
@@ -632,8 +632,9 @@ def test_get_minespace_users_include_rejected(test_client, db_session, auth_head
     data = json.loads(get_resp.data.decode())
     user_ids = [u['user_id'] for u in data['records']]
     assert user1.user_id not in user_ids
+    assert user2.user_id in user_ids
     
-    # With include_rejected=true, user1 should be returned
+    # With include_rejected=true, both user1 and user2 should be returned
     get_resp = test_client.get(
         '/users/minespace?include_rejected=true',
         headers=auth_headers['full_auth_header']
@@ -642,3 +643,4 @@ def test_get_minespace_users_include_rejected(test_client, db_session, auth_head
     data = json.loads(get_resp.data.decode())
     user_ids = [u['user_id'] for u in data['records']]
     assert user1.user_id in user_ids
+    assert user2.user_id in user_ids

@@ -164,7 +164,7 @@ def test_minespace_user_create_minespace_user_new(db_session):
     
     assert user is not None
     assert user.bceid_username == bceid_username
-    assert user.deleted_ind == None
+    assert user.deleted_ind is None
 
 
 def test_minespace_user_create_minespace_user_restore_deleted(db_session):

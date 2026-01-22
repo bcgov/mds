@@ -193,7 +193,7 @@ class MinespaceUserResource(Resource, UserMixin):
             existing_minespace_user_mine = MinespaceUserMine.find_by_minespace_user_mine_relationship(guid, user_id)
             current_app.logger.info('Existing Mine: {}'.format(existing_minespace_user_mine))
             if not existing_minespace_user_mine:
-                new_minespace_user_mine = MinespaceUserMine.create(user_id, mine.mine_guid)
+                MinespaceUserMine.create(user_id, mine.mine_guid)
         
         # Handle user_roles updates if provided
         # Format: [{mine_guid, minespace_user_role_code, is_pending, minespace_user_role_xref_guid}]

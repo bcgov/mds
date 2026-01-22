@@ -1,6 +1,3 @@
-from datetime import datetime
-from pytz import utc
-
 from app.api.users.minespace.models.minespace_user_request import MinespaceUserRequest
 from tests.factories import MinespaceUserFactory, MineFactory
 
@@ -11,7 +8,7 @@ def test_find_by_user_sub_existing(db_session):
     mine2 = MineFactory()
     
     # complete permittee form submission with mines
-    request = MinespaceUserRequest.create_or_update_request(
+    MinespaceUserRequest.create_or_update_request(
         user_sub=user_sub,
         data={
             "role_requested": "PMT",

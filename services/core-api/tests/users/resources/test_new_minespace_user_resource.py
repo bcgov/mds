@@ -569,10 +569,13 @@ def test_get_mine_search_results_by_permit_no(test_client, db_session, auth_head
     assert get_resp.status_code == 200
     data = json.loads(get_resp.data.decode())
     assert 'mines' in data
+    assert len(data['mines']) > 0
     
     # Should find the mine associated with this permit
-    mine_guids = [m['mine_guid'] for m in data['mines']]
-    assert str(mine.mine_guid) in mine_guids
+    result = next((m for m in data['mines'] if m['mine_guid'] == str(mine.mine_guid)), None)
+    assert result is not None
+    assert result['permit_guid'] == str(permit.permit_guid)
+    assert result['permit_no'] == permit.permit_no
 
 
 def test_get_mine_search_results_core_user_full_data(test_client, db_session, auth_headers):
@@ -590,12 +593,15 @@ def test_get_mine_search_results_core_user_full_data(test_client, db_session, au
     assert get_resp.status_code == 200
     data = json.loads(get_resp.data.decode())
     assert 'mines' in data
+    assert len(data['mines']) > 0
     
-    if len(data['mines']) > 0:
-        result = data['mines'][0]
-        # Core users get all fields
-        assert 'mine_guid' in result
-        assert 'mine_no' in result
-        assert 'mine_name' in result
-        assert 'permit_guid' in result
-        assert 'permit_no' in result
+    # Find our specific mine in the results
+    result = next((m for m in data['mines'] if m['mine_guid'] == str(mine.mine_guid)), None)
+    assert result is not None
+    
+    # Core users get all fields with correct values
+    assert result['mine_guid'] == str(mine.mine_guid)
+    assert result['mine_no'] == mine.mine_no
+    assert result['mine_name'] == mine.mine_name
+    assert result['permit_guid'] == str(permit.permit_guid)
+    assert result['permit_no'] == permit.permit_no

@@ -307,7 +307,7 @@ const MinespaceAccessRequest: FC = () => {
           <Typography.Paragraph>Typical processing time: 5-10 business days</Typography.Paragraph>
           <Typography.Paragraph strong>What you'll need:</Typography.Paragraph>
           <ul>
-            <li>Your role and associated business name (as registered with Business BCeiD)</li>
+            <li>Your role and associated business name (as registered with Business BCeID)</li>
             <li>Mine number(s) or permit details</li>
             <li>Authorization from the permittee (letter or contact information)</li>
           </ul>
