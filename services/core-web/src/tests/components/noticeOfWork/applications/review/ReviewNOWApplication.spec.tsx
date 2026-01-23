@@ -1,7 +1,8 @@
 import React from "react";
-import { shallow } from "enzyme";
 import { ReviewNOWApplication } from "@/components/noticeOfWork/applications/review/ReviewNOWApplication";
 import * as NOW_MOCK from "@mds/common/tests/mocks/noticeOfWorkMock";
+import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
+import { render } from "@testing-library/react";
 
 const reducerProps = {
   isViewMode: true,
@@ -50,7 +51,11 @@ const props = {
 
 describe("ReviewNOWApplication", () => {
   it("renders properly", () => {
-    const component = shallow(<ReviewNOWApplication {...props} {...reducerProps} />);
-    expect(component).toMatchSnapshot();
+    const { container } = render(
+      <ReduxWrapper>
+        <ReviewNOWApplication {...props} {...reducerProps} />
+      </ReduxWrapper>
+    );
+    expect(container.firstChild).toMatchSnapshot();
   });
 });
