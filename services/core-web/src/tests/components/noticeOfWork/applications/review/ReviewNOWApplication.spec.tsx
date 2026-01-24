@@ -1,10 +1,13 @@
 import React from "react";
-import { ReviewNOWApplication } from "@/components/noticeOfWork/applications/review/ReviewNOWApplication";
+import ReviewNOWApplication from
+  "@/components/noticeOfWork/applications/review/ReviewNOWApplication";
 import * as NOW_MOCK from "@mds/common/tests/mocks/noticeOfWorkMock";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 import { render } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
 import * as FORM from "@/constants/forms";
+import { AUTHENTICATION, NOTICE_OF_WORK } from "@mds/common/constants/reducerTypes";
+import { USER_ROLES } from "@mds/common/constants/environment";
 
 const initialState = {
   form: {
@@ -17,18 +20,9 @@ const initialState = {
         imported_submission_documents: [],
         filtered_submission_documents:
           NOW_MOCK.IMPORTED_NOTICE_OF_WORK.filtered_submission_documents,
-
-        proposed_annual_maximum_tonnage:
-          NOW_MOCK.IMPORTED_NOTICE_OF_WORK.proposed_annual_maximum_tonnage,
-        adjusted_annual_maximum_tonnage:
-          NOW_MOCK.IMPORTED_NOTICE_OF_WORK.adjusted_annual_maximum_tonnage,
-        proposed_start_date: NOW_MOCK.IMPORTED_NOTICE_OF_WORK.proposed_start_date,
         proposed_end_date: NOW_MOCK.IMPORTED_NOTICE_OF_WORK.proposed_end_date,
-
-        type_of_application: NOW_MOCK.IMPORTED_NOTICE_OF_WORK.application_type_code,
         application_permit_type_code: "",
         has_surface_disturbance_outside_tenure: false,
-        is_access_gated: false,
         proposedTonnage: NOW_MOCK.IMPORTED_NOTICE_OF_WORK.proposed_annual_maximum_tonnage,
         adjustedTonnage: Number(NOW_MOCK.IMPORTED_NOTICE_OF_WORK.adjusted_annual_maximum_tonnage) || 0,
         proposedStartDate: NOW_MOCK.IMPORTED_NOTICE_OF_WORK.proposed_start_date,
@@ -47,24 +41,15 @@ const initialState = {
         isOnCrownLand: false,
         hasLicenceOfOccupation: false,
         isAccessGated: false,
-
-        state_of_land: {
-          is_on_private_land: false,
-          has_activity_in_park: false,
-          has_auth_lieutenant_gov_council: false,
-          has_archaeology_sites_affected: false,
-          has_shared_info_with_fn: false,
-          has_acknowledged_undrip: false,
-          has_fn_cultural_heritage_sites_in_area: false,
-          is_on_crown_land: false,
-          has_licence_of_occupation: false,
-          applied_for_licence_of_occupation: false,
-        },
       },
     },
   },
 
-  noticeOfWork: {
+  [NOTICE_OF_WORK]: {
+    applicationDelays: [],
+    noticeOfWork: {
+      ...NOW_MOCK.IMPORTED_NOTICE_OF_WORK,
+    },
     regionDropdownOptions: NOW_MOCK.DROPDOWN_APPLICATION_TYPES,
     applicationTypeOptions: NOW_MOCK.APPLICATION_TYPES.records,
     editableApplicationTypeOptions: NOW_MOCK.DROPDOWN_APPLICATION_TYPES,
@@ -75,14 +60,13 @@ const initialState = {
     applicationTypeOptionsHash: NOW_MOCK.APPLICATION_TYPES_HASH,
   },
 
-  authentication: {
-    userAccessData: [],
-  },
+  [AUTHENTICATION]: {
+    userAccessData: [USER_ROLES.role_admin],
+  }
 };
 
 const reducerProps = {
   isViewMode: true,
-  noticeOfWork: NOW_MOCK.IMPORTED_NOTICE_OF_WORK,
   reclamationSummary: NOW_MOCK.RECLAMATION_SUMMARY,
   renderOriginalValues: jest.fn().mockReturnValue({ value: "N/A", edited: true }),
   userRoles: [],
@@ -94,6 +78,7 @@ const props = {
   initialValues: NOW_MOCK.IMPORTED_NOTICE_OF_WORK,
   isPreLaunch: false,
   isNoticeOfWorkTypeDisabled: false,
+  noticeOfWork: NOW_MOCK.IMPORTED_NOTICE_OF_WORK,
 };
 
 describe("ReviewNOWApplication", () => {
