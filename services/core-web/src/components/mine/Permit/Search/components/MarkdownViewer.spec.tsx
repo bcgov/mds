@@ -46,7 +46,7 @@ describe('MarkdownViewer', () => {
 
         const mockedMarkdown = screen.getByTestId('mocked-markdown');
         expect(mockedMarkdown).toHaveTextContent('Check this');
-        expect(mockedMarkdown).toHaveTextContent('[1](#condition-abc123)');
+        expect(mockedMarkdown).toHaveTextContent('[[1]](#condition-abc123)');
         expect(mockedMarkdown).toHaveTextContent('reference');
 
         expect(container).toMatchSnapshot();
@@ -58,8 +58,8 @@ describe('MarkdownViewer', () => {
 
         const mockedMarkdown = screen.getByTestId('mocked-markdown');
         expect(mockedMarkdown).toHaveTextContent('Check these references');
-        expect(mockedMarkdown).toHaveTextContent('[1](#condition-abc123)');
-        expect(mockedMarkdown).toHaveTextContent('[2](#condition-def456)');
+        expect(mockedMarkdown).toHaveTextContent('[[1]](#condition-abc123)');
+        expect(mockedMarkdown).toHaveTextContent('[[2]](#condition-def456)');
     });
 
     test('processes double bracket reference correctly', () => {
@@ -68,17 +68,29 @@ describe('MarkdownViewer', () => {
 
         const mockedMarkdown = screen.getByTestId('mocked-markdown');
         expect(mockedMarkdown).toHaveTextContent('Check this');
-        expect(mockedMarkdown).toHaveTextContent('[1](#condition-abc123)');
+        expect(mockedMarkdown).toHaveTextContent('[[1]](#condition-abc123)');
         expect(mockedMarkdown).toHaveTextContent('reference');
     });
 
 
     test('handles click on non-reference link', () => {
         const mockMarkdown = 'Check this [regular link](https://example.com)';
-        render(<MarkdownViewer markdown={mockMarkdown} />);
+        const { container } = render(<MarkdownViewer markdown={mockMarkdown} />);
 
-        const mockedMarkdown = screen.getByTestId('mocked-markdown');
-        expect(mockedMarkdown).toHaveTextContent('Check this');
-        expect(mockedMarkdown).toHaveTextContent('[regular link](https://example.com)');
+        const markdownDiv: any = container.querySelector('.permit-search__markdown');
+        expect(markdownDiv).not.toBeNull();
+
+        const mockEvent = {
+            preventDefault: jest.fn(),
+            target: {
+                tagName: 'A',
+                href: 'https://example.com'
+            }
+        };
+
+        markdownDiv!.onclick!(mockEvent as any);
+
+        expect(mockEvent.preventDefault).not.toHaveBeenCalled();
+        expect(mockScrollIntoView).not.toHaveBeenCalled();
     });
 });

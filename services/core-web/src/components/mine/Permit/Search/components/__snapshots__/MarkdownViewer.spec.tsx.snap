@@ -12,7 +12,7 @@ exports[`MarkdownViewer processes single reference correctly 1`] = `
       <div
         data-testid="mocked-markdown"
       >
-        Check this [1](#condition-abc123) reference
+        Check this [[1]](#condition-abc123) reference
       </div>
     </div>
   </div>

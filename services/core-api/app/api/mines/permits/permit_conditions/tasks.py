@@ -20,11 +20,7 @@ def export_and_index_permit_amendments(permit_amendment_guids, is_manual=False):
         writer.writeheader()
         
         for permit_amendment_guid in permit_amendment_guids:
-            try:
-                print(f"Exporting permit amendment conditions for GUID: {permit_amendment_guid}")
-                export_permit_conditions(permit_amendment_guid, csv_writer=writer)
-            except Exception as e:
-                print(f"Failed to export permit amendment {permit_amendment_guid}: {e}")
+            export_permit_conditions(permit_amendment_guid, csv_writer=writer)
 
         csv_data.seek(0)
         timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")

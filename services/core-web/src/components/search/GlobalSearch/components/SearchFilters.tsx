@@ -22,17 +22,18 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
   onToggleScopeToMine,
   searchTerm,
 }) => {
-  const getFacetCount = (filterKey: string): number => {
-    if (filterKey === "mine") return facets.mine ?? 0;
-    if (filterKey === "contact") return facets.person ?? 0;
-    if (filterKey === "organization") return facets.organization ?? 0;
-    if (filterKey === "permit") return facets.permit ?? 0;
-    if (filterKey === "explosives_permit") return facets.explosives_permit ?? 0;
-    if (filterKey === "now_application") return facets.now_application ?? 0;
-    if (filterKey === "nod") return facets.nod ?? 0;
-    if (filterKey === "document") return (facets.mine_documents ?? 0) + (facets.permit_documents ?? 0);
-    return 0;
+  const facetCountMap: Record<string, number> = {
+    mine: facets.mine ?? 0,
+    contact: facets.person ?? 0,
+    organization: facets.organization ?? 0,
+    permit: facets.permit ?? 0,
+    explosives_permit: facets.explosives_permit ?? 0,
+    now_application: facets.now_application ?? 0,
+    nod: facets.nod ?? 0,
+    document: (facets.mine_documents ?? 0) + (facets.permit_documents ?? 0),
   };
+
+  const getFacetCount = (filterKey: string): number => facetCountMap[filterKey] ?? 0;
 
   return (
     <div style={{ padding: "8px 16px", borderBottom: "1px solid #f0f0f0" }}>
