@@ -60,3 +60,4 @@ services/document-manager/document-manager.iml
 /services/core-api/core-api.iml
 openshift-client-linux-*.tar.gz*
 kubectl
+/services/nris-api/nris-api.iml
