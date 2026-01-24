@@ -49,44 +49,14 @@ import { useAppSelector } from "@mds/common/redux/rootState";
 
 interface ReviewNOWApplicationProps {
   isViewMode: boolean;
-  contacts: any[];
   reclamationSummary: any[];
-  now_application_guid: string;
-  documents: any[];
-  filtered_submission_documents: any[];
   importNowSubmissionDocumentsJob: any;
-  regionDropdownOptions: any;
-  applicationTypeOptions: any;
   noticeOfWorkType: string;
   renderOriginalValues: any;
   noticeOfWork: any;
-  permitTypeHash: any;
-  regionHash: any;
-  applicationTypeOptionsHash: any;
-  permitTypeOptions: any;
   initialValues: any;
-  proposedTonnage: number;
-  adjustedTonnage: number;
-  proposedStartDate: string;
-  proposedAuthorizationEndDate: string;
-  userRoles: string[];
   isPreLaunch: boolean;
   isNoticeOfWorkTypeDisabled: boolean;
-  editableApplicationTypeOptions: any;
-  typeOfApplication: string;
-  applicationPermitType: string;
-  surfaceDisturbance: boolean;
-  isOnPrivateLand: boolean;
-  activitiesInPark: boolean;
-  lieutenantGovernorAuthorization: boolean;
-  archaeologySitesAffected: boolean;
-  sharedInfoWithFn: boolean;
-  acknowledgedUNDRIP: boolean;
-  culturalHeritageSites: boolean;
-  appliedLicenceOccupation: boolean;
-  isOnCrownLand: boolean;
-  hasLicenceOfOccupation: boolean;
-  isAccessGated: boolean;
 }
 
 const selector = formValueSelector(FORM.EDIT_NOTICE_OF_WORK);
