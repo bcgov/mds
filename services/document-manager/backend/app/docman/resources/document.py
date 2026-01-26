@@ -28,6 +28,32 @@ from app.utils.include.user_info import User
 CACHE_TIMEOUT = TIMEOUT_24_HOURS
 
 
+def check_upload_authorization(document_guid=None, folder_path=None):
+    """
+    Check if authentication is required for a document upload.
+    Minespace access request uploads bypass normal authentication requirements.
+    
+    Args:
+        document_guid: Document GUID to check (will lookup the document)
+        folder_path: Direct folder path to check (from request)
+    
+    Raises:
+        Unauthorized: If user lacks required roles for non-access-request uploads
+    """
+    is_access_request = False
+    
+    if folder_path:
+        is_access_request = 'minespace_access_requests' in (folder_path or '')
+    elif document_guid:
+        document = Document.find_by_document_guid(document_guid)
+        if document:
+            is_access_request = 'minespace_access_requests' in (document.full_storage_path or '')
+    
+    # Apply authentication check for all uploads except minespace access requests
+    if not is_access_request:
+        requires_any_of(DOCUMENT_UPLOAD_ROLES)(lambda: None)()
+
+
 @api.route('/documents')
 class DocumentListResource(Resource):
     parser = reqparse.RequestParser(trim=True)
@@ -42,10 +68,13 @@ class DocumentListResource(Resource):
     parser.add_argument(
         'filename', type=str, required=False, help='File name + extension of the document.')
 
-    @requires_any_of(DOCUMENT_UPLOAD_ROLES)
     def post(self):
-        file_size, data, filename = DocumentUploadHelper().parse_and_validate_uploaded_file(
-            self.parser.parse_args())
+        args = self.parser.parse_args()
+        folder = args.get('folder') or request.headers.get('Folder')
+        
+        check_upload_authorization(folder_path=folder)
+        
+        file_size, data, filename = DocumentUploadHelper().parse_and_validate_uploaded_file(args)
 
         # Create the path string for this file
         document_guid = str(uuid.uuid4())
@@ -55,7 +84,6 @@ class DocumentListResource(Resource):
         if User().get_user_username() == 'idir\\core-admin':
             base_folder = os.path.join(base_folder, "cypress")
 
-        folder = data.get('folder') or request.headers.get('Folder')
         folder = os.path.join(base_folder, folder)
         file_path = os.path.join(folder, document_guid)
         pretty_folder = data.get(
@@ -124,8 +152,9 @@ class DocumentListResource(Resource):
 
 @api.route(f'/documents/<string:document_guid>')
 class DocumentResource(Resource):
-    @requires_any_of(DOCUMENT_UPLOAD_ROLES)
     def patch(self, document_guid):
+        check_upload_authorization(document_guid=document_guid)
+        
         # Get and validate the file path (not required if object store is enabled)
         file_path = cache.get(FILE_UPLOAD_PATH(document_guid))
         if not Config.OBJECT_STORE_ENABLED and (file_path is None
@@ -232,8 +261,9 @@ class DocumentResource(Resource):
             'Access-Control-Expose-Headers'] = 'Tus-Resumable,Tus-Version,Upload-Offset,Upload-Expires'
         return response
 
-    @requires_any_of(DOCUMENT_UPLOAD_ROLES)
     def head(self, document_guid):
+        check_upload_authorization(document_guid=document_guid)
+        
         file_path = cache.get(FILE_UPLOAD_PATH(document_guid))
         object_store_upload_resource = cache.get(
             OBJECT_STORE_UPLOAD_RESOURCE(document_guid))

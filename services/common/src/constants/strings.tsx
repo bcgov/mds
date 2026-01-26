@@ -101,6 +101,17 @@ export const BUSINESS_ROLES = {
   projectLead: "PRL",
 };
 
+export const MINESPACE_POSITIONS = [
+  { label: "Permittee", value: "PMT" },
+  { label: "Mine Manager", value: "MMG" },
+  { label: "MineSpace Administrator", value: "ADM" },
+  { label: "Employee", value: "EMP" },
+  { label: "Contractor/Consultant", value: "CON" },
+  { label: "Agent", value: "AGT" },
+];
+// not a valid role, used only for the form on MS
+export const NULL_MINESPACE_POSITION = { label: "General Public/Researcher", value: "NUL" };
+
 export const NOT_APPLICABLE = "N/A";
 
 // MDS email

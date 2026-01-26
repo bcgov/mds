@@ -27,12 +27,56 @@ logger = logging.getLogger(__name__)
 ALLOWED_DOCUMENT_CATEGORIES = [
     'tailings', 'permits', 'variances', 'incidents', 'reports', 'mine_party_appts', 'noticeofwork',
     'bonds', 'reclamation_invoices', 'explosives_permits', 'project_summaries', 'ams_final_application',
-    'notices_of_depature', 'information_requirements_table', 'major_mine_application', 'project_decision_package'
+    'notices_of_depature', 'information_requirements_table', 'major_mine_application', 'project_decision_package',
+    'minespace_access_request'
 ]
 
 
 class DocumentManagerService():
     document_manager_document_resource_url = f'{Config.DOCUMENT_MANAGER_URL}/documents'
+    
+    @classmethod
+    def initialize_upload_for_minespace_access_request(cls, request, bceid_username):
+        """
+        Initialize file upload for minespace access requests.
+        Unlike other uploads, this doesn't require a mine_guid since it's for new user registration.
+        Uses a special folder structure and prepends BCeID username to filename for tracking.
+        Note: Users requesting access don't have full MineSpace roles yet,
+        but must be authenticated with BCeID.
+        """
+        metadata = cls._parse_request_metadata(request)
+        if not metadata or not metadata.get('filename'):
+            raise BadRequest('Request metadata missing filename')
+        
+        # Prepend BCeID username to filename for tracking
+        original_filename = metadata.get('filename')
+        filename_with_bceid = f"{bceid_username}_{original_filename}"
+        
+        # Use special folder for access requests (no mine_guid required)
+        folder = 'minespace_access_requests'
+        pretty_folder = 'MineSpace Access Requests'
+        
+        data = {
+            'folder': folder,
+            'pretty_folder': pretty_folder,
+            'filename': filename_with_bceid
+        }
+        
+        # Call document manager - user must have BCeID authentication
+        # The document manager allows this specific folder without MineSpace roles
+        resp = requests.post(
+            url=cls.document_manager_document_resource_url,
+            headers={key: value for (key, value) in request.headers if key != 'Host' and key != 'Content-Type'},
+            json=data,
+            cookies=request.cookies,
+            timeout=60
+        )
+        
+        if resp.status_code not in [200, 201]:
+            current_app.logger.error(f'Document manager upload initialization failed for BCeID user {bceid_username}: {resp.status_code} - {resp.text}')
+            raise BadRequest(f'Failed to initialize document upload: {resp.text}')
+        
+        return Response(json.dumps(resp.json()), resp.status_code, resp.raw.headers.items())
     
     @classmethod
     def validateFileNameAndInitializeFileUploadWithDocumentManager(

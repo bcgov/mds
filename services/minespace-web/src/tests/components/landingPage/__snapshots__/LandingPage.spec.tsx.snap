@@ -2,272 +2,347 @@
 
 exports[`LandingPage renders properly 1`] = `
 <div>
-  <Row
-    align="top"
-    className="landing-header"
-    gutter={64}
-    justify="center"
+  <div
+    style="width: 100%;"
   >
-    <Col
-      xl={
-        Object {
-          "span": 24,
-        }
-      }
-      xxl={
-        Object {
-          "span": 20,
-        }
-      }
+    <div
+      id="landing-page-header"
     >
-      <ForwardRef>
-        Welcome to MineSpace
-      </ForwardRef>
-      <ForwardRef
-        className="header-text"
+      <img
+        alt="minespace-background-image"
+        id="landing-page-header-image"
+        src="[object Object]"
+      />
+      <div
+        id="landing-page-header-text"
       >
-        Manage applications, see inspection histories, submit reports, and more.
-      </ForwardRef>
-      <div>
-        <LoginButton
-          className="login"
-        />
-        <AuthorizationWrapper
-          inTesting={true}
+        <h1
+          class="ant-typography"
+          style="color: white; margin: 0px;"
         >
-          <Button
-            className="login"
-            size="large"
-            type="primary"
-          >
-            <a
-              href="<URL>http://localhostundefined/return-page?type=login&kc_idp_hint=ms-verifiable-credential"
-            >
-              Log in with Verifiable Credentials
-            </a>
-          </Button>
-        </AuthorizationWrapper>
+          Welcome to MineSpace
+        </h1>
+        <div
+          class="ant-typography"
+        >
+          MineSpace is an online portal for managing mining permits, compliance, and reporting online.
+        </div>
       </div>
-    </Col>
-  </Row>
-  <Row
-    align="top"
-    className="landing-section"
-    gutter={64}
-    justify="center"
-  >
-    <Col
-      sm={
-        Object {
-          "span": 24,
-        }
-      }
-      xl={
-        Object {
-          "span": 12,
-        }
-      }
-      xxl={
-        Object {
-          "span": 10,
-        }
-      }
+    </div>
+    <div
+      class="ant-row ant-row-center"
     >
-      <ForwardRef
-        level={4}
+      <div
+        class="ant-col app-container-column ant-col-xs-24 ant-col-lg-22 ant-col-xl-20 ant-col-xxl-18"
       >
-        What is MineSpace?
-      </ForwardRef>
-      <ForwardRef>
-        The 
-        <ForwardRef(Text)
-          strong={true}
+        <div
+          class="landing-section"
         >
-          Ministry of Mining and Critical Minerals
-        </ForwardRef(Text)>
-         is developing a system to make it easier for the public, industry and government to see what's happening in the mining industry across British Columbia. The system is called 
-        <ForwardRef(Text)
-          strong={true}
-        >
-          Mines Digital Services (MDS)
-        </ForwardRef(Text)>
-        .
-      </ForwardRef>
-      <ForwardRef>
-        <ForwardRef(Text)
-          strong={true}
-        >
-          MineSpace
-        </ForwardRef(Text)>
-         is part of the MDS system, developed specifically for industry. It is intended to make it easier for businesses to manage applications, see their inspection history and submit reports.
-      </ForwardRef>
-      <ForwardRef>
-        This system is being developed iteratively and with input from people who operate mines across B.C.
-      </ForwardRef>
-      <ForwardRef
-        level={4}
-      >
-        What can I do in MineSpace?
-      </ForwardRef>
-      <ul
-        className="landing-list"
-      >
-        <li>
-          Upload any report specified in the Health, Safety and Reclamation Code
-        </li>
-        <li>
-          View all code variances granted to and incidents reported by your mine
-        </li>
-        <li>
-          View your mine permit and amendment history
-        </li>
-        <li>
-          See all the contacts the Ministry has on file for your mine
-        </li>
-        <li>
-          Find important Ministry contacts
-        </li>
-      </ul>
-      <ForwardRef />
-    </Col>
-    <Col
-      sm={
-        Object {
-          "span": 24,
-        }
-      }
-      xl={
-        Object {
-          "span": 12,
-        }
-      }
-      xxl={
-        Object {
-          "span": 10,
-        }
-      }
-    >
-      <ForwardRef
-        level={4}
-      >
-        How do I get access?
-      </ForwardRef>
-      <ForwardRef>
-        You must have a 
-        <ForwardRef(Text)
-          strong={true}
-        >
-          Business or Basic BCeID
-        </ForwardRef(Text)>
-         and then contact us to request access to MineSpace.
-      </ForwardRef>
-      <ForwardRef
-        strong={true}
-      >
-        If you have a BCeID:
-      </ForwardRef>
-      <ForwardRef>
-        Contact us at 
-        <a
-          href="mailto:mds@gov.bc.ca"
-        >
-          mds@gov.bc.ca
-        </a>
-         to request access to MineSpace.
-      </ForwardRef>
-      <ForwardRef
-        strong={true}
-      >
-        If you have multiple employees who need to use MineSpace:
-      </ForwardRef>
-      <ForwardRef>
-        <ForwardRef(Text)>
-          1. Add them to your Business BCeID
-        </ForwardRef(Text)>
-        <br />
-        <ForwardRef(Text)>
-          2. Let us know you want them to be able to access MineSpace
-        </ForwardRef(Text)>
-      </ForwardRef>
-      <ForwardRef
-        level={4}
-      >
-        Don't have a BCeID?
-      </ForwardRef>
-      <ForwardRef>
-        In order to access MineSpace, you need to register for a Business or Basic BCeID. It can take several weeks to process the request, so give yourself plenty of lead time.
-      </ForwardRef>
-      <ForwardRef>
-        Once you have your BCeID, you can add employees and delegates. You can request that anyone added to your Business BCeID account be given access to MineSpace.
-      </ForwardRef>
-      <Row
-        justify="center"
-      >
-        <Col
-          span={24}
-        >
-          <a
-            href="https://www.bceid.ca/register/business/getting_started/getting_started.aspx"
-            rel="noopener noreferrer"
-            target="_blank"
+          <div
+            class="ant-col ant-col-xs-24 ant-col-xxl-20"
           >
-            <Button
-              size="large"
-              type="primary"
+            <div>
+              MineSpace is part of Mines Digital Services (MDS), developed by the Ministry of Mining and Critical Minerals with industry input. It provides tools to streamline permitting, compliance tracking, and reporting
+            </div>
+          </div>
+        </div>
+        <div
+          class="landing-section"
+        >
+          <div
+            class="ant-col ant-col-xs-24 ant-col-xxl-20"
+          >
+            <h2
+              class="ant-typography"
             >
-              Get a BCeID
-            </Button>
-          </a>
-        </Col>
-      </Row>
-    </Col>
-  </Row>
-  <Row
-    align="top"
-    className="landing-section"
-    gutter={64}
-    justify="center"
-  >
-    <Col
-      sm={
-        Object {
-          "span": 24,
-        }
-      }
-      xl={
-        Object {
-          "span": 12,
-        }
-      }
-      xxl={
-        Object {
-          "span": 10,
-        }
-      }
-    >
-      <ForwardRef
-        title="Questions?"
-      >
-        <Row>
-          <Col
-            span={24}
-          >
-            <ForwardRef>
-              Please let us know about any questions or comments you have regarding your experience using MineSpace.
-            </ForwardRef>
-            <ForwardRef>
-              Email us at 
-              <a
-                href="mailto:mds@gov.bc.ca"
+              With MineSpace you can:
+            </h2>
+            <div
+              class="ant-row"
+              style="margin: -8px -8px -8px -8px;"
+            >
+              <div
+                class="ant-col ms-activity-col ant-col-xs-24 ant-col-sm-12 ant-col-md-8"
+                style="padding: 8px 8px 8px 8px;"
               >
-                mds@gov.bc.ca
-              </a>
-              .
-            </ForwardRef>
-          </Col>
-        </Row>
-      </ForwardRef>
-    </Col>
-  </Row>
+                <div
+                  class="ms-activity-container"
+                >
+                  Receive permits online
+                </div>
+              </div>
+              <div
+                class="ant-col ms-activity-col ant-col-xs-24 ant-col-sm-12 ant-col-md-8"
+                style="padding: 8px 8px 8px 8px;"
+              >
+                <div
+                  class="ms-activity-container"
+                >
+                  Track and manage mining applications
+                </div>
+              </div>
+              <div
+                class="ant-col ms-activity-col ant-col-xs-24 ant-col-sm-12 ant-col-md-8"
+                style="padding: 8px 8px 8px 8px;"
+              >
+                <div
+                  class="ms-activity-container"
+                >
+                  Record and track mine incidents
+                </div>
+              </div>
+              <div
+                class="ant-col ms-activity-col ant-col-xs-24 ant-col-sm-12 ant-col-md-8"
+                style="padding: 8px 8px 8px 8px;"
+              >
+                <div
+                  class="ms-activity-container"
+                >
+                  Check compliance requirements
+                </div>
+              </div>
+              <div
+                class="ant-col ms-activity-col ant-col-xs-24 ant-col-sm-12 ant-col-md-8"
+                style="padding: 8px 8px 8px 8px;"
+              >
+                <div
+                  class="ms-activity-container"
+                >
+                  Submit required reports
+                </div>
+              </div>
+              <div
+                class="ant-col ms-activity-col ant-col-xs-24 ant-col-sm-12 ant-col-md-8"
+                style="padding: 8px 8px 8px 8px;"
+              >
+                <div
+                  class="ms-activity-container"
+                >
+                  Request Mines Act digital credentials
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="landing-section"
+        >
+          <div
+            class="ant-col ant-col-xs-24 ant-col-xxl-20"
+          >
+            <h2
+              class="ant-typography"
+            >
+              Access MineSpace
+            </h2>
+            <div>
+              <button
+                class="ant-btn ant-btn-primary ant-btn-lg login"
+                type="button"
+              >
+                <span>
+                  Log in with BCeID
+                </span>
+              </button>
+              <button
+                class="ant-btn ant-btn-default ant-btn-lg login"
+                type="button"
+              >
+                <span>
+                  Join MineSpace
+                </span>
+              </button>
+            </div>
+          </div>
+          <div
+            class="ant-col ant-col-xs-24 ant-col-xxl-20"
+          >
+            <h4
+              class="ant-typography"
+            >
+              How do I get access?
+            </h4>
+            <div
+              class="ant-typography"
+            >
+              You must have a 
+              <span
+                class="ant-typography"
+              >
+                <strong>
+                  Business BCeID
+                </strong>
+              </span>
+               and then 
+              click the 
+              <b>
+                Join MineSpace
+              </b>
+               button to complete the sign-up process.
+            </div>
+            <div
+              class="ant-typography"
+            >
+              <strong>
+                If you have multiple employees who need to use MineSpace:
+              </strong>
+            </div>
+            <div
+              class="ant-typography"
+            >
+              <span
+                class="ant-typography"
+              >
+                1. Add them to your Business BCeID
+              </span>
+              <br />
+              <span
+                class="ant-typography"
+              >
+                2. Have them click the 
+                <b>
+                  Join MineSpace
+                </b>
+                 button to complete the sign-up process
+              </span>
+            </div>
+            <h4
+              class="ant-typography"
+            >
+              Don't have a BCeID?
+            </h4>
+            <div
+              class="ant-typography"
+            >
+              In order to access MineSpace, you need to register for a Business BCeID. It can take several weeks to process the request, so give yourself plenty of lead time.
+            </div>
+            <div
+              class="ant-typography"
+            >
+              Once you have your BCeID, you can add employees and delegates. You can request that anyone added to your Business BCeID account be given access to MineSpace.
+            </div>
+            <div
+              class="ant-row ant-row-center"
+            >
+              <div
+                class="ant-col ant-col-24"
+              >
+                <a
+                  href="https://www.bceid.ca/register/business/getting_started/getting_started.aspx"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  <button
+                    class="ant-btn ant-btn-primary ant-btn-lg"
+                    type="button"
+                  >
+                    <span>
+                      Get a BCeID
+                    </span>
+                  </button>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div
+            class="ant-col ant-col-xs-24 ant-col-xxl-20"
+          >
+            <div
+              class="ant-card ant-card-bordered landing-page-card"
+            >
+              <div
+                class="ant-card-head"
+              >
+                <div
+                  class="ant-card-head-wrapper"
+                >
+                  <div
+                    class="ant-card-head-title"
+                  >
+                    Related Links
+                  </div>
+                </div>
+              </div>
+              <div
+                class="ant-card-body"
+              >
+                <div
+                  class="ant-typography"
+                >
+                  <a
+                    href="https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/mineral-titles/mineral-placer-titles/mineraltitlesonline"
+                    target="_blank"
+                    title="Mineral Titles Online"
+                  >
+                    Mineral Titles Online
+                  </a>
+                </div>
+                <div
+                  class="ant-typography"
+                >
+                  <a
+                    href="https://portalext.nrs.gov.bc.ca/web/client/-/frontcounter-bc-online-self-service.html"
+                    target="_blank"
+                    title="virtual FrontCounter BC"
+                  >
+                    virtual FrontCounter BC
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="ant-col ant-col-xs-24 ant-col-xxl-20"
+          >
+            <div
+              class="ant-card ant-card-bordered landing-page-card"
+            >
+              <div
+                class="ant-card-head"
+              >
+                <div
+                  class="ant-card-head-wrapper"
+                >
+                  <div
+                    class="ant-card-head-title"
+                  >
+                    Questions?
+                  </div>
+                </div>
+              </div>
+              <div
+                class="ant-card-body"
+              >
+                <div
+                  class="ant-row"
+                >
+                  <div
+                    class="ant-col ant-col-24"
+                  >
+                    <div
+                      class="ant-typography"
+                    >
+                      Please let us know about any questions or comments you have regarding your experience using MineSpace.
+                    </div>
+                    <div
+                      class="ant-typography"
+                    >
+                      Email us at 
+                      <a
+                        href="mailto:mds@gov.bc.ca"
+                      >
+                        mds@gov.bc.ca
+                      </a>
+                      .
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 `;

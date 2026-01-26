@@ -9,5 +9,6 @@
     "vc_anoncreds_minespace": true,
     "vc_w3c": true,
     "ams_agent": true,
-    "recurring_reports": true
+    "recurring_reports": true,
+    "minespace_signup": true
 }

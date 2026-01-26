@@ -6,6 +6,8 @@ import * as routes from "@/constants/routes";
 import { BC_GOV } from "@/constants/assets";
 import NotificationDrawer from "@/components/layout/NotificationDrawer";
 import HelpGuide from "@mds/common/components/help/HelpGuide";
+import { useAppSelector } from "@mds/common/redux/rootState";
+import { isNewProponent } from "@mds/common/redux/selectors/authenticationSelectors";
 
 interface HeaderProps {
   xs: number;
@@ -16,6 +18,8 @@ interface HeaderProps {
 }
 
 export const Header: FC<HeaderProps> = ({ xs, lg, xl, xxl, isAuthenticated = false }) => {
+  const isNewUser = useAppSelector(isNewProponent);
+
   return (
     <Layout.Header>
       <Row justify="center" align="top">
@@ -31,8 +35,8 @@ export const Header: FC<HeaderProps> = ({ xs, lg, xl, xxl, isAuthenticated = fal
             </div>
             <div className="inline-flex items-center">
               <HeaderDropdown />
-              {isAuthenticated && <NotificationDrawer />}
-              <HelpGuide />
+              {isAuthenticated && !isNewUser && <NotificationDrawer />}
+              {!isNewUser && <HelpGuide />}
             </div>
           </div>
         </Col>

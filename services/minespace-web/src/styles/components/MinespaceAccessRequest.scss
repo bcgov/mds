@@ -1,0 +1,19 @@
+@use "../base.scss" as *;
+@use "../settings/theme.scss";
+@use "../settings/variables.scss";
+
+.bold-first-line li::marker {
+    font-weight: bold;
+}
+
+.bold-first-line li>div:first-child {
+    font-weight: bold;
+}
+
+.terms-container {
+    max-height: 350px;
+    overflow-y: scroll;
+    border: 1px solid $gov-grey;
+    border-radius: 5px;
+    padding: 10px 20px;
+}

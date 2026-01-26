@@ -347,3 +347,16 @@ export const deleteMineComment = (mineGuid, commentGuid) => (dispatch) => {
       dispatch(error(NetworkReducerTypes.DELETE_MINE_COMMENT));
     });
 };
+
+export const fetchMineSearchResultsForNewUser = (searchTerm: string) => (dispatch) => {
+  dispatch(request(NetworkReducerTypes.GET_MINE_NAME_LIST));
+  dispatch(showLoading());
+  return CustomAxios()
+    .get(ENVIRONMENT.apiUrl + API.NEW_MINESPACE_USER_MINES({ search: searchTerm }), createRequestHeader())
+    .then((response) => {
+      dispatch(success(NetworkReducerTypes.GET_MINE_NAME_LIST));
+      dispatch(mineActions.storeMineSearchResultsForNewUser(response.data));
+    })
+    .catch(() => dispatch(error(NetworkReducerTypes.GET_MINE_NAME_LIST)))
+    .finally(() => dispatch(hideLoading()));
+};

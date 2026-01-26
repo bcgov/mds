@@ -11,6 +11,7 @@ export const getMineDocuments = (state) => mineReducer.getMineDocuments(state);
 export const getSubscribedMines = (state) => mineReducer.getSubscribedMines(state).records;
 export const getSubscribedMinesLoaded = (state) => mineReducer.getSubscribedMines(state).loaded;
 export const getMineComments = (state) => mineReducer.getMineComments(state);
+export const getMineSearchResultsForNewUser = (state) => mineReducer.getMineSearchResultsForNewUser(state);
 
 export const getMineById = (mineGuid: string) =>
   createSelector([getMines], (mines) => {
