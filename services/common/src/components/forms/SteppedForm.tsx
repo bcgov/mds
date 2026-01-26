@@ -1,6 +1,13 @@
 import React, { FC, ReactElement, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getFormSyncErrors, getFormValues, isDirty, getFormMeta, reset, submit } from "@mds/common/components/forms/form";
+import {
+  getFormSyncErrors,
+  getFormValues,
+  isDirty,
+  getFormMeta,
+  reset,
+  submit,
+} from "@mds/common/components/forms/form";
 import { Button, Col, Menu, Popconfirm, Row, StepProps } from "antd";
 import LeftOutlined from "@ant-design/icons/LeftOutlined";
 import RightOutlined from "@ant-design/icons/RightOutlined";
@@ -88,7 +95,7 @@ const SteppedForm: FC<SteppedFormProps> = ({
         if (handleTabChange) {
           handleTabChange(tab);
         }
-      }
+      };
       // but isFormTouched here will avoid prompting user unnecessarily
       cancelConfirmWrapper(changeTab, isEditMode && isFormTouched);
     }
@@ -167,14 +174,14 @@ const SteppedForm: FC<SteppedFormProps> = ({
           <div className="stepped-form-form-container">
             <FormWrapper
               name={name}
-              onSubmit={() => { }}
+              onSubmit={() => {}}
               initialValues={initialValues}
               isEditMode={isEditMode}
               forceRedux={forceRedux}
               reduxFormConfig={
                 reduxFormConfig ?? {
                   touchOnBlur: true,
-                  touchOnChange: false,
+                  touchOnChange: true,
                   enableReinitialize: true,
                 }
               }
@@ -236,8 +243,9 @@ const SteppedForm: FC<SteppedFormProps> = ({
                   {nextText}
                 </Button>
               )}
-              {isEditMode && isLast && (
-                confirmOnSubmit ? (
+              {isEditMode &&
+                isLast &&
+                (confirmOnSubmit ? (
                   <Popconfirm
                     placement="topRight"
                     title={confirmSubmissionText}
@@ -245,10 +253,7 @@ const SteppedForm: FC<SteppedFormProps> = ({
                     okText={confirmSubmissionOkText}
                     cancelText={confirmSubmissionCancelText}
                   >
-                    <Button
-                      type="primary"
-                      disabled={isSubmitting}
-                    >
+                    <Button type="primary" disabled={isSubmitting}>
                       {submitText || "Submit"}
                     </Button>
                   </Popconfirm>
@@ -260,8 +265,7 @@ const SteppedForm: FC<SteppedFormProps> = ({
                   >
                     {submitText || "Submit"}
                   </Button>
-                )
-              )}
+                ))}
             </Row>
           </div>
         )}

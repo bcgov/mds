@@ -9,6 +9,7 @@ import {
   FieldArray,
   FormSection,
   getFormValues,
+  touch,
 } from "@mds/common/components/forms/form";
 import { Alert, Button, Checkbox, Col, Row, Tooltip, Typography } from "antd";
 import InfoCircleOutlined from "@ant-design/icons/InfoCircleOutlined";
@@ -413,6 +414,7 @@ const RenderEMAAuthCodeFormSection = ({ code, isDisabled }) => {
   };
 
   const handleChangeAuthType = (value, _newVal, prevVal, _fieldName) => {
+    dispatch(touch(FORM.ADD_EDIT_PROJECT_SUMMARY, `${code}.types`));
     permitTypes.forEach((type) => {
       if (value.includes(type) && !prevVal.includes(type)) {
         dispatch(arrayPush(FORM.ADD_EDIT_PROJECT_SUMMARY, `authorizations.${code}.${type}`, {}));
@@ -588,6 +590,7 @@ export const AuthorizationsInvolved: FC<ProjectSummaryFormComponentProps> = ({ f
   const envFieldsDisabled = areAuthEnvFieldsDisabled(systemFlag, formValues?.status_code, formValues?.confirmation_of_submission);
 
   const handleChange = (e, code) => {
+    dispatch(touch(FORM.ADD_EDIT_PROJECT_SUMMARY, "authorizationTypes"));
     if (e.target.checked) {
       let formVal;
       dispatch(arrayPush(FORM.ADD_EDIT_PROJECT_SUMMARY, `authorizationTypes`, code));
