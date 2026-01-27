@@ -1,6 +1,4 @@
 import React, { FC } from "react";
-import { compose } from "redux";
-import { connect } from "react-redux";
 import { Field, FormSection, formValueSelector } from "@mds/common/components/forms/form";
 import { Row, Col } from "antd";
 import {
@@ -43,6 +41,7 @@ import * as Permission from "@/constants/permissions";
 import ReviewNOWContacts from "./ReviewNOWContacts";
 import ReclamationSummary from "./activities/ReclamationSummary";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
+import { useAppSelector } from "@mds/common/redux/rootState";
 
 /**
  * @constant ReviewNOWApplication renders edit/view for the NoW Application review step
@@ -50,50 +49,62 @@ import FormWrapper from "@mds/common/components/forms/FormWrapper";
 
 interface ReviewNOWApplicationProps {
   isViewMode: boolean;
-  contacts: any[];
   reclamationSummary: any[];
-  now_application_guid: string;
-  documents: any[];
-  filtered_submission_documents: any[];
   importNowSubmissionDocumentsJob: any;
-  regionDropdownOptions: any;
-  applicationTypeOptions: any;
   noticeOfWorkType: string;
   renderOriginalValues: any;
   noticeOfWork: any;
-  permitTypeHash: any;
-  regionHash: any;
-  applicationTypeOptionsHash: any;
-  permitTypeOptions: any;
   initialValues: any;
-  proposedTonnage: number;
-  adjustedTonnage: number;
-  proposedStartDate: string;
-  proposedAuthorizationEndDate: string;
-  userRoles: string[];
   isPreLaunch: boolean;
   isNoticeOfWorkTypeDisabled: boolean;
-  editableApplicationTypeOptions: any;
-  typeOfApplication: string;
-  applicationPermitType: string;
-  surfaceDisturbance: boolean;
-  isOnPrivateLand: boolean;
-  activitiesInPark: boolean;
-  lieutenantGovernorAuthorization: boolean;
-  archaeologySitesAffected: boolean;
-  sharedInfoWithFn: boolean;
-  acknowledgedUNDRIP: boolean;
-  culturalHeritageSites: boolean;
-  appliedLicenceOccupation: boolean;
-  isOnCrownLand: boolean;
-  hasLicenceOfOccupation: boolean;
-  isAccessGated: boolean;
 }
+
+const selector = formValueSelector(FORM.EDIT_NOTICE_OF_WORK);
 
 export const ReviewNOWApplication: FC<ReviewNOWApplicationProps> = (
   props
 ) => {
-  const isAdmin = props.userRoles.includes(USER_ROLES[Permission.ADMIN]);
+  const contacts = useAppSelector((state) => selector(state, "contacts"));
+  const now_application_guid = useAppSelector((state) => selector(state, "now_application_guid"));
+  const documents = useAppSelector((state) => selector(state, "documents"));
+  const submission_documents = useAppSelector((state) => selector(state, "submission_documents"));
+  const imported_submission_documents = useAppSelector((state) => selector(state, "imported_submission_documents"));
+  const filtered_submission_documents = useAppSelector((state) => selector(state, "filtered_submission_documents"));
+  const proposedTonnage = useAppSelector((state) => selector(state, "proposed_annual_maximum_tonnage"));
+  const adjustedTonnage = useAppSelector((state) => selector(state, "adjusted_annual_maximum_tonnage"));
+  const proposedStartDate = useAppSelector((state) => selector(state, "proposed_start_date"));
+  const proposedAuthorizationEndDate = useAppSelector((state) => selector(state, "proposed_end_date"));
+  const typeOfApplication = useAppSelector((state) => selector(state, "type_of_application"));
+  const applicationPermitType = useAppSelector((state) => selector(state, "application_permit_type_code"));
+  const surfaceDisturbance = useAppSelector((state) => selector(state, "has_surface_disturbance_outside_tenure"));
+  const isOnPrivateLand = useAppSelector((state) => selector(state, "state_of_land.is_on_private_land"));
+  const activitiesInPark = useAppSelector((state) => selector(state, "state_of_land.has_activity_in_park"));
+  const lieutenantGovernorAuthorization = useAppSelector(
+    (state) => selector(state, "state_of_land.has_auth_lieutenant_gov_council")
+  );
+  const archaeologySitesAffected = useAppSelector((state) => selector(state, "state_of_land.has_archaeology_sites_affected"));
+  const sharedInfoWithFn = useAppSelector((state) => selector(state, "state_of_land.has_shared_info_with_fn"));
+  const acknowledgedUNDRIP = useAppSelector((state) => selector(state, "state_of_land.has_acknowledged_undrip"));
+  const culturalHeritageSites = useAppSelector(
+    (state) => selector(state, "state_of_land.has_fn_cultural_heritage_sites_in_area")
+  );
+  const isOnCrownLand = useAppSelector((state) => selector(state, "state_of_land.is_on_crown_land"));
+  const hasLicenceOfOccupation = useAppSelector((state) => selector(state, "state_of_land.has_licence_of_occupation"));
+  const appliedLicenceOccupation = useAppSelector(
+    (state) => selector(state, "state_of_land.applied_for_licence_of_occupation")
+  );
+  const isAccessGated = useAppSelector((state) => selector(state, "is_access_gated"));
+  const regionDropdownOptions = useAppSelector(getMineRegionDropdownOptions);
+  const applicationTypeOptions = useAppSelector(getDropdownNoticeOfWorkApplicationTypeOptions);
+  const applicationProgressStatusCodes = useAppSelector(getNoticeOfWorkApplicationProgressStatusCodeOptions);
+  const permitTypeOptions = useAppSelector(getDropdownNoticeOfWorkApplicationPermitTypeOptions);
+  const regionHash = useAppSelector(getMineRegionHash);
+  const permitTypeHash = useAppSelector(getNoticeOfWorkApplicationPermitTypeOptionsHash);
+  const applicationTypeOptionsHash = useAppSelector(getNoticeOfWorkApplicationTypeOptionsHash);
+  const userRoles = useAppSelector(getUserAccessData);
+  const editableApplicationTypeOptions = useAppSelector(getNoticeOfWorkEditableTypes);
+
+  const isAdmin = userRoles.includes(USER_ROLES[Permission.ADMIN]);
 
   const renderCodeValues = (codeHash, value) => {
     if (value === Strings.EMPTY_FIELD) {
@@ -204,7 +215,7 @@ export const ReviewNOWApplication: FC<ReviewNOWApplicationProps> = (
             Region
             <NOWOriginalValueTooltip
               originalValue={renderCodeValues(
-                props.regionHash,
+                regionHash,
                 props.renderOriginalValues("mine_region").value
               )}
               isVisible={props.renderOriginalValues("mine_region").edited}
@@ -214,7 +225,7 @@ export const ReviewNOWApplication: FC<ReviewNOWApplicationProps> = (
             id="mine_region"
             name="mine_region"
             component={RenderSelect}
-            data={props.regionDropdownOptions}
+            data={regionDropdownOptions}
             disabled
           />
           <div className="field-title">
@@ -231,7 +242,7 @@ export const ReviewNOWApplication: FC<ReviewNOWApplicationProps> = (
           <div className="field-title">
             Open and view NoW on the Inspection Mapper (new window)&nbsp;&nbsp;
             <a
-              href={generateMinistryInspectionMapperUrl(props.now_application_guid)}
+              href={generateMinistryInspectionMapperUrl(now_application_guid)}
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -261,7 +272,7 @@ export const ReviewNOWApplication: FC<ReviewNOWApplicationProps> = (
           Permit Type
           <NOWOriginalValueTooltip
             originalValue={renderCodeValues(
-              props.permitTypeHash,
+              permitTypeHash,
               props.renderOriginalValues("application_permit_type_code").value
             )}
             isVisible={props.renderOriginalValues("application_permit_type_code").edited}
@@ -271,7 +282,7 @@ export const ReviewNOWApplication: FC<ReviewNOWApplicationProps> = (
           id="application_permit_type_code"
           name="application_permit_type_code"
           component={RenderSelect}
-          data={props.permitTypeOptions}
+          data={permitTypeOptions}
           disabled={props.isViewMode}
         />
       </Col>
@@ -291,13 +302,13 @@ export const ReviewNOWApplication: FC<ReviewNOWApplicationProps> = (
         />
       </Col>
       <Col md={12} sm={24}>
-        {props.applicationPermitType === "MY-ABP" && (
+        {applicationPermitType === "MY-ABP" && (
           <>
             <div className="field-title">
               Is this the first year of a multi-year, area based application?
               <NOWOriginalValueTooltip
                 originalValue={renderCodeValues(
-                  props.permitTypeHash,
+                  permitTypeHash,
                   props.renderOriginalValues("is_first_year_of_multi").value
                 )}
                 isVisible={props.renderOriginalValues("is_first_year_of_multi").edited}
@@ -319,8 +330,8 @@ export const ReviewNOWApplication: FC<ReviewNOWApplicationProps> = (
     const noticeOfWorkTypeDropDownDisabled = props.isViewMode || props.isNoticeOfWorkTypeDisabled;
 
     const filteredApplicationTypeOptions = noticeOfWorkTypeDropDownDisabled
-      ? props.applicationTypeOptions
-      : props.editableApplicationTypeOptions;
+      ? applicationTypeOptions
+      : editableApplicationTypeOptions;
     return (
       <div>
         <Row gutter={16}>
@@ -329,7 +340,7 @@ export const ReviewNOWApplication: FC<ReviewNOWApplicationProps> = (
               Type of Notice of Work
               <NOWOriginalValueTooltip
                 originalValue={renderCodeValues(
-                  props.applicationTypeOptionsHash,
+                  applicationTypeOptionsHash,
                   props.renderOriginalValues("notice_of_work_type_code").value
                 )}
                 isVisible={props.renderOriginalValues("notice_of_work_type_code").edited}
@@ -387,7 +398,7 @@ export const ReviewNOWApplication: FC<ReviewNOWApplicationProps> = (
             />
           </Col>
           <Col md={12} sm={24}>
-            {props.typeOfApplication !== "New Permit" && (
+            {typeOfApplication !== "New Permit" && (
               <>
                 <div className="field-title">
                   Permit Number
@@ -414,7 +425,7 @@ export const ReviewNOWApplication: FC<ReviewNOWApplicationProps> = (
         </Row>
         <Row gutter={16}>
           <Col md={12} sm={24}>
-            {props.typeOfApplication !== "New Permit" && (
+            {typeOfApplication !== "New Permit" && (
               <>
                 <div className="field-title">
                   Annual Summary submitted for this site?
@@ -534,10 +545,10 @@ export const ReviewNOWApplication: FC<ReviewNOWApplicationProps> = (
           initialValues={props.noticeOfWork}
           isViewMode={props.isViewMode}
           isAdmin={isAdmin}
-          proposedTonnage={props.proposedTonnage}
-          adjustedTonnage={props.adjustedTonnage}
-          proposedStartDate={props.proposedStartDate}
-          proposedAuthorizationEndDate={props.proposedAuthorizationEndDate}
+          proposedTonnage={proposedTonnage}
+          adjustedTonnage={adjustedTonnage}
+          proposedStartDate={proposedStartDate}
+          proposedAuthorizationEndDate={proposedAuthorizationEndDate}
           isPreLaunch={props.isPreLaunch}
         />
       </Col>
@@ -564,7 +575,7 @@ export const ReviewNOWApplication: FC<ReviewNOWApplicationProps> = (
             disabled={props.isViewMode}
           />
         </Col>
-        {props.isAccessGated && (
+        {isAccessGated && (
           <Col md={12} sm={24}>
             <div className="field-title">
               Key provided to the inspector
@@ -608,7 +619,7 @@ export const ReviewNOWApplication: FC<ReviewNOWApplicationProps> = (
           disabled={props.isViewMode}
         />
       </Col>
-      {props.surfaceDisturbance && (
+      {surfaceDisturbance && (
         <>
           <Col md={12} sm={24}>
             <div className="field-title">
@@ -837,7 +848,7 @@ export const ReviewNOWApplication: FC<ReviewNOWApplicationProps> = (
                 />
               </Col>
             </Row>
-            {props.isOnPrivateLand && (
+            {isOnPrivateLand && (
               <Row gutter={16}>
                 <Col md={12} sm={24}>
                   <div className="field-title">
@@ -904,7 +915,7 @@ export const ReviewNOWApplication: FC<ReviewNOWApplicationProps> = (
                 />
               </Col>
             </Row>
-            {props.isOnCrownLand && (
+            {isOnCrownLand && (
               <>
                 <Row gutter={16}>
                   <Col md={12} sm={24}>
@@ -931,7 +942,7 @@ export const ReviewNOWApplication: FC<ReviewNOWApplicationProps> = (
                     />
                   </Col>
                 </Row>
-                {props.hasLicenceOfOccupation && (
+                {hasLicenceOfOccupation && (
                   <Row gutter={16}>
                     <Col md={12} sm={24}>
                       <div className="field-title">
@@ -955,7 +966,7 @@ export const ReviewNOWApplication: FC<ReviewNOWApplicationProps> = (
                     </Col>
                   </Row>
                 )}
-                {!props.hasLicenceOfOccupation && props.hasLicenceOfOccupation !== undefined && (
+                {!hasLicenceOfOccupation && hasLicenceOfOccupation !== undefined && (
                   <>
                     <Row gutter={16}>
                       <Col md={12} sm={24}>
@@ -983,7 +994,7 @@ export const ReviewNOWApplication: FC<ReviewNOWApplicationProps> = (
                         />
                       </Col>
                     </Row>
-                    {props.appliedLicenceOccupation && (
+                    {appliedLicenceOccupation && (
                       <Row gutter={16}>
                         <Col md={12} sm={24}>
                           <div className="field-title">
@@ -1036,7 +1047,7 @@ export const ReviewNOWApplication: FC<ReviewNOWApplicationProps> = (
                   disabled={props.isViewMode}
                 />
               </Col>
-              {props.activitiesInPark && (
+              {activitiesInPark && (
                 <Col md={12} sm={24}>
                   <div className="field-title">
                     Do you have authorization by the Lieutenant Governor in Council?
@@ -1062,7 +1073,7 @@ export const ReviewNOWApplication: FC<ReviewNOWApplicationProps> = (
                 </Col>
               )}
             </Row>
-            {props.lieutenantGovernorAuthorization && props.activitiesInPark && (
+            {lieutenantGovernorAuthorization && activitiesInPark && (
               <Row gutter={16}>
                 <Col md={12} sm={24}>
                   <div className="field-title">
@@ -1113,7 +1124,7 @@ export const ReviewNOWApplication: FC<ReviewNOWApplicationProps> = (
                 />
               </Col>
               <Col md={12} sm={24}>
-                {props.sharedInfoWithFn && (
+                {sharedInfoWithFn && (
                   <>
                     <div className="field-title">
                       Describe your First Nations engagement activities
@@ -1138,7 +1149,7 @@ export const ReviewNOWApplication: FC<ReviewNOWApplicationProps> = (
                 )}
               </Col>
             </Row>
-            {props.sharedInfoWithFn && (
+            {sharedInfoWithFn && (
               <Row gutter={16}>
                 <Col md={12} sm={24}>
                   <div className="field-title">
@@ -1165,7 +1176,7 @@ export const ReviewNOWApplication: FC<ReviewNOWApplicationProps> = (
                     disabled={props.isViewMode}
                   />
                 </Col>
-                {props.culturalHeritageSites && (
+                {culturalHeritageSites && (
                   <Col md={12} sm={24}>
                     <div className="field-title">
                       Describe any cultural heritage resources in the area
@@ -1359,7 +1370,7 @@ export const ReviewNOWApplication: FC<ReviewNOWApplicationProps> = (
   const renderProposedDates = () => (
     <Row gutter={16}>
       <Col md={12} sm={24}>
-        {props.typeOfApplication !== "New Permit" && (
+        {typeOfApplication !== "New Permit" && (
           <>
             <div className="field-title">
               Original Start Date
@@ -1414,7 +1425,8 @@ export const ReviewNOWApplication: FC<ReviewNOWApplicationProps> = (
 
   return (
     <div>
-      <FormWrapper onSubmit={() => { }} initialValues={props.initialValues}
+      <FormWrapper onSubmit={() => { }}
+        initialValues={props.initialValues ?? {}}
         name={FORM.EDIT_NOTICE_OF_WORK}
         reduxFormConfig={{
           touchOnChange: false,
@@ -1470,7 +1482,7 @@ export const ReviewNOWApplication: FC<ReviewNOWApplicationProps> = (
           <ReviewNOWContacts
             contacts={props.noticeOfWork.contacts}
             isViewMode={props.isViewMode}
-            contactFormValues={props.contacts}
+            contactFormValues={contacts}
             noticeOfWork={props.noticeOfWork}
           />
         </ScrollContentWrapper>
@@ -1479,7 +1491,7 @@ export const ReviewNOWApplication: FC<ReviewNOWApplicationProps> = (
         </ScrollContentWrapper>
         <ScrollContentWrapper id="application-files" title="Application Files">
           <NOWSubmissionDocuments
-            now_application_guid={props.now_application_guid}
+            now_application_guid={now_application_guid}
             documents={props.noticeOfWork.filtered_submission_documents.concat(
               props.noticeOfWork.documents
                 ?.filter(
@@ -1524,45 +1536,4 @@ export const ReviewNOWApplication: FC<ReviewNOWApplicationProps> = (
   );
 };
 
-const selector = formValueSelector(FORM.EDIT_NOTICE_OF_WORK);
-
-export default compose(
-  connect((state) => ({
-    contacts: selector(state, "contacts"),
-    now_application_guid: selector(state, "now_application_guid"),
-    documents: selector(state, "documents"),
-    submission_documents: selector(state, "submission_documents"),
-    imported_submission_documents: selector(state, "imported_submission_documents"),
-    filtered_submission_documents: selector(state, "filtered_submission_documents"),
-    proposedTonnage: selector(state, "proposed_annual_maximum_tonnage"),
-    adjustedTonnage: selector(state, "adjusted_annual_maximum_tonnage"),
-    proposedStartDate: selector(state, "proposed_start_date"),
-    proposedAuthorizationEndDate: selector(state, "proposed_end_date"),
-    typeOfApplication: selector(state, "type_of_application"),
-    applicationPermitType: selector(state, "application_permit_type_code"),
-    surfaceDisturbance: selector(state, "has_surface_disturbance_outside_tenure"),
-    isOnPrivateLand: selector(state, "state_of_land.is_on_private_land"),
-    activitiesInPark: selector(state, "state_of_land.has_activity_in_park"),
-    lieutenantGovernorAuthorization: selector(
-      state,
-      "state_of_land.has_auth_lieutenant_gov_council"
-    ),
-    archaeologySitesAffected: selector(state, "state_of_land.has_archaeology_sites_affected"),
-    sharedInfoWithFn: selector(state, "state_of_land.has_shared_info_with_fn"),
-    acknowledgedUNDRIP: selector(state, "state_of_land.has_acknowledged_undrip"),
-    culturalHeritageSites: selector(state, "state_of_land.has_fn_cultural_heritage_sites_in_area"),
-    isOnCrownLand: selector(state, "state_of_land.is_on_crown_land"),
-    hasLicenceOfOccupation: selector(state, "state_of_land.has_licence_of_occupation"),
-    appliedLicenceOccupation: selector(state, "state_of_land.applied_for_licence_of_occupation"),
-    isAccessGated: selector(state, "is_access_gated"),
-    regionDropdownOptions: getMineRegionDropdownOptions(state),
-    applicationTypeOptions: getDropdownNoticeOfWorkApplicationTypeOptions(state),
-    applicationProgressStatusCodes: getNoticeOfWorkApplicationProgressStatusCodeOptions(state),
-    permitTypeOptions: getDropdownNoticeOfWorkApplicationPermitTypeOptions(state),
-    regionHash: getMineRegionHash(state),
-    permitTypeHash: getNoticeOfWorkApplicationPermitTypeOptionsHash(state),
-    applicationTypeOptionsHash: getNoticeOfWorkApplicationTypeOptionsHash(state),
-    userRoles: getUserAccessData(state),
-    editableApplicationTypeOptions: getNoticeOfWorkEditableTypes(state),
-  }))
-)(ReviewNOWApplication);
+export default ReviewNOWApplication;
