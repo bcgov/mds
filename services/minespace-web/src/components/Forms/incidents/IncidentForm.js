@@ -345,7 +345,7 @@ const renderIncidentDetails = (childProps) => {
           id="number_of_injuries"
           name="number_of_injuries"
           component={renderConfig.FIELD}
-          validate={[wholeNumber, maxLength(10)]}
+          validate={[wholeNumber, required, maxLength(10)]}
           disabled={formDisabled}
         />
       </Col>
@@ -354,6 +354,7 @@ const renderIncidentDetails = (childProps) => {
           label="Number of fatalities"
           id="number_of_fatalities"
           name="number_of_fatalities"
+          required
           component={renderConfig.FIELD}
           validate={[wholeNumber, maxLength(10)]}
           disabled={formDisabled}
@@ -565,8 +566,8 @@ const renderUploadInitialNotificationDocuments = (
 
   const formValuesDocumentsInitial = formValues?.documents
     ? formValues?.documents?.filter(
-        (doc) => doc.mine_incident_document_type_code === Strings.INCIDENT_DOCUMENT_TYPES.initial
-      )
+      (doc) => doc.mine_incident_document_type_code === Strings.INCIDENT_DOCUMENT_TYPES.initial
+    )
     : [];
 
   const formValuesDocumentsFinalReport =
@@ -576,14 +577,14 @@ const renderUploadInitialNotificationDocuments = (
 
   const formValuesInitialNotificationDocs = formValues?.initial_notification_documents
     ? formValues?.initial_notification_documents?.filter(
-        (doc) => doc.mine_incident_document_type_code === Strings.INCIDENT_DOCUMENT_TYPES.initial
-      )
+      (doc) => doc.mine_incident_document_type_code === Strings.INCIDENT_DOCUMENT_TYPES.initial
+    )
     : [];
 
   const formValuesFinaltReportDocs = formValues?.final_report_documents
     ? formValues?.final_report_documents?.filter(
-        (doc) => doc.mine_incident_document_type_code === Strings.INCIDENT_DOCUMENT_TYPES.final
-      )
+      (doc) => doc.mine_incident_document_type_code === Strings.INCIDENT_DOCUMENT_TYPES.final
+    )
     : [];
 
   const initialDocumentsForm = [
@@ -911,7 +912,7 @@ export const IncidentForm = (props) => {
     <FormWrapper
       name={FORM.ADD_EDIT_INCIDENT}
       initialValues={props.initialValues}
-      onSubmit={() => {}}
+      onSubmit={() => { }}
       reduxFormConfig={{
         enableReinitialize: true,
         touchOnBlur: true,
