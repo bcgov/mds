@@ -1379,7 +1379,7 @@ exports[`IncidentForm renders properly 1`] = `
                         class="ant-col ant-form-item-label"
                       >
                         <label
-                          class=""
+                          class="ant-form-item-required"
                           for="ADD_EDIT_INCIDENT_number_of_injuries"
                           title=""
                         >
