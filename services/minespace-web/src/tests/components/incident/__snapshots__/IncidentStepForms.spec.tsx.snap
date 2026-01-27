@@ -789,12 +789,6 @@ Object {
                         >
                           <div>
                             Number of injuries
-                             
-                            <span
-                              class="form-item-optional"
-                            >
-                               (optional)
-                            </span>
                           </div>
                         </label>
                       </div>
@@ -3012,12 +3006,6 @@ Object {
                         >
                           <div>
                             Number of injuries
-                             
-                            <span
-                              class="form-item-optional"
-                            >
-                               (optional)
-                            </span>
                           </div>
                         </label>
                       </div>
@@ -5410,12 +5398,6 @@ Object {
                       >
                         <div>
                           Number of injuries
-                           
-                          <span
-                            class="form-item-optional"
-                          >
-                             (optional)
-                          </span>
                         </div>
                       </label>
                     </div>
@@ -7633,12 +7615,6 @@ Object {
                       >
                         <div>
                           Number of injuries
-                           
-                          <span
-                            class="form-item-optional"
-                          >
-                             (optional)
-                          </span>
                         </div>
                       </label>
                     </div>

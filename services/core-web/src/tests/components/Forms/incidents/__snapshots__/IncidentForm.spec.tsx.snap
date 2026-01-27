@@ -1385,12 +1385,6 @@ exports[`IncidentForm renders properly 1`] = `
                         >
                           <div>
                             Number of injuries
-                             
-                            <span
-                              class="form-item-optional"
-                            >
-                               (optional)
-                            </span>
                           </div>
                         </label>
                       </div>
