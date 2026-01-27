@@ -240,7 +240,7 @@ export const RelationshipProfile: FC = () => {
       };
     });
 
-  const filteredRelationships: IPartyAppt[] = partyRelationships
+  const filteredRelationships: IPartyAppt[] = [...partyRelationships]
     .sort((a, b) =>
       moment(a.start_date, "YYYY-MM-DD") >= moment(b.start_date, "YYYY-MM-DD") ? -1 : 1
     )
