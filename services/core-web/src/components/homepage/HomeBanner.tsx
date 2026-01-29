@@ -1,7 +1,7 @@
 import React from "react";
 import { Typography, Col, Row } from "antd";
 
-import GlobalSearch from "@/components/search/GlobalSearch";
+import GlobalSearch from "@/components/search/GlobalSearch/GlobalSearch";
 import { BACKGROUND } from "@/constants/assets";
 
 const HomeBanner = () => {

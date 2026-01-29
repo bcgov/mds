@@ -9,7 +9,7 @@ import debounce from "lodash/debounce";
 import {
   fetchSearchResults,
   clearAllSearchResults,
-} from "@mds/common/redux/actionCreators/searchActionCreator";
+} from "@mds/common/redux/slices/searchSlice";
 
 const debouncePropTypes = {
   fetchOptions: PropTypes.func.isRequired,
@@ -80,8 +80,8 @@ export const RenderMultiSelectPartySearch = (props) => {
   }, [props.triggerSelectReset]);
 
   const getFetchOptions = (value) =>
-    props.fetchSearchResults(value, "party").then((response) => {
-      const results = response?.data?.search_results || [];
+    props.fetchSearchResults({ searchTerm: value, searchTypes: ["party"] }).then((response) => {
+      const results = response?.payload?.search_results || response?.data?.search_results || [];
       props.onSearchResultsChanged(results);
       setSearchResults(results);
       return results?.party

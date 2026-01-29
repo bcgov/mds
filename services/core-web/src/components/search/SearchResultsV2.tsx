@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useMemo, useCallback } from "react";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useLocation, useHistory } from "react-router-dom";
 import queryString from "query-string";
 import {
@@ -24,21 +23,21 @@ import {
   ClearOutlined,
   EnvironmentOutlined,
   UserOutlined,
-  BankOutlined,
   FileProtectOutlined,
   AlertOutlined,
   FileSearchOutlined,
   ExceptionOutlined,
 } from "@ant-design/icons";
-import { getSearchResults, getSearchFacets, getSearchTerms } from "@mds/common/redux/selectors/searchSelectors";
 import {
+  selectSearchResults,
+  selectSearchFacets,
+  selectSearchTerms,
+  selectSearchOptions,
   fetchSearchOptions,
   fetchSearchResults,
-} from "@mds/common/redux/actionCreators/searchActionCreator";
-import { getSearchOptions } from "@mds/common/redux/reducers/searchReducer";
+} from "@mds/common/redux/slices/searchSlice";
 import { getPartyRelationshipTypeHash } from "@mds/common/redux/selectors/staticContentSelectors";
 import * as router from "@/constants/routes";
-import { ISearchResultList } from "@mds/common/interfaces";
 import { MineResultsTable } from "./MineResultsTable";
 import { PermitResultsTable } from "./PermitResultsTable";
 import { ContactResultsTable } from "./ContactResultsTable";
@@ -147,23 +146,21 @@ interface SearchFacets {
   type?: FacetBucket[];
 }
 
-interface SearchResultsProps {
-  fetchSearchOptions: () => any;
-  fetchSearchResults: (query: string, tab?: string, filters?: Record<string, string>) => any;
-  searchOptions: any[];
-  searchTerms: string[];
-  searchResults: ISearchResultList;
-  searchFacets: SearchFacets;
-  partyRelationshipTypeHash: Record<string, string>;
-}
-
-export const SearchResults: React.FC<SearchResultsProps> = (props) => {
+export const SearchResults: React.FC = () => {
   const [isSearching, setIsSearching] = useState(false);
   const [params, setParams] = useState<{ q?: string; t?: string }>({});
   const [searchInputValue, setSearchInputValue] = useState("");
   const [selectedFilters, setSelectedFilters] = useState<Record<string, string[]>>({});
   const history = useHistory();
   const location = useLocation();
+  const dispatch = useDispatch();
+
+  // Redux selectors
+  const searchOptions = useSelector(selectSearchOptions);
+  const searchResults = useSelector(selectSearchResults);
+  const searchFacets = useSelector(selectSearchFacets);
+  const searchTerms = useSelector(selectSearchTerms);
+  const partyRelationshipTypeHash = useSelector(getPartyRelationshipTypeHash);
 
   const highlightRegex = useMemo(() => {
     if (!params.q) return null;
@@ -189,7 +186,7 @@ export const SearchResults: React.FC<SearchResultsProps> = (props) => {
 
 
   // Map tab keys to backend search types and apply automatic filters
-  const mapTabToSearchType = useCallback((tabKey: string | undefined, currentFilters: Record<string, string[]>): { types: string | undefined; filters: Record<string, string[]> } => {
+  const mapTabToSearchType = useCallback((tabKey: string | undefined, currentFilters: Record<string, string[]>): { types: string[] | undefined; filters: Record<string, string[]> } => {
     if (!tabKey || tabKey === "all") return { types: undefined, filters: currentFilters };
 
     const tabToTypeMap: Record<string, string> = {
@@ -212,8 +209,9 @@ export const SearchResults: React.FC<SearchResultsProps> = (props) => {
       newFilters.party_type = ["Organization"];
     }
 
+    const typeString = tabToTypeMap[tabKey];
     return {
-      types: tabToTypeMap[tabKey],
+      types: typeString ? typeString.split(",") : undefined,
       filters: newFilters
     };
   }, []);
@@ -224,8 +222,8 @@ export const SearchResults: React.FC<SearchResultsProps> = (props) => {
     setIsSearching(true);
     const { types, filters: enhancedFilters } = mapTabToSearchType(searchTypes, filters || {});
     const apiFilters = getFiltersForApi(enhancedFilters);
-    props.fetchSearchResults(searchTerm, types, apiFilters);
-  }, [props.fetchSearchResults, getFiltersForApi, mapTabToSearchType]);
+    dispatch(fetchSearchResults({ searchTerm, searchTypes: types, filters: apiFilters }));
+  }, [dispatch, getFiltersForApi, mapTabToSearchType]);
 
   const handleSearch = useCallback((searchParams: string, resetFilters = true) => {
     const parsedParams = queryString.parse(searchParams);
@@ -253,10 +251,10 @@ export const SearchResults: React.FC<SearchResultsProps> = (props) => {
   };
 
   useEffect(() => {
-    if (!props.searchOptions.length) {
-      props.fetchSearchOptions();
+    if (!searchOptions.length) {
+      dispatch(fetchSearchOptions(undefined));
     }
-  }, [props.searchOptions.length, props.fetchSearchOptions]);
+  }, [searchOptions.length, dispatch]);
 
   useEffect(() => {
     const parsedParams = queryString.parse(location.search);
@@ -267,15 +265,15 @@ export const SearchResults: React.FC<SearchResultsProps> = (props) => {
       setIsSearching(true);
       const { types, filters: enhancedFilters } = mapTabToSearchType(t as string, {});
       const apiFilters = getFiltersForApi(enhancedFilters);
-      props.fetchSearchResults(q as string, types, apiFilters);
+      dispatch(fetchSearchResults({ searchTerm: q as string, searchTypes: types, filters: apiFilters }));
     }
-  }, [location.search, props.fetchSearchResults, mapTabToSearchType, getFiltersForApi]);
+  }, [location.search, dispatch, mapTabToSearchType, getFiltersForApi]);
 
   useEffect(() => {
-    if (props.searchResults) {
+    if (searchResults) {
       setIsSearching(false);
     }
-  }, [props.searchResults]);
+  }, [searchResults]);
 
   // Handle filter change - trigger server-side search
   const handleFilterChange = (category: string, value: string, checked: boolean) => {
@@ -311,14 +309,14 @@ export const SearchResults: React.FC<SearchResultsProps> = (props) => {
   const hasActiveFilters = Object.keys(selectedFilters).length > 0;
 
   // Get results directly from API (server-side filtered)
-  const mines = props.searchResults?.mine || [];
-  const parties = props.searchResults?.party || [];
-  const permits = props.searchResults?.permit || [];
-  const mineDocuments = props.searchResults?.mine_documents || [];
-  const permitDocuments = props.searchResults?.permit_documents || [];
-  const explosivesPermits = props.searchResults?.explosives_permit || [];
-  const nowApplications = props.searchResults?.now_application || [];
-  const nods = props.searchResults?.notice_of_departure || [];
+  const mines = searchResults?.mine || [];
+  const parties = searchResults?.party || [];
+  const permits = searchResults?.permit || [];
+  const mineDocuments = searchResults?.mine_documents || [];
+  const permitDocuments = searchResults?.permit_documents || [];
+  const explosivesPermits = searchResults?.explosives_permit || [];
+  const nowApplications = searchResults?.now_application || [];
+  const nods = searchResults?.notice_of_departure || [];
 
   // Transform results to format expected by table components
   const mineResults = mines.map((item: any) => item.result).filter(Boolean);
@@ -344,7 +342,7 @@ export const SearchResults: React.FC<SearchResultsProps> = (props) => {
         .map((facetKey) => ({
           key: facetKey,
           label: FACET_LABELS[facetKey] || facetKey,
-          data: (props.searchFacets as any)?.[facetKey] || [],
+          data: (searchFacets as any)?.[facetKey] || [],
         }))
         .filter((f) => f.data.length > 0);
 
@@ -353,7 +351,7 @@ export const SearchResults: React.FC<SearchResultsProps> = (props) => {
         facets: facets,
       };
     }).filter((group) => group.facets.length > 0);
-  }, [props.searchFacets]);
+  }, [searchFacets]);
 
   const renderFilters = () => (
     <Card size="small" style={{ marginBottom: 16 }}>
@@ -407,7 +405,7 @@ export const SearchResults: React.FC<SearchResultsProps> = (props) => {
                     {facet.label}
                   </Text>
                   <div style={{ maxHeight: 200, overflowY: "auto", paddingLeft: 8 }}>
-                    {facet.data
+                    {[...facet.data]
                       .sort((a: FacetBucket, b: FacetBucket) => b.count - a.count)
                       .map((bucket: FacetBucket) => (
                         <div key={bucket.key} style={{ marginBottom: 4 }}>
@@ -467,7 +465,7 @@ export const SearchResults: React.FC<SearchResultsProps> = (props) => {
               highlightRegex={highlightRegex}
               query={params.q || ""}
               searchResults={peopleResults}
-              partyRelationshipTypeHash={props.partyRelationshipTypeHash}
+              partyRelationshipTypeHash={partyRelationshipTypeHash}
               showAdvancedLookup={false}
             />
           )}
@@ -477,7 +475,7 @@ export const SearchResults: React.FC<SearchResultsProps> = (props) => {
               highlightRegex={highlightRegex}
               query={params.q || ""}
               searchResults={organizationResults}
-              partyRelationshipTypeHash={props.partyRelationshipTypeHash}
+              partyRelationshipTypeHash={partyRelationshipTypeHash}
               showAdvancedLookup={false}
             />
           )}
@@ -563,7 +561,7 @@ export const SearchResults: React.FC<SearchResultsProps> = (props) => {
           highlightRegex={highlightRegex}
           query={params.q || ""}
           searchResults={peopleResults}
-          partyRelationshipTypeHash={props.partyRelationshipTypeHash}
+          partyRelationshipTypeHash={partyRelationshipTypeHash}
           showAdvancedLookup={true}
         />
       ),
@@ -577,7 +575,7 @@ export const SearchResults: React.FC<SearchResultsProps> = (props) => {
           highlightRegex={highlightRegex}
           query={params.q || ""}
           searchResults={organizationResults}
-          partyRelationshipTypeHash={props.partyRelationshipTypeHash}
+          partyRelationshipTypeHash={partyRelationshipTypeHash}
           showAdvancedLookup={true}
         />
       ),
@@ -726,21 +724,4 @@ export const SearchResults: React.FC<SearchResultsProps> = (props) => {
   );
 };
 
-const mapStateToProps = (state: any) => ({
-  searchOptions: getSearchOptions(state),
-  searchResults: getSearchResults(state),
-  searchFacets: getSearchFacets(state),
-  searchTerms: getSearchTerms(state),
-  partyRelationshipTypeHash: getPartyRelationshipTypeHash(state),
-});
-
-const mapDispatchToProps = (dispatch: any) =>
-  bindActionCreators(
-    {
-      fetchSearchOptions,
-      fetchSearchResults,
-    },
-    dispatch
-  );
-
-export default connect(mapStateToProps, mapDispatchToProps)(SearchResults);
+export default SearchResults;

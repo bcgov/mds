@@ -13,9 +13,9 @@ jest.mock("react-router-dom", () => ({
 }));
 
 const defaultProps = {
-  placeholder: "Search mines, contacts, permits...",
-  defaultValue: "",
-  size: "large",
+  placeholderText: "Search mines, contacts, permits...",
+  iconPlacement: "suffix" as const,
+  showFocusButton: false,
 };
 
 describe("SearchBar", () => {
@@ -44,7 +44,7 @@ describe("SearchBar", () => {
         </MemoryRouter>
       );
 
-      expect(screen.getByPlaceholderText(defaultProps.placeholder)).toBeInTheDocument();
+      expect(screen.getByPlaceholderText(defaultProps.placeholderText)).toBeInTheDocument();
     });
 
     it.skip("displays default value (component doesn't use defaultValue prop)", () => {
@@ -56,7 +56,7 @@ describe("SearchBar", () => {
         </MemoryRouter>
       );
 
-      const input = screen.getByPlaceholderText(defaultProps.placeholder);
+      const input = screen.getByPlaceholderText(defaultProps.placeholderText);
       expect(input).toHaveValue("test query");
     });
 
@@ -83,7 +83,7 @@ describe("SearchBar", () => {
         </MemoryRouter>
       );
 
-      const input = screen.getByPlaceholderText(defaultProps.placeholder);
+      const input = screen.getByPlaceholderText(defaultProps.placeholderText);
 
       fireEvent.change(input, { target: { value: "test" } });
       fireEvent.keyDown(input, { key: "Enter", code: "Enter" });
@@ -103,7 +103,7 @@ describe("SearchBar", () => {
         </MemoryRouter>
       );
 
-      const input = screen.getByPlaceholderText(defaultProps.placeholder);
+      const input = screen.getByPlaceholderText(defaultProps.placeholderText);
       fireEvent.change(input, { target: { value: "test" } });
       fireEvent.focus(input);
 
@@ -125,7 +125,7 @@ describe("SearchBar", () => {
         </MemoryRouter>
       );
 
-      const input = screen.getByPlaceholderText(defaultProps.placeholder);
+      const input = screen.getByPlaceholderText(defaultProps.placeholderText);
 
       fireEvent.change(input, { target: { value: "  test query  " } });
       fireEvent.keyDown(input, { key: "Enter", code: "Enter" });
@@ -144,7 +144,7 @@ describe("SearchBar", () => {
         </MemoryRouter>
       );
 
-      const input = screen.getByPlaceholderText(defaultProps.placeholder);
+      const input = screen.getByPlaceholderText(defaultProps.placeholderText);
 
       fireEvent.keyDown(input, { key: "Enter", code: "Enter" });
 
@@ -162,7 +162,7 @@ describe("SearchBar", () => {
         </MemoryRouter>
       );
 
-      const input = screen.getByPlaceholderText(defaultProps.placeholder);
+      const input = screen.getByPlaceholderText(defaultProps.placeholderText);
 
       fireEvent.change(input, { target: { value: "   " } });
       fireEvent.keyDown(input, { key: "Enter", code: "Enter" });
@@ -183,7 +183,7 @@ describe("SearchBar", () => {
         </MemoryRouter>
       );
 
-      const input = screen.getByPlaceholderText(defaultProps.placeholder) as HTMLInputElement;
+      const input = screen.getByPlaceholderText(defaultProps.placeholderText) as HTMLInputElement;
 
       fireEvent.change(input, { target: { value: "new value" } });
 
@@ -199,7 +199,7 @@ describe("SearchBar", () => {
         </MemoryRouter>
       );
 
-      const input = screen.getByPlaceholderText(defaultProps.placeholder) as HTMLInputElement;
+      const input = screen.getByPlaceholderText(defaultProps.placeholderText) as HTMLInputElement;
 
       expect(input.value).toBe("test");
 
@@ -221,7 +221,7 @@ describe("SearchBar", () => {
       expect(screen.queryByLabelText(/clear/i)).not.toBeInTheDocument();
 
       // Type something
-      const input = screen.getByPlaceholderText(defaultProps.placeholder);
+      const input = screen.getByPlaceholderText(defaultProps.placeholderText);
       fireEvent.change(input, { target: { value: "test" } });
 
       // Clear button should appear
@@ -271,7 +271,7 @@ describe("SearchBar", () => {
         </MemoryRouter>
       );
 
-      const input = screen.getByPlaceholderText(defaultProps.placeholder);
+      const input = screen.getByPlaceholderText(defaultProps.placeholderText);
       expect(input).toBeInTheDocument();
     });
 
@@ -284,7 +284,7 @@ describe("SearchBar", () => {
         </MemoryRouter>
       );
 
-      const input = screen.getByPlaceholderText(defaultProps.placeholder);
+      const input = screen.getByPlaceholderText(defaultProps.placeholderText);
       fireEvent.focus(input);
 
       const button = screen.getByRole("button");
@@ -305,7 +305,7 @@ describe("SearchBar", () => {
         </MemoryRouter>
       );
 
-      const input = screen.getByPlaceholderText(defaultProps.placeholder);
+      const input = screen.getByPlaceholderText(defaultProps.placeholderText);
 
       fireEvent.change(input, { target: { value: longQuery } });
       fireEvent.keyDown(input, { key: "Enter", code: "Enter" });
@@ -327,7 +327,7 @@ describe("SearchBar", () => {
         </MemoryRouter>
       );
 
-      const input = screen.getByPlaceholderText(defaultProps.placeholder);
+      const input = screen.getByPlaceholderText(defaultProps.placeholderText);
 
       fireEvent.change(input, { target: { value: specialQuery } });
       fireEvent.keyDown(input, { key: "Enter", code: "Enter" });
@@ -348,7 +348,7 @@ describe("SearchBar", () => {
         </MemoryRouter>
       );
 
-      const input = screen.getByPlaceholderText(defaultProps.placeholder);
+      const input = screen.getByPlaceholderText(defaultProps.placeholderText);
 
       fireEvent.change(input, { target: { value: unicodeQuery } });
       fireEvent.keyDown(input, { key: "Enter", code: "Enter" });

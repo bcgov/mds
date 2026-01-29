@@ -2,7 +2,7 @@ import React from "react";
 import { shallow } from "enzyme";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
-import GlobalSearch from "@/components/search/GlobalSearch";
+import GlobalSearch from "@/components/search/GlobalSearch/GlobalSearch";
 
 const mockStore = configureStore([]);
 

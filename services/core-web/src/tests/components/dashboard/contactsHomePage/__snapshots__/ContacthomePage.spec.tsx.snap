@@ -170,27 +170,48 @@ exports[`ContactHomePage renders properly 1`] = `
           parties={
             Object {
               "18133c75-49ad-4101-85f3-a43e35ae989a": Object {
-                "address": Array [
-                  Object {},
-                ],
-                "business_role_appts": Array [
-                  Object {},
-                ],
+                "address": Object {
+                  "address_line_1": "123 Main St",
+                  "address_type_code": "CAN",
+                  "city": "Vancouver",
+                  "post_code": "V6B 1A1",
+                  "sub_division_code": "BC",
+                },
+                "business_role_appts": Array [],
+                "email": "mock@example.com",
                 "first_name": "First",
+                "mine_party_appt": Array [],
+                "name": "First mock name",
+                "now_party_appt": Array [],
+                "organization": null,
+                "organization_guid": null,
                 "party_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
                 "party_name": "mock name",
+                "party_orgbook_entity": null,
                 "party_type_code": "PER",
+                "phone_no": "123-456-7890",
               },
               "18145c75-49ad-0101-85f3-a43e45ae989a": Object {
-                "address": Array [
-                  Object {},
-                ],
-                "business_role_appts": Array [
-                  Object {},
-                ],
+                "address": Object {
+                  "address_line_1": "456 Oak Ave",
+                  "address_type_code": "CAN",
+                  "city": "Victoria",
+                  "post_code": "V8W 1A2",
+                  "sub_division_code": "BC",
+                },
+                "business_role_appts": Array [],
+                "email": "mocktwo@example.com",
+                "first_name": "Mock",
+                "mine_party_appt": Array [],
+                "name": "Mock mock Two",
+                "now_party_appt": Array [],
+                "organization": null,
+                "organization_guid": null,
                 "party_guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
                 "party_name": "mock Two",
+                "party_orgbook_entity": null,
                 "party_type_code": "PER",
+                "phone_no": "123-456-7891",
               },
             }
           }

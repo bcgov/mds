@@ -6,13 +6,14 @@ import { Row, Col } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { sumBy, map, mapValues, keyBy } from "lodash";
-import { getSearchResults, getSearchTerms } from "@mds/common/redux/selectors/searchSelectors";
-import { getPartyRelationshipTypeHash } from "@mds/common/redux/selectors/staticContentSelectors";
-import {
+import { 
+  selectSearchResults, 
+  selectSearchTerms, 
+  selectSearchOptions,
   fetchSearchOptions,
   fetchSearchResults,
-} from "@mds/common/redux/actionCreators/searchActionCreator";
-import { getSearchOptions } from "@mds/common/redux/reducers/searchReducer";
+} from "@mds/common/redux/slices/searchSlice";
+import { getPartyRelationshipTypeHash } from "@mds/common/redux/selectors/staticContentSelectors";
 import { MineResultsTable } from "@/components/search/MineResultsTable";
 import { PermitResultsTable } from "@/components/search/PermitResultsTable";
 import { ContactResultsTable } from "@/components/search/ContactResultsTable";
@@ -24,8 +25,8 @@ import { ISearchResultList } from "@mds/common/interfaces";
 interface SearchResultsProps {
   location: { search: string };
   history: { push: (path: string) => void };
-  fetchSearchOptions: () => Promise<void>;
-  fetchSearchResults: (query, tab) => Promise<void>;
+  fetchSearchOptions: any;
+  fetchSearchResults: any;
   searchOptions: any[];
   searchOptionsHash: { [key: string]: any };
   searchTerms: string[];
@@ -122,7 +123,7 @@ export const SearchResultsLegacy: React.FC<SearchResultsProps & PropsFromRedux> 
     const { q, t } = parsedParams;
 
     if (q) {
-      props.fetchSearchResults(q, t);
+      props.fetchSearchResults({ searchTerm: q as string, searchTypes: t ? [t as string] : [] });
       setParams(parsedParams);
       setIsSearching(true);
       setHasSearchTerm(true);
@@ -236,10 +237,10 @@ export const SearchResultsLegacy: React.FC<SearchResultsProps & PropsFromRedux> 
 };
 
 const mapStateToProps = (state: any) => ({
-  searchOptions: getSearchOptions(state),
-  searchOptionsHash: mapValues(keyBy(getSearchOptions(state), "model_id"), "description"),
-  searchResults: getSearchResults(state),
-  searchTerms: getSearchTerms(state),
+  searchOptions: selectSearchOptions(state),
+  searchOptionsHash: mapValues(keyBy(selectSearchOptions(state), "model_id"), "description"),
+  searchResults: selectSearchResults(state),
+  searchTerms: selectSearchTerms(state),
   partyRelationshipTypeHash: getPartyRelationshipTypeHash(state),
 });
 

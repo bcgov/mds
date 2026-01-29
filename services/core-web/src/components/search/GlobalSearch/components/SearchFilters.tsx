@@ -36,25 +36,24 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
   const getFacetCount = (filterKey: string): number => facetCountMap[filterKey] ?? 0;
 
   return (
-    <div style={{ padding: "8px 16px", borderBottom: "1px solid #f0f0f0" }}>
-      <Space size={[4, 4]} wrap>
+    <div style={{ padding: 8, borderBottom: "1px solid #f0f0f0" }}>
+      <Space size={[4, 4]} wrap style={{ padding: '0 8px' }}>
         {isOnMinePage && (
-          <Tag
-            onClick={() => onToggleScopeToMine(!scopeToMine)}
+          <Tag.CheckableTag
+            checked={scopeToMine}
+            onChange={(checked) => onToggleScopeToMine(checked)}
             style={{
-              cursor: "pointer",
-              backgroundColor: scopeToMine ? "#5e46a115" : "transparent",
-              borderColor: scopeToMine ? "#5e46a1" : "#d9d9d9",
-              color: scopeToMine ? "#5e46a1" : "#595959",
-              margin: 0,
-              fontWeight: scopeToMine ? 600 : 400,
+              border: `1px solid ${scopeToMine ? "#5e46a1" : "#d9d9d9"}`,
+              borderRadius: 4,
+              padding: '0 8px',
+              fontSize: 13,
             }}
           >
             <Space size={4}>
               <AimOutlined />
               <span>This Mine</span>
             </Space>
-          </Tag>
+          </Tag.CheckableTag>
         )}
         {isOnMinePage && <Divider type="vertical" style={{ margin: "0 4px", height: 20 }} />}
         {Object.entries(SEARCH_TYPE_CONFIG).map(([key, config]) => {
@@ -62,23 +61,24 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
           const count = getFacetCount(key);
 
           return (
-            <Tag
+            <Tag.CheckableTag
               key={key}
-              onClick={() => onToggleFilter(key)}
+              checked={isActive}
+              onChange={() => onToggleFilter(key)}
               style={{
-                cursor: "pointer",
-                backgroundColor: isActive ? `${config.color}15` : "transparent",
-                borderColor: isActive ? config.color : "#d9d9d9",
+                border: `1px solid ${isActive ? config.color : "#d9d9d9"}`,
                 color: isActive ? config.color : "#595959",
-                margin: 0,
+                borderRadius: 4,
+                padding: '0 8px',
+                fontSize: 13,
               }}
             >
               <Space size={4}>
                 {config.icon}
                 <span>{config.pluralLabel}</span>
-                {searchTerm && <span style={{ opacity: 0.6 }}>({count})</span>}
+                {searchTerm && count > 0 && <span style={{ opacity: 0.6 }}>({count})</span>}
               </Space>
-            </Tag>
+            </Tag.CheckableTag>
           );
         })}
       </Space>

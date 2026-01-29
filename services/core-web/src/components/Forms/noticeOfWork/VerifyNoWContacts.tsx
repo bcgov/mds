@@ -15,16 +15,16 @@ import { required } from "@mds/common/redux/utils/Validate";
 import {
     fetchSearchResults as fetchSearchResultsAction,
     clearAllSearchResults as clearAllSearchResultsAction,
-} from "@mds/common/redux/actionCreators/searchActionCreator";
+    storeSubsetSearchResults as storeSubsetSearchResultsAction,
+} from "@mds/common/redux/slices/searchSlice";
 import { fetchPartyById as fetchPartyByIdAction, updateParty as updatePartyAction } from "@mds/common/redux/slices/partiesSlice";
-import { storeSubsetSearchResults as storeSubsetSearchResultsAction } from "@mds/common/redux/actions/searchActions";
 import { TRASHCAN, PROFILE_NOCIRCLE } from "@/constants/assets";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import {
     getSearchResults,
     getSearchSubsetResults,
-} from "@mds/common/redux/selectors/searchSelectors";
+} from "@mds/common/redux/slices/searchSlice";
 import * as Strings from "@mds/common/constants/strings";
 
 import Address from "@/components/common/Address";
@@ -305,7 +305,7 @@ export const VerifyNoWContacts: React.FC<VerifyNoWContactsProps> = (props) => {
     const openModal = (cfg: any) => dispatch(openModalAction(cfg));
     const closeModal = () => dispatch(closeModalAction());
     const fetchSearchResults = (term: string, category: string) =>
-        dispatch(fetchSearchResultsAction(term, category));
+        dispatch(fetchSearchResultsAction({ searchTerm: term, searchTypes: [category] }));
     const clearAllSearchResults = () => dispatch(clearAllSearchResultsAction());
     const storeSubsetSearchResults = (r: any) => dispatch(storeSubsetSearchResultsAction(r));
     const fetchPartyById = (pg: string) => dispatch(fetchPartyByIdAction(pg));
@@ -489,8 +489,8 @@ export const VerifyNoWContacts: React.FC<VerifyNoWContactsProps> = (props) => {
             }
 
             setIsLoading(true);
-            Promise.resolve(fetchSearchResults(newSearchTerm, "party")).then((response: any) => {
-                const data = response?.data ?? response;
+            Promise.resolve(fetchSearchResults(newSearchTerm || searchTerm, "party")).then((action: any) => {
+                const data = action?.payload ?? action;
                 const partyResults: any[] = data?.search_results?.party ?? [];
                 // Merge with any persisted selected results not present in latest search
                 const merged = [

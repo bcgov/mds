@@ -8,7 +8,7 @@ const SearchResults: React.FC<any> = (props) => {
   const { isFeatureEnabled } = useFeatureFlag();
 
   if (isFeatureEnabled(Feature.GLOBAL_SEARCH_V2)) {
-    return <SearchResultsV2 {...props} />;
+    return <SearchResultsV2 />;
   }
 
   return <SearchResultsLegacy {...props} />;

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { List, Avatar, Typography } from "antd";
 import { EnterOutlined } from "@ant-design/icons";
 import { ISearchResult, ISimpleSearchResult } from "@mds/common/interfaces";
@@ -24,15 +24,32 @@ export const SearchResultItem: React.FC<SearchResultItemProps> = ({
   onClick,
   onMouseEnter,
 }) => {
+  const [isHovered, setIsHovered] = useState(false);
   const configKey = RESULT_TYPE_MAP[item.type] || "document";
   const config = SEARCH_TYPE_CONFIG[configKey];
   const isSelected = index === selectedIndex;
 
+  const getBackground = () => {
+    if (isSelected) return 'rgba(94, 70, 161, 0.08)';
+    if (isHovered) return 'rgba(94, 70, 161, 0.04)';
+    return 'transparent';
+  };
+
   return (
     <List.Item
-      className={`global-search__result-item ${isSelected ? "global-search__result-item--selected" : ""}`}
       onClick={() => onClick(item)}
-      onMouseEnter={() => onMouseEnter(index)}
+      onMouseEnter={() => {
+        onMouseEnter(index);
+        setIsHovered(true);
+      }}
+      onMouseLeave={() => setIsHovered(false)}
+      style={{
+        cursor: 'pointer',
+        borderLeft: `2px solid ${isSelected ? '#5e46a1' : 'transparent'}`,
+        background: getBackground(),
+        padding: '8px 16px',
+        transition: 'all 0.2s',
+      }}
     >
       <List.Item.Meta
         avatar={

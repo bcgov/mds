@@ -25,7 +25,8 @@ exports[`HomePage renders properly 1`] = `
             class="ant-col ant-col-24"
           >
             <button
-              class="ant-btn ant-btn-default global-search-trigger"
+              class="ant-btn ant-btn-default"
+              style="display: flex; align-items: center; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); color: rgba(255, 255, 255, 0.85); border-radius: 6px; min-width: 200px; transition: all 0.2s;"
               type="button"
             >
               <span
@@ -48,29 +49,55 @@ exports[`HomePage renders properly 1`] = `
                   />
                 </svg>
               </span>
-              <span
-                class="search-placeholder"
+              <div
+                class="ant-space ant-space-horizontal ant-space-align-center search-trigger-content"
+                style="width: 100%; justify-content: space-between;"
               >
-                Search by Mines, Contacts, Permits or Documents Name...
-              </span>
-              <span
-                class="search-shortcut"
-              >
-                <span
-                  class="ant-typography"
+                <div
+                  class="ant-space-item"
+                  style="margin-right: 8px;"
                 >
-                  <kbd>
-                    ⌘
-                  </kbd>
-                </span>
-                <span
-                  class="ant-typography"
+                  <span
+                    class="ant-typography search-placeholder"
+                    style="opacity: 0.85;"
+                  >
+                    Search by Mines, Contacts, Permits or Documents Name...
+                  </span>
+                </div>
+                <div
+                  class="ant-space-item"
                 >
-                  <kbd>
-                    K
-                  </kbd>
-                </span>
-              </span>
+                  <div
+                    class="ant-space ant-space-horizontal ant-space-align-center search-shortcut"
+                  >
+                    <div
+                      class="ant-space-item"
+                      style="margin-right: 4px;"
+                    >
+                      <span
+                        class="ant-typography"
+                        style="background: rgba(255, 255, 255, 0.2);"
+                      >
+                        <kbd>
+                          ⌘
+                        </kbd>
+                      </span>
+                    </div>
+                    <div
+                      class="ant-space-item"
+                    >
+                      <span
+                        class="ant-typography"
+                        style="background: rgba(255, 255, 255, 0.2);"
+                      >
+                        <kbd>
+                          K
+                        </kbd>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </button>
           </div>
         </div>

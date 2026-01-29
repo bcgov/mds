@@ -3,8 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
 import { Modal, Input, Typography, Button, List, Space, Row, Divider, Tag } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
-import { fetchSearchBarResults } from "@mds/common/redux/actionCreators/searchActionCreator";
-import { getSearchBarResults, getSearchBarFacets } from "@mds/common/redux/reducers/searchReducer";
+import { fetchSearchBarResults, selectSearchBarResults, selectSearchBarFacets } from "@mds/common/redux/slices/searchSlice";
 import * as router from "@/constants/routes";
 import { ISearchResult, ISimpleSearchResult } from "@mds/common/interfaces";
 import { SearchTriggerButton } from "./components/SearchTriggerButton";
@@ -24,9 +23,9 @@ interface GlobalSearchProps {
   enableShortcut?: boolean;
 }
 
-const GlobalSearch: React.FC<GlobalSearchProps> = ({ 
-  placeholder = "Search Core...", 
-  enableShortcut = true 
+const GlobalSearch: React.FC<GlobalSearchProps> = ({
+  placeholder = "Search Core...",
+  enableShortcut = true
 }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -36,8 +35,8 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
   const [quickFilter, setQuickFilter] = useState<string | null>(null);
 
   const dispatch = useDispatch();
-  const searchResults = useSelector(getSearchBarResults);
-  const facets = useSelector(getSearchBarFacets);
+  const searchResults = useSelector(selectSearchBarResults);
+  const facets = useSelector(selectSearchBarFacets);
   const history = useHistory();
   const location = useLocation();
   const inputRef = useRef<any>(null);
@@ -50,7 +49,11 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
   const handleSearch = useCallback(
     (term: string, filters: string[], mineGuid: string | null) => {
       if (term.length > 0) {
-        dispatch(fetchSearchBarResults(term, getSearchTypes(filters, quickFilter), mineGuid));
+        dispatch(fetchSearchBarResults({
+          searchTerm: term,
+          searchTypes: getSearchTypes(filters, quickFilter),
+          mineGuid
+        }));
       }
     },
     [dispatch, quickFilter]
@@ -223,7 +226,7 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
     if (hasActiveSearch && groupedResults) {
       let globalIndex = 0;
       return (
-        <div className="global-search__results">
+        <div style={{ maxHeight: 400, overflowY: 'auto' }}>
           {Object.entries(groupedResults).map(([type, results]) => {
             const configKey = RESULT_TYPE_MAP[type] || "document";
             const config = SEARCH_TYPE_CONFIG[configKey];
@@ -324,7 +327,7 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
         open={isModalVisible}
         onCancel={handleClose}
         footer={
-          <Row justify="space-between" style={{ fontSize: 12, color: "#8c8c8c" }}>
+          <Row justify="space-between" style={{ fontSize: 12, color: "#8c8c8c", padding: '8px 0' }}>
             <Space size="middle">
               <span>
                 <Text keyboard>↵</Text> select
@@ -341,9 +344,10 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
         closable={false}
         maskClosable
         keyboard
-        className="global-search-modal"
         width={580}
         style={{ top: 80 }}
+        bodyStyle={{ padding: 0 }}
+        className="global-search-modal"
         destroyOnClose
       >
         <Input
