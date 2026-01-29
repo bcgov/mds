@@ -25,7 +25,7 @@ def enable_simple_search_v2():
 @pytest.fixture
 def mock_es_service():
     """Mock Elasticsearch service - mocks the class method 'search'."""
-    with patch('app.api.search.search.global_search_service.ElasticSearchService.search') as mock_search:
+    with patch('app.api.search.elasticsearch.elastic_search_service.ElasticSearchService.search') as mock_search:
         # Default return value to prevent errors
         mock_search.return_value = {
             'hits': {'hits': []},

@@ -3,6 +3,57 @@
 from .search_constants import INDEX_TO_TYPE, FACET_KEYS
 
 
+def extract_simple_type_facets(aggs):
+    """
+    Extract simple facet counts by document type from ES aggregations.
+    
+    Used by simple search to get counts for autocomplete/preview results.
+    Returns counts grouped by result type (mine, person, organization, etc.).
+    
+    Args:
+        aggs: Elasticsearch aggregations response with by_index terms aggregation
+        
+    Returns:
+        Dict with counts per type: {
+            'mine': 0, 'person': 0, 'organization': 0, 'permit': 0,
+            'nod': 0, 'explosives_permit': 0, 'now_application': 0,
+            'mine_documents': 0, 'permit_documents': 0
+        }
+    """
+    facets = {
+        'mine': 0, 'person': 0, 'organization': 0, 'permit': 0,
+        'nod': 0, 'explosives_permit': 0, 'now_application': 0,
+        'mine_documents': 0, 'permit_documents': 0
+    }
+    
+    # Map ES index names to facet keys
+    index_to_facet = {
+        'mines': 'mine',
+        'mine_permits': 'permit',
+        'notices_of_departure': 'nod',
+        'explosives_permits': 'explosives_permit',
+        'now_applications': 'now_application',
+        'documents': 'mine_documents'
+    }
+    
+    for bucket in _extract_buckets(aggs, 'by_index'):
+        index_name = bucket['key']
+        doc_count = bucket['doc_count']
+        
+        if index_name in index_to_facet:
+            facets[index_to_facet[index_name]] = doc_count
+        elif index_name == 'parties':
+            # Split parties by type (person vs organization)
+            for party_bucket in _extract_buckets(bucket, 'by_party_type'):
+                party_type = party_bucket['key']
+                if party_type == 'PER':
+                    facets['person'] = party_bucket['doc_count']
+                elif party_type == 'ORG':
+                    facets['organization'] = party_bucket['doc_count']
+    
+    return facets
+
+
 # Predefined values for facets that should always appear
 PREDEFINED_FACETS = {
     'mine_classification': ['Major Mine', 'Regional Mine'],

@@ -14,6 +14,38 @@ def build_deleted_filter():
     }
 
 
+def build_mine_guid_filter(mine_guid):
+    """
+    Build filter for mine_guid scoping across different indices.
+    
+    Handles different field locations:
+    - mines index: mine_guid direct field
+    - permits index: mine_guids array field (from mine_permit_xref)
+    - nod/explosives/now indices: mine_guid direct field or mine.mine_guid nested
+    
+    Uses both raw and .keyword variants for compatibility with different field mappings.
+    
+    Args:
+        mine_guid: The mine GUID to filter by
+        
+    Returns:
+        Elasticsearch bool filter with should clauses for all possible locations
+    """
+    return {
+        "bool": {
+            "should": [
+                {"term": {"mine_guid": mine_guid}},
+                {"term": {"mine_guid.keyword": mine_guid}},
+                {"term": {"mine_guids": mine_guid}},
+                {"term": {"mine_guids.keyword": mine_guid}},
+                {"term": {"mine.mine_guid": mine_guid}},
+                {"term": {"mine.mine_guid.keyword": mine_guid}},
+            ],
+            "minimum_should_match": 1
+        }
+    }
+
+
 def build_terms_filter(field, values):
     """Build simple terms filter."""
     return {"terms": {field: values}}
