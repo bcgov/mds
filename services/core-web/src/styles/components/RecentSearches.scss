@@ -1,0 +1,35 @@
+@use "@/styles/base.scss" as *;
+
+.recent-searches {
+  &__divider {
+    margin: 8px 0;
+    font-size: 12px;
+  }
+
+  &__item {
+    cursor: pointer;
+    padding: 8px 16px;
+    transition: all 0.2s;
+    border-left: 2px solid transparent;
+    background: transparent;
+
+    &--selected {
+      border-left: 2px solid $violet;
+      background: rgba($violet, 0.08);
+    }
+
+    &--hovered {
+      background: rgba($violet, 0.04);
+    }
+  }
+
+  &__delete-icon {
+    color: #bfbfbf;
+    cursor: pointer;
+    padding: 4px;
+  }
+
+  &__icon {
+    color: #bfbfbf;
+  }
+}

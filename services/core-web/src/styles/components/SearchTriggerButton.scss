@@ -1,0 +1,96 @@
+@use "@/styles/base.scss" as *;
+
+.search-trigger-container {
+  .searchbar {
+    display: flex;
+    align-items: center;
+    border-radius: 4px;
+    min-width: 200px;
+    transition: none;
+    height: 32px;
+    padding: 4px 11px;
+    background-color: transparent;
+    border: 1px solid #8C8C8C;
+    color: $white;
+
+    input {
+      background-color: transparent;
+      color: inherit;
+      cursor: pointer;
+      
+      &::placeholder {
+        color: $white;
+      }
+    }
+
+    &:hover,
+    &:focus,
+    &:active,
+    &-focused {
+      border-color: #40a9ff;
+      box-shadow: none;
+      outline: 0;
+    }
+
+    .anticon {
+      color: inherit;
+    }
+
+    &.search-not-focussed {
+      input::placeholder,
+      .anticon {
+        opacity: 0.6;
+      }
+    }
+
+    .ant-input-prefix {
+      margin-right: 8px;
+    }
+
+    .search-bar-button {
+      margin: 0;
+      background: transparent;
+      color: #8C8C8C;
+      border-color: #8C8C8C;
+      padding: 6px 8px;
+      height: 26px;
+      font-size: 11px;
+      line-height: 14px;
+      transition: none;
+
+      @media (max-width: $tablet-width) {
+        display: none;
+      }
+
+      &:hover {
+        background-color: transparent;
+        color: #8C8C8C;
+        border-color: #8C8C8C;
+      }
+      
+      span {
+        font-size: 11px;
+        font-weight: 400;
+        line-height: 14px;
+      }
+    }
+
+    // Responsive behavior
+    @include tablet {
+      input::placeholder,
+      .ant-input-suffix {
+        display: none !important;
+      }
+      
+      // Keep icon visible but allow container to shrink
+      min-width: 40px;
+      width: 40px;
+      justify-content: center;
+      padding: 0;
+      
+      .ant-input-prefix {
+        margin-right: 0;
+      }
+    }
+  }
+}

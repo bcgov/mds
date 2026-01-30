@@ -6,6 +6,7 @@ import {
   TeamOutlined,
   FileSearchOutlined,
 } from "@ant-design/icons";
+import "@/styles/components/EmptySearchState.scss";
 
 const { Text, Title } = Typography;
 
@@ -31,8 +32,8 @@ export const EmptySearchState: React.FC<EmptySearchStateProps> = ({
   if (hasSearchTerm) {
     return (
       <div className="global-search__empty">
-        <Space direction="vertical" align="center" style={{ width: "100%", padding: 32 }}>
-          <SearchOutlined style={{ fontSize: 48, color: "#d9d9d9" }} />
+        <Space direction="vertical" align="center" className="empty-search-state__container">
+          <SearchOutlined className="empty-search-state__icon" />
           <Title level={5}>No results found</Title>
           <Text type="secondary">
             {scopeToMine && !searchTerm
@@ -74,7 +75,7 @@ export const EmptySearchState: React.FC<EmptySearchStateProps> = ({
   ];
 
   return (
-    <Space direction="vertical" style={{ width: "100%", padding: "16px 20px" }}>
+    <Space direction="vertical" className="empty-search-state__quick-actions">
       <Text type="secondary">
         <SearchOutlined /> Quick Actions
       </Text>
@@ -85,14 +86,14 @@ export const EmptySearchState: React.FC<EmptySearchStateProps> = ({
               type="text"
               block
               onClick={() => onQuickAction?.(action.route)}
-              style={{ height: "auto", padding: "12px 8px" }}
+              className="empty-search-state__action-btn"
             >
               <Space direction="vertical" size={4}>
                 <Avatar
                   icon={action.icon}
                   style={{ backgroundColor: `${action.color}20`, color: action.color }}
                 />
-                <Text style={{ fontSize: 12 }}>{action.label}</Text>
+                <Text className="empty-search-state__action-label">{action.label}</Text>
               </Space>
             </Button>
           </Col>

@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { List, Avatar, Typography } from "antd";
 import { EnterOutlined } from "@ant-design/icons";
+import classNames from "classnames";
 import { ISearchResult, ISimpleSearchResult } from "@mds/common/interfaces";
 import { SEARCH_TYPE_CONFIG, RESULT_TYPE_MAP } from "../utils/searchConfig";
 import { highlightMatch } from "../utils/searchHelpers";
+import "@/styles/components/SearchResultItem.scss";
 
 const { Text } = Typography;
 
@@ -29,12 +31,6 @@ export const SearchResultItem: React.FC<SearchResultItemProps> = ({
   const config = SEARCH_TYPE_CONFIG[configKey];
   const isSelected = index === selectedIndex;
 
-  const getBackground = () => {
-    if (isSelected) return 'rgba(94, 70, 161, 0.08)';
-    if (isHovered) return 'rgba(94, 70, 161, 0.04)';
-    return 'transparent';
-  };
-
   return (
     <List.Item
       onClick={() => onClick(item)}
@@ -43,13 +39,10 @@ export const SearchResultItem: React.FC<SearchResultItemProps> = ({
         setIsHovered(true);
       }}
       onMouseLeave={() => setIsHovered(false)}
-      style={{
-        cursor: 'pointer',
-        borderLeft: `2px solid ${isSelected ? '#5e46a1' : 'transparent'}`,
-        background: getBackground(),
-        padding: '8px 16px',
-        transition: 'all 0.2s',
-      }}
+      className={classNames("search-result-item", {
+        "search-result-item--selected": isSelected,
+        "search-result-item--hovered": isHovered && !isSelected
+      })}
     >
       <List.Item.Meta
         avatar={
@@ -58,21 +51,21 @@ export const SearchResultItem: React.FC<SearchResultItemProps> = ({
             style={{ backgroundColor: `${config.color}20`, color: config.color }}
           />
         }
-        title={<Text strong={isSelected}>{highlightMatch(item.result.value, searchTerm)}</Text>}
+        title={<Text strong={isSelected} className="search-result-item__title">{highlightMatch(item.result.value, searchTerm)}</Text>}
         description={
           <Text type="secondary">
             {config.label}
             {item.result.description && <span style={{ marginLeft: 8 }}>• {item.result.description}</span>}
             {item.result.highlight && (
               <span
-                style={{ marginLeft: 8, fontStyle: "italic" }}
+                className="search-result-item__highlight"
                 dangerouslySetInnerHTML={{ __html: `• ${item.result.highlight}` }}
               />
             )}
           </Text>
         }
       />
-      {isSelected && <EnterOutlined style={{ color: "#5e46a1" }} />}
+      {isSelected && <EnterOutlined className="search-result-item__enter-icon" />}
     </List.Item>
   );
 };

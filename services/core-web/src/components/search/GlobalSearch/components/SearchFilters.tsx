@@ -1,7 +1,9 @@
 import React from "react";
 import { Tag, Space, Divider } from "antd";
 import { AimOutlined } from "@ant-design/icons";
+import classNames from "classnames";
 import { SEARCH_TYPE_CONFIG } from "../utils/searchConfig";
+import "@/styles/components/SearchFilters.scss";
 
 interface SearchFiltersProps {
   activeFilters: string[];
@@ -36,18 +38,15 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
   const getFacetCount = (filterKey: string): number => facetCountMap[filterKey] ?? 0;
 
   return (
-    <div style={{ padding: 8, borderBottom: "1px solid #f0f0f0" }}>
-      <Space size={[4, 4]} wrap style={{ padding: '0 8px' }}>
+    <div className="search-filters">
+      <Space size={[4, 4]} wrap className="search-filters__container">
         {isOnMinePage && (
           <Tag.CheckableTag
             checked={scopeToMine}
             onChange={(checked) => onToggleScopeToMine(checked)}
-            style={{
-              border: `1px solid ${scopeToMine ? "#5e46a1" : "#d9d9d9"}`,
-              borderRadius: 4,
-              padding: '0 8px',
-              fontSize: 13,
-            }}
+            className={classNames("search-filters__tag search-filters__tag--mine-scope", {
+              "checked": scopeToMine
+            })}
           >
             <Space size={4}>
               <AimOutlined />
@@ -55,7 +54,7 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
             </Space>
           </Tag.CheckableTag>
         )}
-        {isOnMinePage && <Divider type="vertical" style={{ margin: "0 4px", height: 20 }} />}
+        {isOnMinePage && <Divider type="vertical" className="search-filters__divider" />}
         {Object.entries(SEARCH_TYPE_CONFIG).map(([key, config]) => {
           const isActive = activeFilters.includes(key);
           const count = getFacetCount(key);
@@ -65,18 +64,16 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
               key={key}
               checked={isActive}
               onChange={() => onToggleFilter(key)}
+              className="search-filters__tag"
               style={{
                 border: `1px solid ${isActive ? config.color : "#d9d9d9"}`,
                 color: isActive ? config.color : "#595959",
-                borderRadius: 4,
-                padding: '0 8px',
-                fontSize: 13,
               }}
             >
               <Space size={4}>
                 {config.icon}
                 <span>{config.pluralLabel}</span>
-                {searchTerm && count > 0 && <span style={{ opacity: 0.6 }}>({count})</span>}
+                {searchTerm && count > 0 && <span className="search-filters__count">({count})</span>}
               </Space>
             </Tag.CheckableTag>
           );

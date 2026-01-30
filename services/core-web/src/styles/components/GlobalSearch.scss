@@ -1,65 +1,35 @@
-@use "../base.scss" as *;
+@use "@/styles/base.scss" as *;
 
-// Highlight marks in search results
-mark {
-  background: rgba($violet, 0.15);
-  color: inherit;
-}
-
-// Global search modal styling
 .global-search-modal {
+  top: 80px;
+
   .ant-modal-content {
     border-radius: 8px;
     padding: 0;
   }
-}
 
-// Responsive behavior for search trigger button
-@include tablet {
-  .search-trigger-content {
+  &__input {
+    border-bottom: 1px solid #f0f0f0;
+    border-radius: 0;
+  }
 
-    .search-placeholder,
-    .search-shortcut {
-      display: none !important;
-    }
+  &__footer {
+    font-size: 12px;
+    color: #8c8c8c;
+    padding: 8px 0;
   }
 }
 
-// Search Results Page (legacy full-page search)
-.search-results-page {
-  min-height: calc(100vh - #{$nav-height});
+.search-icon {
+  color: $violet;
+  font-size: 18px;
+}
 
-  &__header {
-    background: $darkest-grey;
-    padding: 3rem 0;
-  }
+.search-tag-icon {
+  margin: 0;
+  margin-left: 4px;
+}
 
-  &__filters {
-    position: sticky;
-    top: calc(#{$nav-height} + 1.5rem);
-    max-height: calc(100vh - #{$nav-height} - 3rem);
-    overflow-y: auto;
-  }
-
-  &__results {
-    .ant-tabs-tab-active {
-      background: $violet;
-
-      .ant-tabs-tab-btn {
-        color: #fff;
-      }
-    }
-  }
-
-  @include tablet {
-    &__header {
-      padding: 2rem 0;
-    }
-
-    &__filters {
-      position: relative;
-      top: 0;
-      max-height: none;
-    }
-  }
+.search-type-label {
+  margin-left: 4px;
 }

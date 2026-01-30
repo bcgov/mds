@@ -354,10 +354,10 @@ export const SearchResults: React.FC = () => {
   }, [searchFacets]);
 
   const renderFilters = () => (
-    <Card size="small" style={{ marginBottom: 16 }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
+    <Card size="small" className="search-results-v2__filters-card">
+      <div className="search-results-v2__filters-card-header">
         <Text strong>
-          <FilterOutlined style={{ marginRight: 8 }} />
+          <FilterOutlined className="search-results-v2__filters-card-icon" />
           Filters
         </Text>
         {hasActiveFilters && (
@@ -368,7 +368,7 @@ export const SearchResults: React.FC = () => {
       </div>
 
       {hasActiveFilters && (
-        <div style={{ marginBottom: 12 }}>
+        <div className="search-results-v2__filters-card-tags">
           <Space size={4} wrap>
             {Object.entries(selectedFilters).map(([category, values]) =>
               values.map((value) => (
@@ -377,7 +377,7 @@ export const SearchResults: React.FC = () => {
                   closable
                   onClose={() => handleFilterChange(category, value, false)}
                   color="blue"
-                  style={{ margin: 0 }}
+                  className="search-results-v2__filters-card-tag"
                 >
                   {value}
                 </Tag>
@@ -400,22 +400,22 @@ export const SearchResults: React.FC = () => {
               key={group.key}
             >
               {group.facets.map((facet) => (
-                <div key={facet.key} style={{ marginBottom: 8 }}>
-                  <Text strong style={{ fontSize: 12, display: "block", marginBottom: 4 }}>
+                <div key={facet.key} className="search-results-v2__filters-card-group">
+                  <Text strong className="search-results-v2__filters-card-label">
                     {facet.label}
                   </Text>
-                  <div style={{ maxHeight: 200, overflowY: "auto", paddingLeft: 8 }}>
+                  <div className="search-results-v2__filters-card-list">
                     {[...facet.data]
                       .sort((a: FacetBucket, b: FacetBucket) => b.count - a.count)
                       .map((bucket: FacetBucket) => (
-                        <div key={bucket.key} style={{ marginBottom: 4 }}>
+                        <div key={bucket.key} className="search-results-v2__filters-card-item">
                           <Checkbox
                             checked={selectedFilters[facet.key]?.includes(bucket.key)}
                             onChange={(e) => handleFilterChange(facet.key, bucket.key, e.target.checked)}
                           >
-                            <span style={{ fontSize: 13 }}>
+                            <span className="search-results-v2__filters-card-item-text">
                               {bucket.key}{" "}
-                              <Text type="secondary" style={{ fontSize: 11 }}>({bucket.count})</Text>
+                              <Text type="secondary" className="search-results-v2__filters-card-item-count">({bucket.count})</Text>
                             </span>
                           </Checkbox>
                         </div>
@@ -427,7 +427,7 @@ export const SearchResults: React.FC = () => {
           ))}
         </Collapse>
       ) : (
-        <Text type="secondary" style={{ fontSize: 12 }}>No filters available</Text>
+        <Text type="secondary" className="search-results-v2__filters-card-empty">No filters available</Text>
       )}
     </Card>
   );
@@ -440,7 +440,7 @@ export const SearchResults: React.FC = () => {
         </span>
       }
       image={Empty.PRESENTED_IMAGE_SIMPLE}
-      style={{ padding: "40px 0" }}
+      className="search-results-v2__empty-state"
     />
   );
 
@@ -686,9 +686,9 @@ export const SearchResults: React.FC = () => {
       <div className="landing-page__content">
         <div className="tab__content">
           {isSearching ? (
-            <div style={{ textAlign: "center", padding: 48 }}>
+            <div className="search-results-v2__loading">
               <Spin size="large" />
-              <div style={{ marginTop: 16 }}>
+              <div className="search-results-v2__loading-text">
                 <Text type="secondary">Searching...</Text>
               </div>
             </div>
@@ -698,7 +698,7 @@ export const SearchResults: React.FC = () => {
                 {renderFilters()}
               </Col>
               <Col xs={24} md={17} lg={18}>
-                <div style={{ marginBottom: 16 }}>
+                <div className="search-results-v2__result-count">
                   <Text type="secondary">
                     {totalResults === 0 ? (
                       <>No results for "<strong>{params.q}</strong>"{hasActiveFilters && " (filtered)"}</>

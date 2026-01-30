@@ -1,6 +1,8 @@
 import React from "react";
 import { List, Space, Divider } from "antd";
 import { HistoryOutlined, ClockCircleOutlined, DeleteOutlined } from "@ant-design/icons";
+import classNames from "classnames";
+import "@/styles/components/RecentSearches.scss";
 
 interface RecentSearchesProps {
   recentSearches: string[];
@@ -18,8 +20,8 @@ export const RecentSearches: React.FC<RecentSearchesProps> = ({
   onSetSelectedIndex,
 }) => {
   return (
-    <div>
-      <Divider orientation="left" plain style={{ margin: "8px 0", fontSize: 12 }}>
+    <div className="recent-searches">
+      <Divider orientation="left" plain className="recent-searches__divider">
         <Space>
           <HistoryOutlined />
           Recent Searches
@@ -31,12 +33,6 @@ export const RecentSearches: React.FC<RecentSearchesProps> = ({
           const isSelected = index === selectedIndex;
           const [isHovered, setIsHovered] = React.useState(false);
           
-          const getBackground = () => {
-            if (isSelected) return 'rgba(94, 70, 161, 0.08)';
-            if (isHovered) return 'rgba(94, 70, 161, 0.04)';
-            return 'transparent';
-          };
-
           return (
             <List.Item
               onClick={() => onSearchClick(term)}
@@ -45,21 +41,18 @@ export const RecentSearches: React.FC<RecentSearchesProps> = ({
                 setIsHovered(true);
               }}
               onMouseLeave={() => setIsHovered(false)}
-              style={{
-                cursor: 'pointer',
-                borderLeft: `2px solid ${isSelected ? '#5e46a1' : 'transparent'}`,
-                background: getBackground(),
-                padding: '8px 16px',
-                transition: 'all 0.2s',
-              }}
+              className={classNames("recent-searches__item", {
+                "recent-searches__item--selected": isSelected,
+                "recent-searches__item--hovered": isHovered && !isSelected
+              })}
               extra={
                 <DeleteOutlined
                   onClick={(e) => onRemoveSearch(term, e)}
-                  style={{ color: "#bfbfbf", cursor: "pointer", padding: 4 }}
+                  className="recent-searches__delete-icon"
                 />
               }
             >
-              <List.Item.Meta avatar={<ClockCircleOutlined style={{ color: "#bfbfbf" }} />} title={term} />
+              <List.Item.Meta avatar={<ClockCircleOutlined className="recent-searches__icon" />} title={term} />
             </List.Item>
           );
         }}

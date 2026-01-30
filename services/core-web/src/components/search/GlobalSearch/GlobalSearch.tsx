@@ -226,13 +226,13 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
     if (hasActiveSearch && groupedResults) {
       let globalIndex = 0;
       return (
-        <div style={{ maxHeight: 400, overflowY: 'auto' }}>
+        <div className="global-search-results">
           {Object.entries(groupedResults).map(([type, results]) => {
             const configKey = RESULT_TYPE_MAP[type] || "document";
             const config = SEARCH_TYPE_CONFIG[configKey];
             return (
               <div key={type}>
-                <Divider orientation="left" plain style={{ margin: "8px 0", fontSize: 12 }}>
+                <Divider orientation="left" plain className="global-search-results__section-divider">
                   {config.pluralLabel}
                 </Divider>
                 <List
@@ -253,8 +253,8 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
               </div>
             );
           })}
-          <div style={{ padding: "12px 20px", borderTop: "1px solid #f0f0f0" }}>
-            <Button type="link" block onClick={handleViewAll} style={{ color: "#5e46a1" }}>
+          <div className="global-search-results__view-all">
+            <Button type="link" block onClick={handleViewAll} className="global-search-results__view-all-btn">
               View all results for "{searchTerm}"
             </Button>
           </div>
@@ -327,7 +327,7 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
         open={isModalVisible}
         onCancel={handleClose}
         footer={
-          <Row justify="space-between" style={{ fontSize: 12, color: "#8c8c8c", padding: '8px 0' }}>
+          <Row justify="space-between" className="global-search-modal__footer">
             <Space size="middle">
               <span>
                 <Text keyboard>↵</Text> select
@@ -354,7 +354,7 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
           ref={inputRef}
           prefix={
             <Space size={4}>
-              <SearchOutlined style={{ color: "#5e46a1", fontSize: 18 }} />
+              <SearchOutlined className="search-icon" />
               {quickFilter && (
                 <Tag
                   color="blue"
@@ -363,10 +363,10 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
                     e.preventDefault();
                     setQuickFilter(null);
                   }}
-                  style={{ margin: 0, marginLeft: 4 }}
+                  className="search-tag-icon"
                 >
                   {SEARCH_TYPE_CONFIG[quickFilter]?.icon}
-                  <span style={{ marginLeft: 4 }}>{SEARCH_TYPE_CONFIG[quickFilter]?.pluralLabel || quickFilter}</span>
+                  <span className="search-type-label">{SEARCH_TYPE_CONFIG[quickFilter]?.pluralLabel || quickFilter}</span>
                 </Tag>
               )}
             </Space>
@@ -382,7 +382,7 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
           bordered={false}
           allowClear
           size="large"
-          style={{ borderBottom: "1px solid #f0f0f0", borderRadius: 0 }}
+          className="global-search-modal__input"
         />
         <SearchFilters
           activeFilters={activeFilters}

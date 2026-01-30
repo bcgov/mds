@@ -1,0 +1,22 @@
+@use "@/styles/base.scss" as *;
+
+.global-search-results {
+  max-height: 400px;
+  overflow-y: auto;
+
+  &__section {
+    &-divider {
+      margin: 8px 0;
+      font-size: 12px;
+    }
+  }
+
+  &__view-all {
+    padding: 12px 20px;
+    border-top: 1px solid #f0f0f0;
+
+    &-btn {
+      color: $violet;
+    }
+  }
+}
