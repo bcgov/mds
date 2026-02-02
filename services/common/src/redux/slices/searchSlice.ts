@@ -8,17 +8,6 @@ import { ISearchResult, ISearchResultList, ISimpleSearchResult } from "@mds/comm
 
 export const searchReducerType = "search";
 
-// Helper function for deep cloning that works in all environments
-const deepClone = <T>(obj: T): T => {
-    // Try structuredClone if available (modern browsers/Node 17+)
-    if (typeof structuredClone !== 'undefined') {
-        return structuredClone(obj);
-    }
-    // Fallback to JSON parse/stringify for test environments
-    // This works fine for Redux state which should be serializable
-    return JSON.parse(JSON.stringify(obj));
-};
-
 export interface SearchState {
     searchOptions: any[];
     searchResults: ISearchResultList;
@@ -42,7 +31,23 @@ const initialState: SearchState = {
         permit_documents: [],
     },
     searchFacets: {
-        mine_region: [], mine_classification: [], mine_operation_status: [], mine_tenure: [], mine_commodity: [], has_tsf: [], verified_status: [], permit_status: [], is_exploration: [], party_type: [], explosives_permit_status: [], explosives_permit_closed: [], nod_type: [], nod_status: [], now_application_status: [], now_type: [], type: []
+        mine_region: [],
+        mine_classification: [],
+        mine_operation_status: [],
+        mine_tenure: [],
+        mine_commodity: [],
+        has_tsf: [],
+        verified_status: [],
+        permit_status: [],
+        is_exploration: [],
+        party_type: [],
+        explosives_permit_status: [],
+        explosives_permit_closed: [],
+        nod_type: [],
+        nod_status: [],
+        now_application_status: [],
+        now_type: [],
+        type: []
     },
     searchBarResults: [],
     searchBarFacets: { mine: 0, person: 0, organization: 0, permit: 0, nod: 0, explosives_permit: 0, now_application: 0, mine_documents: 0, permit_documents: 0 },
@@ -59,7 +64,7 @@ const searchSlice = createAppSlice({
         }),
         storeSearchResults: create.reducer((state, action: { payload: { search_results: ISearchResultList; facets: any; search_terms: any[] } }) => {
             state.searchResults = action.payload.search_results;
-            state.searchFacets = action.payload.facets ? deepClone(action.payload.facets) : initialState.searchFacets;
+            state.searchFacets = action.payload.facets ? structuredClone(action.payload.facets) : initialState.searchFacets;
             state.searchTerms = action.payload.search_terms;
         }),
         storeSubsetSearchResults: create.reducer((state, action: { payload: any[] }) => {
@@ -67,7 +72,7 @@ const searchSlice = createAppSlice({
         }),
         storeSearchBarResults: create.reducer((state, action: { payload: { search_results: ISearchResult<ISimpleSearchResult>[]; facets: any } }) => {
             state.searchBarResults = action.payload.search_results;
-            state.searchBarFacets = action.payload.facets ? deepClone(action.payload.facets) : initialState.searchBarFacets;
+            state.searchBarFacets = action.payload.facets ? structuredClone(action.payload.facets) : initialState.searchBarFacets;
         }),
         clearSearchBarResults: create.reducer((state) => {
             state.searchBarResults = [];
@@ -109,7 +114,7 @@ const searchSlice = createAppSlice({
                     state.searchResults = (Array.isArray(results) && results.length === 0)
                         ? initialState.searchResults
                         : results;
-                    state.searchFacets = action.payload.facets ? deepClone(action.payload.facets) : initialState.searchFacets;
+                    state.searchFacets = action.payload.facets ? structuredClone(action.payload.facets) : initialState.searchFacets;
                     state.searchTerms = action.payload.search_terms;
                 },
                 rejected: (state, action) => {
@@ -138,7 +143,7 @@ const searchSlice = createAppSlice({
             {
                 fulfilled: (state, action) => {
                     state.searchBarResults = action.payload.search_results;
-                    state.searchBarFacets = action.payload.facets ? deepClone(action.payload.facets) : initialState.searchBarFacets;
+                    state.searchBarFacets = action.payload.facets ? structuredClone(action.payload.facets) : initialState.searchBarFacets;
                 },
                 rejected: (state, action) => {
                     rejectHandler(action);
@@ -201,7 +206,6 @@ export const {
     selectSearchSubsetResults,
 } = searchSlice.selectors;
 
-// Legacy selector exports for backward compatibility
 export const getSearchOptions = (state: { search: SearchState }) => state.search.searchOptions;
 export const getSearchResults = (state: { search: SearchState }) => state.search.searchResults;
 export const getSearchFacets = (state: { search: SearchState }) => state.search.searchFacets;

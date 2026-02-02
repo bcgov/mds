@@ -11,7 +11,7 @@ from app.api.search.elasticsearch.elastic_search_service import ElasticSearchSer
 from app.api.utils.search import SearchResult, simple_search_targets
 from flask import current_app
 
-from .global_search_service import parse_csv_param, parse_search_terms
+from .global_search_service import parse_csv_param
 
 # Import shared constants and utilities
 from .search_constants import INDEX_TO_TYPE, SEARCH_FIELDS, TYPE_TO_INDEX
@@ -60,9 +60,6 @@ class SimpleSearchService:
         Returns:
             dict with search_terms, search_results, and facets
         """
-        # Tokenize search terms
-        search_terms = parse_search_terms(search_term) if (search_term and search_term != "*") else []
-        
         # Parse allowed types
         # If search_types is None (not provided), set allowed_types to None (implies all types)
         # If search_types is empty string, parse_csv_param returns [], which implies NO types
@@ -71,7 +68,7 @@ class SimpleSearchService:
         # Determine indices to search
         indices = self._determine_search_indices(allowed_types)
         if not indices:
-            return {'search_terms': search_terms, 'search_results': [], 'facets': {}}
+            return {'search_results': [], 'facets': {}}
         
         indices_string = ",".join(list(set(indices)))
         current_app.logger.info(f"Searching indices: {indices_string}")
@@ -92,7 +89,6 @@ class SimpleSearchService:
         facets = self._get_facet_counts(search_term)
         
         return {
-            'search_terms': search_terms,
             'search_results': search_results,
             'facets': facets
         }
@@ -241,14 +237,6 @@ class SimpleSearchService:
         if allowed_types and result_type not in allowed_types:
             return None
         
-        # Apply score multipliers
-        score_multiplier = type_config.get('score_multiplier', 1)
-        if value and search_term and search_term != "*":
-            if value.lower().startswith(search_term.lower()):
-                score_multiplier *= 3
-            if value.lower() == search_term.lower():
-                score_multiplier *= 10
-        
         # Extract highlight
         highlight_text = None
         if highlights := hit.get('highlight', {}):
@@ -260,7 +248,7 @@ class SimpleSearchService:
         mine_guid = self._extract_mine_guid(type, source)
         
         return SearchResult(
-            score * score_multiplier,
+            score,
             result_type,
             {
                 'id': source.get(type_config['id_field']),
