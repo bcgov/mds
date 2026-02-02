@@ -64,7 +64,7 @@ const searchSlice = createAppSlice({
         }),
         storeSearchResults: create.reducer((state, action: { payload: { search_results: ISearchResultList; facets: any; search_terms: any[] } }) => {
             state.searchResults = action.payload.search_results;
-            state.searchFacets = action.payload.facets ? structuredClone(action.payload.facets) : initialState.searchFacets;
+            state.searchFacets = action.payload.facets ? JSON.parse(JSON.stringify(action.payload.facets)) : initialState.searchFacets;
             state.searchTerms = action.payload.search_terms;
         }),
         storeSubsetSearchResults: create.reducer((state, action: { payload: any[] }) => {
@@ -72,7 +72,7 @@ const searchSlice = createAppSlice({
         }),
         storeSearchBarResults: create.reducer((state, action: { payload: { search_results: ISearchResult<ISimpleSearchResult>[]; facets: any } }) => {
             state.searchBarResults = action.payload.search_results;
-            state.searchBarFacets = action.payload.facets ? structuredClone(action.payload.facets) : initialState.searchBarFacets;
+            state.searchBarFacets = action.payload.facets ? { ...action.payload.facets } : initialState.searchBarFacets;
         }),
         clearSearchBarResults: create.reducer((state) => {
             state.searchBarResults = [];
@@ -114,7 +114,7 @@ const searchSlice = createAppSlice({
                     state.searchResults = (Array.isArray(results) && results.length === 0)
                         ? initialState.searchResults
                         : results;
-                    state.searchFacets = action.payload.facets ? structuredClone(action.payload.facets) : initialState.searchFacets;
+                    state.searchFacets = action.payload.facets ? JSON.parse(JSON.stringify(action.payload.facets)) : initialState.searchFacets;
                     state.searchTerms = action.payload.search_terms;
                 },
                 rejected: (state, action) => {
@@ -143,7 +143,7 @@ const searchSlice = createAppSlice({
             {
                 fulfilled: (state, action) => {
                     state.searchBarResults = action.payload.search_results;
-                    state.searchBarFacets = action.payload.facets ? structuredClone(action.payload.facets) : initialState.searchBarFacets;
+                    state.searchBarFacets = action.payload.facets ? { ...action.payload.facets } : initialState.searchBarFacets;
                 },
                 rejected: (state, action) => {
                     rejectHandler(action);
