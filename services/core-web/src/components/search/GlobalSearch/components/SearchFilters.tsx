@@ -3,7 +3,6 @@ import { Tag, Space, Divider } from "antd";
 import { AimOutlined } from "@ant-design/icons";
 import classNames from "classnames";
 import { SEARCH_TYPE_CONFIG } from "../utils/searchConfig";
-import "@/styles/components/SearchFilters.scss";
 
 interface SearchFiltersProps {
   activeFilters: string[];

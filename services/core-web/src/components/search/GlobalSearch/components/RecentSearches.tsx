@@ -2,7 +2,6 @@ import React from "react";
 import { List, Space, Divider } from "antd";
 import { HistoryOutlined, ClockCircleOutlined, DeleteOutlined } from "@ant-design/icons";
 import classNames from "classnames";
-import "@/styles/components/RecentSearches.scss";
 
 interface RecentSearchesProps {
   recentSearches: string[];
@@ -32,7 +31,7 @@ export const RecentSearches: React.FC<RecentSearchesProps> = ({
         renderItem={(term, index) => {
           const isSelected = index === selectedIndex;
           const [isHovered, setIsHovered] = React.useState(false);
-          
+
           return (
             <List.Item
               onClick={() => onSearchClick(term)}

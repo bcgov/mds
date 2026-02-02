@@ -6,7 +6,6 @@ import {
   TeamOutlined,
   FileSearchOutlined,
 } from "@ant-design/icons";
-import "@/styles/components/EmptySearchState.scss";
 
 const { Text, Title } = Typography;
 

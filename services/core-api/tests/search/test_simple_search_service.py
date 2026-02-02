@@ -340,7 +340,6 @@ class TestSimpleSearchService:
         
             result = service.execute_search('test', None, None)
             
-            assert 'search_terms' in result
             assert 'search_results' in result
             assert 'facets' in result
             assert len(result['search_results']) == 1

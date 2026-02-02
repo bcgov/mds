@@ -59,7 +59,6 @@ class TestSimpleSearchResourceIntegration:
         """Test that V2 endpoint delegates to SimpleSearchService."""
         # Configure mock service response
         mock_simple_search_service.execute_search.return_value = {
-            'search_terms': ['test'],
             'search_results': [],
             'facets': {'mine': 0, 'person': 0, 'organization': 0}
         }
@@ -84,7 +83,6 @@ class TestSimpleSearchResourceIntegration:
     ):
         """Test V2 endpoint with all query parameters."""
         mock_simple_search_service.execute_search.return_value = {
-            'search_terms': ['mountain'],
             'search_results': [],
             'facets': {}
         }
@@ -121,7 +119,6 @@ class TestSimpleSearchResourceIntegration:
         }
         
         mock_simple_search_service.execute_search.return_value = {
-            'search_terms': ['test'],
             'search_results': [mock_result],
             'facets': {
                 'mine': 1,
@@ -145,11 +142,9 @@ class TestSimpleSearchResourceIntegration:
         data = json.loads(response.data.decode())
         
         # Verify response structure
-        assert 'search_terms' in data
         assert 'search_results' in data
         assert 'facets' in data
         
-        assert data['search_terms'] == ['test']
         assert len(data['search_results']) == 1
         assert data['facets']['mine'] == 1
     
@@ -161,7 +156,6 @@ class TestSimpleSearchResourceIntegration:
     ):
         """Test search with wildcard (*) search term."""
         mock_simple_search_service.execute_search.return_value = {
-            'search_terms': [],
             'search_results': [],
             'facets': {}
         }
@@ -180,7 +174,6 @@ class TestSimpleSearchResourceIntegration:
     ):
         """Test search with empty search term."""
         mock_simple_search_service.execute_search.return_value = {
-            'search_terms': [],
             'search_results': [],
             'facets': {}
         }
@@ -198,7 +191,6 @@ class TestSimpleSearchResourceIntegration:
     ):
         """Test search with special characters in search term."""
         mock_simple_search_service.execute_search.return_value = {
-            'search_terms': [],
             'search_results': [],
             'facets': {}
         }
@@ -216,7 +208,6 @@ class TestSimpleSearchResourceIntegration:
     ):
         """Test search with unicode characters."""
         mock_simple_search_service.execute_search.return_value = {
-            'search_terms': [],
             'search_results': [],
             'facets': {}
         }
@@ -236,7 +227,6 @@ class TestSimpleSearchResourceIntegration:
     ):
         """Test search with single type filter."""
         mock_simple_search_service.execute_search.return_value = {
-            'search_terms': ['test'],
             'search_results': [],
             'facets': {}
         }
@@ -255,7 +245,6 @@ class TestSimpleSearchResourceIntegration:
     ):
         """Test search with multiple type filters."""
         mock_simple_search_service.execute_search.return_value = {
-            'search_terms': ['test'],
             'search_results': [],
             'facets': {}
         }
@@ -278,7 +267,6 @@ class TestSimpleSearchResourceIntegration:
     ):
         """Test mine-scoped search."""
         mock_simple_search_service.execute_search.return_value = {
-            'search_terms': ['permit'],
             'search_results': [],
             'facets': {}
         }
@@ -299,7 +287,6 @@ class TestSimpleSearchResourceIntegration:
     ):
         """Test mine-scoped search with type filter."""
         mock_simple_search_service.execute_search.return_value = {
-            'search_terms': [],
             'search_results': [],
             'facets': {}
         }
@@ -338,7 +325,6 @@ class TestSimpleSearchResourceIntegration:
     ):
         """Test search without search_term parameter."""
         mock_simple_search_service.execute_search.return_value = {
-            'search_terms': [],
             'search_results': [],
             'facets': {}
         }
@@ -360,7 +346,6 @@ class TestSimpleSearchResourceIntegration:
     ):
         """Test that response contains all required fields."""
         mock_simple_search_service.execute_search.return_value = {
-            'search_terms': ['test'],
             'search_results': [],
             'facets': {
                 'mine': 0,
@@ -369,7 +354,9 @@ class TestSimpleSearchResourceIntegration:
                 'permit': 0,
                 'nod': 0,
                 'explosives_permit': 0,
-                'now_application': 0
+                'now_application': 0,
+                'mine_documents': 0,
+                'permit_documents': 0
             }
         }
         
@@ -381,8 +368,7 @@ class TestSimpleSearchResourceIntegration:
         assert response.status_code == 200
         data = json.loads(response.data.decode())
         
-        # V2 should have search_terms, search_results, and facets
-        assert 'search_terms' in data
+        # V2 should have search_results and facets
         assert 'search_results' in data
         assert 'facets' in data
         
@@ -412,7 +398,6 @@ class TestSimpleSearchResourceIntegration:
         }
         
         mock_simple_search_service.execute_search.return_value = {
-            'search_terms': ['test'],
             'search_results': [mock_result],
             'facets': {}
         }
@@ -439,7 +424,6 @@ class TestSimpleSearchResourceIntegration:
         import time
         
         mock_simple_search_service.execute_search.return_value = {
-            'search_terms': ['test'],
             'search_results': [],
             'facets': {}
         }
@@ -472,10 +456,8 @@ class TestSimpleSearchResourceIntegration:
             assert response.status_code == 200
             data = json.loads(response.data.decode())
             
-            # V1 should have search_terms and search_results
-            assert 'search_terms' in data
+            # V1 should have search_results
             assert 'search_results' in data
-            # V1 might not have facets
     
     # ==================== Edge Cases ====================
     
@@ -486,7 +468,6 @@ class TestSimpleSearchResourceIntegration:
         """Test search with very long search term."""
         long_term = 'a' * 500
         mock_simple_search_service.execute_search.return_value = {
-            'search_terms': [],
             'search_results': [],
             'facets': {}
         }
@@ -505,7 +486,6 @@ class TestSimpleSearchResourceIntegration:
         """Test search with all possible type filters."""
         all_types = 'mine,person,organization,permit,nod,explosives_permit,now_application'
         mock_simple_search_service.execute_search.return_value = {
-            'search_terms': ['test'],
             'search_results': [],
             'facets': {}
         }
@@ -524,7 +504,6 @@ class TestSimpleSearchResourceIntegration:
     ):
         """Test search with invalid type filter."""
         mock_simple_search_service.execute_search.return_value = {
-            'search_terms': ['test'],
             'search_results': [],
             'facets': {}
         }

@@ -117,14 +117,13 @@ Object {
                 style="padding-left: 12px; padding-right: 12px;"
               >
                 <div
-                  class="ant-card ant-card-bordered ant-card-small"
-                  style="margin-bottom: 16px;"
+                  class="ant-card ant-card-bordered ant-card-small search-results-v2__filters-card"
                 >
                   <div
                     class="ant-card-body"
                   >
                     <div
-                      style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;"
+                      class="search-results-v2__filters-card-header"
                     >
                       <span
                         class="ant-typography"
@@ -132,9 +131,8 @@ Object {
                         <strong>
                           <span
                             aria-label="filter"
-                            class="anticon anticon-filter"
+                            class="anticon anticon-filter search-results-v2__filters-card-icon"
                             role="img"
-                            style="margin-right: 8px;"
                           >
                             <svg
                               aria-hidden="true"
@@ -156,8 +154,7 @@ Object {
                       </span>
                     </div>
                     <span
-                      class="ant-typography ant-typography-secondary"
-                      style="font-size: 12px;"
+                      class="ant-typography ant-typography-secondary search-results-v2__filters-card-empty"
                     >
                       No filters available
                     </span>
@@ -169,7 +166,7 @@ Object {
                 style="padding-left: 12px; padding-right: 12px;"
               >
                 <div
-                  style="margin-bottom: 16px;"
+                  class="search-results-v2__result-count"
                 >
                   <span
                     class="ant-typography ant-typography-secondary"
@@ -386,8 +383,7 @@ Object {
                         tabindex="0"
                       >
                         <div
-                          class="ant-empty ant-empty-normal"
-                          style="padding: 40px 0px;"
+                          class="ant-empty ant-empty-normal search-results-v2__empty-state"
                         >
                           <div
                             class="ant-empty-image"
@@ -558,14 +554,13 @@ Object {
               style="padding-left: 12px; padding-right: 12px;"
             >
               <div
-                class="ant-card ant-card-bordered ant-card-small"
-                style="margin-bottom: 16px;"
+                class="ant-card ant-card-bordered ant-card-small search-results-v2__filters-card"
               >
                 <div
                   class="ant-card-body"
                 >
                   <div
-                    style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;"
+                    class="search-results-v2__filters-card-header"
                   >
                     <span
                       class="ant-typography"
@@ -573,9 +568,8 @@ Object {
                       <strong>
                         <span
                           aria-label="filter"
-                          class="anticon anticon-filter"
+                          class="anticon anticon-filter search-results-v2__filters-card-icon"
                           role="img"
-                          style="margin-right: 8px;"
                         >
                           <svg
                             aria-hidden="true"
@@ -597,8 +591,7 @@ Object {
                     </span>
                   </div>
                   <span
-                    class="ant-typography ant-typography-secondary"
-                    style="font-size: 12px;"
+                    class="ant-typography ant-typography-secondary search-results-v2__filters-card-empty"
                   >
                     No filters available
                   </span>
@@ -610,7 +603,7 @@ Object {
               style="padding-left: 12px; padding-right: 12px;"
             >
               <div
-                style="margin-bottom: 16px;"
+                class="search-results-v2__result-count"
               >
                 <span
                   class="ant-typography ant-typography-secondary"
@@ -827,8 +820,7 @@ Object {
                       tabindex="0"
                     >
                       <div
-                        class="ant-empty ant-empty-normal"
-                        style="padding: 40px 0px;"
+                        class="ant-empty ant-empty-normal search-results-v2__empty-state"
                       >
                         <div
                           class="ant-empty-image"

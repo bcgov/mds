@@ -5,7 +5,6 @@ import classNames from "classnames";
 import { ISearchResult, ISimpleSearchResult } from "@mds/common/interfaces";
 import { SEARCH_TYPE_CONFIG, RESULT_TYPE_MAP } from "../utils/searchConfig";
 import { highlightMatch } from "../utils/searchHelpers";
-import "@/styles/components/SearchResultItem.scss";
 
 const { Text } = Typography;
 

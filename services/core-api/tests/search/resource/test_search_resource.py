@@ -85,7 +85,7 @@ def test_simple_search_no_results(test_client, db_session, auth_headers):
         f'/search/simple?search_term=Abbo', headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
     assert get_resp.status_code == 200
-    assert get_data['search_terms'] == ['Abbo']
+    assert get_data['search_terms'] == ['Abbo']  # V1 returns search_terms
     assert len(get_data['search_results']) == 0
 
 
