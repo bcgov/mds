@@ -79,7 +79,7 @@ class SimpleSearchService:
         
         # Execute search and process results
         search_results = self._execute_and_process_search(
-            indices_string, query, search_term, allowed_types
+            indices_string, query, allowed_types
         )
         
         # Group and rank results
@@ -95,24 +95,20 @@ class SimpleSearchService:
     
     def _determine_search_indices(self, allowed_types):
         """Determine which Elasticsearch indices to search based on allowed types."""
-        indices = []
-        for type in simple_search_targets.keys():
-            if type in TYPE_TO_INDEX:
-                if allowed_types is None:
-                    indices.append(TYPE_TO_INDEX[type])
-                else:
-                    for result_type in allowed_types:
-                        if RESULT_TYPE_TO_INDEX.get(result_type) == type:
-                            indices.append(TYPE_TO_INDEX[type])
-                            break
-        return indices
+        available_types = [t for t in simple_search_targets.keys() if t in TYPE_TO_INDEX]
+
+        if allowed_types is None:
+            return [TYPE_TO_INDEX[t] for t in available_types]
+
+        allowed_index_types = {RESULT_TYPE_TO_INDEX.get(t) for t in allowed_types}
+        allowed_index_types.discard(None)
+        return [TYPE_TO_INDEX[t] for t in available_types if t in allowed_index_types]
     
     def _build_base_filters(self, mine_guid=None):
         """Build base Elasticsearch filters using shared filter builders."""
         filters = [build_deleted_filter()]
         
         if mine_guid:
-            current_app.logger.info(f"Adding mine_guid filter: {mine_guid}")
             filters.append(build_mine_guid_filter(mine_guid))
         
         return filters
@@ -167,7 +163,7 @@ class SimpleSearchService:
         
         return query
     
-    def _execute_and_process_search(self, indices_string, query, search_term, allowed_types):
+    def _execute_and_process_search(self, indices_string, query, allowed_types):
         """Execute Elasticsearch search and process results."""
         search_results = []
         
@@ -179,7 +175,7 @@ class SimpleSearchService:
             
             # Process each hit
             for hit in hits:
-                result = self._process_hit(hit, search_term, allowed_types)
+                result = self._process_hit(hit, allowed_types)
                 if result:
                     search_results.append(result)
                     
@@ -204,18 +200,18 @@ class SimpleSearchService:
         results_list.sort(key=lambda x: x.score, reverse=True)
         return results_list[:4]
     
-    def _process_hit(self, hit, search_term, allowed_types):
+    def _process_hit(self, hit, allowed_types):
         """Process a single Elasticsearch hit into a SearchResult."""
         index = hit['_index']
         index_to_type = {v: k for k, v in TYPE_TO_INDEX.items()}
-        type = index_to_type.get(index)
+        doc_type = index_to_type.get(index)
         
-        if not type or type not in simple_search_targets:
+        if not doc_type or doc_type not in simple_search_targets:
             return None
         
         source = hit['_source']
         score = hit['_score']
-        type_config = simple_search_targets[type]
+        type_config = simple_search_targets[doc_type]
         
         # Process based on type using processor dictionary
         processors = {
@@ -227,7 +223,7 @@ class SimpleSearchService:
             'now_application': self._process_now_application_result
         }
         
-        processor = processors.get(type)
+        processor = processors.get(doc_type)
         if not processor:
             return None
         
@@ -245,7 +241,7 @@ class SimpleSearchService:
                     highlight_text = fragments[0]
                     break
         
-        mine_guid = self._extract_mine_guid(type, source)
+        mine_guid = self._extract_mine_guid(doc_type, source)
         
         return SearchResult(
             score,
@@ -259,14 +255,14 @@ class SimpleSearchService:
             }
         )
     
-    def _extract_mine_guid(self, type, source):
+    def _extract_mine_guid(self, doc_type, source):
         """Extract mine_guid from source based on document type."""
-        if type == 'mine':
+        if doc_type == 'mine':
             return source.get('mine_guid')
-        elif type == 'permit':
+        elif doc_type == 'permit':
             mine_guids = source.get('mine_guids', [])
             return mine_guids[0] if mine_guids and isinstance(mine_guids, list) else None
-        elif type in ['notice_of_departure', 'explosives_permit', 'now_application']:
+        elif doc_type in ['notice_of_departure', 'explosives_permit', 'now_application']:
             mine_info = source.get('mine')
             return mine_info.get('mine_guid') if isinstance(mine_info, dict) else None
         return None

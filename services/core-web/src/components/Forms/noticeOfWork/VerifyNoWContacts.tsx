@@ -16,15 +16,13 @@ import {
     fetchSearchResults as fetchSearchResultsAction,
     clearAllSearchResults as clearAllSearchResultsAction,
     storeSubsetSearchResults as storeSubsetSearchResultsAction,
+    getSearchResults,
+    getSearchSubsetResults,
 } from "@mds/common/redux/slices/searchSlice";
 import { fetchPartyById as fetchPartyByIdAction, updateParty as updatePartyAction } from "@mds/common/redux/slices/partiesSlice";
 import { TRASHCAN, PROFILE_NOCIRCLE } from "@/constants/assets";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
-import {
-    getSearchResults,
-    getSearchSubsetResults,
-} from "@mds/common/redux/slices/searchSlice";
 import * as Strings from "@mds/common/constants/strings";
 
 import Address from "@/components/common/Address";
@@ -32,7 +30,7 @@ import AddButton from "@/components/common/buttons/AddButton";
 import RenderSelect from "@mds/common/components/forms/RenderSelect";
 import CoreTable from "@mds/common/components/common/CoreTable";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
-import { IMinePartyApptType, IParty, IPartyRelationshipType } from "@mds/common/interfaces";
+import { IMinePartyApptType, IParty } from "@mds/common/interfaces";
 
 export interface VerifyNoWContactValue {
     id?: string;

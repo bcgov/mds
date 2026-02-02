@@ -10,7 +10,8 @@ export const getSearchTypes = (filters: string[], includeQuickFilter?: string | 
 
 export const highlightMatch = (text: string, search: string): React.ReactNode => {
   if (!search || !text) return text;
-  const regex = new RegExp(`(${search.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")})`, "gi");
+  const escapedSearch = search.replace(/[.*+?^${}()|[\]\\]/g, String.raw`\$&`);
+  const regex = new RegExp(`(${escapedSearch})`, "gi");
   const parts = text.split(regex);
   return parts.map((part, i) => (regex.test(part) ? <mark key={i}>{part}</mark> : part));
 };

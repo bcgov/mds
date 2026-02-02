@@ -9,7 +9,7 @@ export const GenericResultsTable = ({ header, searchResults, columns, getRecordK
     if (!text || !highlightRegex) return text;
     const parts = String(text).split(highlightRegex);
     return parts.map((part, index) =>
-      highlightRegex.test(part) ? <mark key={index}>{part}</mark> : part
+      highlightRegex.test(part) ? <mark key={`highlight-${index}`}>{part}</mark> : part
     );
   };
 

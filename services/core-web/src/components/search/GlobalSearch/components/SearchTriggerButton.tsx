@@ -28,7 +28,7 @@ export const SearchTriggerButton: React.FC<SearchTriggerButtonProps> = ({
   ) : null;
 
   return (
-    <div className="search-trigger-container" onClick={onClick}>
+    <div className="search-trigger-container">
       <Input
         size={size}
         prefix={size === "middle" ? <SearchOutlined className="search-icon" /> : undefined}
@@ -42,6 +42,7 @@ export const SearchTriggerButton: React.FC<SearchTriggerButtonProps> = ({
         readOnly
         onFocus={() => setIsFocussed(true)}
         onBlur={() => setIsFocussed(false)}
+        onClick={onClick}
       />
     </div>
   );

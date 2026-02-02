@@ -18,6 +18,7 @@ export const RecentSearches: React.FC<RecentSearchesProps> = ({
   onRemoveSearch,
   onSetSelectedIndex,
 }) => {
+  const [hoveredIndex, setHoveredIndex] = React.useState<number | null>(null);
   return (
     <div className="recent-searches">
       <Divider orientation="left" plain className="recent-searches__divider">
@@ -30,16 +31,15 @@ export const RecentSearches: React.FC<RecentSearchesProps> = ({
         dataSource={recentSearches}
         renderItem={(term, index) => {
           const isSelected = index === selectedIndex;
-          const [isHovered, setIsHovered] = React.useState(false);
-
+          const isHovered = hoveredIndex === index;
           return (
             <List.Item
               onClick={() => onSearchClick(term)}
               onMouseEnter={() => {
                 onSetSelectedIndex(index);
-                setIsHovered(true);
+                setHoveredIndex(index);
               }}
-              onMouseLeave={() => setIsHovered(false)}
+              onMouseLeave={() => setHoveredIndex(null)}
               className={classNames("recent-searches__item", {
                 "recent-searches__item--selected": isSelected,
                 "recent-searches__item--hovered": isHovered && !isSelected

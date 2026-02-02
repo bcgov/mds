@@ -65,28 +65,75 @@ def build_boolean_filter(field, value_map, values):
     return {"terms": {field: bool_values}} if bool_values else None
 
 
+def _append_terms_filter(clauses, filters, filter_key, field):
+    if filters.get(filter_key):
+        clauses.append(build_terms_filter(field, filters[filter_key]))
+
+
+def _append_nested_terms_filter(clauses, filters, filter_key, path, field):
+    if filters.get(filter_key):
+        clauses.append(build_nested_filter(path, {"terms": {field: filters[filter_key]}}))
+
+
+def _append_boolean_terms_filter(clauses, filters, filter_key, field, value_map):
+    if filters.get(filter_key):
+        clause = build_boolean_filter(field, value_map, filters[filter_key])
+        if clause:
+            clauses.append(clause)
+
+
+def _append_has_tsf_filters(clauses, filters):
+    if not filters.get('has_tsf'):
+        return
+    exists_clause = build_nested_filter(
+        "tailings_storage_facilities",
+        {"exists": {"field": "tailings_storage_facilities.mine_tailings_storage_facility_guid"}}
+    )
+    for tsf_filter in filters['has_tsf']:
+        if tsf_filter == 'Has TSF':
+            clauses.append(exists_clause)
+        elif tsf_filter == 'No TSF':
+            clauses.append({"bool": {"must_not": exists_clause}})
+
+
+def _append_verified_status_filters(clauses, filters):
+    if not filters.get('verified_status'):
+        return
+    for status in filters['verified_status']:
+        clauses.append(build_nested_filter(
+            "verified_status",
+            {"term": {"verified_status.healthy_ind": status == 'Verified'}}
+        ))
+
+
+def _append_party_type_filters(clauses, filters):
+    if not filters.get('party_type'):
+        return
+    type_codes = []
+    for pt in filters['party_type']:
+        type_codes.append({'Organization': 'ORG', 'Person': 'PER'}.get(pt, pt))
+    clauses.append(build_terms_filter("party_type_code.keyword", type_codes))
+
+
 def build_filter_clauses(filters):
     """Build ES filter clauses from filter parameters."""
     clauses = [build_deleted_filter()]
 
-    if filters.get('mine_region'):
-        clauses.append(build_terms_filter("mine_region.keyword", filters['mine_region']))
-
-    if filters.get('mine_classification'):
-        clause = build_boolean_filter(
-            "major_mine_ind",
-            {'Major Mine': True, 'Regional Mine': False},
-            filters['mine_classification']
-        )
-        if clause:
-            clauses.append(clause)
-
-    if filters.get('mine_tenure'):
-        clauses.append(build_nested_filter(
-            "mine_types",
-            {"terms": {"mine_types.mine_tenure_type_code.keyword": filters['mine_tenure']}}
-        ))
-
+    _append_terms_filter(clauses, filters, 'mine_region', "mine_region.keyword")
+    _append_boolean_terms_filter(
+        clauses,
+        filters,
+        'mine_classification',
+        "major_mine_ind",
+        {'Major Mine': True, 'Regional Mine': False}
+    )
+    _append_nested_terms_filter(
+        clauses,
+        filters,
+        'mine_tenure',
+        "mine_types",
+        "mine_types.mine_tenure_type_code.keyword"
+    )
     if filters.get('mine_commodity'):
         clauses.append(build_nested_filter(
             "mine_types",
@@ -95,10 +142,7 @@ def build_filter_clauses(filters):
                 {"terms": {"mine_types.mine_type_details.mine_commodity_code.keyword": filters['mine_commodity']}}
             )
         ))
-
-    if filters.get('permit_status'):
-        clauses.append(build_terms_filter("permit_status_code.keyword", filters['permit_status']))
-
+    _append_terms_filter(clauses, filters, 'permit_status', "permit_status_code.keyword")
     if filters.get('mine_operation_status'):
         clauses.append(build_nested_filter(
             "mine_status",
@@ -107,74 +151,39 @@ def build_filter_clauses(filters):
                 {"terms": {"mine_status.status_xref.mine_operation_status_code.keyword": filters['mine_operation_status']}}
             )
         ))
-
-    if filters.get('has_tsf'):
-        for tsf_filter in filters['has_tsf']:
-            if tsf_filter == 'Has TSF':
-                clauses.append(build_nested_filter(
-                    "tailings_storage_facilities",
-                    {"exists": {"field": "tailings_storage_facilities.mine_tailings_storage_facility_guid"}}
-                ))
-            elif tsf_filter == 'No TSF':
-                clauses.append({
-                    "bool": {
-                        "must_not": build_nested_filter(
-                            "tailings_storage_facilities",
-                            {"exists": {"field": "tailings_storage_facilities.mine_tailings_storage_facility_guid"}}
-                        )
-                    }
-                })
-
-    if filters.get('verified_status'):
-        for status in filters['verified_status']:
-            clauses.append(build_nested_filter(
-                "verified_status",
-                {"term": {"verified_status.healthy_ind": status == 'Verified'}}
-            ))
-
-    if filters.get('is_exploration'):
-        clause = build_boolean_filter(
-            "is_exploration",
-            {'Exploration': True, 'Non-Exploration': False},
-            filters['is_exploration']
-        )
-        if clause:
-            clauses.append(clause)
-
-    if filters.get('party_type'):
-        type_codes = []
-        for pt in filters['party_type']:
-            type_codes.append({'Organization': 'ORG', 'Person': 'PER'}.get(pt, pt))
-        clauses.append(build_terms_filter("party_type_code.keyword", type_codes))
-
-    if filters.get('explosives_permit_status'):
-        clauses.append(build_terms_filter("application_status.keyword", filters['explosives_permit_status']))
-
-    if filters.get('explosives_permit_closed'):
-        clause = build_boolean_filter(
-            "is_closed",
-            {'Closed': True, 'Open': False},
-            filters['explosives_permit_closed']
-        )
-        if clause:
-            clauses.append(clause)
-
-    if filters.get('nod_type'):
-        clauses.append(build_terms_filter("nod_type.keyword", filters['nod_type']))
-
-    if filters.get('nod_status'):
-        clauses.append(build_terms_filter("nod_status.keyword", filters['nod_status']))
-
-    if filters.get('now_application_status'):
-        clauses.append(build_nested_filter(
-            "application",
-            {"terms": {"application.now_application_status_code.keyword": filters['now_application_status']}}
-        ))
-
-    if filters.get('now_type'):
-        clauses.append(build_nested_filter(
-            "application",
-            {"terms": {"application.notice_of_work_type_code.keyword": filters['now_type']}}
-        ))
+    _append_has_tsf_filters(clauses, filters)
+    _append_verified_status_filters(clauses, filters)
+    _append_boolean_terms_filter(
+        clauses,
+        filters,
+        'is_exploration',
+        "is_exploration",
+        {'Exploration': True, 'Non-Exploration': False}
+    )
+    _append_party_type_filters(clauses, filters)
+    _append_terms_filter(clauses, filters, 'explosives_permit_status', "application_status.keyword")
+    _append_boolean_terms_filter(
+        clauses,
+        filters,
+        'explosives_permit_closed',
+        "is_closed",
+        {'Closed': True, 'Open': False}
+    )
+    _append_terms_filter(clauses, filters, 'nod_type', "nod_type.keyword")
+    _append_terms_filter(clauses, filters, 'nod_status', "nod_status.keyword")
+    _append_nested_terms_filter(
+        clauses,
+        filters,
+        'now_application_status',
+        "application",
+        "application.now_application_status_code.keyword"
+    )
+    _append_nested_terms_filter(
+        clauses,
+        filters,
+        'now_type',
+        "application",
+        "application.notice_of_work_type_code.keyword"
+    )
 
     return clauses

@@ -159,7 +159,6 @@ export const SearchResults: React.FC = () => {
   const searchOptions = useSelector(selectSearchOptions);
   const searchResults = useSelector(selectSearchResults);
   const searchFacets = useSelector(selectSearchFacets);
-  const searchTerms = useSelector(selectSearchTerms);
   const partyRelationshipTypeHash = useSelector(getPartyRelationshipTypeHash);
 
   const highlightRegex = useMemo(() => {
@@ -224,19 +223,6 @@ export const SearchResults: React.FC = () => {
     const apiFilters = getFiltersForApi(enhancedFilters);
     dispatch(fetchSearchResults({ searchTerm, searchTypes: types, filters: apiFilters }));
   }, [dispatch, getFiltersForApi, mapTabToSearchType]);
-
-  const handleSearch = useCallback((searchParams: string, resetFilters = true) => {
-    const parsedParams = queryString.parse(searchParams);
-    const { q, t } = parsedParams;
-    if (q) {
-      if (resetFilters) {
-        setSelectedFilters({});
-      }
-      setParams({ q: q as string, t: t as string });
-      setSearchInputValue(q as string);
-      triggerSearch(q as string, t as string, resetFilters ? {} : selectedFilters);
-    }
-  }, [triggerSearch, selectedFilters]);
 
   const onSearch = (value: string) => {
     if (value) {
@@ -342,7 +328,7 @@ export const SearchResults: React.FC = () => {
         .map((facetKey) => ({
           key: facetKey,
           label: FACET_LABELS[facetKey] || facetKey,
-          data: (searchFacets as any)?.[facetKey] || [],
+          data: searchFacets?.[facetKey] || [],
         }))
         .filter((f) => f.data.length > 0);
 

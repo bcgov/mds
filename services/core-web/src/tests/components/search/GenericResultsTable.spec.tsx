@@ -1,7 +1,10 @@
 import React from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render as rtlRender, screen, fireEvent } from "@testing-library/react";
+import { MemoryRouter } from "react-router-dom";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 import { GenericResultsTable } from "@/components/search/GenericResultsTable";
+
+const render = (ui) => rtlRender(<MemoryRouter>{ui}</MemoryRouter>);
 
 const mockResultsExplosivesPermits = [
   {
@@ -62,13 +65,23 @@ describe("GenericResultsTable", () => {
 
   // Test helper props
   const mockColumnsExplosives = [
-    { title: "Application #", dataIndex: "application_number", key: "application_number" },
+    {
+      title: "Application #",
+      dataIndex: "application_number",
+      key: "application_number",
+      link: (record) => `/explosives-permit/${record.explosives_permit_guid}`,
+    },
     { title: "Mine Name", dataIndex: "mine_name", key: "mine_name" },
     { title: "Status", dataIndex: "application_status", key: "application_status" },
   ];
 
   const mockColumnsNow = [
-    { title: "Application #", dataIndex: "now_number", key: "now_number" },
+    {
+      title: "Application #",
+      dataIndex: "now_number",
+      key: "now_number",
+      link: (record) => `/notice-of-work/${record.now_application_guid}`,
+    },
     { title: "Mine Name", dataIndex: "mine_name", key: "mine_name" },
     { title: "Status", dataIndex: "now_application_status_code", key: "now_application_status_code" },
   ];
@@ -206,8 +219,7 @@ describe("GenericResultsTable", () => {
       expect(screen.getAllByText(/REC/i).length).toBeGreaterThan(0);
     });
 
-    it.skip("displays closed status badge", () => {
-      // This requires custom column rendering which is implementation-specific
+    it("displays status values", () => {
       render(
         <ReduxWrapper>
           <GenericResultsTable
@@ -221,10 +233,11 @@ describe("GenericResultsTable", () => {
         </ReduxWrapper>
       );
 
-      expect(screen.getByText(/closed/i)).toBeInTheDocument();
+      expect(screen.getByText(/^APP$/i)).toBeInTheDocument();
+      expect(screen.getByText(/^REC$/i)).toBeInTheDocument();
     });
 
-    it.skip("makes application number clickable", () => {
+    it("makes application number clickable", () => {
       // This requires link configuration in column definition
       render(
         <ReduxWrapper>
@@ -293,7 +306,7 @@ describe("GenericResultsTable", () => {
       expect(screen.getByText(/REC/i)).toBeInTheDocument();
     });
 
-    it.skip("makes NoW number clickable", () => {
+    it("makes NoW number clickable", () => {
       // This requires link configuration in column definition
       render(
         <ReduxWrapper>

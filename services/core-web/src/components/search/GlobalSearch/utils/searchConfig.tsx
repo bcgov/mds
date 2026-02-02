@@ -7,8 +7,6 @@ import {
   AlertOutlined,
   FileSearchOutlined,
   ExceptionOutlined,
-  AimOutlined,
-  DeleteOutlined,
 } from "@ant-design/icons";
 
 export interface SearchTypeConfig {

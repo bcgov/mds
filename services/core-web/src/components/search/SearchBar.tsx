@@ -7,14 +7,12 @@ import { Input, InputProps, Button } from "antd";
 
 import {
   fetchSearchBarResults,
-  clearSearchBarResults,
   selectSearchBarResults,
 } from "@mds/common/redux/slices/searchSlice";
 import * as router from "@/constants/routes";
 
 import { SearchOutlined } from "@ant-design/icons";
 import { useKey } from "@/App";
-import { ISearchResult, ISimpleSearchResult } from "@mds/common/interfaces/search/searchResult.interface";
 import { SearchBarDropdown } from "@/components/search/SearchBarDropdown";
 import { throttle } from "lodash";
 
@@ -120,9 +118,9 @@ const SearchBar: FC<SearchBarProps> = ({
             setIsFocussed(false);
           }}
           ref={hotKeyRef}
+          {...iconProps}
           {...(showFocusButton ? getFocusButton() : null)}
           {...props}
-          {...iconProps}
         />
       </SearchBarDropdown>
     </div>

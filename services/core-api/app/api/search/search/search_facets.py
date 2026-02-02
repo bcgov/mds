@@ -1,6 +1,6 @@
 """Facet extraction from Elasticsearch aggregations."""
 
-from .search_constants import INDEX_TO_TYPE, FACET_KEYS
+from .search_constants import FACET_KEYS, INDEX_TO_TYPE
 
 
 def extract_simple_type_facets(aggs):
@@ -96,6 +96,27 @@ def _ensure_predefined_values(facet_list, facet_key):
     return facet_list
 
 
+def _append_bucket_facets(facets, facet_key, aggs, agg_key, nested_path=None, transform=None, filter_fn=None):
+    """Append buckets from an aggregation to a facet list."""
+    for bucket in _extract_buckets(aggs, agg_key, nested_path):
+        if filter_fn and not filter_fn(bucket):
+            continue
+        item = transform(bucket) if transform else {'key': bucket['key'], 'count': bucket['doc_count']}
+        facets[facet_key].append(item)
+
+
+def _append_boolean_facets(facets, facet_key, aggs, agg_key, true_label, false_label, nested_path=None):
+    """Append boolean bucket facets with labels."""
+    _append_bucket_facets(
+        facets,
+        facet_key,
+        aggs,
+        agg_key,
+        nested_path=nested_path,
+        transform=lambda b: _parse_boolean_bucket(b, true_label, false_label)
+    )
+
+
 def extract_facets(aggs):
     """Extract facet data from ES aggregations."""
     facets = {k: [] for k in FACET_KEYS}
@@ -107,27 +128,39 @@ def extract_facets(aggs):
     facets['type'] = _ensure_predefined_values(facets['type'], 'type')
 
     # Mine region
-    for bucket in _extract_buckets(aggs, 'mine_region'):
-        if bucket['key'] != 'Unknown':
-            facets['mine_region'].append({'key': bucket['key'], 'count': bucket['doc_count']})
+    _append_bucket_facets(
+        facets,
+        'mine_region',
+        aggs,
+        'mine_region',
+        filter_fn=lambda b: b['key'] != 'Unknown'
+    )
 
     # Classification (major vs regional)
-    for bucket in _extract_buckets(aggs, 'major_mine_ind'):
-        facets['mine_classification'].append(_parse_boolean_bucket(bucket, 'Major Mine', 'Regional Mine'))
+    _append_boolean_facets(facets, 'mine_classification', aggs, 'major_mine_ind', 'Major Mine', 'Regional Mine')
     facets['mine_classification'] = _ensure_predefined_values(facets['mine_classification'], 'mine_classification')
 
     # Operation status (nested)
-    for bucket in _extract_buckets(aggs, 'mine_operation_status', ['status_codes', 'codes']):
-        facets['mine_operation_status'].append({'key': bucket['key'], 'count': bucket['doc_count']})
+    _append_bucket_facets(
+        facets,
+        'mine_operation_status',
+        aggs,
+        'mine_operation_status',
+        nested_path=['status_codes', 'codes']
+    )
 
     # Tenure (nested)
-    for bucket in _extract_buckets(aggs, 'mine_tenure', ['tenure_codes']):
-        facets['mine_tenure'].append({'key': bucket['key'], 'count': bucket['doc_count']})
+    _append_bucket_facets(facets, 'mine_tenure', aggs, 'mine_tenure', nested_path=['tenure_codes'])
 
     # Commodity (nested)
-    for bucket in _extract_buckets(aggs, 'mine_commodity', ['details', 'commodity_codes']):
-        if bucket['key']:
-            facets['mine_commodity'].append({'key': bucket['key'], 'count': bucket['doc_count']})
+    _append_bucket_facets(
+        facets,
+        'mine_commodity',
+        aggs,
+        'mine_commodity',
+        nested_path=['details', 'commodity_codes'],
+        filter_fn=lambda b: b['key']
+    )
 
     # TSF
     tsf_count = aggs.get('has_tsf', {}).get('count', {}).get('value', 0)
@@ -136,48 +169,57 @@ def extract_facets(aggs):
     facets['has_tsf'].append({'key': 'No TSF', 'count': max(0, total_mines - tsf_count)})
 
     # Verified status (nested)
-    for bucket in _extract_buckets(aggs, 'verified_status', ['healthy']):
-        facets['verified_status'].append(_parse_boolean_bucket(bucket, 'Verified', 'Unverified'))
+    _append_boolean_facets(
+        facets,
+        'verified_status',
+        aggs,
+        'verified_status',
+        'Verified',
+        'Unverified',
+        nested_path=['healthy']
+    )
     facets['verified_status'] = _ensure_predefined_values(facets['verified_status'], 'verified_status')
 
     # Permit status
-    for bucket in _extract_buckets(aggs, 'permit_status'):
-        facets['permit_status'].append({'key': bucket['key'], 'count': bucket['doc_count']})
+    _append_bucket_facets(facets, 'permit_status', aggs, 'permit_status')
 
     # Is exploration
-    for bucket in _extract_buckets(aggs, 'is_exploration'):
-        facets['is_exploration'].append(_parse_boolean_bucket(bucket, 'Exploration', 'Non-Exploration'))
+    _append_boolean_facets(facets, 'is_exploration', aggs, 'is_exploration', 'Exploration', 'Non-Exploration')
     facets['is_exploration'] = _ensure_predefined_values(facets['is_exploration'], 'is_exploration')
 
     # Party type
-    for bucket in _extract_buckets(aggs, 'party_type'):
-        label = {'ORG': 'Organization', 'PER': 'Person'}.get(bucket['key'], bucket['key'])
-        facets['party_type'].append({'key': label, 'count': bucket['doc_count']})
+    _append_bucket_facets(
+        facets,
+        'party_type',
+        aggs,
+        'party_type',
+        transform=lambda b: {'key': {'ORG': 'Organization', 'PER': 'Person'}.get(b['key'], b['key']), 'count': b['doc_count']}
+    )
     facets['party_type'] = _ensure_predefined_values(facets['party_type'], 'party_type')
 
     # Explosives permit status
-    for bucket in _extract_buckets(aggs, 'explosives_permit_status'):
-        facets['explosives_permit_status'].append({'key': bucket['key'], 'count': bucket['doc_count']})
+    _append_bucket_facets(facets, 'explosives_permit_status', aggs, 'explosives_permit_status')
 
     # Explosives permit closed
-    for bucket in _extract_buckets(aggs, 'explosives_permit_closed'):
-        facets['explosives_permit_closed'].append(_parse_boolean_bucket(bucket, 'Closed', 'Open'))
+    _append_boolean_facets(facets, 'explosives_permit_closed', aggs, 'explosives_permit_closed', 'Closed', 'Open')
     facets['explosives_permit_closed'] = _ensure_predefined_values(facets['explosives_permit_closed'], 'explosives_permit_closed')
 
     # NOD type
-    for bucket in _extract_buckets(aggs, 'nod_type'):
-        facets['nod_type'].append({'key': bucket['key'], 'count': bucket['doc_count']})
+    _append_bucket_facets(facets, 'nod_type', aggs, 'nod_type')
 
     # NOD status
-    for bucket in _extract_buckets(aggs, 'nod_status'):
-        facets['nod_status'].append({'key': bucket['key'], 'count': bucket['doc_count']})
+    _append_bucket_facets(facets, 'nod_status', aggs, 'nod_status')
 
     # NoW application status (nested)
-    for bucket in _extract_buckets(aggs, 'now_application_status', ['status_codes']):
-        facets['now_application_status'].append({'key': bucket['key'], 'count': bucket['doc_count']})
+    _append_bucket_facets(
+        facets,
+        'now_application_status',
+        aggs,
+        'now_application_status',
+        nested_path=['status_codes']
+    )
 
     # NoW type (nested)
-    for bucket in _extract_buckets(aggs, 'now_type', ['type_codes']):
-        facets['now_type'].append({'key': bucket['key'], 'count': bucket['doc_count']})
+    _append_bucket_facets(facets, 'now_type', aggs, 'now_type', nested_path=['type_codes'])
 
     return facets

@@ -17,23 +17,22 @@ const initialState = {
 };
 
 
-describe("Tailings BasicInformation", () => {
 
+describe("Tailings BasicInformation", () => {
     let tzGuessSpy;
     const originalTZ = process.env.TZ;
 
     beforeAll(() => {
-        // Set timezone to America/Vancouver (PST/PDT) to match snapshot
-        process.env.TZ = 'America/Vancouver';
-        // Mock moment.tz.guess to always return Canada/Pacific
+        // Set timezone to UTC for consistent CI results
+        // Mock moment.tz.guess to always return UTC
         const moment = require('moment-timezone');
-        tzGuessSpy = jest.spyOn(moment.tz, 'guess').mockReturnValue('Canada/Pacific');
+        moment.tz.setDefault('PST');
     });
 
     afterAll(() => {
         // Restore original timezone
-        process.env.TZ = originalTZ;
-        if (tzGuessSpy) tzGuessSpy.mockRestore();
+        const moment = require('moment-timezone');
+        moment.tz.setDefault(); // Unset default timezone
     });
 
     it("renders properly", () => {

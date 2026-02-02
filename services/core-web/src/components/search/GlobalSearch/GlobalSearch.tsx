@@ -94,8 +94,8 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
         }
       }
     };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    globalThis.addEventListener("keydown", handleKeyDown);
+    return () => globalThis.removeEventListener("keydown", handleKeyDown);
   }, [isModalVisible, handleClose, enableShortcut]);
 
   const getMineGuidForSearch = () => (scopeToMine && currentMineGuid ? currentMineGuid : null);

@@ -1,19 +1,19 @@
 import json
 
 from app.api.mines.documents.models.mine_document import MineDocument
+from app.api.mines.explosives_permit.models.explosives_permit import ExplosivesPermit
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.permits.permit.models.permit import Permit
 from app.api.mines.permits.permit_amendment.models.permit_amendment_document import (
     PermitAmendmentDocument,
 )
-from app.api.mines.explosives_permit.models.explosives_permit import ExplosivesPermit
-from app.api.parties.party.models.party import Party
 from app.api.notice_of_departure.models.notice_of_departure import NoticeOfDeparture
-from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
-from app.api.search.search.permit_search_service import PermitSearchService
-from app.api.utils.feature_flag import Feature, is_feature_enabled
+from app.api.now_applications.models.now_application_identity import (
+    NOWApplicationIdentity,
+)
+from app.api.parties.party.models.party import Party
 from app.extensions import db
-from sqlalchemy import desc, func, or_
+from sqlalchemy import desc, func
 
 common_search_targets = {
     'mine': {
