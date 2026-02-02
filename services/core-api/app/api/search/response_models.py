@@ -243,6 +243,8 @@ SIMPLE_SEARCH_FACETS_MODEL = api.model(
         'nod': fields.Integer,
         'explosives_permit': fields.Integer,
         'now_application': fields.Integer,
+        'mine_documents': fields.Integer,
+        'permit_documents': fields.Integer,
     })
 
 SIMPLE_SEARCH_RESULT_RETURN_MODEL = api.model(

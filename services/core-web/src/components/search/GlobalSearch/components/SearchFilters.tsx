@@ -66,14 +66,15 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
               onChange={() => onToggleFilter(key)}
               className="search-filters__tag"
               style={{
+                backgroundColor: isActive ? config.color : undefined,
                 border: `1px solid ${isActive ? config.color : "#d9d9d9"}`,
-                color: isActive ? config.color : "#595959",
+                color: isActive ? "#fff" : "#595959",
               }}
             >
               <Space size={4}>
                 {config.icon}
                 <span>{config.pluralLabel}</span>
-                {searchTerm && count > 0 && <span className="search-filters__count">({count})</span>}
+                {count > 0 && <span className="search-filters__count">({count})</span>}
               </Space>
             </Tag.CheckableTag>
           );

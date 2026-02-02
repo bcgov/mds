@@ -11,18 +11,34 @@
   &__input {
     border-bottom: 1px solid #f0f0f0;
     border-radius: 0;
+    height: 60px; // Increased height to prevent "squished" look
+    padding: 0 16px; // Horizontal padding to match other elements
+    display: flex;
+    align-items: center;
+
+    input {
+      font-size: 16px;
+      height: 100%;
+    }
+    
+    .ant-input-prefix {
+      margin-right: 12px;
+    }
   }
 
   &__footer {
     font-size: 12px;
     color: #8c8c8c;
-    padding: 8px 0;
+    padding: 12px 16px; // Added horizontal padding to align with content
+    background-color: #fcfcfc; // Optional: slight background distinction
+    border-top: 1px solid #f0f0f0;
+    border-radius: 0 0 8px 8px;
   }
 }
 
 .search-icon {
   color: $violet;
-  font-size: 18px;
+  font-size: 20px; // Slightly larger icon
 }
 
 .search-tag-icon {

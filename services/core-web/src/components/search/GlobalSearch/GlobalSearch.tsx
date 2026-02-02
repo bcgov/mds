@@ -25,7 +25,8 @@ interface GlobalSearchProps {
 
 const GlobalSearch: React.FC<GlobalSearchProps> = ({
   placeholder = "Search Core...",
-  enableShortcut = true
+  enableShortcut = true,
+  size,
 }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -48,10 +49,15 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
 
   const handleSearch = useCallback(
     (term: string, filters: string[], mineGuid: string | null) => {
-      if (term.length > 0) {
+      const effectiveTerm = term || "*";
+      if (effectiveTerm.length > 0) {
+        const derivedTypes = getSearchTypes(filters, quickFilter);
+        // If no filters are selected, explicitly send all search types to allow 1-char search
+        const allTypes = Object.values(SEARCH_TYPE_CONFIG).flatMap((c) => c.types);
+
         dispatch(fetchSearchBarResults({
-          searchTerm: term,
-          searchTypes: getSearchTypes(filters, quickFilter),
+          searchTerm: effectiveTerm,
+          searchTypes: derivedTypes || allTypes,
           mineGuid
         }));
       }
@@ -110,7 +116,7 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
       : [...activeFilters, filterKey];
     setActiveFilters(newFilters);
     setSelectedIndex(0);
-    if (searchTerm.length > 0) {
+    if (searchTerm.length > 0 || newFilters.length > 0) {
       handleSearch(searchTerm, newFilters, getMineGuidForSearch());
     }
   };
@@ -221,7 +227,7 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
   };
 
   const renderResults = () => {
-    const hasActiveSearch = searchTerm || scopeToMine;
+    const hasActiveSearch = searchTerm || scopeToMine || activeFilters.length > 0;
 
     if (hasActiveSearch && groupedResults) {
       let globalIndex = 0;
@@ -232,7 +238,7 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
             const config = SEARCH_TYPE_CONFIG[configKey];
             return (
               <div key={type}>
-                <Divider orientation="left" plain className="global-search-results__section-divider">
+                <Divider style={{ margin: "0" }} orientation="left" plain className="global-search-results__section-divider">
                   {config.pluralLabel}
                 </Divider>
                 <List
@@ -321,7 +327,12 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
 
   return (
     <>
-      <SearchTriggerButton onClick={handleOpen} placeholder={placeholder} />
+      <SearchTriggerButton
+        onClick={handleOpen}
+        placeholder={placeholder}
+        size={size}
+        enableShortcut={enableShortcut}
+      />
 
       <Modal
         open={isModalVisible}

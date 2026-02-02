@@ -6,16 +6,17 @@ Separated from the REST resource layer for better testability and maintainabilit
 """
 
 import logging
-from flask import current_app
 
 from app.api.search.elasticsearch.elastic_search_service import ElasticSearchService
 from app.api.utils.search import SearchResult, simple_search_targets
+from flask import current_app
+
+from .global_search_service import parse_csv_param, parse_search_terms
 
 # Import shared constants and utilities
-from .search_constants import TYPE_TO_INDEX, INDEX_TO_TYPE, SEARCH_FIELDS
-from .global_search_service import parse_search_terms, parse_csv_param
-from .search_filters import build_deleted_filter, build_mine_guid_filter
+from .search_constants import INDEX_TO_TYPE, SEARCH_FIELDS, TYPE_TO_INDEX
 from .search_facets import extract_simple_type_facets
+from .search_filters import build_deleted_filter, build_mine_guid_filter
 
 logger = logging.getLogger(__name__)
 
@@ -409,7 +410,7 @@ class SimpleSearchService:
         # Add aggregations for type counting
         facet_query["aggs"] = {
             "by_index": {
-                "terms": {"field": "_index"},
+                "terms": {"field": "_index", "size": 100},  # Increased size to ensure we get all indices
                 "aggs": {
                     "by_party_type": {
                         "terms": {"field": "party_type_code.keyword", "missing": "N/A"}
