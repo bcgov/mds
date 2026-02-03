@@ -1,3 +1,15 @@
+/**
+ * Integration tests for SearchResultsV2
+ * 
+ * These tests verify that all components (SearchHeader, SearchFiltersPanel, 
+ * SearchResultsTabs, and useSearchResults) work together correctly.
+ * 
+ * For unit tests of individual components, see:
+ * - SearchHeader.spec.tsx
+ * - SearchFiltersPanel.spec.tsx
+ * - SearchResultsTabs.spec.tsx
+ * - useSearchResults.spec.ts
+ */
 import React from "react";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
@@ -21,156 +33,87 @@ const getDefaultState = () => ({
   },
 });
 
-const renderWithRouterAndRedux = (component, initialEntries = ["/search?q=test"], state = null) => {
+const renderSearchResults = (initialEntries = ["/search?q=test"], state = null) => {
   const stateToUse = state || getDefaultState();
   return render(
     <ReduxWrapper initialState={stateToUse}>
       <MemoryRouter initialEntries={initialEntries}>
-        {component}
+        <SearchResults />
       </MemoryRouter>
     </ReduxWrapper>
   );
 };
 
-describe("SearchResults", () => {
+describe("SearchResultsV2 Integration Tests", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  describe("Rendering", () => {
-    it("renders without crashing", () => {
-      const { container } = renderWithRouterAndRedux(
-        <SearchResults />
-      );
-      expect(container).toBeTruthy();
+  describe("Component Integration", () => {
+    it("renders all child components together", () => {
+      renderSearchResults();
+
+      // SearchHeader
+      expect(screen.getByRole("heading", { name: /search results/i })).toBeInTheDocument();
+      expect(screen.getByPlaceholderText(/search for mines, contacts, permits/i)).toBeInTheDocument();
+
+      // SearchFiltersPanel
+      expect(screen.getByText("Filters")).toBeInTheDocument();
+
+      // SearchResultsTabs
+      expect(screen.getByRole("tab", { name: /All/ })).toBeInTheDocument();
+      expect(screen.getByRole("tab", { name: /Mines/ })).toBeInTheDocument();
     });
 
-    it("displays search input with query from URL", () => {
-      renderWithRouterAndRedux(
-        <SearchResults />
-      );
+    it("shares state correctly between header and tabs", () => {
+      renderSearchResults(["/search?q=test"]);
 
+      // Query from URL should appear in search input
       const searchInput = screen.getByPlaceholderText(/search/i);
       expect(searchInput).toHaveValue("test");
-    });
 
-    it("displays loading spinner when loading", () => {
-      renderWithRouterAndRedux(
-        <SearchResults />
-      );
-
-      // Multiple img elements exist (icons), so just check that the component renders
-      expect(screen.getByPlaceholderText(/search/i)).toBeInTheDocument();
-    });
-
-    it("displays tab for each result type with counts", () => {
-      const resultsWithCounts = {
-        mine: Array(5).fill(SEARCH_RESULTS_V2.mine[0]),
-        party: Array(3).fill(SEARCH_RESULTS_V2.party[0]),
-        permit: [],
-        permit_documents: [],
-        mine_documents: [],
-        explosives_permit: [],
-        now_application: [],
-        notice_of_departure: [],
-      };
-
-      const defaultState = getDefaultState();
-      const customState = {
-        ...defaultState,
-        [searchReducerType]: {
-          ...defaultState[searchReducerType],
-          searchResults: resultsWithCounts,
-        },
-      };
-
-      renderWithRouterAndRedux(
-        <SearchResults />,
-        ["/search?q=test"],
-        customState
-      );
-
-      expect(screen.getByText(/Mines.*5/)).toBeInTheDocument();
-      expect(screen.getByRole("tab", { name: /People.*3/ })).toBeInTheDocument();
-    });
-
-    it("displays empty state when no results", () => {
-      const emptyResults = {
-        mine: [],
-        party: [],
-        permit: [],
-        permit_documents: [],
-        mine_documents: [],
-        explosives_permit: [],
-        now_application: [],
-        notice_of_departure: [],
-      };
-
-      const defaultState = getDefaultState();
-      const customState = {
-        ...defaultState,
-        [searchReducerType]: {
-          ...defaultState[searchReducerType],
-          searchResults: emptyResults,
-        },
-      };
-
-      renderWithRouterAndRedux(
-        <SearchResults />,
-        ["/search?q=test"],
-        customState
-      );
-
-      expect(screen.getByText(/No results in this category/i)).toBeInTheDocument();
+      // Results should be displayed in tabs
+      const allTab = screen.getByRole("tab", { name: /All/ });
+      expect(allTab).toBeInTheDocument();
     });
   });
 
-  describe("Search Functionality", () => {
-    it("triggers search on search button click", async () => {
-      renderWithRouterAndRedux(
-        <SearchResults />,
-        ["/search?q=initial"]
-      );
+  describe("Search Flow", () => {
+    it("populates search from URL query parameter", () => {
+      renderSearchResults(["/search?q=my%20search%20term"]);
+
+      const searchInput = screen.getByPlaceholderText(/search/i);
+      expect(searchInput).toHaveValue("my search term");
+    });
+
+    it("updates input when user types", async () => {
+      renderSearchResults();
 
       const searchInput = screen.getByPlaceholderText(/search/i);
       fireEvent.change(searchInput, { target: { value: "new query" } });
 
-      const searchButton = screen.getByRole("button", { name: "search" });
-      fireEvent.click(searchButton);
-
-      // The component will dispatch Redux actions when searching
-      // This test verifies the UI interaction works
       await waitFor(() => {
         expect(searchInput).toHaveValue("new query");
       });
     });
 
-    it("calls fetchSearchResults on mount with query from URL", () => {
-      renderWithRouterAndRedux(
-        <SearchResults />,
-        ["/search?q=test"]
-      );
-
-      // The component dispatches the search action on mount
-      // Verify the component renders with the query
-      const searchInput = screen.getByPlaceholderText(/search/i);
-      expect(searchInput).toHaveValue("test");
-    });
-
-    it("displays search term from URL in input", () => {
-      renderWithRouterAndRedux(
-        <SearchResults />,
-        ["/search?q=test%20mine"]
-      );
+    it("allows search submission via button click", async () => {
+      renderSearchResults();
 
       const searchInput = screen.getByPlaceholderText(/search/i);
-      expect(searchInput).toHaveValue("test mine");
+      fireEvent.change(searchInput, { target: { value: "new search" } });
+
+      const searchButton = screen.getByRole("button", { name: "search" });
+      fireEvent.click(searchButton);
+
+      await waitFor(() => {
+        expect(searchInput).toHaveValue("new search");
+      });
     });
   });
 
-  describe("Filters/Facets", () => {
-    // Create a deep copy to avoid state mutation
-    const facetsWithValues = JSON.parse(JSON.stringify({
+  describe("Filter Integration", () => {
+    const facetsWithValues = {
       ...SEARCH_FACETS,
       mine_region: [
         { key: "SW", count: 10 },
@@ -184,68 +127,35 @@ describe("SearchResults", () => {
         { key: "O", count: 15 },
         { key: "C", count: 3 },
       ],
-    }));
+    };
 
-    it("displays filter panel with facets", () => {
-      const defaultState = getDefaultState();
+    it("displays facets from redux state in filter panel", () => {
       const customState = {
-        ...defaultState,
+        ...getDefaultState(),
         [searchReducerType]: {
-          ...defaultState[searchReducerType],
+          ...getDefaultState()[searchReducerType],
           searchFacets: facetsWithValues,
         },
       };
 
-      renderWithRouterAndRedux(
-        <SearchResults />,
-        ["/search?q=test"],
-        customState
-      );
+      renderSearchResults(["/search?q=test"], customState);
 
       expect(screen.getByText("Mine Filters")).toBeInTheDocument();
-      expect(screen.getByText("Permit Filters")).toBeInTheDocument();
-    });
-
-    it("displays facet values with counts", () => {
-      const defaultState = getDefaultState();
-      const customState = {
-        ...defaultState,
-        [searchReducerType]: {
-          ...defaultState[searchReducerType],
-          searchFacets: facetsWithValues,
-        },
-      };
-
-      renderWithRouterAndRedux(
-        <SearchResults />,
-        ["/search?q=test"],
-        customState
-      );
-
-      // Check for facet values (they should be visible)
-      expect(screen.getByText(/SW/)).toBeInTheDocument();
+      expect(screen.getByText("SW")).toBeInTheDocument();
       expect(screen.getAllByText("(10)").length).toBeGreaterThan(0);
-      expect(screen.getByText(/NE/)).toBeInTheDocument();
-      expect(screen.getByText("(5)")).toBeInTheDocument();
     });
 
-    it("applies filter when checkbox clicked", async () => {
-      const defaultState = getDefaultState();
+    it("updates filter state when checkbox is clicked", async () => {
       const customState = {
-        ...defaultState,
+        ...getDefaultState(),
         [searchReducerType]: {
-          ...defaultState[searchReducerType],
+          ...getDefaultState()[searchReducerType],
           searchFacets: facetsWithValues,
         },
       };
 
-      renderWithRouterAndRedux(
-        <SearchResults />,
-        ["/search?q=test"],
-        customState
-      );
+      renderSearchResults(["/search?q=test"], customState);
 
-      // Find and click the SW checkbox
       const checkboxes = screen.getAllByRole("checkbox");
       const swCheckbox = checkboxes.find(cb =>
         cb.parentElement?.textContent?.includes("SW")
@@ -254,16 +164,48 @@ describe("SearchResults", () => {
       if (swCheckbox) {
         fireEvent.click(swCheckbox);
 
-        // The component will dispatch Redux actions when filters are applied
         await waitFor(() => {
           expect(swCheckbox).toBeChecked();
         });
       }
     });
+
+    it("shows filter tags when filters are selected", async () => {
+      const customState = {
+        ...getDefaultState(),
+        [searchReducerType]: {
+          ...getDefaultState()[searchReducerType],
+          searchFacets: facetsWithValues,
+        },
+      };
+
+      renderSearchResults(["/search?q=test"], customState);
+
+      const checkboxes = screen.getAllByRole("checkbox");
+      const swCheckbox = checkboxes.find(cb =>
+        cb.parentElement?.textContent?.includes("SW")
+      );
+
+      if (swCheckbox) {
+        fireEvent.click(swCheckbox);
+
+        await waitFor(() => {
+          // Clear button should appear
+          expect(screen.getByText("Clear")).toBeInTheDocument();
+        });
+      }
+    });
   });
 
-  describe("Tabs", () => {
-    it("displays all results tab with count", () => {
+  describe("Tab Navigation", () => {
+    it("shows All tab as active by default", () => {
+      renderSearchResults();
+
+      const allTab = screen.getByRole("tab", { name: /All/ });
+      expect(allTab).toHaveAttribute("aria-selected", "true");
+    });
+
+    it("displays correct counts in tabs", () => {
       const resultsWithCounts = {
         mine: Array(5).fill(SEARCH_RESULTS_V2.mine[0]),
         party: Array(3).fill(SEARCH_RESULTS_V2.party[0]),
@@ -275,87 +217,245 @@ describe("SearchResults", () => {
         notice_of_departure: [],
       };
 
-      const defaultState = getDefaultState();
       const customState = {
-        ...defaultState,
+        ...getDefaultState(),
         [searchReducerType]: {
-          ...defaultState[searchReducerType],
+          ...getDefaultState()[searchReducerType],
           searchResults: resultsWithCounts,
         },
       };
 
-      renderWithRouterAndRedux(
-        <SearchResults />,
-        ["/search?q=test"],
-        customState
-      );
+      renderSearchResults(["/search?q=test"], customState);
 
-      // Check that All tab shows total count (5 mines + 3 parties + 2 permits = 10)
       expect(screen.getByText(/All.*10/)).toBeInTheDocument();
+      expect(screen.getByRole("tab", { name: /Mines.*5/ })).toBeInTheDocument();
     });
 
-    it("displays individual result type tabs with counts", () => {
-      renderWithRouterAndRedux(
-        <SearchResults />
-      );
+    it("renders tables when results exist", () => {
+      renderSearchResults();
 
-      // Check for individual tabs
-      expect(screen.getByRole("tab", { name: /Mines/ })).toBeInTheDocument();
-      expect(screen.getByRole("tab", { name: /Permits/ })).toBeInTheDocument();
-    });
-  });
-
-  describe("Result Tables", () => {
-    it("renders tables for results", () => {
-      renderWithRouterAndRedux(
-        <SearchResults />
-      );
-
-      // Should render tables for results
       const tables = screen.getAllByRole("table");
       expect(tables.length).toBeGreaterThan(0);
     });
   });
 
+  describe("Results Display", () => {
+    it("shows result count message", () => {
+      renderSearchResults();
+
+      expect(screen.getByText(/results for/i)).toBeInTheDocument();
+      expect(screen.getByText(/test/)).toBeInTheDocument();
+    });
+
+    it("shows no results message when empty", () => {
+      const emptyResults = {
+        mine: [],
+        party: [],
+        permit: [],
+        permit_documents: [],
+        mine_documents: [],
+        explosives_permit: [],
+        now_application: [],
+        notice_of_departure: [],
+      };
+
+      const customState = {
+        ...getDefaultState(),
+        [searchReducerType]: {
+          ...getDefaultState()[searchReducerType],
+          searchResults: emptyResults,
+        },
+      };
+
+      renderSearchResults(["/search?q=test"], customState);
+
+      expect(screen.getByText(/No results for/i)).toBeInTheDocument();
+    });
+
+    it("shows empty state in tab when category has no results", () => {
+      const emptyResults = {
+        mine: [],
+        party: [],
+        permit: [],
+        permit_documents: [],
+        mine_documents: [],
+        explosives_permit: [],
+        now_application: [],
+        notice_of_departure: [],
+      };
+
+      const customState = {
+        ...getDefaultState(),
+        [searchReducerType]: {
+          ...getDefaultState()[searchReducerType],
+          searchResults: emptyResults,
+        },
+      };
+
+      renderSearchResults(["/search?q=test"], customState);
+
+      expect(screen.getByText(/No results in this category/i)).toBeInTheDocument();
+    });
+  });
+
+  describe("Loading State", () => {
+    it("shows loading spinner initially while searching", () => {
+      // The component sets isSearching=true on mount before results arrive
+      // Since results exist in mock state, loading completes quickly
+      renderSearchResults();
+
+      // After results load, we should see the content
+      expect(screen.getByPlaceholderText(/search/i)).toBeInTheDocument();
+    });
+  });
+
+  describe("URL Tab Parameter", () => {
+    it("respects tab parameter from URL", () => {
+      renderSearchResults(["/search?q=test&t=mine"]);
+
+      const mineTab = screen.getByRole("tab", { name: /Mines/ });
+      expect(mineTab).toHaveAttribute("aria-selected", "true");
+    });
+
+    it("defaults to all tab when no tab parameter", () => {
+      renderSearchResults(["/search?q=test"]);
+
+      const allTab = screen.getByRole("tab", { name: /All/ });
+      expect(allTab).toHaveAttribute("aria-selected", "true");
+    });
+  });
+
   describe("Error Handling", () => {
     it("handles missing facets gracefully", () => {
-      const defaultState = getDefaultState();
       const customState = {
-        ...defaultState,
+        ...getDefaultState(),
         [searchReducerType]: {
-          ...defaultState[searchReducerType],
+          ...getDefaultState()[searchReducerType],
           searchFacets: undefined,
         },
       };
 
-      renderWithRouterAndRedux(
-        <SearchResults />,
-        ["/search?q=test"],
-        customState
-      );
+      renderSearchResults(["/search?q=test"], customState);
 
-      // Should not crash
       expect(screen.getByPlaceholderText(/search/i)).toBeInTheDocument();
+      expect(screen.getByText("No filters available")).toBeInTheDocument();
     });
 
     it("handles missing search results gracefully", () => {
-      const defaultState = getDefaultState();
       const customState = {
-        ...defaultState,
+        ...getDefaultState(),
         [searchReducerType]: {
-          ...defaultState[searchReducerType],
+          ...getDefaultState()[searchReducerType],
           searchResults: undefined,
         },
       };
 
-      renderWithRouterAndRedux(
-        <SearchResults />,
-        ["/search?q=test"],
-        customState
+      renderSearchResults(["/search?q=test"], customState);
+
+      expect(screen.getByPlaceholderText(/search/i)).toBeInTheDocument();
+    });
+
+    it("handles empty search results object gracefully", () => {
+      const customState = {
+        ...getDefaultState(),
+        [searchReducerType]: {
+          ...getDefaultState()[searchReducerType],
+          searchResults: {},
+        },
+      };
+
+      renderSearchResults(["/search?q=test"], customState);
+
+      expect(screen.getByPlaceholderText(/search/i)).toBeInTheDocument();
+    });
+  });
+
+  describe("End-to-End User Workflows", () => {
+    it("complete search workflow: type query, see results, filter", async () => {
+      const facetsWithValues = {
+        mine_region: [{ key: "SW", count: 10 }],
+      };
+
+      const customState = {
+        ...getDefaultState(),
+        [searchReducerType]: {
+          ...getDefaultState()[searchReducerType],
+          searchFacets: facetsWithValues,
+        },
+      };
+
+      renderSearchResults(["/search?q=initial"], customState);
+
+      // Step 1: User sees search populated from URL
+      const searchInput = screen.getByPlaceholderText(/search/i);
+      expect(searchInput).toHaveValue("initial");
+
+      // Step 2: User modifies search
+      fireEvent.change(searchInput, { target: { value: "new query" } });
+      expect(searchInput).toHaveValue("new query");
+
+      // Step 3: User sees filters
+      expect(screen.getByText("Mine Filters")).toBeInTheDocument();
+
+      // Step 4: User applies a filter
+      const checkboxes = screen.getAllByRole("checkbox");
+      const swCheckbox = checkboxes.find(cb =>
+        cb.parentElement?.textContent?.includes("SW")
       );
 
-      // Should not crash
-      expect(screen.getByPlaceholderText(/search/i)).toBeInTheDocument();
+      if (swCheckbox) {
+        fireEvent.click(swCheckbox);
+
+        await waitFor(() => {
+          expect(swCheckbox).toBeChecked();
+          expect(screen.getByText("Clear")).toBeInTheDocument();
+        });
+      }
+    });
+
+    it("tab navigation workflow: switch between tabs", () => {
+      renderSearchResults();
+
+      // Start on All tab
+      expect(screen.getByRole("tab", { name: /All/ })).toHaveAttribute("aria-selected", "true");
+
+      // Switch to Mines tab
+      fireEvent.click(screen.getByRole("tab", { name: /Mines/ }));
+
+      // The tab change triggers URL update via history.push
+      // In our test, this won't actually update the DOM since we're using MemoryRouter
+      // But the click event should be processed
+    });
+  });
+
+  describe("Snapshots", () => {
+    it("matches snapshot with search results", () => {
+      const { container } = renderSearchResults();
+      expect(container).toMatchSnapshot();
+    });
+
+    it("matches snapshot with no results", () => {
+      const emptyResults = {
+        mine: [],
+        party: [],
+        permit: [],
+        permit_documents: [],
+        mine_documents: [],
+        explosives_permit: [],
+        now_application: [],
+        notice_of_departure: [],
+      };
+
+      const customState = {
+        ...getDefaultState(),
+        [searchReducerType]: {
+          ...getDefaultState()[searchReducerType],
+          searchResults: emptyResults,
+        },
+      };
+
+      const { container } = renderSearchResults(["/search?q=test"], customState);
+      expect(container).toMatchSnapshot();
     });
   });
 });

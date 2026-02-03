@@ -26,7 +26,7 @@ describe("Tailings BasicInformation", () => {
         // Set timezone to UTC for consistent CI results
         // Mock moment.tz.guess to always return UTC
         const moment = require('moment-timezone');
-        moment.tz.setDefault('PST');
+        moment.tz.setDefault('UTC');
     });
 
     afterAll(() => {
