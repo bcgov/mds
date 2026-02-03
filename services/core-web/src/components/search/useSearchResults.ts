@@ -91,9 +91,13 @@ export const useSearchResults = () => {
   const onSearch = useCallback((value: string) => {
     if (value) {
       setSelectedFilters({});
-      history.push(router.SEARCH_RESULTS.dynamicRoute({ q: value }));
+      const newParams: Record<string, string | null> = { q: value };
+      if (params.t) {
+        newParams.t = params.t;
+      }
+      history.push(router.SEARCH_RESULTS.dynamicRoute(newParams));
     }
-  }, [history]);
+  }, [history, params.t]);
 
   const onTabChange = useCallback((key: string) => {
     const newParams = { q: params.q || "", t: key === "all" ? null : key };
@@ -142,11 +146,10 @@ export const useSearchResults = () => {
       setParams({ q: q as string, t: t as string });
       setSearchInputValue(q as string);
       setIsSearching(true);
-      const { types, filters: enhancedFilters } = mapTabToSearchType(t as string, {});
-      const apiFilters = getFiltersForApi(enhancedFilters);
-      dispatch(fetchSearchResults({ searchTerm: q as string, searchTypes: types, filters: apiFilters }));
+      // Always fetch all types to populate all tab counts
+      dispatch(fetchSearchResults({ searchTerm: q as string, searchTypes: undefined, filters: {} }));
     }
-  }, [location.search, dispatch, mapTabToSearchType, getFiltersForApi]);
+  }, [location.search, dispatch]);
 
   useEffect(() => {
     if (searchResults) {
