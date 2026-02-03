@@ -52,7 +52,7 @@ export const SearchResultItem: React.FC<SearchResultItemProps> = ({
         }
         title={<Text strong={isSelected} className="search-result-item__title">{highlightMatch(item.result.value, searchTerm)}</Text>}
         description={
-          <Text type="secondary">
+          <Text type="secondary" ellipsis>
             {config.label}
             {item.result.description && <span style={{ marginLeft: 8 }}>• {item.result.description}</span>}
             {item.result.highlight && (
@@ -64,7 +64,7 @@ export const SearchResultItem: React.FC<SearchResultItemProps> = ({
           </Text>
         }
       />
-      {isSelected && <EnterOutlined className="search-result-item__enter-icon" />}
+      <EnterOutlined className="search-result-item__enter-icon" style={{ visibility: isSelected ? 'visible' : 'hidden' }} />
     </List.Item>
   );
 };

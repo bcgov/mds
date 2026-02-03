@@ -4,6 +4,14 @@
   max-height: 400px;
   overflow-y: auto;
 
+  .ant-list-items {
+    padding: 4px 0;
+  }
+
+  .ant-list-item {
+    border-bottom: none;
+  }
+
   &__section {
     &-divider {
       margin: 8px 0;
