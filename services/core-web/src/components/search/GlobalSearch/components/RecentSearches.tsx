@@ -3,6 +3,7 @@ import { List, Space, Divider } from "antd";
 import { HistoryOutlined, ClockCircleOutlined, DeleteOutlined } from "@ant-design/icons";
 import classNames from "classnames";
 
+
 interface RecentSearchesProps {
   recentSearches: string[];
   selectedIndex: number;
