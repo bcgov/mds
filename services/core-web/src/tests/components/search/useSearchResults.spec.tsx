@@ -24,8 +24,10 @@ const getDefaultState = () => ({
   },
 });
 
+type OnRenderCallback = (values: ReturnType<typeof useSearchResults>) => void;
+
 // Test component that exposes hook values
-const TestComponent: React.FC<{ onRender: (values: ReturnType<typeof useSearchResults>) => void }> = ({ onRender }) => {
+const TestComponent: React.FC<{ onRender: OnRenderCallback }> = ({ onRender }) => {
   const hookValues = useSearchResults();
   onRender(hookValues);
   
@@ -65,7 +67,7 @@ const TestComponent: React.FC<{ onRender: (values: ReturnType<typeof useSearchRe
 const renderTestComponent = (
   initialEntries = ["/search?q=test"],
   state = getDefaultState(),
-  onRender = jest.fn()
+  onRender: OnRenderCallback = jest.fn()
 ) => {
   const store = getStore(state);
   return render(
@@ -210,12 +212,12 @@ describe("useSearchResults", () => {
           searchResults: {
             ...SEARCH_RESULTS_V2,
             party: [
-              { result: { party_guid: "1", party_type_code: "PER", name: "Person" } },
-              { result: { party_guid: "2", party_type_code: "ORG", name: "Org" } },
+              { result: { party_guid: "1", party_type_code: "PER", name: "Person" } as any, score: 1, type: "party" },
+              { result: { party_guid: "2", party_type_code: "ORG", name: "Org" } as any, score: 1, type: "party" },
             ],
           },
         },
-      };
+      } as any;
 
       let hookValues: ReturnType<typeof useSearchResults> | null = null;
       renderTestComponent(["/search?q=test"], stateWithParties, (values) => {
