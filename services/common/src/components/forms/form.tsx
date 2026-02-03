@@ -17,6 +17,7 @@ export {
     formValueSelector,
     getFormSubmitErrors,
     getFormSyncErrors,
+    getFormMeta,
     getFormValues,
     hasSubmitFailed,
     initialize,
