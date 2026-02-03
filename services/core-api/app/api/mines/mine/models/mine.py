@@ -195,6 +195,7 @@ class Mine(SoftDeleteMixin, AuditMixin, Base):
                                                        '%Y-%m-%d').replace(tzinfo=timezone.utc)
                 if party.mine_party_appt_type_code == "MMG" and party.party.email \
                     and (party_end_date == None or party_end_date > today) \
+                        and party.deleted_ind != True \
                         and str(party.status).lower() != "inactive":                #There are mine managers with null status
                     return party
         return None
