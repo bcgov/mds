@@ -1,0 +1,466 @@
+[
+    {
+        "database": "mds",
+        "index": "mines",
+        "nodes": {
+            "table": "mine",
+            "columns": [
+                "mine_guid",
+                "mine_name",
+                "mine_no",
+                "mms_alias",
+                "mine_region",
+                "major_mine_ind",
+                "deleted_ind"
+            ],
+            "children": [
+                {
+                    "table": "mine_status",
+                    "columns": [
+                        "mine_status_guid",
+                        "effective_date"
+                    ],
+                    "label": "mine_status",
+                    "relationship": {
+                        "type": "one_to_many",
+                        "variant": "object",
+                        "foreign_key": {
+                            "child": [
+                                "mine_guid"
+                            ],
+                            "parent": [
+                                "mine_guid"
+                            ]
+                        }
+                    },
+                    "children": [
+                        {
+                            "table": "mine_status_xref",
+                            "columns": [
+                                "mine_operation_status_code",
+                                "mine_operation_status_reason_code",
+                                "description"
+                            ],
+                            "label": "status_xref",
+                            "relationship": {
+                                "type": "one_to_one",
+                                "variant": "object",
+                                "foreign_key": {
+                                    "child": [
+                                        "mine_status_xref_guid"
+                                    ],
+                                    "parent": [
+                                        "mine_status_xref_guid"
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "table": "mine_type",
+                    "columns": [
+                        "mine_type_guid",
+                        "mine_tenure_type_code",
+                        "active_ind"
+                    ],
+                    "label": "mine_types",
+                    "relationship": {
+                        "type": "one_to_many",
+                        "variant": "object",
+                        "foreign_key": {
+                            "child": [
+                                "mine_guid"
+                            ],
+                            "parent": [
+                                "mine_guid"
+                            ]
+                        }
+                    },
+                    "children": [
+                        {
+                            "table": "mine_type_detail_xref",
+                            "columns": [
+                                "mine_commodity_code",
+                                "mine_disturbance_code",
+                                "active_ind"
+                            ],
+                            "label": "mine_type_details",
+                            "relationship": {
+                                "type": "one_to_many",
+                                "variant": "object",
+                                "foreign_key": {
+                                    "child": [
+                                        "mine_type_guid"
+                                    ],
+                                    "parent": [
+                                        "mine_type_guid"
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "table": "mine_verified_status",
+                    "columns": [
+                        "healthy_ind",
+                        "verifying_timestamp"
+                    ],
+                    "label": "verified_status",
+                    "relationship": {
+                        "type": "one_to_one",
+                        "variant": "object",
+                        "foreign_key": {
+                            "child": [
+                                "mine_guid"
+                            ],
+                            "parent": [
+                                "mine_guid"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "table": "mine_work_information",
+                    "columns": [
+                        "work_start_date",
+                        "work_stop_date",
+                        "deleted_ind"
+                    ],
+                    "label": "work_information",
+                    "relationship": {
+                        "type": "one_to_many",
+                        "variant": "object",
+                        "foreign_key": {
+                            "child": [
+                                "mine_guid"
+                            ],
+                            "parent": [
+                                "mine_guid"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "table": "mine_tailings_storage_facility",
+                    "columns": [
+                        "mine_tailings_storage_facility_guid",
+                        "mine_tailings_storage_facility_name"
+                    ],
+                    "label": "tailings_storage_facilities",
+                    "relationship": {
+                        "type": "one_to_many",
+                        "variant": "object",
+                        "foreign_key": {
+                            "child": [
+                                "mine_guid"
+                            ],
+                            "parent": [
+                                "mine_guid"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "table": "permit",
+                    "columns": [
+                        "permit_id",
+                        "permit_guid",
+                        "permit_no",
+                        "permit_status_code"
+                    ],
+                    "label": "permits",
+                    "relationship": {
+                        "type": "one_to_many",
+                        "variant": "object",
+                        "through_tables": [
+                            "mine_permit_xref"
+                        ]
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "database": "mds",
+        "index": "parties",
+        "nodes": {
+            "table": "party",
+            "columns": [
+                "party_guid",
+                "first_name",
+                "party_name",
+                "party_type_code",
+                "email",
+                "phone_no",
+                "deleted_ind"
+            ],
+            "children": [
+                {
+                    "table": "mine_party_appt",
+                    "columns": [
+                        "mine_party_appt_guid",
+                        "mine_party_appt_id",
+                        "mine_guid",
+                        "mine_party_appt_type_code",
+                        "start_date",
+                        "end_date",
+                        "status",
+                        "mine_party_acknowledgement_status",
+                        "permit_id",
+                        "mine_tailings_storage_facility_guid",
+                        "deleted_ind"
+                    ],
+                    "label": "mine_party_appointments",
+                    "relationship": {
+                        "type": "one_to_many",
+                        "variant": "object",
+                        "foreign_key": {
+                            "child": [
+                                "party_guid"
+                            ],
+                            "parent": [
+                                "party_guid"
+                            ]
+                        }
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "database": "mds",
+        "index": "mine_permits",
+        "nodes": {
+            "table": "permit",
+            "columns": [
+                "permit_id",
+                "permit_guid",
+                "permit_no",
+                "permit_status_code",
+                "is_exploration",
+                "deleted_ind"
+            ],
+            "children": [
+                {
+                    "table": "mine_permit_xref",
+                    "columns": [
+                        "mine_guid",
+                        "permit_id"
+                    ],
+                    "label": "mine_guids",
+                    "relationship": {
+                        "type": "one_to_many",
+                        "variant": "scalar",
+                        "foreign_key": {
+                            "child": [
+                                "permit_id"
+                            ],
+                            "parent": [
+                                "permit_id"
+                            ]
+                        }
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "database": "mds",
+        "index": "explosives_permits",
+        "nodes": {
+            "table": "explosives_permit",
+            "columns": [
+                "explosives_permit_guid",
+                "explosives_permit_id",
+                "permit_number",
+                "application_number",
+                "application_status",
+                "description",
+                "is_closed",
+                "issue_date",
+                "expiry_date",
+                "mine_guid",
+                "deleted_ind"
+            ],
+            "children": [
+                {
+                    "table": "mine",
+                    "columns": [
+                        "mine_guid",
+                        "mine_name",
+                        "mine_no"
+                    ],
+                    "label": "mine",
+                    "relationship": {
+                        "type": "one_to_one",
+                        "variant": "object",
+                        "foreign_key": {
+                            "child": [
+                                "mine_guid"
+                            ],
+                            "parent": [
+                                "mine_guid"
+                            ]
+                        }
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "database": "mds",
+        "index": "documents",
+        "nodes": {
+            "table": "mine_document",
+            "columns": [
+                "mine_document_guid",
+                "document_name",
+                "mine_guid",
+                "upload_date",
+                "deleted_ind"
+            ],
+            "children": [
+                {
+                    "table": "mine",
+                    "columns": [
+                        "mine_name"
+                    ],
+                    "relationship": {
+                        "type": "one_to_one",
+                        "variant": "object",
+                        "foreign_key": {
+                            "child": [
+                                "mine_guid"
+                            ],
+                            "parent": [
+                                "mine_guid"
+                            ]
+                        }
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "database": "mds",
+        "index": "notices_of_departure",
+        "nodes": {
+            "table": "notice_of_departure",
+            "columns": [
+                "nod_guid",
+                "nod_no",
+                "nod_title",
+                "nod_description",
+                "nod_type",
+                "nod_status",
+                "mine_guid",
+                "permit_guid",
+                "submission_timestamp",
+                "deleted_ind"
+            ],
+            "children": [
+                {
+                    "table": "mine",
+                    "columns": [
+                        "mine_name",
+                        "mine_no"
+                    ],
+                    "label": "mine",
+                    "relationship": {
+                        "type": "one_to_one",
+                        "variant": "object",
+                        "foreign_key": {
+                            "child": [
+                                "mine_guid"
+                            ],
+                            "parent": [
+                                "mine_guid"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "table": "permit",
+                    "columns": [
+                        "permit_no"
+                    ],
+                    "label": "permit",
+                    "relationship": {
+                        "type": "one_to_one",
+                        "variant": "object",
+                        "foreign_key": {
+                            "child": [
+                                "permit_guid"
+                            ],
+                            "parent": [
+                                "permit_guid"
+                            ]
+                        }
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "database": "mds",
+        "index": "now_applications",
+        "nodes": {
+            "table": "now_application_identity",
+            "columns": [
+                "now_application_guid",
+                "now_number",
+                "mine_guid",
+                "application_type_code"
+            ],
+            "children": [
+                {
+                    "table": "now_application",
+                    "columns": [
+                        "now_application_id",
+                        "now_application_status_code",
+                        "notice_of_work_type_code",
+                        "property_name",
+                        "submitted_date",
+                        "received_date"
+                    ],
+                    "label": "application",
+                    "relationship": {
+                        "type": "one_to_one",
+                        "variant": "object",
+                        "foreign_key": {
+                            "child": [
+                                "now_application_id"
+                            ],
+                            "parent": [
+                                "now_application_id"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "table": "mine",
+                    "columns": [
+                        "mine_guid",
+                        "mine_name",
+                        "mine_no"
+                    ],
+                    "label": "mine",
+                    "relationship": {
+                        "type": "one_to_one",
+                        "variant": "object",
+                        "foreign_key": {
+                            "child": [
+                                "mine_guid"
+                            ],
+                            "parent": [
+                                "mine_guid"
+                            ]
+                        }
+                    }
+                }
+            ]
+        }
+    }
+]

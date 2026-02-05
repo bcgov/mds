@@ -10,7 +10,7 @@ import {
 import * as FORM from "@/constants/forms";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
-import { clearAllSearchResults as clearAllSearchResultsAction } from "@mds/common/redux/actionCreators/searchActionCreator";
+import { clearAllSearchResults as clearAllSearchResultsAction } from "@mds/common/redux/slices/searchSlice";
 import { resetForm } from "@common/utils/helpers";
 import EditNOWMineAndLocation from "@/components/Forms/noticeOfWork/EditNOWMineAndLocation";
 import VerifyNoWContacts from "@/components/Forms/noticeOfWork/VerifyNoWContacts";

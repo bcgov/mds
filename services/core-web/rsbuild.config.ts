@@ -79,7 +79,7 @@ export default defineConfig({
     pluginTypeCheck(),
   ],
   source: {
-    include: [/\.(?:ts|tsx|jsx|mts|cts|js)$/],
+    include: [PATHS.commonPackage, PATHS.sharedPackage],
     assetsInclude: /\.(?:png|jpe?g|gif|svg|mp3|pdf|docx?|xlsx?|woff2?|ttf|eot)$/,
     define: {
       "process.env": JSON.stringify(envFile),

@@ -17,7 +17,24 @@ const initialState = {
 };
 
 
+
 describe("Tailings BasicInformation", () => {
+    let tzGuessSpy;
+    const originalTZ = process.env.TZ;
+
+    beforeAll(() => {
+        // Set timezone to UTC for consistent CI results
+        // Mock moment.tz.guess to always return UTC
+        const moment = require('moment-timezone');
+        moment.tz.setDefault('UTC');
+    });
+
+    afterAll(() => {
+        // Restore original timezone
+        const moment = require('moment-timezone');
+        moment.tz.setDefault(); // Unset default timezone
+    });
+
     it("renders properly", () => {
         const { container } = render(
             <ReduxWrapper initialState={initialState}>

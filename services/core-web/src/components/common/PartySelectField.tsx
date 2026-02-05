@@ -8,9 +8,8 @@ import { Divider } from "antd";
 import { MailOutlined, PhoneOutlined, PlusOutlined } from "@ant-design/icons";
 import { change, Field } from "@mds/common/components/forms/form";
 import { getSearchResults } from "@mds/common/redux/selectors/searchSelectors";
-import { getLastCreatedParty } from "@mds/common/redux/slices/partiesSlice";
-import { fetchSearchResults } from "@mds/common/redux/actionCreators/searchActionCreator";
-import { setAddPartyFormState } from "@mds/common/redux/slices/partiesSlice";
+import { getLastCreatedParty, setAddPartyFormState } from "@mds/common/redux/slices/partiesSlice";
+import { fetchSearchResults } from "@mds/common/redux/slices/searchSlice";
 import { createItemMap } from "@common/utils/helpers";
 import { Validate } from "@mds/common/redux/utils/Validate";
 import LinkButton from "@mds/common/components/common/LinkButton";
@@ -121,7 +120,7 @@ export const PartySelectField: FC<PartySelectFieldProps> = ({
   const handleFetchSearchResults = useCallback(
     (searchTerm: string, searchType: string) => {
       setSearching(true);
-      dispatch(fetchSearchResults(searchTerm, searchType));
+      dispatch(fetchSearchResults({ searchTerm, searchTypes: [searchType] }));
     },
     [dispatch]
   );

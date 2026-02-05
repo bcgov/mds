@@ -1,0 +1,51 @@
+@use "@/styles/base.scss" as *;
+
+.global-search-modal {
+  top: 80px;
+
+  .ant-modal-content {
+    border-radius: 8px;
+    padding: 0;
+  }
+
+  &__input {
+    border-bottom: 1px solid #f0f0f0;
+    border-radius: 0;
+    height: 60px; // Increased height to prevent "squished" look
+    padding: 0 16px; // Horizontal padding to match other elements
+    display: flex;
+    align-items: center;
+
+    input {
+      font-size: 16px;
+      height: 100%;
+    }
+    
+    .ant-input-prefix {
+      margin-right: 12px;
+    }
+  }
+
+  &__footer {
+    font-size: 12px;
+    color: #8c8c8c;
+    padding: 12px 16px; // Added horizontal padding to align with content
+    background-color: #fcfcfc; // Optional: slight background distinction
+    border-top: 1px solid #f0f0f0;
+    border-radius: 0 0 8px 8px;
+  }
+}
+
+.search-icon {
+  color: $violet;
+  font-size: 20px; // Slightly larger icon
+}
+
+.search-tag-icon {
+  margin: 0;
+  margin-left: 4px;
+}
+
+.search-type-label {
+  margin-left: 4px;
+}

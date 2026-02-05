@@ -1,0 +1,67 @@
+@use "@/styles/base.scss" as *;
+
+.search-result-item {
+  cursor: pointer;
+  padding: 8px 16px;
+  transition: background-color 0.15s ease;
+  border-left: 2px solid transparent;
+  background: transparent;
+  min-height: 56px;
+  height: auto;
+
+  &.ant-list-item {
+    padding: 8px 16px;
+  }
+
+  .ant-list-item-meta {
+    align-items: center;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .ant-list-item-meta-content {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .ant-list-item-meta-title {
+    margin-bottom: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .ant-list-item-meta-description {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 12px;
+    line-height: 1.4;
+  }
+
+  &--selected {
+    border-left: 2px solid $violet;
+    background: rgba($violet, 0.08);
+  }
+
+  &--hovered {
+    background: rgba($violet, 0.04);
+  }
+
+  &__title {
+    font-weight: 500;
+    display: inline;
+  }
+
+  &__highlight {
+    margin-left: 8px;
+    font-style: italic;
+  }
+  
+  &__enter-icon {
+    color: $violet;
+    flex-shrink: 0;
+    margin-left: 8px;
+  }
+}

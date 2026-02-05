@@ -2,11 +2,11 @@ import logging
 import os
 import traceback
 
-from dotenv import load_dotenv, find_dotenv
+import requests
 from celery.schedules import crontab
+from dotenv import find_dotenv, load_dotenv
 from flask import current_app, has_app_context, has_request_context
 from opentelemetry import trace
-import requests
 
 ENV_FILE = find_dotenv()
 if ENV_FILE:
@@ -72,6 +72,11 @@ class Config(object):
     WERKZEUG_LOGGING_LEVEL = os.environ.get('WERKZEUG_LOGGING_LEVEL',
                                             'CRITICAL')               # ['DEBUG','INFO','WARN','ERROR','CRITICAL']
     DISPLAY_WERKZEUG_LOG = os.environ.get('DISPLAY_WERKZEUG_LOG', True)
+
+    ELASTICSEARCH_URL = os.environ.get('ELASTICSEARCH_URL', 'https://elasticsearch:9200')
+    ELASTICSEARCH_USERNAME = os.environ.get('ELASTICSEARCH_USERNAME', 'elastic')
+    ELASTICSEARCH_PASSWORD = os.environ.get('ELASTICSEARCH_PASSWORD', 'changeme')
+    ELASTICSEARCH_CA_CERTS = os.environ.get('ELASTICSEARCH_CA_CERTS', '/usr/share/elasticsearch/config/certs/ca/ca.crt')
 
     LOGGING_DICT_CONFIG = {
         'version': 1,
@@ -142,6 +147,7 @@ class Config(object):
     SQLALCHEMY_DATABASE_URI = DB_URL
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_ENGINE_OPTIONS = {"pool_pre_ping": True}
+    SQLALCHEMY_WARN_20 = True
 
     JWT_OIDC_WELL_KNOWN_CONFIG = os.environ.get(
         'JWT_OIDC_WELL_KNOWN_CONFIG',

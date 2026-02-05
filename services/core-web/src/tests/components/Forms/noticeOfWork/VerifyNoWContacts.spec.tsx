@@ -1,10 +1,11 @@
 import React from "react";
-import { render, screen, fireEvent, waitFor, within } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor, within, act } from "@testing-library/react";
 import VerifyNoWContacts from "@/components/Forms/noticeOfWork/VerifyNoWContacts";
 import * as FORM from "@/constants/forms";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
-import { STATIC_CONTENT, SEARCH } from "@mds/common/constants/reducerTypes";
+import { STATIC_CONTENT } from "@mds/common/constants/reducerTypes";
+import { searchReducerType } from "@mds/common/redux/slices/searchSlice";
 
 jest.mock("@/components/common/wrappers/AuthorizationWrapper", () => ({ children }: any) => <>{children}</>);
 
@@ -38,7 +39,7 @@ const initialState = {
             { value: "AGT", label: "Agent", isActive: true, subType: null },
         ],
     },
-    [SEARCH]: {
+    [searchReducerType]: {
         searchResults: { party: [] },
         searchSubsetResults: [],
     },
@@ -132,7 +133,9 @@ describe("VerifyNoWContacts (add new contact flow)", () => {
         expect(typeof capturedAfterSubmit).toBe("function");
 
         // Simulate modal afterSubmit callback supplying new party guid
-        capturedAfterSubmit("new-1", { party_guid: "new-1", name: "New Person", email: "new@test.ca", phone_no: "333", address: [{}] });
+        await act(async () => {
+            capturedAfterSubmit("new-1", { party_guid: "new-1", name: "New Person", email: "new@test.ca", phone_no: "333", address: [{}] });
+        });
         // The component will re-search using the new party name; MSW handler returns results including New Person
         await waitFor(() => {
             const coreDetailHeading = screen.getByRole("heading", { name: /Core Contact Detail/i });

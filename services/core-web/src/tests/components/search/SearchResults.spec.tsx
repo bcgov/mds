@@ -3,6 +3,7 @@ import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import SearchResults from "@/components/search/SearchResults";
 import { render } from "@testing-library/react";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
+import { MemoryRouter } from "react-router-dom";
 
 const dispatchProps = {
   fetchSearchOptions: jest.fn(),
@@ -24,9 +25,11 @@ const reducerProps = {
 describe("Search", () => {
   it("renders properly", () => {
     const component = render(
-      <ReduxWrapper>
-        <SearchResults {...dispatchProps} {...reducerProps} />
-      </ReduxWrapper>
+      <MemoryRouter initialEntries={["/search?q=test"]}>
+        <ReduxWrapper>
+          <SearchResults {...dispatchProps} {...reducerProps} />
+        </ReduxWrapper>
+      </MemoryRouter>
     );
     expect(component).toMatchSnapshot();
   });

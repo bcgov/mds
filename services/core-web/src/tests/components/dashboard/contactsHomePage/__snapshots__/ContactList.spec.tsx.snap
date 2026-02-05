@@ -152,7 +152,9 @@ exports[`ContactList renders properly 1`] = `
                       <div
                         class="email-column"
                         title="Email"
-                      />
+                      >
+                        mock@example.com
+                      </div>
                     </td>
                     <td
                       class="ant-table-cell"
@@ -161,7 +163,7 @@ exports[`ContactList renders properly 1`] = `
                         class="phone-column"
                         title="Phone"
                       >
-                        N/A
+                        123-456-7890
                       </div>
                     </td>
                   </tr>
@@ -195,7 +197,9 @@ exports[`ContactList renders properly 1`] = `
                       <div
                         class="email-column"
                         title="Email"
-                      />
+                      >
+                        mocktwo@example.com
+                      </div>
                     </td>
                     <td
                       class="ant-table-cell"
@@ -204,7 +208,7 @@ exports[`ContactList renders properly 1`] = `
                         class="phone-column"
                         title="Phone"
                       >
-                        N/A
+                        123-456-7891
                       </div>
                     </td>
                   </tr>
