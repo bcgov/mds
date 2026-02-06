@@ -173,7 +173,8 @@ exports[`LandingPage renders properly 1`] = `
                   Business BCeID
                 </strong>
               </span>
-               and request access to MineSpace using the 
+               and request access to MineSpace using the
+               
               <span
                 class="ant-typography"
               >
