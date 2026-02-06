@@ -7,6 +7,7 @@ WORKDIR /app
 USER root
 
 COPY start.sh /app/start.sh
+COPY schema.json /config/schema.json
 RUN chmod +x /app/start.sh
 RUN chmod 777 /app
 
