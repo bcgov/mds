@@ -173,12 +173,15 @@ exports[`LandingPage renders properly 1`] = `
                   Business BCeID
                 </strong>
               </span>
-               and then 
-              click the 
-              <b>
-                Join MineSpace
-              </b>
-               button to complete the sign-up process.
+               and request access to MineSpace using the 
+              <span
+                class="ant-typography"
+              >
+                <strong>
+                  Join MineSpace
+                </strong>
+              </span>
+               online request form.
             </div>
             <div
               class="ant-typography"

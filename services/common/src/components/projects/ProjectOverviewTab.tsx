@@ -27,7 +27,7 @@ import { getMinistryContactsByRegion } from "@mds/common/redux/slices/minespaceS
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 import { fetchPermits } from "@mds/common/redux/actionCreators/permitActionCreator";
 import { formatDate } from "@mds/common/redux/utils/helpers";
-import { IProjectSummaryAuthorization } from "@mds/common/interfaces";
+import { IProjectSummaryAuthorization, ProjectLeadContactType } from "@mds/common/interfaces";
 
 const SectionHeader = ({ children, titleText, isLast = false }) => {
     return <Collapse
@@ -169,13 +169,22 @@ const ProjectOverviewTab: FC = () => {
         }
     });
 
-    const project_lead_contact =
-        projectLeads?.filter((lead) => lead.party_guid.includes(project.project_lead_party_guid)) ?? [];
+    const project_lead_contact: ProjectLeadContactType[] = [];
+    const matches =
+        projectLeads?.filter((lead) =>
+            lead.party_guid.includes(project.project_lead_party_guid)
+        ) ?? [];
 
-    if (project_lead_contact?.length > 0) {
-        project_lead_contact[0].is_project_lead_contact = true;
+    if (matches?.length > 0) {
+        project_lead_contact.push({
+            ...matches[0],
+            is_project_lead_contact: true
+        });
     } else {
-        project_lead_contact.push({ is_project_lead_contact: true, project_contact_guid: "n/a" });
+        project_lead_contact.push({
+            is_project_lead_contact: true,
+            project_contact_guid: "n/a"
+        });
     }
 
     const contactsAndProjectLead = [...project.contacts, project_lead_contact[0]];
