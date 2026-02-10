@@ -171,7 +171,7 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, DraftMixin, Base):
         if self.mine_party_appt_type_code in TSF_ALLOWED_CONTACT_TYPES:
             related_guid = str(self.mine_tailings_storage_facility_guid)
         elif self.mine_party_appt_type_code in PERMIT_LINKED_CONTACT_TYPES:
-            related_guid = str(self.permit.permit_guid)
+            related_guid = str(self.permit.permit_guid) if self.permit else None
         result['related_guid'] = related_guid
 
         return result
