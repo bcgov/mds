@@ -195,37 +195,27 @@
                 "email",
                 "phone_no",
                 "deleted_ind"
-            ],
-            "children": [
-                {
-                    "table": "mine_party_appt",
-                    "columns": [
-                        "mine_party_appt_guid",
-                        "mine_party_appt_id",
-                        "mine_guid",
-                        "mine_party_appt_type_code",
-                        "start_date",
-                        "end_date",
-                        "status",
-                        "mine_party_acknowledgement_status",
-                        "permit_id",
-                        "mine_tailings_storage_facility_guid",
-                        "deleted_ind"
-                    ],
-                    "label": "mine_party_appointments",
-                    "relationship": {
-                        "type": "one_to_many",
-                        "variant": "object",
-                        "foreign_key": {
-                            "child": [
-                                "party_guid"
-                            ],
-                            "parent": [
-                                "party_guid"
-                            ]
-                        }
-                    }
-                }
+            ]
+        }
+    },
+    {
+        "database": "mds",
+        "index": "party_appointments",
+        "nodes": {
+            "table": "mine_party_appt",
+            "columns": [
+                "mine_party_appt_guid",
+                "mine_party_appt_id",
+                "party_guid",
+                "mine_guid",
+                "mine_party_appt_type_code",
+                "start_date",
+                "end_date",
+                "status",
+                "mine_party_acknowledgement_status",
+                "permit_id",
+                "mine_tailings_storage_facility_guid",
+                "deleted_ind"
             ]
         }
     },
