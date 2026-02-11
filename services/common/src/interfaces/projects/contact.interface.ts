@@ -10,4 +10,5 @@ export interface IContact {
   first_name: string;
   last_name: string;
   address?: IPartyAddress;
+  party_name?: string;
 }

@@ -85,19 +85,9 @@ export const LandingPage: FC = () => {
             <Col {...colSpans}>
               <Typography.Title level={4}>How do I get access?</Typography.Title>
               <Typography.Paragraph>
-                You must have a <Typography.Text strong>Business BCeID</Typography.Text> and
-                then&nbsp;
-                {newSignupEnabled ? (
-                  <>
-                    click the <b>Join MineSpace</b> button to complete the sign-up process.
-                  </>
-                ) : (
-                  <>
-                    contact us at&nbsp;
-                    <a href={`mailto:${Strings.MDS_EMAIL}`}>{Strings.MDS_EMAIL}</a> to request
-                    access to MineSpace.
-                  </>
-                )}
+                You must have a <Typography.Text strong>Business BCeID</Typography.Text> and request
+                access to MineSpace using the{" "}
+                <Typography.Text strong>Join MineSpace</Typography.Text> online request form.
               </Typography.Paragraph>
               <Typography.Paragraph strong>
                 If you have multiple employees who need to use MineSpace:
