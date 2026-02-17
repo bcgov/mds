@@ -90,7 +90,7 @@ ES_AGGREGATIONS = {
     },
     "has_tsf": {
         "nested": {"path": "tailings_storage_facilities"},
-        "aggs": {"count": {"value_count": {"field": "tailings_storage_facilities.mine_tailings_storage_facility_guid"}}}
+        "aggs": {"count": {"value_count": {"field": "tailings_storage_facilities.mine_tailings_storage_facility_guid.keyword"}}}
     },
     "verified_status": {
         "nested": {"path": "verified_status"},

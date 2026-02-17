@@ -6,6 +6,7 @@ Separated from the REST resource layer for better testability and maintainabilit
 """
 
 import logging
+import traceback
 
 from app.api.search.elasticsearch.elastic_search_service import ElasticSearchService
 from app.api.utils.search import SearchResult, simple_search_targets
@@ -28,7 +29,8 @@ RESULT_TYPE_TO_INDEX = {
     'permit': 'permit',
     'nod': 'notice_of_departure',
     'explosives_permit': 'explosives_permit',
-    'now_application': 'now_application'
+    'now_application': 'now_application',
+    'mine_documents': 'mine_documents'
 }
 
 # Derive highlight configuration from search fields
@@ -172,7 +174,7 @@ class SimpleSearchService:
             es_results = ElasticSearchService.search(indices_string, query, size=30)
             hits = es_results['hits']['hits']
             current_app.logger.info(f"ES returned {len(hits)} hits")
-            
+
             # Process each hit
             for hit in hits:
                 result = self._process_hit(hit, allowed_types)
@@ -181,6 +183,7 @@ class SimpleSearchService:
                     
         except Exception as e:
             current_app.logger.error(f"Elasticsearch error: {e}")
+            current_app.logger.error(f"[DEBUG] full traceback:\n{traceback.format_exc()}")
         
         return search_results
     
@@ -220,7 +223,8 @@ class SimpleSearchService:
             'permit': self._process_permit_result,
             'notice_of_departure': self._process_nod_result,
             'explosives_permit': self._process_explosives_permit_result,
-            'now_application': self._process_now_application_result
+            'now_application': self._process_now_application_result,
+            'mine_documents': self._process_mine_document_result
         }
         
         processor = processors.get(doc_type)
@@ -255,9 +259,25 @@ class SimpleSearchService:
             }
         )
     
+    def _process_mine_document_result(self, source):
+        """Process mine document search result."""
+        value = source.get('document_name', '')
+        mine_name = source.get('mine', {}).get('mine_name', '') if isinstance(source.get('mine'), dict) else ''
+        upload_date = source.get('upload_date', '')
+        
+        desc_parts = []
+        if mine_name:
+            desc_parts.append(mine_name)
+        if upload_date:
+            desc_parts.append(f"Date: {upload_date[:10]}")
+        
+        return 'mine_documents', value, " | ".join(desc_parts)
+        
     def _extract_mine_guid(self, doc_type, source):
         """Extract mine_guid from source based on document type."""
         if doc_type == 'mine':
+            return source.get('mine_guid')
+        elif doc_type == 'mine_documents':
             return source.get('mine_guid')
         elif doc_type == 'permit':
             mine_guids = source.get('mine_guids', [])
@@ -275,8 +295,8 @@ class SimpleSearchService:
         
         # Extract commodities
         commodities = set()
-        for mt in source.get('mine_types', []):
-            for detail in mt.get('mine_type_details', []):
+        for mt in source.get('mine_types', []) or []:
+            for detail in mt.get('mine_type_details', []) or []:
                 if commodity := detail.get('mine_commodity_code'):
                     commodities.add(commodity)
         

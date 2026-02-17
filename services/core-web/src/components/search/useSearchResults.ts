@@ -146,10 +146,11 @@ export const useSearchResults = () => {
       setParams({ q: q as string, t: t as string });
       setSearchInputValue(q as string);
       setIsSearching(true);
-      // Always fetch all types to populate all tab counts
-      dispatch(fetchSearchResults({ searchTerm: q as string, searchTypes: undefined, filters: {} }));
+      const { types, filters: enhancedFilters } = mapTabToSearchType(t as string, selectedFilters);
+      const apiFilters = getFiltersForApi(enhancedFilters);
+      dispatch(fetchSearchResults({ searchTerm: q as string, searchTypes: types, filters: apiFilters }));
     }
-  }, [location.search, dispatch]);
+  }, [location.search, dispatch, mapTabToSearchType, getFiltersForApi]);
 
   useEffect(() => {
     if (searchResults) {
