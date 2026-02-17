@@ -5,7 +5,6 @@ TYPE_TO_INDEX = {
     'party': 'parties',
     'permit': 'mine_permits',
     'mine_documents': 'documents',
-    'permit_documents': 'permit_documents',
     'notice_of_departure': 'notices_of_departure',
     'explosives_permit': 'explosives_permits',
     'now_application': 'now_applications',
