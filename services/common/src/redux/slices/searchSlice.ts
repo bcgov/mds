@@ -16,6 +16,8 @@ export interface SearchState {
     searchBarFacets: { mine: number; person: number; organization: number; permit: number; nod: number; explosives_permit: number; now_application: number; mine_documents: number; permit_documents: number };
     searchTerms: any[];
     searchSubsetResults: any[];
+    _searchRequestId: string;
+    _searchBarRequestId: string;
 }
 
 const initialState: SearchState = {
@@ -53,6 +55,8 @@ const initialState: SearchState = {
     searchBarFacets: { mine: 0, person: 0, organization: 0, permit: 0, nod: 0, explosives_permit: 0, now_application: 0, mine_documents: 0, permit_documents: 0 },
     searchTerms: [],
     searchSubsetResults: [],
+    _searchRequestId: "",
+    _searchBarRequestId: "",
 };
 
 const searchSlice = createAppSlice({
@@ -108,7 +112,13 @@ const searchSlice = createAppSlice({
                 return response.data;
             },
             {
+                pending: (state, action) => {
+                    state._searchRequestId = action.meta.requestId;
+                },
                 fulfilled: (state, action) => {
+                    // Ignore stale responses from earlier requests
+                    if (action.meta.requestId !== state._searchRequestId) return;
+
                     // If search_results is an empty array, use initial state structure
                     const results = action.payload.search_results;
                     state.searchResults = (Array.isArray(results) && results.length === 0)
@@ -141,7 +151,13 @@ const searchSlice = createAppSlice({
                 return response.data;
             },
             {
+                pending: (state, action) => {
+                    state._searchBarRequestId = action.meta.requestId;
+                },
                 fulfilled: (state, action) => {
+                    // Ignore stale responses from earlier requests
+                    if (action.meta.requestId !== state._searchBarRequestId) return;
+
                     state.searchBarResults = action.payload.search_results;
                     state.searchBarFacets = action.payload.facets ? { ...action.payload.facets } : initialState.searchBarFacets;
                 },

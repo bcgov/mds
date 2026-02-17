@@ -50,7 +50,7 @@ export const MineResultsTable = (props) => {
       title: "Permit No.",
       key: "permit_no",
       render: (record) => {
-        return record.mine_permit.map((permit) => {
+        return (record.mine_permit || []).map((permit) => {
           if (digitizedPermitsEnabled) {
             return (
               <p>
@@ -72,7 +72,7 @@ export const MineResultsTable = (props) => {
     {
       title: "Status",
       key: "status",
-      render: (record) => record.mine_status[0] && record.mine_status[0].status_labels.join(", "),
+      render: (record) => record.mine_status?.[0]?.status_labels?.join(", "),
     },
   ];
   return (
