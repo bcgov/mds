@@ -6,6 +6,7 @@ Separated from the REST resource layer for better testability and maintainabilit
 """
 
 import logging
+import traceback
 
 from app.api.search.elasticsearch.elastic_search_service import ElasticSearchService
 from app.api.utils.search import SearchResult, simple_search_targets
