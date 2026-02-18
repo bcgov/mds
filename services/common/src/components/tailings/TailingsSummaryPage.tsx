@@ -284,6 +284,7 @@ export const TailingsSummaryPage: FC = () => {
             enableReinitialize: true,
             destroyOnUnmount: true,
           }}
+          forceRedux={true}
         >
           <Step key="basic-information">
             <BasicInformation
