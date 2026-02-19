@@ -1,12 +1,14 @@
 services:
 
   nlm-ingestor:
+    platform: linux/amd64
     container_name: nlm_ingestor
     image: ghcr.io/nlmatics/nlm-ingestor:latest
     ports:
       - 5010:5001
   
   haystack:
+    platform: linux/amd64
     container_name: haystack
     build:
       context: './'
@@ -32,6 +34,7 @@ services:
       redis:
         condition: service_healthy
   haystack_celery:
+    platform: linux/amd64
     container_name: haystack_celery
     build:
       context: './'
@@ -65,9 +68,10 @@ services:
       redis:
         condition: service_started
   create_certs:
+    platform: linux/amd64
     tty: true
     container_name: create_certs
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.12.1
+    image: elasticsearch:8.12.1
     command: >
       bash -c '
       ### 1. Create CA and certificates for elasticsearch.
@@ -113,7 +117,8 @@ services:
       retries: 120
 
   elasticsearch:
-    image: "docker.elastic.co/elasticsearch/elasticsearch:8.12.1"
+    platform: linux/amd64
+    image: "elasticsearch:8.12.1"
     container_name: elasticsearch
     ports:
       - 9200:9200
@@ -154,7 +159,8 @@ services:
       create_certs:
         condition: service_healthy
   kibana:
-    image: "docker.elastic.co/kibana/kibana:8.12.1"
+    platform: linux/amd64
+    image: "kibana:8.12.1"
     ports:
       - 5601:5601
     depends_on:

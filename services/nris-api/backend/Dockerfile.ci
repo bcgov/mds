@@ -1,4 +1,4 @@
-FROM python:3.12.12-bookworm
+FROM python:3.11.14-bookworm
 
 ENV LD_LIBRARY_PATH="/opt/oracle/instantclient:${LD_LIBRARY_PATH}" \
     PATH="/opt/oracle/instantclient:${PATH}" \
@@ -10,9 +10,10 @@ RUN curl -o instantclient-basic-linux.x64-19.8.0.0.0dbru.zip https://download.or
 RUN curl -o instantclient-sdk-linux.x64-19.8.0.0.0dbru.zip https://download.oracle.com/otn_software/linux/instantclient/19800/instantclient-sdk-linux.x64-19.8.0.0.0dbru.zip
 RUN curl -o instantclient-sqlplus-linux.x64-19.8.0.0.0dbru.zip https://download.oracle.com/otn_software/linux/instantclient/19800/instantclient-sqlplus-linux.x64-19.8.0.0.0dbru.zip
 
-RUN apt-get update
-RUN BUILD_PACKAGES="build-essential unzip curl libaio1 git" && \
-    apt-get install -y $BUILD_PACKAGES
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential unzip curl libaio1 git ca-certificates && \
+    update-ca-certificates && \
+    rm -rf /var/lib/apt/lists/*
 
 RUN mkdir -p opt/oracle && \
     unzip instantclient-basic-linux.x64-19.8.0.0.0dbru.zip -d /opt/oracle && \

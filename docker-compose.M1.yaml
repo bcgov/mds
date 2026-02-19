@@ -4,6 +4,7 @@ include:
 services:
   ####################### Keycloak for Cypress #######################
   keycloak:
+    platform: linux/amd64
     build:
       context: ./cypress/.docker/keycloak
       dockerfile: Dockerfile.test
@@ -22,6 +23,7 @@ services:
 
   ####################### Open Telemetry #######################
   otelcollector:
+    platform: linux/amd64
     image: otel/opentelemetry-collector
     command: [--config=/etc/otel-collector-config.yaml]
     volumes:
@@ -38,6 +40,7 @@ services:
   ####################### Jaeger Tracing #######################
 
   jaeger:
+    platform: linux/amd64
     image: "jaegertracing/all-in-one:latest"
     container_name: mds_jaeger
     environment:
@@ -50,6 +53,7 @@ services:
 
   ####################### Postgres Definition #######################
   postgres:
+    platform: linux/amd64
     restart: always
     container_name: mds_postgres
     user: postgres
@@ -91,6 +95,7 @@ services:
 
   ####################### Flyway Migration Definition #######################
   flyway:
+    platform: linux/amd64
     container_name: mds_flyway
     build:
       context: migrations
@@ -151,6 +156,7 @@ services:
       redis:
         condition: service_healthy
   backend:
+    platform: linux/amd64
     restart: always
     user: 1000:1000
     container_name: mds_backend
@@ -184,6 +190,7 @@ services:
       retries: 5
 
   core_api_celery:
+    platform: linux/amd64
     restart: always
     container_name: core_api_celery
     build:
@@ -234,7 +241,6 @@ services:
       interval: 15s
       timeout: 5s
       retries: 5
-      start_period: 30s
 
   ####################### Minespace Definition #######################
   minespace:
@@ -260,10 +266,13 @@ services:
 
   ####################### NRIS_BACKEND Definition #######################
   nris_backend:
+    platform: linux/amd64
     restart: always
     container_name: nris_python
     build:
       context: services/nris-api/backend
+      args:
+        INSECURE_GIT: "true"
     ports:
       - 5500:5500
     volumes:
@@ -280,11 +289,14 @@ services:
       retries: 5
 
   nris_migrate:
+    platform: linux/amd64
     restart: on-failure
     container_name: nris_migrate
     build:
       dockerfile: Dockerfile.migrate
       context: services/nris-api/backend
+      args:
+        INSECURE_GIT: "true"
     volumes:
       - ./services/nris-api/backend:/app
     depends_on:
@@ -313,6 +325,7 @@ services:
 
   ####################### DOCUMENT_MANAGER_BACKEND Definition #######################
   document_manager_backend:
+    platform: linux/amd64
     restart: always
     container_name: document_manager_backend
     build:
@@ -331,6 +344,7 @@ services:
     env_file: ./services/document-manager/backend/.env
 
   document_manager_celery:
+    platform: linux/amd64
     restart: always
     container_name: document_manager_celery
     build:
@@ -348,6 +362,7 @@ services:
     env_file: ./services/document-manager/backend/.env
 
   document_manager_migrate:
+    platform: linux/amd64
     restart: on-failure
     container_name: document_manager_migrate
     build:

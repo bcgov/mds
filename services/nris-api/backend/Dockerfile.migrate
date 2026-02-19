@@ -1,11 +1,36 @@
-FROM python:3.12.12-bookworm
+FROM python:3.11.14-bookworm
 
 # Create working directory
 RUN mkdir /app
 WORKDIR /app
 
+# Install system dependencies for SSL and VCS
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ca-certificates \
+    git \
+    curl && \
+    update-ca-certificates && \
+    git config --system http.sslCAInfo /etc/ssl/certs/ca-certificates.crt && \
+    rm -rf /var/lib/apt/lists/*
+
 # Install the requirements
 COPY requirements.txt .
+# Ensure Git and pip use system CAs
+ENV SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
+ENV GIT_SSL_CAPATH=/etc/ssl/certs
+RUN pip config set global.cert /etc/ssl/certs/ca-certificates.crt || true
+
+# Optional: allow insecure Git SSL for corporate proxies (off by default)
+ARG INSECURE_GIT=false
+RUN if [ "$INSECURE_GIT" = "true" ]; then git config --system http.sslVerify false; fi
+
+# Ensure packaging tools are present for building some wheels
+RUN pip install --no-cache-dir setuptools==68.2.2 wheel
+
+# Constrain build backend dependencies for isolated builds
+RUN echo "setuptools<70" > /tmp/constraints.txt
+ENV PIP_CONSTRAINT=/tmp/constraints.txt
+
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Run the server

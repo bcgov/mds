@@ -1,4 +1,4 @@
-FROM python:3.12.12-bookworm
+FROM python:3.11.14-bookworm
 
 ENV LD_LIBRARY_PATH="/opt/oracle/instantclient:${LD_LIBRARY_PATH}" \
     PATH="/opt/oracle/instantclient:${PATH}" \
@@ -6,13 +6,22 @@ ENV LD_LIBRARY_PATH="/opt/oracle/instantclient:${LD_LIBRARY_PATH}" \
     OCI_LIB_DIR="/opt/oracle/instantclient" \
     OCI_INCLUDE_DIR="/opt/oracle/instantclient/sdk/include"
 
-RUN curl -o instantclient-basic-linux.x64-19.8.0.0.0dbru.zip https://download.oracle.com/otn_software/linux/instantclient/19800/instantclient-basic-linux.x64-19.8.0.0.0dbru.zip
-RUN curl -o instantclient-sdk-linux.x64-19.8.0.0.0dbru.zip https://download.oracle.com/otn_software/linux/instantclient/19800/instantclient-sdk-linux.x64-19.8.0.0.0dbru.zip
-RUN curl -o instantclient-sqlplus-linux.x64-19.8.0.0.0dbru.zip https://download.oracle.com/otn_software/linux/instantclient/19800/instantclient-sqlplus-linux.x64-19.8.0.0.0dbru.zip
+# Install tools and CA certificates before downloading Oracle Instant Client
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential unzip curl libaio1 git ca-certificates && \
+    update-ca-certificates && \
+    git config --system http.sslCAInfo /etc/ssl/certs/ca-certificates.crt && \
+    rm -rf /var/lib/apt/lists/*
 
-RUN apt-get update
-RUN BUILD_PACKAGES="build-essential unzip curl libaio1 git" && \
-    apt-get install -y $BUILD_PACKAGES
+ENV SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
+ENV GIT_SSL_CAPATH=/etc/ssl/certs
+
+# Download Oracle Instant Client archives (supporting optional insecure mode for corporate proxies)
+ARG INSECURE_GIT=false
+RUN if [ "$INSECURE_GIT" = "true" ]; then CURL_OPTS='-k'; else CURL_OPTS=''; fi && \
+    curl $CURL_OPTS -o instantclient-basic-linux.x64-19.8.0.0.0dbru.zip https://download.oracle.com/otn_software/linux/instantclient/19800/instantclient-basic-linux.x64-19.8.0.0.0dbru.zip && \
+    curl $CURL_OPTS -o instantclient-sdk-linux.x64-19.8.0.0.0dbru.zip https://download.oracle.com/otn_software/linux/instantclient/19800/instantclient-sdk-linux.x64-19.8.0.0.0dbru.zip && \
+    curl $CURL_OPTS -o instantclient-sqlplus-linux.x64-19.8.0.0.0dbru.zip https://download.oracle.com/otn_software/linux/instantclient/19800/instantclient-sqlplus-linux.x64-19.8.0.0.0dbru.zip
 
 RUN mkdir -p opt/oracle && \
     unzip instantclient-basic-linux.x64-19.8.0.0.0dbru.zip -d /opt/oracle && \
@@ -27,8 +36,14 @@ RUN mkdir -p opt/oracle && \
 RUN mkdir /app
 WORKDIR /app
 
+# Optional: allow insecure Git SSL for corporate proxies
+RUN if [ "$INSECURE_GIT" = "true" ]; then git config --system http.sslVerify false; fi
+
 # Install the requirements
 COPY requirements.txt .
+# Constrain build backend dependencies for isolated builds
+RUN echo "setuptools<70" > /tmp/constraints.txt
+ENV PIP_CONSTRAINT=/tmp/constraints.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Oracle config files

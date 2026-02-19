@@ -1,39 +1,39 @@
-FROM mcr.microsoft.com/dotnet/sdk:7.0
+# Stage 1: Build
+FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:7.0 AS build
+ARG TARGETARCH
+WORKDIR /src
+COPY ej2-amazon-s3-aspcore-file-provider/ .
+RUN dotnet restore -a $TARGETARCH
+RUN dotnet publish -c Release -o /app -a $TARGETARCH --no-restore
 
+# Stage 2: Runtime
+FROM mcr.microsoft.com/dotnet/aspnet:7.0
 USER 0
 
 RUN apt-get update \
-    && apt-get install -y --allow-unauthenticated \
+    && apt-get install -y --no-install-recommends \
     libc6-dev \
     libgdiplus \
     libx11-dev \
     curl \
-    vim \
     supervisor \
-    procps
+    procps \
+    && rm -rf /var/lib/apt/lists/*
 
-RUN ln -s /lib/x86_64-linux-gnu/libdl-2.24.so /lib/x86_64-linux-gnu/libdl.so
-    # install System.Drawing native dependencies
-RUN apt-get update && apt-get install -y --allow-unauthenticated libgdiplus libc6-dev libx11-dev
-RUN ln -s libgdiplus.so gdiplus.dll
+RUN ln -s /lib/x86_64-linux-gnu/libdl.so.2 /lib/x86_64-linux-gnu/libdl.so || true
+RUN ln -s /usr/lib/libgdiplus.so /usr/lib/gdiplus.dll || true
 
-COPY ej2-amazon-s3-aspcore-file-provider ${APP_ROOT}/app
-
-COPY init.sh .
+WORKDIR /app
+COPY --from=build /app .
+COPY init.sh /app/init.sh
+RUN chmod +x /app/init.sh
 
 # Provide user permissions to temp dotnet workspace
-RUN mkdir /.dotnet
-RUN chmod -R 700 /.dotnet
-RUN chown -R 1001:0 /.dotnet
-
+RUN mkdir /.dotnet && chmod -R 770 /.dotnet && chown -R 1001:0 /.dotnet
 ENV DOTNET_CLI_HOME /.dotnet
 ENV XDG_DATA_HOME /.dotnet
 
-RUN cd ${APP_ROOT}/app && dotnet restore && dotnet build
-
-RUN chmod -R 700 ${APP_ROOT}/app
-RUN chown -R 1001:0 ${APP_ROOT}/app
-
+RUN chmod -R 770 /app && chown -R 1001:0 /app
 
 USER 1001
 EXPOSE 62870

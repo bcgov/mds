@@ -3,8 +3,12 @@ FROM python:3.11.14-slim
 WORKDIR /app
 
 # Update installation utility
-RUN apt-get update
-RUN apt-get install build-essential -y
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    ca-certificates \
+    git && \
+    update-ca-certificates && \
+    rm -rf /var/lib/apt/lists/*
 
 # Install the requirements
 COPY requirements.txt .
