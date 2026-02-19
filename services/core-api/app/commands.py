@@ -25,8 +25,6 @@ from tests.factories import (
     NOWApplicationIdentityFactory,
     NOWApplicationProgressFactory,
     NOWApplicationReviewFactory,
-    create_mine_and_permit,
-    create_mine_and_tailing_storage_facility,
 )
 
 DUMMY_SIGNATURE = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg=="
@@ -492,7 +490,7 @@ def register_commands(app):
         sys.stdout.write(generate_now_application_sql(now_number))
 
     @app.cli.command('create-test-data')
-    @click.option('--scenario', type=click.Choice(['mine-with-permit', 'mine-with-tsf', 'now-application', 'random-mine']), help='The data scenario to create.')
+    @click.option('--scenario', type=click.Choice(['now-application']), default='now-application', help='The data scenario to create.')
     @click.option('--name', help='Mine name override.')
     @click.option('--mine-guid', help='Existing Mine GUID to link the data to.')
     @click.option('--num', default=1, help='Number of entities to create (if applicable).')
@@ -518,9 +516,11 @@ def register_commands(app):
                 override = list(override) + [processed_data]
 
         # If no core arguments provided, force interactive mode
-        if not (scenario or name or mine_guid or override) and interactive:
+        if interactive:
             click.echo("--- MDS Test Data Generator (Interactive Mode) ---")
-            scenario = click.prompt("Select Scenario", type=click.Choice(['mine-with-permit', 'mine-with-tsf', 'now-application', 'random-mine']), default='random-mine')
+            
+            if not scenario:
+                scenario = 'now-application'
             
             if scenario == 'now-application':
                 click.echo("\n[Production Data Helper]")
@@ -590,14 +590,10 @@ def register_commands(app):
                     
                     override = list(override) + [data_to_add]
             
-            if not mine_guid and scenario != 'random-mine':
+            
+            if not mine_guid:
                 mine_guid = click.prompt("Existing Mine GUID (the mine you want this record attached to)", default="")
-            
-            if not name and not mine_guid:
-                name = click.prompt("Mine Name Override (optional)", default="")
-            
-            if scenario == 'random-mine':
-                num = click.prompt("Number of entities", default=1, type=int)
+
 
         with app.app_context():
             # Reset sequences to avoid IntegrityErrors in persistent environments
@@ -614,41 +610,7 @@ def register_commands(app):
 
                 overrides = _parse_overrides(override)
 
-                if scenario == 'mine-with-permit':
-                    mine_kwargs = {'mine_name': name} if name and not mine else {}
-                    if mine:
-                        mine_kwargs['mine_guid'] = mine.mine_guid
-                    
-                    # Merge overrides (permit_kwargs, mine_kwargs etc)
-                    # We expect overrides like 'permit.permit_no=TEST' or 'mine.mine_name=TEST'
-                    # create_mine_and_permit expects separate dicts
-                    m_kwargs = {k.replace('mine__', ''): v for k, v in overrides.items() if k.startswith('mine__')}
-                    p_kwargs = {k.replace('permit__', ''): v for k, v in overrides.items() if k.startswith('permit__')}
-                    mine_kwargs.update(m_kwargs)
-                    
-                    if mine:
-                        _, permit = create_mine_and_permit(mine_kwargs={'mine_guid': mine.mine_guid}, permit_kwargs=p_kwargs)
-                    else:
-                        mine, permit = create_mine_and_permit(mine_kwargs=mine_kwargs, permit_kwargs=p_kwargs)
-                    click.echo(f"Created/Linked Mine: {mine.mine_name} [GUID: {mine.mine_guid}]")
-                    click.echo(f"Created Permit: {permit.permit_no} [GUID: {permit.permit_guid}]")
-                    for amendment in permit.permit_amendments:
-                        click.echo(f"Created Amendment [GUID: {amendment.permit_amendment_guid}]")
-                
-                elif scenario == 'mine-with-tsf':
-                    mine_kwargs = {'mine_name': name} if name and not mine else {}
-                    m_kwargs = {k.replace('mine__', ''): v for k, v in overrides.items() if k.startswith('mine__')}
-                    t_kwargs = {k.replace('tsf__', ''): v for k, v in overrides.items() if k.startswith('tsf__')}
-                    mine_kwargs.update(m_kwargs)
-                    
-                    if mine:
-                        _, tsf = create_mine_and_tailing_storage_facility(mine_kwargs={'mine_guid': mine.mine_guid}, tsf_kwargs=t_kwargs)
-                    else:
-                        mine, tsf = create_mine_and_tailing_storage_facility(mine_kwargs=mine_kwargs, tsf_kwargs=t_kwargs)
-                    click.echo(f"Created/Linked Mine: {mine.mine_name} [GUID: {mine.mine_guid}]")
-                    click.echo(f"Created TSF: {tsf.mine_tailings_storage_facility_name} [GUID: {tsf.mine_tailings_storage_facility_guid}]")
-                
-                elif scenario == 'now-application':
+                if scenario == 'now-application':
                     from datetime import datetime
                     from app.api.parties.party.models.party import Party
                     from app.api.parties.party.models.address import Address
@@ -690,6 +652,7 @@ def register_commands(app):
                         if local_permit:
                             click.echo(f"  - DEBUG: Found matching local permit {submitted_permit_no} for role linkage.")
                     
+                    app_overrides = {}
                     for k in list(now_kwargs.keys()):
                         if k.startswith('now_application.') or k.startswith('now_application__'):
                             key_part = k.replace('now_application.', '').replace('now_application__', '')
