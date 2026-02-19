@@ -41,7 +41,10 @@
     "@syncfusion/ej2-pdfviewer": "31.2.5"
   },
   "scripts": {
-    "postinstall": "husky install"
+    "postinstall": "husky install",
+    "core-web": "yarn workspace @mds/core-web serve",
+    "minespace-web": "yarn workspace @mds/minespace-web serve",
+    "frontend": "yarn core-web && yarn minespace-web"
   },
   "lint-staged": {
     "*.{js,css,json,md,ts,tsx}": [

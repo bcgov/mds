@@ -45,8 +45,10 @@ echo "Select the Production Database Pod."
 echo "Make sure you are logged into the correct OpenShift namespace!"
 
 # Try to find the Crunchy Data Primary/Master pod first
-# Common label for Crunchy Data PGO 4.x/5.x master/primary
-MASTER_POD=$(oc get pods -l postgres-operator.crunchydata.com/role=master -o jsonpath='{.items[0].metadata.name}' 2>/dev/null)
+# We find all master pods, exclude clones, and prefer HA instances
+MASTER_POD_CANDIDATES=$(oc get pods -l postgres-operator.crunchydata.com/role=master -o custom-columns=":metadata.name" --no-headers 2>/dev/null | grep -v "clone" || true)
+MASTER_POD=$(echo "$MASTER_POD_CANDIDATES" | grep "ha-" | head -n 1 || true)
+MASTER_POD=${MASTER_POD:-$(echo "$MASTER_POD_CANDIDATES" | head -n 1)}
 
 if [ -z "$MASTER_POD" ]; then
     # Fallback: Parse the list we are about to show to find one labeled 'master'

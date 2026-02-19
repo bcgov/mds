@@ -1,3 +1,5 @@
+import re
+import os
 import uuid
 from multiprocessing.dummy import Pool as ThreadPool
 from typing import List
@@ -12,6 +14,7 @@ from app.api.users.minespace.models.minespace_user import MinespaceUser
 from app.api.utils.include.user_info import User
 from app.config import Config
 from app.extensions import db
+from app.api.constants import PERMIT_LINKED_CONTACT_TYPES
 from flask import current_app
 from sqlalchemy.exc import DBAPIError
 from tests.factories import (
@@ -420,135 +423,62 @@ def register_commands(app):
         with current_app.app_context():
             bulk_export_permit_conditions(csv_path, output_dir)
 
-    CHUNKED_FIELDS = ('contacts_data', 'state_of_land_data', 'blasting_operation_data', 'now_application_progress_data', 'now_application_review_data', 'documents_data')
+    CHUNKED_FIELDS = ('contacts_data', 'state_of_land_data', 'blasting_operation_data', 'now_application_progress_data', 'now_application_review_data', 'documents_data', 'permit_amendments_data')
 
     def process_override_input(paste_data):
-        """
-        Cleans and reassembles raw PostgreSQL output, handling escaping and chunked fields.
-        Also handles file paths.
-        """
-        if not paste_data:
-            return ""
-            
-        import os
+        # Unescape common characters
+        paste_data = paste_data.replace('\\n', '\n').replace('\\r', '\r')
         
-        # PostgreSQL wraps the entire output in quotes - strip them
-        if paste_data.startswith('"') and paste_data.endswith('"'):
-            paste_data = paste_data[1:-1]
+        reassembled = {}
         
-        # PostgreSQL escapes newlines as literal \n - convert them to actual newlines
-        paste_data = paste_data.replace('\\n', '\n')
-        paste_data = paste_data.replace('\\r', '\r')
+        # 1. Handle chunked fields: {key}=SEGMENT_START {content} SEGMENT_END
+        # These can appear multiple times for the same key (matched via MULTILINE)
+        chunks = re.findall(r'^\s*([\w\.]+)=SEGMENT_START (.*?) SEGMENT_END', paste_data, re.MULTILINE | re.DOTALL)
+        for key, val in chunks:
+            reassembled[key] = reassembled.get(key, '') + val
+            
+        # 2. Handle simple fields: {key}={content}###END###
+        # We use a negative lookahead to skip keys handled by the chunked regex
+        simples = re.findall(r'^\s*([\w\.]+)=(?!SEGMENT_START)(.*?)###END###', paste_data, re.MULTILINE | re.DOTALL)
+        for key, val in simples:
+            # Only add if not already reassembled (prioritize chunks)
+            if key not in reassembled:
+                reassembled[key] = val
         
-        # PostgreSQL escapes quotes as "" - convert them back to "
-        paste_data = paste_data.replace('""', '"')
-        
-        # Reassemble chunked data
-        reassembled_lines = []
-        chunk_buffers = {}
-        
-        for line in paste_data.split('\n'):
-            line_for_match = line.strip()
-            matched_key = None
-            for k in CHUNKED_FIELDS:
-                if line_for_match.startswith(k + '='):
-                    matched_key = k
-                    break
-            
-            if matched_key:
-                # Use split to get key and value, preserving spacing in the value
-                try:
-                    key, val = line.split('=', 1)
-                    key = key.strip()
-                    # We use \b (ASCII 8) as a marker. In the string it might be literal '\b' or '\\b'
-                    # We only strip the prefix part, not the value itself to preserve inner whitespace
-                    if val.endswith('\b') or val.endswith('\\b'):
-                        marker_len = 2 if val.endswith('\\b') else 1
-                        val_actual = val[:-marker_len]
-                        chunk_buffers[key] = chunk_buffers.get(key, '') + val_actual
-                        reassembled_lines.append(f"{key}={chunk_buffers.pop(key)}")
-                    else:
-                        chunk_buffers[key] = chunk_buffers.get(key, '') + val
-                except ValueError:
-                    reassembled_lines.append(line)
-            else:
-                reassembled_lines.append(line)
-        
-        paste_data = '\n'.join(reassembled_lines)
-        
-        if paste_data:
-            data_to_add = paste_data
-            # Handle file:// prefix
-            clean_path = paste_data.replace('file://', '')
-            clean_path = os.path.expanduser(clean_path)
-            
-            # Check potential paths
-            possible_paths = [clean_path]
-            if not clean_path.startswith('/app/'):
-                relative_path = os.path.join('/app', clean_path.lstrip('/'))
-                possible_paths.append(relative_path)
-            
-            found_file = False
-            # Only check for file if looks like a path
-            if "\n" not in paste_data and len(paste_data) < 1000:
-                for p in possible_paths:
-                    if os.path.isfile(p):
-                        with open(p, 'r') as f:
-                            data_to_add = f.read().strip()
-                            click.echo(f"  - SUCCESS: Loaded {len(data_to_add)} characters from {p}")
-                            found_file = True
-                            break
-            
-            # If loaded from file, apply same sanitization
-            if found_file:
-                if data_to_add.startswith('"') and data_to_add.endswith('"'):
-                    data_to_add = data_to_add[1:-1]
-                data_to_add = data_to_add.replace('\\n', '\n')
-                data_to_add = data_to_add.replace('\\r', '\r')
-                data_to_add = data_to_add.replace('""', '"')
-            
-            if not found_file and any(p.endswith(('.txt', '.json')) for p in possible_paths) and "\n" not in paste_data:
-                click.secho(f"  - WARNING: Treated input as raw string because no file was found at: {', '.join(possible_paths)}", fg='yellow')
-            elif not found_file and len(paste_data) >= 4095 and "\n" not in paste_data:
-                click.secho("  - WARNING: Input is exactly 4095 characters. This common terminal limit often truncates pasted data.", fg='red', bold=True)
-                
-            return data_to_add
-            
-        return ""
+        # Return as ||| joined pairs for _parse_overrides
+        return '|||'.join([f"{k}={v}" for k, v in reassembled.items()])
 
     def generate_now_application_sql(now_number):
-        """
-        Generates the SQL query to fetch NoW Application data from production.
-        Includes chunking logic for large fields.
-        """
         def sql_chunk(field_sql, alias):
-            return f"'{alias}=' || regexp_replace(COALESCE(({field_sql})::text, '[]'), '(.{{1,255}})', '\\1' || E'\\n{alias}=', 'g') || E'\\b'"
-
+            # Split the JSON field into 2000-char segments with robust start/end markers for reassembly.
+            return f"(SELECT string_agg(' {alias}=SEGMENT_START ' || substring(t.data from i for 2000) || ' SEGMENT_END ', E'\\n') || '###END###' FROM (SELECT COALESCE(({field_sql})::text, '[]') as data) t, generate_series(1, length(t.data), 2000) i)"
         return (
-            "SELECT 'now_application_guid=' || i.now_application_guid || E'\\n' || "
-            "'now_number=' || i.now_number || E'\\n' || "
+            "SELECT 'now_application_guid=' || i.now_application_guid || '###END###' || E'\\n' || "
+            "'now_number=' || i.now_number || '###END###' || E'\\n' || "
             + sql_chunk("SELECT json_agg(json_build_object('mine_party_appt_type_code', npa.mine_party_appt_type_code, 'party_name', p.party_name, 'first_name', p.first_name, 'email', p.email, 'phone_no', p.phone_no, 'has_signature', (p.signature IS NOT NULL), 'address', (SELECT json_build_object('address_line_1', address_line_1, 'city', city, 'sub_division_code', sub_division_code, 'post_code', post_code) FROM address WHERE party_guid = p.party_guid LIMIT 1)))::text FROM now_party_appointment npa JOIN party p ON npa.party_guid = p.party_guid WHERE npa.now_application_id = a.now_application_id AND npa.deleted_ind = false", "contacts_data") + " || E'\\n' || "
-            "'now_application.now_application_status_code=' || a.now_application_status_code || E'\\n' || "
-            "'now_application.type_of_application=' || COALESCE(a.type_of_application, '') || E'\\n' || "
-            "'now_application.notice_of_work_type_code=' || a.notice_of_work_type_code || E'\\n' || "
-            "'now_application.property_name=' || REPLACE(COALESCE(a.property_name, ''), ',', ' ') || E'\\n' || "
-            "'now_application.tenure_number=' || COALESCE(a.tenure_number, '') || E'\\n' || "
-            "'now_application.latitude=' || COALESCE(a.latitude::text, '') || E'\\n' || "
-            "'now_application.longitude=' || COALESCE(a.longitude::text, '') || E'\\n' || "
-            "'now_application.submitted_date=' || COALESCE(a.submitted_date::text, '') || E'\\n' || "
-            "'now_application.received_date=' || COALESCE(a.received_date::text, '') || E'\\n' || "
-            "'now_application.proposed_start_date=' || COALESCE(a.proposed_start_date::text, '') || E'\\n' || "
-            "'now_application.proposed_end_date=' || COALESCE(a.proposed_end_date::text, '') || E'\\n' || "
-            "'now_application.proponent_submitted_permit_number=' || COALESCE(a.proponent_submitted_permit_number, '') || E'\\n' || "
-            "'now_application.annual_summary_submitted=' || a.annual_summary_submitted || E'\\n' || "
-            "'now_application.is_first_year_of_multi=' || a.is_first_year_of_multi || E'\\n' || "
-            "'site_property_tenure_type_code=' || COALESCE((SELECT mine_tenure_type_code FROM mine_type WHERE now_application_guid = i.now_application_guid AND active_ind = true LIMIT 1), '') || E'\\n' || "
-            "'issuing_inspector_name=' || COALESCE((SELECT p.first_name || ' ' || p.party_name FROM party p WHERE p.party_guid = a.issuing_inspector_party_guid), '') || E'\\n' || "
+            "'now_application.type_of_application=' || COALESCE(a.type_of_application, '') || '###END###' || E'\\n' || "
+            "'now_application.now_application_status_code=' || COALESCE(a.now_application_status_code, '') || '###END###' || E'\\n' || "
+            "'now_application.notice_of_work_type_code=' || COALESCE(a.notice_of_work_type_code, '') || '###END###' || E'\\n' || "
+            "'now_application.property_name=' || REPLACE(COALESCE(a.property_name, ''), ',', ' ') || '###END###' || E'\\n' || "
+            "'now_application.tenure_number=' || COALESCE(a.tenure_number, '') || '###END###' || E'\\n' || "
+            "'now_application.latitude=' || COALESCE(a.latitude::text, '') || '###END###' || E'\\n' || "
+            "'now_application.longitude=' || COALESCE(a.longitude::text, '') || '###END###' || E'\\n' || "
+            "'now_application.submitted_date=' || COALESCE(a.submitted_date::text, '') || '###END###' || E'\\n' || "
+            "'now_application.received_date=' || COALESCE(a.received_date::text, '') || '###END###' || E'\\n' || "
+            "'now_application.proposed_start_date=' || COALESCE(a.proposed_start_date::text, '') || '###END###' || E'\\n' || "
+            "'now_application.proposed_end_date=' || COALESCE(a.proposed_end_date::text, '') || '###END###' || E'\\n' || "
+            "'now_application.proponent_submitted_permit_number=' || COALESCE(a.proponent_submitted_permit_number, '') || '###END###' || E'\\n' || "
+            "'now_application.annual_summary_submitted=' || COALESCE(a.annual_summary_submitted::text, '') || '###END###' || E'\\n' || "
+            "'now_application.is_first_year_of_multi=' || COALESCE(a.is_first_year_of_multi::text, '') || '###END###' || E'\\n' || "
+            "'now_application.application_permit_type_code=' || COALESCE(a.application_permit_type_code, '') || '###END###' || E'\\n' || "
+            "'site_property_tenure_type_code=' || COALESCE((SELECT mine_tenure_type_code FROM mine_type WHERE now_application_guid = i.now_application_guid AND active_ind = true LIMIT 1), '') || '###END###' || E'\\n' || "
+            "'issuing_inspector_name=' || COALESCE((SELECT p.first_name || ' ' || p.party_name FROM party p WHERE p.party_guid = a.issuing_inspector_party_guid), '') || '###END###' || E'\\n' || "
             + sql_chunk("SELECT json_build_object('has_community_water_shed', has_community_water_shed, 'has_archaeology_sites_affected', has_archaeology_sites_affected, 'authorization_details', authorization_details, 'has_licence_of_occupation', has_licence_of_occupation, 'licence_of_occupation', licence_of_occupation)::text FROM state_of_land WHERE now_application_id = a.now_application_id", "state_of_land_data") + " || E'\\n' || "
             + sql_chunk("SELECT json_build_object('has_storage_explosive_on_site', has_storage_explosive_on_site, 'explosive_permit_issued', explosive_permit_issued, 'explosive_permit_number', explosive_permit_number)::text FROM blasting_operation WHERE now_application_id = a.now_application_id", "blasting_operation_data") + " || E'\\n' || "
             + sql_chunk("SELECT json_agg(json_build_object('application_progress_status_code', application_progress_status_code, 'start_date', start_date::text, 'end_date', end_date::text, 'created_by', created_by, 'active_ind', active_ind))::text FROM now_application_progress WHERE now_application_id = a.now_application_id", "now_application_progress_data") + " || E'\\n' || "
-            + sql_chunk("SELECT json_agg(json_build_object('now_application_review_type_code', now_application_review_type_code, 'response_date', response_date::text, 'referee_name', REPLACE(COALESCE(referee_name, ''), ',', ' '), 'referral_number', COALESCE(referral_number, ''), 'response_url', COALESCE(response_url, '')))::text FROM now_application_review WHERE now_application_id = a.now_application_id", "now_application_review_data") + " || E'\\n' || "
-            + sql_chunk("SELECT json_agg(json_build_object('now_application_document_type_code', now_application_document_type_code, 'is_final_package', is_final_package))::text FROM now_application_document_xref WHERE now_application_id = a.now_application_id AND now_application_document_type_code IN ('MRP', 'ACP') AND is_final_package = true AND deleted_ind = false", "documents_data") + " "
+            + sql_chunk("SELECT json_agg(json_build_object('now_application_review_type_code', now_application_review_type_code, 'response_date', response_date::text, 'referee_name', REPLACE(COALESCE(referee_name, ''), ',', ' '), 'referral_number', REPLACE(COALESCE(referral_number, ''), ',', ' '), 'response_url', REPLACE(COALESCE(response_url, ''), ',', ' ')))::text FROM now_application_review WHERE now_application_id = a.now_application_id", "now_application_review_data") + " || E'\\n' || "
+            + sql_chunk("SELECT json_agg(json_build_object('now_application_document_type_code', now_application_document_type_code, 'is_final_package', is_final_package))::text FROM now_application_document_xref WHERE now_application_id = a.now_application_id AND now_application_document_type_code IN ('MRP', 'ACP') AND is_final_package = true AND deleted_ind = false", "documents_data") + " || E'\\n' || "
+            + sql_chunk("SELECT json_agg(json_build_object('permit_amendment_status_code', pa.permit_amendment_status_code, 'permit_amendment_type_code', pa.permit_amendment_type_code, 'received_date', pa.received_date::text, 'issue_date', pa.issue_date::text, 'authorization_end_date', pa.authorization_end_date::text, 'description', pa.description, 'permit_no', p.permit_no, 'permit_status_code', p.permit_status_code))::text FROM permit_amendment pa JOIN permit p ON pa.permit_id = p.permit_id WHERE pa.now_application_guid = i.now_application_guid AND pa.deleted_ind = false", "permit_amendments_data") + " "
             "FROM now_application a JOIN now_application_identity i ON a.now_application_id = i.now_application_id "
             f"WHERE i.now_number = '{now_number}';"
         )
@@ -556,21 +486,10 @@ def register_commands(app):
     @app.cli.command('generate-now-query')
     @click.option('--now-number', required=True, help='The NoW Number (e.g. 0400022-2025-01)')
     def generate_now_query(now_number):
-        """
-        Outputs the SQL query to fetch NoW Application data from production.
-        Used by the local replication script.
-        """
-        # Suppress all logging to ensure clean output for piping
         import logging
-        # Mute root logger and all known noisy loggers
         logging.getLogger().setLevel(logging.CRITICAL) 
-        logging.getLogger('app').setLevel(logging.CRITICAL)
-        logging.getLogger('werkzeug').setLevel(logging.CRITICAL)
-        logging.getLogger('sqlalchemy').setLevel(logging.CRITICAL)
-        
-        click.echo(generate_now_application_sql(now_number), nl=False)
-
-
+        import sys
+        sys.stdout.write(generate_now_application_sql(now_number))
 
     @app.cli.command('create-test-data')
     @click.option('--scenario', type=click.Choice(['mine-with-permit', 'mine-with-tsf', 'now-application', 'random-mine']), help='The data scenario to create.')
@@ -595,7 +514,6 @@ def register_commands(app):
             # Read all available input
             piped_data = sys.stdin.read().strip()
             if piped_data:
-                click.echo("Reading overrides from STDIN pipe...")
                 processed_data = process_override_input(piped_data)
                 override = list(override) + [processed_data]
 
@@ -609,17 +527,7 @@ def register_commands(app):
                 now_num_for_sql = click.prompt("Enter the NoW Number you want to replicate (e.g. 0400022-2025-01)", default="YOUR_NOW_NUMBER")
                 click.echo("\nTip: Run this SQL in the Prod Read-Only DB to get the override string.")
                 click.echo("--------------------------------------------------------------------------------")
-                # We use REPLACE(..., '\n', '\n') to ensure that even if the output is pasted, it's broken into multiple lines.
-                # However, Postgres json_agg output is usually a single long line.
-                # We can use jsonb_pretty if we cast to jsonb, but that's only for jsonb.
-                # Better: we use a Postgres trick to split long strings into multiple lines with a prefix.
                 
-                # We'll use a more robust way to handle large JSON: 
-                # Instead of one big line, we'll try to use Postgres regex to insert newlines every 2000 chars.
-                def sql_chunk(field_sql, alias):
-                    # Legacy helper, kept for compatibility if needed, but we use the new helper now
-                    return f"'{alias}=' || regexp_replace(COALESCE(({field_sql})::text, '[]'), '(.{{1,255}})', '\\1' || E'\\n{alias}=', 'g') || E'\\b'"
-
                 sql = generate_now_application_sql(now_num_for_sql)
                 click.echo(sql)
                 click.echo("--------------------------------------------------------------------------------")
@@ -641,9 +549,46 @@ def register_commands(app):
                 
                 paste_data = "".join(paste_lines).strip()
                 
-                data_to_add = process_override_input(paste_data)
+                if paste_data:
+                    data_to_add = process_override_input(paste_data)
+                    override = list(override) + [data_to_add]
+                    # Handle file:// prefix often added by file explorers when copying paths
+                    clean_path = paste_data.replace('file://', '')
+                    clean_path = os.path.expanduser(clean_path)
                     
-                override = list(override) + [data_to_add]
+                    # Inside Docker, the repo root is often /app
+                    # Check absolute path, then check relative to /app (repo root)
+                    possible_paths = [clean_path]
+                    if not clean_path.startswith('/app/'):
+                        relative_path = os.path.join('/app', clean_path.lstrip('/'))
+                        possible_paths.append(relative_path)
+                    
+                    found_file = False
+                    # Only check for file if the paste_data looks like a single line path
+                    if "\n" not in paste_data and len(paste_data) < 1000:
+                        for p in possible_paths:
+                            if os.path.isfile(p):
+                                with open(p, 'r') as f:
+                                    data_to_add = f.read().strip()
+                                    click.echo(f"  - SUCCESS: Loaded {len(data_to_add)} characters from {p}")
+                                    found_file = True
+                                    break
+                    
+                    # If loaded from file, apply same sanitization
+                    if found_file:
+                        if data_to_add.startswith('"') and data_to_add.endswith('"'):
+                            data_to_add = data_to_add[1:-1]
+                        data_to_add = data_to_add.replace('\\n', '\n')
+                        data_to_add = data_to_add.replace('\\r', '\r')
+                        data_to_add = data_to_add.replace('""', '"')
+                
+                    if not found_file and any(p.endswith(('.txt', '.json')) for p in possible_paths) and "\n" not in paste_data:
+                        click.secho(f"  - WARNING: Treated input as raw string because no file was found at: {', '.join(possible_paths)}", fg='yellow')
+                        click.secho(f"    (Note: Since this runs in Docker, files must be inside the repo folder to be visible)", fg='yellow')
+                    elif not found_file and len(paste_data) >= 4095 and "\n" not in paste_data:
+                        click.secho("  - WARNING: Input is exactly 4095 characters. This common terminal limit often truncates pasted data.", fg='red', bold=True)
+                    
+                    override = list(override) + [data_to_add]
             
             if not mine_guid and scenario != 'random-mine':
                 mine_guid = click.prompt("Existing Mine GUID (the mine you want this record attached to)", default="")
@@ -704,7 +649,7 @@ def register_commands(app):
                     click.echo(f"Created TSF: {tsf.mine_tailings_storage_facility_name} [GUID: {tsf.mine_tailings_storage_facility_guid}]")
                 
                 elif scenario == 'now-application':
-                    from datetime import datetime, timedelta
+                    from datetime import datetime
                     from app.api.parties.party.models.party import Party
                     from app.api.parties.party.models.address import Address
                     from app.api.now_applications.models.now_party_appointment import NOWPartyAppointment
@@ -732,71 +677,96 @@ def register_commands(app):
                     documents_data = overrides.pop('documents_data', None)
                     inspector_name = overrides.pop('issuing_inspector_name', None)
                     tenure_type_code = overrides.pop('site_property_tenure_type_code', None)
+                    permit_amendments_data = overrides.pop('permit_amendments_data', None)
 
                     now_kwargs = {'mine': mine}
                     now_kwargs.update(overrides)
                     
+                    # Extract submitted permit number for potential linkage
+                    submitted_permit_no = now_kwargs.get('proponent_submitted_permit_number')
+                    local_permit = None
+                    if submitted_permit_no and mine:
+                        local_permit = Permit.find_by_permit_no(submitted_permit_no)
+                        if local_permit:
+                            click.echo(f"  - DEBUG: Found matching local permit {submitted_permit_no} for role linkage.")
+                    
                     for k in list(now_kwargs.keys()):
+                        if k.startswith('now_application.') or k.startswith('now_application__'):
+                            key_part = k.replace('now_application.', '').replace('now_application__', '')
+                            app_overrides[key_part] = now_kwargs.pop(k)
+
                         if k.startswith('mine__'):
                             del now_kwargs[k]
+
 
                     # Check for existing application to prompt overwrite
                     now_num = now_kwargs.get('now_number')
                     if now_num:
                         existing_identity = NOWApplicationIdentity.find_by_now_number(now_num)
                         if existing_identity:
-                            if not interactive or click.confirm(f"Application {now_num} already exists. Would you like to OVERWRITE it?", abort=True):
-                                click.echo(f"Overwriting application {now_num}...")
-                                from sqlalchemy import text
-                                nid = existing_identity.now_application_id
-                                nguid = str(existing_identity.now_application_guid)
+                            if interactive:
+                                if not click.confirm(f"Application {now_num} already exists. Would you like to OVERWRITE it?", abort=True):
+                                    return
+                            click.echo(f"Overwriting application {now_num}...")
+                            from sqlalchemy import text
+                            nid = existing_identity.now_application_id
+                            nguid = str(existing_identity.now_application_guid)
+                            
+                            # Use raw SQL to bypass SQLAlchemy's complex relationship/PK management for clean deletion
+                            if nid:
+                                # 1. Delete Activity Sub-children (Details and Xrefs)
+                                db.session.execute(text("DELETE FROM activity_equipment_xref WHERE activity_summary_id IN (SELECT activity_summary_id FROM activity_summary WHERE now_application_id = :id)"), {"id": nid})
+                                db.session.execute(text("DELETE FROM activity_summary_detail_xref WHERE activity_summary_id IN (SELECT activity_summary_id FROM activity_summary WHERE now_application_id = :id)"), {"id": nid})
+                                db.session.execute(text("DELETE FROM activity_summary_staging_area_detail_xref WHERE activity_summary_id IN (SELECT activity_summary_id FROM activity_summary WHERE now_application_id = :id)"), {"id": nid})
+                                db.session.execute(text("DELETE FROM activity_summary_building_detail_xref WHERE activity_summary_id IN (SELECT activity_summary_id FROM activity_summary WHERE now_application_id = :id)"), {"id": nid})
                                 
-                                # Use raw SQL to bypass SQLAlchemy's complex relationship/PK management for clean deletion
-                                if nid:
-                                    # 1. Delete Activity Sub-children (Details and Xrefs)
-                                    db.session.execute(text("DELETE FROM activity_equipment_xref WHERE activity_summary_id IN (SELECT activity_summary_id FROM activity_summary WHERE now_application_id = :id)"), {"id": nid})
-                                    db.session.execute(text("DELETE FROM activity_summary_detail_xref WHERE activity_summary_id IN (SELECT activity_summary_id FROM activity_summary WHERE now_application_id = :id)"), {"id": nid})
-                                    db.session.execute(text("DELETE FROM activity_summary_staging_area_detail_xref WHERE activity_summary_id IN (SELECT activity_summary_id FROM activity_summary WHERE now_application_id = :id)"), {"id": nid})
-                                    db.session.execute(text("DELETE FROM activity_summary_building_detail_xref WHERE activity_summary_id IN (SELECT activity_summary_id FROM activity_summary WHERE now_application_id = :id)"), {"id": nid})
-                                    
-                                    # 2. Delete Activity Specific (Polymorphic Children) - ONLY those with their own tables (Joined Inheritance)
-                                    activity_tables = [
-                                        'camp', 'placer_operation', 'settling_pond', 'surface_bulk_sample',
-                                        'sand_gravel_quarry_operation', 'underground_exploration',
-                                        'exploration_access', 'exploration_surface_drilling'
-                                    ]
-                                    for table in activity_tables:
-                                        db.session.execute(text(f"DELETE FROM {table} WHERE activity_summary_id IN (SELECT activity_summary_id FROM activity_summary WHERE now_application_id = :id)"), {"id": nid})
-                                    
-                                    # 3. Delete Activity Summaries
-                                    db.session.execute(text("DELETE FROM activity_summary WHERE now_application_id = :id"), {"id": nid})
-                                    
-                                    # 4. Delete Direct Children of NOWApplication
-                                    db.session.execute(text("DELETE FROM blasting_operation WHERE now_application_id = :id"), {"id": nid})
-                                    db.session.execute(text("DELETE FROM state_of_land WHERE now_application_id = :id"), {"id": nid})
-                                    db.session.execute(text("DELETE FROM now_application_review WHERE now_application_id = :id"), {"id": nid})
-                                    db.session.execute(text("DELETE FROM now_application_progress WHERE now_application_id = :id"), {"id": nid})
-                                    db.session.execute(text("DELETE FROM now_party_appointment WHERE now_application_id = :id"), {"id": nid})
-                                    db.session.execute(text("DELETE FROM now_application_document_xref WHERE now_application_id = :id"), {"id": nid})
-                                    db.session.execute(text("DELETE FROM application_reason_code_xref WHERE now_application_id = :id"), {"id": nid})
-                                    db.session.execute(text("DELETE FROM now_application_document_identity_xref WHERE now_application_id = :id"), {"id": nid})
-                                    
-                                # 5. Clean up Identity-linked records
-                                db.session.execute(text("DELETE FROM now_application_delay WHERE now_application_guid = :guid"), {"guid": nguid})
-                                db.session.execute(text("DELETE FROM mine_type WHERE now_application_guid = :guid"), {"guid": nguid})
+                                # 2. Delete Activity Specific (Polymorphic Children) - ONLY those with their own tables (Joined Inheritance)
+                                activity_tables = [
+                                    'camp', 'placer_operation', 'settling_pond', 'surface_bulk_sample',
+                                    'sand_gravel_quarry_operation', 'underground_exploration',
+                                    'exploration_access', 'exploration_surface_drilling'
+                                ]
+                                for table in activity_tables:
+                                    db.session.execute(text(f"DELETE FROM {table} WHERE activity_summary_id IN (SELECT activity_summary_id FROM activity_summary WHERE now_application_id = :id)"), {"id": nid})
                                 
-                                # 6. Delete Identity itself (Must happen before NOWApplication because it references it)
-                                db.session.execute(text("DELETE FROM now_application_identity WHERE now_application_guid = :guid"), {"guid": nguid})
+                                # 3. Delete Activity Summaries
+                                db.session.execute(text("DELETE FROM activity_summary WHERE now_application_id = :id"), {"id": nid})
                                 
-                                # 7. Finally delete the application itself
-                                if nid:
-                                    db.session.execute(text("DELETE FROM now_application WHERE now_application_id = :id"), {"id": nid})
+                                # 4. Delete Direct Children of NOWApplication
+                                db.session.execute(text("DELETE FROM blasting_operation WHERE now_application_id = :id"), {"id": nid})
+                                db.session.execute(text("DELETE FROM state_of_land WHERE now_application_id = :id"), {"id": nid})
+                                db.session.execute(text("DELETE FROM now_application_review WHERE now_application_id = :id"), {"id": nid})
+                                db.session.execute(text("DELETE FROM now_application_progress WHERE now_application_id = :id"), {"id": nid})
+                                db.session.execute(text("DELETE FROM now_party_appointment WHERE now_application_id = :id"), {"id": nid})
+                                db.session.execute(text("DELETE FROM now_application_document_xref WHERE now_application_id = :id"), {"id": nid})
+                                db.session.execute(text("DELETE FROM application_reason_code_xref WHERE now_application_id = :id"), {"id": nid})
+                                db.session.execute(text("DELETE FROM now_application_document_identity_xref WHERE now_application_id = :id"), {"id": nid})
+                                # Delete linked permit amendments
+                                db.session.execute(text("DELETE FROM permit_amendment WHERE now_application_guid = :guid"), {"guid": nguid})
                                 
-                                db.session.commit()
-                                click.echo(f"Existing record deleted successfully. Recreating...")
+                            # 5. Clean up Identity-linked records
+                            db.session.execute(text("DELETE FROM now_application_delay WHERE now_application_guid = :guid"), {"guid": nguid})
+                            db.session.execute(text("DELETE FROM mine_type WHERE now_application_guid = :guid"), {"guid": nguid})
+                            
+                            # 6. Delete Identity itself (Must happen before NOWApplication because it references it)
+                            db.session.execute(text("DELETE FROM now_application_identity WHERE now_application_guid = :guid"), {"guid": nguid})
+                            
+                            # 7. Finally delete the application itself
+                            if nid:
+                                db.session.execute(text("DELETE FROM now_application WHERE now_application_id = :id"), {"id": nid})
+                            
+                            db.session.commit()
+                            click.echo(f"Existing record deleted successfully. Recreating...")
 
+                    # Create NOWApplication
                     now_identity = NOWApplicationIdentityFactory(**now_kwargs)
                     now_app = now_identity.now_application
+                    db.session.flush()
+
+                    # Apply application-level overrides
+                    for k, v in app_overrides.items():
+                        if hasattr(now_app, k):
+                            setattr(now_app, k, v)
 
                     # Replicate Inspector if provided
                     if inspector_name:
@@ -833,11 +803,20 @@ def register_commands(app):
                         for k, v in blasting_data.items():
                             if hasattr(now_app.blasting_operation, k): setattr(now_app.blasting_operation, k, v)
 
+                    def _parse_date(d_str):
+                        if not d_str or d_str == 'None': return None
+                        try:
+                            # Split to handle both 'YYYY-MM-DD' and 'YYYY-MM-DD HH:MM:SS+00'
+                            return datetime.strptime(d_str.split(' ')[0], '%Y-%m-%d').date()
+                        except: return None
+
                     # Replicate Progress records
                     if progress_data and isinstance(progress_data, list):
                         from app.api.now_applications.models.now_application_progress import NOWApplicationProgress
                         db.session.query(NOWApplicationProgress).filter_by(now_application_id=now_app.now_application_id).delete()
                         for p in progress_data:
+                            p['start_date'] = _parse_date(p.get('start_date'))
+                            p['end_date'] = _parse_date(p.get('end_date'))
                             NOWApplicationProgressFactory(now_application=now_app, **p)
 
                     # Replicate Review records
@@ -845,9 +824,76 @@ def register_commands(app):
                         from app.api.now_applications.models.now_application_review import NOWApplicationReview
                         db.session.query(NOWApplicationReview).filter_by(now_application_id=now_app.now_application_id).delete()
                         for r in review_data:
+                            r['response_date'] = _parse_date(r.get('response_date'))
                             NOWApplicationReviewFactory(now_application=now_app, **r)
 
-                    # Replicate Contacts (Permittees)
+                    last_processed_permit = local_permit
+                    if permit_amendments_data and isinstance(permit_amendments_data, list):
+                        click.echo(f"  - DEBUG: Ingesting {len(permit_amendments_data)} permit fragments")
+                        for pa_doc in permit_amendments_data:
+                            click.echo(f"    - Processing '{pa_doc['permit_no']}' / Status: {pa_doc['permit_amendment_status_code']}")
+
+                            # 1. Fetch or Create Parent Permit
+                            permit = Permit.find_by_permit_no(pa_doc['permit_no'])
+                            if not permit:
+                                permit = Permit.create(
+                                    mine=mine,
+                                    permit_no=pa_doc['permit_no'],
+                                    permit_status_code=pa_doc['permit_status_code'],
+                                    is_exploration=False,
+                                    exemption_fee_status_code=None,
+                                    exemption_fee_status_note=None
+                                )
+                                if permit._mine_associations:
+                                    permit._mine_associations[0].start_date = datetime.utcnow()
+                                db.session.flush()
+                                click.echo(f"    - Created matching permit {pa_doc['permit_no']}")
+                            else:
+                                if mine.mine_guid not in [m.mine_guid for m in permit._all_mines]:
+                                    from app.api.mines.permits.permit.models.mine_permit_xref import MinePermitXref
+                                    permit._mine_associations.append(MinePermitXref(mine_guid=mine.mine_guid, start_date=datetime.utcnow()))
+                                    db.session.flush()
+                                    click.echo(f"    - Added mine association for existing permit {pa_doc['permit_no']}")
+
+                            last_processed_permit = permit
+
+                            # 2. Check for existing amendment for this NoW on this permit
+                            existing_pa = PermitAmendment.query.filter_by(
+                                now_application_guid=now_identity.now_application_guid,
+                                permit_id=permit.permit_id,
+                                deleted_ind=False
+                            ).first()
+
+                            if not existing_pa:
+                                pa_guid = uuid.UUID(str(now_identity.now_application_guid))
+                                status = pa_doc['permit_amendment_status_code']
+
+                                new_pa = PermitAmendment.create(
+                                    permit=permit,
+                                    mine=mine,
+                                    received_date=_parse_date(pa_doc['received_date']),
+                                    issue_date=_parse_date(pa_doc['issue_date']),
+                                    authorization_end_date=_parse_date(pa_doc['authorization_end_date']),
+                                    permit_amendment_type_code=pa_doc['permit_amendment_type_code'],
+                                    description=pa_doc['description'],
+                                    permit_amendment_status_code=status,
+                                    now_application_guid=pa_guid,
+                                    add_to_session=True
+                                )
+                                click.echo(f"    - Linked {status} amendment for permit {pa_doc['permit_no']}")
+                            else:
+                                click.echo(f"    - Amendment for {pa_doc['permit_no']} already exists.")
+
+                    # Replicate Documents (MRP/ACP metadata)
+                    if documents_data and isinstance(documents_data, list):
+                        for doc in documents_data:
+                            mine_doc = MineDocument(mine_guid=mine.mine_guid, document_name=f"Replicated_{doc['now_application_document_type_code']}.pdf", document_manager_guid=uuid.uuid4())
+                            db.session.add(mine_doc)
+                            db.session.flush()
+                            db.session.add(NOWApplicationDocumentXref(now_application_id=now_app.now_application_id, mine_document_guid=mine_doc.mine_document_guid, now_application_document_type_code=doc['now_application_document_type_code'], is_final_package=True))
+
+                    # Replicate Contacts (Permittees) 
+                    # Handled AFTER permits to ensure we have a permit_id to link to for PMT role
                     if contacts_data:
                         if isinstance(contacts_data, list):
                             from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
@@ -861,7 +907,6 @@ def register_commands(app):
                                 
                                 party = Party.find_by_name(p_name, f_name)
                                 if not party:
-                                    # Mock contact info for privacy
                                     mock_email = f"{f_name or 'info'}.{p_name}@example.com".replace(' ', '.').lower()
                                     mock_phone = "604-555-0000"
                                     party = Party.create(p_name, mock_phone, "PER" if f_name else "ORG", first_name=f_name, email=mock_email)
@@ -876,52 +921,61 @@ def register_commands(app):
                                     party.signature = DUMMY_SIGNATURE
                                     db.session.add(party)
                                 
-                                # Add to Application contacts
                                 npa = NOWPartyAppointment(now_application_id=now_app.now_application_id, party_guid=party.party_guid, mine_party_appt_type_code=type_code)
                                 db.session.add(npa)
                                 click.echo(f"  - DEBUG: Linked contact {p_name} as {type_code}")
                                 
-                                # If Mine Manager, also add to Mine appointments to satisfy permit validations
-                                # NOTE: We skip Permittee (PMT) here because it is permit-linked and 
-                                # adding it at the mine-level without a permit breaks the API/Frontend.
-                                if type_code == 'MMG':
-                                    # Find existing active appointments of this type to avoid daterange overlap violation
-                                    today = datetime.utcnow().date()
-                                    existing_active = [ma for ma in mine.mine_party_appt if ma.mine_party_appt_type_code == type_code and (ma.end_date is None or ma.end_date > today)]
-                                    
-                                    if any(ma.party_guid == party.party_guid for ma in existing_active):
-                                        click.echo(f"  - DEBUG: Party {p_name} is already active as {type_code}")
-                                    else:
-                                        for ma in existing_active:
-                                            # Close existing appointment as of today
-                                            ma.end_date = today
-                                            db.session.add(ma)
+                                if type_code in PERMIT_LINKED_CONTACT_TYPES or type_code == 'MMG':
+                                        # Link to permit if it's a permit-linked type
+                                        is_permit_linked = type_code in PERMIT_LINKED_CONTACT_TYPES
+                                        target_permit_id = last_processed_permit.permit_id if (is_permit_linked and last_processed_permit) else None
                                         
+                                        if is_permit_linked and not target_permit_id:
+                                            click.echo(f"  - WARNING: Skipping MinePartyAppointment for {type_code} {p_name} because no permit_id found.")
+                                            continue
+
+                                        # Retire existing active appointments for this ROLE on this MINE/PERMIT to avoid date overlap
+                                        query = MinePartyAppointment.query.filter_by(
+                                            mine_party_appt_type_code=type_code,
+                                            deleted_ind=False
+                                        ).filter(MinePartyAppointment.end_date == None)
+                                        
+                                        if is_permit_linked:
+                                            query = query.filter_by(permit_id=target_permit_id)
+                                        else:
+                                            query = query.filter_by(mine_guid=mine.mine_guid)
+
+                                        existing_active = query.all()
+                                        for ea in existing_active:
+                                            ea.end_date = datetime.utcnow().date()
+                                            db.session.add(ea)
+                                        db.session.flush()
+
                                         db.session.add(MinePartyAppointment(
-                                            mine_guid=mine.mine_guid,
+                                            mine_guid=mine.mine_guid if not is_permit_linked else None,
                                             party_guid=party.party_guid,
                                             mine_party_appt_type_code=type_code,
-                                            start_date=today
+                                            permit_id=target_permit_id,
+                                            start_date=datetime.utcnow().date()
                                         ))
                             db.session.flush()
                             click.echo(f"  - Replicated {len(contacts_data)} Contacts")
                         else:
                             click.echo(f"Warning: contacts_data was not a list (got {type(contacts_data).__name__}). Skipping contact replication.", err=True)
 
-                    # Replicate Documents (MRP/ACP metadata)
-                    if documents_data and isinstance(documents_data, list):
-                        for doc in documents_data:
-                            mine_doc = MineDocument(mine_guid=mine.mine_guid, document_name=f"Replicated_{doc['now_application_document_type_code']}.pdf", document_manager_guid=uuid.uuid4())
-                            db.session.add(mine_doc)
-                            db.session.flush()
-                            db.session.add(NOWApplicationDocumentXref(now_application_id=now_app.now_application_id, mine_document_guid=mine_doc.mine_document_guid, now_application_document_type_code=doc['now_application_document_type_code'], is_final_package=True))
-
                     click.echo(f"Created/Linked Mine: {mine.mine_name} [GUID: {mine.mine_guid}]")
                     click.echo(f"Created NoW Application: {now_identity.now_number} [ID: {now_identity.now_application_id}] [GUID: {now_identity.now_application_guid}]")
                     
-                    if progress_data: click.echo(f"  - Replicated {len(progress_data) if isinstance(progress_data, list) else 0} Progress records")
-                    if review_data: click.echo(f"  - Replicated {len(review_data) if isinstance(review_data, list) else 0} Review records")
-                    if documents_data: click.echo(f"  - Replicated {len(documents_data)} Final Package document placeholders")
+                    if progress_data is not None:
+                        click.echo(f"  - Replicated {len(progress_data) if isinstance(progress_data, list) else 0} Progress records")
+                    if review_data is not None:
+                        count = len(review_data) if isinstance(review_data, list) else 0
+                        click.echo(f"  - Replicated {count} Review records")
+                    if documents_data:
+                        click.echo(f"  - Replicated {len(documents_data)} Final Package document placeholders")
+                    if permit_amendments_data:
+                        count = len(permit_amendments_data) if isinstance(permit_amendments_data, list) else 0
+                        click.echo(f"  - Replicated {count} Permit Amendment fragments")
 
                 elif scenario == 'random-mine':
                     for _ in range(num):
@@ -991,8 +1045,7 @@ def register_commands(app):
         click.echo(f"  - DEBUG Splitter: Processing string of length {len(s)}")
         
         for i, char in enumerate(s):
-            # Track quotes for depth-tracking. 
-            # Note: Postgres json_build_object uses double quotes.
+            # Track quotes at any depth to avoid counting braces/commas inside strings
             if char in '"\'' and (i == 0 or s[i-1] != '\\'):
                 if not in_quote:
                     in_quote = True
@@ -1003,12 +1056,8 @@ def register_commands(app):
             if not in_quote:
                 if char in '[{':
                     depth += 1
-                    if depth > 5:  # Debug deep nesting
-                        click.echo(f"    - DEBUG: Depth now {depth} at position {i}, char='{char}'")
                 elif char in ']}':
                     depth -= 1
-                    if depth < 0:  # This shouldn't happen
-                        click.echo(f"    - WARNING: Depth went negative at position {i}!")
                 elif char in (',', '\n') and depth == 0:
                     # Look ahead to see if the next part looks like "key="
                     lookahead = s[i+1:].lstrip()
@@ -1039,7 +1088,9 @@ def register_commands(app):
         clean_pairs = []
         
         for o in overrides:
-            if '--override' in o:
+            if '|||' in o:
+                clean_pairs.extend(o.split('|||'))
+            elif '--override' in o:
                 clean_pairs.extend([p.strip() for p in o.split('--override ') if p.strip()])
             else:
                 clean_pairs.extend(split_top_level_commas(o))
@@ -1055,8 +1106,7 @@ def register_commands(app):
                     click.echo(f"    - Value starts: '{value[:50]}'")
                     click.echo(f"    - Value ends: '{value[-50:]}'")
                 
-                # Aggressively strip whitespace and psql alignment artifacts (+)
-                value = value.strip().rstrip('+').strip().strip('"\'')
+                value = value.strip().strip('"\'')
                 
                 # Try JSON parsing - be more aggressive in detecting JSON
                 v_clean = value.strip()
@@ -1073,16 +1123,6 @@ def register_commands(app):
                         # click.echo(f"  - DEBUG: Parsed JSON for {key}") # Keep quiet if success
                         continue
                     except json.JSONDecodeError as e:
-                        # Diagnostics: show snippet where error occurred
-                        click.echo(f"Warning: JSON decode error for key {key}: {str(e)}", err=True)
-                        if len(v_clean) > 0:
-                            start_snippet = v_clean[:200]
-                            err_pos = e.pos
-                            context_start = max(0, err_pos - 50)
-                            context_end = min(len(v_clean), err_pos + 50)
-                            click.echo(f"  - ERROR CONTEXT: ...{v_clean[context_start:context_end]}...", err=True)
-                            click.echo(f"  - ERROR POINTER: {' ' * (err_pos - context_start + 18)}^", err=True)
-                        
                         # If still failing, it might be truncated in the middle of a string/object
                         # We try one more level of aggressive fixing for common list truncation
                         if v_clean.startswith('[') and '},' in v_clean:
@@ -1092,6 +1132,9 @@ def register_commands(app):
                                 click.secho(f"  - FIXED: Recovered truncated JSON for {key}", fg='green')
                                 continue
                             except: pass
+                        click.echo(f"Warning: JSON decode error for key {key}: {str(e)}", err=True)
+                        click.echo(f"  - Raw value starts: '{v_clean[:100]}'")
+                        click.echo(f"  - Raw value ends:   '{v_clean[-100:]}'")
                 elif key == 'contacts_data':
                     click.echo(f"  - DEBUG: contacts_data did NOT parse as JSON.")
                     click.echo(f"    - Cleaned value starts with: '{v_clean[:20]}'")
@@ -1138,14 +1181,7 @@ def register_commands(app):
     @click.option('--output-dir', type=click.Path(exists=True, file_okay=False, dir_okay=True), required=False, help="Directory to save the CSV file in dry-run mode.")
     def bulk_export_and_index_permit_conditions(permit_type, amendment_guids, batch_size, apply, output_dir):
         """
-        Bulk export permit conditions. 
-        By default, exports to a local CSV file for verification.
-        If --apply is passed, uploads to blob storage to trigger indexing.
-
-        Example usage:
-            flask bulk_export_and_index_permit_conditions
-            flask bulk_export_and_index_permit_conditions NOW --apply
-            flask bulk_export_and_index_permit_conditions --amendment_guids=b1af0a62-2379-4ac0-85a9-be4f2b229cd6
+        Bulk export permit conditions.
         """
         import csv
         import datetime
