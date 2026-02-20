@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
 import { Modal, Input, Typography, Button, List, Space, Row, Divider, Tag } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
+import debounce from "lodash/debounce";
 import { fetchSearchBarResults, selectSearchBarResults, selectSearchBarFacets } from "@mds/common/redux/slices/searchSlice";
 import * as router from "@/constants/routes";
 import { ISearchResult, ISimpleSearchResult } from "@mds/common/interfaces";
@@ -30,7 +31,7 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
 }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [selectedIndex, setSelectedIndex] = useState(-1);
   const [activeFilters, setActiveFilters] = useState<string[]>([]);
   const [scopeToMine, setScopeToMine] = useState(false);
   const [quickFilter, setQuickFilter] = useState<string | null>(null);
@@ -47,11 +48,11 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
 
   const { recentSearches, saveRecentSearch, removeRecentSearch } = useRecentSearches();
 
-  const handleSearch = useCallback(
-    (term: string, filters: string[], mineGuid: string | null) => {
+  const performSearch = useCallback(
+    (term: string, filters: string[], mineGuid: string | null, currentQuickFilter: string | null) => {
       const effectiveTerm = term || "*";
       if (effectiveTerm.length > 0) {
-        const derivedTypes = getSearchTypes(filters, quickFilter);
+        const derivedTypes = getSearchTypes(filters, currentQuickFilter);
         // If no filters are selected, explicitly send all search types to allow 1-char search
         const allTypes = Object.values(SEARCH_TYPE_CONFIG).flatMap((c) => c.types);
 
@@ -62,7 +63,27 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
         }));
       }
     },
-    [dispatch, quickFilter]
+    [dispatch]
+  );
+
+  const debouncedSearch = useMemo(
+    () => debounce((term: string, filters: string[], mineGuid: string | null, currentQuickFilter: string | null) => {
+      performSearch(term, filters, mineGuid, currentQuickFilter);
+    }, 300),
+    [performSearch]
+  );
+
+  useEffect(() => {
+    return () => {
+      debouncedSearch.cancel();
+    };
+  }, [debouncedSearch]);
+
+  const handleSearch = useCallback(
+    (term: string, filters: string[], mineGuid: string | null) => {
+      debouncedSearch(term, filters, mineGuid, quickFilter);
+    },
+    [debouncedSearch, quickFilter]
   );
 
   const handleOpen = () => {
@@ -73,7 +94,7 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
   const handleClose = useCallback(() => {
     setIsModalVisible(false);
     setSearchTerm("");
-    setSelectedIndex(0);
+    setSelectedIndex(-1);
     setActiveFilters([]);
     setScopeToMine(false);
     setQuickFilter(null);
@@ -104,7 +125,7 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
     const value = e.target.value;
 
     setSearchTerm(value);
-    setSelectedIndex(0);
+    setSelectedIndex(-1);
     if (value.length > 0) {
       handleSearch(value, activeFilters, getMineGuidForSearch());
     }
@@ -115,7 +136,7 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
       ? activeFilters.filter((f) => f !== filterKey)
       : [...activeFilters, filterKey];
     setActiveFilters(newFilters);
-    setSelectedIndex(0);
+    setSelectedIndex(-1);
     if (searchTerm.length > 0 || newFilters.length > 0) {
       handleSearch(searchTerm, newFilters, getMineGuidForSearch());
     }
@@ -160,12 +181,8 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
   };
 
   const handleEnter = () => {
-    if (searchResults?.length > 0) {
+    if (selectedIndex >= 0 && searchResults?.length > 0) {
       navigateToResult(searchResults[selectedIndex]);
-    } else if (searchTerm.length > 0) {
-      saveRecentSearch(searchTerm);
-      handleClose();
-      history.push(router.SEARCH_RESULTS.dynamicRoute({ q: searchTerm }));
     }
   };
 
@@ -179,15 +196,19 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
     switch (e.key) {
       case "ArrowDown":
         e.preventDefault();
-        setSelectedIndex((prev) => (prev + 1) % (totalItems || 1));
+        if (totalItems > 0) {
+          setSelectedIndex((prev) => (prev < 0 ? 0 : (prev + 1) % totalItems));
+        }
         break;
       case "ArrowUp":
         e.preventDefault();
-        setSelectedIndex((prev) => (prev - 1 + (totalItems || 1)) % (totalItems || 1));
+        if (totalItems > 0) {
+          setSelectedIndex((prev) => (prev < 0 ? totalItems - 1 : (prev - 1 + totalItems) % totalItems));
+        }
         break;
       case "Enter":
         e.preventDefault();
-        if (!searchTerm && recentSearches.length > 0) {
+        if (!searchTerm && recentSearches.length > 0 && selectedIndex >= 0) {
           handleRecentSearchClick(recentSearches[selectedIndex]);
         } else {
           handleEnter();
