@@ -1144,7 +1144,14 @@ def register_commands(app):
     @click.option('--output-dir', type=click.Path(exists=True, file_okay=False, dir_okay=True), required=False, help="Directory to save the CSV file in dry-run mode.")
     def bulk_export_and_index_permit_conditions(permit_type, amendment_guids, batch_size, apply, output_dir):
         """
-        Bulk export permit conditions.
+        Bulk export permit conditions. 
+        By default, exports to a local CSV file for verification.
+        If --apply is passed, uploads to blob storage to trigger indexing.
+
+        Example usage:
+            flask bulk_export_and_index_permit_conditions
+            flask bulk_export_and_index_permit_conditions NOW --apply
+            flask bulk_export_and_index_permit_conditions --amendment_guids=b1af0a62-2379-4ac0-85a9-be4f2b229cd6
         """
         import csv
         import datetime
