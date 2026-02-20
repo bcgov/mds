@@ -59,6 +59,38 @@ find_backend_pod() {
 }
 
 
+
+# --- Helper Function: Check OpenShift Login ---
+check_login() {
+    if ! oc whoami &> /dev/null; then
+        echo -e "${YELLOW}You are not logged into OpenShift.${NC}"
+        echo -e "Please generate a token from: ${BLUE}https://oauth-openshift.apps.silver.devops.gov.bc.ca/oauth/token/request${NC}"
+        echo -e "${YELLOW}...Paste Token Here...${NC}"
+        read -s OC_TOKEN
+        echo ""
+
+        if [ -z "$OC_TOKEN" ]; then
+            echo -e "${RED}Error: Token is required.${NC}"
+            exit 1
+        fi
+
+        echo "Logging in..."
+        oc login --token="$OC_TOKEN" --server=https://api.silver.devops.gov.bc.ca:6443 > /dev/null
+        
+        if ! oc whoami &> /dev/null; then
+             echo -e "${RED}Error: Login failed.${NC}"
+             exit 1
+        fi
+        echo -e "${GREEN}Successfully logged in as $(oc whoami)${NC}"
+    else
+        echo -e "Logged in as: ${GREEN}$(oc whoami)${NC}"
+    fi
+}
+
+echo ""
+check_login
+echo ""
+
 # 1. Prompt for NoW Number
 read -p "Enter NoW Number to be copied from Prod (e.g. 0400022-2025-01): " NOW_NUMBER
 if [ -z "$NOW_NUMBER" ]; then
@@ -114,19 +146,17 @@ fi
 
 # 4. Prompt for SOURCE Prod Pod
 echo ""
-echo "Select the SOURCE Production Database Pod (must be in current oc context namespace)."
-echo "Make sure you are logged into the PROD namespace (e.g., 4c2ba9-prod)!"
+echo "Select the SOURCE Production Database Pod (must be in 4c2ba9-prod)."
+SOURCE_NAMESPACE="4c2ba9-prod"
 
-# Auto-detect SOURCE pod
-# We assume the user is currently `oc project`ed into the source namespace (PROD), or we could force it.
-# For now, let's assume current context is correct source as per original script logic.
-MASTER_POD=$(find_primary_db_pod "")
+# Auto-detect SOURCE pod in PROD namespace
+MASTER_POD=$(find_primary_db_pod "$SOURCE_NAMESPACE")
 PROD_POD=${MASTER_POD:-postgresql-prod-0}
 
-echo "Detected Primary Pod Candidate: ${MASTER_POD:-(none)}"
+echo "Detected Primary Pod Candidate in PROD: ${MASTER_POD:-(none)}"
 echo ""
-echo "Available Postgres Pods in Current Context:"
-oc get pods -L postgres-operator.crunchydata.com/role --no-headers 2>/dev/null | grep -E "postgres|crunchy" | grep "ha-" || echo "  (none found)"
+echo "Available Postgres Pods in PROD:"
+oc get pods -n "$SOURCE_NAMESPACE" -L postgres-operator.crunchydata.com/role --no-headers 2>/dev/null | grep -E "postgres|crunchy" | grep "ha-" || echo "  (none found)"
 echo "" 
 
 read -p "Source DB Pod Name [$PROD_POD]: " USER_POD
@@ -157,7 +187,7 @@ echo -e "${YELLOW}Step 2: Fetching data from Prod and ingesting into Target...${
 if [ "$TARGET_ENV" == "local" ]; then
     # --- Execute for Local ---
     (echo "SET search_path TO public;"; cat generated_query.sql) | \
-        oc exec -i "$PROD_POD" -c database -- psql -d mds -At | \
+        oc exec -n "$SOURCE_NAMESPACE" -i "$PROD_POD" -c database -- psql -d mds -At | \
         docker compose exec -T backend flask create-test-data --scenario now-application --mine-guid "$MINE_GUID" --non-interactive
 else
     # --- Execute for Remote OpenShift ---
@@ -184,7 +214,7 @@ else
     
     echo "Ingesting data..."
     (echo "SET search_path TO public;"; cat generated_query.sql) | \
-        oc exec -i "$PROD_POD" -c database -- psql -d mds -At | \
+        oc exec -n "$SOURCE_NAMESPACE" -i "$PROD_POD" -c database -- psql -d mds -At | \
         oc exec -n "$TARGET_NAMESPACE" -i "$TARGET_POD" -- flask create-test-data --scenario now-application --mine-guid "$MINE_GUID" --non-interactive
 fi
 
