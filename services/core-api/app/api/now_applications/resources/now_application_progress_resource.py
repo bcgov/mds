@@ -116,13 +116,9 @@ class NOWApplicationProgressResource(Resource, UserMixin):
             ]
 
             if progress_end_dates and all([x is not None for x in progress_end_dates]):
-                # Don't override terminal/decision statuses when referrals complete after issuance.
-                if identity.now_application.now_application_status_code not in [
-                        "AIA", "WDN", "REJ", "NPR"
-                ]:
-                    identity.now_application.previous_application_status_code = identity.now_application.now_application_status_code
-                    identity.now_application.now_application_status_code = "RCO"
-                    identity.save()
+                identity.now_application.previous_application_status_code = identity.now_application.now_application_status_code
+                identity.now_application.now_application_status_code = "RCO"
+                identity.save()
 
         # only trigger if the technical review is updated via the standard flow and not via the manual editing flow
         if application_progress_status_code == 'REV' and not date_override:
