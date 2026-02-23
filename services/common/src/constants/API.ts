@@ -139,7 +139,7 @@ export const REPORT_ERROR = `/report-error`;
 export const EPIC_INFO = (mineGuid) => `/mines/${mineGuid}/epic`;
 
 // Search
-export const SEARCH = (params) => (params ? `/search?${queryString.stringify(params)}` : "/search");
+export const SEARCH = (params) => (params ? `/search?${queryString.stringify(params, { arrayFormat: 'comma' })}` : "/search");
 export const SEARCH_OPTIONS = "/search/options";
 export const SIMPLE_SEARCH = "/search/simple";
 
