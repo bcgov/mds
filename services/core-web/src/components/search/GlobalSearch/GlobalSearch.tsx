@@ -237,9 +237,27 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
   }, [searchResults]);
 
   const handleViewAll = () => {
-    saveRecentSearch(searchTerm);
+    if (searchTerm) {
+      saveRecentSearch(searchTerm);
+    }
     handleClose();
-    history.push(router.SEARCH_RESULTS.dynamicRoute({ q: searchTerm }));
+    
+    // Map filter keys to search results page tab keys
+    const filterToTabMap: Record<string, string> = {
+      mine: "mine",
+      contact: "people",
+      organization: "organization",
+      permit: "permit",
+      explosives_permit: "explosives_permit",
+      now_application: "now_application",
+      nod: "notice_of_departure",
+      document: "document",
+    };
+    
+    // Get tab from first active filter if any
+    const tab = activeFilters.length > 0 ? filterToTabMap[activeFilters[0]] : null;
+    
+    history.push(router.SEARCH_RESULTS.dynamicRoute({ q: searchTerm || "*", t: tab }));
   };
 
   const handleQuickAction = (route: string) => {
@@ -282,7 +300,7 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
           })}
           <div className="global-search-results__view-all">
             <Button type="link" block onClick={handleViewAll} className="global-search-results__view-all-btn">
-              View all results for "{searchTerm}"
+              {searchTerm ? `View all results for "${searchTerm}"` : "View all results"}
             </Button>
           </div>
         </div>

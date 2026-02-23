@@ -27,6 +27,18 @@ interface SearchResultsTabsProps {
     nodResults: any[];
     nods: any[];
     totalResults: number;
+    facetCounts: {
+      mine: number;
+      party: number;
+      person: number;
+      organization: number;
+      permit: number;
+      explosives_permit: number;
+      now_application: number;
+      notice_of_departure: number;
+      mine_documents: number;
+      permit_documents: number;
+    };
   };
 }
 
@@ -47,19 +59,16 @@ export const SearchResultsTabs: React.FC<SearchResultsTabsProps> = ({
   results,
 }) => {
   const {
-    mines,
     mineResults,
     peopleResults,
     organizationResults,
     permitResults,
     documentResults,
     explosivesPermitResults,
-    explosivesPermits,
     nowApplicationResults,
-    nowApplications,
     nodResults,
-    nods,
     totalResults,
+    facetCounts,
   } = results;
 
   const explosivesColumns = [
@@ -92,7 +101,7 @@ export const SearchResultsTabs: React.FC<SearchResultsTabsProps> = ({
         <>
           {mineResults.length > 0 && (
             <MineResultsTable
-              header={`Mines (${mineResults.length})`}
+              header={`Mines (${facetCounts.mine})`}
               highlightRegex={highlightRegex}
               query={query}
               searchResults={mineResults}
@@ -101,7 +110,7 @@ export const SearchResultsTabs: React.FC<SearchResultsTabsProps> = ({
           )}
           {peopleResults.length > 0 && (
             <ContactResultsTable
-              header={`People (${peopleResults.length})`}
+              header={`People (${facetCounts.person})`}
               highlightRegex={highlightRegex}
               query={query}
               searchResults={peopleResults}
@@ -111,7 +120,7 @@ export const SearchResultsTabs: React.FC<SearchResultsTabsProps> = ({
           )}
           {organizationResults.length > 0 && (
             <ContactResultsTable
-              header={`Organizations (${organizationResults.length})`}
+              header={`Organizations (${facetCounts.organization})`}
               highlightRegex={highlightRegex}
               query={query}
               searchResults={organizationResults}
@@ -121,14 +130,14 @@ export const SearchResultsTabs: React.FC<SearchResultsTabsProps> = ({
           )}
           {permitResults.length > 0 && (
             <PermitResultsTable
-              header={`Permits (${permitResults.length})`}
+              header={`Permits (${facetCounts.permit})`}
               highlightRegex={highlightRegex}
               searchResults={permitResults}
             />
           )}
           {explosivesPermitResults.length > 0 && (
             <GenericResultsTable
-              header={`Explosives Permits (${explosivesPermitResults.length})`}
+              header={`Explosives Permits (${facetCounts.explosives_permit})`}
               searchResults={explosivesPermitResults}
               highlightRegex={highlightRegex}
               getRecordKey={(record: any) => record.explosives_permit_guid}
@@ -137,7 +146,7 @@ export const SearchResultsTabs: React.FC<SearchResultsTabsProps> = ({
           )}
           {nowApplicationResults.length > 0 && (
             <GenericResultsTable
-              header={`Notices of Work (${nowApplicationResults.length})`}
+              header={`Notices of Work (${facetCounts.now_application})`}
               searchResults={nowApplicationResults}
               highlightRegex={highlightRegex}
               getRecordKey={(record: any) => record.now_application_guid}
@@ -146,7 +155,7 @@ export const SearchResultsTabs: React.FC<SearchResultsTabsProps> = ({
           )}
           {nodResults.length > 0 && (
             <GenericResultsTable
-              header={`Notices of Departure (${nodResults.length})`}
+              header={`Notices of Departure (${facetCounts.notice_of_departure})`}
               searchResults={nodResults}
               highlightRegex={highlightRegex}
               getRecordKey={(record: any) => record.nod_guid}
@@ -155,7 +164,7 @@ export const SearchResultsTabs: React.FC<SearchResultsTabsProps> = ({
           )}
           {documentResults.length > 0 && (
             <DocumentResultsTable
-              header={`Documents (${documentResults.length})`}
+              header={`Documents (${facetCounts.mine_documents + facetCounts.permit_documents})`}
               highlightRegex={highlightRegex}
               searchResults={documentResults}
             />
@@ -165,7 +174,7 @@ export const SearchResultsTabs: React.FC<SearchResultsTabsProps> = ({
     },
     {
       key: "mine",
-      label: `Mines (${mines.length})`,
+      label: `Mines (${facetCounts.mine})`,
       children: mineResults.length === 0 ? renderEmptyState() : (
         <MineResultsTable
           header=""
@@ -178,7 +187,7 @@ export const SearchResultsTabs: React.FC<SearchResultsTabsProps> = ({
     },
     {
       key: "people",
-      label: `People (${peopleResults.length})`,
+      label: `People (${facetCounts.person})`,
       children: peopleResults.length === 0 ? renderEmptyState() : (
         <ContactResultsTable
           header=""
@@ -192,7 +201,7 @@ export const SearchResultsTabs: React.FC<SearchResultsTabsProps> = ({
     },
     {
       key: "organization",
-      label: `Organizations (${organizationResults.length})`,
+      label: `Organizations (${facetCounts.organization})`,
       children: organizationResults.length === 0 ? renderEmptyState() : (
         <ContactResultsTable
           header=""
@@ -206,7 +215,7 @@ export const SearchResultsTabs: React.FC<SearchResultsTabsProps> = ({
     },
     {
       key: "permit",
-      label: `Permits (${results.permitResults.length})`,
+      label: `Permits (${facetCounts.permit})`,
       children: permitResults.length === 0 ? renderEmptyState() : (
         <PermitResultsTable
           header=""
@@ -217,7 +226,7 @@ export const SearchResultsTabs: React.FC<SearchResultsTabsProps> = ({
     },
     {
       key: "explosives_permit",
-      label: `Explosives (${explosivesPermits.length})`,
+      label: `Explosives (${facetCounts.explosives_permit})`,
       children: explosivesPermitResults.length === 0 ? renderEmptyState() : (
         <GenericResultsTable
           header=""
@@ -230,7 +239,7 @@ export const SearchResultsTabs: React.FC<SearchResultsTabsProps> = ({
     },
     {
       key: "now_application",
-      label: `NoW (${nowApplications.length})`,
+      label: `NoW (${facetCounts.now_application})`,
       children: nowApplicationResults.length === 0 ? renderEmptyState() : (
         <GenericResultsTable
           header=""
@@ -243,7 +252,7 @@ export const SearchResultsTabs: React.FC<SearchResultsTabsProps> = ({
     },
     {
       key: "notice_of_departure",
-      label: `NODs (${nods.length})`,
+      label: `NODs (${facetCounts.notice_of_departure})`,
       children: nodResults.length === 0 ? renderEmptyState() : (
         <GenericResultsTable
           header=""
@@ -256,7 +265,7 @@ export const SearchResultsTabs: React.FC<SearchResultsTabsProps> = ({
     },
     {
       key: "document",
-      label: `Documents (${documentResults.length})`,
+      label: `Documents (${facetCounts.mine_documents + facetCounts.permit_documents})`,
       children: documentResults.length === 0 ? renderEmptyState() : (
         <DocumentResultsTable
           header=""

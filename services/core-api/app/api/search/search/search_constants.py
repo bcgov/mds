@@ -40,8 +40,6 @@ SEARCH_FIELDS = [
     "document_name^2",
     # Description fields
     "description",
-    # Catch-all
-    "*"
 ]
 
 FACET_KEYS = [
