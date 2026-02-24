@@ -217,11 +217,21 @@ describe("SearchResultsV2 Integration Tests", () => {
         notice_of_departure: [],
       };
 
+      const facetsWithTypeCounts = {
+        ...SEARCH_FACETS,
+        type: [
+          { key: "mine", count: 5 },
+          { key: "party", count: 3 },
+          { key: "permit", count: 2 },
+        ],
+      };
+
       const customState = {
         ...getDefaultState(),
         [searchReducerType]: {
           ...getDefaultState()[searchReducerType],
           searchResults: resultsWithCounts,
+          searchFacets: facetsWithTypeCounts,
         },
       };
 
@@ -259,11 +269,17 @@ describe("SearchResultsV2 Integration Tests", () => {
         notice_of_departure: [],
       };
 
+      const emptyFacets = {
+        ...SEARCH_FACETS,
+        type: [],
+      };
+
       const customState = {
         ...getDefaultState(),
         [searchReducerType]: {
           ...getDefaultState()[searchReducerType],
           searchResults: emptyResults,
+          searchFacets: emptyFacets,
         },
       };
 
@@ -284,11 +300,17 @@ describe("SearchResultsV2 Integration Tests", () => {
         notice_of_departure: [],
       };
 
+      const emptyFacets = {
+        ...SEARCH_FACETS,
+        type: [],
+      };
+
       const customState = {
         ...getDefaultState(),
         [searchReducerType]: {
           ...getDefaultState()[searchReducerType],
           searchResults: emptyResults,
+          searchFacets: emptyFacets,
         },
       };
 

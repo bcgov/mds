@@ -61,9 +61,17 @@ export const SearchResults: React.FC = () => {
                 <div className="search-results-v2__result-count">
                   <Text type="secondary">
                     {results.totalResults === 0 ? (
-                      <>No results for "<strong>{params.q}</strong>"{hasActiveFilters && " (filtered)"}</>
+                      params.q === "*" ? (
+                        <>No results found{hasActiveFilters && " (filtered)"}</>
+                      ) : (
+                        <>No results for "<strong>{params.q}</strong>"{hasActiveFilters && " (filtered)"}</>
+                      )
                     ) : (
-                      <>Showing <strong>{results.totalResults}</strong> results for "<strong>{params.q}</strong>"{hasActiveFilters && " (filtered)"}</>
+                      params.q === "*" ? (
+                        <>Showing <strong>{results.totalResults}</strong> results{hasActiveFilters && " (filtered)"}</>
+                      ) : (
+                        <>Showing <strong>{results.totalResults}</strong> results for "<strong>{params.q}</strong>"{hasActiveFilters && " (filtered)"}</>
+                      )
                     )}
                   </Text>
                 </div>

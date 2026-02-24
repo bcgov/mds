@@ -5,6 +5,7 @@ Business logic for simple search functionality.
 Separated from the REST resource layer for better testability and maintainability.
 """
 
+import json
 import logging
 import traceback
 
@@ -170,7 +171,7 @@ class SimpleSearchService:
         search_results = []
         
         try:
-            current_app.logger.info(f"ES Query: {query}")
+            current_app.logger.info(f"ES Query: {json.dumps(query)}")
             es_results = ElasticSearchService.search(indices_string, query, size=30)
             hits = es_results['hits']['hits']
             current_app.logger.info(f"ES returned {len(hits)} hits")
