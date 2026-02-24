@@ -15,7 +15,8 @@ interface EditPartyProps {
 
 export const EditPartyModal: FC<EditPartyProps> = ({ onSubmit, partyGuid }) => {
   const parties = useAppSelector(getParties) as IParty[];
-  const party: EditFullPartyFormValues = parties[partyGuid];
+  const partyFromStore = parties[partyGuid];
+  const party: EditFullPartyFormValues = partyFromStore ? { ...partyFromStore } : null;
   const today = moment().utc();
   const inspectorInfo = party?.business_role_appts.find(
     (role) =>
