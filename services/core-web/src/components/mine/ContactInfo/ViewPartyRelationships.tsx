@@ -340,6 +340,7 @@ export const ViewPartyRelationships: FC<ViewPartyRelationshipsProps> = ({ mine }
           openEditPartyRelationshipModal={openEditPartyRelationshipModal}
           onSubmitEditPartyRelationship={onSubmitEditPartyRelationship}
           isEditable
+          editPermission={USER_ROLES.role_edit_parties}
         />
       </Col>
     );
