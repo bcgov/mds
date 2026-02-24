@@ -783,18 +783,14 @@ Object {
                         class="ant-col ant-form-item-label"
                       >
                         <label
-                          class=""
+                          class="ant-form-item-required"
                           for="ADD_EDIT_INCIDENT_number_of_injuries"
                           title=""
                         >
-                          <div>
+                          <div
+                            style="width: 100%;"
+                          >
                             Number of injuries
-
-                            <span
-                              class="form-item-optional"
-                            >
-                               (optional)
-                            </span>
                           </div>
                         </label>
                       </div>
@@ -813,6 +809,7 @@ Object {
                               data-testid="number_of_injuries"
                               id="number_of_injuries"
                               name="number_of_injuries"
+                              placeholder="Enter the number of injuries. If none, enter '0'."
                               type="text"
                               value=""
                             />
@@ -849,18 +846,14 @@ Object {
                         class="ant-col ant-form-item-label"
                       >
                         <label
-                          class=""
+                          class="ant-form-item-required"
                           for="ADD_EDIT_INCIDENT_number_of_fatalities"
                           title=""
                         >
-                          <div>
+                          <div
+                            style="width: 100%;"
+                          >
                             Number of fatalities
-                             
-                            <span
-                              class="form-item-optional"
-                            >
-                               (optional)
-                            </span>
                           </div>
                         </label>
                       </div>
@@ -3006,18 +2999,14 @@ Object {
                         class="ant-col ant-form-item-label"
                       >
                         <label
-                          class=""
+                          class="ant-form-item-required"
                           for="ADD_EDIT_INCIDENT_number_of_injuries"
                           title=""
                         >
-                          <div>
+                          <div
+                            style="width: 100%;"
+                          >
                             Number of injuries
-
-                            <span
-                              class="form-item-optional"
-                            >
-                               (optional)
-                            </span>
                           </div>
                         </label>
                       </div>
@@ -3037,6 +3026,7 @@ Object {
                               disabled=""
                               id="number_of_injuries"
                               name="number_of_injuries"
+                              placeholder="Enter the number of injuries. If none, enter '0'."
                               type="text"
                               value=""
                             />
@@ -3073,18 +3063,14 @@ Object {
                         class="ant-col ant-form-item-label"
                       >
                         <label
-                          class=""
+                          class="ant-form-item-required"
                           for="ADD_EDIT_INCIDENT_number_of_fatalities"
                           title=""
                         >
-                          <div>
+                          <div
+                            style="width: 100%;"
+                          >
                             Number of fatalities
-                             
-                            <span
-                              class="form-item-optional"
-                            >
-                               (optional)
-                            </span>
                           </div>
                         </label>
                       </div>
@@ -5404,18 +5390,14 @@ Object {
                       class="ant-col ant-form-item-label"
                     >
                       <label
-                        class=""
+                        class="ant-form-item-required"
                         for="ADD_EDIT_INCIDENT_number_of_injuries"
                         title=""
                       >
-                        <div>
+                        <div
+                          style="width: 100%;"
+                        >
                           Number of injuries
-
-                          <span
-                              class="form-item-optional"
-                            >
-                               (optional)
-                            </span>
                         </div>
                       </label>
                     </div>
@@ -5434,6 +5416,7 @@ Object {
                             data-testid="number_of_injuries"
                             id="number_of_injuries"
                             name="number_of_injuries"
+                            placeholder="Enter the number of injuries. If none, enter '0'."
                             type="text"
                             value=""
                           />
@@ -5470,18 +5453,14 @@ Object {
                       class="ant-col ant-form-item-label"
                     >
                       <label
-                        class=""
+                        class="ant-form-item-required"
                         for="ADD_EDIT_INCIDENT_number_of_fatalities"
                         title=""
                       >
-                        <div>
+                        <div
+                          style="width: 100%;"
+                        >
                           Number of fatalities
-                           
-                          <span
-                            class="form-item-optional"
-                          >
-                             (optional)
-                          </span>
                         </div>
                       </label>
                     </div>
@@ -7627,18 +7606,14 @@ Object {
                       class="ant-col ant-form-item-label"
                     >
                       <label
-                        class=""
+                        class="ant-form-item-required"
                         for="ADD_EDIT_INCIDENT_number_of_injuries"
                         title=""
                       >
-                        <div>
+                        <div
+                          style="width: 100%;"
+                        >
                           Number of injuries
-
-                          <span
-                              class="form-item-optional"
-                            >
-                               (optional)
-                            </span>
                         </div>
                       </label>
                     </div>
@@ -7658,6 +7633,7 @@ Object {
                             disabled=""
                             id="number_of_injuries"
                             name="number_of_injuries"
+                            placeholder="Enter the number of injuries. If none, enter '0'."
                             type="text"
                             value=""
                           />
@@ -7694,18 +7670,14 @@ Object {
                       class="ant-col ant-form-item-label"
                     >
                       <label
-                        class=""
+                        class="ant-form-item-required"
                         for="ADD_EDIT_INCIDENT_number_of_fatalities"
                         title=""
                       >
-                        <div>
+                        <div
+                          style="width: 100%;"
+                        >
                           Number of fatalities
-                           
-                          <span
-                            class="form-item-optional"
-                          >
-                             (optional)
-                          </span>
                         </div>
                       </label>
                     </div>

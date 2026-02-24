@@ -251,8 +251,11 @@ exports[`IncidentForm renders properly 1`] = `
             id="number_of_injuries"
             label="Number of injuries"
             name="number_of_injuries"
+            placeholder="Enter the number of injuries. If none, enter '0'."
+            required={true}
             validate={
               Array [
+                [Function],
                 [Function],
                 [Function],
               ]
@@ -269,6 +272,7 @@ exports[`IncidentForm renders properly 1`] = `
             id="number_of_fatalities"
             label="Number of fatalities"
             name="number_of_fatalities"
+            required={true}
             validate={
               Array [
                 [Function],
