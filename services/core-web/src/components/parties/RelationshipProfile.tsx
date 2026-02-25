@@ -137,9 +137,11 @@ export const RelationshipProfile: FC = () => {
   };
 
   const onSubmitEditPartyRelationship = async (values: IPartyAppt) => {
-    let payload = partyRelationships.find(
-      (relationship) => relationship.mine_party_appt_guid === values.mine_party_appt_guid
-    );
+    let payload = {
+      ...partyRelationships.find(
+        (relationship) => relationship.mine_party_appt_guid === values.mine_party_appt_guid
+      )
+    };
 
     payload.start_date = values.start_date;
     payload.end_date = values.end_date;
