@@ -130,5 +130,3 @@ class MineReportDefinitionListResource(Resource, UserMixin):
                                                              data.get('report_type'),
                                                              data.get('is_common'))
         return mine_report_definition, 201
-
-

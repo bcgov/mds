@@ -31,12 +31,13 @@ from app.config import Config
 from app.extensions import db
 from flask import current_app
 from pytz import timezone as pytz_timezone
-from sqlalchemy import and_, desc, func, literal, select
+from sqlalchemy import and_, desc, func, literal, select, exists, or_
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import validates
 from sqlalchemy.schema import FetchedValue
+from typing import Self
 
 
 class MineReport(SoftDeleteMixin, AuditMixin, Base):
@@ -470,6 +471,58 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
         )
         
         return mine_report
+
+    @classmethod
+    def get_all_recurring_crr_reports(cls) -> list[Self]:
+        from app.api.mines.reports.models.mine_report_definition import MineReportDefinition
+        from app.api.mines.permits.permit.models.mine_permit_xref import MinePermitXref
+        from app.api.mines.permits.permit.models.permit import Permit
+        from app.api.mines.reports.models.mine_report_category_xref import MineReportCategoryXref
+        from app.api.mines.tailings.models.tailings import MineTailingsStorageFacility
+
+        # Check to see if mine report's mine has an active permit
+        active_permit_exists = exists().where(
+            and_(
+                MinePermitXref.mine_guid == cls.mine_guid,
+                MinePermitXref.permit_id == Permit.permit_id,
+                Permit.deleted_ind == False,
+            )
+        )
+
+        # Check to see if mine report definition has TSF category
+        definition_has_tsf = exists().where(
+            and_(
+                MineReportCategoryXref.mine_report_definition_id
+                == cls.mine_report_definition_id,
+                MineReportCategoryXref.mine_report_category == "TSF",
+            )
+        )
+
+        # Check to see if mine has a tailings storage facility
+        tsf_exists = exists().where(
+            MineTailingsStorageFacility.mine_guid == cls.mine_guid
+        )
+
+        return (
+            cls.query
+            .join(
+                MineReportDefinition,
+                cls.mine_report_definition_id
+                == MineReportDefinition.mine_report_definition_id,
+            )
+            .filter(
+                cls.deleted_ind == False,
+                cls.due_date != None,
+                MineReportDefinition.active_ind.is_(True),
+                MineReportDefinition.mine_report_due_date_type.in_(["FIS", "YRL"]),
+                active_permit_exists,
+                or_(
+                    ~definition_has_tsf,
+                    tsf_exists,
+                ),
+            )
+            .all()
+        )
 
     @validates('mine_report_definition_id')
     def validate_mine_report_definition_id(self, key, mine_report_definition_id):
