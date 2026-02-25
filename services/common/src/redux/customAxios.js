@@ -50,7 +50,9 @@ CustomAxios = ({
   suppressErrorNotification = false,
   successToastMessage = undefined,
 } = {}) => {
-  const instance = axios.create();
+  const instance = axios.create({
+    adapter: ['xhr', 'http']
+  });
 
   instance.interceptors.response.use(
     (response) => {
