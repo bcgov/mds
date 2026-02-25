@@ -65,7 +65,17 @@ class ReportsResource(Resource, UserMixin):
             'region': request.args.getlist('region', type=str),
         }
 
-        query = MineReport.query.filter_by(deleted_ind=False)
+        query = (
+            MineReport.query
+            .outerjoin(MineReportDefinition)
+            .filter(
+                MineReport.deleted_ind == False,
+                or_(
+                    MineReport.mine_report_definition_id.is_(None),
+                    MineReportDefinition.active_ind.is_(True),
+                )
+            )
+        )
 
         records, pagination_details = ReportFilterHelper.apply_filters_and_pagination(query, args)
         if not records:
