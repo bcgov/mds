@@ -181,6 +181,7 @@ def create_new_recurring_report_requests():
         print("Task exiting early - feature flag is disabled")
         return {"status": "skipped", "reason": "feature flag disabled"} 
     
+    print("Starting creation of recurring report requests...")
     current_date = datetime.now().date()
     
     recurring_requirements = MineReportPermitRequirement.get_all_recurring()
@@ -232,6 +233,7 @@ def create_new_recurring_crr_report_requests():
         print("Task exiting early - feature flag is disabled")
         return {"status": "skipped", "reason": "feature flag disabled"} 
     
+    print("Starting creation of recurring CRR report requests...")
     current_date = datetime.now().date()
     one_year_from_now = current_date + relativedelta(years=1)
 
