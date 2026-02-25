@@ -1,12 +1,20 @@
 """Global search service for executing searches against Elasticsearch."""
 
+import json
+
 import regex
+from app.api.search.elasticsearch.elastic_search_service import ElasticSearchService
 from flask import current_app
 
-from app.api.search.elasticsearch.elastic_search_service import ElasticSearchService
-from .search_constants import TYPE_TO_INDEX, ES_AGGREGATIONS, FACET_KEYS, FILTER_PARAMS, SEARCH_FIELDS
-from .search_filters import build_filter_clauses
+from .search_constants import (
+    ES_AGGREGATIONS,
+    FACET_KEYS,
+    FILTER_PARAMS,
+    SEARCH_FIELDS,
+    TYPE_TO_INDEX,
+)
 from .search_facets import extract_facets
+from .search_filters import build_filter_clauses
 from .search_transformers import transform_es_results
 
 
@@ -136,6 +144,7 @@ class GlobalSearchService:
             query = build_search_query(search_term, filter_clauses)
 
             current_app.logger.info(f"Searching ES indices: {','.join(indices)} for: {search_term}")
+            current_app.logger.info(f"ES Query: {json.dumps(query)}")
 
             es_results = ElasticSearchService.search(','.join(set(indices)), query, size=size)
             hits = es_results['hits']['hits']

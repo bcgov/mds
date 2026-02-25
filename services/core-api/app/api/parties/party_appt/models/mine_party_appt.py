@@ -3,7 +3,7 @@ from datetime import datetime, timedelta, date
 from enum import Enum
 from werkzeug.exceptions import BadRequest
 
-from sqlalchemy import and_, nullsfirst, nullslast
+from sqlalchemy import and_, or_, nullsfirst, nullslast
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 
@@ -275,7 +275,10 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, DraftMixin, Base):
             built_query = cls.query.filter_by(
                 deleted_ind=False, mine_guid=mine_guid, status=MinePartyAppointmentStatus.active)
         else:
-            built_query = cls.query.filter_by(deleted_ind=False, mine_guid=mine_guid, end_date=None)
+            built_query = cls.query.filter(
+                cls.deleted_ind == False,
+                cls.mine_guid == mine_guid,
+                or_(cls.end_date == None, cls.end_date > datetime.utcnow().date()))
 
         if permit_id:
             built_query = built_query.filter_by(permit_id=permit_id)

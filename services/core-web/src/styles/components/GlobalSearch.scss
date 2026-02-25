@@ -9,10 +9,11 @@
   }
 
   &__input {
-    border-bottom: 1px solid #f0f0f0;
+    border: none;
+    border-bottom: 2px solid $violet;
     border-radius: 0;
-    height: 60px; // Increased height to prevent "squished" look
-    padding: 0 16px; // Horizontal padding to match other elements
+    height: 60px;
+    padding: 0 16px;
     display: flex;
     align-items: center;
 
@@ -20,7 +21,7 @@
       font-size: 16px;
       height: 100%;
     }
-    
+
     .ant-input-prefix {
       margin-right: 12px;
     }

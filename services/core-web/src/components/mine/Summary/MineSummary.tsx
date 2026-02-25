@@ -10,6 +10,7 @@ import { getMines } from "@mds/common/redux/selectors/mineSelectors";
 import { getUnformattedPermits } from "@mds/common/redux/selectors/permitSelectors";
 import * as String from "@mds/common/constants/strings";
 import * as router from "@/constants/routes";
+import { USER_ROLES } from "@mds/common/constants/environment";
 import PermitCard from "@/components/mine/Permit/MinePermitCard";
 import { TSFCard } from "@/components/mine/Tailings/MineTSFCard";
 import { DOC, OVERDUEDOC } from "@/constants/assets";
@@ -38,6 +39,7 @@ const renderPartyRelationship = (mine, permits, partyRelationship, partyRelation
         partyRelationship={partyRelationship}
         partyRelationshipTitle={partyRelationshipTitle}
         compact
+        editPermission={USER_ROLES.role_edit_parties}
       />
     </Col>
   );

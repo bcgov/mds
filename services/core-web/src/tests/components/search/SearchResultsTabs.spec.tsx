@@ -3,6 +3,19 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { SearchResultsTabs } from "@/components/search/SearchResultsTabs";
 
+const emptyFacetCounts = {
+  mine: 0,
+  party: 0,
+  person: 0,
+  organization: 0,
+  permit: 0,
+  explosives_permit: 0,
+  now_application: 0,
+  notice_of_departure: 0,
+  mine_documents: 0,
+  permit_documents: 0,
+};
+
 const emptyResults = {
   mines: [],
   mineResults: [],
@@ -17,6 +30,7 @@ const emptyResults = {
   nodResults: [],
   nods: [],
   totalResults: 0,
+  facetCounts: emptyFacetCounts,
 };
 
 const defaultProps = {

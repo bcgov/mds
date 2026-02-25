@@ -5,6 +5,9 @@ import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 import GlobalSearch from "@/components/search/GlobalSearch/GlobalSearch";
 import { searchReducerType } from "@mds/common/redux/slices/searchSlice";
 import { SIMPLE_SEARCH_RESULTS, SIMPLE_SEARCH_FACETS } from "@mds/common/tests/mocks/searchMockData";
+import * as searchSlice from "@mds/common/redux/slices/searchSlice";
+
+const mockFetchSearchBarResults = jest.spyOn(searchSlice, "fetchSearchBarResults");
 
 const getDefaultState = () => ({
   [searchReducerType]: {
@@ -63,7 +66,12 @@ const getModalInput = () => {
 describe("GlobalSearch", () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    jest.useFakeTimers();
     localStorage.clear();
+  });
+
+  afterEach(() => {
+    jest.useRealTimers();
   });
 
   describe("Rendering", () => {
@@ -182,8 +190,10 @@ describe("GlobalSearch", () => {
         fireEvent.keyDown(document, { key: "k", metaKey: true });
       });
 
-      // Wait a bit and confirm modal did not open
-      await new Promise(resolve => setTimeout(resolve, 100));
+      // Advance fake timers and confirm modal did not open
+      await act(async () => {
+        jest.advanceTimersByTime(100);
+      });
       expect(document.querySelector('.global-search-modal')).not.toBeInTheDocument();
     });
 
@@ -210,6 +220,7 @@ describe("GlobalSearch", () => {
 
   describe("Search Input", () => {
     it("updates search term on input change", async () => {
+      jest.useRealTimers();
       renderGlobalSearch({ enableShortcut: true });
 
       await openModalViaKeyboard();
@@ -225,6 +236,7 @@ describe("GlobalSearch", () => {
     });
 
     it("clears input when clear icon is clicked", async () => {
+      jest.useRealTimers();
       renderGlobalSearch({ enableShortcut: true });
 
       await openModalViaKeyboard();
@@ -246,6 +258,153 @@ describe("GlobalSearch", () => {
         });
         expect(input!.value).toBe("");
       }
+    });
+  });
+
+  describe("Debounced Search", () => {
+    it("does not dispatch search immediately on input change", async () => {
+      renderGlobalSearch({ enableShortcut: true });
+
+      await act(async () => {
+        fireEvent.keyDown(document, { key: "k", metaKey: true });
+        jest.advanceTimersByTime(100);
+      });
+
+      const input = getModalInput();
+      expect(input).toBeTruthy();
+
+      mockFetchSearchBarResults.mockClear();
+
+      await act(async () => {
+        fireEvent.change(input!, { target: { value: "t" } });
+      });
+
+      // Should not have dispatched immediately
+      expect(mockFetchSearchBarResults).not.toHaveBeenCalled();
+    });
+
+    it("dispatches search after debounce delay (300ms)", async () => {
+      renderGlobalSearch({ enableShortcut: true });
+
+      await act(async () => {
+        fireEvent.keyDown(document, { key: "k", metaKey: true });
+        jest.advanceTimersByTime(100);
+      });
+
+      const input = getModalInput();
+      expect(input).toBeTruthy();
+
+      mockFetchSearchBarResults.mockClear();
+
+      await act(async () => {
+        fireEvent.change(input!, { target: { value: "test" } });
+      });
+
+      // Not dispatched yet
+      expect(mockFetchSearchBarResults).not.toHaveBeenCalled();
+
+      // Advance past debounce delay
+      await act(async () => {
+        jest.advanceTimersByTime(300);
+      });
+
+      // Now should have been called
+      expect(mockFetchSearchBarResults).toHaveBeenCalledTimes(1);
+      expect(mockFetchSearchBarResults).toHaveBeenCalledWith(
+        expect.objectContaining({
+          searchTerm: "test",
+        })
+      );
+    });
+
+    it("only dispatches once for rapid keystrokes", async () => {
+      renderGlobalSearch({ enableShortcut: true });
+
+      await act(async () => {
+        fireEvent.keyDown(document, { key: "k", metaKey: true });
+        jest.advanceTimersByTime(100);
+      });
+
+      const input = getModalInput();
+      expect(input).toBeTruthy();
+
+      mockFetchSearchBarResults.mockClear();
+
+      // Simulate rapid typing
+      await act(async () => {
+        fireEvent.change(input!, { target: { value: "t" } });
+        jest.advanceTimersByTime(50);
+        fireEvent.change(input!, { target: { value: "te" } });
+        jest.advanceTimersByTime(50);
+        fireEvent.change(input!, { target: { value: "tes" } });
+        jest.advanceTimersByTime(50);
+        fireEvent.change(input!, { target: { value: "test" } });
+      });
+
+      // Not dispatched yet (still within debounce window)
+      expect(mockFetchSearchBarResults).not.toHaveBeenCalled();
+
+      // Advance past debounce delay
+      await act(async () => {
+        jest.advanceTimersByTime(300);
+      });
+
+      // Should only dispatch once with final value
+      expect(mockFetchSearchBarResults).toHaveBeenCalledTimes(1);
+      expect(mockFetchSearchBarResults).toHaveBeenCalledWith(
+        expect.objectContaining({
+          searchTerm: "test",
+        })
+      );
+    });
+
+    it("resets debounce timer on new input", async () => {
+      renderGlobalSearch({ enableShortcut: true });
+
+      await act(async () => {
+        fireEvent.keyDown(document, { key: "k", metaKey: true });
+        jest.advanceTimersByTime(100);
+      });
+
+      const input = getModalInput();
+      expect(input).toBeTruthy();
+
+      mockFetchSearchBarResults.mockClear();
+
+      await act(async () => {
+        fireEvent.change(input!, { target: { value: "test" } });
+      });
+
+      // Wait 200ms (less than 300ms debounce)
+      await act(async () => {
+        jest.advanceTimersByTime(200);
+      });
+
+      // Type more - should reset the timer
+      await act(async () => {
+        fireEvent.change(input!, { target: { value: "testing" } });
+      });
+
+      // Wait another 200ms (total 400ms from first keystroke, but only 200ms from last)
+      await act(async () => {
+        jest.advanceTimersByTime(200);
+      });
+
+      // Should still not have fired because timer was reset
+      expect(mockFetchSearchBarResults).not.toHaveBeenCalled();
+
+      // Wait another 100ms to complete the debounce from last keystroke
+      await act(async () => {
+        jest.advanceTimersByTime(100);
+      });
+
+      // Now should fire with the latest value
+      expect(mockFetchSearchBarResults).toHaveBeenCalledTimes(1);
+      expect(mockFetchSearchBarResults).toHaveBeenCalledWith(
+        expect.objectContaining({
+          searchTerm: "testing",
+        })
+      );
     });
   });
 
@@ -306,7 +465,7 @@ describe("GlobalSearch", () => {
       expect(document.querySelector('.global-search-modal')).toBeInTheDocument();
     });
 
-    it("handles Enter key in empty state", async () => {
+    it("handles Enter key with no selection - modal stays open", async () => {
       renderGlobalSearch({ enableShortcut: true });
 
       await openModalViaKeyboard();
@@ -320,10 +479,8 @@ describe("GlobalSearch", () => {
         fireEvent.keyDown(input!, { key: "Enter" });
       });
 
-      // Enter with search term should close modal and navigate
-      await waitFor(() => {
-        expect(document.querySelector('.global-search-modal')).not.toBeInTheDocument();
-      });
+      // Enter with no selection should keep modal open
+      expect(document.querySelector('.global-search-modal')).toBeInTheDocument();
     });
   });
 
@@ -486,7 +643,7 @@ describe("GlobalSearch", () => {
   });
 
   describe("Result Click Navigation", () => {
-    it("closes modal when navigating via search term submission", async () => {
+    it("keeps modal open when Enter is pressed with no selection", async () => {
       renderGlobalSearch({ enableShortcut: true });
 
       await openModalViaKeyboard();
@@ -496,15 +653,13 @@ describe("GlobalSearch", () => {
         fireEvent.change(input!, { target: { value: "test mine" } });
       });
 
-      // Submit search via Enter
+      // Press Enter without selecting a result
       await act(async () => {
         fireEvent.keyDown(input!, { key: "Enter" });
       });
 
-      // Modal should close after submission
-      await waitFor(() => {
-        expect(document.querySelector('.global-search-modal')).not.toBeInTheDocument();
-      });
+      // Modal should stay open since no result is selected
+      expect(document.querySelector('.global-search-modal')).toBeInTheDocument();
     });
   });
 

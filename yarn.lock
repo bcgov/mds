@@ -2908,7 +2908,7 @@ __metadata:
     eslint-plugin-react: 7.37.1
     file-loader: 6.2.0
     filepond: 4.30.4
-    filepond-plugin-file-encode: 2.1.10
+    filepond-plugin-file-encode: 2.1.14
     filepond-plugin-file-validate-size: 2.2.8
     filepond-plugin-file-validate-type: 1.2.8
     filepond-plugin-get-file: 1.1.0
@@ -10976,12 +10976,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"filepond-plugin-file-encode@npm:2.1.10":
-  version: 2.1.10
-  resolution: "filepond-plugin-file-encode@npm:2.1.10"
+"filepond-plugin-file-encode@npm:2.1.14":
+  version: 2.1.14
+  resolution: "filepond-plugin-file-encode@npm:2.1.14"
   peerDependencies:
     filepond: ">=3.x <5.x"
-  checksum: eb51ca41c716898d636d1258611fb792687cfcc2b12dc455303d48f9dfbb47e16cc3c22d2c82132c179d5031b679ed755c39145b53e54e6f21be2849fcc89691
+  checksum: 6a0a4c74c95840544776cc73be4f723215b67c16d91e5852281fac11e9ab281b6693be7a65917a16fa66e79635ab51bf5ab03a7d0f1de286f9b25c34cb93bbe1
   languageName: node
   linkType: hard
 
