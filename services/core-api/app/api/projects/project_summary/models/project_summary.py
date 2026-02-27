@@ -1434,6 +1434,9 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         cc = [MDS_EMAIL]
         minespace_recipients = [contact.email for contact in self.contacts if contact.is_primary]
 
+        ministry_recipients = [email for email in ministry_recipients if email]
+        minespace_recipients = [email for email in minespace_recipients if email]
+
         ministry_template = "email/projects/ministry_project_summary_email.html"
         minespace_template = "email/projects/minespace_project_summary_email.html"
         subject = f'Project Description Notification for {mine.mine_name}'
@@ -1460,16 +1463,17 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             "ema_auth_link": f'{Config.EMA_AUTH_LINK}',
         }
 
-        EmailService.send_template_email(
-            subject,
-            ministry_recipients,
-            ministry_template,
-            ministry_context,
-            cc=cc,
-            reference_id=self.project_summary_guid,
-            reference_table='project_summary'
-        )
-        if send_ms_email:
+        if ministry_recipients:
+            EmailService.send_template_email(
+                subject,
+                ministry_recipients,
+                ministry_template,
+                ministry_context,
+                cc=cc,
+                reference_id=self.project_summary_guid,
+                reference_table='project_summary'
+            )
+        if send_ms_email and minespace_recipients:
             EmailService.send_template_email(
                 subject,
                 minespace_recipients,

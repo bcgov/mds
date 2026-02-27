@@ -1,4 +1,6 @@
-from tests.factories import ProjectSummaryFactory
+from tests.factories import ProjectSummaryFactory, PartyFactory, ProjectSummaryAuthorizationFactory
+from app.api.projects.project_summary.models.project_summary import ProjectSummary
+from app.api.projects.project.models.project import Project
 from app.api.constants import MDS_EMAIL
 from app.config import Config
 
@@ -7,10 +9,14 @@ from unittest.mock import patch, mock_open, call, ANY
 @patch("app.api.services.email_service.EmailService.send_template_email")
 @patch("builtins.open", mock_open(read_data='email content'))
 
-def test_sub_to_asg(mock_send_template_email, test_client, db_session, auth_headers):
+@patch("app.api.projects.project.models.project.Project.has_mines_act_auths", return_value=True)
+def test_sub_to_asg(mock_has_mines_act_auths, mock_send_template_email, test_client, db_session, auth_headers):
     project_summary = ProjectSummaryFactory(set_status_code='SUB')
 
     # TODO: ams_authorizations and documents should both have documents in order to test document emails
+
+    party = PartyFactory(person=True)
+    party.save()
 
     updated_project_summary_title = 'Test Project Title - Updated'
     data = {}
@@ -23,12 +29,14 @@ def test_sub_to_asg(mock_send_template_email, test_client, db_session, auth_head
     data['project_summary_description'] = project_summary.project_summary_description
     data['status_code'] = 'ASG'
     data['is_historic'] = False
+    data['project_lead_party_guid'] = party.party_guid
 
     put_resp = test_client.put(
         f'/projects/{project_summary.project.project_guid}/project-summaries/{project_summary.project_summary_guid}',
         headers=auth_headers['full_auth_header'],
         json=data
     )
+    
     ministry_context = {
             "project_summary": {
                 "project_summary_description": project_summary.project_summary_description,
