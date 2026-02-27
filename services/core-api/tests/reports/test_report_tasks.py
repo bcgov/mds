@@ -474,10 +474,10 @@ class TestCreateNewRecurringCRRReportRequests:
         result = create_new_recurring_crr_report_requests()
 
         reports = MineReport.query.filter_by(
-        mine_guid=mine.mine_guid,
-        mine_report_definition_id=non_recurring_definition.mine_report_definition_id,
-        deleted_ind=False
-        ).filter(MineReport.mine_report_id == mine_report.mine_report_id).all()
+            mine_guid=mine.mine_guid,
+            mine_report_definition_id=non_recurring_definition.mine_report_definition_id,
+            deleted_ind=False
+            ).filter(MineReport.mine_report_id == mine_report.mine_report_id).all()
 
         assert len(reports) == 1
         assert result["total_created"] == 0
