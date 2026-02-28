@@ -1,8 +1,9 @@
 import json
 import uuid
 from datetime import datetime, timedelta
+from app.api.mines.reports.models.mine_report_definition import MineReportDefinition
 
-from tests.factories import MineFactory
+from tests.factories import MineFactory, MineReportFactory
 
 THREE_REPORTS = 3
 ONE_REPORT = 1
@@ -10,7 +11,26 @@ GUID = str(uuid.uuid4)
 
 
 def test_get_reports(test_client, db_session, auth_headers):
-    mine = MineFactory(mine_reports=THREE_REPORTS)
+    mine = MineFactory()
+
+    crr_definition = MineReportDefinition(
+            report_name="CRR report",
+            active_ind=True,
+            mine_report_due_date_type="EVT",
+            description=f"CRR test definition",
+            is_common=True,
+            is_prr_only=False,
+        )
+
+    MineReportFactory.create_batch(
+        size=THREE_REPORTS,
+        mine=mine,
+        mine_report_definition_id=crr_definition.mine_report_definition_id,
+        deleted_ind=False
+    )
+
+    db_session.commit()
+
     get_resp = test_client.get(
         f'/mines/reports', headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
