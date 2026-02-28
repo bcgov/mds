@@ -16,6 +16,26 @@ GUID = str(uuid.uuid4)
 
 # GET
 def test_get_code_required_reports_for_mine(test_client, db_session, auth_headers):
+    mine = MineFactory()
+
+    crr_definition = MineReportDefinition(
+            report_name="CRR report",
+            active_ind=True,
+            mine_report_due_date_type="EVT",
+            description=f"CRR test definition",
+            is_common=True,
+            is_prr_only=False,
+        )
+
+    MineReportFactory.create_batch(
+        size=THREE_REPORTS,
+        mine=mine,
+        mine_report_definition_id=crr_definition.mine_report_definition_id,
+        deleted_ind=False
+    )
+
+    db_session.commit()
+
     mine = MineFactory(mine_reports=THREE_REPORTS)
     get_resp = test_client.get(
         f'/mines/{mine.mine_guid}/reports', headers=auth_headers['full_auth_header'])
