@@ -86,7 +86,7 @@ def setup_crr_environment(request, db_session):
     )
 
     db_session.add(mine_report_definition)
-    db_session.commit()
+    db_session.flush()
 
     article = ComplianceArticleFactory(
         expiry_date=datetime.utcnow() + relativedelta(months=12)
@@ -462,7 +462,7 @@ class TestCreateNewRecurringCRRReportRequests:
         )
 
         db_session.add(non_recurring_definition)
-        db_session.commit()
+        db_session.flush()
 
         mine_report = MineReportFactory(
             mine=mine,
