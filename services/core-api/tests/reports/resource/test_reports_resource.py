@@ -16,9 +16,6 @@ def test_get_reports(test_client, db_session, auth_headers):
         f'/mines/reports', headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
 
-    for data in get_data['records']:
-        pprint(data)
-
     assert len(get_data['records']) == THREE_REPORTS
     assert get_resp.status_code == 200
 
@@ -38,9 +35,6 @@ def test_get_reports(test_client, db_session, auth_headers):
     )
     get_data = json.loads(get_resp.data.decode())
     assert get_resp.status_code == 200
-
-    print("fudgeaaaa")
-    print(mine.mine_reports)
 
     assert len(get_data['records']) == len(mine.mine_reports)
     for i in range(len(get_data['records']) - 1):
