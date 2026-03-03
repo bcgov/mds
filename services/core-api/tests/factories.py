@@ -55,7 +55,6 @@ from app.api.mines.reports.models.mine_report_comment import MineReportComment
 from app.api.mines.reports.models.mine_report_definition_compliance_article_xref import (
     MineReportDefinitionComplianceArticleXref,
 )
-from app.api.compliance.models.compliance_article import ComplianceArticle
 from app.api.mines.reports.models.mine_report_permit_requirement import (
     CimOrCpo,
     MineReportPermitRequirement,
@@ -1888,29 +1887,6 @@ class MineReportDefinitionComplianceArticleXrefFactory(BaseFactory):
 
     mine_report_definition_id = factory.LazyFunction(RandomMineReportDefinition)
     compliance_article_id = factory.LazyFunction(RandomComplianceArticleId)
-
-class ComplianceArticleFactory(BaseFactory):
-
-    class Meta:
-        model = ComplianceArticle
-
-    article_act_code = "MA"
-    section = factory.Faker("bothify", text="?")
-    sub_section = factory.Faker("bothify", text="?")
-    paragraph = factory.Faker("bothify", text="?")
-    sub_paragraph = factory.Faker("bothify", text="?")
-    description = factory.Faker("sentence")
-    long_description = factory.Faker("paragraph")
-    effective_date = factory.LazyFunction(datetime.utcnow)
-    expiry_date = None  # None = not expired
-
-    # For when testing expiry_date is expired
-    class Params:
-        expired = factory.Trait(
-            expiry_date=factory.LazyFunction(
-                lambda: datetime.utcnow() - timedelta(days=1)
-            )
-        )
 
 class MineReportPermitRequirementFactory(BaseFactory):
     class Meta:

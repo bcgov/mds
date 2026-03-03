@@ -13,8 +13,6 @@ from tests.factories import (
     MineReportFactory,
     create_mine_and_permit,
     MineFactory,
-    ComplianceArticleFactory,
-    MineReportDefinitionComplianceArticleXrefFactory,
 )
 
 @pytest.fixture(scope="function")
@@ -69,42 +67,42 @@ def setup_recurring_requirements(db_session):
     }
 
 
-@pytest.fixture
+@pytest.fixture(params=["YRL", "FIS"])
 def setup_crr_environment(request, db_session):
     today = date.today()
 
     mine = MineFactory()
 
+    due_type = request.param
+
+    if due_type == "YRL":
+        expected_month = 1
+        expected_day = 31
+    elif due_type == "FIS":
+        expected_month = 3
+        expected_day = 31
 
     mine_report_definition = MineReportDefinition(
-        report_name="CRR Report",
+        report_name=f"CRR {due_type} Report",
         active_ind=True,
-        mine_report_due_date_type="FIS",
-        description="CRR definition",
+        mine_report_due_date_type=due_type,
+        description=f"CRR {due_type} definition",
         is_common=True,
         is_prr_only=False,
     )
 
     db_session.add(mine_report_definition)
-    db_session.flush()
-
-    article = ComplianceArticleFactory(
-        expiry_date=datetime.utcnow() + relativedelta(months=12)
-    )
-
-    MineReportDefinitionComplianceArticleXrefFactory(
-        mine_report_definition_id=mine_report_definition.mine_report_definition_id,
-        compliance_article_id=article.compliance_article_id,
-    )
+    db_session.commit()
 
     yield {
         "mine": mine,
         "definition": mine_report_definition,
         "today": today,
-        "due_type": "FIS",
-        "expected_month": 3,
-        "expected_day": 31
+        "due_type": due_type,
+        "expected_month": expected_month,
+        "expected_day": expected_day
     }
+
 
 @pytest.fixture
 def setup_with_existing_reports(setup_recurring_requirements):
@@ -462,9 +460,9 @@ class TestCreateNewRecurringCRRReportRequests:
         )
 
         db_session.add(non_recurring_definition)
-        db_session.flush()
+        db_session.commit()
 
-        mine_report = MineReportFactory(
+        MineReportFactory(
             mine=mine,
             mine_report_definition_id=non_recurring_definition.mine_report_definition_id,
             due_date=today - relativedelta(years=1),
@@ -477,7 +475,7 @@ class TestCreateNewRecurringCRRReportRequests:
             mine_guid=mine.mine_guid,
             mine_report_definition_id=non_recurring_definition.mine_report_definition_id,
             deleted_ind=False
-            ).filter(MineReport.mine_report_id == mine_report.mine_report_id).all()
+        ).all()
 
         assert len(reports) == 1
         assert result["total_created"] == 0
@@ -489,7 +487,7 @@ class TestCreateNewRecurringCRRReportRequests:
         mock_create.side_effect = Exception("Simulated failure")
 
         mock_mine.return_value = mock.Mock(mine_name="Test Mine", mine_guid="fake-guid")
-        mock_definition.return_value = mock.Mock(report_name="Test CRR Report", mine_report_definition_id="fake-id", mine_report_due_date_type="FIS")
+        mock_definition.return_value = mock.Mock(report_name="Test CRR Report", mine_report_definition_id="fake-id")
 
         result = create_new_recurring_crr_report_requests()
 
