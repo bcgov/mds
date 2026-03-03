@@ -202,6 +202,7 @@ export const ReportPermitRequirementForm: FC<ReportPermitRequirementProps> = ({
     if (selectedRequirement) {
       return ({
         ...selectedRequirement,
+        cim_or_cpo: selectedRequirement.cim_or_cpo ?? "NONE",
         ...initialValues
       });
     }
