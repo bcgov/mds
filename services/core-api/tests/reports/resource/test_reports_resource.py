@@ -11,11 +11,9 @@ GUID = str(uuid.uuid4)
 
 def test_get_reports(test_client, db_session, auth_headers):
     mine = MineFactory(mine_reports=THREE_REPORTS)
-
     get_resp = test_client.get(
         f'/mines/reports', headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
-
     assert len(get_data['records']) == THREE_REPORTS
     assert get_resp.status_code == 200
 
@@ -35,7 +33,6 @@ def test_get_reports(test_client, db_session, auth_headers):
     )
     get_data = json.loads(get_resp.data.decode())
     assert get_resp.status_code == 200
-
     assert len(get_data['records']) == len(mine.mine_reports)
     for i in range(len(get_data['records']) - 1):
         assert datetime.strptime(get_data['records'][i]['due_date'], '%Y-%m-%d') <= datetime.strptime(

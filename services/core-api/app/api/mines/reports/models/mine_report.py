@@ -479,8 +479,6 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
         from app.api.mines.permits.permit.models.permit import Permit
         from app.api.mines.reports.models.mine_report_category_xref import MineReportCategoryXref
         from app.api.mines.tailings.models.tailings import MineTailingsStorageFacility
-        from app.api.mines.reports.models.mine_report_definition_compliance_article_xref import \
-            MineReportDefinitionComplianceArticleXref
 
         # Check to see if mine report's mine has an active permit
         active_permit_exists = exists().where(
@@ -505,21 +503,6 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
             MineTailingsStorageFacility.mine_guid == cls.mine_guid
         )
 
-        # Check if mine report definition is linked to at least one non-expired compliance article
-        has_non_expired_compliance_article = exists().where(
-            and_(
-                MineReportDefinitionComplianceArticleXref.mine_report_definition_id
-                == cls.mine_report_definition_id,
-                MineReportDefinitionComplianceArticleXref.compliance_article_id
-                == ComplianceArticle.compliance_article_id,
-                or_(
-                    ComplianceArticle.expiry_date.is_(None),  # treat null expiry as not expired
-                    ComplianceArticle.expiry_date >= datetime.utcnow(),
-                ),
-            )
-        )
-
-
         return (
             cls.query
             .join(
@@ -537,7 +520,6 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
                     ~definition_has_tsf,
                     tsf_exists,
                 ),
-                has_non_expired_compliance_article,
             )
             .all()
         )

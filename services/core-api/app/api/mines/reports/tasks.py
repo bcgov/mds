@@ -4,7 +4,6 @@ from app.api.mines.reports.models.mine_report_definition import MineReportDefini
 from app.api.mines.mine.models.mine import Mine
 from app.extensions import db
 from app.tasks.celery import celery
-from celery import chain
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from app.api.utils.feature_flag import Feature, is_feature_enabled
@@ -170,13 +169,6 @@ def _process_crr_reports(mine, mine_report_definition, reports, current_date, on
     
     print(f"  Successfully created {created_count} {mine_report_definition.report_name} reports for this mine")
     return created_count, failed_count
-
-@celery.task()
-def create_new_recurring_report_requests_chain():
-    chain(
-        create_new_recurring_report_requests.s(),
-        create_new_recurring_crr_report_requests.si()
-    ).apply_async()
 
 @celery.task()
 def create_new_recurring_report_requests():
