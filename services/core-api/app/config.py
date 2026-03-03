@@ -146,7 +146,6 @@ class Config(object):
     # SqlAlchemy config
     SQLALCHEMY_DATABASE_URI = DB_URL
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    SQLALCHEMY_ENGINE_OPTIONS = {"pool_pre_ping": True}
     SQLALCHEMY_WARN_20 = True
 
     JWT_OIDC_WELL_KNOWN_CONFIG = os.environ.get(
@@ -198,7 +197,7 @@ class Config(object):
     RESTPLUS_JSON = {'indent': None, 'separators': (',', ':')}
     COMPRESS_LEVEL = 9
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    SQLALCHEMY_ENGINE_OPTIONS = {'pool_timeout': 300, 'max_overflow': 20}
+    SQLALCHEMY_ENGINE_OPTIONS = {'pool_timeout': 300, 'max_overflow': 20, 'pool_pre_ping': True}
 
     # Flagsmith
     FLAGSMITH_URL = os.environ.get('FLAGSMITH_URL',
