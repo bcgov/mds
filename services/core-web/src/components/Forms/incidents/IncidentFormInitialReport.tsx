@@ -325,7 +325,7 @@ const IncidentFormInitialReport: FC<IncidentFormInitialReportProps> = ({
                 required
                 placeholder="Enter the number of injuries. If none, enter '0'."
                 component={renderConfig.FIELD}
-                validate={[wholeNumber, maxLength(10)]}
+                validate={[wholeNumber, required, maxLength(10)]}
                 disabled={!isEditMode}
               />
             </Col>
