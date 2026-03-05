@@ -172,13 +172,6 @@ def _process_crr_reports(mine, mine_report_definition, reports, current_date, on
     return created_count, failed_count
 
 @celery.task()
-def create_new_recurring_report_requests_chain():
-    chain(
-        create_new_recurring_report_requests.s(),
-        create_new_recurring_crr_report_requests.si()
-    ).apply_async()
-
-@celery.task()
 def create_new_recurring_report_requests():
     """
     Create new recurring report requests based on permit requirements.
@@ -245,14 +238,27 @@ def create_new_recurring_crr_report_requests():
     current_date = datetime.now().date()
     one_year_from_now = current_date + relativedelta(years=1)
 
-    recurring_reports = MineReport.get_all_recurring_crr_reports()
-    print(f"Found {len(recurring_reports)} recurring CRR reports")
+    query = MineReport.get_all_recurring_crr_reports()
+    batch_size = 100
+    page = 1
+    found_recurring_reports = 0
 
     # Group reports by mine then by mine report definition ID 
     grouped_recurring_reports = defaultdict(lambda: defaultdict(list))
-    for report in recurring_reports:
-        grouped_recurring_reports[report.mine_guid][report.mine_report_definition_id].append(report)
+
+    while True:
+        pagination = query.paginate(page=page, per_page=batch_size, error_out=False)
+        if not pagination.items:
+            break
+
+        for report in pagination.items:
+            grouped_recurring_reports[report.mine_guid][report.mine_report_definition_id].append(report)
+            found_recurring_reports += 1
+
+        page += 1
     
+    print(f"Found {found_recurring_reports} recurring CRR reports")
+
     total_created = 0
     failed_report_requests= []
 

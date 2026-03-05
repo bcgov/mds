@@ -473,7 +473,7 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
         return mine_report
 
     @classmethod
-    def get_all_recurring_crr_reports(cls) -> list[Self]:
+    def get_all_recurring_crr_reports(cls):
         from app.api.mines.reports.models.mine_report_definition import MineReportDefinition
         from app.api.mines.permits.permit.models.mine_permit_xref import MinePermitXref
         from app.api.mines.permits.permit.models.permit import Permit
@@ -539,7 +539,6 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
                 ),
                 has_non_expired_compliance_article,
             )
-            .all()
         )
 
     @validates('mine_report_definition_id')
