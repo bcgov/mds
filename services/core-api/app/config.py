@@ -287,9 +287,13 @@ class Config(object):
             'task': 'app.api.parties.party_appt.tasks.notify_and_update_expired_party_appointments',
             'schedule': crontab(minute="*/15"),
         },
-        'create_new_recurring_report_requests_chain': {
-            'task': 'app.api.mines.reports.tasks.create_new_recurring_report_requests_chain',
+        'create_new_recurring_report_requests': {
+            'task': 'app.api.mines.reports.tasks.create_new_recurring_report_requests',
             'schedule': crontab(hour="10", minute="0"),  # Run daily at 2am (10am UTC)
+        },
+        'create_new_recurring_crr_report_requests': {
+            'task': 'app.api.mines.reports.tasks.create_new_recurring_crr_report_requests',
+            'schedule': crontab(hour="11", minute="0"),  # Run daily at 3am (11am UTC)
         },
         'push_untp_map_data_to_publisher': {
             'task': 'app.api.verifiable_credentials.manager.push_untp_map_data_to_publisher',
