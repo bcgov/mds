@@ -241,6 +241,8 @@ class EmailService():
             return tracking_records
 
         for recipient_email in recipients:
+            if not recipient_email:
+                continue
             tracking_record = EmailTracking.create(
                 recipient_email=recipient_email,
                 recipient_type=recipient_type,
@@ -287,6 +289,15 @@ class EmailService():
         elif is_not_prod and not Config.EMAIL_RECIPIENT_OVERRIDE:
             current_app.logger.info(
                 'Not sending email: Recipient override must be set when not in prod environment!')
+            return
+
+        # Filter out None or empty string recipients
+        recipients = [r for r in (recipients or []) if r]
+        cc = [c for c in (cc or []) if c]
+        bcc = [b for b in (bcc or []) if b]
+
+        if not recipients and not cc and not bcc:
+            current_app.logger.info('Not sending email: No valid recipients found.')
             return
 
         original_recipients = recipients
@@ -410,6 +421,15 @@ class EmailService():
         elif is_not_prod and not Config.EMAIL_RECIPIENT_OVERRIDE:
             current_app.logger.info(
                 'Not sending email: Recipient override must be set when not in prod environment!')
+            return
+
+        # Filter out None or empty string recipients
+        recipients = [r for r in (recipients or []) if r]
+        cc = [c for c in (cc or []) if c]
+        bcc = [b for b in (bcc or []) if b]
+
+        if not recipients and not cc and not bcc:
+            current_app.logger.info('Not sending email: No valid recipients found.')
             return
 
         original_recipients = recipients
