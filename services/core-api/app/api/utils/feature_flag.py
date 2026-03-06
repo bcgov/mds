@@ -20,6 +20,7 @@ class Feature(Enum):
     VC_W3C = "vc_w3c"
     AMS_AGENT = 'ams_agent'
     RECURRING_REPORTS = 'recurring_reports'
+    RECURRING_CRR_REPORTS= 'recurring_crr_reports'
     MINESPACE_SIGNUP = 'minespace_signup'
     GLOBAL_SEARCH_V2 = 'global_search_v2'
 

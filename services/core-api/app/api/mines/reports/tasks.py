@@ -230,7 +230,7 @@ def create_new_recurring_crr_report_requests():
     This task finds all recurring CRR reports and creates missing reports
     for the next year, ensuring no duplicates are created.
     """
-    if not is_feature_enabled(Feature.RECURRING_REPORTS):
+    if not is_feature_enabled(Feature.RECURRING_CRR_REPORTS):
         print("Task exiting early - feature flag is disabled")
         return {"status": "skipped", "reason": "feature flag disabled"} 
     
