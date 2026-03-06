@@ -66,7 +66,7 @@ def _calculate_missing_crr_report_due_dates(mine_report_due_date_type, existing_
 def _create_report_for_due_date(requirement, due_date):
     """Create a single mine report for the given due date."""
     mine_report = MineReport.create_from_permit_report_requirement(requirement, due_date)
-    mine_report.submission_year = due_date.year
+    mine_report.submission_year = due_date.year - 1 if due_date.month <= 3 else due_date.year
     mine_report.save()
     db.session.commit()
     return mine_report
@@ -157,7 +157,7 @@ def _process_crr_reports(mine, mine_report_definition, reports, current_date, on
                 system_created=True
             )
 
-            new_mine_report.submission_year = due_date.year
+            new_mine_report.submission_year = due_date.year - 1 if due_date.month <= 3 else due_date.year
             new_mine_report.save()
             db.session.commit()
 
