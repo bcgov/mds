@@ -159,18 +159,7 @@ class MineReportListResource(Resource, UserMixin):
                 }
 
         # Base query; ordering is applied via ReportFilterHelper
-        query = (
-            MineReport.query
-            .outerjoin(MineReportDefinition)
-            .filter(
-                MineReport.mine_guid == mine_guid,
-                MineReport.deleted_ind == False,
-                or_(
-                    MineReport.mine_report_definition_id.is_(None),
-                    MineReportDefinition.active_ind.is_(True),
-                )
-            )
-        )
+        query = MineReport.query.filter_by(mine_guid=mine_guid, deleted_ind=False)
         
         if requested_types:
             conditions = []

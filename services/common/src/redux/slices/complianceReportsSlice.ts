@@ -74,7 +74,7 @@ const complianceReportSlice = createAppSlice({
         thunkApi.dispatch(showLoading());
         const resp = await CustomAxios({
           errorToastMessage: "Failed to load compliance reports",
-        }).get(`${ENVIRONMENT.apiUrl}${API.MINE_REPORT_DEFINITIONS({ ...searchParams, active_ind: [true] })}`, headers);
+        }).get(`${ENVIRONMENT.apiUrl}${API.MINE_REPORT_DEFINITIONS(searchParams ?? {})}`, headers);
         thunkApi.dispatch(hideLoading());
         return resp.data;
       },

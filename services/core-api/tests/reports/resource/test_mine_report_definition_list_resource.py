@@ -6,6 +6,7 @@ from app.api.compliance.models.compliance_article import ComplianceArticle
 from app.api.mines.reports.models.mine_report_definition import MineReportDefinition
 from app.api.mines.reports.models.mine_report_definition_compliance_article_xref import \
     MineReportDefinitionComplianceArticleXref
+from app.api.mines.reports.models.mine_report import MineReport
 
 
 # test non-paginated results
@@ -97,7 +98,20 @@ def test_post_mine_report_definition_pagination(test_client, db_session, auth_he
 # test filters
 def test_mine_report_definition_active_filter(test_client, db_session, auth_headers):
     all_records = db_session.query(MineReportDefinition).all()
-    all_record_count = len(all_records)
+
+    expected_records = []
+    for record in all_records:
+        if record.active_ind:
+            expected_records.append(record)
+        else:
+            has_active_report = db_session.query(MineReport).filter(
+                MineReport.mine_report_definition_id == record.mine_report_definition_id,
+                MineReport.deleted_ind == False
+            ).first()
+
+            if has_active_report:
+                expected_records.append(record)
+                
     request_all_data = "active_ind=true&active_ind=false&show_expired=true"
     request_inactive_data = "active_ind=false&show_expired=true"
     print(request_all_data)
@@ -109,10 +123,9 @@ def test_mine_report_definition_active_filter(test_client, db_session, auth_head
     get_all_data = json.loads(get_all_resp.data.decode())
 
     assert get_all_resp.status_code == 200
-    assert len(get_all_data['records']) == all_record_count
+    assert len(get_all_data['records']) == len(expected_records)
 
-    inactive_records = list(x for x in all_records if x.active_ind == False)
-    inactive_record_count = len(inactive_records)
+    inactive_records = list(x for x in expected_records if x.active_ind == False)
 
     get_inactive_resp = test_client.get(
         f'/mines/reports/definitions?{request_inactive_data}',
@@ -121,7 +134,7 @@ def test_mine_report_definition_active_filter(test_client, db_session, auth_head
     get_inactive_data = json.loads(get_inactive_resp.data.decode())
 
     assert get_inactive_resp.status_code == 200
-    assert len(get_inactive_data['records']) == inactive_record_count
+    assert len(get_inactive_data['records']) == len(inactive_records)
 
 def test_mine_report_definition_section_filter(test_client, db_session, auth_headers):    
     section_search = "2.3.1"
@@ -343,3 +356,31 @@ def test_post_mine_report_definition_missing_required_fields(test_client, auth_h
     # Assertions
     assert post_resp.status_code == 400
     assert "Input payload validation failed" in post_data['message']
+
+# Test inactive MineReportDefinitions should only appear if they have at least one active MineReport associated to it
+def test_mine_report_definition_inactive_without_reports_filtered(test_client, db_session, auth_headers):
+    all_definitions = db_session.query(MineReportDefinition).all()
+
+    expected_definitions = []
+    for definition in all_definitions:
+        if definition.active_ind:
+            expected_definitions.append(definition)
+        else:
+            has_active_report = db_session.query(MineReport).filter(
+                MineReport.mine_report_definition_id == definition.mine_report_definition_id,
+                MineReport.deleted_ind == False
+            ).first()
+
+            if has_active_report:
+                expected_definitions.append(definition)
+
+    request_data = "active_ind=true&active_ind=false&show_expired=true"
+
+    get_resp = test_client.get(
+        f'/mines/reports/definitions?{request_data}',
+        headers=auth_headers['full_auth_header'],
+    )
+    get_data = json.loads(get_resp.data.decode())
+
+    assert get_resp.status_code == 200
+    assert len(get_data['records']) == len(expected_definitions)
