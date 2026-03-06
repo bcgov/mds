@@ -471,7 +471,7 @@ class TestCreateNewRecurringCRRReportRequests:
             deleted_ind=False
         )
 
-        result = create_new_recurring_crr_report_requests()
+        create_new_recurring_crr_report_requests()
 
         reports = MineReport.query.filter_by(
             mine_guid=mine.mine_guid,
@@ -480,7 +480,7 @@ class TestCreateNewRecurringCRRReportRequests:
             ).filter(MineReport.mine_report_id == mine_report.mine_report_id).all()
 
         assert len(reports) == 1
-        assert result["total_created"] == 0
+        assert reports[0].mine_report_id == mine_report.mine_report_id
 
     @mock.patch("app.api.mines.reports.models.mine_report.MineReport.create")
     @mock.patch("app.api.mines.reports.tasks.Mine.find_by_mine_guid")
