@@ -6,6 +6,7 @@ node_modules/
 pipeline/build/
 coverage/
 .idea/
+.agents/
 migrations/sql/afterMigrate__88__create_schema_users.sql
 __pycache__
 *.pytest_cache

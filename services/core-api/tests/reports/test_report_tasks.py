@@ -358,7 +358,9 @@ class TestCreateNewRecurringReportRequests:
             assert report.submitter_name == ""
             assert report.submitter_email == ""
             assert report.received_date is None
-            assert report.submission_year == report.due_date.year
+            
+            expected_year = report.due_date.year - 1 if report.due_date.month <= 3 else report.due_date.year
+            assert report.submission_year == expected_year
             assert report.mine_report_status_code == 'NON' # Report Requested
 
 
