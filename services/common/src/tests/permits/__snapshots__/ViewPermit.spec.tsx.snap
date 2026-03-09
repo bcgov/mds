@@ -2,7 +2,7 @@
 
 exports[`ViewPermit renders properly 1`] = `
 <div
-  class="fixed-tabs-container"
+  class="fixed-tabs-container permit-tabs-container"
 >
   <div
     class="common-page"
