@@ -137,6 +137,20 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
                 due_dt >= april_1_2025 and
                 self.mine_report_status_code == 'NON')
 
+    @is_overdue.expression
+    def is_overdue(cls):
+        from sqlalchemy import case
+        april_1_2025 = date(2025, 4, 1)
+        return case(
+            (and_(
+                cls.due_date.isnot(None),
+                cls.due_date < func.now(),
+                cls.due_date >= april_1_2025,
+                cls.mine_report_status_code == 'NON'
+            ), True),
+            else_=False
+        )
+
     @hybrid_property
     def report_type(self):
         return "PRR" if self.permit_condition_category_code or self.mine_report_permit_requirement_id else "CRR"

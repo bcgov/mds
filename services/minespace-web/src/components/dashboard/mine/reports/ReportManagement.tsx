@@ -46,6 +46,7 @@ const defaultParams: MineReportParams = {
     Strings.MINE_REPORTS_TYPE.codeRequiredReports,
     Strings.MINE_REPORTS_TYPE.permitRequiredReports,
   ],
+  sort_overdue: true,
 };
 
 const ReportManagement: FC = () => {

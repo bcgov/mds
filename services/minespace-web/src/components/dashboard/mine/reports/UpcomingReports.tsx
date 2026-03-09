@@ -44,7 +44,7 @@ const UpcomingReports: FC<UpcomingReportsProps> = ({ mineGuid, openReport }) => 
             Strings.MINE_REPORTS_TYPE.codeRequiredReports,
             Strings.MINE_REPORTS_TYPE.permitRequiredReports,
           ],
-          params: { page, per_page: REPORTS_PAGE_SIZE, time_range: range },
+          params: { page, per_page: REPORTS_PAGE_SIZE, time_range: range, sort_overdue: true },
         })
       )
     ).then(() => setIsLoaded(true));

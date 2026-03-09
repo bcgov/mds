@@ -144,6 +144,9 @@ class ReportFilterHelper:
 
         filtered_query = apply_filters(query, conditions)
 
+        if args.get('sort_overdue'):
+            filtered_query = filtered_query.order_by(desc(MineReport.is_overdue))
+
         if args['sort_field'] == 'mine_report_status_code' or args['sort_field'] == 'mine_report_status':
             if args['sort_dir'] == 'asc':
                 filtered_query = filtered_query.order_by(

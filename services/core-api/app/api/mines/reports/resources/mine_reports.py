@@ -115,6 +115,7 @@ class MineReportListResource(Resource, UserMixin):
             'major': request.args.get('major', type=str),
             'region': request.args.getlist('region', type=str),
             'permit_guid': request.args.get('permit_guid', type=str),
+            'sort_overdue': request.args.get('sort_overdue', type=str) == "true",
         }
 
         mrd_category = request.args.get('mine_report_definition_category')
