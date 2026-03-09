@@ -26,7 +26,7 @@ import {
   faUsers,
 } from "@fortawesome/pro-light-svg-icons";
 
-export const getMineDashboardRoutes = (showApplications, overdueReportsCount?: number) =>
+export const getMineDashboardRoutes = (showApplications, reportsBadgeCount?: number) =>
   [
     {
       key: "overview",
@@ -57,7 +57,7 @@ export const getMineDashboardRoutes = (showApplications, overdueReportsCount?: n
       label: "Reports",
       icon: (
         <Badge
-          count={overdueReportsCount}
+          count={reportsBadgeCount}
           overflowCount={99}
           showZero={false}
           style={{ backgroundColor: "#d9363e" }}
