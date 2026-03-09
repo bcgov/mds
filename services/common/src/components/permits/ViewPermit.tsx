@@ -304,7 +304,7 @@ const ViewPermit: FC = () => {
   ) : null;
 
   return (
-    <div className="fixed-tabs-container">
+    <div className="fixed-tabs-container permit-tabs-container">
       <CommonPageHeader
         entityLabel={permit?.permit_no ?? ""}
         entityType="Permit"

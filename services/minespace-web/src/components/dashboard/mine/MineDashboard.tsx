@@ -16,7 +16,7 @@ import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFla
 import { Feature } from "@mds/common/utils";
 import {
   fetchMineReportStats,
-  getOverdueReportsCountByMineGuid,
+  getMineReportStatsByMineGuid,
 } from "@mds/common/redux/slices/mineReportStatsSlice";
 
 const MineDashboard: FC = () => {
@@ -58,7 +58,11 @@ const MineDashboard: FC = () => {
     }
   }, [id]);
 
-  const overdueReports = useSelector(getOverdueReportsCountByMineGuid(mine?.mine_guid));
+  const stats = useSelector(getMineReportStatsByMineGuid(mine?.mine_guid));
+  const overdueReports = stats?.overdue_reports ?? 0;
+  const dueNext90 = stats?.due_next_90_days ?? 0;
+  const reportsBadgeCount = Number(overdueReports) + Number(dueNext90);
+
   useEffect(() => {
     if (mine?.mine_guid && showReportStats) {
       dispatch(fetchMineReportStats(mine.mine_guid));
@@ -68,7 +72,7 @@ const MineDashboard: FC = () => {
   const dynamicRoute = (key: string) => {
     return MINE_DASHBOARD.dynamicRoute(mine?.mine_guid, key, "");
   };
-  const items = getMineDashboardRoutes(showApplications, overdueReports).map((item) => ({
+  const items = getMineDashboardRoutes(showApplications, reportsBadgeCount).map((item) => ({
     ...item,
     path: dynamicRoute(item.key),
   }));

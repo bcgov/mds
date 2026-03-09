@@ -404,7 +404,7 @@ def test_get_upcoming_reports_for_mine(test_client, db_session, auth_headers):
     past_due = MineReportFactory(
         mine=mine,
         mine_report_submissions=0,
-        due_date=today - timedelta(days=1),  # yesterday → should be excluded when upcoming=true
+        due_date=today - timedelta(days=1),  # yesterday → should be included when upcoming=true
         received_date=None,
     )
     far_future = MineReportFactory(
@@ -426,7 +426,7 @@ def test_get_upcoming_reports_for_mine(test_client, db_session, auth_headers):
 
     assert str(in_window_1.mine_report_guid) in returned
     assert str(in_window_2.mine_report_guid) in returned
-    assert str(past_due.mine_report_guid) not in returned
+    assert str(past_due.mine_report_guid) in returned
     assert str(far_future.mine_report_guid) not in returned
 
 

@@ -7,7 +7,7 @@ from app.api.mines.reports.models.mine_report import MineReport
 from app.api.mines.reports.models.mine_report_category import MineReportCategory
 from app.api.mines.reports.models.mine_report_category_xref import MineReportCategoryXref
 from app.api.mines.reports.models.mine_report_definition import MineReportDefinition
-from sqlalchemy import case
+from sqlalchemy import case, or_, and_
 from app.api.mines.permits.permit_conditions.models.permit_condition_category import PermitConditionCategory
 from app.api.mines.reports.models.mine_report_permit_requirement import MineReportPermitRequirement
 from app.api.mines.permits.permit.models.permit import Permit
@@ -63,13 +63,13 @@ class ReportFilterHelper:
 
         if args["report_type"] or (args['sort_field'] and sort_models[
             args['sort_field']] in ['MineReportCategoryXref', 'MineReportDefinition'] and not mine_guid):
-            query = query.join(
+            query = query.outerjoin(
                 MineReportDefinition, MineReport.mine_report_definition_id ==
                                       MineReportDefinition.mine_report_definition_id)
-            query = query.join(
+            query = query.outerjoin(
                 MineReportCategoryXref, MineReportDefinition.mine_report_definition_id ==
                                         MineReportCategoryXref.mine_report_definition_id)
-            query = query.join(
+            query = query.outerjoin(
                 MineReportCategory, MineReportCategoryXref.mine_report_category ==
                                     MineReportCategory.mine_report_category)
 
@@ -80,9 +80,12 @@ class ReportFilterHelper:
             conditions.append(ReportFilterHelper.build_filter('Mine', 'mine_region', 'in', args["region"]))
 
         if args["report_type"]:
-            conditions.append(
-                ReportFilterHelper.build_filter('MineReportCategoryXref', 'mine_report_category', 'in',
-                                                args["report_type"]))
+            query = query.filter(
+                or_(
+                    MineReportCategoryXref.mine_report_category.in_(args["report_type"]),
+                    MineReport.permit_condition_category_code.in_(args["report_type"])
+                )
+            )
 
         if args["report_name"]:
             report_name = args["report_name"][0]
@@ -142,7 +145,24 @@ class ReportFilterHelper:
         if args.get('permit_guid'):
             query = query.filter(MineReport.permit_guid == args["permit_guid"])
 
+        if args.get('is_upcoming_view'):
+            from datetime import date
+            upcoming_window_end = args.get('upcoming_window_end', date.today())
+            query = query.filter(
+                or_(
+                    MineReport.is_overdue == True,
+                    and_(
+                        MineReport.due_date >= date.today(),
+                        MineReport.due_date <= upcoming_window_end,
+                        MineReport.mine_report_status_code == 'NON'
+                    )
+                )
+            )
+
         filtered_query = apply_filters(query, conditions)
+
+        if args.get('sort_overdue'):
+            filtered_query = filtered_query.order_by(desc(MineReport.is_overdue))
 
         if args['sort_field'] == 'mine_report_status_code' or args['sort_field'] == 'mine_report_status':
             if args['sort_dir'] == 'asc':

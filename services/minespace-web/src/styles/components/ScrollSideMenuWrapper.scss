@@ -127,3 +127,13 @@
     }
   }
 }
+
+.permit-tabs-container .fixed-tabs-tabs {
+  &>.ant-tabs-nav {
+    top: 154px !important;
+  }
+
+  &>.ant-tabs-content-holder {
+    margin-top: 154px;
+  }
+}

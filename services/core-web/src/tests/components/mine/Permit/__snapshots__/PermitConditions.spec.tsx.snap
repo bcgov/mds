@@ -3,7 +3,7 @@
 exports[`PermitConditions renders properly 1`] = `
 <div>
   <div
-    class="fixed-tabs-container"
+    class="fixed-tabs-container permit-tabs-container"
   >
     <div
       class="common-page"

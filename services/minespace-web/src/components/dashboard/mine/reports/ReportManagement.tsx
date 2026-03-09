@@ -46,6 +46,7 @@ const defaultParams: MineReportParams = {
     Strings.MINE_REPORTS_TYPE.codeRequiredReports,
     Strings.MINE_REPORTS_TYPE.permitRequiredReports,
   ],
+  sort_overdue: true,
 };
 
 const ReportManagement: FC = () => {
@@ -84,6 +85,9 @@ const ReportManagement: FC = () => {
   const activePermits = stats?.active_permits ?? "";
   const reportsOverdue = stats?.overdue_reports ?? "";
   const reportsDueNext90 = stats?.due_next_90_days ?? "";
+  const upcomingReportsCount = stats
+    ? Number(stats.due_next_90_days || 0) + Number(stats.overdue_reports || 0)
+    : undefined;
 
   const openReport = (reportRecord: IMineReport, isEditMode: boolean) => {
     history.push(
@@ -250,7 +254,7 @@ const ReportManagement: FC = () => {
                       <Row gutter={8}>
                         <Col>Upcoming Reports</Col>
                         <Col>
-                          <Badge count={reportsDueNext90 ?? undefined} />
+                          <Badge count={upcomingReportsCount} />
                         </Col>
                       </Row>
                     ),
