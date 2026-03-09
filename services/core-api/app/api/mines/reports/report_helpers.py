@@ -7,7 +7,7 @@ from app.api.mines.reports.models.mine_report import MineReport
 from app.api.mines.reports.models.mine_report_category import MineReportCategory
 from app.api.mines.reports.models.mine_report_category_xref import MineReportCategoryXref
 from app.api.mines.reports.models.mine_report_definition import MineReportDefinition
-from sqlalchemy import case
+from sqlalchemy import case, or_, and_
 from app.api.mines.permits.permit_conditions.models.permit_condition_category import PermitConditionCategory
 from app.api.mines.reports.models.mine_report_permit_requirement import MineReportPermitRequirement
 from app.api.mines.permits.permit.models.permit import Permit
@@ -141,6 +141,20 @@ class ReportFilterHelper:
 
         if args.get('permit_guid'):
             query = query.filter(MineReport.permit_guid == args["permit_guid"])
+
+        if args.get('is_upcoming_view'):
+            from datetime import date
+            upcoming_window_end = args.get('upcoming_window_end', date.today())
+            query = query.filter(
+                or_(
+                    MineReport.is_overdue == True,
+                    and_(
+                        MineReport.due_date >= date.today(),
+                        MineReport.due_date <= upcoming_window_end,
+                        MineReport.mine_report_status_code == 'NON'
+                    )
+                )
+            )
 
         filtered_query = apply_filters(query, conditions)
 

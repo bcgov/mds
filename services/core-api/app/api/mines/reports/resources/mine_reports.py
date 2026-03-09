@@ -146,11 +146,9 @@ class MineReportListResource(Resource, UserMixin):
             else:
                 end_date = date.today() + timedelta(days=365)
 
-            # Enforce due date to be strictly in the future within the window, unless caller already set
-            if not args['due_date_after']:
-                args['due_date_after'] = date.today().isoformat()
-            if not args['due_date_before']:
-                args['due_date_before'] = end_date.isoformat()
+            # Set an explicit upcoming view flag for report_helpers to process
+            args['is_upcoming_view'] = True
+            args['upcoming_window_end'] = end_date
 
             # If no explicit report types provided, default to CRR + PRR for upcoming
             if not requested_types:
