@@ -63,13 +63,13 @@ class ReportFilterHelper:
 
         if args["report_type"] or (args['sort_field'] and sort_models[
             args['sort_field']] in ['MineReportCategoryXref', 'MineReportDefinition'] and not mine_guid):
-            query = query.join(
+            query = query.outerjoin(
                 MineReportDefinition, MineReport.mine_report_definition_id ==
                                       MineReportDefinition.mine_report_definition_id)
-            query = query.join(
+            query = query.outerjoin(
                 MineReportCategoryXref, MineReportDefinition.mine_report_definition_id ==
                                         MineReportCategoryXref.mine_report_definition_id)
-            query = query.join(
+            query = query.outerjoin(
                 MineReportCategory, MineReportCategoryXref.mine_report_category ==
                                     MineReportCategory.mine_report_category)
 
@@ -80,9 +80,12 @@ class ReportFilterHelper:
             conditions.append(ReportFilterHelper.build_filter('Mine', 'mine_region', 'in', args["region"]))
 
         if args["report_type"]:
-            conditions.append(
-                ReportFilterHelper.build_filter('MineReportCategoryXref', 'mine_report_category', 'in',
-                                                args["report_type"]))
+            query = query.filter(
+                or_(
+                    MineReportCategoryXref.mine_report_category.in_(args["report_type"]),
+                    MineReport.permit_condition_category_code.in_(args["report_type"])
+                )
+            )
 
         if args["report_name"]:
             report_name = args["report_name"][0]
