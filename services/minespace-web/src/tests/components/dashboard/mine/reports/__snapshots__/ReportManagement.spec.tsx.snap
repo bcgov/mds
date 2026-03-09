@@ -269,7 +269,7 @@ exports[`ReportManagement renders and matches snapshot 1`] = `
                         <sup
                           class="ant-scroll-number ant-badge-count"
                           data-show="true"
-                          title="5"
+                          title="9"
                         >
                           <span
                             class="ant-scroll-number-only"
@@ -278,7 +278,7 @@ exports[`ReportManagement renders and matches snapshot 1`] = `
                             <span
                               class="ant-scroll-number-only-unit current"
                             >
-                              5
+                              9
                             </span>
                           </span>
                         </sup>
