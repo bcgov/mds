@@ -846,14 +846,18 @@ Object {
                         class="ant-col ant-form-item-label"
                       >
                         <label
-                          class="ant-form-item-required"
+                          class=""
                           for="ADD_EDIT_INCIDENT_number_of_fatalities"
                           title=""
                         >
-                          <div
-                            style="width: 100%;"
-                          >
+                          <div>
                             Number of fatalities
+                             
+                            <span
+                              class="form-item-optional"
+                            >
+                               (optional)
+                            </span>
                           </div>
                         </label>
                       </div>
@@ -3063,14 +3067,18 @@ Object {
                         class="ant-col ant-form-item-label"
                       >
                         <label
-                          class="ant-form-item-required"
+                          class=""
                           for="ADD_EDIT_INCIDENT_number_of_fatalities"
                           title=""
                         >
-                          <div
-                            style="width: 100%;"
-                          >
+                          <div>
                             Number of fatalities
+                             
+                            <span
+                              class="form-item-optional"
+                            >
+                               (optional)
+                            </span>
                           </div>
                         </label>
                       </div>
@@ -5453,14 +5461,18 @@ Object {
                       class="ant-col ant-form-item-label"
                     >
                       <label
-                        class="ant-form-item-required"
+                        class=""
                         for="ADD_EDIT_INCIDENT_number_of_fatalities"
                         title=""
                       >
-                        <div
-                          style="width: 100%;"
-                        >
+                        <div>
                           Number of fatalities
+                           
+                          <span
+                            class="form-item-optional"
+                          >
+                             (optional)
+                          </span>
                         </div>
                       </label>
                     </div>
@@ -7670,14 +7682,18 @@ Object {
                       class="ant-col ant-form-item-label"
                     >
                       <label
-                        class="ant-form-item-required"
+                        class=""
                         for="ADD_EDIT_INCIDENT_number_of_fatalities"
                         title=""
                       >
-                        <div
-                          style="width: 100%;"
-                        >
+                        <div>
                           Number of fatalities
+                           
+                          <span
+                            class="form-item-optional"
+                          >
+                             (optional)
+                          </span>
                         </div>
                       </label>
                     </div>
