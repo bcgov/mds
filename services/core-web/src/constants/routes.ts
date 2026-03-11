@@ -567,7 +567,7 @@ export const ADMIN_PERMIT_CONDITION_TAG_MANAGEMENT = {
 
 export const SEARCH_RESULTS = {
   route: "/search",
-  dynamicRoute: ({ q, t = null }) => (t ? `/search?q=${q}&t=${t}` : `/search?q=${q}`),
+  dynamicRoute: ({ q, t = null }: Record<string, string | null>) => (t ? `/search?q=${q}&t=${t}` : `/search?q=${q}`),
   component: SearchResults,
   helpKey: "Search-Results",
 };
