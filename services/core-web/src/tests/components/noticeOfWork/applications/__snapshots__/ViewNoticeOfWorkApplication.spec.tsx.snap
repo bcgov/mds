@@ -423,7 +423,7 @@ exports[`ViewNoticeOfWorkApplication renders properly 1`] = `
       key="application"
       tab="Application"
     >
-      <withRouter(Connect(ApplicationTab))
+      <ApplicationTab
         fixedTop={false}
         showActionsAndProgress={false}
       />

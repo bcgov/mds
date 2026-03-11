@@ -46,11 +46,7 @@ exports[`NoticeOfWorkPageHeader renders properly 1`] = `
           class="ant-tag"
           title="Lead Inspector: Unassigned"
         >
-          <a
-            disabled=""
-            href="/dashboard/undefined/profile"
-            style="text-decoration: none;"
-          >
+          <span>
             <span
               aria-label="user"
               class="anticon anticon-user padding-sm--right"
@@ -72,7 +68,7 @@ exports[`NoticeOfWorkPageHeader renders properly 1`] = `
               </svg>
             </span>
             Unassigned
-          </a>
+          </span>
         </span>
         <span
           class="ant-tag"
