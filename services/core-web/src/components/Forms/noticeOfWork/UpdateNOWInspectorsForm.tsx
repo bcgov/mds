@@ -1,0 +1,121 @@
+import React, { FC } from "react";
+import { Field } from "@mds/common/components/forms/form";
+import { Button, Popconfirm, Alert } from "antd";
+import { required } from "@mds/common/redux/utils/Validate";
+import * as FORM from "@/constants/forms";
+import { connect } from "react-redux";
+import { MDS_EMAIL } from "@mds/common/constants/strings";
+import { renderConfig } from "@/components/common/config";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+import * as Permission from "@/constants/permissions";
+import FormWrapper from "@mds/common/components/forms/FormWrapper";
+import { INoticeOfWork, IOption } from "@mds/common/interfaces";
+
+interface UpdateNOWInspectorsFormProps {
+  noticeOfWork: INoticeOfWork;
+  inspectors: any[];
+  onSubmit: (values: any) => void | Promise<any>;
+  initialValues?: any;
+  isAdminView: boolean;
+  isEditMode: boolean;
+  setEditMode: (isEditMode: boolean) => void;
+  title: string;
+  noticeOfWorkTierOptions: IOption[];
+}
+
+export const UpdateNOWInspectorsForm: FC<UpdateNOWInspectorsFormProps> = (props) => {
+  return (
+    <div>
+      <FormWrapper
+        name={FORM.UPDATE_NOW_LEAD_INSPECTOR}
+        reduxFormConfig={{
+          touchOnBlur: true,
+        }}
+        onSubmit={props.onSubmit}
+        initialValues={props.initialValues}
+      >
+        <div className="field-title">Lead Inspector</div>
+        <Field
+          id="lead_inspector_party_guid"
+          name="lead_inspector_party_guid"
+          label={
+            !props.isAdminView
+              ? "Assign the Lead Inspector before continuing. This assignment can be updated later under the Administrative tab."
+              : ""
+          }
+          component={renderConfig.GROUPED_SELECT}
+          placeholder="Start typing the Lead Inspector's name"
+          required
+          validate={[required]}
+          data={props.inspectors}
+          disabled={!props.isEditMode}
+        />
+        <div className="field-title">Issuing Inspector</div>
+        <Field
+          id="issuing_inspector_party_guid"
+          name="issuing_inspector_party_guid"
+          label={
+            !props.isAdminView
+              ? "Optionally assign the Issuing Inspector before continuing. This assignment can be updated later under the Administrative tab."
+              : ""
+          }
+          component={renderConfig.GROUPED_SELECT}
+          placeholder="Start typing the Issuing Inspector's name"
+          data={props.inspectors}
+          disabled={!props.isEditMode}
+        />
+        {!props.isEditMode && (
+          <>
+            {props.noticeOfWork?.issuing_inspector?.signature ? (
+              <img
+                src={props.noticeOfWork.issuing_inspector.signature}
+                alt="Signature"
+                style={{ pointerEvents: "none", userSelect: "none" }}
+                height={120}
+              />
+            ) : (
+              <Alert
+                message="No Signature"
+                description={
+                  <>
+                    The signature for the Issuing Inspector has not been provided. Please contact
+                    the MDS team at <a href={`mailto: ${MDS_EMAIL}`}>{MDS_EMAIL}</a>.
+                  </>
+                }
+                type="warning"
+                showIcon
+                style={{ display: "inline-block" }}
+              />
+            )}
+          </>
+        )}
+        {props.isEditMode && (
+          <div className="right center-mobile">
+            {props.isAdminView && (
+              <Popconfirm
+                placement="topRight"
+                title="Are you sure you want to cancel?"
+                onConfirm={() => props.setEditMode(false)}
+                okText="Yes"
+                cancelText="No"
+              >
+                <Button className="full-mobile" type="default">
+                  Cancel
+                </Button>
+              </Popconfirm>
+            )}
+            <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+              <Button htmlType="submit" type="primary">
+                {props.title}
+              </Button>
+            </AuthorizationWrapper>
+          </div>
+        )}
+      </FormWrapper>
+    </div>
+  );
+};
+
+const mapStateToProps = (state) => ({});
+
+export default connect(mapStateToProps)(UpdateNOWInspectorsForm);
