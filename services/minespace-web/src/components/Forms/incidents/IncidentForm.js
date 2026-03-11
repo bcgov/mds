@@ -356,7 +356,6 @@ const renderIncidentDetails = (childProps) => {
           label="Number of fatalities"
           id="number_of_fatalities"
           name="number_of_fatalities"
-          required
           component={renderConfig.FIELD}
           validate={[wholeNumber, maxLength(10)]}
           disabled={formDisabled}

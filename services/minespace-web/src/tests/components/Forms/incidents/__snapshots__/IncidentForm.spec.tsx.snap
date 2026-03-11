@@ -272,7 +272,6 @@ exports[`IncidentForm renders properly 1`] = `
             id="number_of_fatalities"
             label="Number of fatalities"
             name="number_of_fatalities"
-            required={true}
             validate={
               Array [
                 [Function],
