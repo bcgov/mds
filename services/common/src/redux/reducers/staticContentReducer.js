@@ -60,6 +60,7 @@ const initialState = {
   projectSummaryPermitTypes: [],
   projectDecisionPackageStatusCodes: [],
   municipalityOptions: [],
+  noticeOfWorkTierOptions: [],
 };
 
 export const staticContentReducer = (state = initialState, action) => {
@@ -170,6 +171,7 @@ export const getProjectSummaryPermitTypes = (state) =>
 export const getProjectDecisionPackageStatusCodes = (state) =>
   state[STATIC_CONTENT].projectDecisionPackageStatusCodes;
 export const getMunicipalityOptions = (state) => state[STATIC_CONTENT].municipalityOptions;
+export const getNoticeOfWorkTierOptions = (state) => state[STATIC_CONTENT].noticeOfWorkTierOptions;
 
 const isStaticContentLoaded = (state) =>
   Object.keys(state)

@@ -52,6 +52,10 @@ export interface INoticeOfWork {
   latitude?: string;
   contacts?: INoticeOfWorkContact[];
   application_progress?: INoticeOfWorkApplicationProgress[];
+  now_application_tier_code?: string;
+  now_application_tier_description?: string;
+  application_type_code?: string;
+  now_application_status_code?: string;
 }
 
 export interface IConditionSection {
