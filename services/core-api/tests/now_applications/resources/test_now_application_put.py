@@ -28,7 +28,8 @@ class TestNOWApplication:
         assert decimal.Decimal(put_data['latitude']) == decimal.Decimal(new_latitude)
 
     @patch('app.api.now_applications.resources.now_application_resource.NROSNOWStatusService.nros_now_status_update')
-    def test_put_now_application_tier_code(self, mock_nros, test_client, db_session, auth_headers):
+    @patch('app.api.now_applications.resources.now_application_resource.DocumentManagerService.importNoticeOfWorkSubmissionDocuments')
+    def test_put_now_application_tier_code(self, mock_import_docs, mock_nros, test_client, db_session, auth_headers):
         now_application = NOWApplicationFactory()
         test_application = NOWApplicationIdentityFactory(now_application=now_application)
         assert test_application.now_application
