@@ -5,11 +5,11 @@ import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 import * as Permission from "@/constants/permissions";
 import { EDIT_OUTLINE } from "@/constants/assets";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
-import { INoticeOfWork, IOption } from "@mds/common/interfaces";
+import { INoticeOfWork, IOption, IGroupedDropdownList } from "@mds/common/interfaces";
 
 interface AssignInspectorsProps {
   noticeOfWork: INoticeOfWork;
-  inspectors: IOption[];
+  inspectors: (IOption | IGroupedDropdownList)[];
   handleUpdateInspectors: (values: any, callback: () => void) => void | Promise<any>;
   title: string;
   isEditMode?: boolean;

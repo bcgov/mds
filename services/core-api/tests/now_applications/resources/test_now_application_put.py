@@ -68,3 +68,43 @@ class TestNOWApplication:
 
         # Latest tier should be T2
         assert test_application.now_application.now_application_tier_code == 'T2'
+
+    @patch('app.api.now_applications.resources.now_application_resource.NROSNOWStatusService.nros_now_status_update')
+    @patch('app.api.now_applications.resources.now_application_resource.DocumentManagerService.importNoticeOfWorkSubmissionDocuments')
+    def test_put_now_application_tier_invalid_code(self, mock_import_docs, mock_nros, test_client, db_session, auth_headers):
+        now_application = NOWApplicationFactory()
+        test_application = NOWApplicationIdentityFactory(now_application=now_application)
+        data = marshal(test_application.now_application, NOW_APPLICATION_MODEL)
+
+        data['now_application_tier_code'] = 'INV'
+        put_resp = test_client.put(
+            f'/now-applications/{test_application.now_application_guid}',
+            json=data,
+            headers=auth_headers['full_auth_header'])
+        
+        assert put_resp.status_code == 400
+        assert b'Invalid Tier Category code: INV' in put_resp.data
+
+    @patch('app.api.now_applications.resources.now_application_resource.NROSNOWStatusService.nros_now_status_update')
+    @patch('app.api.now_applications.resources.now_application_resource.DocumentManagerService.importNoticeOfWorkSubmissionDocuments')
+    def test_put_now_application_tier_null_code_on_existing_tier(self, mock_import_docs, mock_nros, test_client, db_session, auth_headers):
+        now_application = NOWApplicationFactory()
+        test_application = NOWApplicationIdentityFactory(now_application=now_application)
+        data = marshal(test_application.now_application, NOW_APPLICATION_MODEL)
+
+        # First set it
+        data['now_application_tier_code'] = 'T1'
+        test_client.put(
+            f'/now-applications/{test_application.now_application_guid}',
+            json=data,
+            headers=auth_headers['full_auth_header'])
+        
+        # Now try to set it to null
+        data['now_application_tier_code'] = None
+        put_resp = test_client.put(
+            f'/now-applications/{test_application.now_application_guid}',
+            json=data,
+            headers=auth_headers['full_auth_header'])
+        
+        assert put_resp.status_code == 400
+        assert b'Tier Category code cannot be null.' in put_resp.data

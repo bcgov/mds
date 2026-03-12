@@ -255,7 +255,9 @@ export class AdministrativeTab extends Component {
           .fetchImportedNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid)
           .then(() => {
             this.setState({ isInspectorsLoaded: true });
-            finalAction();
+            if (finalAction) {
+              finalAction();
+            }
           });
       });
   };
@@ -273,7 +275,9 @@ export class AdministrativeTab extends Component {
           .fetchImportedNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid)
           .then(() => {
             this.setState({ isInspectorsLoaded: true });
-            finalAction();
+            if (finalAction) {
+              finalAction();
+            }
           });
       });
   };

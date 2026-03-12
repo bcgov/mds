@@ -9,11 +9,11 @@ import { renderConfig } from "@/components/common/config";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
-import { INoticeOfWork, IOption } from "@mds/common/interfaces";
+import { INoticeOfWork, IOption, IGroupedDropdownList } from "@mds/common/interfaces";
 
 interface UpdateNOWInspectorsFormProps {
   noticeOfWork: INoticeOfWork;
-  inspectors: any[];
+  inspectors: (IOption | IGroupedDropdownList)[];
   onSubmit: (values: any) => void | Promise<any>;
   initialValues?: any;
   isAdminView: boolean;
@@ -116,6 +116,5 @@ export const UpdateNOWInspectorsForm: FC<UpdateNOWInspectorsFormProps> = (props)
   );
 };
 
-const mapStateToProps = (state) => ({});
 
-export default connect(mapStateToProps)(UpdateNOWInspectorsForm);
+export default UpdateNOWInspectorsForm;

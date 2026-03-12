@@ -36,6 +36,7 @@ import ReviewAdminAmendmentApplication from "@/components/noticeOfWork/applicati
 import { EDIT_OUTLINE } from "@/constants/assets";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { Feature } from "@mds/common/utils/featureFlag";
+import { INoticeOfWorkApplication } from "@mds/common/src/interfaces/noticeOfWorkApplication.interface";
 
 export interface ApplicationTabProps {
   fixedTop: boolean;
@@ -64,7 +65,7 @@ export const ApplicationTab: FC<ApplicationTabProps> = ({
   const noticeOfWork = useAppSelector(getNoticeOfWork);
   const originalNoticeOfWork = useAppSelector(getOriginalNoticeOfWork);
   const importNowSubmissionDocumentsJob = useAppSelector(getImportNowSubmissionDocumentsJob);
-  const formValues = useAppSelector(getFormValues(FORM.EDIT_NOTICE_OF_WORK));
+  const formValues: Partial<INoticeOfWorkApplication> = useAppSelector(getFormValues(FORM.EDIT_NOTICE_OF_WORK));
   const formErrors = useAppSelector(getFormSyncErrors(FORM.EDIT_NOTICE_OF_WORK));
   const submitFailed = useAppSelector(hasSubmitFailed(FORM.EDIT_NOTICE_OF_WORK));
   const inspectors = useAppSelector(getDropdownInspectors);
@@ -207,12 +208,8 @@ export const ApplicationTab: FC<ApplicationTabProps> = ({
   };
 
   const handleCancelNOWEdit = () => {
-    if (formValues && formValues.contacts && formValues.contacts.length > 0) {
-      formValues.contacts.map((contact: any) => delete contact.state_modified);
-    }
-
     dispatch(reset(FORM.EDIT_NOTICE_OF_WORK));
-    setIsViewMode((prev) => !prev);
+    setIsViewMode(true);
   };
 
   const renderEditModeNav = () => {
@@ -228,7 +225,7 @@ export const ApplicationTab: FC<ApplicationTabProps> = ({
           noticeOfWork.lead_inspector_party_guid && (
             <>
               <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab="REV">
-                <Button type="secondary" className="form-btn" onClick={toggleEditMode}>
+                <Button className="form-btn" onClick={toggleEditMode}>
                   <img alt="EDIT_OUTLINE" className="padding-sm--right" src={EDIT_OUTLINE} />
                   Edit
                 </Button>
@@ -240,7 +237,7 @@ export const ApplicationTab: FC<ApplicationTabProps> = ({
                   onVisibleChange={handleVisibleChange}
                   visible={menuVisible}
                 >
-                  <Button type="secondary" className="full-mobile">
+                  <Button className="full-mobile">
                     Download
                     <DownOutlined />
                   </Button>
@@ -259,13 +256,12 @@ export const ApplicationTab: FC<ApplicationTabProps> = ({
               cancelText="No"
               disabled={submitting}
             >
-              <Button type="secondary" className="full-mobile" disabled={submitting}>
+              <Button className="full-mobile" disabled={submitting}>
                 Cancel
               </Button>
             </Popconfirm>
             {showErrors && (
               <Button
-                type="danger"
                 className="full-mobile"
                 onClick={() => focusErrorInput(true)}
               >
@@ -273,7 +269,6 @@ export const ApplicationTab: FC<ApplicationTabProps> = ({
               </Button>
             )}
             <Button
-              type="tertiary"
               className="full-mobile"
               onClick={() => handleSaveNOWEdit(false)}
               loading={submitting}
@@ -330,7 +325,7 @@ export const ApplicationTab: FC<ApplicationTabProps> = ({
     return { value: getValue(), edited };
   };
 
-  const handleUpdateInspectors = (values: any) => {
+  const handleUpdateInspectors = (values: any, callback?: () => void) => {
     setIsInspectorsLoaded(false);
     return dispatch(
       updateNoticeOfWorkApplication(
@@ -339,13 +334,16 @@ export const ApplicationTab: FC<ApplicationTabProps> = ({
         "Successfully updated the assigned inspectors"
       )
     ).then(() => {
-      dispatch(fetchImportedNoticeOfWorkApplication(noticeOfWork.now_application_guid)).then(() =>
-        setIsInspectorsLoaded(true)
-      );
+      dispatch(fetchImportedNoticeOfWorkApplication(noticeOfWork.now_application_guid)).then(() => {
+        setIsInspectorsLoaded(true);
+        if (callback) {
+          callback();
+        }
+      });
     });
   };
 
-  const handleUpdateTier = (values: any) => {
+  const handleUpdateTier = (values: any, callback?: () => void) => {
     setIsInspectorsLoaded(false);
     return dispatch(
       updateNoticeOfWorkApplication(
@@ -354,9 +352,12 @@ export const ApplicationTab: FC<ApplicationTabProps> = ({
         "Successfully updated the Tier Category"
       )
     ).then(() => {
-      dispatch(fetchImportedNoticeOfWorkApplication(noticeOfWork.now_application_guid)).then(() =>
-        setIsInspectorsLoaded(true)
-      );
+      dispatch(fetchImportedNoticeOfWorkApplication(noticeOfWork.now_application_guid)).then(() => {
+        setIsInspectorsLoaded(true);
+        if (callback) {
+          callback();
+        }
+      });
     });
   };
 
@@ -375,7 +376,6 @@ export const ApplicationTab: FC<ApplicationTabProps> = ({
             location.pathname.includes("application");
           // handle user navigating away from technical review/draft permit while in editMode
           if (action === "REPLACE" && !onTechnicalReview) {
-            toggleEditMode();
             handleCancelNOWEdit();
           }
           // if the pathname changes while still on the technicalReview tab (via side navigation), don't prompt user

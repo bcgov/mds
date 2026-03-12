@@ -11,6 +11,11 @@ exports[`UpdateNOWTierForm renders properly 1`] = `
     >
       Tier Category 
     </div>
+    <p
+      class="field-title--description"
+    >
+      Tier selection is required for Mineral or Coal exploration applications.
+    </p>
     <div
       class="ant-form-item ant-form-item-with-help"
     >
@@ -27,6 +32,7 @@ exports[`UpdateNOWTierForm renders properly 1`] = `
               class="ant-form-item-control-input-content"
             >
               <div
+                aria-required="true"
                 class="ant-select ant-select-in-form-item ant-select-single ant-select-allow-clear ant-select-show-arrow ant-select-show-search"
                 data-cy="now_application_tier_code"
               >
@@ -42,6 +48,7 @@ exports[`UpdateNOWTierForm renders properly 1`] = `
                       aria-controls="now_application_tier_code_list"
                       aria-haspopup="listbox"
                       aria-owns="now_application_tier_code_list"
+                      aria-required="true"
                       autocomplete="off"
                       class="ant-select-selection-search-input"
                       id="now_application_tier_code"

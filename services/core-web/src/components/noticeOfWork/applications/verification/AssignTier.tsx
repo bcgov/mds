@@ -17,7 +17,7 @@ interface AssignTierProps {
 }
 
 const AssignTier: FC<AssignTierProps> = (props) => {
-  const [isEditMode, setEditMode] = useState(props.isEditMode);
+  const [isEditMode, setEditMode] = useState(props.isEditMode ?? false);
   return (
     <LoadingWrapper condition={props.isLoaded}>
       {!isEditMode && props.isAdminView && (

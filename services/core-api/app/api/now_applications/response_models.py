@@ -805,6 +805,8 @@ NOW_VIEW_MODEL = api.model(
         fields.String,
         'now_application_tier_code':
         fields.String,
+        'now_application_tier_description':
+        fields.String,
     })
 
 NOW_VIEW_MODEL_PROPONENT = api.model(

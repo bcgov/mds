@@ -191,7 +191,17 @@ class NOWApplicationResource(Resource, UserMixin):
             tier_code = data.pop('now_application_tier_code', now_application_identity.now_application.now_application_tier_code)
             tier_desc = data.pop('now_application_tier_description', now_application_identity.now_application.now_application_tier_description)
             
+            if tier_code:
+                from app.api.now_applications.models.notice_of_work_tier import NoticeOfWorkTier
+                if not NoticeOfWorkTier.query.get(tier_code):
+                    raise BadRequest(f'Invalid Tier Category code: {tier_code}')
+
             if now_application_identity.now_application.application_tier:
+                if tier_code is None:
+                    # Decide if null means delete. For now, let's keep the existing record if only description is provided,
+                    # but if tier_code is explicitly null, it's a validation error because it's required in the DB if the record exists.
+                    # If we want to allow deleting, we should handle it here.
+                    raise BadRequest('Tier Category code cannot be null.')
                 now_application_identity.now_application.application_tier.notice_of_work_tier_code = tier_code
                 now_application_identity.now_application.application_tier.description = tier_desc
             elif tier_code:

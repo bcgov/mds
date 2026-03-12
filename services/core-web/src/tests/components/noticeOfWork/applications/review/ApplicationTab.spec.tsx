@@ -63,7 +63,6 @@ const props = {
 
 describe("ApplicationTab", () => {
   it("renders properly", () => {
-    console.log("CONTACTS: ", JSON.stringify(NOW_MOCK.IMPORTED_NOTICE_OF_WORK.contacts));
     const { container } = render(
       <ReduxWrapper initialState={initialState}>
         <BrowserRouter>

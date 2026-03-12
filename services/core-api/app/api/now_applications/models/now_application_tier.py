@@ -13,7 +13,7 @@ class NOWApplicationTier(AuditMixin, Base):
         db.String(3),
         db.ForeignKey('notice_of_work_tier.notice_of_work_tier_code'),
         nullable=False)
-    description = db.Column(db.String(4000), nullable=True)
+    description = db.Column(db.String, nullable=True)
 
     tier = db.relationship('NoticeOfWorkTier', lazy='joined')
 

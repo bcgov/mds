@@ -23,4 +23,17 @@ describe("UpdateNOWTierModal", () => {
         );
         expect(component).toMatchSnapshot();
     });
+
+    it("renders properly with provided initialValues", () => {
+        const initialValues = {
+            now_application_tier_code: "T1",
+            now_application_tier_description: "Test description",
+        };
+        const { container: component } = render(
+            <ReduxWrapper>
+                <UpdateNOWTierModal {...props} {...dispatchProps} initialValues={initialValues} />
+            </ReduxWrapper>
+        );
+        expect(component).toMatchSnapshot();
+    });
 });
