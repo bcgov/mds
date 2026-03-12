@@ -66,9 +66,9 @@ export const UpdateNOWInspectorsForm: FC<UpdateNOWInspectorsFormProps> = (props)
         />
         {!props.isEditMode && (
           <>
-            {props.noticeOfWork?.issuing_inspector?.signature ? (
+            {(props.noticeOfWork as any)?.issuing_inspector?.signature ? (
               <img
-                src={props.noticeOfWork.issuing_inspector.signature}
+                src={(props.noticeOfWork as any).issuing_inspector.signature}
                 alt="Signature"
                 style={{ pointerEvents: "none", userSelect: "none" }}
                 height={120}
