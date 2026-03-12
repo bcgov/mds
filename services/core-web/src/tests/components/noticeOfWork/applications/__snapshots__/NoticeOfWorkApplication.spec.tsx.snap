@@ -18,10 +18,7 @@ exports[`NoticeOfWorkApplication renders properly 1`] = `
             class="ant-tag"
             title="Mine: Unassigned"
           >
-            <a
-              href="/mine-dashboard/20af050d-2a1a-4870-9016-eacabaa68f02/mine-information/general"
-              style="text-decoration: none;"
-            >
+            <span>
               <span
                 aria-label="environment"
                 class="anticon anticon-environment padding-sm--right"
@@ -43,7 +40,7 @@ exports[`NoticeOfWorkApplication renders properly 1`] = `
                 </svg>
               </span>
               Unassigned
-            </a>
+            </span>
           </span>
           <span
             class="ant-tag"

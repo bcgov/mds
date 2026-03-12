@@ -2545,6 +2545,11 @@ exports[`AdministrativeTab renders properly 1`] = `
                                   Tier Category 
                                   (initial intake)
                                 </div>
+                                <p
+                                  class="field-title--description"
+                                >
+                                  Tier selection is required for Mineral or Coal exploration applications.
+                                </p>
                                 <div
                                   class="ant-form-item ant-form-item-with-help"
                                 >

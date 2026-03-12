@@ -138,7 +138,7 @@ export const NoticeOfWorkPageHeader: FC<NoticeOfWorkPageHeaderProps> = (props) =
                 <Button
                   type="text"
                   onClick={openUpdateTierModal}
-                  style={{ marginLeft: "5px", padding: 0, height: "auto" }}
+                  style={{ border: "none", padding: 0, margin: 0, marginLeft: "10px", height: "auto", background: "transparent" }}
                 >
                   <img
                     src={EDIT_OUTLINE}

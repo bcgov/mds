@@ -20,7 +20,6 @@ interface UpdateNOWInspectorsFormProps {
   isEditMode: boolean;
   setEditMode: (isEditMode: boolean) => void;
   title: string;
-  noticeOfWorkTierOptions: IOption[];
 }
 
 export const UpdateNOWInspectorsForm: FC<UpdateNOWInspectorsFormProps> = (props) => {
