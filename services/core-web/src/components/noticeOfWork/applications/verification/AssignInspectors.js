@@ -11,6 +11,7 @@ import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 const propTypes = {
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   inspectors: CustomPropTypes.groupOptions.isRequired,
+  consultationAdvisors: CustomPropTypes.groupOptions.isRequired,
   handleUpdateInspectors: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
   isEditMode: PropTypes.bool,
@@ -44,10 +45,12 @@ const AssignInspectors = (props) => {
               initialValues={{
                 lead_inspector_party_guid: props.noticeOfWork.lead_inspector_party_guid,
                 issuing_inspector_party_guid: props.noticeOfWork.issuing_inspector_party_guid,
+                consultation_advisor_party_guid: props.noticeOfWork.consultation_advisor_party_guid,
               }}
               noticeOfWork={props.noticeOfWork}
               inspectors={props.inspectors}
-              onSubmit={(values) => props.handleUpdateInspectors(values, setEditMode(false))}
+              consultationAdvisors={props.consultationAdvisors}
+              onSubmit={(values) => props.handleUpdateInspectors(values, () => setEditMode(false))}
               title={props.title}
               isAdminView={props.isAdminView}
               isEditMode={isEditMode}

@@ -14,6 +14,7 @@ import FormWrapper from "@mds/common/components/forms/FormWrapper";
 const propTypes = {
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   inspectors: CustomPropTypes.groupOptions.isRequired,
+  consultationAdvisors: CustomPropTypes.groupOptions.isRequired,
   onSubmit: PropTypes.func.isRequired,
   initialValues: PropTypes.any,
   isAdminView: PropTypes.bool.isRequired,
@@ -86,6 +87,20 @@ const UpdateNOWInspectorsForm = (props) => {
             )}
           </>
         )}
+        <div className="field-title">Consultation Advisor</div>
+        <Field
+          id="consultation_advisor_party_guid"
+          name="consultation_advisor_party_guid"
+          label={
+            !props.isAdminView
+              ? "Assign when First Nations engagement requires validation. Otherwise optional."
+              : ""
+          }
+          component={renderConfig.GROUPED_SELECT}
+          placeholder="Start typing the Consultation Advisor's name"
+          data={props.consultationAdvisors}
+          disabled={!props.isEditMode}
+        />
         {props.isEditMode && (
           <div className="right center-mobile">
             {props.isAdminView && (

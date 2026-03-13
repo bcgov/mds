@@ -16,6 +16,7 @@ const dispatchProps = {
 const reducerProps = {
   noticeOfWork: NOW_MOCK.IMPORTED_NOTICE_OF_WORK,
   inspectors: [],
+  consultationAdvisors: [],
   importNowSubmissionDocumentsJob: false,
   fixedTop: false,
   formValues: NOW_MOCK.IMPORTED_NOTICE_OF_WORK,

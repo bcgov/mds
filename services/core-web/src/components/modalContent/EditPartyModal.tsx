@@ -18,16 +18,26 @@ export const EditPartyModal: FC<EditPartyProps> = ({ onSubmit, partyGuid }) => {
   const partyFromStore = parties[partyGuid];
   const party: EditFullPartyFormValues = partyFromStore ? { ...partyFromStore } : null;
   const today = moment().utc();
-  const inspectorInfo = party?.business_role_appts.find(
+  const sortedBusinessRoleAppts = [...party?.business_role_appts].sort(
+    (a, b) => b.party_business_role_appt_id - a.party_business_role_appt_id
+  );
+  const inspectorInfo = sortedBusinessRoleAppts.find(
     (role) =>
       role.party_business_role_code === "INS" &&
       today.isSameOrAfter(role.start_date, "day") &&
       (!role.end_date || today.isBefore(role.end_date, "day"))
   );
 
-  const projectLeadInfo = party?.business_role_appts.find(
+  const projectLeadInfo = sortedBusinessRoleAppts.find(
     (role) =>
       role.party_business_role_code === "PRL" &&
+      today.isSameOrAfter(role.start_date, "day") &&
+      (!role.end_date || today.isBefore(role.end_date, "day"))
+  );
+
+  const consultationAdvisorInfo = sortedBusinessRoleAppts.find(
+    (role) =>
+      role.party_business_role_code === "CNA" &&
       today.isSameOrAfter(role.start_date, "day") &&
       (!role.end_date || today.isBefore(role.end_date, "day"))
   );
@@ -51,6 +61,18 @@ export const EditPartyModal: FC<EditPartyProps> = ({ onSubmit, partyGuid }) => {
     );
     party.project_lead_end_date = projectLeadInfo.end_date
       ? moment(formatDate(projectLeadInfo.end_date)).format("YYYY-MM-DD")
+      : null;
+  }
+
+  if (consultationAdvisorInfo) {
+    party.set_to_consultation_advisor =
+      today.isSameOrAfter(consultationAdvisorInfo.start_date, "day") &&
+      (!consultationAdvisorInfo.end_date || today.isSameOrBefore(consultationAdvisorInfo.end_date, "day"));
+    party.consultation_advisor_start_date = moment(formatDate(consultationAdvisorInfo.start_date)).format(
+      "YYYY-MM-DD"
+    );
+    party.consultation_advisor_end_date = consultationAdvisorInfo.end_date
+      ? moment(formatDate(consultationAdvisorInfo.end_date)).format("YYYY-MM-DD")
       : null;
   }
 

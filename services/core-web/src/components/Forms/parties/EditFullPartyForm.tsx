@@ -1,6 +1,6 @@
 import React, { FC, useState } from "react";
-import { Field, getFormValues } from "@mds/common/components/forms/form";
-import { Col, Descriptions, Divider, Row, Typography } from "antd";
+import { Field, getFormValues, change } from "@mds/common/components/forms/form";
+import { Col, Descriptions, Divider, Row, Typography, Tooltip } from "antd";
 import { isEmpty } from "lodash";
 import {
   email,
@@ -17,7 +17,7 @@ import PartyOrgBookForm from "@/components/Forms/parties/PartyOrgBookForm";
 import { ORGBOOK_CREDENTIAL_URL, ORGBOOK_ENTITY_URL } from "@/constants/routes";
 import PartySignatureUpload from "./PartySignatureUpload";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
 import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
 import { useAppSelector } from "@mds/common/redux/rootState";
@@ -25,6 +25,7 @@ import { userHasRole } from "@mds/common/redux/selectors/authenticationSelectors
 import { USER_ROLES } from "@mds/common/constants/environment";
 import { IParty, IPartyAddress } from "@mds/common/interfaces";
 import { getDropdownProvinceOptions } from "@mds/common/redux/selectors/staticContentSelectors";
+import InfoCircleOutlined from "@ant-design/icons/InfoCircleOutlined";
 
 export interface EditFullPartyFormValues extends IParty, IPartyAddress {
   set_to_inspector: boolean;
@@ -33,6 +34,9 @@ export interface EditFullPartyFormValues extends IParty, IPartyAddress {
   set_to_project_lead: boolean;
   project_lead_start_date: string;
   project_lead_end_date: string;
+  set_to_consultation_advisor: boolean;
+  consultation_advisor_start_date: string;
+  consultation_advisor_end_date: string;
 }
 
 interface EditFullPartyFormProps {
@@ -55,9 +59,18 @@ export const EditFullPartyForm: FC<EditFullPartyFormProps> = ({
 
   const canManageOrgbook = useAppSelector(userHasRole(USER_ROLES.role_manage_orgbook));
   const isAdmin = useAppSelector(userHasRole(USER_ROLES.role_admin));
+  const dispatch = useDispatch();
 
   const onChangeSignature = (signatureBase64) => {
     setSignature(signatureBase64);
+  };
+
+  const handleRoleToggle = (checked: boolean, fields: string[]) => {
+    if (!checked) {
+      fields.forEach((field) => {
+        dispatch(change(FORM.EDIT_FULL_PARTY, field, null));
+      });
+    }
   };
 
   const isPerson = party?.party_type_code === "PER";
@@ -377,88 +390,157 @@ export const EditFullPartyForm: FC<EditFullPartyFormProps> = ({
             <Divider />
             <Row gutter={16}>
               <Col span={24}>
-                <h5>Assign Inspector Role</h5>
+                <h5>ROLE ASSIGNMENTS</h5>
+                <Typography.Paragraph>
+                  Select the roles this contact holds, and if applicable, the period they apply.
+                  <i> Note: removing a role does not deleted the contact from the system or other records</i>
+                </Typography.Paragraph>
               </Col>
             </Row>
             <Row>
-              <p>
-                By setting this checkbox you grant inspector role to this party. Please note that
-                removing this checkbox will not delete party from associated entities.
-              </p>
               <Col md={12} sm={24}>
                 <Field
                   id="set_to_inspector"
                   name="set_to_inspector"
-                  label="Set to inspector"
+                  label={
+                    <>
+                      Inspector{" "}
+                      <Tooltip title="Identifies this person as an inspector responsible for reviewing, approving, or issuing decisions recorded in Core.">
+                        <InfoCircleOutlined />
+                      </Tooltip>
+                    </>
+                  }
                   type="checkbox"
                   component={renderConfig.CHECKBOX}
+                  onChange={(event, checked) =>
+                    handleRoleToggle(checked, [
+                      "inspector_start_date",
+                      "inspector_end_date",
+                    ])
+                  }
                 />
               </Col>
             </Row>
-            <Row gutter={16}>
-              <Col span={12}>
-                <Field
-                  label="Start Date"
-                  id="inspector_start_date"
-                  name="inspector_start_date"
-                  placeholder="yyyy-mm-dd"
-                  component={renderConfig.DATE}
-                />
-              </Col>
-              <Col span={12}>
-                <Field
-                  label="End Date"
-                  id="inspector_end_date"
-                  name="inspector_end_date"
-                  placeholder="yyyy-mm-dd"
-                  component={renderConfig.DATE}
-                />
-              </Col>
-            </Row>
-            <br />
-            <Divider />
-            <Row gutter={16}>
-              <Col span={24}>
-                <h5>Assign Project Lead Role</h5>
-              </Col>
-            </Row>
+            {formValues?.set_to_inspector && (
+              <>
+                <Row gutter={16}>
+                  <Col span={12}>
+                    <Field
+                      label="Start Date"
+                      id="inspector_start_date"
+                      name="inspector_start_date"
+                      placeholder="yyyy-mm-dd"
+                      component={renderConfig.DATE}
+                    />
+                  </Col>
+                  <Col span={12}>
+                    <Field
+                      label="End Date"
+                      id="inspector_end_date"
+                      name="inspector_end_date"
+                      placeholder="yyyy-mm-dd"
+                      component={renderConfig.DATE}
+                    />
+                  </Col>
+                </Row>
+              </>
+            )}
             <Row>
-              <p>
-                By setting this checkbox you grant project lead role to this party. Please note that
-                removing this checkbox will not delete party from associated entities.
-              </p>
+              <Col md={12} sm={24}>
+                <Field
+                  id="set_to_consultation_advisor"
+                  name="set_to_consultation_advisor"
+                  label={
+                    <>
+                      Consultation Advisor{" "}
+                      <Tooltip title="Identifies this person as a First Nations consultation advisor who may be assigned to review applications in Core.">
+                        <InfoCircleOutlined />
+                      </Tooltip>
+                    </>
+                  }
+                  type="checkbox"
+                  component={renderConfig.CHECKBOX}
+                  onChange={(event, checked) =>
+                    handleRoleToggle(checked, [
+                      "consultation_advisor_start_date",
+                      "consultation_advisor_end_date",
+                    ])
+                  }
+                />
+              </Col>
+            </Row>
+            {formValues?.set_to_consultation_advisor && (
+              <>
+                <Row gutter={16}>
+                  <Col span={12}>
+                    <Field
+                      label="Start Date"
+                      id="consultation_advisor_start_date"
+                      name="consultation_advisor_start_date"
+                      placeholder="yyyy-mm-dd"
+                      component={renderConfig.DATE}
+                    />
+                  </Col>
+                  <Col span={12}>
+                    <Field
+                      label="End Date"
+                      id="consultation_advisor_end_date"
+                      name="consultation_advisor_end_date"
+                      placeholder="yyyy-mm-dd"
+                      component={renderConfig.DATE}
+                    />
+                  </Col>
+                </Row>
+              </>
+            )}
+            <Row>
               <Col md={12} sm={24}>
                 <Field
                   id="set_to_project_lead"
                   name="set_to_project_lead"
-                  label="Set to project lead"
+                  label={
+                    <>
+                      Project Lead{" "}
+                      <Tooltip title="Identifies this person as the project lead for a major mine application.">
+                        <InfoCircleOutlined />
+                      </Tooltip>
+                    </>
+                  }
                   type="checkbox"
                   component={renderConfig.CHECKBOX}
+                  onChange={(event, checked) =>
+                    handleRoleToggle(checked, [
+                      "project_lead_start_date",
+                      "project_lead_end_date",
+                    ])
+                  }
                 />
               </Col>
             </Row>
-            <Row gutter={16}>
-              <Col span={12}>
-                <Field
-                  label="Start Date"
-                  id="project_lead_start_date"
-                  name="project_lead_start_date"
-                  placeholder="yyyy-mm-dd"
-                  component={renderConfig.DATE}
-                />
-              </Col>
-              <Col span={12}>
-                <Field
-                  label="End Date"
-                  id="project_lead_end_date"
-                  name="project_lead_end_date"
-                  placeholder="yyyy-mm-dd"
-                  component={renderConfig.DATE}
-                />
-              </Col>
-            </Row>
-            <br />
-            <Divider />
+            {formValues?.set_to_project_lead && (
+              <>
+                <Row gutter={16}>
+                  <Col span={12}>
+                    <Field
+                      label="Start Date"
+                      id="project_lead_start_date"
+                      name="project_lead_start_date"
+                      placeholder="yyyy-mm-dd"
+                      component={renderConfig.DATE}
+                    />
+                  </Col>
+                  <Col span={12}>
+                    <Field
+                      label="End Date"
+                      id="project_lead_end_date"
+                      name="project_lead_end_date"
+                      placeholder="yyyy-mm-dd"
+                      component={renderConfig.DATE}
+                    />
+                  </Col>
+                </Row>
+              </>
+            )}
             <Row gutter={16}>
               <Col span={24}>
                 <h5>Upload Signature</h5>

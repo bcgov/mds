@@ -3,7 +3,11 @@ import { ENVIRONMENT } from "@mds/common/constants/environment";
 import { request, success, error } from "../actions/genericActions";
 import { NetworkReducerTypes } from "@mds/common/constants/networkReducerTypes";
 import * as staticContentActions from "../actions/staticContentActions";
-import { fetchInspectors as fetchInspectorsAction, fetchProjectLeads as fetchProjectLeadsAction } from "@mds/common/redux/slices/partiesSlice";
+import {
+  fetchInspectors as fetchInspectorsAction,
+  fetchProjectLeads as fetchProjectLeadsAction,
+  fetchConsultationAdvisors as fetchConsultationAdvisorsAction
+} from "@mds/common/redux/slices/partiesSlice";
 import * as String from "@mds/common/constants/strings";
 import * as API from "@mds/common/constants/API";
 import { createRequestHeader } from "../utils/RequestHeaders";
@@ -28,4 +32,8 @@ export const fetchInspectors = () => (dispatch) => {
 
 export const fetchProjectLeads = () => (dispatch) => {
   return dispatch(fetchProjectLeadsAction());
+};
+
+export const fetchConsultationAdvisors = () => (dispatch) => {
+  return dispatch(fetchConsultationAdvisorsAction());
 };

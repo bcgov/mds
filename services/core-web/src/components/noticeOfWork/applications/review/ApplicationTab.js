@@ -11,7 +11,7 @@ import {
   fetchImportedNoticeOfWorkApplication,
   updateNoticeOfWorkApplication,
 } from "@mds/common/redux/actionCreators/noticeOfWorkActionCreator";
-import { getDropdownInspectors } from "@mds/common/redux/slices/partiesSlice";
+import { getDropdownInspectors, getDropdownConsultationAdvisors } from "@mds/common/redux/slices/partiesSlice";
 import {
   getNoticeOfWork,
   getOriginalNoticeOfWork,
@@ -58,6 +58,7 @@ const propTypes = {
   fixedTop: PropTypes.bool.isRequired,
   submitFailed: PropTypes.bool.isRequired,
   inspectors: CustomPropTypes.groupOptions.isRequired,
+  consultationAdvisors: CustomPropTypes.groupOptions.isRequired,
   reclamationSummary: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.strings)).isRequired,
   generatableApplicationDocuments: PropTypes.objectOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   location: PropTypes.shape({
@@ -419,6 +420,7 @@ export class ApplicationTab extends Component {
               <ScrollContentWrapper id="inspectors" title="Assign Inspectors" isActive>
                 <AssignInspectors
                   inspectors={this.props.inspectors}
+                  consultationAdvisors={this.props.consultationAdvisors}
                   noticeOfWork={this.props.noticeOfWork}
                   handleUpdateInspectors={this.handleUpdateInspectors}
                   title="Assign Inspectors"
@@ -469,6 +471,7 @@ const mapStateToProps = (state) => ({
   formErrors: getFormSyncErrors(FORM.EDIT_NOTICE_OF_WORK)(state),
   submitFailed: hasSubmitFailed(FORM.EDIT_NOTICE_OF_WORK)(state),
   inspectors: getDropdownInspectors(state),
+  consultationAdvisors: getDropdownConsultationAdvisors(state),
   reclamationSummary: getNOWReclamationSummary(state),
   generatableApplicationDocuments: getGeneratableNoticeOfWorkApplicationDocumentTypeOptions(state),
   noticeOfWorkApplicationStatusOptionsHash: getNoticeOfWorkApplicationStatusOptionsHash(state),

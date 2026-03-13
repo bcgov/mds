@@ -458,6 +458,10 @@ NOW_APPLICATION_MODEL = api.model(
         fields.String,
         'issuing_inspector':
         fields.Nested(PARTY),
+        'consultation_advisor_party_guid':
+        fields.String,
+        'consultation_advisor':
+        fields.Nested(PARTY),
         'imported_to_core':
         fields.Boolean,
         'is_historic':
@@ -784,6 +788,10 @@ NOW_VIEW_MODEL = api.model(
         'issuing_inspector_party_guid':
         fields.String,
         'issuing_inspector_name':
+        fields.String,
+        'consultation_advisor_party_guid':
+        fields.String,
+        'consultation_advisor_name':
         fields.String,
         'now_application_status_code':
         fields.String,

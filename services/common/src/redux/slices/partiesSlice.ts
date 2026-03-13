@@ -48,6 +48,7 @@ interface PartiesState {
   lastCreatedParty: IParty;
   inspectors: IParty[];
   projectLeads: IParty[];
+  consultationAdvisors: IParty[];
   engineersOfRecordOptions: IOption[];
   engineersOfRecord: IPartyAppt[];
   qualifiedPersons: IPartyAppt[];
@@ -64,6 +65,7 @@ const initialState: PartiesState = {
   lastCreatedParty: {} as IParty,
   inspectors: [],
   projectLeads: [],
+  consultationAdvisors: [],
   engineersOfRecordOptions: [],
   engineersOfRecord: [],
   qualifiedPersons: [],
@@ -363,10 +365,10 @@ const partiesSlice = createAppSlice({
       async (_: never) => {
         const response = await CustomAxios().get(
           ENVIRONMENT.apiUrl +
-            API.PARTIES_LIST_QUERY({
-              per_page: "all",
-              business_role: Strings.BUSINESS_ROLES.inspector,
-            }),
+          API.PARTIES_LIST_QUERY({
+            per_page: "all",
+            business_role: Strings.BUSINESS_ROLES.inspector,
+          }),
           createRequestHeader()
         );
         return response.data;
@@ -381,10 +383,10 @@ const partiesSlice = createAppSlice({
       async (_: never) => {
         const response = await CustomAxios().get(
           ENVIRONMENT.apiUrl +
-            API.PARTIES_LIST_QUERY({
-              per_page: "all",
-              business_role: Strings.BUSINESS_ROLES.projectLead,
-            }),
+          API.PARTIES_LIST_QUERY({
+            per_page: "all",
+            business_role: Strings.BUSINESS_ROLES.projectLead,
+          }),
           createRequestHeader()
         );
         return response.data;
@@ -392,6 +394,24 @@ const partiesSlice = createAppSlice({
       {
         fulfilled: (state, action) => {
           state.projectLeads = action.payload.records;
+        },
+      }
+    ),
+    fetchConsultationAdvisors: create.asyncThunk(
+      async (_: never) => {
+        const response = await CustomAxios().get(
+          ENVIRONMENT.apiUrl +
+          API.PARTIES_LIST_QUERY({
+            per_page: "all",
+            business_role: Strings.BUSINESS_ROLES.consultationAdvisor,
+          }),
+          createRequestHeader()
+        );
+        return response.data;
+      },
+      {
+        fulfilled: (state, action) => {
+          state.consultationAdvisors = action.payload.records;
         },
       }
     ),
@@ -407,6 +427,7 @@ const partiesSlice = createAppSlice({
     getLastCreatedParty: (state) => state.lastCreatedParty,
     getInspectors: (state) => state.inspectors,
     getProjectLeads: (state) => state.projectLeads,
+    getConsultationAdvisors: (state) => state.consultationAdvisors,
   },
 });
 
@@ -421,6 +442,7 @@ export const {
   getLastCreatedParty,
   getInspectors,
   getProjectLeads,
+  getConsultationAdvisors,
 } = partiesSlice.selectors;
 
 export const getSummaryPartyRelationships = createSelector(
@@ -493,14 +515,50 @@ export const getDropdownProjectLeads = createSelector([getProjectLeads], (partie
   ];
 });
 
+export const getDropdownConsultationAdvisors = createSelector([getConsultationAdvisors], (parties) => {
+  const today = moment().utc();
+  const activeConsultationAdvisors = parties
+    .filter((consultationAdvisor) =>
+      consultationAdvisor.business_role_appts.find(
+        (r) =>
+          today.isSameOrAfter(r.start_date, "day") &&
+          (today.isBefore(r.end_date, "day") || !r.end_date)
+      )
+    )
+    .map((consultationAdvisor) => ({
+      value: consultationAdvisor.party_guid,
+      label: consultationAdvisor.name,
+    }));
+  const inactiveConsultationAdvisor = parties
+    .filter((consultationAdvisor) =>
+      consultationAdvisor.business_role_appts.find(
+        (r) =>
+          today.isSameOrAfter(r.end_date, "day") &&
+          !activeConsultationAdvisors.find((prl) => prl.value === consultationAdvisor.party_guid)
+      )
+    )
+    .map((consultationAdvisor) => ({
+      value: consultationAdvisor.party_guid,
+      label: consultationAdvisor.name,
+    }));
+  return [
+    { groupName: "Active", opt: activeConsultationAdvisors },
+    { groupName: "Inactive", opt: inactiveConsultationAdvisor },
+  ];
+});
+
 export const getInspectorsList = (state: RootState) =>
   createDropDownList(state[PARTIES].inspectors, "name", "party_guid");
 
 export const getProjectLeadsList = (state: RootState) =>
   createDropDownList(state[PARTIES].projectLeads, "name", "party_guid");
 
+export const getConsultationAdvisorsList = (state: RootState) =>
+  createDropDownList(state[PARTIES].consultationAdivsors, "name", "party_guid");
+
 export const getInspectorsHash = createSelector([getInspectorsList], createLabelHash);
 export const getProjectLeadsHash = createSelector([getProjectLeadsList], createLabelHash);
+export const getConsultationAdvisorsHash = createSelector([getConsultationAdvisorsList], createLabelHash);
 
 export const getMatchingPartyRelationships = (
   mine_party_appt_type_code: string,
@@ -533,6 +591,7 @@ export const {
   mergeParties,
   fetchInspectors,
   fetchProjectLeads,
+  fetchConsultationAdvisors,
 } = partiesSlice.actions;
 
 export const partiesReducer = partiesSlice.reducer;

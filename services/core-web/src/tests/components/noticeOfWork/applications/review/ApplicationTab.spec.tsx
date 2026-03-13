@@ -22,6 +22,7 @@ const reducerProps = {
   fixedTop: false,
   submitFailed: false,
   inspectors: [],
+  consultationAdvisors: [],
   reclamationSummary: [],
   generatableApplicationDocuments: {},
   location: {},
