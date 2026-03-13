@@ -3,6 +3,18 @@ import { render } from "@testing-library/react";
 import { EditFullPartyForm } from "@/components/Forms/parties/EditFullPartyForm";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
+import * as selectors from "@mds/common/redux/selectors/authenticationSelectors";
+import * as formSelectors from "@mds/common/components/forms/form";
+
+
+jest.spyOn(selectors, "userHasRole").mockImplementation(
+  () => (() => true) as any
+);
+jest.spyOn(formSelectors, "getFormValues").mockReturnValue({
+  set_to_inspector: true,
+  set_to_project_lead: false,
+  set_to_consultation_advisor: true,
+} as any);
 
 describe("EditFullPartyForm", () => {
   it("renders properly", () => {
@@ -56,15 +68,11 @@ describe("EditFullPartyForm", () => {
       party_type_code: "PER",
     };
 
-    const initialValues = {
-      set_to_consultation_advisor: true,
-    } as any;
-
     const { getAllByPlaceholderText } = render(
       <ReduxWrapper>
         <EditFullPartyForm
           onSubmit={jest.fn()}
-          initialValues={initialValues}
+          initialValues={{}}
           party={party}
         />
       </ReduxWrapper>
