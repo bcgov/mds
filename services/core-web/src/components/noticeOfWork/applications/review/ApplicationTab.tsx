@@ -1,8 +1,14 @@
-import React, { FC, useState, useRef } from "react";
+import React, { FC, useRef, useState } from "react";
 import { Prompt, useLocation } from "react-router-dom";
-import { Button, Dropdown, Menu, Popconfirm, Alert, Divider } from "antd";
+import { Alert, Button, Divider, Dropdown, Menu, Popconfirm } from "antd";
 import { DownOutlined } from "@ant-design/icons";
-import { getFormValues, reset, getFormSyncErrors, submit, hasSubmitFailed } from "@mds/common/components/forms/form";
+import {
+  getFormSyncErrors,
+  getFormValues,
+  hasSubmitFailed,
+  reset,
+  submit,
+} from "@mds/common/components/forms/form";
 import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 import { get, isNull, isUndefined } from "lodash";
 import {
@@ -11,14 +17,12 @@ import {
 } from "@mds/common/redux/actionCreators/noticeOfWorkActionCreator";
 import { getDropdownInspectors } from "@mds/common/redux/slices/partiesSlice";
 import {
-  getNoticeOfWork,
-  getOriginalNoticeOfWork,
   getImportNowSubmissionDocumentsJob,
+  getNoticeOfWork,
   getNOWReclamationSummary,
+  getOriginalNoticeOfWork,
 } from "@mds/common/redux/selectors/noticeOfWorkSelectors";
-import {
-  getGeneratableNoticeOfWorkApplicationDocumentTypeOptions,
-} from "@mds/common/redux/selectors/staticContentSelectors";
+import { getGeneratableNoticeOfWorkApplicationDocumentTypeOptions } from "@mds/common/redux/selectors/staticContentSelectors";
 import { flattenObject } from "@common/utils/helpers";
 import { downloadNowDocument } from "@mds/common/redux/utils/actionlessNetworkCalls";
 import * as Strings from "@mds/common/constants/strings";
@@ -65,19 +69,19 @@ export const ApplicationTab: FC<ApplicationTabProps> = ({
   const noticeOfWork = useAppSelector(getNoticeOfWork);
   const originalNoticeOfWork = useAppSelector(getOriginalNoticeOfWork);
   const importNowSubmissionDocumentsJob = useAppSelector(getImportNowSubmissionDocumentsJob);
-  const formValues: Partial<INoticeOfWorkApplication> = useAppSelector(getFormValues(FORM.EDIT_NOTICE_OF_WORK));
+  const formValues: Partial<INoticeOfWorkApplication> = useAppSelector(
+    getFormValues(FORM.EDIT_NOTICE_OF_WORK)
+  );
   const formErrors = useAppSelector(getFormSyncErrors(FORM.EDIT_NOTICE_OF_WORK));
   const submitFailed = useAppSelector(hasSubmitFailed(FORM.EDIT_NOTICE_OF_WORK));
   const inspectors = useAppSelector(getDropdownInspectors);
   const reclamationSummary = useAppSelector(getNOWReclamationSummary);
-  const generatableApplicationDocuments = useAppSelector(getGeneratableNoticeOfWorkApplicationDocumentTypeOptions);
+  const generatableApplicationDocuments = useAppSelector(
+    getGeneratableNoticeOfWorkApplicationDocumentTypeOptions
+  );
 
   const toggleEditMode = () => {
     setIsViewMode((prev) => !prev);
-    setMenuVisible(false);
-  };
-
-  const handleMenuClick = () => {
     setMenuVisible(false);
   };
 
@@ -105,7 +109,9 @@ export const ApplicationTab: FC<ApplicationTabProps> = ({
         count.current = 1;
       }
     }
-    const errorElement = document.querySelector(`[name="${errors[count.current - 1]}"]`) as HTMLElement;
+    const errorElement = document.querySelector(
+      `[name="${errors[count.current - 1]}"]`
+    ) as HTMLElement;
     if (errorElement && errorElement.focus) {
       errorElement.focus();
     }
@@ -118,17 +124,14 @@ export const ApplicationTab: FC<ApplicationTabProps> = ({
       focusErrorInput();
     } else {
       setSubmitting(true);
-      return dispatch(
-        updateNoticeOfWorkApplication(
-          formValues,
-          noticeOfWork.now_application_guid
-        )
-      )
+      return dispatch(updateNoticeOfWorkApplication(formValues, noticeOfWork.now_application_guid))
         .then(() => {
-          dispatch(fetchImportedNoticeOfWorkApplication(noticeOfWork.now_application_guid)).then(() => {
-            setIsViewMode(endEditSession);
-            setSubmitted(false);
-          });
+          dispatch(fetchImportedNoticeOfWorkApplication(noticeOfWork.now_application_guid)).then(
+            () => {
+              setIsViewMode(endEditSession);
+              setSubmitted(false);
+            }
+          );
         })
         .finally(() => {
           setSubmitting(false);
@@ -155,11 +158,7 @@ export const ApplicationTab: FC<ApplicationTabProps> = ({
       (x: any) => x.filename === "ApplicationForm.pdf"
     )[0];
     if (document) {
-      downloadNowDocument(
-        document.id,
-        noticeOfWork.now_application_guid,
-        document.filename
-      );
+      downloadNowDocument(document.id, noticeOfWork.now_application_guid, document.filename);
     }
   };
 
@@ -261,10 +260,7 @@ export const ApplicationTab: FC<ApplicationTabProps> = ({
               </Button>
             </Popconfirm>
             {showErrors && (
-              <Button
-                className="full-mobile"
-                onClick={() => focusErrorInput(true)}
-              >
+              <Button className="full-mobile" onClick={() => focusErrorInput(true)}>
                 Next Issue
               </Button>
             )}
@@ -285,8 +281,9 @@ export const ApplicationTab: FC<ApplicationTabProps> = ({
             </Button>
             {showErrors && (
               <Alert
-                message={`You have ${errorsLength} ${errorsLength === 1 ? "issue" : "issues"
-                  } that must be fixed before proceeding.`}
+                message={`You have ${errorsLength} ${
+                  errorsLength === 1 ? "issue" : "issues"
+                } that must be fixed before proceeding.`}
                 type="error"
                 showIcon
               />
@@ -304,7 +301,7 @@ export const ApplicationTab: FC<ApplicationTabProps> = ({
   const renderOriginalValues = (path: string, currentPath: string | null = null) => {
     const prevValue = get(originalNoticeOfWork, path);
     const currentValue = get(noticeOfWork, currentPath || path);
-    
+
     const isNewValue = isUndefined(prevValue) && !isNull(currentValue);
     const isPrevValue = !isUndefined(prevValue) && !isNull(prevValue);
     const hasBeenEdited = isNewValue || isPrevValue;

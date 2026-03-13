@@ -36,7 +36,8 @@ const AssignTier: FC<AssignTierProps> = (props) => {
             <UpdateNOWTierForm
               initialValues={{
                 now_application_tier_code: props.noticeOfWork.now_application_tier_code,
-                now_application_tier_description: props.noticeOfWork.now_application_tier_description,
+                now_application_tier_description:
+                  props.noticeOfWork.now_application_tier_description,
               }}
               noticeOfWork={props.noticeOfWork}
               onSubmit={(values) => props.handleUpdateTier(values, () => setEditMode(false))}

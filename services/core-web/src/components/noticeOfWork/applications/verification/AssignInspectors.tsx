@@ -1,11 +1,11 @@
 import React, { FC, useState } from "react";
-import { Col, Row, Button } from "antd";
+import { Button, Col, Row } from "antd";
 import UpdateNOWInspectorsForm from "@/components/Forms/noticeOfWork/UpdateNOWInspectorsForm";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 import * as Permission from "@/constants/permissions";
 import { EDIT_OUTLINE } from "@/constants/assets";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
-import { INoticeOfWork, IOption, IGroupedDropdownList } from "@mds/common/interfaces";
+import { IGroupedDropdownList, INoticeOfWork, IOption } from "@mds/common/interfaces";
 
 interface AssignInspectorsProps {
   noticeOfWork: INoticeOfWork;

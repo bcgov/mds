@@ -1,15 +1,14 @@
 import React, { FC } from "react";
 import { Field } from "@mds/common/components/forms/form";
-import { Button, Popconfirm, Alert } from "antd";
+import { Alert, Button, Popconfirm } from "antd";
 import { required } from "@mds/common/redux/utils/Validate";
 import * as FORM from "@/constants/forms";
-import { connect } from "react-redux";
 import { MDS_EMAIL } from "@mds/common/constants/strings";
 import { renderConfig } from "@/components/common/config";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
-import { INoticeOfWork, IOption, IGroupedDropdownList } from "@mds/common/interfaces";
+import { IGroupedDropdownList, INoticeOfWork, IOption } from "@mds/common/interfaces";
 
 interface UpdateNOWInspectorsFormProps {
   noticeOfWork: INoticeOfWork;
@@ -114,6 +113,5 @@ export const UpdateNOWInspectorsForm: FC<UpdateNOWInspectorsFormProps> = (props)
     </div>
   );
 };
-
 
 export default UpdateNOWInspectorsForm;
