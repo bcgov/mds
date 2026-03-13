@@ -357,3 +357,83 @@ def test_post_party_organization_org_fail(test_client, db_session, auth_headers)
 
     assert post_resp.status_code == 400
     assert 'Cannot associate organization with another organization' in post_data['message']
+
+def test_set_party_to_consultation_advisor_by_admin_success(test_client, db_session, auth_headers):
+    party_guid = PartyFactory(person=True).party_guid
+
+    test_person_data = {
+        "party_name": "Changedlast",
+        "first_name": "Changedfirst",
+        "phone_no": "682-732-8490",
+        "set_to_consultation_advisor": "true",
+        "consultation_advisor_start_date": "2021-01-01",
+        "consultation_advisor_end_date": "2021-01-10",
+    }
+
+    put_resp = test_client.put(
+        f'/parties/{party_guid}',
+        data=test_person_data,
+        headers=auth_headers['full_auth_header'])
+
+    put_data = json.loads(put_resp.data.decode())
+
+    assert put_resp.status_code == 200
+
+    business_role = next(
+        r for r in put_data['business_role_appts']
+        if r['party_business_role_code'] == "CNA"
+    )
+
+    assert datetime.strptime(
+        business_role['start_date'],
+        '%Y-%m-%dT%H:%M:%S').strftime('%Y-%m-%d') == test_person_data['consultation_advisor_start_date']
+
+    assert datetime.strptime(
+        business_role['end_date'],
+        '%Y-%m-%dT%H:%M:%S').strftime('%Y-%m-%d') == test_person_data['consultation_advisor_end_date']
+
+def test_set_party_to_consultation_advisor_not_admin(test_client, db_session, auth_headers):
+    party_guid = PartyFactory(person=True).party_guid
+
+    test_person_data = {
+        "party_name": "Changedlast",
+        "first_name": "Changedfirst",
+        "phone_no": "682-732-8490",
+        "set_to_consultation_advisor": "true",
+        "consultation_advisor_start_date": "2021-01-01",
+    }
+
+    put_resp = test_client.put(
+        f'/parties/{party_guid}',
+        data=test_person_data,
+        headers=auth_headers['core_edit_parties_only_auth_header'])
+
+    put_data = json.loads(put_resp.data.decode())
+
+    assert put_resp.status_code == 200
+    assert not put_data['business_role_appts']
+
+def test_deactivate_consultation_advisor(test_client, db_session, auth_headers):
+    party = PartyFactory(person=True)
+
+    test_client.put(
+        f'/parties/{party.party_guid}',
+        data={
+            "set_to_consultation_advisor": "true",
+            "consultation_advisor_start_date": "2021-01-01"
+        },
+        headers=auth_headers['full_auth_header']
+    )
+
+    # Now deactivate
+    put_resp = test_client.put(
+        f'/parties/{party.party_guid}',
+        data={
+            "consultation_advisor_end_date": "2025-01-01"
+        },
+        headers=auth_headers['full_auth_header']
+    )
+
+    put_data = json.loads(put_resp.data.decode())
+
+    assert put_resp.status_code == 200

@@ -18,7 +18,7 @@ export const EditPartyModal: FC<EditPartyProps> = ({ onSubmit, partyGuid }) => {
   const partyFromStore = parties[partyGuid];
   const party: EditFullPartyFormValues = partyFromStore ? { ...partyFromStore } : null;
   const today = moment().utc();
-  const sortedBusinessRoleAppts = [...party?.business_role_appts].sort(
+  const sortedBusinessRoleAppts = [...(party?.business_role_appts ?? [])].sort(
     (a, b) => b.party_business_role_appt_id - a.party_business_role_appt_id
   );
   const inspectorInfo = sortedBusinessRoleAppts.find(

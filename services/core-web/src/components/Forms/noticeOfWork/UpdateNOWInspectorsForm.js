@@ -93,7 +93,7 @@ const UpdateNOWInspectorsForm = (props) => {
           name="consultation_advisor_party_guid"
           label={
             !props.isAdminView
-              ? "Assign when First Nations engagement requires validation. Otherwise optional."
+              ? "Optionally assign the Consultation Advisor before continuing. Assign when First Nations engagement requires validation. This assignment can be updated later under the Administrative tab."
               : ""
           }
           component={renderConfig.GROUPED_SELECT}

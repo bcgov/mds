@@ -422,28 +422,26 @@ export const EditFullPartyForm: FC<EditFullPartyFormProps> = ({
               </Col>
             </Row>
             {formValues?.set_to_inspector && (
-              <>
-                <Row gutter={16}>
-                  <Col span={12}>
-                    <Field
-                      label="Start Date"
-                      id="inspector_start_date"
-                      name="inspector_start_date"
-                      placeholder="yyyy-mm-dd"
-                      component={renderConfig.DATE}
-                    />
-                  </Col>
-                  <Col span={12}>
-                    <Field
-                      label="End Date"
-                      id="inspector_end_date"
-                      name="inspector_end_date"
-                      placeholder="yyyy-mm-dd"
-                      component={renderConfig.DATE}
-                    />
-                  </Col>
-                </Row>
-              </>
+              <Row gutter={16}>
+                <Col span={12}>
+                  <Field
+                    label="Start Date"
+                    id="inspector_start_date"
+                    name="inspector_start_date"
+                    placeholder="yyyy-mm-dd"
+                    component={renderConfig.DATE}
+                  />
+                </Col>
+                <Col span={12}>
+                  <Field
+                    label="End Date"
+                    id="inspector_end_date"
+                    name="inspector_end_date"
+                    placeholder="yyyy-mm-dd"
+                    component={renderConfig.DATE}
+                  />
+                </Col>
+              </Row>
             )}
             <Row>
               <Col md={12} sm={24}>
@@ -470,28 +468,26 @@ export const EditFullPartyForm: FC<EditFullPartyFormProps> = ({
               </Col>
             </Row>
             {formValues?.set_to_consultation_advisor && (
-              <>
-                <Row gutter={16}>
-                  <Col span={12}>
-                    <Field
-                      label="Start Date"
-                      id="consultation_advisor_start_date"
-                      name="consultation_advisor_start_date"
-                      placeholder="yyyy-mm-dd"
-                      component={renderConfig.DATE}
-                    />
-                  </Col>
-                  <Col span={12}>
-                    <Field
-                      label="End Date"
-                      id="consultation_advisor_end_date"
-                      name="consultation_advisor_end_date"
-                      placeholder="yyyy-mm-dd"
-                      component={renderConfig.DATE}
-                    />
-                  </Col>
-                </Row>
-              </>
+              <Row gutter={16}>
+                <Col span={12}>
+                  <Field
+                    label="Start Date"
+                    id="consultation_advisor_start_date"
+                    name="consultation_advisor_start_date"
+                    placeholder="yyyy-mm-dd"
+                    component={renderConfig.DATE}
+                  />
+                </Col>
+                <Col span={12}>
+                  <Field
+                    label="End Date"
+                    id="consultation_advisor_end_date"
+                    name="consultation_advisor_end_date"
+                    placeholder="yyyy-mm-dd"
+                    component={renderConfig.DATE}
+                  />
+                </Col>
+              </Row>
             )}
             <Row>
               <Col md={12} sm={24}>
@@ -518,28 +514,26 @@ export const EditFullPartyForm: FC<EditFullPartyFormProps> = ({
               </Col>
             </Row>
             {formValues?.set_to_project_lead && (
-              <>
-                <Row gutter={16}>
-                  <Col span={12}>
-                    <Field
-                      label="Start Date"
-                      id="project_lead_start_date"
-                      name="project_lead_start_date"
-                      placeholder="yyyy-mm-dd"
-                      component={renderConfig.DATE}
-                    />
-                  </Col>
-                  <Col span={12}>
-                    <Field
-                      label="End Date"
-                      id="project_lead_end_date"
-                      name="project_lead_end_date"
-                      placeholder="yyyy-mm-dd"
-                      component={renderConfig.DATE}
-                    />
-                  </Col>
-                </Row>
-              </>
+              <Row gutter={16}>
+                <Col span={12}>
+                  <Field
+                    label="Start Date"
+                    id="project_lead_start_date"
+                    name="project_lead_start_date"
+                    placeholder="yyyy-mm-dd"
+                    component={renderConfig.DATE}
+                  />
+                </Col>
+                <Col span={12}>
+                  <Field
+                    label="End Date"
+                    id="project_lead_end_date"
+                    name="project_lead_end_date"
+                    placeholder="yyyy-mm-dd"
+                    component={renderConfig.DATE}
+                  />
+                </Col>
+              </Row>
             )}
             <Row gutter={16}>
               <Col span={24}>
