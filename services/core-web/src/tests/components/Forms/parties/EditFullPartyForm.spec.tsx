@@ -8,13 +8,16 @@ import * as formSelectors from "@mds/common/components/forms/form";
 
 
 jest.spyOn(selectors, "userHasRole").mockImplementation(
-  () => (() => true) as any
+  ((role: string) => (state: any) => true) as any
 );
-jest.spyOn(formSelectors, "getFormValues").mockReturnValue({
-  set_to_inspector: true,
-  set_to_project_lead: false,
-  set_to_consultation_advisor: true,
-} as any);
+
+jest.spyOn(formSelectors, "getFormValues").mockImplementation(
+  ((formName: string) => (state: any) => ({
+    set_to_inspector: true,
+    set_to_project_lead: false,
+    set_to_consultation_advisor: true,
+  })) as any
+);
 
 describe("EditFullPartyForm", () => {
   it("renders properly", () => {
