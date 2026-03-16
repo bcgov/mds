@@ -66,6 +66,7 @@ export const {
   getMajorMinesApplicationStatusCodes,
   getMajorMinesApplicationDocumentTypes,
   getProjectDecisionPackageStatusCodes,
+  getNoticeOfWorkTierOptions,
 } = staticContentReducer;
 
 const getVisibilityFilterOption = (_state, showActiveOnly: boolean | undefined = true) =>
@@ -603,6 +604,17 @@ export const getDropdownNoticeOfWorkApplicationPermitTypeOptions = createSelecto
 );
 export const getNoticeOfWorkApplicationPermitTypeOptionsHash = createSelector(
   [getDropdownNoticeOfWorkApplicationPermitTypeOptions],
+  createLabelHash
+);
+
+export const getDropdownNoticeOfWorkTierOptions = createSelectorWrapper(
+  getNoticeOfWorkTierOptions,
+  createDropDownList,
+  ["description", "notice_of_work_tier_code", "display_order"]
+);
+
+export const getNoticeOfWorkTierOptionsHash = createSelector(
+  [getDropdownNoticeOfWorkTierOptions],
   createLabelHash
 );
 

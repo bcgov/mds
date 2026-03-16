@@ -306,6 +306,14 @@ export const sideMenuOptions = (tab, hasPermitConditionsFlow = true) => {
         applicationType: ["NOW", "ADA"],
       },
       {
+        href: "tier-category",
+        title: "Tier Category",
+        alwaysVisible: true,
+        children: [],
+        applicationType: ["NOW", "ADA"],
+        featureFlag: "NOTICE_OF_WORK_TIER",
+      },
+      {
         href: "progress-tracking",
         title: "Application Progress Tracking",
         alwaysVisible: true,

@@ -1,28 +1,27 @@
-import React from "react";
+import React, { FC } from "react";
 import { Field } from "@mds/common/components/forms/form";
-import { Button, Popconfirm, Alert } from "antd";
-import PropTypes from "prop-types";
+import { Alert, Button, Popconfirm } from "antd";
 import { required } from "@mds/common/redux/utils/Validate";
 import * as FORM from "@/constants/forms";
 import { MDS_EMAIL } from "@mds/common/constants/strings";
 import { renderConfig } from "@/components/common/config";
-import CustomPropTypes from "@/customPropTypes";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
+import { IGroupedDropdownList, INoticeOfWork, IOption } from "@mds/common/interfaces";
 
-const propTypes = {
-  noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
-  inspectors: CustomPropTypes.groupOptions.isRequired,
-  onSubmit: PropTypes.func.isRequired,
-  initialValues: PropTypes.any,
-  isAdminView: PropTypes.bool.isRequired,
-  isEditMode: PropTypes.bool.isRequired,
-  setEditMode: PropTypes.func.isRequired,
-  title: PropTypes.bool.isRequired,
-};
+interface UpdateNOWInspectorsFormProps {
+  noticeOfWork: INoticeOfWork;
+  inspectors: (IOption | IGroupedDropdownList)[];
+  onSubmit: (values: any) => void | Promise<any>;
+  initialValues?: any;
+  isAdminView: boolean;
+  isEditMode: boolean;
+  setEditMode: (isEditMode: boolean) => void;
+  title: string;
+}
 
-const UpdateNOWInspectorsForm = (props) => {
+export const UpdateNOWInspectorsForm: FC<UpdateNOWInspectorsFormProps> = (props) => {
   return (
     <div>
       <FormWrapper
@@ -30,7 +29,9 @@ const UpdateNOWInspectorsForm = (props) => {
         reduxFormConfig={{
           touchOnBlur: true,
         }}
-        onSubmit={props.onSubmit} initialValues={props.initialValues}>
+        onSubmit={props.onSubmit}
+        initialValues={props.initialValues}
+      >
         <div className="field-title">Lead Inspector</div>
         <Field
           id="lead_inspector_party_guid"
@@ -63,9 +64,9 @@ const UpdateNOWInspectorsForm = (props) => {
         />
         {!props.isEditMode && (
           <>
-            {props.noticeOfWork?.issuing_inspector?.signature ? (
+            {(props.noticeOfWork as any)?.issuing_inspector?.signature ? (
               <img
-                src={props.noticeOfWork.issuing_inspector.signature}
+                src={(props.noticeOfWork as any).issuing_inspector.signature}
                 alt="Signature"
                 style={{ pointerEvents: "none", userSelect: "none" }}
                 height={120}
@@ -96,7 +97,7 @@ const UpdateNOWInspectorsForm = (props) => {
                 okText="Yes"
                 cancelText="No"
               >
-                <Button className="full-mobile" type="secondary">
+                <Button className="full-mobile" type="default">
                   Cancel
                 </Button>
               </Popconfirm>
@@ -112,7 +113,5 @@ const UpdateNOWInspectorsForm = (props) => {
     </div>
   );
 };
-
-UpdateNOWInspectorsForm.propTypes = propTypes;
 
 export default UpdateNOWInspectorsForm;

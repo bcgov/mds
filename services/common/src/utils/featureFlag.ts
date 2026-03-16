@@ -37,6 +37,7 @@ export enum Feature {
   REPORT_MANAGEMENT_V2 = "report_management_v2",
   MINESPACE_SIGNUP = "minespace_signup",
   GLOBAL_SEARCH_V2 = "global_search_v2",
+  NOTICE_OF_WORK_TIER = "notice_of_work_tier",
 }
 
 export const initializeFlagsmith = async (flagsmithUrl, flagsmithKey) => {

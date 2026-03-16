@@ -17,6 +17,7 @@ from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.mines.mine.models.mine import Mine
 from app.api.now_applications.models.now_application import NOWApplication
 from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
+from app.api.now_applications.models.now_application_tier import NOWApplicationTier
 from app.api.now_applications.models.now_application_status import NOWApplicationStatus
 from app.api.now_applications.models.applications_view import ApplicationsView
 from app.api.now_applications.transmogrify_now import transmogrify_now
@@ -183,6 +184,32 @@ class NOWApplicationResource(Resource, UserMixin):
         ) != now_application_identity.now_application.notice_of_work_type_code and now_application_identity.application_type_code == 'NOW' and any(
             doc.now_application_document_type_code == "NTR"
             for doc in now_application_identity.now_application.documents)
+
+        # Ensure Tier Code and Description is updated
+        has_tier_fields = 'now_application_tier_code' in data or 'now_application_tier_description' in data
+        if has_tier_fields:
+            tier_code = data.pop('now_application_tier_code', now_application_identity.now_application.now_application_tier_code)
+            tier_desc = data.pop('now_application_tier_description', now_application_identity.now_application.now_application_tier_description)
+            
+            if tier_code:
+                from app.api.now_applications.models.notice_of_work_tier import NoticeOfWorkTier
+                if not NoticeOfWorkTier.query.get(tier_code):
+                    raise BadRequest(f'Invalid Tier Category code: {tier_code}')
+
+            if now_application_identity.now_application.application_tier:
+                if tier_code is None:
+                    # Decide if null means delete. For now, let's keep the existing record if only description is provided,
+                    # but if tier_code is explicitly null, it's a validation error because it's required in the DB if the record exists.
+                    # If we want to allow deleting, we should handle it here.
+                    raise BadRequest('Tier Category code cannot be null.')
+                now_application_identity.now_application.application_tier.notice_of_work_tier_code = tier_code
+                now_application_identity.now_application.application_tier.description = tier_desc
+            elif tier_code:
+                new_tier = NOWApplicationTier(
+                    notice_of_work_tier_code=tier_code,
+                    description=tier_desc
+                )
+                now_application_identity.now_application.application_tier = new_tier
 
         now_application_identity.now_application.deep_update_from_dict(data)
 

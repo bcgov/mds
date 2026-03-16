@@ -6,7 +6,11 @@ import NOWSecurities from "@/components/noticeOfWork/applications/administrative
 import NOWDocuments from "@/components/noticeOfWork/applications//NOWDocuments";
 import ScrollContentWrapper from "@/components/noticeOfWork/applications/ScrollContentWrapper";
 import AssignInspectors from "@/components/noticeOfWork/applications/verification/AssignInspectors";
+import AssignTier from "@/components/noticeOfWork/applications/verification/AssignTier";
 import NOWProgressTable from "@/components/noticeOfWork/applications/administrative/NOWProgressTable";
+
+import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
+import { Feature } from "@mds/common/utils/featureFlag";
 
 /**
  * @class NOWApplicationAdministrative- contains all information relating to the Administrative work on a Notice of Work Application
@@ -17,6 +21,7 @@ const propTypes = {
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   inspectors: CustomPropTypes.groupOptions.isRequired,
   handleUpdateInspectors: PropTypes.func.isRequired,
+  handleUpdateTier: PropTypes.func.isRequired,
   importNowSubmissionDocumentsJob: PropTypes.objectOf(PropTypes.any),
   isLoaded: PropTypes.bool.isRequired,
   draftPermitAmendment: CustomPropTypes.permitAmendment.isRequired,
@@ -25,6 +30,7 @@ const propTypes = {
 const defaultProps = { importNowSubmissionDocumentsJob: {} };
 
 export const NOWApplicationAdministrative = (props) => {
+  const { isFeatureEnabled } = useFeatureFlag();
   const isNoWApplication = props.noticeOfWork.application_type_code === "NOW";
   return (
     <div>
@@ -38,9 +44,9 @@ export const NOWApplicationAdministrative = (props) => {
         />
       </ScrollContentWrapper>
       <ScrollContentWrapper
-        id="reclamation-securities"
-        title="Reclamation Securities"
-        isLoaded={props.isLoaded}
+          id="reclamation-securities"
+          title="Reclamation Securities"
+          isLoaded={props.isLoaded}
       >
         <NOWSecurities />
         <br />
@@ -118,6 +124,17 @@ export const NOWApplicationAdministrative = (props) => {
           isLoaded={props.isLoaded}
         />
       </ScrollContentWrapper>
+      {isFeatureEnabled(Feature.NOTICE_OF_WORK_TIER) && (
+        <ScrollContentWrapper id="tier-category" title="Tier Category" isLoaded={props.isLoaded}>
+          <AssignTier
+            noticeOfWork={props.noticeOfWork}
+            handleUpdateTier={props.handleUpdateTier}
+            title="Update Tier Category"
+            isAdminView
+            isLoaded={props.isLoaded}
+          />
+        </ScrollContentWrapper>
+      )}
       <ScrollContentWrapper
         id="progress-tracking"
         title="Application Progress Tracking"

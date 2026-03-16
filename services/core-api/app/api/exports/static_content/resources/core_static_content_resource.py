@@ -51,6 +51,7 @@ from app.api.mines.permits.permit_amendment.models.permit_amendment_type_code im
 from app.api.now_applications.models.administrative_amendments.application_reason_code import ApplicationReasonCode
 from app.api.now_applications.models.administrative_amendments.application_source_type_code import ApplicationSourceTypeCode
 from app.api.now_applications.models.application_type_code import ApplicationTypeCode
+from app.api.now_applications.models.notice_of_work_tier import NoticeOfWorkTier
 from app.api.mines.government_agencies.models.government_agency_type import GovernmentAgencyType
 from app.api.mines.tailings.models.tsf_operating_status_code import TSFOperatingStatusCode
 from app.api.mines.tailings.models.consequence_classification_status_code import ConsequenceClassificationStatusCode
@@ -84,6 +85,7 @@ MODELS_GET_ACTIVE = [
     ExemptionFeeStatus, PermitConditionType, PermitConditionCategory, PartyBusinessRoleCode,
     NOWApplicationDelayType, PermitAmendmentTypeCode, ApplicationReasonCode,
     ApplicationSourceTypeCode, ApplicationTypeCode, GovernmentAgencyType, TSFOperatingStatusCode,
+    NoticeOfWorkTier,
     ConsequenceClassificationStatusCode, ITRBExemptionStatusCode, ExplosivesPermitStatus,
     ExplosivesPermitMagazineType, ExplosivesPermitDocumentType, ProjectSummaryDocumentType,
     ProjectSummaryStatusCode, MinistryContactType, ProjectSummaryAuthorizationType,
