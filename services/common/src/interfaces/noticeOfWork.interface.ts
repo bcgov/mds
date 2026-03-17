@@ -35,6 +35,7 @@ export interface INoticeOfWork {
   lead_inspector_name: string;
   issuing_inspector_name: string;
   issuing_inspector_party_guid: string;
+  consultation_advisor_party_guid: string;
   now_application_status_description: string;
   received_date: string;
   originating_system: string;
@@ -52,6 +53,10 @@ export interface INoticeOfWork {
   latitude?: string;
   contacts?: INoticeOfWorkContact[];
   application_progress?: INoticeOfWorkApplicationProgress[];
+  now_application_tier_code?: string;
+  now_application_tier_description?: string;
+  application_type_code?: string;
+  now_application_status_code?: string;
 }
 
 export interface IConditionSection {

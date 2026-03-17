@@ -646,6 +646,10 @@ NOW_APPLICATION_MODEL = api.model(
         fields.String,
         'submitted_to_core_date':
         fields.Date,
+        'now_application_tier_code':
+        fields.String,
+        'now_application_tier_description':
+        fields.String,
     })
 
 NOW_APPLICATION_MODEL_EXPORT = api.model(
@@ -807,6 +811,10 @@ NOW_VIEW_MODEL = api.model(
         fields.String,
         'mine_purpose':
         fields.String,
+        'now_application_tier_code':
+        fields.String,
+        'now_application_tier_description':
+        fields.String,
     })
 
 NOW_VIEW_MODEL_PROPONENT = api.model(
@@ -854,6 +862,13 @@ NOW_ACTIVITY_TYPES = api.model('ActivityType', {
 APPLICATION_TYPE_CODE = api.model('ApplicationTypeCode', {
     'application_type_code': fields.String,
     'description': fields.String,
+    'active_ind': fields.Boolean
+})
+
+NOTICE_OF_WORK_TIER = api.model('NoticeOfWorkTier', {
+    'notice_of_work_tier_code': fields.String,
+    'description': fields.String,
+    'display_order': fields.Integer,
     'active_ind': fields.Boolean
 })
 

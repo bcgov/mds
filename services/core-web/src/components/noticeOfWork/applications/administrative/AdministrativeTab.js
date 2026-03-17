@@ -256,7 +256,29 @@ export class AdministrativeTab extends Component {
           .fetchImportedNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid)
           .then(() => {
             this.setState({ isInspectorsLoaded: true });
-            finalAction();
+            if (finalAction) {
+              finalAction();
+            }
+          });
+      });
+  };
+
+  handleUpdateTier = (values, finalAction) => {
+    this.setState({ isInspectorsLoaded: false });
+    return this.props
+      .updateNoticeOfWorkApplication(
+        values,
+        this.props.noticeOfWork.now_application_guid,
+        "Successfully updated the Tier Category"
+      )
+      .then(() => {
+        this.props
+          .fetchImportedNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid)
+          .then(() => {
+            this.setState({ isInspectorsLoaded: true });
+            if (finalAction) {
+              finalAction();
+            }
           });
       });
   };
@@ -312,6 +334,7 @@ export class AdministrativeTab extends Component {
             inspectors={this.props.inspectors}
             consultationAdvisors={this.props.consultationAdvisors}
             handleUpdateInspectors={this.handleUpdateInspectors}
+            handleUpdateTier={this.handleUpdateTier}
             importNowSubmissionDocumentsJob={this.props.importNowSubmissionDocumentsJob}
             handleSaveNOWEdit={this.handleSaveNOWEdit}
             isLoaded={this.state.isInspectorsLoaded}

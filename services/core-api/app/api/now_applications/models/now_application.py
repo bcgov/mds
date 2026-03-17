@@ -164,6 +164,21 @@ class NOWApplication(Base, AuditMixin):
     # Progress
     application_progress = db.relationship('NOWApplicationProgress', lazy='selectin', uselist=True)
 
+    # Tiers
+    application_tier = db.relationship('NOWApplicationTier', lazy='selectin', uselist=False, overlaps='now_application')
+
+    @hybrid_property
+    def now_application_tier_code(self):
+        if self.application_tier:
+            return self.application_tier.notice_of_work_tier_code
+        return None
+
+    @hybrid_property
+    def now_application_tier_description(self):
+        if self.application_tier:
+            return self.application_tier.description
+        return None
+
     # Documents that are not associated with a review
     documents = db.relationship(
         'NOWApplicationDocumentXref',

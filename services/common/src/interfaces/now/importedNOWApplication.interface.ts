@@ -22,6 +22,8 @@ export interface IimportedNOWApplication {
   imported_to_core: boolean;
   notice_of_work_type_code: string;
   now_application_status_code: string;
+  now_application_tier_code?: string;
+  now_application_tier_description?: string;
   submitted_date: string;
   received_date: Date;
   latitude: string;

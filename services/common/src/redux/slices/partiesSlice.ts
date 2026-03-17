@@ -554,7 +554,7 @@ export const getProjectLeadsList = (state: RootState) =>
   createDropDownList(state[PARTIES].projectLeads, "name", "party_guid");
 
 export const getConsultationAdvisorsList = (state: RootState) =>
-  createDropDownList(state[PARTIES].consultationAdivsors, "name", "party_guid");
+  createDropDownList(state[PARTIES].consultationAdvisors, "name", "party_guid");
 
 export const getInspectorsHash = createSelector([getInspectorsList], createLabelHash);
 export const getProjectLeadsHash = createSelector([getProjectLeadsList], createLabelHash);

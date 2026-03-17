@@ -1,37 +1,31 @@
-import React, { useState } from "react";
-import { Col, Row, Button } from "antd";
-import PropTypes from "prop-types";
-import CustomPropTypes from "@/customPropTypes";
+import React, { FC, useState } from "react";
+import { Button, Col, Row } from "antd";
 import UpdateNOWInspectorsForm from "@/components/Forms/noticeOfWork/UpdateNOWInspectorsForm";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 import * as Permission from "@/constants/permissions";
 import { EDIT_OUTLINE } from "@/constants/assets";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
+import { IGroupedDropdownList, INoticeOfWork, IOption } from "@mds/common/interfaces";
 
-const propTypes = {
-  noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
-  inspectors: CustomPropTypes.groupOptions.isRequired,
-  consultationAdvisors: CustomPropTypes.groupOptions.isRequired,
-  handleUpdateInspectors: PropTypes.func.isRequired,
-  title: PropTypes.string.isRequired,
-  isEditMode: PropTypes.bool,
-  isAdminView: PropTypes.bool,
-  isLoaded: PropTypes.bool.isRequired,
-};
+interface AssignInspectorsProps {
+  noticeOfWork: INoticeOfWork;
+  inspectors: (IOption | IGroupedDropdownList)[];
+  consultationAdvisors: (IOption | IGroupedDropdownList)[];
+  handleUpdateInspectors: (values: any, callback: () => void) => void | Promise<any>;
+  title: string;
+  isEditMode?: boolean;
+  isAdminView?: boolean;
+  isLoaded: boolean;
+}
 
-const defaultProps = {
-  isEditMode: false,
-  isAdminView: false,
-};
-
-const AssignInspectors = (props) => {
+const AssignInspectors: FC<AssignInspectorsProps> = (props) => {
   const [isEditMode, setEditMode] = useState(props.isEditMode);
   return (
     <LoadingWrapper condition={props.isLoaded}>
       {!isEditMode && props.isAdminView && (
         <div className="right">
           <NOWActionWrapper permission={Permission.EDIT_PERMITS} ignoreDelay>
-            <Button type="secondary" onClick={() => setEditMode(true)}>
+            <Button type="default" onClick={() => setEditMode(true)}>
               <img src={EDIT_OUTLINE} title="Edit" alt="Edit" className="padding-md--right" />
               Edit
             </Button>
@@ -62,8 +56,5 @@ const AssignInspectors = (props) => {
     </LoadingWrapper>
   );
 };
-
-AssignInspectors.propTypes = propTypes;
-AssignInspectors.defaultProps = defaultProps;
 
 export default AssignInspectors;
