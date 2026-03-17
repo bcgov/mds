@@ -23,7 +23,7 @@ import {
 } from "@/actionCreators/documentActionCreator";
 import { getDocumentContextTemplate } from "@/reducers/documentReducer";
 import { getGeneratableNoticeOfWorkApplicationDocumentTypeOptions } from "@mds/common/redux/selectors/staticContentSelectors";
-import { getDropdownInspectors } from "@mds/common/redux/slices/partiesSlice";
+import { getDropdownInspectors, getDropdownConsultationAdvisors } from "@mds/common/redux/slices/partiesSlice";
 import CustomPropTypes from "@/customPropTypes";
 import * as Permission from "@/constants/permissions";
 import * as FORM from "@/constants/forms";
@@ -49,6 +49,7 @@ const propTypes = {
   documentContextTemplate: PropTypes.objectOf(PropTypes.string).isRequired,
   generateNoticeOfWorkApplicationDocument: PropTypes.func.isRequired,
   inspectors: CustomPropTypes.groupOptions.isRequired,
+  consultationAdvisors: CustomPropTypes.groupOptions.isRequired,
   formValues: CustomPropTypes.importedNOWApplication.isRequired,
   draftPermitAmendment: CustomPropTypes.permitAmendment.isRequired,
 };
@@ -331,6 +332,7 @@ export class AdministrativeTab extends Component {
             mineGuid={this.props.noticeOfWork.mine_guid}
             noticeOfWork={this.props.noticeOfWork}
             inspectors={this.props.inspectors}
+            consultationAdvisors={this.props.consultationAdvisors}
             handleUpdateInspectors={this.handleUpdateInspectors}
             handleUpdateTier={this.handleUpdateTier}
             importNowSubmissionDocumentsJob={this.props.importNowSubmissionDocumentsJob}
@@ -347,6 +349,7 @@ export class AdministrativeTab extends Component {
 const mapStateToProps = (state) => ({
   noticeOfWork: getNoticeOfWork(state),
   inspectors: getDropdownInspectors(state),
+  consultationAdvisors: getDropdownConsultationAdvisors(state),
   formValues: getFormValues(FORM.EDIT_NOTICE_OF_WORK)(state),
   importNowSubmissionDocumentsJob: getImportNowSubmissionDocumentsJob(state),
   generatableApplicationDocuments: getGeneratableNoticeOfWorkApplicationDocumentTypeOptions(state),

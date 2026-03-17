@@ -18,6 +18,7 @@ import {
   mergeParties,
   fetchInspectors,
   fetchProjectLeads,
+  fetchConsultationAdvisors,
   setAddPartyFormState,
   getParties,
   getPartyIds,
@@ -25,6 +26,7 @@ import {
   getLastCreatedParty,
   getDropdownInspectors,
   getDropdownProjectLeads,
+  getDropdownConsultationAdvisors,
 } from "./partiesSlice";
 import moment from "moment";
 
@@ -129,78 +131,87 @@ describe("partiesSlice", () => {
     });
 
     it("addPartyRelationship success", async () => {
-        (CustomAxios as jest.Mock).mockImplementation(() => ({
-            post: jest.fn().mockResolvedValue({ data: {} }),
-        }));
-        await store.dispatch(addPartyRelationship({ data: {} as any }));
-        expect(CustomAxios).toHaveBeenCalled();
+      (CustomAxios as jest.Mock).mockImplementation(() => ({
+        post: jest.fn().mockResolvedValue({ data: {} }),
+      }));
+      await store.dispatch(addPartyRelationship({ data: {} as any }));
+      expect(CustomAxios).toHaveBeenCalled();
     });
 
     it("updatePartyRelationship success", async () => {
-        (CustomAxios as jest.Mock).mockImplementation(() => ({
-            put: jest.fn().mockResolvedValue({ data: {} }),
-        }));
-        await store.dispatch(updatePartyRelationship({ data: { mine_party_appt_guid: "123" } }));
-        expect(CustomAxios).toHaveBeenCalled();
+      (CustomAxios as jest.Mock).mockImplementation(() => ({
+        put: jest.fn().mockResolvedValue({ data: {} }),
+      }));
+      await store.dispatch(updatePartyRelationship({ data: { mine_party_appt_guid: "123" } }));
+      expect(CustomAxios).toHaveBeenCalled();
     });
 
     it("removePartyRelationship success", async () => {
-        (CustomAxios as jest.Mock).mockImplementation(() => ({
-            delete: jest.fn().mockResolvedValue({ data: {} }),
-        }));
-        await store.dispatch(removePartyRelationship("123"));
-        expect(CustomAxios).toHaveBeenCalled();
+      (CustomAxios as jest.Mock).mockImplementation(() => ({
+        delete: jest.fn().mockResolvedValue({ data: {} }),
+      }));
+      await store.dispatch(removePartyRelationship("123"));
+      expect(CustomAxios).toHaveBeenCalled();
     });
 
     it("addDocumentToRelationship success", async () => {
-        (CustomAxios as jest.Mock).mockImplementation(() => ({
-            put: jest.fn().mockResolvedValue({ data: {} }),
-        }));
-        await store.dispatch(addDocumentToRelationship({ mineGuid: "m1", minePartyApptGuid: "r1", data: {} as any }));
-        expect(CustomAxios).toHaveBeenCalled();
+      (CustomAxios as jest.Mock).mockImplementation(() => ({
+        put: jest.fn().mockResolvedValue({ data: {} }),
+      }));
+      await store.dispatch(addDocumentToRelationship({ mineGuid: "m1", minePartyApptGuid: "r1", data: {} as any }));
+      expect(CustomAxios).toHaveBeenCalled();
     });
 
     it("createPartyOrgBookEntity success", async () => {
-        (CustomAxios as jest.Mock).mockImplementation(() => ({
-            post: jest.fn().mockResolvedValue({ data: {} }),
-        }));
-        await store.dispatch(createPartyOrgBookEntity({ partyGuid: "p1", data: {} as any }));
-        expect(CustomAxios).toHaveBeenCalled();
+      (CustomAxios as jest.Mock).mockImplementation(() => ({
+        post: jest.fn().mockResolvedValue({ data: {} }),
+      }));
+      await store.dispatch(createPartyOrgBookEntity({ partyGuid: "p1", data: {} as any }));
+      expect(CustomAxios).toHaveBeenCalled();
     });
 
     it("deletePartyOrgBookEntity success", async () => {
-        (CustomAxios as jest.Mock).mockImplementation(() => ({
-            delete: jest.fn().mockResolvedValue({ data: {} }),
-        }));
-        await store.dispatch(deletePartyOrgBookEntity("p1"));
-        expect(CustomAxios).toHaveBeenCalled();
+      (CustomAxios as jest.Mock).mockImplementation(() => ({
+        delete: jest.fn().mockResolvedValue({ data: {} }),
+      }));
+      await store.dispatch(deletePartyOrgBookEntity("p1"));
+      expect(CustomAxios).toHaveBeenCalled();
     });
 
     it("mergeParties success", async () => {
-        const mockResponse = { data: { party_guid: "merged123" } };
-        (CustomAxios as jest.Mock).mockImplementation(() => ({
-            post: jest.fn().mockResolvedValue(mockResponse),
-        }));
-        await store.dispatch(mergeParties({ party_guids: ["1", "2"], party: {} } as any));
-        expect(store.getState().PARTIES.lastCreatedParty).toEqual(mockResponse.data);
+      const mockResponse = { data: { party_guid: "merged123" } };
+      (CustomAxios as jest.Mock).mockImplementation(() => ({
+        post: jest.fn().mockResolvedValue(mockResponse),
+      }));
+      await store.dispatch(mergeParties({ party_guids: ["1", "2"], party: {} } as any));
+      expect(store.getState().PARTIES.lastCreatedParty).toEqual(mockResponse.data);
     });
 
     it("fetchInspectors success", async () => {
-        const mockResponse = { data: { records: [{ party_guid: "ins1" }] } };
-        (CustomAxios as jest.Mock).mockImplementation(() => ({
-            get: jest.fn().mockResolvedValue(mockResponse),
-        }));
-        await store.dispatch(fetchInspectors());
-        expect(store.getState().PARTIES.inspectors).toEqual(mockResponse.data.records);
+      const mockResponse = { data: { records: [{ party_guid: "ins1" }] } };
+      (CustomAxios as jest.Mock).mockImplementation(() => ({
+        get: jest.fn().mockResolvedValue(mockResponse),
+      }));
+      await store.dispatch(fetchInspectors());
+      expect(store.getState().PARTIES.inspectors).toEqual(mockResponse.data.records);
     });
 
     it("fetchProjectLeads success", async () => {
-        const mockResponse = { data: { records: [{ party_guid: "pl1" }] } };
-        (CustomAxios as jest.Mock).mockImplementation(() => ({
-            get: jest.fn().mockResolvedValue(mockResponse),
-        }));
-        await store.dispatch(fetchProjectLeads());
-        expect(store.getState().PARTIES.projectLeads).toEqual(mockResponse.data.records);
+      const mockResponse = { data: { records: [{ party_guid: "pl1" }] } };
+      (CustomAxios as jest.Mock).mockImplementation(() => ({
+        get: jest.fn().mockResolvedValue(mockResponse),
+      }));
+      await store.dispatch(fetchProjectLeads());
+      expect(store.getState().PARTIES.projectLeads).toEqual(mockResponse.data.records);
+    });
+
+    it("fetchConsultationAdvisors success", async () => {
+      const mockResponse = { data: { records: [{ party_guid: "cna1" }] } };
+      (CustomAxios as jest.Mock).mockImplementation(() => ({
+        get: jest.fn().mockResolvedValue(mockResponse),
+      }));
+      await store.dispatch(fetchConsultationAdvisors());
+      expect(store.getState().PARTIES.consultationAdvisors).toEqual(mockResponse.data.records);
     });
   });
 
@@ -232,132 +243,168 @@ describe("partiesSlice", () => {
     });
 
     it("getPartyPageData", () => {
-        const state = {
-          PARTIES: {
-            partyPageData: { current_page: 1 },
+      const state = {
+        PARTIES: {
+          partyPageData: { current_page: 1 },
+        },
+      };
+      expect(getPartyPageData(state as any)).toEqual({ current_page: 1 });
+    });
+
+    it("getLastCreatedParty", () => {
+      const state = {
+        PARTIES: {
+          lastCreatedParty: { party_guid: "123" },
+        },
+      };
+      expect(getLastCreatedParty(state as any)).toEqual({ party_guid: "123" });
+    });
+
+    it("getDropdownInspectors filters active and inactive correctly", () => {
+      const today = moment().utc();
+      const activeInspector = {
+        party_guid: "ins-1",
+        name: "Active Inspector",
+        business_role_appts: [
+          {
+            start_date: today.clone().subtract(1, "day").toISOString(),
+            end_date: null,
           },
-        };
-        expect(getPartyPageData(state as any)).toEqual({ current_page: 1 });
-      });
-
-      it("getLastCreatedParty", () => {
-        const state = {
-          PARTIES: {
-            lastCreatedParty: { party_guid: "123" },
+        ],
+      };
+      const activeInspectorFutureEnd = {
+        party_guid: "ins-2",
+        name: "Active Inspector Future",
+        business_role_appts: [
+          {
+            start_date: today.clone().subtract(1, "day").toISOString(),
+            end_date: today.clone().add(1, "day").toISOString(),
           },
-        };
-        expect(getLastCreatedParty(state as any)).toEqual({ party_guid: "123" });
-      });
-
-      it("getDropdownInspectors filters active and inactive correctly", () => {
-        const today = moment().utc();
-        const activeInspector = {
-          party_guid: "ins-1",
-          name: "Active Inspector",
-          business_role_appts: [
-            {
-              start_date: today.clone().subtract(1, "day").toISOString(),
-              end_date: null,
-            },
-          ],
-        };
-        const activeInspectorFutureEnd = {
-          party_guid: "ins-2",
-          name: "Active Inspector Future",
-          business_role_appts: [
-            {
-              start_date: today.clone().subtract(1, "day").toISOString(),
-              end_date: today.clone().add(1, "day").toISOString(),
-            },
-          ],
-        };
-        const inactiveInspector = {
-          party_guid: "ins-3",
-          name: "Inactive Inspector",
-          business_role_appts: [
-            {
-              start_date: today.clone().subtract(5, "days").toISOString(),
-              end_date: today.clone().subtract(1, "day").toISOString(),
-            },
-          ],
-        };
-        const activeAndInactiveInspector = {
-          party_guid: "ins-4",
-          name: "Active and Inactive",
-          business_role_appts: [
-            {
-              start_date: today.clone().subtract(10, "days").toISOString(),
-              end_date: today.clone().subtract(5, "days").toISOString(),
-            },
-            {
-              start_date: today.clone().subtract(1, "day").toISOString(),
-              end_date: null,
-            },
-          ],
-        };
-
-        const state = {
-          PARTIES: {
-            inspectors: [
-              activeInspector,
-              activeInspectorFutureEnd,
-              inactiveInspector,
-              activeAndInactiveInspector,
-            ],
+        ],
+      };
+      const inactiveInspector = {
+        party_guid: "ins-3",
+        name: "Inactive Inspector",
+        business_role_appts: [
+          {
+            start_date: today.clone().subtract(5, "days").toISOString(),
+            end_date: today.clone().subtract(1, "day").toISOString(),
           },
-        };
-
-        const result = getDropdownInspectors(state as any);
-        expect(result).toHaveLength(2);
-        expect(result[0].groupName).toBe("Active");
-        expect(result[0].opt).toHaveLength(3);
-        expect(result[0].opt).toEqual(
-          expect.arrayContaining([
-            { value: "ins-1", label: "Active Inspector" },
-            { value: "ins-2", label: "Active Inspector Future" },
-            { value: "ins-4", label: "Active and Inactive" },
-          ])
-        );
-
-        expect(result[1].groupName).toBe("Inactive");
-        expect(result[1].opt).toHaveLength(1);
-        expect(result[1].opt).toEqual([{ value: "ins-3", label: "Inactive Inspector" }]);
-      });
-
-      it("getDropdownProjectLeads filters active and inactive correctly", () => {
-        const today = moment().utc();
-        const activeLead = {
-          party_guid: "pl-1",
-          name: "Active Lead",
-          business_role_appts: [
-            {
-              start_date: today.clone().subtract(1, "day").toISOString(),
-              end_date: null,
-            },
-          ],
-        };
-        const inactiveLead = {
-          party_guid: "pl-2",
-          name: "Inactive Lead",
-          business_role_appts: [
-            {
-              start_date: today.clone().subtract(5, "days").toISOString(),
-              end_date: today.clone().subtract(1, "day").toISOString(),
-            },
-          ],
-        };
-
-        const state = {
-          PARTIES: {
-            projectLeads: [activeLead, inactiveLead],
+        ],
+      };
+      const activeAndInactiveInspector = {
+        party_guid: "ins-4",
+        name: "Active and Inactive",
+        business_role_appts: [
+          {
+            start_date: today.clone().subtract(10, "days").toISOString(),
+            end_date: today.clone().subtract(5, "days").toISOString(),
           },
-        };
+          {
+            start_date: today.clone().subtract(1, "day").toISOString(),
+            end_date: null,
+          },
+        ],
+      };
 
-        const result = getDropdownProjectLeads(state as any);
-        expect(result[0].groupName).toBe("Active");
-        expect(result[0].opt).toEqual([{ value: "pl-1", label: "Active Lead" }]);
-        expect(result[1].groupName).toBe("Inactive");
-        expect(result[1].opt).toEqual([{ value: "pl-2", label: "Inactive Lead" }]);
-      });
+      const state = {
+        PARTIES: {
+          inspectors: [
+            activeInspector,
+            activeInspectorFutureEnd,
+            inactiveInspector,
+            activeAndInactiveInspector,
+          ],
+        },
+      };
+
+      const result = getDropdownInspectors(state as any);
+      expect(result).toHaveLength(2);
+      expect(result[0].groupName).toBe("Active");
+      expect(result[0].opt).toHaveLength(3);
+      expect(result[0].opt).toEqual(
+        expect.arrayContaining([
+          { value: "ins-1", label: "Active Inspector" },
+          { value: "ins-2", label: "Active Inspector Future" },
+          { value: "ins-4", label: "Active and Inactive" },
+        ])
+      );
+
+      expect(result[1].groupName).toBe("Inactive");
+      expect(result[1].opt).toHaveLength(1);
+      expect(result[1].opt).toEqual([{ value: "ins-3", label: "Inactive Inspector" }]);
+    });
+
+    it("getDropdownProjectLeads filters active and inactive correctly", () => {
+      const today = moment().utc();
+      const activeLead = {
+        party_guid: "pl-1",
+        name: "Active Lead",
+        business_role_appts: [
+          {
+            start_date: today.clone().subtract(1, "day").toISOString(),
+            end_date: null,
+          },
+        ],
+      };
+      const inactiveLead = {
+        party_guid: "pl-2",
+        name: "Inactive Lead",
+        business_role_appts: [
+          {
+            start_date: today.clone().subtract(5, "days").toISOString(),
+            end_date: today.clone().subtract(1, "day").toISOString(),
+          },
+        ],
+      };
+
+      const state = {
+        PARTIES: {
+          projectLeads: [activeLead, inactiveLead],
+        },
+      };
+
+      const result = getDropdownProjectLeads(state as any);
+      expect(result[0].groupName).toBe("Active");
+      expect(result[0].opt).toEqual([{ value: "pl-1", label: "Active Lead" }]);
+      expect(result[1].groupName).toBe("Inactive");
+      expect(result[1].opt).toEqual([{ value: "pl-2", label: "Inactive Lead" }]);
+    });
+
+    it("getDropdownConsultationAdvisors filters active and inactive correctly", () => {
+      const today = moment().utc();
+      const activeConsultationAdvisor = {
+        party_guid: "cna-1",
+        name: "Active Consultation Advisor",
+        business_role_appts: [
+          {
+            start_date: today.clone().subtract(1, "day").toISOString(),
+            end_date: null,
+          },
+        ],
+      };
+      const inactiveConsultationAdvisor = {
+        party_guid: "cna-2",
+        name: "Inactive Consultation Advisor",
+        business_role_appts: [
+          {
+            start_date: today.clone().subtract(5, "days").toISOString(),
+            end_date: today.clone().subtract(1, "day").toISOString(),
+          },
+        ],
+      };
+
+      const state = {
+        PARTIES: {
+          consultationAdvisors: [activeConsultationAdvisor, inactiveConsultationAdvisor],
+        },
+      };
+
+      const result = getDropdownConsultationAdvisors(state as any);
+      expect(result[0].groupName).toBe("Active");
+      expect(result[0].opt).toEqual([{ value: "cna-1", label: "Active Consultation Advisor" }]);
+      expect(result[1].groupName).toBe("Inactive");
+      expect(result[1].opt).toEqual([{ value: "cna-2", label: "Inactive Consultation Advisor" }]);
+    });
   });
 });

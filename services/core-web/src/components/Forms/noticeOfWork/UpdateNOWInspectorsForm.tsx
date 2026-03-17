@@ -13,6 +13,7 @@ import { IGroupedDropdownList, INoticeOfWork, IOption } from "@mds/common/interf
 interface UpdateNOWInspectorsFormProps {
   noticeOfWork: INoticeOfWork;
   inspectors: (IOption | IGroupedDropdownList)[];
+  consultationAdvisors: (IOption | IGroupedDropdownList)[];
   onSubmit: (values: any) => void | Promise<any>;
   initialValues?: any;
   isAdminView: boolean;
@@ -87,6 +88,20 @@ export const UpdateNOWInspectorsForm: FC<UpdateNOWInspectorsFormProps> = (props)
             )}
           </>
         )}
+        <div className="field-title">Consultation Advisor</div>
+        <Field
+          id="consultation_advisor_party_guid"
+          name="consultation_advisor_party_guid"
+          label={
+            !props.isAdminView
+              ? "Optionally assign the Consultation Advisor before continuing. Assign when First Nations engagement requires validation. This assignment can be updated later under the Administrative tab."
+              : ""
+          }
+          component={renderConfig.GROUPED_SELECT}
+          placeholder="Start typing the Consultation Advisor's name"
+          data={props.consultationAdvisors}
+          disabled={!props.isEditMode}
+        />
         {props.isEditMode && (
           <div className="right center-mobile">
             {props.isAdminView && (

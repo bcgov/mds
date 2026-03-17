@@ -45,6 +45,7 @@ const initialState = {
   },
   [PARTIES]: {
     inspectors: [],
+    consultationAdvisors: [],
   },
   [STATIC_CONTENT]: {
     ...BULK_STATIC_CONTENT_RESPONSE,
@@ -73,4 +74,3 @@ describe("ApplicationTab", () => {
     expect(container.firstChild).toMatchSnapshot();
   });
 });
-

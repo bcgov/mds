@@ -12,6 +12,7 @@ const dispatchProps = {
 const props = {
     noticeOfWork: NOW_MOCK.NOTICE_OF_WORK as any,
     inspectors: [],
+    consultationAdvisors: [],
     initialValues: {},
     isAdminView: true,
     isEditMode: true,

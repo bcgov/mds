@@ -23,6 +23,7 @@ class NowApplicationBaseListResource(Resource, UserMixin):
                                       mine_guid=None,
                                       lead_inspector_name=None,
                                       issuing_inspector_name=None,
+                                      consultation_advisor_name=None,
                                       notice_of_work_type_description=[],
                                       mine_region=[],
                                       mine_name=None,
@@ -63,6 +64,11 @@ class NowApplicationBaseListResource(Resource, UserMixin):
             filters.append(
                 func.lower(ApplicationsView.issuing_inspector_name).contains(
                     func.lower(issuing_inspector_name)))
+            
+        if consultation_advisor_name:
+            filters.append(
+                func.lower(ApplicationsView.consultation_advisor_name).contains(
+                    func.lower(consultation_advisor_name)))
 
         if notice_of_work_type_description:
             filters.append(

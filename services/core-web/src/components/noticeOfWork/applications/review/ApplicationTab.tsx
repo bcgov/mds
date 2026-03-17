@@ -15,7 +15,7 @@ import {
   fetchImportedNoticeOfWorkApplication,
   updateNoticeOfWorkApplication,
 } from "@mds/common/redux/actionCreators/noticeOfWorkActionCreator";
-import { getDropdownInspectors } from "@mds/common/redux/slices/partiesSlice";
+import { getDropdownInspectors, getDropdownConsultationAdvisors } from "@mds/common/redux/slices/partiesSlice";
 import {
   getImportNowSubmissionDocumentsJob,
   getNoticeOfWork,
@@ -75,6 +75,7 @@ export const ApplicationTab: FC<ApplicationTabProps> = ({
   const formErrors = useAppSelector(getFormSyncErrors(FORM.EDIT_NOTICE_OF_WORK));
   const submitFailed = useAppSelector(hasSubmitFailed(FORM.EDIT_NOTICE_OF_WORK));
   const inspectors = useAppSelector(getDropdownInspectors);
+  const consultationAdvisors = useAppSelector(getDropdownConsultationAdvisors);
   const reclamationSummary = useAppSelector(getNOWReclamationSummary);
   const generatableApplicationDocuments = useAppSelector(
     getGeneratableNoticeOfWorkApplicationDocumentTypeOptions
@@ -281,9 +282,8 @@ export const ApplicationTab: FC<ApplicationTabProps> = ({
             </Button>
             {showErrors && (
               <Alert
-                message={`You have ${errorsLength} ${
-                  errorsLength === 1 ? "issue" : "issues"
-                } that must be fixed before proceeding.`}
+                message={`You have ${errorsLength} ${errorsLength === 1 ? "issue" : "issues"
+                  } that must be fixed before proceeding.`}
                 type="error"
                 showIcon
               />
@@ -391,6 +391,7 @@ export const ApplicationTab: FC<ApplicationTabProps> = ({
             <ScrollContentWrapper id="inspectors" title="Assign Inspectors" isActive>
               <AssignInspectors
                 inspectors={inspectors}
+                consultationAdvisors={consultationAdvisors}
                 noticeOfWork={noticeOfWork}
                 handleUpdateInspectors={handleUpdateInspectors}
                 title="Assign Inspectors"

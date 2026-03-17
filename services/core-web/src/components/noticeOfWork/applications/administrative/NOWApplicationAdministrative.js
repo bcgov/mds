@@ -20,6 +20,7 @@ const propTypes = {
   mineGuid: PropTypes.string.isRequired,
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   inspectors: CustomPropTypes.groupOptions.isRequired,
+  consultationAdvisors: CustomPropTypes.groupOptions.isRequired,
   handleUpdateInspectors: PropTypes.func.isRequired,
   handleUpdateTier: PropTypes.func.isRequired,
   importNowSubmissionDocumentsJob: PropTypes.objectOf(PropTypes.any),
@@ -117,6 +118,7 @@ export const NOWApplicationAdministrative = (props) => {
       <ScrollContentWrapper id="inspectors" title="Inspectors" isLoaded={props.isLoaded}>
         <AssignInspectors
           inspectors={props.inspectors}
+          consultationAdvisors={props.consultationAdvisors}
           noticeOfWork={props.noticeOfWork}
           handleUpdateInspectors={props.handleUpdateInspectors}
           title="Update Inspectors"

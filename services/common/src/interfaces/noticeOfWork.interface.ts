@@ -35,6 +35,7 @@ export interface INoticeOfWork {
   lead_inspector_name: string;
   issuing_inspector_name: string;
   issuing_inspector_party_guid: string;
+  consultation_advisor_party_guid: string;
   now_application_status_description: string;
   received_date: string;
   originating_system: string;

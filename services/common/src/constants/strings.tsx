@@ -99,6 +99,7 @@ export const INCIDENT_CONTACT_METHOD_OPTIONS = [
 export const BUSINESS_ROLES = {
   inspector: "INS",
   projectLead: "PRL",
+  consultationAdvisor: "CNA",
 };
 
 export const MINESPACE_POSITIONS = [

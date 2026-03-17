@@ -10,6 +10,7 @@ import { IGroupedDropdownList, INoticeOfWork, IOption } from "@mds/common/interf
 interface AssignInspectorsProps {
   noticeOfWork: INoticeOfWork;
   inspectors: (IOption | IGroupedDropdownList)[];
+  consultationAdvisors: (IOption | IGroupedDropdownList)[];
   handleUpdateInspectors: (values: any, callback: () => void) => void | Promise<any>;
   title: string;
   isEditMode?: boolean;
@@ -38,9 +39,11 @@ const AssignInspectors: FC<AssignInspectorsProps> = (props) => {
               initialValues={{
                 lead_inspector_party_guid: props.noticeOfWork.lead_inspector_party_guid,
                 issuing_inspector_party_guid: props.noticeOfWork.issuing_inspector_party_guid,
+                consultation_advisor_party_guid: props.noticeOfWork.consultation_advisor_party_guid,
               }}
               noticeOfWork={props.noticeOfWork}
               inspectors={props.inspectors}
+              consultationAdvisors={props.consultationAdvisors}
               onSubmit={(values) => props.handleUpdateInspectors(values, () => setEditMode(false))}
               title={props.title}
               isAdminView={props.isAdminView}

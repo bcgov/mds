@@ -56,7 +56,12 @@ class NOWApplication(Base, AuditMixin):
         lazy='selectin',
         uselist=False,
         primaryjoin='Party.party_guid == NOWApplication.issuing_inspector_party_guid')
-
+    consultation_advisor_party_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'))
+    consultation_advisor = db.relationship(
+        'Party',
+        lazy='selectin',
+        uselist=False,
+        primaryjoin='Party.party_guid == NOWApplication.consultation_advisor_party_guid')
     now_tracking_number = db.Column(db.Integer)
     proponent_submitted_permit_number = db.Column(db.String)
     annual_summary_submitted = db.Column(db.Boolean)

@@ -44,6 +44,8 @@ class ApplicationsView(Base):
     issuing_inspector_party_guid = db.Column(
         UUID(as_uuid=True), db.ForeignKey('party.party_guid'), nullable=True)
     issuing_inspector_name = db.Column(db.String)
+    consultation_advisor_party_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'), nullable=True)
+    consultation_advisor_name = db.Column(db.String)
 
     notice_of_work_type_description = db.Column(db.String)
     now_application_status_description = db.Column(db.String)
