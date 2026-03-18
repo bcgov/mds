@@ -159,6 +159,22 @@ def register_commands(app):
             create_new_recurring_crr_report_requests()
             print("celery job started: create_new_recurring_crr_report_requests")
 
+    @app.cli.command('regenerate_report_requests_for_permit')
+    @click.argument('permit_guid')
+    def regenerate_report_requests_for_permit(permit_guid):
+        from app import auth
+        from app.api.mines.reports.tasks import create_new_recurring_report_requests
+
+        auth.apply_security = False
+
+        with current_app.app_context():
+            result = create_new_recurring_report_requests(permit_guid=permit_guid, regenerate=True)
+
+            if result.get('status') == 'error':
+                raise click.ClickException(result['reason'])
+
+            print(result)
+
     @app.cli.command('revoke_mines_act_permit_vc_and_offer_newest')
     @click.argument('credential_exchange_id')
     @click.argument('permit_guid')
