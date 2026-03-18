@@ -7,7 +7,13 @@ from app.api.mines.mine.models.mine import Mine
 from app.api.mines.reports.models.mine_report_definition import MineReportDefinition
 from flask import current_app
 from pytz import timezone as pytz_timezone
-from tests.factories import MineFactory, MineReportFactory, MineReportSubmissionFactory
+from tests.factories import (
+    MineFactory,
+    MineReportFactory,
+    MineReportPermitRequirementFactory,
+    MineReportSubmissionFactory,
+    create_mine_and_permit,
+)
 
 THREE_REPORTS = 3
 ONE_REPORT = 1
@@ -73,14 +79,57 @@ def test_get_code_required_reports_for_mine(test_client, db_session, auth_header
 
 
 def test_get_permit_required_reports_for_mine(test_client, db_session, auth_headers):
-    mine = MineFactory(mine_reports=THREE_REPORTS)
-    mine_reports = MineReportFactory(mine=mine, permit_required_reports=True)
+    mine, permit = create_mine_and_permit(mine_kwargs={"mine_reports": 0}, num_permit_amendments=2)
+    # Set distinct issue_dates so the filter can determine the latest amendment
+    today = date.today()
+    for i, amendment in enumerate(permit.permit_amendments):
+        amendment.issue_date = today - timedelta(days=10 - i)
+    db_session.flush()
+    latest_amendment = max(permit.permit_amendments, key=lambda amendment: amendment.issue_date)
+    previous_amendment = min(permit.permit_amendments, key=lambda amendment: amendment.issue_date)
+
+    latest_requirement = MineReportPermitRequirementFactory(
+        permit_amendment=latest_amendment,
+        report_name="Latest PRR",
+        due_date_period_months=0,
+        initial_due_date=date.today() + timedelta(days=10),
+        active_ind=True,
+        deleted_ind=False,
+    )
+    previous_requirement = MineReportPermitRequirementFactory(
+        permit_amendment=previous_amendment,
+        report_name="Old PRR",
+        due_date_period_months=0,
+        initial_due_date=date.today() + timedelta(days=10),
+        active_ind=True,
+        deleted_ind=False,
+    )
+
+    MineReportFactory(
+        mine=mine,
+        permit=permit,
+        mine_report_definition_id=None,
+        mine_report_permit_requirement=latest_requirement,
+        due_date=date.today() + timedelta(days=10),
+        mine_report_submissions=0,
+    )
+    MineReportFactory(
+        mine=mine,
+        permit=permit,
+        mine_report_definition_id=None,
+        mine_report_permit_requirement=previous_requirement,
+        due_date=date.today() + timedelta(days=10),
+        mine_report_submissions=0,
+    )
+
     get_resp = test_client.get(
         f'/mines/{mine.mine_guid}/reports?mine_reports_type={MINE_REPORT_TYPE["PERMIT REQUIRED REPORTS"]}',
         headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
+
     assert len(get_data['records']) == 1
     assert get_resp.status_code == 200
+    assert get_data['records'][0]['mine_report_permit_requirement_id'] == latest_requirement.mine_report_permit_requirement_id
 
 
 def test_get_a_report_for_a_mine(test_client, db_session, auth_headers):
@@ -346,7 +395,7 @@ def test_delete_mine_report(test_client, db_session, auth_headers):
 
 def test_get_prr_and_crr_reports_for_mine(test_client, db_session, auth_headers):
     # Create a mine with no reports, then add one CRR (non-TSF) and one PRR
-    mine = MineFactory(mine_reports=0)
+    mine, permit = create_mine_and_permit(mine_kwargs={"mine_reports": 0}, num_permit_amendments=1)
 
     # Pick a non-TSF code-required report definition to avoid TAR filtering
     defs = MineReportDefinition.get_all()
@@ -356,7 +405,22 @@ def test_get_prr_and_crr_reports_for_mine(test_client, db_session, auth_headers)
 
     # Create CRR (has definition) and PRR (no definition) reports
     MineReportFactory(mine=mine, mine_report_definition_id=non_tsf_def.mine_report_definition_id)
-    MineReportFactory(mine=mine, permit_required_reports=True)
+    requirement = MineReportPermitRequirementFactory(
+        permit_amendment=permit.permit_amendments[0],
+        report_name="Current PRR",
+        due_date_period_months=0,
+        initial_due_date=date.today() + timedelta(days=10),
+        active_ind=True,
+        deleted_ind=False,
+    )
+    MineReportFactory(
+        mine=mine,
+        permit=permit,
+        mine_report_definition_id=None,
+        mine_report_permit_requirement=requirement,
+        due_date=date.today() + timedelta(days=10),
+        mine_report_submissions=0,
+    )
 
     # Request only CRR
     get_resp = test_client.get(
@@ -428,6 +492,65 @@ def test_get_upcoming_reports_for_mine(test_client, db_session, auth_headers):
     assert str(in_window_2.mine_report_guid) in returned
     assert str(past_due.mine_report_guid) in returned
     assert str(far_future.mine_report_guid) not in returned
+
+
+def test_get_upcoming_reports_for_mine_only_shows_latest_permit_required_reports(test_client, db_session, auth_headers):
+    today = date.today()
+    mine, permit = create_mine_and_permit(mine_kwargs={"mine_reports": 0}, num_permit_amendments=2)
+    # Set distinct issue_dates so the filter can determine the latest amendment
+    for i, amendment in enumerate(permit.permit_amendments):
+        amendment.issue_date = today - timedelta(days=10 - i)
+    db_session.flush()
+    latest_amendment = max(permit.permit_amendments, key=lambda amendment: amendment.issue_date)
+    previous_amendment = min(permit.permit_amendments, key=lambda amendment: amendment.issue_date)
+
+    latest_requirement = MineReportPermitRequirementFactory(
+        permit_amendment=latest_amendment,
+        report_name="Latest Upcoming PRR",
+        due_date_period_months=0,
+        initial_due_date=today + timedelta(days=10),
+        active_ind=True,
+        deleted_ind=False,
+    )
+    previous_requirement = MineReportPermitRequirementFactory(
+        permit_amendment=previous_amendment,
+        report_name="Old Upcoming PRR",
+        due_date_period_months=0,
+        initial_due_date=today + timedelta(days=10),
+        active_ind=True,
+        deleted_ind=False,
+    )
+
+    latest_report = MineReportFactory(
+        mine=mine,
+        permit=permit,
+        mine_report_definition_id=None,
+        mine_report_permit_requirement=latest_requirement,
+        due_date=today + timedelta(days=10),
+        received_date=None,
+        mine_report_submissions=0,
+    )
+    old_report = MineReportFactory(
+        mine=mine,
+        permit=permit,
+        mine_report_definition_id=None,
+        mine_report_permit_requirement=previous_requirement,
+        due_date=today + timedelta(days=10),
+        received_date=None,
+        mine_report_submissions=0,
+    )
+
+    resp = test_client.get(
+        f"/mines/{mine.mine_guid}/reports?upcoming=true&time_range=90d&mine_reports_type=PRR",
+        headers=auth_headers["full_auth_header"],
+    )
+
+    assert resp.status_code == 200
+    data = json.loads(resp.data.decode())
+    returned = {r["mine_report_guid"] for r in data["records"]}
+
+    assert str(latest_report.mine_report_guid) in returned
+    assert str(old_report.mine_report_guid) not in returned
 
 
 def test_get_pending_reports_for_mine_status_filter(test_client, db_session, auth_headers):

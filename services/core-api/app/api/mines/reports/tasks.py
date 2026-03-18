@@ -1,14 +1,52 @@
-from app.api.mines.reports.models.mine_report_permit_requirement import MineReportPermitRequirement
+from collections import defaultdict
+from datetime import datetime
+
+from app.api.mines.mine.models.mine import Mine
 from app.api.mines.reports.models.mine_report import MineReport
 from app.api.mines.reports.models.mine_report_definition import MineReportDefinition
-from app.api.mines.mine.models.mine import Mine
+from app.api.mines.reports.report_helpers import ReportFilterHelper
+from app.api.utils.feature_flag import Feature, is_feature_enabled
 from app.extensions import db
 from app.tasks.celery import celery
-from celery import chain
-from datetime import datetime
 from dateutil.relativedelta import relativedelta
-from app.api.utils.feature_flag import Feature, is_feature_enabled
-from collections import defaultdict
+
+
+def _delete_relevant_permit_report_requests(requirements):
+    requirement_ids = [
+        requirement.mine_report_permit_requirement_id
+        for requirement in requirements
+    ]
+
+    if not requirement_ids:
+        return 0
+
+    existing_report_requests = MineReport.query.filter(
+        MineReport.mine_report_permit_requirement_id.in_(requirement_ids),
+        MineReport.deleted_ind == False,
+        MineReport.mine_report_status_code == 'NON',
+    ).all()
+
+    for report_request in existing_report_requests:
+        report_request.delete(commit=False)
+
+    db.session.commit()
+    return len(existing_report_requests)
+
+
+def _latest_permit_amendment_authorization_has_passed(requirement, current_date):
+    from app.api.mines.permits.permit_amendment.models.permit_amendment import (
+        PermitAmendment,
+    )
+
+    permit_amendment = PermitAmendment.find_by_permit_amendment_id(requirement.permit_amendment_id)
+    if not permit_amendment:
+        return False
+
+    latest_permit_amendment = PermitAmendment.find_last_amendment_by_permit_id(permit_amendment.permit_id)
+    if not latest_permit_amendment or not latest_permit_amendment.authorization_end_date:
+        return False
+
+    return latest_permit_amendment.authorization_end_date < current_date
 
 def _calculate_missing_due_dates(requirement, existing_due_dates, current_date, one_year_from_now):
     """Calculate which due dates need new reports created."""
@@ -75,6 +113,10 @@ def _create_report_for_due_date(requirement, due_date):
 def _process_single_requirement(requirement, current_date, one_year_from_now):
     """Process a single requirement and create missing reports."""
     print(f"Processing requirement: {requirement.report_name} (ID: {requirement.mine_report_permit_requirement_id})")
+
+    if _latest_permit_amendment_authorization_has_passed(requirement, current_date):
+        print("  Skipping - latest permit amendment authorization end date has passed")
+        return 0, 0
     
     if not requirement.initial_due_date:
         print("  Skipping - no initial due date")
@@ -172,7 +214,7 @@ def _process_crr_reports(mine, mine_report_definition, reports, current_date, on
     return created_count, failed_count
 
 @celery.task()
-def create_new_recurring_report_requests():
+def create_new_recurring_report_requests(permit_guid=None, regenerate=False):
     """
     Create new recurring report requests based on permit requirements.
     This task finds all recurring requirements and creates missing reports
@@ -184,20 +226,27 @@ def create_new_recurring_report_requests():
     
     print("Starting creation of recurring report requests...")
     current_date = datetime.now().date()
-    
-    recurring_requirements = MineReportPermitRequirement.get_all_recurring()
-    print(f"Found {len(recurring_requirements)} recurring report requirements")
-    single_requirements = MineReportPermitRequirement.get_all_single_reports(current_date)
-    print(f"Found {len(single_requirements)} single report requirements")
 
-    all_requirements = recurring_requirements + single_requirements
+    requirements, error = ReportFilterHelper.get_filtered_requirements(current_date, permit_guid=permit_guid)
+    if error:
+        return error
+
+    if permit_guid:
+        print(f"Filtering report request generation to permit guid: {permit_guid}")
+
+    print(f"Found {len(requirements)} report requirements")
     
     one_year_from_now = current_date + relativedelta(years=1)
+    total_deleted = 0
+
+    if regenerate:
+        total_deleted = _delete_relevant_permit_report_requests(requirements)
+        print(f"Deleted {total_deleted} existing permit report requests before regeneration")
     
     total_created = 0
     failed_requirements = []
     
-    for requirement in all_requirements:
+    for requirement in requirements:
         created_count, failed_count = _process_single_requirement(
             requirement, current_date, one_year_from_now
         )
@@ -219,6 +268,7 @@ def create_new_recurring_report_requests():
             print(f"  - Requirement ID {failed['requirement_id']} ({failed['report_name']}): {failed['failed_count']} failed reports")
     
     return {
+        'total_deleted': total_deleted,
         'total_created': total_created,
         'failed_requirements': failed_requirements
     }

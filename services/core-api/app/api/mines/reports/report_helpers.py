@@ -1,17 +1,27 @@
 # report_helpers.py
-from sqlalchemy import asc, desc
-from sqlalchemy_filters import apply_sort, apply_pagination, apply_filters
+import uuid
 
 from app.api.mines.mine.models.mine import Mine
+from app.api.mines.permits.permit.models.permit import Permit
+from app.api.mines.permits.permit_amendment.models.permit_amendment import (
+    PermitAmendment,
+)
+from app.api.mines.permits.permit_conditions.models.permit_condition_category import (
+    PermitConditionCategory,
+)
 from app.api.mines.reports.models.mine_report import MineReport
 from app.api.mines.reports.models.mine_report_category import MineReportCategory
-from app.api.mines.reports.models.mine_report_category_xref import MineReportCategoryXref
+from app.api.mines.reports.models.mine_report_category_xref import (
+    MineReportCategoryXref,
+)
 from app.api.mines.reports.models.mine_report_definition import MineReportDefinition
-from sqlalchemy import case, or_, and_
-from app.api.mines.permits.permit_conditions.models.permit_condition_category import PermitConditionCategory
-from app.api.mines.reports.models.mine_report_permit_requirement import MineReportPermitRequirement
-from app.api.mines.permits.permit.models.permit import Permit
-import uuid
+from app.api.mines.reports.models.mine_report_permit_requirement import (
+    MineReportPermitRequirement,
+)
+from app.extensions import db
+from sqlalchemy import and_, asc, case, desc, func, or_
+from sqlalchemy_filters import apply_filters, apply_pagination, apply_sort
+
 
 def is_guid(value) -> bool:
     try:
@@ -24,6 +34,155 @@ class ReportFilterHelper:
     @classmethod
     def build_filter(cls, model, field, op, argfield):
         return {'model': model, 'field': field, 'op': op, 'value': argfield}
+
+    @staticmethod
+    def _filter_latest_permit_amendment_prr(query):
+        latest_amendments = (
+            db.session.query(
+                PermitAmendment.permit_id.label('permit_id'),
+                func.max(PermitAmendment.issue_date).label('latest_issue_date'),
+            )
+            .filter(
+                PermitAmendment.deleted_ind == False,
+                PermitAmendment.permit_amendment_status_code != 'DFT',
+            )
+            .group_by(PermitAmendment.permit_id)
+            .subquery()
+        )
+
+        latest_amendment_ids = (
+            db.session.query(
+                PermitAmendment.permit_amendment_id.label('latest_permit_amendment_id'),
+                PermitAmendment.permit_id.label('permit_id'),
+            )
+            .join(
+                latest_amendments,
+                and_(
+                    PermitAmendment.permit_id == latest_amendments.c.permit_id,
+                    PermitAmendment.issue_date == latest_amendments.c.latest_issue_date,
+                )
+            )
+            .filter(
+                PermitAmendment.deleted_ind == False,
+                PermitAmendment.permit_amendment_status_code != 'DFT',
+            )
+            .subquery()
+        )
+
+        filtered_query = (
+            query
+                .outerjoin(MineReport.mine_report_permit_requirement)
+                .outerjoin(MineReport.permit_condition_category)
+                .outerjoin(latest_amendment_ids, MineReport.permit_id == latest_amendment_ids.c.permit_id)
+        )
+
+        return filtered_query.filter(
+            or_(
+                MineReport.mine_report_definition_id.isnot(None),
+                MineReportPermitRequirement.permit_amendment_id == latest_amendment_ids.c.latest_permit_amendment_id,
+                PermitConditionCategory.permit_amendment_id == latest_amendment_ids.c.latest_permit_amendment_id,
+            )
+        )
+
+    @staticmethod
+    def _get_alg_permit_amendment_ids(permit_guid=None):
+        """
+        Get permit_amendment_ids from ALG permits (latest amendment by issue_date).
+        Only returns amendments from permits where the latest amendment is type ALG.
+        """
+        # Subquery: latest issue_date per permit
+        latest_issue_date_subq = (
+            db.session.query(
+                PermitAmendment.permit_id,
+                func.max(PermitAmendment.issue_date).label('max_issue_date'),
+            )
+            .filter(
+                PermitAmendment.deleted_ind == False,
+                PermitAmendment.permit_amendment_status_code != 'DFT',
+            )
+            .group_by(PermitAmendment.permit_id)
+            .subquery()
+        )
+
+        # Get permits where latest amendment is ALG
+        alg_permit_ids_subq = (
+            db.session.query(PermitAmendment.permit_id)
+            .join(latest_issue_date_subq, and_(
+                PermitAmendment.permit_id == latest_issue_date_subq.c.permit_id,
+                PermitAmendment.issue_date == latest_issue_date_subq.c.max_issue_date,
+            ))
+            .filter(
+                PermitAmendment.deleted_ind == False,
+                PermitAmendment.permit_amendment_type_code == 'ALG',
+            )
+            .subquery()
+        )
+
+        # Get the latest amendment ID per (permit_id, mine_guid) for ALG permits
+        latest_per_mine_subq = (
+            db.session.query(
+                PermitAmendment.permit_id,
+                PermitAmendment.mine_guid,
+                func.max(PermitAmendment.issue_date).label('max_issue_date'),
+            )
+            .filter(
+                PermitAmendment.permit_id.in_(alg_permit_ids_subq),
+                PermitAmendment.deleted_ind == False,
+                PermitAmendment.permit_amendment_status_code != 'DFT',
+            )
+            .group_by(PermitAmendment.permit_id, PermitAmendment.mine_guid)
+            .subquery()
+        )
+
+        query = (
+            db.session.query(PermitAmendment.permit_amendment_id)
+            .join(latest_per_mine_subq, and_(
+                PermitAmendment.permit_id == latest_per_mine_subq.c.permit_id,
+                PermitAmendment.mine_guid == latest_per_mine_subq.c.mine_guid,
+                PermitAmendment.issue_date == latest_per_mine_subq.c.max_issue_date,
+            ))
+            .filter(PermitAmendment.deleted_ind == False)
+        )
+
+        if permit_guid:
+            permit = Permit.find_by_permit_guid(permit_guid)
+            if not permit:
+                return None
+            query = query.filter(PermitAmendment.permit_id == permit.permit_id)
+
+        return query.subquery()
+
+    @staticmethod
+    def get_filtered_requirements(current_date, permit_guid=None):
+        """
+        Get active PRR requirements from ALG permits only.
+        Returns the latest amendment's requirements per (permit_id, mine_guid).
+        """
+        alg_amendment_ids = ReportFilterHelper._get_alg_permit_amendment_ids(permit_guid)
+        if alg_amendment_ids is None:
+            return [], {'status': 'error', 'reason': 'permit not found'}
+
+        valid_pa = MineReportPermitRequirement.permit_amendment_is_validated()
+
+        requirements = (
+            MineReportPermitRequirement.query
+            .filter_by(deleted_ind=False, active_ind=True)
+            .filter(valid_pa)
+            .filter(MineReportPermitRequirement.initial_due_date.isnot(None))
+            .filter(MineReportPermitRequirement.permit_amendment_id.in_(alg_amendment_ids))
+            .filter(
+                or_(
+                    MineReportPermitRequirement.due_date_period_months > 0,  # recurring
+                    and_(  # single reports with future due date
+                        MineReportPermitRequirement.due_date_period_months == 0,
+                        MineReportPermitRequirement.initial_due_date >= current_date,
+                    )
+                )
+            )
+            .all()
+        )
+
+        return requirements, None
 
     @staticmethod
     def apply_filters_and_pagination(query, args, mine_guid=None):
@@ -144,6 +303,8 @@ class ReportFilterHelper:
 
         if args.get('permit_guid'):
             query = query.filter(MineReport.permit_guid == args["permit_guid"])
+
+        query = ReportFilterHelper._filter_latest_permit_amendment_prr(query)
 
         if args.get('is_upcoming_view'):
             from datetime import date

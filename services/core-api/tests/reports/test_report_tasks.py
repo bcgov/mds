@@ -11,6 +11,7 @@ from app.api.mines.reports.models.mine_report_definition import MineReportDefini
 from tests.factories import (
     MineReportPermitRequirementFactory,
     MineReportFactory,
+    PermitAmendmentFactory,
     create_mine_and_permit,
     MineFactory,
     ComplianceArticleFactory,
@@ -30,6 +31,8 @@ def setup_recurring_requirements(db_session):
     """Set up test data with a mine, permit, and recurring report requirements."""
     mine, permit = create_mine_and_permit(num_permit_amendments=1)
     permit_amendment = permit.permit_amendments[0]
+    permit_amendment.permit_amendment_type_code = 'ALG'
+    permit_amendment.save()
     today = date.today()
     
     quarterly_requirement = MineReportPermitRequirementFactory(
@@ -314,9 +317,9 @@ class TestCreateNewRecurringReportRequests:
             report_due_date = report.due_date.date()
             assert report_due_date <= max_date, f"Report due date {report_due_date} should not be after {max_date}"
     
-    @mock.patch('app.api.mines.reports.tasks.MineReportPermitRequirement.get_all_recurring')
-    def test_task_with_no_recurring_requirements(self, mock_get_all_recurring, db_session):
-        mock_get_all_recurring.return_value = []
+    @mock.patch('app.api.mines.reports.tasks.ReportFilterHelper.get_filtered_requirements')
+    def test_task_with_no_recurring_requirements(self, mock_get_filtered_requirements, db_session):
+        mock_get_filtered_requirements.return_value = ([], None)
         
         result = create_new_recurring_report_requests()
         
@@ -362,6 +365,338 @@ class TestCreateNewRecurringReportRequests:
             expected_year = report.due_date.year - 1 if report.due_date.month <= 3 else report.due_date.year
             assert report.submission_year == expected_year
             assert report.mine_report_status_code == 'NON' # Report Requested
+
+    @mock.patch('app.api.mines.reports.tasks.is_feature_enabled', return_value=True)
+    def test_task_can_filter_to_a_single_permit(self, _mock_feature_flag, db_session):
+        first_mine, first_permit = create_mine_and_permit(num_permit_amendments=1)
+        second_mine, second_permit = create_mine_and_permit(num_permit_amendments=1)
+        today = date.today()
+
+        first_permit.permit_amendments[0].permit_amendment_type_code = 'ALG'
+        first_permit.permit_amendments[0].save()
+        second_permit.permit_amendments[0].permit_amendment_type_code = 'ALG'
+        second_permit.permit_amendments[0].save()
+
+        first_requirement = MineReportPermitRequirementFactory(
+            permit_amendment=first_permit.permit_amendments[0],
+            report_name="First Permit Report",
+            due_date_period_months=3,
+            initial_due_date=today - relativedelta(months=6),
+            active_ind=True,
+            deleted_ind=False,
+        )
+        second_requirement = MineReportPermitRequirementFactory(
+            permit_amendment=second_permit.permit_amendments[0],
+            report_name="Second Permit Report",
+            due_date_period_months=3,
+            initial_due_date=today - relativedelta(months=6),
+            active_ind=True,
+            deleted_ind=False,
+        )
+
+        result = create_new_recurring_report_requests(permit_guid=first_permit.permit_guid)
+
+        first_reports = MineReport.query.filter_by(
+            mine_report_permit_requirement_id=first_requirement.mine_report_permit_requirement_id,
+            deleted_ind=False,
+        ).count()
+        second_reports = MineReport.query.filter_by(
+            mine_report_permit_requirement_id=second_requirement.mine_report_permit_requirement_id,
+            deleted_ind=False,
+        ).count()
+
+        assert result['total_created'] > 0
+        assert result['total_deleted'] == 0
+        assert first_reports > 0
+        assert second_reports == 0
+
+    @mock.patch('app.api.mines.reports.tasks.is_feature_enabled', return_value=True)
+    def test_task_fully_regenerates_existing_report_requests_for_a_single_permit(self, _mock_feature_flag, db_session):
+        first_mine, first_permit = create_mine_and_permit(num_permit_amendments=1)
+        second_mine, second_permit = create_mine_and_permit(num_permit_amendments=1)
+        today = date.today()
+
+        first_permit.permit_amendments[0].permit_amendment_type_code = 'ALG'
+        first_permit.permit_amendments[0].save()
+        second_permit.permit_amendments[0].permit_amendment_type_code = 'ALG'
+        second_permit.permit_amendments[0].save()
+
+        first_requirement = MineReportPermitRequirementFactory(
+            permit_amendment=first_permit.permit_amendments[0],
+            report_name="First Permit One-time Report",
+            due_date_period_months=0,
+            initial_due_date=today + relativedelta(months=3),
+            active_ind=True,
+            deleted_ind=False,
+        )
+        second_requirement = MineReportPermitRequirementFactory(
+            permit_amendment=second_permit.permit_amendments[0],
+            report_name="Second Permit One-time Report",
+            due_date_period_months=0,
+            initial_due_date=today + relativedelta(months=3),
+            active_ind=True,
+            deleted_ind=False,
+        )
+
+        MineReportFactory(
+            mine=first_mine,
+            permit=first_permit,
+            mine_report_permit_requirement=first_requirement,
+            due_date=first_requirement.initial_due_date,
+            deleted_ind=False,
+            mine_report_submissions=0,
+        )
+        MineReportFactory(
+            mine=second_mine,
+            permit=second_permit,
+            mine_report_permit_requirement=second_requirement,
+            due_date=second_requirement.initial_due_date,
+            deleted_ind=False,
+            mine_report_submissions=0,
+        )
+
+        result = create_new_recurring_report_requests(permit_guid=first_permit.permit_guid, regenerate=True)
+
+        first_active_reports = MineReport.query.filter_by(
+            mine_report_permit_requirement_id=first_requirement.mine_report_permit_requirement_id,
+            deleted_ind=False,
+        ).count()
+        first_deleted_reports = MineReport.query.filter_by(
+            mine_report_permit_requirement_id=first_requirement.mine_report_permit_requirement_id,
+            deleted_ind=True,
+        ).count()
+        second_active_reports = MineReport.query.filter_by(
+            mine_report_permit_requirement_id=second_requirement.mine_report_permit_requirement_id,
+            deleted_ind=False,
+        ).count()
+        second_deleted_reports = MineReport.query.filter_by(
+            mine_report_permit_requirement_id=second_requirement.mine_report_permit_requirement_id,
+            deleted_ind=True,
+        ).count()
+
+        assert result['total_deleted'] == 1
+        assert result['total_created'] == 1
+        assert first_active_reports == 1
+        assert first_deleted_reports == 1
+        assert second_active_reports == 1
+        assert second_deleted_reports == 0
+
+    @mock.patch('app.api.mines.reports.tasks.is_feature_enabled', return_value=True)
+    def test_task_filter_does_not_delete_existing_reports_without_regeneration(self, _mock_feature_flag, db_session):
+        mine, permit = create_mine_and_permit(num_permit_amendments=1)
+        today = date.today()
+
+        permit.permit_amendments[0].permit_amendment_type_code = 'ALG'
+        permit.permit_amendments[0].save()
+
+        requirement = MineReportPermitRequirementFactory(
+            permit_amendment=permit.permit_amendments[0],
+            report_name="One-time Report",
+            due_date_period_months=0,
+            initial_due_date=today + relativedelta(months=3),
+            active_ind=True,
+            deleted_ind=False,
+        )
+
+        MineReportFactory(
+            mine=mine,
+            permit=permit,
+            mine_report_permit_requirement=requirement,
+            due_date=requirement.initial_due_date,
+            deleted_ind=False,
+            mine_report_submissions=0,
+        )
+
+        result = create_new_recurring_report_requests(permit_guid=permit.permit_guid)
+
+        active_reports = MineReport.query.filter_by(
+            mine_report_permit_requirement_id=requirement.mine_report_permit_requirement_id,
+            deleted_ind=False,
+        ).count()
+        deleted_reports = MineReport.query.filter_by(
+            mine_report_permit_requirement_id=requirement.mine_report_permit_requirement_id,
+            deleted_ind=True,
+        ).count()
+
+        assert result['total_deleted'] == 0
+        assert result['total_created'] == 0
+        assert active_reports == 1
+        assert deleted_reports == 0
+
+    @mock.patch('app.api.mines.reports.tasks.is_feature_enabled', return_value=True)
+    def test_task_only_uses_latest_validated_requirements_per_mine_for_amalgamated_permits(self, _mock_feature_flag, db_session):
+        first_mine, permit = create_mine_and_permit(num_permit_amendments=0)
+        second_mine = MineFactory()
+        permit._all_mines.append(second_mine)
+        today = date.today()
+
+        first_mine_original_amendment = PermitAmendmentFactory(
+            permit=permit,
+            mine=first_mine,
+            issue_date=today - relativedelta(months=3),
+            permit_amendment_type_code='AMD',
+        )
+        first_mine_latest_amendment = PermitAmendmentFactory(
+            permit=permit,
+            mine=first_mine,
+            issue_date=today - relativedelta(months=2),
+            permit_amendment_type_code='AMD',
+        )
+        second_mine_amalgamated_amendment = PermitAmendmentFactory(
+            permit=permit,
+            mine=second_mine,
+            issue_date=today - relativedelta(months=1),
+            permit_amendment_type_code='ALG',
+        )
+
+        stale_requirement = MineReportPermitRequirementFactory(
+            permit_amendment=first_mine_original_amendment,
+            report_name="Stale Mine 1 Report",
+            due_date_period_months=0,
+            initial_due_date=today + relativedelta(months=3),
+            active_ind=True,
+            deleted_ind=False,
+        )
+        latest_first_mine_requirement = MineReportPermitRequirementFactory(
+            permit_amendment=first_mine_latest_amendment,
+            report_name="Latest Mine 1 Report",
+            due_date_period_months=0,
+            initial_due_date=today + relativedelta(months=3),
+            active_ind=True,
+            deleted_ind=False,
+        )
+        second_mine_requirement = MineReportPermitRequirementFactory(
+            permit_amendment=second_mine_amalgamated_amendment,
+            report_name="Latest Mine 2 Report",
+            due_date_period_months=0,
+            initial_due_date=today + relativedelta(months=3),
+            active_ind=True,
+            deleted_ind=False,
+        )
+
+        result = create_new_recurring_report_requests()
+
+        stale_reports = MineReport.query.filter_by(
+            mine_report_permit_requirement_id=stale_requirement.mine_report_permit_requirement_id,
+            deleted_ind=False,
+        ).count()
+        latest_first_mine_reports = MineReport.query.filter_by(
+            mine_report_permit_requirement_id=latest_first_mine_requirement.mine_report_permit_requirement_id,
+            deleted_ind=False,
+        ).count()
+        second_mine_reports = MineReport.query.filter_by(
+            mine_report_permit_requirement_id=second_mine_requirement.mine_report_permit_requirement_id,
+            deleted_ind=False,
+        ).count()
+
+        assert result['total_created'] == 2
+        assert stale_reports == 0
+        assert latest_first_mine_reports == 1
+        assert second_mine_reports == 1
+
+    @mock.patch('app.api.mines.reports.tasks.is_feature_enabled', return_value=True)
+    def test_task_skips_creation_when_latest_authorization_end_date_has_passed(self, _mock_feature_flag, db_session):
+        _mine, permit = create_mine_and_permit(num_permit_amendments=2)
+        today = date.today()
+        latest_permit_amendment = max(
+            permit._all_permit_amendments,
+            key=lambda permit_amendment: permit_amendment.permit_amendment_id,
+        )
+        older_permit_amendment = min(
+            permit._all_permit_amendments,
+            key=lambda permit_amendment: permit_amendment.permit_amendment_id,
+        )
+
+        older_permit_amendment.authorization_end_date = today + relativedelta(days=30)
+        older_permit_amendment.permit_amendment_type_code = 'AMD'
+        older_permit_amendment.save()
+        latest_permit_amendment.authorization_end_date = today - relativedelta(days=1)
+        latest_permit_amendment.permit_amendment_type_code = 'ALG'
+        latest_permit_amendment.save()
+
+        requirement = MineReportPermitRequirementFactory(
+            permit_amendment=older_permit_amendment,
+            report_name="Expired Authorization Report",
+            due_date_period_months=0,
+            initial_due_date=today + relativedelta(months=3),
+            active_ind=True,
+            deleted_ind=False,
+        )
+
+        result = create_new_recurring_report_requests(permit_guid=permit.permit_guid)
+
+        reports = MineReport.query.filter_by(
+            mine_report_permit_requirement_id=requirement.mine_report_permit_requirement_id,
+            deleted_ind=False,
+        ).count()
+
+        assert result['total_created'] == 0
+        assert result['total_deleted'] == 0
+        assert reports == 0
+
+    @mock.patch('app.api.mines.reports.tasks.is_feature_enabled', return_value=True)
+    def test_task_can_filter_to_a_permit_without_context_mine(self, _mock_feature_flag, db_session):
+        _mine, permit = create_mine_and_permit(num_permit_amendments=1)
+        permit._context_mine = None
+        today = date.today()
+
+        permit._all_permit_amendments[0].permit_amendment_type_code = 'ALG'
+        permit._all_permit_amendments[0].save()
+
+        requirement = MineReportPermitRequirementFactory(
+            permit_amendment=permit._all_permit_amendments[0],
+            report_name="Context-free Permit Report",
+            due_date_period_months=0,
+            initial_due_date=today + relativedelta(months=3),
+            active_ind=True,
+            deleted_ind=False,
+        )
+
+        result = create_new_recurring_report_requests(permit_guid=permit.permit_guid)
+
+        reports = MineReport.query.filter_by(
+            mine_report_permit_requirement_id=requirement.mine_report_permit_requirement_id,
+            deleted_ind=False,
+        ).count()
+
+        assert result['total_created'] == 1
+        assert result['total_deleted'] == 0
+        assert reports == 1
+
+    @mock.patch('app.api.mines.reports.tasks.is_feature_enabled', return_value=True)
+    def test_task_does_not_create_reports_when_latest_permit_amendment_is_not_amalgamated(self, _mock_feature_flag, db_session):
+        _mine, permit = create_mine_and_permit(num_permit_amendments=1)
+        today = date.today()
+
+        permit.permit_amendments[0].permit_amendment_type_code = 'AMD'
+        permit.permit_amendments[0].save()
+
+        requirement = MineReportPermitRequirementFactory(
+            permit_amendment=permit.permit_amendments[0],
+            report_name="Non Amalgamated Report",
+            due_date_period_months=0,
+            initial_due_date=today + relativedelta(months=3),
+            active_ind=True,
+            deleted_ind=False,
+        )
+
+        result = create_new_recurring_report_requests(permit_guid=permit.permit_guid)
+
+        reports = MineReport.query.filter_by(
+            mine_report_permit_requirement_id=requirement.mine_report_permit_requirement_id,
+            deleted_ind=False,
+        ).count()
+
+        assert result['total_created'] == 0
+        assert result['total_deleted'] == 0
+        assert reports == 0
+
+    @mock.patch('app.api.mines.reports.tasks.is_feature_enabled', return_value=True)
+    @mock.patch('app.api.mines.permits.permit.models.permit.Permit.find_by_permit_guid', return_value=None)
+    def test_task_returns_error_for_unknown_permit_filter(self, _mock_find_permit, _mock_feature_flag):
+        result = create_new_recurring_report_requests(permit_guid='missing-permit-guid')
+
+        assert result == {'status': 'error', 'reason': 'permit not found'}
 
 
 # CRR report test

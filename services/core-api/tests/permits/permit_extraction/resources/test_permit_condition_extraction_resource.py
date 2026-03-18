@@ -77,7 +77,9 @@ def test_post_permit_condition_fails_with_invalid_permit_amendment(test_client, 
 
 @responses.activate
 @mock.patch('app.api.mines.permits.permit_extraction.resources.permit_condition_extraction_resource.poll_update_permit_extraction_status.delay')
-def test_post_permit_condition_extraction(delay, test_client, auth_headers, pc_test_data, db_session):
+@mock.patch('app.api.search.search.permit_search_service._get_oidc_configuration')
+def test_post_permit_condition_extraction(mock_oidc_config, delay, test_client, auth_headers, pc_test_data, db_session):
+    mock_oidc_config.return_value = {'token_endpoint': 'https://test.loginproxy.gov.bc.ca/auth/realms/standard/protocol/openid-connect/token'}
     delay.return_value = mock.Mock(id='123')
 
     amendment, amendment_document = pc_test_data

@@ -7,8 +7,10 @@ from tests.factories import (
     MineFactory,
     MinePermitXrefFactory,
     MineReportFactory,
+    MineReportPermitRequirementFactory,
     MineReportSubmissionFactory,
     PermitFactory,
+    create_mine_and_permit,
 )
 
 
@@ -131,3 +133,59 @@ def test_overdue_threshold_april_1_boundary(test_client, db_session, auth_header
 
     assert resp.status_code == 200
     assert data['overdue_reports'] == 1
+
+
+def test_report_stats_only_include_latest_permit_required_reports(test_client, db_session, auth_headers):
+    today = datetime.now(pytz_timezone('US/Pacific')).date()
+    mine, permit = create_mine_and_permit(mine_kwargs={"mine_reports": 0}, num_permit_amendments=2)
+    # Set distinct issue_dates so the filter can determine the latest amendment
+    for i, amendment in enumerate(permit.permit_amendments):
+        amendment.issue_date = today - timedelta(days=10 - i)
+    db_session.flush()
+    latest_amendment = max(permit.permit_amendments, key=lambda amendment: amendment.issue_date)
+    previous_amendment = min(permit.permit_amendments, key=lambda amendment: amendment.issue_date)
+
+    latest_requirement = MineReportPermitRequirementFactory(
+        permit_amendment=latest_amendment,
+        report_name="Latest Stats PRR",
+        due_date_period_months=0,
+        initial_due_date=today + timedelta(days=10),
+        active_ind=True,
+        deleted_ind=False,
+    )
+    previous_requirement = MineReportPermitRequirementFactory(
+        permit_amendment=previous_amendment,
+        report_name="Old Stats PRR",
+        due_date_period_months=0,
+        initial_due_date=today + timedelta(days=10),
+        active_ind=True,
+        deleted_ind=False,
+    )
+
+    MineReportFactory(
+        mine=mine,
+        permit=permit,
+        mine_report_definition_id=None,
+        mine_report_permit_requirement=latest_requirement,
+        due_date=today + timedelta(days=10),
+        received_date=None,
+        mine_report_submissions=0,
+    )
+    MineReportFactory(
+        mine=mine,
+        permit=permit,
+        mine_report_definition_id=None,
+        mine_report_permit_requirement=previous_requirement,
+        due_date=today - timedelta(days=1),
+        received_date=None,
+        mine_report_submissions=0,
+    )
+
+    resp = test_client.get(
+        f"/mines/{mine.mine_guid}/reports/stats", headers=auth_headers['full_auth_header']
+    )
+    data = json.loads(resp.data.decode())
+
+    assert resp.status_code == 200
+    assert data['overdue_reports'] == 0
+    assert data['due_next_90_days'] == 1

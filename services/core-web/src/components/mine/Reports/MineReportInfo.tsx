@@ -208,9 +208,9 @@ export const MineReportInfo: FC = () => {
       <div className="center">
         <ResponsivePagination
           onPageChange={onPageChange}
-          currentPage={Number(pageData.current_page)}
-          pageTotal={Number(pageData.total)}
-          itemsPerPage={Number(pageData.items_per_page)}
+          currentPage={Number(pageData?.current_page)}
+          pageTotal={Number(pageData?.total)}
+          itemsPerPage={Number(pageData?.items_per_page)}
         />
       </div>
     </div>
