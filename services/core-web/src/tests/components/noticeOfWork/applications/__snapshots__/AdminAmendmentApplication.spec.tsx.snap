@@ -123,6 +123,7 @@ exports[`AdminAmendmentApplication renders properly 1`] = `
                 />
               </svg>
             </span>
+            Timeline Tier: 
             Unassigned
           </span>
         </span>
