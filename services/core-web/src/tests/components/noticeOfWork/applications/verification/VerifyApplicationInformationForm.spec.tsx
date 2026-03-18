@@ -26,12 +26,22 @@ jest.mock("@/components/Forms/noticeOfWork/EditNOWMineAndLocation", () => () => 
 jest.mock("@/components/Forms/noticeOfWork/VerifyNoWContacts", () => () => (
   <div data-testid="verify-contacts" />
 ));
+
+jest.mock("@mds/common/components/forms/form", () => {
+  const actual = jest.requireActual("@mds/common/components/forms/form");
+  return {
+    ...actual,
+    Field: ({ id, name }: any) => <div data-testid={`mock-field-${id || name}`} />,
+  };
+});
+
 jest.mock("@mds/common/components/forms/FormWrapper", () => ({ children }: any) => (
   <form data-testid="form-wrapper">{children}</form>
 ));
 jest.mock("@/components/common/wrappers/AuthorizationWrapper", () => ({ children }: any) => (
   <>{children}</>
 ));
+
 
 const dispatchProps = {
   onSubmit: jest.fn(),
@@ -59,6 +69,9 @@ describe("VerifyApplicationInformationForm", () => {
           contacts: reducerProps.contacts,
         },
       },
+    },
+    staticContent: {
+      noticeOfWorkTierOptions: [],
     },
   } as any;
 

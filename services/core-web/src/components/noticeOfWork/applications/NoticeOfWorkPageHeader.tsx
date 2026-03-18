@@ -133,8 +133,8 @@ export const NoticeOfWorkPageHeader: FC<NoticeOfWorkPageHeaderProps> = (props) =
           {isFeatureEnabled(Feature.NOTICE_OF_WORK_TIER) && (
             <Tag title={`Tier Category: ${nowTierCategoryName}`}>
               <TagOutlined className="padding-sm--right" />
-              {nowTierCategoryName}
-              {userCanEdit && (
+              Timeline Tier: {nowTierCategoryName}
+              {userCanEdit && props.noticeOfWork.imported_to_core && (
                 <Button
                   type="text"
                   onClick={openUpdateTierModal}
