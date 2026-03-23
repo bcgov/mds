@@ -362,6 +362,10 @@ def _save_stop_order(stop_order, inspected_location):
         noncompliance_permit = _save_order_noncompliance_permit(order_permit)
         stop_detail.noncompliance_permits.append(noncompliance_permit)
 
+    for order_condition in stop_order.findall('order_conditions'):
+        noncompliance_permit = _save_order_noncompliance_condition(order_condition)
+        stop_detail.noncompliance_permits.append(noncompliance_permit)
+
     for attachment in stop_order.findall('attachment'):
         _save_document(attachment, stop_detail=stop_detail)
 
@@ -395,6 +399,20 @@ def _save_order_noncompliance_permit(order_permit):
     noncompliance_permit.section_text = _parse_element_text(permit_section_text)
 
     return noncompliance_permit
+
+
+def _save_order_noncompliance_condition(order_condition):
+    noncompliance_permit = NonCompliancePermit()
+
+    pc_number = order_condition.find('pc_number')
+    pc_text = order_condition.find('pc_text')
+
+    noncompliance_permit.section_number = _parse_element_text(pc_number)
+    noncompliance_permit.section_title = ""
+    noncompliance_permit.section_text = _parse_element_text(pc_text)
+
+    return noncompliance_permit
+
 
 
 def _save_order_noncompliance_legislation(order_legislation):
