@@ -51,7 +51,7 @@ CustomAxios = ({
   successToastMessage = undefined,
 } = {}) => {
   const instance = axios.create({
-    adapter: ['xhr', 'http']
+    adapter: process.env.NODE_ENV === "test" ? undefined : ['xhr', 'http']
   });
 
   instance.interceptors.response.use(
