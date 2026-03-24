@@ -2991,7 +2991,7 @@ __metadata:
     antd: 4.24.10
     array-move: 3.0.1
     autoprefixer: 10.4.20
-    axios: 1.8.3
+    axios: 1.13.5
     axios-mock-adapter: 1.17.0
     clean-webpack-plugin: 4.0.0
     copy-webpack-plugin: 12.0.2
@@ -3139,7 +3139,7 @@ __metadata:
     acorn: 6.4.1
     antd: 4.24.10
     autoprefixer: 10.4.20
-    axios: 1.8.3
+    axios: 1.13.5
     axios-mock-adapter: 1.17.0
     clean-webpack-plugin: 4.0.0
     copy-webpack-plugin: 12.0.2
@@ -6621,14 +6621,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:1.8.3":
-  version: 1.8.3
-  resolution: "axios@npm:1.8.3"
+"axios@npm:1.13.5":
+  version: 1.13.5
+  resolution: "axios@npm:1.13.5"
   dependencies:
-    follow-redirects: ^1.15.6
-    form-data: ^4.0.0
+    follow-redirects: ^1.15.11
+    form-data: ^4.0.5
     proxy-from-env: ^1.1.0
-  checksum: 85fc8ad7d968e43ea9da5513310637d29654b181411012ee14cc0a4b3662782e6c81ac25eea40b5684f86ed2d8a01fa6fc20b9b48c4da14ef4eaee848fea43bc
+  checksum: 985024c4a32f837053f198f02a308fd6f8bfb4053a2f21e39e37992bc6d06917f008679c36b3e7f0f0c9060c85ffe37c61e58d2ac662595d68dc1b89cef78de8
   languageName: node
   linkType: hard
 
@@ -11297,7 +11297,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"follow-redirects@npm:^1.0.0, follow-redirects@npm:^1.14.0, follow-redirects@npm:^1.15.6":
+"follow-redirects@npm:^1.0.0, follow-redirects@npm:^1.14.0, follow-redirects@npm:^1.15.11":
   version: 1.15.11
   resolution: "follow-redirects@npm:1.15.11"
   peerDependenciesMeta:
@@ -11369,7 +11369,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"form-data@npm:^4.0.0, form-data@npm:~4.0.4":
+"form-data@npm:^4.0.0, form-data@npm:^4.0.5, form-data@npm:~4.0.4":
   version: 4.0.5
   resolution: "form-data@npm:4.0.5"
   dependencies:
