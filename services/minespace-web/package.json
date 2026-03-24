@@ -31,7 +31,7 @@
     "keycloak-js": "26.2.0",
     "leaflet": "1.5.1",
     "leaflet.markercluster": "1.4.1",
-    "lodash-es": "4.17.21",
+    "lodash-es": "4.17.23",
     "moment": "^2.24.0",
     "moment-timezone": "0.5.43",
     "pm2": "6.0.9",
