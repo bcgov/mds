@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Button } from "antd";
 import { truncateFilename, dateSorter } from "@common/utils/helpers";
-import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
+import { downloadFileFromDocumentManager } from "@mds/common/redux/utils/actionlessNetworkCalls";
 import CustomPropTypes from "@/customPropTypes";
 import { formatDate } from "@/utils/helpers";
 import { RED_CLOCK } from "@/constants/assets";
@@ -21,8 +21,8 @@ const propTypes = {
 };
 
 const defaultProps = {
-  openEditVarianceModal: () => { },
-  openViewVarianceModal: () => { },
+  openEditVarianceModal: () => {},
+  openViewVarianceModal: () => {},
 };
 
 export class VariancesTable extends Component {
@@ -130,12 +130,12 @@ export class VariancesTable extends Component {
           <div title="Documents" className="cap-col-height">
             {record.documents.length > 0
               ? record.documents.map((file) => (
-                <div key={file.mine_document_guid}>
-                  <LinkButton title={text} onClick={() => downloadFileFromDocumentManager(file)}>
-                    {truncateFilename(file.document_name)}
-                  </LinkButton>
-                </div>
-              ))
+                  <div key={file.mine_document_guid}>
+                    <LinkButton title={text} onClick={() => downloadFileFromDocumentManager(file)}>
+                      {truncateFilename(file.document_name)}
+                    </LinkButton>
+                  </div>
+                ))
               : Strings.EMPTY_FIELD}
           </div>
         );

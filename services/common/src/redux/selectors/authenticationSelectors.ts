@@ -16,6 +16,13 @@ export const getFormattedUserName = createSelector([getUserInfo], (userInfo) => 
   return identity_provider === "idir" ? `idir\\${preferred_username}` : preferred_username;
 });
 
+export const isNewProponent = createSelector([getUserAccessData], (roles) => {
+  if (!(roles?.length > 0)) {
+    return true;
+  }
+  return false;
+})
+
 export const userHasRole = (role: string) =>
   createSelector([getUserAccessData], (roles) => {
     return roles.includes(USER_ROLES[role] ?? role);

@@ -19,8 +19,7 @@ const terms = (
           application form;
         </div>
         <div>
-          “Authorization” means the permit, approval, operational certificate, or amended permit,
-          approval, operational certificate, sought pursuant to this application;
+          “Authorization” means the permit, or approval, or amended permit, or approval, sought pursuant to this application;
         </div>
         <div>“Director” means any statutory decision maker under EMA;</div>
         <div>
@@ -137,7 +136,7 @@ const Declaration: FC = () => {
           <Typography.Text strong>Confirmation of Submission</Typography.Text>
           <Field
             name="confirmation_of_submission"
-            label="I understand that this submission, along with any supporting files, is being submitted on behalf of the owner, agent, or mine manager. The reporter may be contacted by the Ministry for further follow-up."
+            label="I understand that this submission, along with any supporting files, is being submitted on behalf of the owner, agent, or mine manager. The submitter, or any of the provided contacts in this submission, may be contacted by the Ministry for further follow-up."
             required
             validate={[required]}
             component={RenderCheckbox}

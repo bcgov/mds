@@ -1,4 +1,5 @@
 import React from "react";
+import { Badge } from "antd";
 import Overview from "./overview/Overview";
 import ViewProjects from "./projects/ViewProjects";
 import PermitTabContainer from "./permits/PermitTabContainer";
@@ -9,6 +10,7 @@ import Reports from "./reports/Reports";
 import Variances from "./variances/Variances";
 import Incidents from "./incidents/Incidents";
 import NoticesOfDeparture from "@/components/dashboard/mine/noticeOfDeparture/NoticeOfDeparture";
+import MineUserAccessPage from "./users/MineUserAccessPage";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faHouse,
@@ -21,9 +23,10 @@ import {
   faShieldKeyhole,
   faHouseWater,
   faUserMagnifyingGlass,
+  faUsers,
 } from "@fortawesome/pro-light-svg-icons";
 
-export const getMineDashboardRoutes = (showApplications) =>
+export const getMineDashboardRoutes = (showApplications, reportsBadgeCount?: number) =>
   [
     {
       key: "overview",
@@ -52,7 +55,16 @@ export const getMineDashboardRoutes = (showApplications) =>
     {
       key: "reports",
       label: "Reports",
-      icon: <FontAwesomeIcon icon={faClipboardList} style={{ width: "24px" }} />,
+      icon: (
+        <Badge
+          count={reportsBadgeCount}
+          overflowCount={99}
+          showZero={false}
+          style={{ backgroundColor: "#d9363e" }}
+        >
+          <FontAwesomeIcon icon={faClipboardList} style={{ width: "24px" }} />
+        </Badge>
+      ),
       component: Reports,
     },
     {
@@ -84,5 +96,11 @@ export const getMineDashboardRoutes = (showApplications) =>
       label: "Tailings & Dams",
       icon: <FontAwesomeIcon icon={faHouseWater} style={{ width: "24px" }} />,
       component: Tailings,
+    },
+    {
+      key: "user-access",
+      label: "User Access",
+      icon: <FontAwesomeIcon icon={faUsers} style={{ width: "24px" }} />,
+      component: MineUserAccessPage,
     },
   ].filter(Boolean);

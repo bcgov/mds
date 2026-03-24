@@ -41,7 +41,7 @@ export const FacilityOperator: FC<ProjectSummaryFormComponentProps> = ({ fieldsD
         required
         validate={[required, maxLength(4000)]}
         label="Facility Type"
-        labelSubtitle="List the proposed facility type and/or mining activity."
+        labelSubtitle="Briefly describe the proposed facility type and/or mining activity."
         component={RenderField}
         disabled={fieldsDisabled}
       />
@@ -50,7 +50,7 @@ export const FacilityOperator: FC<ProjectSummaryFormComponentProps> = ({ fieldsD
         required
         validate={[required, maxLength(4000)]}
         label="Facility Description"
-        labelSubtitle="Briefly describe: Overview of the project. The primary activity of the facility. If there is not enough space, you may attach additional information, including conceptual site plans."
+        labelSubtitle="Briefly describe the primary activity of the facility. If there is not enough space, you may attach additional information, including conceptual site plans."
         maximumCharacters={4000}
         rows={3}
         component={RenderAutoSizeField}
@@ -172,7 +172,7 @@ export const FacilityOperator: FC<ProjectSummaryFormComponentProps> = ({ fieldsD
           <Field
             disabled={fieldsDisabled}
             name="facility_operator.phone_no"
-            label="Facility Operator Contact Number"
+            label="Facility Operator Phone Number"
             required
             validate={[phoneNumber, maxLength(12), required]}
             component={RenderField}

@@ -9,6 +9,7 @@ import {
   FieldArray,
   FormSection,
   getFormValues,
+  touch,
 } from "@mds/common/components/forms/form";
 import { Alert, Button, Checkbox, Col, Row, Tooltip, Typography } from "antd";
 import InfoCircleOutlined from "@ant-design/icons/InfoCircleOutlined";
@@ -52,9 +53,19 @@ import { SystemFlagEnum } from "@mds/common/constants/enums";
 import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
 import { FormContext } from "../forms/FormWrapper";
 import { ProjectSummaryFormComponentProps } from "./ProjectSummaryForm";
-import { areAuthEnvFieldsDisabled, areDocumentFieldsDisabled, isDocumentDeletionEnabled } from "../projects/projectUtils";
+import {
+  areAuthEnvFieldsDisabled,
+  areDocumentFieldsDisabled,
+  isDocumentDeletionEnabled,
+} from "../projects/projectUtils";
 import { removeDocumentFromProjectSummary } from "@mds/common/redux/actionCreators/projectActionCreator";
-import { PROJECT_SUMMARY_DOCUMENT_TYPE_CODE_STATE, ENVIRONMENTAL_MANAGMENT_ACT, WASTE_DISCHARGE_NEW_AUTHORIZATIONS_URL, WASTE_DISCHARGE_AMENDMENT_AUTHORIZATIONS_URL } from "@mds/common/constants/strings";
+import {
+  PROJECT_SUMMARY_DOCUMENT_TYPE_CODE_STATE,
+  WATER_SUSTAINABILITY_ACT,
+  ENVIRONMENTAL_MANAGMENT_ACT,
+  WASTE_DISCHARGE_NEW_AUTHORIZATIONS_URL,
+  WASTE_DISCHARGE_AMENDMENT_AUTHORIZATIONS_URL,
+} from "@mds/common/constants/strings";
 import { useAppDispatch } from "@mds/common/redux/rootState";
 
 const RenderEMAPermitCommonSections = ({ code, isAmendment, index, isDisabled }) => {
@@ -63,9 +74,8 @@ const RenderEMAPermitCommonSections = ({ code, isAmendment, index, isDisabled })
     ? "Additional Amendment Request Information"
     : "Purpose of Application";
   const authType = isAmendment ? "AMENDMENT" : "NEW";
-  const { authorizations, mine_guid, project_guid, project_summary_guid, status_code } = useSelector(
-    getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)
-  ) as IProjectSummaryForm;
+  const { authorizations, mine_guid, project_guid, project_summary_guid, status_code } =
+    useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)) as IProjectSummaryForm;
   const systemFlag = useSelector(getSystemFlag);
   const codeAuthorizations = authorizations[code];
   const { AMENDMENT, NEW } = codeAuthorizations;
@@ -91,11 +101,16 @@ const RenderEMAPermitCommonSections = ({ code, isAmendment, index, isDisabled })
           project_guid,
           project_summary_guid,
           document.mine_document_guid
-        )).then(() => {
-          removeAmendmentDocument(tableDocuments.indexOf(document), document.category, document.document_manager_guid)
-        })
+        )
+      ).then(() => {
+        removeAmendmentDocument(
+          tableDocuments.indexOf(document),
+          document.category,
+          document.document_manager_guid
+        );
+      });
     }
-  }
+  };
 
   const removeAmendmentDocument = (
     amendmentDocumentsIndex: number,
@@ -176,7 +191,7 @@ const RenderEMAPermitCommonSections = ({ code, isAmendment, index, isDisabled })
         maximumCharacters={4000}
         minRows={2}
         component={RenderAutoSizeField}
-        placeholder="e.g. To Discharge air emissions from x number of stacks at a sawmill."
+        placeholder="To discharge air emissions from x number of stacks at a mining facility."
       />
       <Field
         disabled={isDisabled}
@@ -334,9 +349,11 @@ const RenderEMAAmendFieldArray = ({ fields, code, isDisabled, isEditMode }) => {
                       </a>
                     </Typography.Text>
                   </Col>
-                  {isEditMode && !isDisabled && <Col>
-                    <Button onClick={() => handleRemoveAmendment(index)}>Cancel</Button>
-                  </Col>}
+                  {isEditMode && !isDisabled && (
+                    <Col>
+                      <Button onClick={() => handleRemoveAmendment(index)}>Cancel</Button>
+                    </Col>
+                  )}
                 </Row>
               }
               name="existing_permits_authorizations[0]"
@@ -400,7 +417,9 @@ const RenderEMAAmendFieldArray = ({ fields, code, isDisabled, isEditMode }) => {
 };
 
 const RenderEMAAuthCodeFormSection = ({ code, isDisabled }) => {
-  const { authorizations } = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)) as IProjectSummaryForm;
+  const { authorizations } = useSelector(
+    getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)
+  ) as IProjectSummaryForm;
   const codeAuthorizations = authorizations[code] ?? [];
   const hasAmendments = codeAuthorizations.AMENDMENT?.length > 0;
   const hasNew = codeAuthorizations.NEW?.length > 0;
@@ -413,6 +432,7 @@ const RenderEMAAuthCodeFormSection = ({ code, isDisabled }) => {
   };
 
   const handleChangeAuthType = (value, _newVal, prevVal, _fieldName) => {
+    dispatch(touch(FORM.ADD_EDIT_PROJECT_SUMMARY, `${code}.types`));
     permitTypes.forEach((type) => {
       if (value.includes(type) && !prevVal.includes(type)) {
         dispatch(arrayPush(FORM.ADD_EDIT_PROJECT_SUMMARY, `authorizations.${code}.${type}`, {}));
@@ -457,14 +477,16 @@ const RenderEMAAuthCodeFormSection = ({ code, isDisabled }) => {
                         component={RenderEMAAmendFieldArray}
                         props={{ code, isDisabled, isEditMode }}
                       />
-                      {isEditMode && <Button
-                        disabled={isDisabled}
-                        onClick={addAmendment}
-                        icon={<PlusCircleFilled />}
-                        className="btn-sm-padding margin-large--bottom"
-                      >
-                        Add another amendment
-                      </Button>}
+                      {isEditMode && (
+                        <Button
+                          disabled={isDisabled}
+                          onClick={addAmendment}
+                          icon={<PlusCircleFilled />}
+                          className="btn-sm-padding margin-large--bottom"
+                        >
+                          Add another amendment
+                        </Button>
+                      )}
                     </Row>
                   )}
                 </>
@@ -485,7 +507,9 @@ const RenderEMAAuthCodeFormSection = ({ code, isDisabled }) => {
 
 const RenderMinesActPermitSelect = ({ isDisabled }) => {
   const dispatch = useDispatch();
-  const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)) as IProjectSummaryForm;
+  const formValues = useSelector(
+    getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)
+  ) as IProjectSummaryForm;
   const { mine_guid } = formValues;
   const permits = useSelector(getPermits);
   const permitDropdown = createDropDownList(permits, "permit_no", "permit_guid");
@@ -574,20 +598,29 @@ const RenderAuthCodeFormSection = ({ authorizationType, code, isDisabled }) => {
   );
 };
 
-export const AuthorizationsInvolved: FC<ProjectSummaryFormComponentProps> = ({ fieldsDisabled }) => {
+export const AuthorizationsInvolved: FC<ProjectSummaryFormComponentProps> = ({
+  fieldsDisabled,
+}) => {
   const dispatch = useDispatch();
   const transformedProjectSummaryAuthorizationTypes = useSelector(
     getTransformedProjectSummaryAuthorizationTypes
   );
   const { isEditMode } = useContext(FormContext);
   const amsAuthTypes = useSelector(getAmsAuthorizationTypes);
-  const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)) as IProjectSummaryForm;
+  const formValues = useSelector(
+    getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)
+  ) as IProjectSummaryForm;
 
   const systemFlag = useSelector(getSystemFlag);
   const isCore = systemFlag === SystemFlagEnum.core;
-  const envFieldsDisabled = areAuthEnvFieldsDisabled(systemFlag, formValues?.status_code, formValues?.confirmation_of_submission);
+  const envFieldsDisabled = areAuthEnvFieldsDisabled(
+    systemFlag,
+    formValues?.status_code,
+    formValues?.confirmation_of_submission
+  );
 
   const handleChange = (e, code) => {
+    dispatch(touch(FORM.ADD_EDIT_PROJECT_SUMMARY, "authorizationTypes"));
     if (e.target.checked) {
       let formVal;
       dispatch(arrayPush(FORM.ADD_EDIT_PROJECT_SUMMARY, `authorizationTypes`, code));
@@ -629,11 +662,29 @@ export const AuthorizationsInvolved: FC<ProjectSummaryFormComponentProps> = ({ f
             {transformedProjectSummaryAuthorizationTypes.map((authorization) => {
               return (
                 <div key={authorization.code} className="margin-large--bottom">
-                  <Typography.Title level={5}>{authorization.description}</Typography.Title>
+                  {authorization.code === WATER_SUSTAINABILITY_ACT && (
+                    <>
+                      <Typography.Title level={4}>
+                        Indicate any other required regulatory approvals.
+                      </Typography.Title>
+                      <Typography.Paragraph>
+                        Note: These related approvals are listed for{" "}
+                        <b>informational purposes only</b> and are <b>not submitted</b> through this
+                        application. However, by providing details about these applications, you
+                        help support a coordinated review process across ministries, which may
+                        positively impact review timelines and reduce delays.
+                      </Typography.Paragraph>
+                    </>
+                  )}
+                  <Typography.Title
+                    level={5}
+                  >{`${authorization.description} ${authorization.code === ENVIRONMENTAL_MANAGMENT_ACT ? "(EMA)" : ""}`}</Typography.Title>
                   {authorization.code === ENVIRONMENTAL_MANAGMENT_ACT && (
                     <Typography.Paragraph>
-                      For registration under the Municipal Wastewater Regulation and Hazardous Waste
-                      Regulation, please refer to the{" "}
+                      For Registration and Changes to an Existing Registration under the EMA’s
+                      Municipal Wastewater Regulation, Hazardous Waste Regulation or Petroleum
+                      Storage and Distribution Facilities Storm Water Regulation: submit an
+                      application to the Ministry of Environment and Parks according to the{" "}
                       <Link
                         to={{ pathname: WASTE_DISCHARGE_NEW_AUTHORIZATIONS_URL }}
                         target="_blank"
@@ -645,7 +696,7 @@ export const AuthorizationsInvolved: FC<ProjectSummaryFormComponentProps> = ({ f
                         to={{ pathname: WASTE_DISCHARGE_AMENDMENT_AUTHORIZATIONS_URL }}
                         target="_blank"
                       >
-                        authorization amendment
+                        change a waste discharge authorization
                       </Link>{" "}
                       guideline.
                     </Typography.Paragraph>
@@ -668,7 +719,9 @@ export const AuthorizationsInvolved: FC<ProjectSummaryFormComponentProps> = ({ f
                               checked={checked}
                               onChange={(e) => handleChange(e, child.code)}
                             >
-                              <b className={!isEditMode ? "view-item-label" : ""}>{child.description}</b>
+                              <b className={!isEditMode ? "view-item-label" : ""}>
+                                {child.description}
+                              </b>
                             </Checkbox>
                             {checked && (
                               <>

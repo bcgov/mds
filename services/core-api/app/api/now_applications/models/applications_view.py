@@ -44,6 +44,8 @@ class ApplicationsView(Base):
     issuing_inspector_party_guid = db.Column(
         UUID(as_uuid=True), db.ForeignKey('party.party_guid'), nullable=True)
     issuing_inspector_name = db.Column(db.String)
+    consultation_advisor_party_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'), nullable=True)
+    consultation_advisor_name = db.Column(db.String)
 
     notice_of_work_type_description = db.Column(db.String)
     now_application_status_description = db.Column(db.String)
@@ -100,9 +102,9 @@ class ApplicationsView(Base):
         primaryjoin=
         'and_(foreign(ApplicationReasonXref.now_application_id)==ApplicationsView.now_application_id)',
         secondary=
-        'join(ApplicationReasonXref, ApplicationReasonCode, foreign(ApplicationReasonXref.application_reason_code)==remote(ApplicationReasonCode.application_reason_code))',
+        'join(ApplicationReasonXref, ApplicationReasonCode, foreign(ApplicationReasonXref.application_reason_code)==ApplicationReasonCode.application_reason_code)',
         secondaryjoin=
-        'foreign(ApplicationReasonXref.application_reason_code)==remote(ApplicationReasonCode.application_reason_code)',
+        'foreign(ApplicationReasonXref.application_reason_code)==ApplicationReasonCode.application_reason_code',
         viewonly=True)
 
     contacts = db.relationship(
@@ -110,9 +112,7 @@ class ApplicationsView(Base):
         lazy='selectin',
         primaryjoin=
         'and_(foreign(NOWPartyAppointment.now_application_id) == ApplicationsView.now_application_id, NOWPartyAppointment.deleted_ind==False)',
-        secondary=
-        'join(NOWPartyAppointment, Party, foreign(NOWPartyAppointment.party_guid)==remote(Party.party_guid))',
-        secondaryjoin='foreign(NOWPartyAppointment.party_guid)==remote(Party.party_guid)',
+        viewonly=True,
         overlaps='now_party_appt,party,contacts,now_application'
     )
 

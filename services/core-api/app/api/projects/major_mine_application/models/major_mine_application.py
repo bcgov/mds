@@ -5,7 +5,8 @@ from werkzeug.exceptions import NotFound
 
 from app.api.activity.models.activity_notification import ActivityType, ActivityRecipients
 from app.api.activity.utils import trigger_notification
-from app.api.constants import MAJOR_MINES_OFFICE_EMAIL
+from app.api.constants import MAJOR_MINES_OFFICE_EMAIL, PROJECT_EMA_EMAILS, PERM_RECL_EMAIL
+from app.api.email_tracking.models.email_tracking import EmailTracking
 from app.api.mines.documents.models.mine_document import MineDocument
 from app.api.mines.documents.models.mine_document_bundle import MineDocumentBundle
 from app.api.mines.mine.models.mine import Mine
@@ -90,31 +91,67 @@ class MajorMineApplication(SoftDeleteMixin, AuditMixin, Base):
         except ValueError:
             return None
 
-    def send_mma_submit_email(self):
-        recipients = [contact.email for contact in self.project.contacts]
+    def send_mma_submit_email(self):        
+        core_recipients = [PERM_RECL_EMAIL] if self.project.has_mines_act_auths() else []
+        project_lead_email = self.project.project_lead.email if self.project.project_lead else None
+        if project_lead_email:
+            core_recipients.append(project_lead_email)
+        if self.project.has_ema_auths():
+            core_recipients = core_recipients + PROJECT_EMA_EMAILS
+        minespace_recipients = [contact.email for contact in self.project.contacts]
+        
         primary_documents = [document.document_name for document in self.documents if document.major_mine_application_document_type_code == "PRM"]
+        appendix_documents = [document.document_name for document in self.documents if document.major_mine_application_document_type_code == "APX"]
         spatial_documents = [document.document_name for document in self.documents if document.major_mine_application_document_type_code == "SPT"]
         supporting_documents = [document.document_name for document in self.documents if document.major_mine_application_document_type_code == "SPR"]
 
-        def generate_list_element(element):
-            return f'<li>{element}</li>'
-
-        # TODO: Update this link with Config.MINESPACE_PROD_URL}/projects/{self.project_guid}/major-mine-application/{self.major_mine_application_guid}/review?step=3 and update frontend to support that
-        link = f'{Config.MINESPACE_PROD_URL}/projects/{self.project_guid}/major-mine-application/entry'
-
         subject = f'Major Mine Application Submitted for {self.project.project_title}'
-        body = '<p>The following documents have been submitted with this Major Mine Application:</p>'
-        body += '<p>Primary document(s):</p>'
-        body += f'<ul>{"".join(list(map(generate_list_element, primary_documents)))}</ul>'
-        if len(spatial_documents) > 0:
-            body += '<p>Spatial document(s):</p>'
-            body += f'<ul>{"".join(list(map(generate_list_element, spatial_documents)))}</ul>'
-        if len(supporting_documents) > 0:
-            body += '<p>Supporting document(s):</p>'
-            body += f'<ul>{"".join(list(map(generate_list_element, supporting_documents)))}</ul>'
-        body += f'<p>View Major Mine Application in Minespace: <a href="{link}" target="_blank">{link}</a></p>'
-
-        EmailService.send_email(subject, recipients, body, send_to_proponent=True)
+        
+        base_context = {
+            'project': {
+                'project_title': self.project.project_title
+            },
+            'primary_documents': primary_documents,
+            'appendix_documents': appendix_documents,
+            'spatial_documents': spatial_documents,
+            'supporting_documents': supporting_documents
+        }
+        
+        # Send to CORE users
+        core_context = {
+            **base_context,
+            'view_link': f'{Config.CORE_WEB_URL}/pre-applications/{self.project_guid}/major-mine-application',
+            'button_text': 'View Major Mine Application in CORE',
+            'brand_type': 'core'
+        }
+        
+        EmailService.send_template_email(
+            subject,
+            core_recipients,
+            'email/projects/mma_submit_email.html',
+            core_context,
+            reference_id=self.major_mine_application_guid,
+            reference_table='major_mine_application',
+            reference_email_type='mma_submit_email_core'
+        )
+        
+        # Send to MineSpace users
+        minespace_context = {
+            **base_context,
+            'view_link': f'{Config.MINESPACE_PROD_URL}/projects/{self.project_guid}/major-mine-application/entry',
+            'button_text': 'View Major Mine Application in MineSpace',
+            'brand_type': 'minespace'
+        }
+        
+        EmailService.send_template_email(
+            subject,
+            minespace_recipients,
+            'email/projects/mma_submit_email.html',
+            minespace_context,
+            reference_id=self.major_mine_application_guid,
+            reference_table='major_mine_application',
+            reference_email_type='mma_submit_email_minespace'
+        )
 
     @classmethod
     def create(cls,
@@ -143,7 +180,10 @@ class MajorMineApplication(SoftDeleteMixin, AuditMixin, Base):
                     mine_document_guid=mine_doc.mine_document_guid,
                     major_mine_application_id=major_mine_application.major_mine_application_id,
                     major_mine_application_document_type_code=doc.get(
-                        'major_mine_application_document_type_code'))
+                        'major_mine_application_document_type_code'),
+                    major_mine_application_document_subtype_code=doc.get(
+                        'major_mine_application_document_subtype_code', None
+                    ))
                 major_mine_application_doc.mine_document = mine_doc
                 major_mine_application.documents.append(major_mine_application_doc)
 
@@ -167,6 +207,8 @@ class MajorMineApplication(SoftDeleteMixin, AuditMixin, Base):
                     major_mine_application_doc = MajorMineApplicationDocumentXref.find_by_mine_document_guid(mine_document_guid)
                     major_mine_application_doc.major_mine_application_document_type_code = doc.get(
                         'major_mine_application_document_type_code')
+                    major_mine_application_doc.major_mine_application_document_subtype_code = doc.get(
+                        'major_mine_application_document_subtype_code')
                 else:
                     mine_doc = MineDocument(
                         mine_guid=project.mine_guid,
@@ -177,7 +219,10 @@ class MajorMineApplication(SoftDeleteMixin, AuditMixin, Base):
                         mine_document_guid=mine_doc.mine_document_guid,
                         major_mine_application_id=self.major_mine_application_id,
                         major_mine_application_document_type_code=doc.get(
-                            'major_mine_application_document_type_code'))
+                            'major_mine_application_document_type_code'),
+                        major_mine_application_document_subtype_code=doc.get(
+                            'major_mine_application_document_subtype_code', None))
+                    
                     major_mine_application_doc.mine_document = mine_doc
                     self.documents.append(major_mine_application_doc)
 
@@ -199,8 +244,8 @@ class MajorMineApplication(SoftDeleteMixin, AuditMixin, Base):
             doc.mine_document.delete(False)
         return super(MajorMineApplication, self).delete(commit)
 
-    def send_application_emails(self, status_code: str, project: Project, subject: str, message: str):
-        minespace_recipients = [contact.email for contact in project.contacts]
+    def send_application_emails(self, status_code: str, project: Project, subject: str, message: str, limit_minespace_resend: bool = False):
+        minespace_recipients = [contact.email for contact in project.contacts] if not limit_minespace_resend else []
         core_recipients = []
         if status_code not in ['CHR', 'UNR']:
             core_recipients.append(MAJOR_MINES_OFFICE_EMAIL)
@@ -223,13 +268,27 @@ class MajorMineApplication(SoftDeleteMixin, AuditMixin, Base):
             }
         }
 
-        minespace_body = open("app/templates/email/projects/minespace_project_section_email.html", "r").read()
-        core_body = open("app/templates/email/projects/ministry_project_section_email.html", "r").read()
+        minespace_template = "email/projects/minespace_project_section_email.html"
+        core_template = "email/projects/ministry_project_section_email.html"
 
         if core_recipients != []:
-            EmailService.send_template_email(subject, core_recipients, core_body, context)
+            EmailService.send_template_email(
+                subject,
+                core_recipients,
+                core_template,
+                context,
+                reference_id=self.major_mine_application_guid,
+                reference_table='major_mine_application'
+            )
         if minespace_recipients != []:
-            EmailService.send_template_email(subject, minespace_recipients, minespace_body, context)
+            EmailService.send_template_email(
+                subject,
+                minespace_recipients,
+                minespace_template,
+                context,
+                reference_id=self.major_mine_application_guid,
+                reference_table='major_mine_application'
+            )
 
     def send_mma_status_notifications(self, status_code):
             project: Project = self.project
@@ -253,11 +312,20 @@ class MajorMineApplication(SoftDeleteMixin, AuditMixin, Base):
         message = f'{message_start} been uploaded for the project {self.project.project_title} for {self.project.mine_name}.'
         subject = f'Application documents updated for {project.mine_name}:{project.project_title}'
 
-        self.send_application_emails(status_code, project, subject, message)
+        limit_minespace_resend = False
+        email_tracking: EmailTracking = EmailTracking.find_latest_by_reference(
+            reference_id=self.major_mine_application_guid,
+            reference_table='major_mine_application',
+            email_reference_type='ministry_project_section_email'
+        )
+        if email_tracking:
+            if email_tracking.check_email_sent_within_timeframe():
+                limit_minespace_resend = True
+
+        self.send_application_emails(status_code, project, subject, message, limit_minespace_resend)
 
         extra_data = {'project': {'project_guid': str(self.project.project_guid)}}
         idempotency_key = f'{self.project_guid}-{self.major_mine_application_guid}'
-        print('SHOULD TRIGGER NOTIFICATIONS')
         trigger_notification(message, ActivityType.project_app_documents_updated, mine,
                              'MajorMineApplication', self.major_mine_application_guid, extra_data, idempotency_key,
                              ActivityRecipients.all_users, True, 24 * 60)

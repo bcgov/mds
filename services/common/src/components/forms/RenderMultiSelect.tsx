@@ -30,7 +30,7 @@ const defaultViewDisplay = (opts: IOption[]): ReactNode => {
   }
   return <ul className="multi-select-view margin-large--left">
     {opts.map((opt) =>
-      <li>
+      <li key={opt.value}>
         <Typography.Paragraph key={opt.value} className="view-item-value">{opt.label}</Typography.Paragraph>
       </li>
     )}
@@ -50,6 +50,7 @@ export const RenderMultiSelect: FC<MultiSelectProps> = (props) => {
     showNA,
     meta,
     input,
+    help,
   } = props;
   const debouncedSearch = useRef(debounce(onSearch, 500)).current;
 
@@ -83,7 +84,6 @@ export const RenderMultiSelect: FC<MultiSelectProps> = (props) => {
                 ((meta.error && <span>{meta.error}</span>) ||
                   (meta.warning && <span>{meta.warning}</span>))
               }
-              getValueProps={() => input.value !== "" && { value: input.value }}
             >
               <Select
                 loading={props.loading}
@@ -96,11 +96,14 @@ export const RenderMultiSelect: FC<MultiSelectProps> = (props) => {
                 id={props.id ?? props.input.name}
                 onSearch={debouncedSearch}
                 options={data}
+                value={input.value === "" ? [] : input.value}
                 onChange={input.onChange}
                 filterOption={filterOption || caseInsensitiveLabelFilter}
+                aria-required={props.required}
                 showArrow
                 {...extraProps}
               ></Select>
+              {help && <div className={`form-item-help ${input?.name}-form-help`}>{help}</div>}
             </Form.Item>
           </div>
         );

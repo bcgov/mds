@@ -1,0 +1,54 @@
+@use "@/styles/base.scss" as *;
+
+.recent-searches {
+  &__divider {
+    background-color: #fafafa;
+    margin: 0 !important;
+    padding: 8px 16px;
+    border-bottom: 1px solid #f0f0f0;
+    width: 100%;
+    
+    .ant-divider-inner-text {
+      padding: 0;
+      font-size: 12px;
+      font-weight: 600;
+      color: #8c8c8c;
+    }
+
+    &::before, &::after {
+      display: none !important;
+    }
+  }
+
+  &__item {
+    cursor: pointer;
+    padding: 10px 16px; // Slightly increased vertical padding
+    transition: all 0.2s;
+    border-left: 3px solid transparent; // Increased border width for better visibility
+    background: transparent;
+
+    &--selected {
+      border-left: 3px solid $violet;
+      background: rgba($violet, 0.08);
+    }
+
+    &--hovered {
+      background: rgba($violet, 0.04);
+    }
+  }
+
+  &__delete-icon {
+    color: #bfbfbf;
+    cursor: pointer;
+    padding: 4px;
+    
+    &:hover {
+      color: $danger-btn-color;
+    }
+  }
+
+  &__icon {
+    color: #bfbfbf;
+    margin-right: 8px;
+  }
+}

@@ -8,12 +8,16 @@ import { MINE_DASHBOARD } from "@/constants/routes";
 import { getMineDashboardRoutes } from "./MineDashboardRoutes";
 import SidebarWrapper, { SidebarNavigation } from "@mds/common/components/common/SidebarWrapper";
 import Loading from "@/components/common/Loading";
-import { fetchMinistryContactsByRegion } from "@mds/common/redux/actionCreators/minespaceActionCreator";
-import { fetchPartyRelationships } from "@mds/common/redux/actionCreators/partiesActionCreator";
+import { fetchMinistryContactsByRegion } from "@mds/common/redux/slices/minespaceSlice";
+import { fetchPartyRelationships } from "@mds/common/redux/slices/partiesSlice";
 import NotFoundNotice from "@/components/common/NotFoundNotice";
 import { useAppDispatch } from "@mds/common/redux/rootState";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { Feature } from "@mds/common/utils";
+import {
+  fetchMineReportStats,
+  getMineReportStatsByMineGuid,
+} from "@mds/common/redux/slices/mineReportStatsSlice";
 
 const MineDashboard: FC = () => {
   const dispatch = useAppDispatch();
@@ -24,12 +28,18 @@ const MineDashboard: FC = () => {
   const [mineNotFound, setMineNotFound] = useState(false);
   const { isFeatureEnabled } = useFeatureFlag();
   const showApplications = mine?.major_mine_ind || isFeatureEnabled(Feature.MINESPACE_NOW_STATUS);
+  const showReportStats = isFeatureEnabled(Feature.REPORT_MANAGEMENT_V2);
 
   const loadData = async (mine_guid) => {
     return Promise.all([
       dispatch(fetchMineRecordById(mine_guid))
         .then(({ data }) => {
-          dispatch(fetchMinistryContactsByRegion(data.mine_region, data.major_mine_ind));
+          dispatch(
+            fetchMinistryContactsByRegion({
+              region: data.mine_region,
+              isMajorMine: data.major_mine_ind,
+            })
+          );
         })
         .catch(() => setMineNotFound(true)),
       dispatch(
@@ -48,10 +58,21 @@ const MineDashboard: FC = () => {
     }
   }, [id]);
 
+  const stats = useSelector(getMineReportStatsByMineGuid(mine?.mine_guid));
+  const overdueReports = stats?.overdue_reports ?? 0;
+  const dueNext90 = stats?.due_next_90_days ?? 0;
+  const reportsBadgeCount = Number(overdueReports) + Number(dueNext90);
+
+  useEffect(() => {
+    if (mine?.mine_guid && showReportStats) {
+      dispatch(fetchMineReportStats(mine.mine_guid));
+    }
+  }, [mine?.mine_guid, showReportStats]);
+
   const dynamicRoute = (key: string) => {
     return MINE_DASHBOARD.dynamicRoute(mine?.mine_guid, key, "");
   };
-  const items = getMineDashboardRoutes(showApplications).map((item) => ({
+  const items = getMineDashboardRoutes(showApplications, reportsBadgeCount).map((item) => ({
     ...item,
     path: dynamicRoute(item.key),
   }));

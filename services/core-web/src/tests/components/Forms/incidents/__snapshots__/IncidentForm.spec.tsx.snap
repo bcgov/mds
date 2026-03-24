@@ -1379,18 +1379,14 @@ exports[`IncidentForm renders properly 1`] = `
                         class="ant-col ant-form-item-label"
                       >
                         <label
-                          class=""
+                          class="ant-form-item-required"
                           for="ADD_EDIT_INCIDENT_number_of_injuries"
                           title=""
                         >
-                          <div>
+                          <div
+                            style="width: 100%;"
+                          >
                             Number of injuries
-                             
-                            <span
-                              class="form-item-optional"
-                            >
-                               (optional)
-                            </span>
                           </div>
                         </label>
                       </div>
@@ -1410,6 +1406,7 @@ exports[`IncidentForm renders properly 1`] = `
                               disabled=""
                               id="number_of_injuries"
                               name="number_of_injuries"
+                              placeholder="Enter the number of injuries. If none, enter '0'."
                               type="text"
                               value="0"
                             />

@@ -12,7 +12,7 @@ import { formatUrlToUpperCaseString } from "@mds/common/redux/utils/helpers";
 import { getSystemFlag, isProponent, userHasRole } from "@mds/common/redux/selectors/authenticationSelectors";
 import SpatialDocumentTable from "../documents/spatial/SpatialDocumentTable";
 import { fetchMineDocuments } from "@mds/common/redux/actionCreators/mineActionCreator";
-import { MineDocument } from "@mds/common/models/documents/document";
+import { MineDocument, MajorMineApplicationDocument } from "@mds/common/models/documents/document";
 import Loading from "../common/Loading";
 import { getProjectSummaryDocumentTypesHash } from "@mds/common/redux/selectors/staticContentSelectors";
 import { areDocumentFieldsDisabled } from "./projectUtils";
@@ -135,13 +135,14 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
   const majorMineAppDocs =
     project?.major_mine_application?.documents?.map(
       (d) =>
-        new MineDocument({
+        new MajorMineApplicationDocument({
           ...d,
           category: CATEGORY_CODE[d.major_mine_application_document_type_code],
         })
     ) ?? [];
 
   const primaryDocuments = majorMineAppDocs.filter((doc) => doc.category === CATEGORY_CODE.PRM);
+  const mmaAppendixDocuments = majorMineAppDocs.filter((doc) => doc.category === CATEGORY_CODE.APX);
   const mmaSpatialDocuments = majorMineAppDocs.filter((doc) => doc.category === CATEGORY_CODE.SPT);
   const mmaSupportingDocuments = majorMineAppDocs.filter(
     (doc) => doc.category === CATEGORY_CODE.SPR
@@ -171,6 +172,7 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
     const headingText = getAuthorizationHeader(auth);
     const infoText = formatUrlToUpperCaseString(headingText);
     const href = `application-${auth.ams_tracking_number}`;
+    const canChangeApplicationAmsFile = !isCore ? application.editable : canManageAmsFiles;
 
     return {
       href,
@@ -182,8 +184,8 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
           titleLevel={5}
           infoText={infoText}
           key={application.ams_final_application_guid}
-          canArchive={canManageAmsFiles}
-          canReplace={canManageAmsFiles}
+          canArchive={canChangeApplicationAmsFile}
+          canReplace={canChangeApplicationAmsFile}
           onArchivedDocuments={refreshAmsApps}
           documents={application.documents.map(
             (d) =>
@@ -303,6 +305,21 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
           onArchivedDocuments={refreshData}
           titleLevel={5}
           documents={primaryDocuments}
+          canReplace={canModifyMmaDocs}
+          canArchive={canModifyMmaDocs}
+        />
+      ),
+    },
+    {
+      href: "pd-appendix-documents",
+      title: <div className="sub-tab-2">Appendix Documents</div>,
+      content: (
+        <ProjectDocumentsTabSection
+          id="mma-appendix-documents"
+          title="Appendix Documents"
+          documents={mmaAppendixDocuments}
+          titleLevel={5}
+          onArchivedDocuments={refreshData}
           canReplace={canModifyMmaDocs}
           canArchive={canModifyMmaDocs}
         />

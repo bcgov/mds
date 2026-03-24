@@ -19,6 +19,7 @@ import {
   REVIEW_INFORMATION_REQUIREMENTS_TABLE,
   REVIEW_MAJOR_MINE_APPLICATION,
   REPORT_VIEW_EDIT,
+  AMS_FINAL_APPLICATION,
 } from "@/constants/routes";
 import { IActivity } from "@mds/common/interfaces";
 
@@ -163,6 +164,18 @@ const NotificationDrawer = () => {
           ),
           state: {},
         };
+      case "AMSApplication": {
+        const { project, project_summary, project_summary_authorization }: any =
+          notification.notification_document.metadata;
+        return {
+          route: AMS_FINAL_APPLICATION.dynamicRoute(
+            project.project_guid,
+            project_summary.project_summary_guid,
+            project_summary_authorization.project_summary_authorization_guid
+          ),
+          state: {},
+        };
+      }
       default:
         return null;
     }

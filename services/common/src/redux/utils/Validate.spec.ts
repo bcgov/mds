@@ -13,7 +13,9 @@ import {
     validateDateRanges,
     validateIncidentDate,
     assessedLiabilityNegativeWarning,
+    partyHasAddress,
 } from "@mds/common/redux/utils/Validate";
+import { IPartyAddress } from "@mds/common/interfaces";
 
 describe("Validate class", () => {
     describe("`required` function", () => {
@@ -319,7 +321,7 @@ describe("Validate class", () => {
                 },
             ];
             const newAppt = {
-                start_date: "2019-06-20",
+                start_date: "2019-06-19",
                 end_date: "2019-06-25",
                 party_guid: randomString(),
             };
@@ -491,6 +493,112 @@ describe("Validate class", () => {
                 `A negative value will decrease the current assessed liability`
             );
             expect(assessedLiabilityNegativeWarning(positiveValue)).toEqual(undefined);
+        });
+    });
+
+    describe("`partyHasAddress` function", () => {
+        const validAddress: IPartyAddress = {
+            address_line_1: "123 Main St",
+            city: "Victoria",
+            sub_division_code: "BC",
+            post_code: "V8V 1A1",
+            address_type_code: "CAN",
+        };
+
+        const errorMessage = "test";
+
+        it("returns `undefined` if no value is provided", () => {
+            const dropdownOptions = [
+                { value: 1, address: [validAddress] }
+            ];
+            expect(partyHasAddress(dropdownOptions, errorMessage)(null)).toEqual(undefined);
+            expect(partyHasAddress(dropdownOptions, errorMessage)(undefined)).toEqual(undefined);
+        });
+
+        it("returns `undefined` if selected option is not found in dropdown", () => {
+            const dropdownOptions = [
+                { value: 1, address: [validAddress] }
+            ];
+            expect(partyHasAddress(dropdownOptions, errorMessage)(999)).toEqual(undefined);
+        });
+
+        it("returns `undefined` if party has an address with properties (array)", () => {
+            const dropdownOptions = [
+                { value: 1, address: [validAddress] }
+            ];
+            expect(partyHasAddress(dropdownOptions, errorMessage)(1)).toEqual(undefined);
+        });
+
+        it("returns `undefined` if party has an address with properties (single object)", () => {
+            const dropdownOptions = [
+                { value: 1, address: validAddress }
+            ];
+            expect(partyHasAddress(dropdownOptions, errorMessage)(1)).toEqual(undefined);
+        });
+
+        it("returns error message if party has no address", () => {
+            const emptyArrayMessage = "No address - empty array";
+            const dropdownOptions = [
+                { value: 1, address: [] }
+            ];
+            expect(partyHasAddress(dropdownOptions, emptyArrayMessage)(1)).toEqual(emptyArrayMessage);
+        });
+
+        it("returns error message if party address is null", () => {
+            const nullMessage = "No address - null";
+            const dropdownOptions = [
+                { value: 1, address: null }
+            ];
+            expect(partyHasAddress(dropdownOptions, nullMessage)(1)).toEqual(nullMessage);
+        });
+
+        it("returns error message if party address exists but all properties are null", () => {
+            const allNullMessage = "No address - all null properties";
+            const dropdownOptions = [
+                {
+                    value: 1,
+                    address: [{
+                        address_line_1: null,
+                        address_line_2: null,
+                        city: null,
+                        post_code: null,
+                        sub_division_code: null,
+                        suite_no: null,
+                        address_type_code: null,
+                    }]
+                }
+            ];
+            expect(partyHasAddress(dropdownOptions, allNullMessage)(1)).toEqual(allNullMessage);
+        });
+
+        it("returns error message if party address array has empty object", () => {
+            const emptyObjectMessage = "No address - empty object";
+            const dropdownOptions = [
+                { value: 1, address: [{}] }
+            ];
+            // @ts-ignore - not technically valid TS, but it is realistic to have address: [{}]
+            expect(partyHasAddress(dropdownOptions, emptyObjectMessage)(1)).toEqual(emptyObjectMessage);
+        });
+
+        it("uses memoization correctly - same validator for same dropdown options", () => {
+            const dropdownOptions = [
+                { value: 1, address: [validAddress] }
+            ];
+            const validator1 = partyHasAddress(dropdownOptions, errorMessage);
+            const validator2 = partyHasAddress(dropdownOptions, errorMessage);
+            expect(validator1).toBe(validator2);
+        });
+
+        it("creates different validators for different dropdown options", () => {
+            const dropdownOptions1 = [
+                { value: 1, address: [validAddress] }
+            ];
+            const dropdownOptions2 = [
+                { value: 2, address: [{ ...validAddress, address_line_1: "456 Oak Ave" }] }
+            ];
+            const validator1 = partyHasAddress(dropdownOptions1, errorMessage);
+            const validator2 = partyHasAddress(dropdownOptions2, errorMessage);
+            expect(validator1).not.toBe(validator2);
         });
     });
 });

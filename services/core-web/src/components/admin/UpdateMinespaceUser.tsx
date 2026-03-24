@@ -3,15 +3,13 @@ import { ActionCreator, bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { getMineNames } from "@mds/common/redux/selectors/mineSelectors";
 import { fetchMineNameList } from "@mds/common/redux/actionCreators/mineActionCreator";
-
-import { getMinespaceUserMines } from "@mds/common/redux/reducers/minespaceReducer";
+import { getMinespaceUserMines } from "@mds/common/redux/slices/minespaceSlice";
 import EditMinespaceUser from "@/components/Forms/EditMinespaceUser";
 import { IMine, IMineSearch } from "@mds/common/interfaces";
 
 interface UpdateMinespaceUserProps {
   fetchMineNameList?: ActionCreator<typeof fetchMineNameList>,
   mines: IMineSearch[],
-  minespaceUserEmailHash?: any,
   handleSubmit?: () => void,
   initialValues?: any,
   minespaceUserMines?: IMine[]
@@ -19,7 +17,6 @@ interface UpdateMinespaceUserProps {
 
 export const UpdateMinespaceUser: FC<UpdateMinespaceUserProps> = ({
   mines = [],
-  minespaceUserEmailHash = {},
   minespaceUserMines = [],
   fetchMineNameList,
   handleSubmit = () => { },
@@ -67,7 +64,7 @@ export const UpdateMinespaceUser: FC<UpdateMinespaceUserProps> = ({
   const EditMinespaceUserProps = {
     mines: parseMinesAsOptions(getMines()),
     initialValueOptions: initialValues.mineNames,
-    initialValues:{
+    initialValues: {
       ...initialValues,
       mine_guids: initialValues.mineNames.map((mn) => mn.mine_guid),
     },

@@ -300,11 +300,11 @@ export enum AMS_FORESTRY_ACT_TYPE {
 
 export enum AMS_FINAL_APPLICATION_DOCUMENT_TYPES {
   AID = "Application Instruction Document",
-  CLF = "Clause Form",
+  CLF = "Clause Amendment Form",
   DFF = "Discharge Factor Form",
-  IRT = "Information Requirements Table",
+  IRT = "Information Requirements Table of Concordance",
   LOC = "Location Map",
-  NEN = "Notification and Engagement",
+  NEN = "Notification and Engagement Report",
   QPD = "Qualified Professional Declaration Form",
   SIT = "Site Plan",
   SPR = "Supporting Documents",

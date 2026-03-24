@@ -3,7 +3,10 @@ import { useSelector } from "react-redux";
 import { Row, Col, Typography, Descriptions, Card, Input, Checkbox, Form } from "antd";
 import * as Strings from "@mds/common/constants/strings";
 import DocumentTable from "@mds/common/components/documents/DocumentTable";
-import { documentNameColumn, uploadDateColumn } from "@/components/common/DocumentColumns";
+import {
+  documentNameColumn,
+  uploadDateColumn,
+} from "@mds/common/components/documents/DocumentColumns";
 import ArchivedDocumentsSection from "@common/components/documents/ArchivedDocumentsSection";
 import { getMineDocuments } from "@mds/common/redux/selectors/mineSelectors";
 import { MajorMineApplicationDocument } from "@mds/common/models/documents/document";
@@ -38,8 +41,13 @@ export const MajorMineApplicationReviewSubmit: FC<MajorMineApplicationReviewSubm
   const routeApplicationSubmitted = routeState?.applicationSubmitted;
   const major_mine_application = useSelector(getFormattedProjectApplication);
 
-  const { primary_contact, primary_documents, spatial_documents, supporting_documents } =
-    major_mine_application;
+  const {
+    primary_contact,
+    primary_documents,
+    appendix_documents,
+    spatial_documents,
+    supporting_documents,
+  } = major_mine_application;
 
   const docsDisabled = areDocumentFieldsDisabled(
     SystemFlagEnum.ms,
@@ -105,6 +113,15 @@ export const MajorMineApplicationReviewSubmit: FC<MajorMineApplicationReviewSubm
           <DocumentTable
             header={<Typography.Title level={4}>Primary Document</Typography.Title>}
             documents={primary_documents}
+            documentParent="Major Mine Application"
+            canArchiveDocuments={false}
+            canReplaceDocuments={false}
+            showVersionHistory={true}
+            enableBulkActions={true}
+          />
+          <DocumentTable
+            header={<Typography.Title level={4}>Appendix Documents</Typography.Title>}
+            documents={appendix_documents}
             documentParent="Major Mine Application"
             canArchiveDocuments={false}
             canReplaceDocuments={false}

@@ -5,7 +5,7 @@ from flask_restx import Resource
 from sqlalchemy import exc as alch_exceptions
 from werkzeug.exceptions import NotFound, BadRequest
 
-from app.api.constants import GET_ALL_INSPECTORS_KEY, GET_ALL_PROJECT_LEADS_KEY
+from app.api.constants import GET_ALL_INSPECTORS_KEY, GET_ALL_PROJECT_LEADS_KEY, GET_ALL_CONSULTATION_ADVISORS_KEY
 from app.api.parties.party.models.address import Address
 from app.api.parties.party.models.party import Party
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
@@ -14,7 +14,7 @@ from app.api.parties.response_models import PARTY
 from app.api.users.minespace.models.minespace_user import MinespaceUser
 from app.api.utils.access_decorators import MINE_ADMIN
 from app.api.utils.access_decorators import requires_role_view_all, requires_role_mine_admin, \
-    requires_any_of, EDIT_PARTY, MINESPACE_PROPONENT, is_minespace_user, bceid_username
+    requires_any_of, EDIT_PARTY, MINESPACE_PROPONENT, is_minespace_user, bceid_username, MANAGE_ORGBOOK
 from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.utils.resources_mixins import UserMixin
 from app.extensions import api, jwt, cache
@@ -131,6 +131,11 @@ class PartyResource(Resource, UserMixin):
         store_missing=False,
         help='Identifies if current party is project lead')
     parser.add_argument(
+        'set_to_consultation_advisor',
+        type=bool,
+        store_missing=False,
+        help='Identifies if current party is consultation advisor')
+    parser.add_argument(
         'inspector_start_date',
         type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
         help='Identifies if current party is inspector')
@@ -146,6 +151,14 @@ class PartyResource(Resource, UserMixin):
         'project_lead_end_date',
         type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
         help='Identifies if current party is project lead')
+    parser.add_argument(
+        'consultation_advisor_start_date',
+        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
+        help='Identifies if current party is consultation advisor')
+    parser.add_argument(
+        'consultation_advisor_end_date',
+        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
+        help='Identifies if current party is consultation advisor')
     parser.add_argument(
         'signature',
         type=str,
@@ -201,21 +214,23 @@ class PartyResource(Resource, UserMixin):
                 new_bappt.save()
             except alch_exceptions.IntegrityError as e:
                 if "daterange_excl" in str(e):
-                    role = "inspector" if party_business_role_code == 'INS' else 'project lead'
+                    if party_business_role_code == 'CNA':
+                        role = 'consultation advisor'
+                    elif party_business_role_code == 'INS':
+                        role = 'inspector'
+                    else:
+                        role = 'project lead'
                     raise BadRequest(f'Date ranges for {role} appointment must not overlap')
 
     @api.expect(parser)
     @api.doc(
         description='Update a party by guid', params={'party_guid': 'guid of the party to update.'})
-    @requires_any_of([EDIT_PARTY, MINESPACE_PROPONENT])
+    @requires_any_of([EDIT_PARTY, MINESPACE_PROPONENT, MANAGE_ORGBOOK])
     @api.marshal_with(PARTY, code=200)
     def put(self, party_guid):
         if is_minespace_user():
             user = bceid_username()
-            current_app.logger.debug('**********************')
-            current_app.logger.debug(user)
-            current_app.logger.debug('**********************')
-            minespace_user = MinespaceUser.find_by_email(user + "@bceid")
+            minespace_user = MinespaceUser.find_by_username(user + "@bceid")
             if not minespace_user:
                 raise BadRequest('User not found.')
 
@@ -251,22 +266,25 @@ class PartyResource(Resource, UserMixin):
             for key, value in data.items():
                 setattr(existing_party.address[0], key, value)
 
-        # admin only can set inspector and project lead roles as well as signature
+        # admin only can set inspector, project lead, and consultation advisor roles as well as signature
         if jwt.validate_roles([MINE_ADMIN]):
             signature = data.get('signature') if data.get('signature') else None
             today = datetime.now(timezone.utc).date()
             business_roles = PartyBusinessRoleAppointment.get_current_business_appointments(
-                existing_party.party_guid, ("INS", "PRL"))
+                existing_party.party_guid, ("INS", "PRL", "CNA"))
 
             current_app.logger.debug(f'business_role: {business_roles}')
 
             inspector_role = None
             project_lead_role = None
+            consultation_advisor_role = None
             for role in business_roles:
                 if role.party_business_role_code == "INS":
                     inspector_role = role
                 elif role.party_business_role_code == 'PRL':
                     project_lead_role = role
+                elif role.party_business_role_code == 'CNA':
+                    consultation_advisor_role = role
 
             if existing_party.signature != signature:
                 existing_party.signature = signature
@@ -305,6 +323,29 @@ class PartyResource(Resource, UserMixin):
                     project_lead_role.end_date = today
                     project_lead_role.save()
                     cache.delete(GET_ALL_PROJECT_LEADS_KEY)
+
+            if data.get("set_to_consultation_advisor"):
+                start_date = data.consultation_advisor_start_date if data.get(
+                    "consultation_advisor_start_date") else datetime.now(timezone.utc)
+                end_date = data.consultation_advisor_end_date if data.get("consultation_advisor_end_date") else None
+                self._save_new_party_business_appointment(
+                    consultation_advisor_role,
+                    "CNA",
+                    party_guid,
+                    start_date,
+                    end_date
+                )
+                cache.delete(GET_ALL_CONSULTATION_ADVISORS_KEY)
+
+            # deactivate consultation advisor
+            elif consultation_advisor_role:
+                end_date = data.get("consultation_advisor_end_date")
+                if end_date and end_date.date() <= today:
+                    pass
+                else:
+                    consultation_advisor_role.end_date = today
+                    consultation_advisor_role.save()
+                    cache.delete(GET_ALL_CONSULTATION_ADVISORS_KEY)
 
         existing_party.save()
         return existing_party

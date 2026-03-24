@@ -8,5 +8,9 @@
     "vc_anoncreds_core": true,
     "vc_anoncreds_minespace": true,
     "vc_w3c": true,
-    "ams_agent": true
+    "ams_agent": true,
+    "recurring_reports": true,
+    "recurring_crr_reports": true,
+    "minespace_signup": true,
+    "global_search_v2": true
 }

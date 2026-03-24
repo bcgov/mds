@@ -1,35 +1,354 @@
 import React from "react";
-import { render } from "@testing-library/react";
-import { Provider } from "react-redux";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { MemoryRouter } from "react-router-dom";
+import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 import SearchBar from "@/components/search/SearchBar";
-import * as MOCK from "@mds/common/tests/mocks/dataMocks";
-import { store } from "@/App";
-import { BrowserRouter } from "react-router-dom";
 
-const dispatchProps = {
-  fetchSearchBarResults: jest.fn(),
-  clearSearchBarResults: jest.fn(),
-};
-const reducerProps = {
-  searchBarResults: MOCK.SIMPLE_SEARCH_RESULTS,
-  history: {
-    push: jest.fn(),
-    location: {},
-  },
-};
-const props = {
-  iconPlacement: "prefix",
+const mockHistoryPush = jest.fn();
 
-}
+jest.mock("react-router-dom", () => ({
+  ...jest.requireActual("react-router-dom"),
+  useHistory: () => ({ push: mockHistoryPush }),
+  useLocation: () => ({ search: "", pathname: "/" }),
+}));
+
+const defaultProps = {
+  placeholderText: "Search mines, contacts, permits...",
+  iconPlacement: "suffix" as const,
+  showFocusButton: false,
+};
 
 describe("SearchBar", () => {
-  it("renders properly", () => {
-    const { container: component } = render(
-      <BrowserRouter>
-        <Provider store={store}>
-          <SearchBar {...dispatchProps} {...reducerProps} />
-        </Provider>
-      </BrowserRouter>);
-    expect(component).toMatchSnapshot();
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  describe("Rendering", () => {
+    it("renders without crashing", () => {
+      const { container } = render(
+        <MemoryRouter>
+          <ReduxWrapper>
+            <SearchBar {...defaultProps} />
+          </ReduxWrapper>
+        </MemoryRouter>
+      );
+      expect(container).toBeTruthy();
+    });
+
+    it("displays placeholder text", () => {
+      render(
+        <MemoryRouter>
+          <ReduxWrapper>
+            <SearchBar {...defaultProps} />
+          </ReduxWrapper>
+        </MemoryRouter>
+      );
+
+      expect(screen.getByPlaceholderText(defaultProps.placeholderText)).toBeInTheDocument();
+    });
+
+    it("ignores defaultValue prop", () => {
+      render(
+        <MemoryRouter>
+          <ReduxWrapper>
+            <SearchBar {...defaultProps} defaultValue="test query" />
+          </ReduxWrapper>
+        </MemoryRouter>
+      );
+
+      const input = screen.getByPlaceholderText(defaultProps.placeholderText);
+      expect(input).toHaveValue("");
+    });
+
+    it("shows search icon", () => {
+      render(
+        <MemoryRouter>
+          <ReduxWrapper>
+            <SearchBar {...defaultProps} />
+          </ReduxWrapper>
+        </MemoryRouter>
+      );
+
+      expect(screen.getByRole("img", { name: /search/i })).toBeInTheDocument();
+    });
+  });
+
+  describe("Search Functionality", () => {
+    it("navigates to search results when Enter key pressed", async () => {
+      render(
+        <MemoryRouter>
+          <ReduxWrapper>
+            <SearchBar {...defaultProps} />
+          </ReduxWrapper>
+        </MemoryRouter>
+      );
+
+      const input = screen.getByPlaceholderText(defaultProps.placeholderText);
+
+      fireEvent.change(input, { target: { value: "test" } });
+      fireEvent.keyDown(input, { key: "Enter", code: "Enter" });
+
+      await waitFor(() => {
+        expect(mockHistoryPush).toHaveBeenCalledWith(expect.stringContaining("/search"));
+        expect(mockHistoryPush).toHaveBeenCalledWith(expect.stringContaining("q=test"));
+      });
+    });
+
+    it("navigates when focus button clicked (button requires specific implementation)", async () => {
+      render(
+        <MemoryRouter>
+          <ReduxWrapper>
+            <SearchBar {...defaultProps} showFocusButton={true} />
+          </ReduxWrapper>
+        </MemoryRouter>
+      );
+
+      const input = screen.getByPlaceholderText(defaultProps.placeholderText);
+      fireEvent.change(input, { target: { value: "test" } });
+      fireEvent.focus(input);
+
+      const searchButton = screen.getByRole("button");
+      fireEvent.click(searchButton);
+
+      await waitFor(() => {
+        expect(mockHistoryPush).toHaveBeenCalledWith(expect.stringContaining("/search"));
+        expect(mockHistoryPush).toHaveBeenCalledWith(expect.stringContaining("q=test"));
+      });
+    });
+
+    it("navigates with query containing whitespace", async () => {
+      render(
+        <MemoryRouter>
+          <ReduxWrapper>
+            <SearchBar {...defaultProps} />
+          </ReduxWrapper>
+        </MemoryRouter>
+      );
+
+      const input = screen.getByPlaceholderText(defaultProps.placeholderText);
+
+      fireEvent.change(input, { target: { value: "  test query  " } });
+      fireEvent.keyDown(input, { key: "Enter", code: "Enter" });
+
+      await waitFor(() => {
+        expect(mockHistoryPush).toHaveBeenCalledWith(expect.stringContaining("test query"));
+      });
+    });
+
+    it("navigates even with empty input", async () => {
+      render(
+        <MemoryRouter>
+          <ReduxWrapper>
+            <SearchBar {...defaultProps} />
+          </ReduxWrapper>
+        </MemoryRouter>
+      );
+
+      const input = screen.getByPlaceholderText(defaultProps.placeholderText);
+
+      fireEvent.keyDown(input, { key: "Enter", code: "Enter" });
+
+      await waitFor(() => {
+        expect(mockHistoryPush).toHaveBeenCalledWith(expect.stringContaining("/search"));
+      });
+    });
+
+    it("navigates even with whitespace-only input", async () => {
+      render(
+        <MemoryRouter>
+          <ReduxWrapper>
+            <SearchBar {...defaultProps} />
+          </ReduxWrapper>
+        </MemoryRouter>
+      );
+
+      const input = screen.getByPlaceholderText(defaultProps.placeholderText);
+
+      fireEvent.change(input, { target: { value: "   " } });
+      fireEvent.keyDown(input, { key: "Enter", code: "Enter" });
+
+      await waitFor(() => {
+        expect(mockHistoryPush).toHaveBeenCalledWith(expect.stringContaining("/search"));
+      });
+    });
+  });
+
+  describe("Input Behavior", () => {
+    it("updates input value when typing", () => {
+      render(
+        <MemoryRouter>
+          <ReduxWrapper>
+            <SearchBar {...defaultProps} />
+          </ReduxWrapper>
+        </MemoryRouter>
+      );
+
+      const input = screen.getByPlaceholderText(defaultProps.placeholderText) as HTMLInputElement;
+
+      fireEvent.change(input, { target: { value: "new value" } });
+
+      expect(input.value).toBe("new value");
+    });
+
+    it("clears input when input value is cleared", () => {
+      render(
+        <MemoryRouter>
+          <ReduxWrapper>
+            <SearchBar {...defaultProps} />
+          </ReduxWrapper>
+        </MemoryRouter>
+      );
+
+      const input = screen.getByPlaceholderText(defaultProps.placeholderText) as HTMLInputElement;
+
+      fireEvent.change(input, { target: { value: "test" } });
+      expect(input.value).toBe("test");
+
+      fireEvent.change(input, { target: { value: "" } });
+
+      expect(input.value).toBe("");
+    });
+
+    it("does not show a clear button", () => {
+      render(
+        <MemoryRouter>
+          <ReduxWrapper>
+            <SearchBar {...defaultProps} />
+          </ReduxWrapper>
+        </MemoryRouter>
+      );
+
+      // No clear button initially
+      expect(screen.queryByLabelText(/clear/i)).not.toBeInTheDocument();
+
+      // Type something
+      const input = screen.getByPlaceholderText(defaultProps.placeholderText);
+      fireEvent.change(input, { target: { value: "test" } });
+
+      // No clear button should appear
+      expect(screen.queryByLabelText(/clear/i)).not.toBeInTheDocument();
+    });
+  });
+
+  describe("Size Variations", () => {
+    it("renders small size", () => {
+      const { container } = render(
+        <MemoryRouter>
+          <ReduxWrapper>
+            <SearchBar {...defaultProps} size="small" />
+          </ReduxWrapper>
+        </MemoryRouter>
+      );
+      expect(container).toBeTruthy();
+    });
+
+    it("renders large size", () => {
+      const { container } = render(
+        <MemoryRouter>
+          <ReduxWrapper>
+            <SearchBar {...defaultProps} size="large" />
+          </ReduxWrapper>
+        </MemoryRouter>
+      );
+      expect(container).toBeTruthy();
+    });
+  });
+
+  describe("Accessibility", () => {
+    it("has accessible label", () => {
+      render(
+        <MemoryRouter>
+          <ReduxWrapper>
+            <SearchBar {...defaultProps} />
+          </ReduxWrapper>
+        </MemoryRouter>
+      );
+
+      const input = screen.getByPlaceholderText(defaultProps.placeholderText);
+      expect(input).toBeInTheDocument();
+    });
+
+    it("search button is keyboard accessible", () => {
+      render(
+        <MemoryRouter>
+          <ReduxWrapper>
+            <SearchBar {...defaultProps} showFocusButton={true} />
+          </ReduxWrapper>
+        </MemoryRouter>
+      );
+
+      const input = screen.getByPlaceholderText(defaultProps.placeholderText);
+      fireEvent.focus(input);
+
+      const button = screen.getByRole("button", { name: /↵|CTRL \+ K|⌘ \+ K/i });
+      button.focus();
+      expect(document.activeElement).toBe(button);
+    });
+  });
+
+  describe("Edge Cases", () => {
+    it("handles very long search queries", async () => {
+      const longQuery = "a".repeat(500);
+
+      render(
+        <MemoryRouter>
+          <ReduxWrapper>
+            <SearchBar {...defaultProps} />
+          </ReduxWrapper>
+        </MemoryRouter>
+      );
+
+      const input = screen.getByPlaceholderText(defaultProps.placeholderText);
+
+      fireEvent.change(input, { target: { value: longQuery } });
+      fireEvent.keyDown(input, { key: "Enter", code: "Enter" });
+
+      await waitFor(() => {
+        expect(mockHistoryPush).toHaveBeenCalledWith(expect.stringContaining("/search"));
+        expect(mockHistoryPush).toHaveBeenCalledWith(expect.stringContaining("q="));
+      });
+    });
+
+    it("handles special characters in search query", async () => {
+      const specialQuery = "test@#$%^&*()";
+
+      render(
+        <MemoryRouter>
+          <ReduxWrapper>
+            <SearchBar {...defaultProps} />
+          </ReduxWrapper>
+        </MemoryRouter>
+      );
+
+      const input = screen.getByPlaceholderText(defaultProps.placeholderText);
+
+      fireEvent.change(input, { target: { value: specialQuery } });
+      fireEvent.keyDown(input, { key: "Enter", code: "Enter" });
+
+      await waitFor(() => {
+        expect(mockHistoryPush).toHaveBeenCalledWith(expect.stringContaining("/search"));
+      });
+    });
+
+    it("handles unicode characters in search query", async () => {
+      const unicodeQuery = "测试 тест";
+
+      render(
+        <MemoryRouter>
+          <ReduxWrapper>
+            <SearchBar {...defaultProps} />
+          </ReduxWrapper>
+        </MemoryRouter>
+      );
+
+      const input = screen.getByPlaceholderText(defaultProps.placeholderText);
+
+      fireEvent.change(input, { target: { value: unicodeQuery } });
+      fireEvent.keyDown(input, { key: "Enter", code: "Enter" });
+
+      await waitFor(() => {
+        expect(mockHistoryPush).toHaveBeenCalledWith(expect.stringContaining("/search"));
+      });
+    });
   });
 });

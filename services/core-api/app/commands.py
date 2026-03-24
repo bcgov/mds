@@ -2,8 +2,12 @@ from multiprocessing.dummy import Pool as ThreadPool
 from typing import List
 
 import click
+from app.api.mines.mine.models.mine import Mine
 from app.api.mines.permits.permit.models.permit import Permit
-from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
+from app.api.mines.permits.permit_amendment.models.permit_amendment import (
+    PermitAmendment,
+)
+from app.api.users.minespace.models.minespace_user import MinespaceUser
 from app.api.utils.include.user_info import User
 from app.config import Config
 from app.extensions import db
@@ -16,8 +20,7 @@ from tests.factories import (
     MinespaceUserFactory,
     NOWApplicationIdentityFactory,
 )
-from app.api.mines.mine.models.mine import Mine
-from app.api.users.minespace.models.minespace_user import MinespaceUser
+
 from .cli_commands.generate_history_table_migration import (
     generate_history_table_migration,
     generate_table_migration,
@@ -82,8 +85,7 @@ def register_commands(app):
             ## Create a minespace user with data corresponding to
             ## the Cypress test user (cypress/keycloak-users.json)
             minespace_user = MinespaceUserFactory(
-                email_or_username='cypress@bceid',
-                keycloak_guid='a28dfc3a-5e5c-4501-ab2f-399d8e64f2c8')
+                bceid_username='cypress@bceid')
 
             ## Subscribe the minespace user to a mine so we have a mine to test with
             ## for Minespace cypress tests
@@ -144,6 +146,35 @@ def register_commands(app):
         with current_app.app_context():
             notify_and_update_expired_party_appointments()
 
+    @app.cli.command('create_new_recurring_report_requests')
+    def create_new_recurring_report_requests():
+        from app import auth
+        from app.api.mines.reports.tasks import create_new_recurring_report_requests, create_new_recurring_crr_report_requests
+        auth.apply_security = False
+
+        with current_app.app_context():
+            create_new_recurring_report_requests()
+            print("celery job started: create_new_recurring_report_requests")
+
+            create_new_recurring_crr_report_requests()
+            print("celery job started: create_new_recurring_crr_report_requests")
+
+    @app.cli.command('regenerate_report_requests_for_permit')
+    @click.argument('permit_guid')
+    def regenerate_report_requests_for_permit(permit_guid):
+        from app import auth
+        from app.api.mines.reports.tasks import create_new_recurring_report_requests
+
+        auth.apply_security = False
+
+        with current_app.app_context():
+            result = create_new_recurring_report_requests(permit_guid=permit_guid, regenerate=True)
+
+            if result.get('status') == 'error':
+                raise click.ClickException(result['reason'])
+
+            print(result)
+
     @app.cli.command('revoke_mines_act_permit_vc_and_offer_newest')
     @click.argument('credential_exchange_id')
     @click.argument('permit_guid')
@@ -168,7 +199,7 @@ def register_commands(app):
         auth.apply_security = False
         with current_app.app_context() as app:
             result = process_all_untp_map_for_orgbook.apply_async()
-            print("celery job started: forward_all_pending_untp_vc_to_orgbook")
+            print("celery job started: process_all_untp_map_for_orgbook")
 
     @app.cli.command('forward_all_pending_untp_vc_to_orgbook')
     def forward_all_pending_untp_vc_to_orgbook():
@@ -274,14 +305,16 @@ def register_commands(app):
                         subscription = Subscription(mine_guid=mine.mine_guid, user_name=full_user_name)
                         db.session.add(subscription)                    
             else:
-                minespace_user = MinespaceUser.find_by_email(full_user_name)
+                minespace_user = MinespaceUser.find_by_username(full_user_name)
                 subscribed_mine_guids = []
                 if not minespace_user:
                     minespace_user = MinespaceUserFactory(
-                        email_or_username=full_user_name,
+                        bceid_username=full_user_name,
                         keycloak_guid='b28dfc3a-5e5c-4501-ab2f-399d8e64f2c8')
                 else:
-                    from app.api.users.minespace.models.minespace_user_mine import MinespaceUserMine
+                    from app.api.users.minespace.models.minespace_user_mine import (
+                        MinespaceUserMine,
+                    )
                     existing_subscriptions = MinespaceUserMine.query.filter_by(user_id=minespace_user.user_id).all()
                     subscribed_mine_guids = [s.mine_guid for s in existing_subscriptions]
                 for mine in all_mines:
@@ -409,34 +442,75 @@ def register_commands(app):
     @click.argument('permit_type', type=click.STRING, required=False)
     @click.option('--amendment_guids', type=click.STRING, required=False)
     @click.option('--batch_size', type=click.INT, required=False, default=500)
-    def bulk_export_and_index_permit_conditions(permit_type, amendment_guids, batch_size):
+    @click.option('--apply', is_flag=True, default=False, help="If provided, uploads to blob storage to trigger indexing. Otherwise saves to local CSV.")
+    @click.option('--output-dir', type=click.Path(exists=True, file_okay=False, dir_okay=True), required=False, help="Directory to save the CSV file in dry-run mode.")
+    def bulk_export_and_index_permit_conditions(permit_type, amendment_guids, batch_size, apply, output_dir):
         """
-        Bulk export permit conditions and index them in the search service.
+        Bulk export permit conditions. 
+        By default, exports to a local CSV file for verification.
+        If --apply is passed, uploads to blob storage to trigger indexing.
 
         Example usage:
             flask bulk_export_and_index_permit_conditions
-            flask bulk_export_and_index_permit_conditions NOW
-            flask bulk_export_and_index_permit_conditions MM
+            flask bulk_export_and_index_permit_conditions NOW --apply
             flask bulk_export_and_index_permit_conditions --amendment_guids=b1af0a62-2379-4ac0-85a9-be4f2b229cd6
         """
-        from app import auth
+        import csv
+        import datetime
+        import os
 
-        from app.api.mines.permits.permit_conditions.tasks import export_and_index_permit_amendments
+        from app import auth
+        from app.api.mines.permits.permit_conditions.tasks import (
+            export_and_index_permit_amendments,
+        )
+
+        from .cli_commands.export_permit_conditions import (
+            export_permit_conditions,
+            headers,
+        )
         
         auth.apply_security = False
         is_now = permit_type.lower() == 'now' if permit_type else False
 
         if amendment_guids:
-            print(f"Exporting and indexing permit amendments with guids: {amendment_guids}")
+            print(f"Exporting permit amendments with guids: {amendment_guids}")
             permit_amendment_guids = amendment_guids.split(',')
         elif permit_type:
             permit_amendment_guids = PermitAmendment.find_all_guids_with_extracted_conditions(is_now)
-            print(f"Exporting and indexing {len(permit_amendment_guids)} {'Notice of Work' if is_now else 'Major Mine'} permit amendments")
+            print(f"Exporting {len(permit_amendment_guids)} {'Notice of Work' if is_now else 'Major Mine'} permit amendments")
         else:
             permit_amendment_guids = PermitAmendment.find_all_guids_with_extracted_conditions()
-            print(f"Exporting and indexing {len(permit_amendment_guids)} permit amendments with extracted conditions for all types")
+            print(f"Exporting {len(permit_amendment_guids)} permit amendments with extracted conditions for all types")
 
-        batches = _batch(permit_amendment_guids, batch_size)
-        for guids in batches:
-            with current_app.app_context():
-                export_and_index_permit_amendments(permit_amendment_guids=guids, is_manual=True)
+        if apply:
+            print("Apply flag set: Uploading to blob storage for indexing...")
+            batches = _batch(permit_amendment_guids, batch_size)
+            for guids in batches:
+                with current_app.app_context():
+                    export_and_index_permit_amendments(permit_amendment_guids=guids, is_manual=True)
+        else:
+            timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+            filename = f'permit_conditions_verify_{timestamp}.csv'
+            
+            if output_dir:
+                filename = os.path.join(output_dir, filename)
+
+            print(f"Dry run: Exporting to local file {filename}...")
+            
+            with open(filename, 'w', newline='') as csvfile:
+                writer = csv.DictWriter(csvfile, fieldnames=headers)
+                writer.writeheader()
+                
+                count = 0
+                total = len(permit_amendment_guids)
+                
+                for guid in permit_amendment_guids:
+                    try:
+                        export_permit_conditions(guid, csv_writer=writer)
+                        count += 1
+                        if count % 10 == 0:
+                            print(f"Processed {count}/{total}...")
+                    except Exception as e:
+                        print(f"Error processing {guid}: {e}")
+            
+            print(f"Done. Verify content in {filename}")

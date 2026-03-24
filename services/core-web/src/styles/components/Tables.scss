@@ -22,6 +22,8 @@
   .ant-table-tbody {
     tr.ant-table-row {
       td.ant-table-cell {
+        padding: 15px 8px 15px 16px;
+
         span.ant-badge-status {
           white-space: nowrap;
         }
@@ -31,7 +33,13 @@
 }
 
 .ant-table-thead>tr>th {
-  font-weight: 600;
+  padding: 11px 8px 11px 16px;
+  vertical-align: middle;
+
+  &.ant-table-column-sort {
+    font-weight: 600;
+    background-color: $light-grey;
+  }
 }
 
 @include tablet {

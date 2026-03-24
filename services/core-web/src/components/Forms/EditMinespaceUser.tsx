@@ -38,10 +38,10 @@ export const EditMinespaceUser: FC<EditMinespaceUserProps> = ({
         <Row>
           <Col span={24}>
             <Field
-              id="email_or_username"
-              name="email_or_username"
-              label="Email/BCeID username"
-              placeholder="Please enter a bceid in the format of user@bceid or a valid email address"
+              id="bceid_username"
+              name="bceid_username"
+              label="BCeID username"
+              placeholder="Please enter a bceid in the format of user@bceid"
               component={RenderField}
               allowClear
             />

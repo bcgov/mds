@@ -166,7 +166,8 @@ AMS_FINAL_APPLICATION_MODEL = api.model(
         'is_draft': fields.Boolean,
         'pre_submitted_files': fields.List(fields.String),
         'submitted_timestamp': fields.DateTime,
-        'documents': fields.List(fields.Nested(AMS_FINAL_APPLICATION_DOCUMENT_MODEL)), 
+        'documents': fields.List(fields.Nested(AMS_FINAL_APPLICATION_DOCUMENT_MODEL)),
+        'editable': fields.Boolean, 
     }
 )
 
@@ -345,7 +346,8 @@ IRT_MODEL = api.model(
 MAJOR_MINE_APPLICATION_DOCUMENT_MODEL = api.inherit(
     'MajorMineApplicationDocument', MINE_DOCUMENT_MODEL, {
         'major_mine_application_id': fields.Integer,
-        'major_mine_application_document_type_code': fields.String
+        'major_mine_application_document_type_code': fields.String,
+        'major_mine_application_document_subtype_code': fields.String
     })
 
 MAJOR_MINE_APPLICATION_STATUS_CODE_MODEL = api.model(
@@ -357,6 +359,15 @@ MAJOR_MINE_APPLICATION_STATUS_CODE_MODEL = api.model(
 
 MAJOR_MINE_APPLICATION_DOCUMENT_TYPE_MODEL = api.model(
     'MajorMineApplicationDocumentType', {
+        'major_mine_application_document_type_code': fields.String,
+        'description': fields.String,
+        'active_ind': fields.Boolean,
+        'display_order': fields.Integer
+    })
+
+MAJOR_MINE_APPLICATION_DOCUMENT_SUBTYPE_MODEL = api.model(
+    'MajorMineApplicationDocumentSubtype', {
+        'major_mine_application_document_subtype_code': fields.String,
         'major_mine_application_document_type_code': fields.String,
         'description': fields.String,
         'active_ind': fields.Boolean,

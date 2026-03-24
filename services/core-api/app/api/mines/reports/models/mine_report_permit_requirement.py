@@ -8,6 +8,8 @@ from sqlalchemy.dialects.postgresql import ARRAY
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy.orm import backref
+from sqlalchemy import exists, and_
+from sqlalchemy.sql import ClauseElement
 from app.api.mines.reports.models.mine_report_req_permit_condition_xref import MineReportReqPermitConditionXref, StandardReportReqPermitConditionXref
 
 class CimOrCpo(str, Enum):
@@ -61,7 +63,8 @@ class MineReportPermitRequirement(SoftDeleteMixin, AuditMixin, HistoryMixin, Bas
         secondary='mine_report_req_permit_condition_xref',
         secondaryjoin='and_(MineReportReqPermitConditionXref.permit_condition_id == PermitConditions.permit_condition_id, MineReportReqPermitConditionXref.deleted_ind==False)',
         lazy='joined',
-        backref=backref('mine_report_permit_requirements', lazy='joined')
+        backref=backref('mine_report_permit_requirements', lazy='joined', overlaps='mine_report_permit_requirement,mine_report_permit_requirement,mine_report_req_permit_conditions'),
+        overlaps="mine_report_permit_requirement,mine_report_permit_requirement,mine_report_req_permit_conditions"
     )
     
     @hybrid_property
@@ -88,8 +91,8 @@ class MineReportPermitRequirement(SoftDeleteMixin, AuditMixin, HistoryMixin, Bas
         return None
     
     @classmethod
-    def find_by_report_name(cls, report_name, permit_amendment_id) -> Self:
-        return cls.query.filter_by(report_name=report_name, permit_amendment_id=permit_amendment_id).one_or_none()
+    def find_by_report_name(cls, report_name, permit_amendment_id) -> Self | None:
+        return cls.query.filter_by(report_name=report_name, permit_amendment_id=permit_amendment_id, deleted_ind=False).one_or_none()
 
     @classmethod
     def get_all(cls) -> list[Self] | None:
@@ -98,7 +101,49 @@ class MineReportPermitRequirement(SoftDeleteMixin, AuditMixin, HistoryMixin, Bas
         except ValueError:
             return None
         
+    @classmethod
+    def get_all_recurring(cls) -> list[Self]:
+        # Only include requirements from validated amendments
+        valid_pa = cls.permit_amendment_is_validated()
 
+        return cls.query.filter_by(deleted_ind=False, active_ind=True).filter(
+            cls.due_date_period_months > 0,
+            cls.initial_due_date != None,
+            valid_pa,
+        ).all()
+
+    @classmethod
+    def get_all_single_reports(cls, due_date_after) -> list[Self]:
+        # Only include requirements from validated amendments
+        valid_pa = cls.permit_amendment_is_validated()
+
+        return cls.query.filter_by(deleted_ind=False, active_ind=True, due_date_period_months=0).filter(
+            cls.initial_due_date >= due_date_after,
+            valid_pa,
+        ).all()
+
+    @classmethod
+    def permit_amendment_is_validated(cls) -> ClauseElement:
+        """Same result as PermitAmendment.conditions_review_completed:
+            confirms that the associated permit amendment has been fully validated
+
+        imports `PermitConditions` lazily to avoid circular imports.
+        """
+        from app.api.mines.permits.permit_conditions.models.permit_conditions import PermitConditions
+
+        top_level_filter = and_(
+            PermitConditions.permit_amendment_id == cls.permit_amendment_id,
+            PermitConditions.parent_permit_condition_id.is_(None),
+            PermitConditions.deleted_ind == False,
+        )
+
+        validated = and_(
+            exists().where(top_level_filter),
+            ~exists().where(and_(top_level_filter, PermitConditions.permit_condition_status_code != 'COM')),
+        )
+
+        return validated
+    
     def update_permit_conditions(self, new_permit_condition_ids) -> None:
         current_condition_ids = self.permit_condition_ids
         
@@ -165,7 +210,7 @@ class StandardReportPermitRequirement(MineReportPermitRequirement):
 
     mine_report_req_permit_conditions: list[StandardReportReqPermitConditionXref] = db.relationship(
         StandardReportReqPermitConditionXref,
-        overlaps="mine_report_permit_requirement",
+        overlaps="mine_report_permit_requirement,mine_report_permit_requirements,mine_report_req_permit_conditions,permit_conditions",
         lazy='joined',
         primaryjoin='and_(StandardReportPermitRequirement.mine_report_permit_requirement_id == StandardReportReqPermitConditionXref.mine_report_permit_requirement_id, StandardReportReqPermitConditionXref.deleted_ind==False)',
     )
@@ -174,7 +219,8 @@ class StandardReportPermitRequirement(MineReportPermitRequirement):
         secondary='mine_report_req_permit_condition_xref',
         secondaryjoin='and_(StandardReportReqPermitConditionXref.standard_permit_condition_id == StandardPermitConditions.standard_permit_condition_id, StandardReportReqPermitConditionXref.deleted_ind==False)',
         lazy='joined',
-        backref=backref('mine_report_permit_requirements', lazy='joined')
+        backref=backref('mine_report_permit_requirements', lazy='joined', overlaps='mine_report_permit_requirement,mine_report_permit_requirement,mine_report_permit_requirements,mine_report_req_permit_conditions,permit_conditions'),
+        overlaps="mine_report_permit_requirements,mine_report_permit_requirement,mine_report_req_permit_conditions"
     )
 
     def update_permit_conditions(self, new_permit_condition_ids) -> None:

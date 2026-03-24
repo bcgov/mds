@@ -28,5 +28,9 @@
     "modify_permit_conditions": true,
     "major_project_refactor": true,
     "help_guide": true,
-    "PERMIT_CONDITION_SEARCH": true
+    "PERMIT_CONDITION_SEARCH": true,
+    "report_management_v2": true,
+    "minespace_signup": true,
+    "global_search_v2": true,
+    "notice_of_work_tier": true
 }

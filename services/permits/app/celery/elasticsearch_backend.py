@@ -1,6 +1,9 @@
 import os
+import logging
 import elasticsearch
 from celery.backends.elasticsearch import ElasticsearchBackend
+
+logger = logging.getLogger(__name__)
 
 ca_cert = os.environ.get("ELASTICSEARCH_CA_CERT", None)
 host = os.environ.get("ELASTICSEARCH_HOST", None) or "https://elasticsearch:9200"
@@ -31,7 +34,14 @@ class MDSElasticSearchBackend(ElasticsearchBackend):
             retry_on_timeout=self.es_retry_on_timeout,
             max_retries=self.es_max_retries,
             timeout=self.es_timeout,
-            http_auth=http_auth,
+            basic_auth=http_auth,
             verify_certs=True if ca_cert else False,
             ca_certs=ca_cert if ca_cert else None,
         )
+
+    def get(self, key):
+        try:
+            return super().get(key)
+        except elasticsearch.ApiError as e:
+            logger.error(f"Elasticsearch error during get: {e}")
+            raise RuntimeError(f"Elasticsearch error: {e}") from e

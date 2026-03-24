@@ -150,7 +150,7 @@ const IncidentFormInitialReport: FC<IncidentFormInitialReportProps> = ({
                   placeholder="Please select date"
                   validate={[
                     dateNotInFutureTZ,
-                    dateNotBeforeStrictOther(formValues.incident_timestamp),
+                    dateNotBeforeStrictOther(formValues.incident_timestamp, 'Incident date & time'),
                   ]}
                 />
               </Col>
@@ -200,7 +200,7 @@ const IncidentFormInitialReport: FC<IncidentFormInitialReportProps> = ({
                   validate={[
                     required,
                     dateNotInFutureTZ,
-                    dateNotBeforeStrictOther(formValues.incident_timestamp),
+                    dateNotBeforeStrictOther(formValues.incident_timestamp, 'Incident date & time'),
                   ]}
                 />
               </Col>
@@ -251,7 +251,7 @@ const IncidentFormInitialReport: FC<IncidentFormInitialReportProps> = ({
                 timezone={formValues.incident_timezone}
                 validate={[
                   dateNotInFutureTZ,
-                  dateNotBeforeStrictOther(formValues.incident_timestamp),
+                  dateNotBeforeStrictOther(formValues.incident_timestamp, 'Incident date & time'),
                 ]}
                 disabled={!isEditMode}
               />
@@ -322,8 +322,10 @@ const IncidentFormInitialReport: FC<IncidentFormInitialReportProps> = ({
                 label="Number of injuries"
                 id="number_of_injuries"
                 name="number_of_injuries"
+                required
+                placeholder="Enter the number of injuries. If none, enter '0'."
                 component={renderConfig.FIELD}
-                validate={[wholeNumber, maxLength(10)]}
+                validate={[wholeNumber, required, maxLength(10)]}
                 disabled={!isEditMode}
               />
             </Col>

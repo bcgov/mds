@@ -35,7 +35,7 @@ import { NOTICE_OF_DEPARTURE_DOCUMENTS } from "@/constants/API";
 import { renderConfig } from "@/components/common/config";
 import FileUpload from "@/components/common/FileUpload";
 import { DOCUMENT, EXCEL } from "@/constants/fileTypes";
-import { renderDocumentLinkColumn } from "../common/DocumentColumns";
+import { renderDocumentLinkColumn } from "@mds/common/components/documents/DocumentColumns";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
 import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
@@ -44,7 +44,7 @@ import { USER_ROLES } from "@mds/common/constants/environment";
 import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 import { closeModal } from "@mds/common/redux/actions/modalActions";
 import { getNoticeOfDeparture } from "@mds/common/redux/selectors/noticeOfDepartureSelectors";
-import { getMatchingPartyRelationships } from "@mds/common/redux/selectors/partiesSelectors";
+import { getMatchingPartyRelationships } from "@mds/common/redux/slices/partiesSlice";
 import { MinePartyAppointmentTypeCodeEnum } from "@mds/common/constants/enums";
 
 

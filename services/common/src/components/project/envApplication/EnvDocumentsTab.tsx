@@ -44,7 +44,7 @@ const EnvDocumentCategoryForm = ({ fields }) => {
                         <Row gutter={16}>
                             <Col flex={1}>
                                 <Field
-                                    name={`${field}document_name`}
+                                    name={`${field}.document_name`}
                                     label="Document Name"
                                     required
                                     validate={[required]}
@@ -54,7 +54,7 @@ const EnvDocumentCategoryForm = ({ fields }) => {
                             </Col>
                             <Col span={8}>
                                 <Field
-                                    name={`${field}ams_final_application_document_type_code`}
+                                    name={`${field}.ams_final_application_document_type_code`}
                                     label="Document Category"
                                     placeholder="Select a Document Category"
                                     component={RenderSelect}
@@ -116,9 +116,20 @@ const EnvDocumentsTab = () => {
     return (
         <>
             <Typography.Title level={3}>Documents</Typography.Title>
+            <Typography.Paragraph>
+                Please upload your Environmental Management Act waste discharge final application for screening.
+                The application must include all documents and information as listed in the Application Instruction Document (AID)
+                and Information Requirements Table (IRT) issued for this application. Incomplete submissions may lead to delays or rejection of your application.
+            </Typography.Paragraph>
+            <Typography.Paragraph>
+                If you did not receive an AID or IRT it is recommended that you consult with Ministry staff to confirm information requirements prior to submission.
+            </Typography.Paragraph>
+            <Typography.Paragraph>
+                When uploading your application files, you will be required to <b>tag each file by type</b>, which supports efficient screening and review.
+            </Typography.Paragraph>
             <Field
                 name="pre_submitted_files"
-                label="Check those that were submitted as part of the Project Description"
+                label="Please check any of the following forms that were submitted as during the Project Description phase of this application"
                 component={RenderGroupCheckbox}
                 options={preSubmittedOptions}
                 normalize={normalizeGroupCheckBox}

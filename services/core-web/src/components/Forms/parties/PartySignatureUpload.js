@@ -32,11 +32,13 @@ registerPlugin(
 );
 
 export const PartySignatureUpload = (props) => {
-  const [files, setFiles] = useState([]);
+  const [files, setFiles] = useState(() => {
+    return props.signature ? [props.signature] : [];
+  });
 
   return (
     <FilePond
-      files={props.signature ? [props.signature] : files}
+      files={files}
       allowImagePreview
       allowRevert
       labelIdle='<strong>Drag & Drop your files or <span class="filepond--label-action">Browse</span></strong><br>
@@ -44,7 +46,17 @@ export const PartySignatureUpload = (props) => {
       acceptedFileTypes={Object.values(IMAGE)}
       onupdatefiles={(fileItems) => {
         const item = fileItems && fileItems[0];
-        props.onFileChange(item ? item.getFileEncodeDataURL() : null);
+        let encoded = null;
+        if (item) {
+          try {
+            encoded = item.getFileEncodeDataURL();
+          } catch (error) {
+            console.error("Failed to get encoded file:", error);
+            encoded = null;
+          }
+        }
+
+        props.onFileChange(encoded);
         setFiles(fileItems);
       }}
       labelButtonDownloadItem="Download signature"

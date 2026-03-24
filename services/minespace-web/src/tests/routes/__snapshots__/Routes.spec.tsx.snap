@@ -6,7 +6,14 @@ exports[`PrivateRoutes  renders properly 1`] = `
 >
   <Switch>
     <Route
-      component={[Function]}
+      component={
+        Object {
+          "$$typeof": Symbol(react.lazy),
+          "_ctor": [Function],
+          "_result": null,
+          "_status": -1,
+        }
+      }
       exact={true}
       path="/"
     />
@@ -14,6 +21,11 @@ exports[`PrivateRoutes  renders properly 1`] = `
       component={[Function]}
       exact={true}
       path="/return-page"
+    />
+    <Route
+      component={[Function]}
+      exact={true}
+      path="/access-request"
     />
     <Route
       component={[Function]}
@@ -26,20 +38,14 @@ exports[`PrivateRoutes  renders properly 1`] = `
       path="/users"
     />
     <Route
-      component={
-        Object {
-          "$$typeof": Symbol(react.memo),
-          "WrappedComponent": [Function],
-          "_ctor": [Function],
-          "_result": null,
-          "_status": -1,
-          "compare": null,
-          "displayName": "Connect(authenticationGuard)",
-          "type": [Function],
-        }
-      }
+      component={[Function]}
       exact={true}
       path="/mines/:id/dashboard/:activeTab/:subTab?"
+    />
+    <Route
+      component={[Function]}
+      exact={true}
+      path="/projects/:projectGuid/ema-application/success"
     />
     <Route
       component={[Function]}
@@ -91,23 +97,12 @@ exports[`PrivateRoutes  renders properly 1`] = `
       path="/mines/:mineGuid/project-description/new/:tab"
     />
     <Route
-      component={
-        Object {
-          "$$typeof": Symbol(react.memo),
-          "WrappedComponent": [Function],
-          "_ctor": [Function],
-          "_result": null,
-          "_status": -1,
-          "compare": null,
-          "displayName": "Connect(authenticationGuard)",
-          "type": [Function],
-        }
-      }
+      component={[Function]}
       path="/projects/:projectGuid/project-summary/:projectSummaryGuid/application/:projectSummaryAuthorizationGuid/:tab"
     />
     <Route
       component={[Function]}
-      path="/projects/:projectGuid/project-description/:projectSummaryGuid/:tab"
+      path="/projects/:projectGuid/project-description/:projectSummaryGuid/:mode/:tab"
     />
     <Route
       component={[Function]}
@@ -126,18 +121,7 @@ exports[`PrivateRoutes  renders properly 1`] = `
       path="/projects/:projectGuid/information-requirements-table/:irtGuid/success"
     />
     <Route
-      component={
-        Object {
-          "$$typeof": Symbol(react.memo),
-          "WrappedComponent": [Function],
-          "_ctor": [Function],
-          "_result": null,
-          "_status": -1,
-          "compare": null,
-          "displayName": "Connect(authenticationGuard)",
-          "type": [Function],
-        }
-      }
+      component={[Function]}
       path="/projects/:projectGuid/:tab"
     />
     <Route
@@ -185,18 +169,7 @@ exports[`PrivateRoutes  renders properly 1`] = `
       path="/mines/:id/redirect/permits/:permitGuid"
     />
     <Route
-      component={
-        Object {
-          "$$typeof": Symbol(react.memo),
-          "WrappedComponent": [Function],
-          "_ctor": [Function],
-          "_result": null,
-          "_status": -1,
-          "compare": null,
-          "displayName": "Connect(authenticationGuard)",
-          "type": [Function],
-        }
-      }
+      component={[Function]}
       path="/mines/:id/permits/:permitGuid/permit-amendment/:permitAmendmentGuid/:tab"
     />
     <Route

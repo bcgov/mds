@@ -4,7 +4,7 @@ import { Field, FieldArray, change } from "@mds/common/components/forms/form";
 import {
   updatePartyRelationship,
   fetchPartyRelationships,
-} from "@mds/common/redux/actionCreators/partiesActionCreator";
+} from "@mds/common/redux/slices/partiesSlice";
 import CoreTable from "@mds/common/components/common/CoreTable";
 import { PARTY_APPOINTMENT_STATUS } from "@mds/common/constants/strings";
 import RenderSelect from "../forms/RenderSelect";
@@ -61,13 +61,13 @@ const PartyAppointmentTable: FC<PartyAppointmentTableProps> = (props) => {
 
     try {
       await dispatch(
-        updatePartyRelationship(
-          {
+        updatePartyRelationship({
+          data: {
             mine_party_appt_guid,
             [key]: value,
           },
-          "Successfully updated Engineer of Record"
-        )
+          successMessage: "Successfully updated Engineer of Record",
+        })
       );
 
       await dispatch(

@@ -3,7 +3,7 @@ from datetime import datetime, timedelta, date
 from enum import Enum
 from werkzeug.exceptions import BadRequest
 
-from sqlalchemy import and_, nullsfirst, nullslast
+from sqlalchemy import and_, or_, nullsfirst, nullslast
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 
@@ -275,7 +275,10 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, DraftMixin, Base):
             built_query = cls.query.filter_by(
                 deleted_ind=False, mine_guid=mine_guid, status=MinePartyAppointmentStatus.active)
         else:
-            built_query = cls.query.filter_by(deleted_ind=False, mine_guid=mine_guid, end_date=None)
+            built_query = cls.query.filter(
+                cls.deleted_ind == False,
+                cls.mine_guid == mine_guid,
+                or_(cls.end_date == None, cls.end_date > datetime.utcnow().date()))
 
         if permit_id:
             built_query = built_query.filter_by(permit_id=permit_id)
@@ -367,7 +370,7 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, DraftMixin, Base):
         """
         party_title = 'Engineer of Record'
         party_page = 'engineer-of-record'
-        email_body = open("app/templates/email/mine_party_appt/ministry_new_eor_email.html", "r").read()
+        template_path = "email/mine_party_appt/ministry_new_eor_email.html"
 
         EDIT_TSF_EMAILS = 'EDIT_TSF_EMAILS'
 
@@ -381,7 +384,7 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, DraftMixin, Base):
         # change from UTC to PST
         submitted_at = format_email_datetime_to_string(datetime.utcnow())
         start_date = self.start_date.strftime(
-            '%b %d %Y') if self.start_date else 'No date provided',
+            '%b %d %Y') if self.start_date else 'No date provided'
 
         email_context = {
             "tsf_name": self.mine_tailings_storage_facility.mine_tailings_storage_facility_name,
@@ -398,7 +401,7 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, DraftMixin, Base):
             "submitted_at": submitted_at
         }
         subject = f'A new {party_title} for {self.mine_tailings_storage_facility.mine_tailings_storage_facility_name} at {self.mine.mine_name} has been assigned.'
-        EmailService.send_template_email(subject, recipients, email_body, email_context)
+        EmailService.send_template_email(subject, recipients, template_path, email_context)
 
     @classmethod
     def end_current(cls,

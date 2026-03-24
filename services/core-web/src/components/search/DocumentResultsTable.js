@@ -2,7 +2,7 @@ import React from "react";
 import { Divider } from "antd";
 import PropTypes from "prop-types";
 import Highlight from "react-highlighter";
-import DocumentLink from "@/components/common/DocumentLink";
+import DocumentLink from "@mds/common/components/documents/DocumentLink";
 import CoreTable from "@mds/common/components/common/CoreTable";
 import {
   renderDateColumn,

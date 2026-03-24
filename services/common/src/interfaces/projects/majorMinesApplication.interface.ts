@@ -14,4 +14,5 @@ export interface IMajorMinesApplication {
   primary_documents: IMajorMinesApplicationDocument[];
   spatial_documents: IMajorMinesApplicationDocument[];
   supporting_documents: IMajorMinesApplicationDocument[];
+  appendix_documents: IMajorMinesApplicationDocument[];
 }

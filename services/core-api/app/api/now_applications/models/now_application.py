@@ -56,7 +56,12 @@ class NOWApplication(Base, AuditMixin):
         lazy='selectin',
         uselist=False,
         primaryjoin='Party.party_guid == NOWApplication.issuing_inspector_party_guid')
-
+    consultation_advisor_party_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'))
+    consultation_advisor = db.relationship(
+        'Party',
+        lazy='selectin',
+        uselist=False,
+        primaryjoin='Party.party_guid == NOWApplication.consultation_advisor_party_guid')
     now_tracking_number = db.Column(db.Integer)
     proponent_submitted_permit_number = db.Column(db.String)
     annual_summary_submitted = db.Column(db.Boolean)
@@ -158,6 +163,21 @@ class NOWApplication(Base, AuditMixin):
 
     # Progress
     application_progress = db.relationship('NOWApplicationProgress', lazy='selectin', uselist=True)
+
+    # Tiers
+    application_tier = db.relationship('NOWApplicationTier', lazy='selectin', uselist=False, overlaps='now_application')
+
+    @hybrid_property
+    def now_application_tier_code(self):
+        if self.application_tier:
+            return self.application_tier.notice_of_work_tier_code
+        return None
+
+    @hybrid_property
+    def now_application_tier_description(self):
+        if self.application_tier:
+            return self.application_tier.description
+        return None
 
     # Documents that are not associated with a review
     documents = db.relationship(

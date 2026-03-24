@@ -99,7 +99,19 @@ export const INCIDENT_CONTACT_METHOD_OPTIONS = [
 export const BUSINESS_ROLES = {
   inspector: "INS",
   projectLead: "PRL",
+  consultationAdvisor: "CNA",
 };
+
+export const MINESPACE_POSITIONS = [
+  { label: "Permittee", value: "PMT" },
+  { label: "Mine Manager", value: "MMG" },
+  { label: "MineSpace Administrator", value: "ADM" },
+  { label: "Employee", value: "EMP" },
+  { label: "Contractor/Consultant", value: "CON" },
+  { label: "Agent", value: "AGT" },
+];
+// not a valid role, used only for the form on MS
+export const NULL_MINESPACE_POSITION = { label: "General Public/Researcher", value: "NUL" };
 
 export const NOT_APPLICABLE = "N/A";
 
@@ -199,18 +211,42 @@ export const MAJOR_MINES_APPLICATION_DOCUMENT_TYPE = {
   PRIMARY: "primary_documents",
   SPATIAL: "spatial_documents",
   SUPPORTING: "supporting_documents",
+  APPENDIX: "appendix_documents"
 };
 
 export const MAJOR_MINES_APPLICATION_DOCUMENT_TYPE_CODE = {
   PRIMARY: "PRM",
   SPATIAL: "SPT",
   SUPPORTING: "SPR",
+  APPENDIX: "APX"
+};
+
+export const MAJOR_MINES_APPLICATION_DOCUMENT_SUBTYPE_CODE = {
+  APX: {
+    INE: "Indigenous Nation Engagement",
+    BIF: "Baseline Information",
+    MIP: "Mine Plan",
+    RCP: "Reclamation and Closure Plan",
+    WQM: "Water Quality Mitigation and Water Modeling",
+    EDE: "Effluent Discharges to the Environment",
+    EEA: "Environmental Effects Assessment",
+    EMO: "Environmental Monitoring",
+    MGP: "Management Plans",
+    RLE: "Reclamation Liability Cost Estimate"
+  },
+  SPR: {
+    QPD: "Qualified Professional Declaration Form",
+    TOC: "Table of Concordance",
+    SPR: "Supporting Documents",
+    CIF: "Confidential Information"
+  }
 };
 
 export const MAJOR_MINES_APPLICATION_DOCUMENT_TYPE_CODE_LOCATION = {
   PRM: "Primary Document",
   SPT: "Spatial Component",
   SPR: "Supporting Document",
+  APX: "Appendix Document"
 };
 
 export const PROJECT_SUMMARY_DOCUMENT_TYPE = {
@@ -283,6 +319,7 @@ export const INFORMATION_REQUIREMENTS_TABLE_DOCUMENT_TYPE_CODE_LOCATION = {
 
 export const CATEGORY_CODE = {
   PRM: "Primary Document",
+  APX: "Appendix Document",
   SPT: "Spatial Component",
   SPR: "Supporting Document",
   GEN: "General",
@@ -518,6 +555,7 @@ export const PROJECT_STATUS_SEVERITY: { [key: string]: "success" | "warning" | "
 }
 
 export const ENVIRONMENTAL_MANAGMENT_ACT = "ENVIRONMENTAL_MANAGMENT_ACT";
+export const WATER_SUSTAINABILITY_ACT = "WATER_SUSTAINABILITY_ACT";
 
 export const DISCHARGE_FACTOR_FORM_NEW =
   "https://www2.gov.bc.ca/assets/gov/environment/waste-management/waste-discharge-authorization/guides/forms/epd-ema-03_new_auth_discharge_factors_application_form.pdf";
@@ -533,6 +571,12 @@ export const WASTE_DISCHARGE_AUTHORIZATION_PROCESS =
 
 export const AMS_ENVIRONMENT_PUBLIC_DOCUMENT_SEARCH_URL =
   "https://j200.gov.bc.ca/pub/ams/Default.aspx?PossePresentation=DocumentSearch";
+
+export const MAJOR_MINE_AUTH_GUIDE_URL =
+  "https://www2.gov.bc.ca/assets/gov/farming-natural-resources-and-industry/mineral-exploration-mining/documents/permitting/mmpo/major_mines_auth_guide.pdf";
+
+export const JOINT_APPLICATION_INFORMATION_REQUIREMENTS_GUIDE_URL =
+  "https://www2.gov.bc.ca/assets/gov/farming-natural-resources-and-industry/mineral-exploration-mining/documents/permitting/joint_application_information_requirements.pdf";
 
 export const MINES_ACT_INCLUDES_EMA_AUTH_TEXT =
   "This application package includes authorization documents related to the ";

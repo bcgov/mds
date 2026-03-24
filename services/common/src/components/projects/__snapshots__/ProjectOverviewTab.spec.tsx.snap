@@ -228,1063 +228,1196 @@ exports[`ProjectDocumentsTab renders properly 1`] = `
           style="padding: 8px 8px 8px 8px;"
         >
           <div
-            class="ant-row ant-row-space-between"
+            class="ant-collapse ant-collapse-icon-position-start primary-title-collapse"
+            style="margin-bottom: 16px;"
           >
             <div
-              class="ant-col"
+              class="ant-collapse-item ant-collapse-item-active"
             >
-              <h2
-                class="ant-typography"
+              <div
+                aria-disabled="false"
+                aria-expanded="true"
+                class="ant-collapse-header"
+                role="button"
+                tabindex="0"
               >
-                Permit and Authorization
-              </h2>
-            </div>
-            <div
-              class="ant-col"
-            >
-              <button
-                class="ant-btn ant-btn-default"
-                data-cy="project-description-view-link"
-                type="button"
-              >
-                <span>
-                  View Project Description
+                <div
+                  class="ant-collapse-expand-icon"
+                >
+                  <span
+                    aria-label="right"
+                    class="anticon anticon-right ant-collapse-arrow"
+                    role="img"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      data-icon="right"
+                      fill="currentColor"
+                      focusable="false"
+                      height="1em"
+                      style="transform: rotate(90deg);"
+                      viewBox="64 64 896 896"
+                      width="1em"
+                    >
+                      <path
+                        d="M765.7 486.8L314.9 134.7A7.97 7.97 0 00302 141v77.3c0 4.9 2.3 9.6 6.1 12.6l360 281.1-360 281.1c-3.9 3-6.1 7.7-6.1 12.6V883c0 6.7 7.7 10.4 12.9 6.3l450.8-352.1a31.96 31.96 0 000-50.4z"
+                      />
+                    </svg>
+                  </span>
+                </div>
+                <span
+                  class="ant-collapse-header-text"
+                >
+                  <h2
+                    class="ant-typography color-white"
+                    style="margin-bottom: 0px;"
+                  >
+                    1. Project Description
+                  </h2>
                 </span>
-              </button>
-            </div>
-          </div>
-          <h5
-            class="ant-typography"
-          >
-            Mines Act (MA) and Joint Application Project Description
-          </h5>
-          <div
-            class="ant-table-wrapper  core-table"
-          >
-            <div
-              class="ant-spin-nested-loading"
-            >
-              <div
-                class="ant-spin-container"
-              >
-                <div
-                  class="ant-table"
-                >
-                  <div
-                    class="ant-table-container"
-                  >
-                    <div
-                      class="ant-table-content"
-                    >
-                      <table
-                        style="table-layout: auto;"
-                      >
-                        <colgroup />
-                        <thead
-                          class="ant-table-thead"
-                        >
-                          <tr>
-                            <th
-                              class="ant-table-cell"
-                            >
-                              Authorization Type
-                            </th>
-                            <th
-                              class="ant-table-cell"
-                            >
-                              Permit Type
-                            </th>
-                            <th
-                              class="ant-table-cell"
-                            >
-                              Permit
-                            </th>
-                            <th
-                              class="ant-table-cell"
-                            >
-                              Project Description Status
-                            </th>
-                          </tr>
-                        </thead>
-                        <tbody
-                          class="ant-table-tbody"
-                        >
-                          <tr
-                            class="ant-table-row ant-table-row-level-0 fade-in"
-                            data-row-key="4d04995c-f90d-42fd-a951-60d9891f242c"
-                          >
-                            <td
-                              class="ant-table-cell"
-                            >
-                              <div
-                                title="Authorization Type"
-                              >
-                                Mines Act permit
-                              </div>
-                            </td>
-                            <td
-                              class="ant-table-cell"
-                            >
-                              <div
-                                class="type-column"
-                                title="Permit Type"
-                              >
-                                <div>
-                                  Amendment to an existing permit
-                                </div>
-                              </div>
-                            </td>
-                            <td
-                              class="ant-table-cell"
-                            >
-                              <div
-                                class="permits-column"
-                                title="Permit"
-                              >
-                                <div>
-                                  P-1234
-                                </div>
-                              </div>
-                            </td>
-                            <td
-                              class="ant-table-cell"
-                            >
-                              <span
-                                class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
-                              >
-                                <span
-                                  class="ant-badge-status-dot ant-badge-status-warning"
-                                />
-                                <span
-                                  class="ant-badge-status-text"
-                                >
-                                  Draft
-                                </span>
-                              </span>
-                            </td>
-                          </tr>
-                          <tr
-                            class="ant-table-row ant-table-row-level-0 fade-in"
-                            data-row-key="80fa60e3-0c8b-48e1-aede-ed2830e8ca42"
-                          >
-                            <td
-                              class="ant-table-cell"
-                            >
-                              <div
-                                title="Authorization Type"
-                              >
-                                Occupant licence to cut
-                              </div>
-                            </td>
-                            <td
-                              class="ant-table-cell"
-                            >
-                              <div
-                                class="type-column"
-                                title="Permit Type"
-                              >
-                                <div>
-                                  Closure of an existing permit
-                                </div>
-                              </div>
-                            </td>
-                            <td
-                              class="ant-table-cell"
-                            >
-                              <div
-                                class="permits-column"
-                                title="Permit"
-                              >
-                                <div>
-                                  P-4444
-                                </div>
-                              </div>
-                            </td>
-                            <td
-                              class="ant-table-cell"
-                            >
-                              <span
-                                class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
-                              >
-                                <span
-                                  class="ant-badge-status-dot ant-badge-status-warning"
-                                />
-                                <span
-                                  class="ant-badge-status-text"
-                                >
-                                  Draft
-                                </span>
-                              </span>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div>
               </div>
-            </div>
-          </div>
-          <h5
-            class="ant-typography"
-          >
-            Environmental Management Act (EMA) Authorization
-          </h5>
-          <div
-            class="ant-typography"
-          >
-            An Environmental Protection Officer will contact you once your application is reviewed and accepted. In the meantime, to learn about the ministry's structured application process and timelines to get a waste discharge authorization, please visit
-             
-            <a
-              href="https://www2.gov.bc.ca/gov/content/environment/waste-management/waste-discharge-authorization/process"
-            >
-              The waste discharge authorization process.
-            </a>
-          </div>
-          <div
-            class="ant-table-wrapper  core-table"
-          >
-            <div
-              class="ant-spin-nested-loading"
-            >
               <div
-                class="ant-spin-container"
+                class="ant-collapse-content ant-collapse-content-active"
               >
                 <div
-                  class="ant-table ant-table-has-fix-right"
+                  class="ant-collapse-content-box"
                 >
                   <div
-                    class="ant-table-container"
+                    class="ant-col ant-col-24"
+                    style="padding: 8px 8px 8px 8px;"
                   >
                     <div
-                      class="ant-table-content"
+                      class="ant-table-wrapper  core-table"
                     >
-                      <table
-                        style="table-layout: auto;"
+                      <div
+                        class="ant-spin-nested-loading"
                       >
-                        <colgroup />
-                        <thead
-                          class="ant-table-thead"
+                        <div
+                          class="ant-spin-container"
                         >
-                          <tr>
-                            <th
-                              class="ant-table-cell"
-                            >
-                              Type
-                            </th>
-                            <th
-                              class="ant-table-cell"
-                            >
-                              Auth #
-                            </th>
-                            <th
-                              class="ant-table-cell"
-                            >
-                              Tracking #
-                            </th>
-                            <th
-                              class="ant-table-cell"
-                            >
-                              Date
-                            </th>
-                            <th
-                              class="ant-table-cell"
-                            >
-                              Auth Status
-                            </th>
-                            <th
-                              class="ant-table-cell actions-column ant-table-cell-fix-right ant-table-cell-fix-right-first"
-                              style="position: sticky; right: 0px;"
-                            />
-                          </tr>
-                        </thead>
-                        <tbody
-                          class="ant-table-tbody"
-                        >
-                          <tr
-                            class="ant-table-row ant-table-row-level-0 fade-in"
+                          <div
+                            class="ant-table ant-table-has-fix-right"
                           >
-                            <td
-                              class="ant-table-cell"
+                            <div
+                              class="ant-table-container"
                             >
                               <div
-                                title="Type"
+                                class="ant-table-content"
                               >
-                                Air Emissions Discharge Permit
-                              </div>
-                            </td>
-                            <td
-                              class="ant-table-cell"
-                            >
-                              <div
-                                class="auth_no-column"
-                                title="Auth #"
-                              >
-                                1234
-                              </div>
-                            </td>
-                            <td
-                              class="ant-table-cell"
-                            >
-                              <div
-                                class="ams_tracking_number-column"
-                                title="Tracking #"
-                              >
-                                N/A
-                              </div>
-                            </td>
-                            <td
-                              class="ant-table-cell"
-                            >
-                              <div
-                                title="Date"
-                              >
-                                May 24 2024
-                              </div>
-                            </td>
-                            <td
-                              class="ant-table-cell"
-                            >
-                              <span
-                                class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
-                              >
-                                <span
-                                  class="ant-badge-status-dot ant-badge-status-default"
-                                />
-                                <span
-                                  class="ant-badge-status-text"
+                                <table
+                                  style="table-layout: auto;"
                                 >
-                                  N/A
-                                </span>
-                              </span>
-                            </td>
-                            <td
-                              class="ant-table-cell actions-column ant-table-cell-fix-right ant-table-cell-fix-right-first"
-                              style="position: sticky; right: 0px;"
-                            >
-                              <button
-                                class="ant-btn ant-btn-text ant-dropdown-trigger actions-dropdown-button"
-                                data-cy="menu-actions-button"
-                                type="button"
-                              >
-                                <span>
-                                  Actions
-                                </span>
-                                <span
-                                  alt="Menu"
-                                  aria-label="caret-down"
-                                  class="anticon anticon-caret-down"
-                                  role="img"
-                                >
-                                  <svg
-                                    aria-hidden="true"
-                                    class=""
-                                    data-icon="caret-down"
-                                    fill="currentColor"
-                                    focusable="false"
-                                    height="1em"
-                                    viewBox="0 0 1024 1024"
-                                    width="1em"
+                                  <colgroup />
+                                  <thead
+                                    class="ant-table-thead"
                                   >
-                                    <path
-                                      d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
-                                    />
-                                  </svg>
-                                </span>
-                              </button>
-                            </td>
-                          </tr>
-                          <tr
-                            class="ant-table-row ant-table-row-level-0 fade-in"
-                          >
-                            <td
-                              class="ant-table-cell"
-                            >
-                              <div
-                                title="Type"
-                              >
-                                Refuse Discharge Permit
-                              </div>
-                            </td>
-                            <td
-                              class="ant-table-cell"
-                            >
-                              <div
-                                class="auth_no-column"
-                                title="Auth #"
-                              >
-                                5678
-                              </div>
-                            </td>
-                            <td
-                              class="ant-table-cell"
-                            >
-                              <div
-                                class="ams_tracking_number-column"
-                                title="Tracking #"
-                              >
-                                N/A
-                              </div>
-                            </td>
-                            <td
-                              class="ant-table-cell"
-                            >
-                              <div
-                                title="Date"
-                              >
-                                May 24 2024
-                              </div>
-                            </td>
-                            <td
-                              class="ant-table-cell"
-                            >
-                              <span
-                                class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
-                              >
-                                <span
-                                  class="ant-badge-status-dot ant-badge-status-default"
-                                />
-                                <span
-                                  class="ant-badge-status-text"
-                                >
-                                  N/A
-                                </span>
-                              </span>
-                            </td>
-                            <td
-                              class="ant-table-cell actions-column ant-table-cell-fix-right ant-table-cell-fix-right-first"
-                              style="position: sticky; right: 0px;"
-                            >
-                              <button
-                                class="ant-btn ant-btn-text ant-dropdown-trigger actions-dropdown-button"
-                                data-cy="menu-actions-button"
-                                type="button"
-                              >
-                                <span>
-                                  Actions
-                                </span>
-                                <span
-                                  alt="Menu"
-                                  aria-label="caret-down"
-                                  class="anticon anticon-caret-down"
-                                  role="img"
-                                >
-                                  <svg
-                                    aria-hidden="true"
-                                    class=""
-                                    data-icon="caret-down"
-                                    fill="currentColor"
-                                    focusable="false"
-                                    height="1em"
-                                    viewBox="0 0 1024 1024"
-                                    width="1em"
+                                    <tr>
+                                      <th
+                                        class="ant-table-cell"
+                                      >
+                                        Stage
+                                      </th>
+                                      <th
+                                        class="ant-table-cell"
+                                      >
+                                        Date
+                                      </th>
+                                      <th
+                                        class="ant-table-cell"
+                                      >
+                                        Status
+                                      </th>
+                                      <th
+                                        class="ant-table-cell actions-column ant-table-cell-fix-right ant-table-cell-fix-right-first"
+                                        style="position: sticky; right: 0px;"
+                                      />
+                                    </tr>
+                                  </thead>
+                                  <tbody
+                                    class="ant-table-tbody"
                                   >
-                                    <path
-                                      d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
-                                    />
-                                  </svg>
-                                </span>
-                              </button>
-                            </td>
-                          </tr>
-                          <tr
-                            class="ant-table-row ant-table-row-level-0 fade-in"
+                                    <tr
+                                      class="ant-table-row ant-table-row-level-0 fade-in"
+                                    >
+                                      <td
+                                        class="ant-table-cell"
+                                      >
+                                        <div
+                                          class="name-column"
+                                          title="Stage"
+                                        >
+                                          Project Description
+                                        </div>
+                                      </td>
+                                      <td
+                                        class="ant-table-cell"
+                                      >
+                                        <div
+                                          title="Date"
+                                        >
+                                          Nov 18 2020
+                                        </div>
+                                      </td>
+                                      <td
+                                        class="ant-table-cell"
+                                      >
+                                        <span
+                                          class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
+                                        >
+                                          <span
+                                            class="ant-badge-status-dot ant-badge-status-warning"
+                                          />
+                                          <span
+                                            class="ant-badge-status-text"
+                                          >
+                                            Draft
+                                          </span>
+                                        </span>
+                                      </td>
+                                      <td
+                                        class="ant-table-cell actions-column ant-table-cell-fix-right ant-table-cell-fix-right-first"
+                                        style="position: sticky; right: 0px;"
+                                      >
+                                        <button
+                                          class="ant-btn ant-btn-default"
+                                          data-cy="project-description-view-link"
+                                          type="button"
+                                        >
+                                          <span>
+                                            View
+                                          </span>
+                                        </button>
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="gov-grey-border-box"
+                    >
+                      <h4
+                        class="ant-typography"
+                      >
+                        Authorizations
+                      </h4>
+                      <h5
+                        class="ant-typography"
+                      >
+                        Mines Act (MA) and Joint Application Authorization
+                      </h5>
+                      <div
+                        class="ant-table-wrapper  core-table"
+                      >
+                        <div
+                          class="ant-spin-nested-loading"
+                        >
+                          <div
+                            class="ant-spin-container"
                           >
-                            <td
-                              class="ant-table-cell"
+                            <div
+                              class="ant-table"
                             >
                               <div
-                                title="Type"
+                                class="ant-table-container"
                               >
-                                Refuse Discharge Permit
-                              </div>
-                            </td>
-                            <td
-                              class="ant-table-cell"
-                            >
-                              <div
-                                class="auth_no-column"
-                                title="Auth #"
-                              >
-                                1234
-                              </div>
-                            </td>
-                            <td
-                              class="ant-table-cell"
-                            >
-                              <div
-                                class="ams_tracking_number-column"
-                                title="Tracking #"
-                              >
-                                123456
-                              </div>
-                            </td>
-                            <td
-                              class="ant-table-cell"
-                            >
-                              <div
-                                title="Date"
-                              >
-                                May 24 2024
-                              </div>
-                            </td>
-                            <td
-                              class="ant-table-cell"
-                            >
-                              <span
-                                class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
-                              >
-                                <span
-                                  class="ant-badge-status-dot ant-badge-status-default"
-                                />
-                                <span
-                                  class="ant-badge-status-text"
+                                <div
+                                  class="ant-table-content"
                                 >
-                                  N/A
-                                </span>
-                              </span>
-                            </td>
-                            <td
-                              class="ant-table-cell actions-column ant-table-cell-fix-right ant-table-cell-fix-right-first"
-                              style="position: sticky; right: 0px;"
-                            >
-                              <button
-                                class="ant-btn ant-btn-text ant-dropdown-trigger actions-dropdown-button"
-                                data-cy="menu-actions-button"
-                                type="button"
-                              >
-                                <span>
-                                  Actions
-                                </span>
-                                <span
-                                  alt="Menu"
-                                  aria-label="caret-down"
-                                  class="anticon anticon-caret-down"
-                                  role="img"
-                                >
-                                  <svg
-                                    aria-hidden="true"
-                                    class=""
-                                    data-icon="caret-down"
-                                    fill="currentColor"
-                                    focusable="false"
-                                    height="1em"
-                                    viewBox="0 0 1024 1024"
-                                    width="1em"
+                                  <table
+                                    style="table-layout: auto;"
                                   >
-                                    <path
-                                      d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
-                                    />
-                                  </svg>
-                                </span>
-                              </button>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
+                                    <colgroup />
+                                    <thead
+                                      class="ant-table-thead"
+                                    >
+                                      <tr>
+                                        <th
+                                          class="ant-table-cell"
+                                        >
+                                          Authorization Type
+                                        </th>
+                                        <th
+                                          class="ant-table-cell"
+                                        >
+                                          Permit Type
+                                        </th>
+                                        <th
+                                          class="ant-table-cell"
+                                        >
+                                          Permit
+                                        </th>
+                                      </tr>
+                                    </thead>
+                                    <tbody
+                                      class="ant-table-tbody"
+                                    >
+                                      <tr
+                                        class="ant-table-row ant-table-row-level-0 fade-in"
+                                        data-row-key="4d04995c-f90d-42fd-a951-60d9891f242c"
+                                      >
+                                        <td
+                                          class="ant-table-cell"
+                                        >
+                                          <div
+                                            title="Authorization Type"
+                                          >
+                                            Mines Act permit
+                                          </div>
+                                        </td>
+                                        <td
+                                          class="ant-table-cell"
+                                        >
+                                          <div
+                                            class="type-column"
+                                            title="Permit Type"
+                                          >
+                                            <div>
+                                              Amendment to an existing permit
+                                            </div>
+                                          </div>
+                                        </td>
+                                        <td
+                                          class="ant-table-cell"
+                                        >
+                                          <div
+                                            class="permits-column"
+                                            title="Permit"
+                                          >
+                                            <div>
+                                              P-1234
+                                            </div>
+                                          </div>
+                                        </td>
+                                      </tr>
+                                      <tr
+                                        class="ant-table-row ant-table-row-level-0 fade-in"
+                                        data-row-key="80fa60e3-0c8b-48e1-aede-ed2830e8ca42"
+                                      >
+                                        <td
+                                          class="ant-table-cell"
+                                        >
+                                          <div
+                                            title="Authorization Type"
+                                          >
+                                            Occupant licence to cut
+                                          </div>
+                                        </td>
+                                        <td
+                                          class="ant-table-cell"
+                                        >
+                                          <div
+                                            class="type-column"
+                                            title="Permit Type"
+                                          >
+                                            <div>
+                                              Closure of an existing permit
+                                            </div>
+                                          </div>
+                                        </td>
+                                        <td
+                                          class="ant-table-cell"
+                                        >
+                                          <div
+                                            class="permits-column"
+                                            title="Permit"
+                                          >
+                                            <div>
+                                              P-4444
+                                            </div>
+                                          </div>
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <h5
+                        class="ant-typography"
+                      >
+                        Environmental Management Act (EMA) Authorization
+                      </h5>
+                      <div
+                        class="ant-typography"
+                      >
+                        An Environmental Protection Officer will contact you once your application is reviewed and accepted. In the meantime, to learn about the ministry's structured application process and timelines to get a waste discharge authorization, please visit
+                         
+                        <a
+                          href="https://www2.gov.bc.ca/gov/content/environment/waste-management/waste-discharge-authorization/process"
+                        >
+                          The waste discharge authorization process.
+                        </a>
+                      </div>
+                      <div
+                        class="ant-table-wrapper  core-table"
+                      >
+                        <div
+                          class="ant-spin-nested-loading"
+                        >
+                          <div
+                            class="ant-spin-container"
+                          >
+                            <div
+                              class="ant-table"
+                            >
+                              <div
+                                class="ant-table-container"
+                              >
+                                <div
+                                  class="ant-table-content"
+                                >
+                                  <table
+                                    style="table-layout: auto;"
+                                  >
+                                    <colgroup />
+                                    <thead
+                                      class="ant-table-thead"
+                                    >
+                                      <tr>
+                                        <th
+                                          class="ant-table-cell"
+                                        >
+                                          Type
+                                        </th>
+                                        <th
+                                          class="ant-table-cell"
+                                        >
+                                          Auth #
+                                        </th>
+                                        <th
+                                          class="ant-table-cell"
+                                        >
+                                          Tracking #
+                                        </th>
+                                        <th
+                                          class="ant-table-cell"
+                                        >
+                                          Date
+                                        </th>
+                                        <th
+                                          class="ant-table-cell"
+                                        >
+                                          Status
+                                        </th>
+                                      </tr>
+                                    </thead>
+                                    <tbody
+                                      class="ant-table-tbody"
+                                    >
+                                      <tr
+                                        class="ant-table-row ant-table-row-level-0 fade-in"
+                                      >
+                                        <td
+                                          class="ant-table-cell"
+                                        >
+                                          <div
+                                            title="Type"
+                                          >
+                                            Air Emissions Discharge Permit
+                                          </div>
+                                        </td>
+                                        <td
+                                          class="ant-table-cell"
+                                        >
+                                          <div
+                                            class="auth_no-column"
+                                            title="Auth #"
+                                          >
+                                            1234
+                                          </div>
+                                        </td>
+                                        <td
+                                          class="ant-table-cell"
+                                        >
+                                          <div
+                                            class="ams_tracking_number-column"
+                                            title="Tracking #"
+                                          >
+                                            N/A
+                                          </div>
+                                        </td>
+                                        <td
+                                          class="ant-table-cell"
+                                        >
+                                          <div
+                                            title="Date"
+                                          >
+                                            May 24 2024
+                                          </div>
+                                        </td>
+                                        <td
+                                          class="ant-table-cell"
+                                        >
+                                          <span
+                                            class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
+                                          >
+                                            <span
+                                              class="ant-badge-status-dot ant-badge-status-default"
+                                            />
+                                            <span
+                                              class="ant-badge-status-text"
+                                            >
+                                              N/A
+                                            </span>
+                                          </span>
+                                        </td>
+                                      </tr>
+                                      <tr
+                                        class="ant-table-row ant-table-row-level-0 fade-in"
+                                      >
+                                        <td
+                                          class="ant-table-cell"
+                                        >
+                                          <div
+                                            title="Type"
+                                          >
+                                            Refuse Discharge Permit
+                                          </div>
+                                        </td>
+                                        <td
+                                          class="ant-table-cell"
+                                        >
+                                          <div
+                                            class="auth_no-column"
+                                            title="Auth #"
+                                          >
+                                            5678
+                                          </div>
+                                        </td>
+                                        <td
+                                          class="ant-table-cell"
+                                        >
+                                          <div
+                                            class="ams_tracking_number-column"
+                                            title="Tracking #"
+                                          >
+                                            N/A
+                                          </div>
+                                        </td>
+                                        <td
+                                          class="ant-table-cell"
+                                        >
+                                          <div
+                                            title="Date"
+                                          >
+                                            May 24 2024
+                                          </div>
+                                        </td>
+                                        <td
+                                          class="ant-table-cell"
+                                        >
+                                          <span
+                                            class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
+                                          >
+                                            <span
+                                              class="ant-badge-status-dot ant-badge-status-default"
+                                            />
+                                            <span
+                                              class="ant-badge-status-text"
+                                            >
+                                              N/A
+                                            </span>
+                                          </span>
+                                        </td>
+                                      </tr>
+                                      <tr
+                                        class="ant-table-row ant-table-row-level-0 fade-in"
+                                      >
+                                        <td
+                                          class="ant-table-cell"
+                                        >
+                                          <div
+                                            title="Type"
+                                          >
+                                            Refuse Discharge Permit
+                                          </div>
+                                        </td>
+                                        <td
+                                          class="ant-table-cell"
+                                        >
+                                          <div
+                                            class="auth_no-column"
+                                            title="Auth #"
+                                          >
+                                            1234
+                                          </div>
+                                        </td>
+                                        <td
+                                          class="ant-table-cell"
+                                        >
+                                          <div
+                                            class="ams_tracking_number-column"
+                                            title="Tracking #"
+                                          >
+                                            123456
+                                          </div>
+                                        </td>
+                                        <td
+                                          class="ant-table-cell"
+                                        >
+                                          <div
+                                            title="Date"
+                                          >
+                                            May 24 2024
+                                          </div>
+                                        </td>
+                                        <td
+                                          class="ant-table-cell"
+                                        >
+                                          <span
+                                            class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
+                                          >
+                                            <span
+                                              class="ant-badge-status-dot ant-badge-status-default"
+                                            />
+                                            <span
+                                              class="ant-badge-status-text"
+                                            >
+                                              N/A
+                                            </span>
+                                          </span>
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <div
-          class="ant-col ant-col-24"
-          style="padding: 8px 8px 8px 8px;"
-        >
-          <h2
-            class="ant-typography"
-          >
-            Information Requirements Table (IRT)
-          </h2>
-          <h5
-            class="ant-typography"
-          >
-            Mines Act (MA) and Joint Application
-          </h5>
           <div
-            class="ant-table-wrapper  core-table"
+            class="ant-collapse ant-collapse-icon-position-start primary-title-collapse"
+            style="margin-bottom: 16px;"
           >
             <div
-              class="ant-spin-nested-loading"
+              class="ant-collapse-item ant-collapse-item-active"
             >
               <div
-                class="ant-spin-container"
+                aria-disabled="false"
+                aria-expanded="true"
+                class="ant-collapse-header"
+                role="button"
+                tabindex="0"
               >
                 <div
-                  class="ant-table"
+                  class="ant-collapse-expand-icon"
+                >
+                  <span
+                    aria-label="right"
+                    class="anticon anticon-right ant-collapse-arrow"
+                    role="img"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      data-icon="right"
+                      fill="currentColor"
+                      focusable="false"
+                      height="1em"
+                      style="transform: rotate(90deg);"
+                      viewBox="64 64 896 896"
+                      width="1em"
+                    >
+                      <path
+                        d="M765.7 486.8L314.9 134.7A7.97 7.97 0 00302 141v77.3c0 4.9 2.3 9.6 6.1 12.6l360 281.1-360 281.1c-3.9 3-6.1 7.7-6.1 12.6V883c0 6.7 7.7 10.4 12.9 6.3l450.8-352.1a31.96 31.96 0 000-50.4z"
+                      />
+                    </svg>
+                  </span>
+                </div>
+                <span
+                  class="ant-collapse-header-text"
+                >
+                  <h2
+                    class="ant-typography color-white"
+                    style="margin-bottom: 0px;"
+                  >
+                    2. Information Requirements Table (IRT)
+                  </h2>
+                </span>
+              </div>
+              <div
+                class="ant-collapse-content ant-collapse-content-active"
+              >
+                <div
+                  class="ant-collapse-content-box"
                 >
                   <div
-                    class="ant-table-container"
+                    class="ant-col ant-col-24"
+                    style="padding: 8px 8px 8px 8px;"
                   >
-                    <div
-                      class="ant-table-content"
+                    <h5
+                      class="ant-typography"
                     >
-                      <table
-                        style="table-layout: auto;"
+                      Mines Act (MA) and Joint Application
+                    </h5>
+                    <div
+                      class="ant-table-wrapper  core-table"
+                    >
+                      <div
+                        class="ant-spin-nested-loading"
                       >
-                        <colgroup />
-                        <thead
-                          class="ant-table-thead"
+                        <div
+                          class="ant-spin-container"
                         >
-                          <tr>
-                            <th
-                              class="ant-table-cell"
-                            >
-                              Final IRT
-                            </th>
-                            <th
-                              class="ant-table-cell"
-                            >
-                              Date
-                            </th>
-                            <th
-                              class="ant-table-cell"
-                            >
-                              Status
-                            </th>
-                            <th
-                              class="ant-table-cell actions-column"
-                            />
-                          </tr>
-                        </thead>
-                        <tbody
-                          class="ant-table-tbody"
-                        >
-                          <tr
-                            class="ant-table-row ant-table-row-level-0 fade-in"
-                            data-row-key="irt-table-item"
+                          <div
+                            class="ant-table ant-table-has-fix-right"
                           >
-                            <td
-                              class="ant-table-cell"
+                            <div
+                              class="ant-table-container"
                             >
                               <div
-                                class="irt_type-column"
-                                title="Final IRT"
+                                class="ant-table-content"
                               >
-                                Joint Application
-                              </div>
-                            </td>
-                            <td
-                              class="ant-table-cell"
-                            >
-                              <div
-                                title="Date"
-                              >
-                                Nov 18 2020
-                              </div>
-                            </td>
-                            <td
-                              class="ant-table-cell"
-                            >
-                              <span
-                                class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
-                              >
-                                <span
-                                  class="ant-badge-status-dot ant-badge-status-success"
-                                />
-                                <span
-                                  class="ant-badge-status-text"
+                                <table
+                                  style="table-layout: auto;"
                                 >
-                                  Submitted
-                                </span>
-                              </span>
-                            </td>
-                            <td
-                              class="ant-table-cell actions-column"
-                            >
-                              <button
-                                class="ant-btn ant-btn-default"
-                                data-cy="final-irt-view-link"
-                                type="button"
-                              >
-                                <span>
-                                  View
-                                </span>
-                              </button>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
+                                  <colgroup />
+                                  <thead
+                                    class="ant-table-thead"
+                                  >
+                                    <tr>
+                                      <th
+                                        class="ant-table-cell"
+                                      >
+                                        Final IRT
+                                      </th>
+                                      <th
+                                        class="ant-table-cell"
+                                      >
+                                        Date
+                                      </th>
+                                      <th
+                                        class="ant-table-cell"
+                                      >
+                                        Status
+                                      </th>
+                                      <th
+                                        class="ant-table-cell actions-column ant-table-cell-fix-right ant-table-cell-fix-right-first"
+                                        style="position: sticky; right: 0px;"
+                                      />
+                                    </tr>
+                                  </thead>
+                                  <tbody
+                                    class="ant-table-tbody"
+                                  >
+                                    <tr
+                                      class="ant-table-row ant-table-row-level-0 fade-in"
+                                      data-row-key="irt-table-item"
+                                    >
+                                      <td
+                                        class="ant-table-cell"
+                                      >
+                                        <div
+                                          class="irt_type-column"
+                                          title="Final IRT"
+                                        >
+                                          Joint Application
+                                        </div>
+                                      </td>
+                                      <td
+                                        class="ant-table-cell"
+                                      >
+                                        <div
+                                          title="Date"
+                                        >
+                                          N/A
+                                        </div>
+                                      </td>
+                                      <td
+                                        class="ant-table-cell"
+                                      >
+                                        <span
+                                          class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
+                                        >
+                                          <span
+                                            class="ant-badge-status-dot ant-badge-status-success"
+                                          />
+                                          <span
+                                            class="ant-badge-status-text"
+                                          >
+                                            Submitted
+                                          </span>
+                                        </span>
+                                      </td>
+                                      <td
+                                        class="ant-table-cell actions-column ant-table-cell-fix-right ant-table-cell-fix-right-first"
+                                        style="position: sticky; right: 0px;"
+                                      >
+                                        <button
+                                          class="ant-btn ant-btn-default"
+                                          data-cy="final-irt-view-link"
+                                          type="button"
+                                        >
+                                          <span>
+                                            Resume
+                                          </span>
+                                        </button>
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <div
-          class="ant-col ant-col-24"
-          style="padding: 8px 8px 8px 8px;"
-        >
-          <h2
-            class="ant-typography"
-          >
-            Application and Final Package
-          </h2>
-           
-          <h5
-            class="ant-typography"
-          >
-            Mines Act and Joint Application
-          </h5>
           <div
-            class="ant-table-wrapper  core-table"
+            class="ant-collapse ant-collapse-icon-position-start primary-title-collapse"
           >
             <div
-              class="ant-spin-nested-loading"
+              class="ant-collapse-item ant-collapse-item-active"
             >
               <div
-                class="ant-spin-container"
+                aria-disabled="false"
+                aria-expanded="true"
+                class="ant-collapse-header"
+                role="button"
+                tabindex="0"
               >
                 <div
-                  class="ant-table"
+                  class="ant-collapse-expand-icon"
                 >
-                  <div
-                    class="ant-table-container"
+                  <span
+                    aria-label="right"
+                    class="anticon anticon-right ant-collapse-arrow"
+                    role="img"
                   >
-                    <div
-                      class="ant-table-content"
+                    <svg
+                      aria-hidden="true"
+                      data-icon="right"
+                      fill="currentColor"
+                      focusable="false"
+                      height="1em"
+                      style="transform: rotate(90deg);"
+                      viewBox="64 64 896 896"
+                      width="1em"
                     >
-                      <table
-                        style="table-layout: auto;"
-                      >
-                        <colgroup />
-                        <thead
-                          class="ant-table-thead"
-                        >
-                          <tr>
-                            <th
-                              class="ant-table-cell"
-                            >
-                              Application
-                            </th>
-                            <th
-                              class="ant-table-cell"
-                            >
-                              Date
-                            </th>
-                            <th
-                              class="ant-table-cell"
-                            >
-                              Status
-                            </th>
-                            <th
-                              class="ant-table-cell actions-column"
-                            />
-                          </tr>
-                        </thead>
-                        <tbody
-                          class="ant-table-tbody"
-                        >
-                          <tr
-                            class="ant-table-row ant-table-row-level-0 fade-in"
-                            data-row-key="mma-table-item"
-                          >
-                            <td
-                              class="ant-table-cell"
-                            >
-                              <div
-                                class="type-column"
-                                title="Application"
-                              >
-                                Joint Application
-                              </div>
-                            </td>
-                            <td
-                              class="ant-table-cell"
-                            >
-                              <div
-                                title="Date"
-                              >
-                                Sep 04 2024
-                              </div>
-                            </td>
-                            <td
-                              class="ant-table-cell"
-                            >
-                              <span
-                                class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
-                              >
-                                <span
-                                  class="ant-badge-status-dot ant-badge-status-default"
-                                />
-                                <span
-                                  class="ant-badge-status-text"
-                                >
-                                  N/A
-                                </span>
-                              </span>
-                            </td>
-                            <td
-                              class="ant-table-cell actions-column"
-                            >
-                              <button
-                                class="ant-btn ant-btn-default"
-                                data-cy="final-application-view-link"
-                                type="button"
-                              >
-                                <span>
-                                  View
-                                </span>
-                              </button>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
+                      <path
+                        d="M765.7 486.8L314.9 134.7A7.97 7.97 0 00302 141v77.3c0 4.9 2.3 9.6 6.1 12.6l360 281.1-360 281.1c-3.9 3-6.1 7.7-6.1 12.6V883c0 6.7 7.7 10.4 12.9 6.3l450.8-352.1a31.96 31.96 0 000-50.4z"
+                      />
+                    </svg>
+                  </span>
                 </div>
+                <span
+                  class="ant-collapse-header-text"
+                >
+                  <h2
+                    class="ant-typography color-white"
+                    style="margin-bottom: 0px;"
+                  >
+                    3. Application and Final Package
+                  </h2>
+                </span>
               </div>
-            </div>
-          </div>
-          <h5
-            class="ant-typography"
-          >
-            Environmental Management Act
-          </h5>
-          <div
-            class="ant-table-wrapper  core-table"
-          >
-            <div
-              class="ant-spin-nested-loading"
-            >
               <div
-                class="ant-spin-container"
+                class="ant-collapse-content ant-collapse-content-active"
               >
                 <div
-                  class="ant-table"
+                  class="ant-collapse-content-box"
                 >
                   <div
-                    class="ant-table-container"
+                    class="ant-col ant-col-24"
+                    style="padding: 8px 8px 8px 8px;"
                   >
-                    <div
-                      class="ant-table-content"
+                     
+                    <h5
+                      class="ant-typography"
                     >
-                      <table
-                        style="table-layout: auto;"
+                      Mines Act and Joint Application
+                    </h5>
+                    <div
+                      class="ant-table-wrapper  core-table"
+                    >
+                      <div
+                        class="ant-spin-nested-loading"
                       >
-                        <colgroup />
-                        <thead
-                          class="ant-table-thead"
+                        <div
+                          class="ant-spin-container"
                         >
-                          <tr>
-                            <th
-                              class="ant-table-cell"
+                          <div
+                            class="ant-table ant-table-has-fix-right"
+                          >
+                            <div
+                              class="ant-table-container"
                             >
-                              Final Application
-                            </th>
-                            <th
-                              class="ant-table-cell"
-                            >
-                              Authorization
-                            </th>
-                            <th
-                              class="ant-table-cell"
-                            >
-                              Tracking #
-                            </th>
-                            <th
-                              class="ant-table-cell"
-                            >
-                              Status
-                            </th>
-                            <th
-                              class="ant-table-cell actions-column"
-                            />
-                          </tr>
-                        </thead>
-                        <tbody
-                          class="ant-table-tbody"
+                              <div
+                                class="ant-table-content"
+                              >
+                                <table
+                                  style="table-layout: auto;"
+                                >
+                                  <colgroup />
+                                  <thead
+                                    class="ant-table-thead"
+                                  >
+                                    <tr>
+                                      <th
+                                        class="ant-table-cell"
+                                      >
+                                        Application
+                                      </th>
+                                      <th
+                                        class="ant-table-cell"
+                                      >
+                                        Date
+                                      </th>
+                                      <th
+                                        class="ant-table-cell"
+                                      >
+                                        Status
+                                      </th>
+                                      <th
+                                        class="ant-table-cell actions-column ant-table-cell-fix-right ant-table-cell-fix-right-first"
+                                        style="position: sticky; right: 0px;"
+                                      />
+                                    </tr>
+                                  </thead>
+                                  <tbody
+                                    class="ant-table-tbody"
+                                  >
+                                    <tr
+                                      class="ant-table-row ant-table-row-level-0 fade-in"
+                                      data-row-key="mma-table-item"
+                                    >
+                                      <td
+                                        class="ant-table-cell"
+                                      >
+                                        <div
+                                          class="type-column"
+                                          title="Application"
+                                        >
+                                          Joint Application
+                                        </div>
+                                      </td>
+                                      <td
+                                        class="ant-table-cell"
+                                      >
+                                        <div
+                                          title="Date"
+                                        >
+                                          Sep 04 2024
+                                        </div>
+                                      </td>
+                                      <td
+                                        class="ant-table-cell"
+                                      >
+                                        <span
+                                          class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
+                                        >
+                                          <span
+                                            class="ant-badge-status-dot ant-badge-status-default"
+                                          />
+                                          <span
+                                            class="ant-badge-status-text"
+                                          >
+                                            N/A
+                                          </span>
+                                        </span>
+                                      </td>
+                                      <td
+                                        class="ant-table-cell actions-column ant-table-cell-fix-right ant-table-cell-fix-right-first"
+                                        style="position: sticky; right: 0px;"
+                                      >
+                                        <button
+                                          class="ant-btn ant-btn-default"
+                                          data-cy="final-application-view-link"
+                                          type="button"
+                                        >
+                                          <span>
+                                            Resume
+                                          </span>
+                                        </button>
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <h5
+                      class="ant-typography"
+                    >
+                      Environmental Management Act
+                    </h5>
+                    <div
+                      class="ant-table-wrapper  core-table"
+                    >
+                      <div
+                        class="ant-spin-nested-loading"
+                      >
+                        <div
+                          class="ant-spin-container"
                         >
-                          <tr
-                            class="ant-table-row ant-table-row-level-0 fade-in"
+                          <div
+                            class="ant-table ant-table-has-fix-right"
                           >
-                            <td
-                              class="ant-table-cell"
+                            <div
+                              class="ant-table-container"
                             >
                               <div
-                                title="Final Application"
+                                class="ant-table-content"
                               >
-                                Air Emissions Discharge Permit
-                              </div>
-                            </td>
-                            <td
-                              class="ant-table-cell"
-                            >
-                              <div
-                                class="auth_no-column"
-                                title="Authorization"
-                              >
-                                1234
-                              </div>
-                            </td>
-                            <td
-                              class="ant-table-cell"
-                            >
-                              <div
-                                class="ams_tracking_number-column"
-                                title="Tracking #"
-                              >
-                                N/A
-                              </div>
-                            </td>
-                            <td
-                              class="ant-table-cell"
-                            >
-                              <span
-                                class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
-                              >
-                                <span
-                                  class="ant-badge-status-dot ant-badge-status-default"
-                                />
-                                <span
-                                  class="ant-badge-status-text"
+                                <table
+                                  style="table-layout: auto;"
                                 >
-                                  N/A
-                                </span>
-                              </span>
-                            </td>
-                            <td
-                              class="ant-table-cell actions-column"
-                            >
-                              <button
-                                class="ant-btn ant-btn-default"
-                                disabled=""
-                                type="button"
-                              >
-                                <span>
-                                  View
-                                </span>
-                              </button>
-                            </td>
-                          </tr>
-                          <tr
-                            class="ant-table-row ant-table-row-level-0 fade-in"
-                          >
-                            <td
-                              class="ant-table-cell"
-                            >
-                              <div
-                                title="Final Application"
-                              >
-                                Refuse Discharge Permit
+                                  <colgroup />
+                                  <thead
+                                    class="ant-table-thead"
+                                  >
+                                    <tr>
+                                      <th
+                                        class="ant-table-cell"
+                                      >
+                                        Final Application
+                                      </th>
+                                      <th
+                                        class="ant-table-cell"
+                                      >
+                                        Authorization
+                                      </th>
+                                      <th
+                                        class="ant-table-cell"
+                                      >
+                                        Tracking #
+                                      </th>
+                                      <th
+                                        class="ant-table-cell"
+                                      >
+                                        Status
+                                      </th>
+                                      <th
+                                        class="ant-table-cell actions-column ant-table-cell-fix-right ant-table-cell-fix-right-first"
+                                        style="position: sticky; right: 0px;"
+                                      />
+                                    </tr>
+                                  </thead>
+                                  <tbody
+                                    class="ant-table-tbody"
+                                  >
+                                    <tr
+                                      class="ant-table-row ant-table-row-level-0 fade-in"
+                                    >
+                                      <td
+                                        class="ant-table-cell"
+                                      >
+                                        <div
+                                          title="Final Application"
+                                        >
+                                          Air Emissions Discharge Permit
+                                        </div>
+                                      </td>
+                                      <td
+                                        class="ant-table-cell"
+                                      >
+                                        <div
+                                          class="auth_no-column"
+                                          title="Authorization"
+                                        >
+                                          1234
+                                        </div>
+                                      </td>
+                                      <td
+                                        class="ant-table-cell"
+                                      >
+                                        <div
+                                          class="ams_tracking_number-column"
+                                          title="Tracking #"
+                                        >
+                                          N/A
+                                        </div>
+                                      </td>
+                                      <td
+                                        class="ant-table-cell"
+                                      >
+                                        <span
+                                          class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
+                                        >
+                                          <span
+                                            class="ant-badge-status-dot ant-badge-status-default"
+                                          />
+                                          <span
+                                            class="ant-badge-status-text"
+                                          >
+                                            N/A
+                                          </span>
+                                        </span>
+                                      </td>
+                                      <td
+                                        class="ant-table-cell actions-column ant-table-cell-fix-right ant-table-cell-fix-right-first"
+                                        style="position: sticky; right: 0px;"
+                                      >
+                                        <span />
+                                      </td>
+                                    </tr>
+                                    <tr
+                                      class="ant-table-row ant-table-row-level-0 fade-in"
+                                    >
+                                      <td
+                                        class="ant-table-cell"
+                                      >
+                                        <div
+                                          title="Final Application"
+                                        >
+                                          Refuse Discharge Permit
+                                        </div>
+                                      </td>
+                                      <td
+                                        class="ant-table-cell"
+                                      >
+                                        <div
+                                          class="auth_no-column"
+                                          title="Authorization"
+                                        >
+                                          5678
+                                        </div>
+                                      </td>
+                                      <td
+                                        class="ant-table-cell"
+                                      >
+                                        <div
+                                          class="ams_tracking_number-column"
+                                          title="Tracking #"
+                                        >
+                                          N/A
+                                        </div>
+                                      </td>
+                                      <td
+                                        class="ant-table-cell"
+                                      >
+                                        <span
+                                          class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
+                                        >
+                                          <span
+                                            class="ant-badge-status-dot ant-badge-status-default"
+                                          />
+                                          <span
+                                            class="ant-badge-status-text"
+                                          >
+                                            N/A
+                                          </span>
+                                        </span>
+                                      </td>
+                                      <td
+                                        class="ant-table-cell actions-column ant-table-cell-fix-right ant-table-cell-fix-right-first"
+                                        style="position: sticky; right: 0px;"
+                                      >
+                                        <span />
+                                      </td>
+                                    </tr>
+                                    <tr
+                                      class="ant-table-row ant-table-row-level-0 fade-in"
+                                    >
+                                      <td
+                                        class="ant-table-cell"
+                                      >
+                                        <div
+                                          title="Final Application"
+                                        >
+                                          Refuse Discharge Permit
+                                        </div>
+                                      </td>
+                                      <td
+                                        class="ant-table-cell"
+                                      >
+                                        <div
+                                          class="auth_no-column"
+                                          title="Authorization"
+                                        >
+                                          1234
+                                        </div>
+                                      </td>
+                                      <td
+                                        class="ant-table-cell"
+                                      >
+                                        <div
+                                          class="ams_tracking_number-column"
+                                          title="Tracking #"
+                                        >
+                                          123456
+                                        </div>
+                                      </td>
+                                      <td
+                                        class="ant-table-cell"
+                                      >
+                                        <span
+                                          class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
+                                        >
+                                          <span
+                                            class="ant-badge-status-dot ant-badge-status-default"
+                                          />
+                                          <span
+                                            class="ant-badge-status-text"
+                                          >
+                                            N/A
+                                          </span>
+                                        </span>
+                                      </td>
+                                      <td
+                                        class="ant-table-cell actions-column ant-table-cell-fix-right ant-table-cell-fix-right-first"
+                                        style="position: sticky; right: 0px;"
+                                      >
+                                        <button
+                                          class="ant-btn ant-btn-text ant-dropdown-trigger actions-dropdown-button"
+                                          data-cy="menu-actions-button"
+                                          type="button"
+                                        >
+                                          <span>
+                                            Actions
+                                          </span>
+                                          <span
+                                            alt="Menu"
+                                            aria-label="caret-down"
+                                            class="anticon anticon-caret-down"
+                                            role="img"
+                                          >
+                                            <svg
+                                              aria-hidden="true"
+                                              class=""
+                                              data-icon="caret-down"
+                                              fill="currentColor"
+                                              focusable="false"
+                                              height="1em"
+                                              viewBox="0 0 1024 1024"
+                                              width="1em"
+                                            >
+                                              <path
+                                                d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
+                                              />
+                                            </svg>
+                                          </span>
+                                        </button>
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
                               </div>
-                            </td>
-                            <td
-                              class="ant-table-cell"
-                            >
-                              <div
-                                class="auth_no-column"
-                                title="Authorization"
-                              >
-                                5678
-                              </div>
-                            </td>
-                            <td
-                              class="ant-table-cell"
-                            >
-                              <div
-                                class="ams_tracking_number-column"
-                                title="Tracking #"
-                              >
-                                N/A
-                              </div>
-                            </td>
-                            <td
-                              class="ant-table-cell"
-                            >
-                              <span
-                                class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
-                              >
-                                <span
-                                  class="ant-badge-status-dot ant-badge-status-default"
-                                />
-                                <span
-                                  class="ant-badge-status-text"
-                                >
-                                  N/A
-                                </span>
-                              </span>
-                            </td>
-                            <td
-                              class="ant-table-cell actions-column"
-                            >
-                              <button
-                                class="ant-btn ant-btn-default"
-                                disabled=""
-                                type="button"
-                              >
-                                <span>
-                                  View
-                                </span>
-                              </button>
-                            </td>
-                          </tr>
-                          <tr
-                            class="ant-table-row ant-table-row-level-0 fade-in"
-                          >
-                            <td
-                              class="ant-table-cell"
-                            >
-                              <div
-                                title="Final Application"
-                              >
-                                Refuse Discharge Permit
-                              </div>
-                            </td>
-                            <td
-                              class="ant-table-cell"
-                            >
-                              <div
-                                class="auth_no-column"
-                                title="Authorization"
-                              >
-                                1234
-                              </div>
-                            </td>
-                            <td
-                              class="ant-table-cell"
-                            >
-                              <div
-                                class="ams_tracking_number-column"
-                                title="Tracking #"
-                              >
-                                123456
-                              </div>
-                            </td>
-                            <td
-                              class="ant-table-cell"
-                            >
-                              <span
-                                class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
-                              >
-                                <span
-                                  class="ant-badge-status-dot ant-badge-status-default"
-                                />
-                                <span
-                                  class="ant-badge-status-text"
-                                >
-                                  N/A
-                                </span>
-                              </span>
-                            </td>
-                            <td
-                              class="ant-table-cell actions-column"
-                            >
-                              <button
-                                class="ant-btn ant-btn-default"
-                                type="button"
-                              >
-                                <span>
-                                  View
-                                </span>
-                              </button>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>

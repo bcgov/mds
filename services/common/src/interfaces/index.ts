@@ -1,6 +1,7 @@
 export * from "./noticeOfDeparture";
 export * from "./mine.interface";
 export * from "./acceptedFileTypes.type";
+export * from "./projectLeadContactType.type";
 export * from "./mineAlert.interface";
 export * from "./mineAlertCreate.interface";
 export * from "./mineComment.interface";
@@ -48,3 +49,4 @@ export * from "./mineDisturbanceOption.interface";
 export * from "./mineSearch.interface"
 export * from "./noticeOfWorkApplicationProgress.interface";
 export * from "./noticeOfWorkApplicationStages.interface";
+export * from "./minespaceUser.interface";

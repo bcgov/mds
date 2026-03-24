@@ -90,6 +90,9 @@ def etl_nris_data():
 
     has_next_page = True
     i = 0
+    processed = 0
+    skipped_missing_status = 0
+    skipped_deleted = 0
 
     print('Parsing {} assessments'.format(nris_data.total))
 
@@ -104,9 +107,17 @@ def etl_nris_data():
             if(i % 100 == 0):
                 print(i, '/', nris_data.total)
 
-            _parse_nris_element(item.nris_data)
+            result = _parse_nris_element(item.nris_data)
+            if result == 'processed':
+                processed += 1
+            elif result == 'missing_status':
+                skipped_missing_status += 1
+            elif result == 'deleted':
+                skipped_deleted += 1
         nris_data = nris_data.next()
 
+    print('NRIS ETL summary: processed={}, excluded_missing_status={}, excluded_deleted={}'.format(
+        processed, skipped_missing_status, skipped_deleted))
 
 
 
@@ -118,12 +129,14 @@ def _parse_nris_element(input):
 
     xmlstring = re.sub(' xmlns="[^"]+"', '', input, count=1)
     data = ET.fromstring(xmlstring)
-    assessment_id = data.find('assessment_id')
+    assessment_id_element = data.find('assessment_id')
+    external_id = _parse_element_text(assessment_id_element)
     assessment_status = data.find('assessment_status')
 
     # Tracer
     if assessment_status is None:
         print(f"No assessment status \n Data: {data}")
+        return 'missing_status'
 
     if assessment_status is not None and assessment_status.text != 'Deleted':
         assessment_status_code = assessment_status.text
@@ -132,7 +145,12 @@ def _parse_nris_element(input):
         assessment_sub_type = data.find('assessment_sub_type')
         business_area = data.find('businessArea').find('business_area_name')
 
-        inspection = Inspection(external_id=_parse_element_text(assessment_id))
+        # Find or create the inspection
+        inspection = db.session.query(Inspection).filter_by(external_id=external_id).first()
+        if inspection is None:
+            inspection = Inspection(external_id=external_id)
+            db.session.add(inspection)
+
         inspection.assessment_sub_type = _parse_element_text(assessment_sub_type)
         inspection.inspection_date = _parse_element_text(assessment_date)
         inspection.business_area = _parse_element_text(business_area)
@@ -170,8 +188,6 @@ def _parse_nris_element(input):
             inspection.inspection_auth_status = _parse_element_text(authorization.find('auth_status'))
             inspection.inspection_auth_type = _parse_element_text(authorization.find('auth_type'))
 
-        db.session.add(inspection)
-
         inspection_data = data.find('inspection')
         inspection_type = inspection_data.find('inspection_type')
         inspection_report_sent_date = inspection_data.find('inspct_report_sent_date')
@@ -188,17 +204,22 @@ def _parse_nris_element(input):
             inspection.inspection_type = inspection_type_code
 
         for attachment in data.findall('attachment'):
-            doc = _save_document(attachment)
-            inspection.documents.append(doc)
+            _save_document(attachment, inspection=inspection)
 
         if inspection_data is not None:
             _save_stops(inspection_data, inspection)
 
-        for inspector in data.findall('related_Inspctrs'):
-            _save_attendee(inspector, inspection)
+        for related_inspector in data.findall('related_Inspctrs'):
+            _save_attendee(related_inspector, inspection)
 
         for attendance in data.findall('attendance'):
             _save_attendee(attendance, inspection)
+
+        db.session.commit()
+        return 'processed'
+    if assessment_status is not None and assessment_status.text == 'Deleted':
+        return 'deleted'
+    return 'missing_status'
 
 
 def _find_or_save_inspection_status(assessment_status_code):
@@ -220,45 +241,69 @@ def _find_or_save_inspection_status(assessment_status_code):
 def _save_stops(nris_inspection_data, inspection):
     for stop in nris_inspection_data.findall('stops'):
         order_location = stop.find('secondary_locations')
+        location = None
         if order_location is not None:
-            latitude = order_location.find('secondary_latitude')
-            longitude = order_location.find('secondary_longitude')
-            desc = order_location.find('secondary_location_description')
-            notes = order_location.find('secondary_location_notes')
+            latitude = _parse_element_text(order_location.find('secondary_latitude'))
+            longitude = _parse_element_text(order_location.find('secondary_longitude'))
+            desc = _parse_element_text(order_location.find('secondary_location_description'))
+            notes = _parse_element_text(order_location.find('secondary_location_notes'))
             utm_info = order_location.find('secondary_location_utm')
+            utm_easting, utm_northing, utm_zone_number, utm_zone_letter = None, None, None, None
             if utm_info is not None:
-                utm_easting = utm_info.find('utm_easting')
-                utm_northing = utm_info.find('utm_northing')
-                utm_zone_number = utm_info.find('zone_number')
-                utm_zone_letter = utm_info.find('zone_letter')
-            location = Location(
-                description=_parse_element_text(desc),
-                notes=_parse_element_text(notes),
-                latitude=_parse_element_text(latitude),
-                longitude=_parse_element_text(longitude),
-                utm_easting=_parse_element_text(utm_easting),
-                utm_northing=_parse_element_text(utm_northing),
-                zone_number=_parse_element_text(utm_zone_number),
-                zone_letter=_parse_element_text(utm_zone_letter))
-            db.session.add(location)
+                utm_easting = _parse_element_text(utm_info.find('utm_easting'))
+                utm_northing = _parse_element_text(utm_info.find('utm_northing'))
+                utm_zone_number = _parse_element_text(utm_info.find('zone_number'))
+                utm_zone_letter = _parse_element_text(utm_info.find('zone_letter'))
+
+            # Check if this location already exists for this inspection
+            location = db.session.query(Location).join(InspectedLocation).filter(
+                InspectedLocation.inspection_id == inspection.inspection_id,
+                Location.description == desc,
+                Location.latitude == latitude,
+                Location.longitude == longitude
+            ).first()
+
+            if location is None:
+                location = Location(
+                    description=desc,
+                    notes=notes,
+                    latitude=latitude,
+                    longitude=longitude,
+                    utm_easting=utm_easting,
+                    utm_northing=utm_northing,
+                    zone_number=utm_zone_number,
+                    zone_letter=utm_zone_letter)
+                db.session.add(location)
 
         stop_type = stop.find('stop_type')
-        inspected_location = InspectedLocation()
-        inspected_location.location = location
-        inspection.inspected_locations.append(inspected_location)
-
         inspected_location_type = _find_or_save_inspected_location_type(stop_type)
-        inspected_location.inspected_location_type_rel = inspected_location_type
+
+        # Find or create InspectedLocation
+        inspected_location = db.session.query(InspectedLocation).filter_by(
+            inspection_id=inspection.inspection_id,
+            location_id=location.location_id if location else None,
+            inspected_location_type_id=inspected_location_type.inspected_location_type_id
+            if inspected_location_type else None
+        ).first()
+
+        if inspected_location is None:
+            inspected_location = InspectedLocation()
+            inspected_location.location = location
+            inspected_location.inspected_location_type_rel = inspected_location_type
+            inspection.inspected_locations.append(inspected_location)
+            db.session.add(inspected_location)
 
         for stop_order in stop.findall('stop_orders'):
-            stop_detail = _save_stop_order(stop_order)
-            inspected_location.stop_details.append(stop_detail)
+            _save_stop_order(stop_order, inspected_location)
 
+        # Clear existing non-stop details to prevent duplicates on refresh
+        inspected_location.advisory_details = []
         for stop_advisory in stop.findall('stop_advisories'):
             detail = stop_advisory.find('advisory_detail')
             advisory = OrderAdvisoryDetail(detail=_parse_element_text(detail))
             inspected_location.advisory_details.append(advisory)
 
+        inspected_location.warning_details = []
         for stop_warning in stop.findall('stop_warnings'):
             detail = stop_warning.find('warning_detail')
             respond_date = stop_warning.find('warning_respond_date')
@@ -266,6 +311,7 @@ def _save_stops(nris_inspection_data, inspection):
                 detail=_parse_element_text(detail), respond_date=_parse_element_text(respond_date))
             inspected_location.warning_details.append(warning)
 
+        inspected_location.request_details = []
         for stop_request in stop.findall('stop_requests'):
             detail = stop_request.find('request_detail')
             response = stop_request.find('request_response')
@@ -277,51 +323,51 @@ def _save_stops(nris_inspection_data, inspection):
             inspected_location.request_details.append(request)
 
         for attachment in stop.findall('attachment'):
-            doc = _save_document(attachment)
-            inspected_location.documents.append(doc)
+            _save_document(attachment, inspected_location=inspected_location)
 
-        db.session.add(inspected_location)
-        db.session.commit()
+def _save_stop_order(stop_order, inspected_location):
+    order_number = _parse_element_text(stop_order.find('order_number'))
 
+    # Find or create the Stop Detail by order number
+    stop_detail = db.session.query(OrderStopDetail).filter_by(
+        inspected_location_id=inspected_location.inspected_location_id,
+        order_number=order_number
+    ).first()
 
-def _save_stop_order(stop_order):
-    stop_detail = OrderStopDetail()
+    if stop_detail is None:
+        stop_detail = OrderStopDetail(order_number=order_number)
+        inspected_location.stop_details.append(stop_detail)
+        db.session.add(stop_detail)
 
-    detail = stop_order.find('order_detail')
-    stop_type = stop_order.find('order_type')
-    response_status = stop_order.find('order_response_status')
-    stop_status = stop_order.find('order_status')
-    observation = stop_order.find('order_observation')
-    response = stop_order.find('order_response')
-    response_received = stop_order.find('order_response_received_date')
-    completion_date = stop_order.find('order_completion_date')
-    authority_act = stop_order.find('order_authority_act')
-    authority_act_section = stop_order.find('order_authority_section')
-    order_number = stop_order.find('order_number')
+    # Update fields
+    stop_detail.detail = _parse_element_text(stop_order.find('order_detail'))
+    stop_detail.stop_type = _parse_element_text(stop_order.find('order_type'))
+    stop_detail.response_status = _parse_element_text(stop_order.find('order_response_status'))
+    stop_detail.stop_status = _parse_element_text(stop_order.find('order_status'))
+    stop_detail.observation = _parse_element_text(stop_order.find('order_observation'))
+    stop_detail.response = _parse_element_text(stop_order.find('order_response'))
+    stop_detail.response_received = _parse_element_text(stop_order.find('order_response_received_date'))
+    stop_detail.completion_date = _parse_element_text(stop_order.find('order_completion_date'))
+    stop_detail.authority_act = _parse_element_text(stop_order.find('order_authority_act'))
+    stop_detail.authority_act_section = _parse_element_text(stop_order.find('order_authority_section'))
 
+    # Refresh Legislations and Permits
+    stop_detail.noncompliance_legislations = []
     for order_legislation in stop_order.findall('order_legislations'):
         noncompliance_legislation = _save_order_noncompliance_legislation(order_legislation)
         stop_detail.noncompliance_legislations.append(noncompliance_legislation)
 
+    stop_detail.noncompliance_permits = []
     for order_permit in stop_order.findall('order_permits'):
         noncompliance_permit = _save_order_noncompliance_permit(order_permit)
         stop_detail.noncompliance_permits.append(noncompliance_permit)
 
-    stop_detail.detail = _parse_element_text(detail)
-    stop_detail.stop_type = _parse_element_text(stop_type)
-    stop_detail.response_status = _parse_element_text(response_status)
-    stop_detail.stop_status = _parse_element_text(stop_status)
-    stop_detail.observation = _parse_element_text(observation)
-    stop_detail.response = _parse_element_text(response)
-    stop_detail.response_received = _parse_element_text(response_received)
-    stop_detail.completion_date = _parse_element_text(completion_date)
-    stop_detail.authority_act = _parse_element_text(authority_act)
-    stop_detail.authority_act_section = _parse_element_text(authority_act_section)
-    stop_detail.order_number = _parse_element_text(order_number)
+    for order_condition in stop_order.findall('order_conditions'):
+        noncompliance_permit = _save_order_noncompliance_condition(order_condition)
+        stop_detail.noncompliance_permits.append(noncompliance_permit)
 
     for attachment in stop_order.findall('attachment'):
-        doc = _save_document(attachment)
-        stop_detail.documents.append(doc)
+        _save_document(attachment, stop_detail=stop_detail)
 
     return stop_detail
 
@@ -353,6 +399,20 @@ def _save_order_noncompliance_permit(order_permit):
     noncompliance_permit.section_text = _parse_element_text(permit_section_text)
 
     return noncompliance_permit
+
+
+def _save_order_noncompliance_condition(order_condition):
+    noncompliance_permit = NonCompliancePermit()
+
+    pc_number = order_condition.find('pc_number')
+    pc_text = order_condition.find('pc_text')
+
+    noncompliance_permit.section_number = _parse_element_text(pc_number)
+    noncompliance_permit.section_title = ""
+    noncompliance_permit.section_text = _parse_element_text(pc_text)
+
+    return noncompliance_permit
+
 
 
 def _save_order_noncompliance_legislation(order_legislation):
@@ -448,24 +508,34 @@ def _save_compliance_article(compliance_article_id, compliance_article_comments)
         return compliance_article
 
 
-def _save_document(attachment):
-    external_id = attachment.find('attachment_id')
-    document_date = attachment.find('attachment_date')
-    file_name = attachment.find('file_path')
-    comment = attachment.find('attachment_comment')
+def _save_document(attachment, inspection=None, inspected_location=None, stop_detail=None):
+    external_id = _parse_element_text(attachment.find('attachment_id'))
+    document_date = _parse_element_text(attachment.find('attachment_date'))
+    file_name = _parse_element_text(attachment.find('file_path'))
+    comment = _parse_element_text(attachment.find('attachment_comment'))
 
-    doc = Document(
-        external_id=_parse_element_text(external_id),
-        document_date=_parse_element_text(document_date),
-        file_name=_parse_element_text(file_name),
-        comment=_parse_element_text(comment))
+    # Find or create document
+    doc = db.session.query(Document).filter_by(external_id=external_id).first()
+    if doc is None:
+        doc = Document(external_id=external_id)
+        db.session.add(doc)
+
+    doc.document_date = document_date
+    doc.file_name = file_name
+    doc.comment = comment
 
     file_type = attachment.find('file_type')
     doc_type = _find_or_save_doc_type(file_type)
-
     doc.document_type_rel = doc_type
 
-    db.session.add(doc)
+    # Relate to the provided parent if not already related
+    if inspection and doc not in inspection.documents:
+        inspection.documents.append(doc)
+    if inspected_location and doc not in inspected_location.documents:
+        inspected_location.documents.append(doc)
+    if stop_detail and doc not in stop_detail.documents:
+        stop_detail.documents.append(doc)
+
     return doc
 
 
@@ -501,24 +571,30 @@ def _find_or_save_inspection_type(inspection_type):
 
 
 def _save_attendee(attendance, inspection):
-
-    attendee_first_name = attendance.find('attendance_first_name')
-    attendee_last_name = attendance.find('attendance_last_name')
-    attendee_org = attendance.find('org')
-    attendee_title = attendance.find('attendance_title')
+    first_name = _parse_element_text(attendance.find('attendance_first_name'))
+    last_name = _parse_element_text(attendance.find('attendance_last_name'))
     attendee_type_value = attendance.find('attendance_type')
     attendance_type = _find_or_save_attendee_type(attendee_type_value)
 
-    attendee = Attendee(
-        first_name=_parse_element_text(attendee_first_name),
-        last_name=_parse_element_text(attendee_last_name),
-        org=_parse_element_text(attendee_org),
-        title=_parse_element_text(attendee_title))
+    # Find or create attendee
+    attendee = db.session.query(Attendee).filter_by(
+        inspection_id=inspection.inspection_id,
+        first_name=first_name,
+        last_name=last_name,
+        attendee_type_id=attendance_type.attendee_type_id
+    ).first()
 
-    attendee.attendee_type_rel = attendance_type
-    attendee.inspection = inspection
+    if attendee is None:
+        attendee = Attendee(
+            first_name=first_name,
+            last_name=last_name,
+            inspection=inspection,
+            attendee_type_rel=attendance_type
+        )
+        db.session.add(attendee)
 
-    db.session.add(attendee)
+    attendee.org = _parse_element_text(attendance.find('org'))
+    attendee.title = _parse_element_text(attendance.find('attendance_title'))
 
     return attendee
 

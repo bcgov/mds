@@ -1,0 +1,28 @@
+{# Brand Colors Component - Single Source of Truth #}
+
+{# Define brand colors based on brand variable #}
+{% if brand == 'minespace' %}
+{% set brand_colors = {
+'primary': '#003366',
+'text': '#6B6363',
+'border': '#DED9D9',
+'background': '#ffffff',
+'button': {
+'background': '#003366',
+'border': '#003366',
+'text': '#ffffff'
+}
+} %}
+{% else %}
+{% set brand_colors = {
+'primary': '#5e46a1',
+'text': '#6B6363',
+'border': '#DED9D9',
+'background': '#ffffff',
+'button': {
+'background': '#5e46a1',
+'border': '#5e46a1',
+'text': '#ffffff'
+}
+} %}
+{% endif %}

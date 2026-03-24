@@ -1,6 +1,10 @@
 import pytest
 from app.api.compliance.resources.compliance_article import ComplianceArticleResource
 from app.api.download_token.resources.download_token import DownloadTokenResource
+from app.api.email_preview.resources.email_preview_resource import (
+    EmailPreviewListResource,
+    EmailPreviewResource,
+)
 from app.api.exports.now_application.resources.now_application_gis_export_resource import (
     NowApplicationGisExportResource,
 )
@@ -73,13 +77,14 @@ from app.api.mines.permits.permit_conditions.resources.standard_permit_condition
 from app.api.mines.permits.permit_conditions.resources.standard_permit_conditions_resource import (
     StandardPermitConditionsResource,
 )
+from app.api.mines.permits.permit_conditions.resources.standard_report_permit_requirement_resource import (
+    StandardReportPermitRequirementResource,
+)
 from app.api.mines.region.resources.region import MineRegionResource
 from app.api.mines.reports.resources.mine_report_permit_requirement import (
     MineReportPermitRequirementResource,
 )
-from app.api.mines.permits.permit_conditions.resources.standard_report_permit_requirement_resource import (
-    StandardReportPermitRequirementResource
-)
+from app.api.mines.reports.resources.mine_report_stats import MineReportStatsResource
 from app.api.mines.reports.resources.mine_reports import (
     MineReportListResource,
     MineReportResource,
@@ -170,6 +175,11 @@ from app.api.users.minespace.resources.minespace_user_mine import (
     MinespaceUserMineListResource,
     MinespaceUserMineResource,
 )
+from app.api.users.minespace.resources.new_minespace_user import (
+    NewMinespaceUserResource,
+    NewMinespaceUserDataResource,
+    NewMinespaceUserDocumentResource,
+)
 from app.api.users.resources.user_list_resource import UserListResource
 from app.api.users.resources.user_resource import UserResource
 from app.api.utils.access_decorators import (
@@ -191,6 +201,7 @@ from app.api.utils.access_decorators import (
     EDIT_TSF,
     EDIT_VARIANCE,
     GIS,
+    MANAGE_ORGBOOK,
     MINE_ADMIN,
     MINE_EDIT,
     MINESPACE_PROPONENT,
@@ -202,6 +213,8 @@ from app.api.utils.access_decorators import (
     "resource,method,expected_roles",
     [(ComplianceArticleResource, "get", [VIEW_ALL, MINESPACE_PROPONENT, EDIT_CODE]),
      (DownloadTokenResource, "get", [VIEW_ALL, MINESPACE_PROPONENT, GIS]),
+     (EmailPreviewResource, "get", [MINE_ADMIN]),
+     (EmailPreviewListResource, "get", [MINE_ADMIN]),
      (MineCommodityCodeResource, "get", [VIEW_ALL]),
      (MineComplianceSummaryResource, "get", [VIEW_ALL]),
      (MineDisturbanceCodeResource, "get", [VIEW_ALL]),
@@ -222,6 +235,7 @@ from app.api.utils.access_decorators import (
      (MineReportResource, "put", [EDIT_REPORT, MINESPACE_PROPONENT]),
      (MineReportListResource, "get", [VIEW_ALL, MINESPACE_PROPONENT]),
      (MineReportListResource, "post", [EDIT_REPORT, MINESPACE_PROPONENT]),
+     (MineReportStatsResource, "get", [VIEW_ALL, MINESPACE_PROPONENT]),
      (MineReportPermitRequirementResource, "post", [EDIT_REPORT]),
      (StandardReportPermitRequirementResource, "post", [EDIT_STANDARD_PERMIT_CONDITIONS]),
      (StandardReportPermitRequirementResource, "put", [EDIT_STANDARD_PERMIT_CONDITIONS]),
@@ -244,7 +258,7 @@ from app.api.utils.access_decorators import (
      (NOWApplicationDocumentIdentityResource, "post", [EDIT_PERMIT]),
      (PartyListResource, "get", [VIEW_ALL, MINESPACE_PROPONENT]),
      (PartyListResource, "post", [EDIT_PARTY, MINESPACE_PROPONENT]), (PartyResource, "get", [VIEW_ALL]),
-     (PartyResource, "put", [EDIT_PARTY, MINESPACE_PROPONENT]), (PartyResource, "delete", [MINE_ADMIN]),
+     (PartyResource, "put", [EDIT_PARTY, MINESPACE_PROPONENT, MANAGE_ORGBOOK]), (PartyResource, "delete", [MINE_ADMIN]),
      (PermitResource, "get", [VIEW_ALL]), (PermitListResource, "post", [EDIT_PERMIT]),
      (PermitResource, "put", [EDIT_SECURITIES]),
      (PermitAmendmentListResource, "post", [EDIT_PERMIT]),
@@ -254,12 +268,18 @@ from app.api.utils.access_decorators import (
      (PermitAmendmentDocumentListResource, "put", [EDIT_PERMIT]),
      (PermitAmendmentDocumentResource, "delete", [EDIT_PERMIT]),
      (SearchResource, "get", [VIEW_ALL]), (SearchOptionsResource, "get", [VIEW_ALL]),
-     (SimpleSearchResource, "get", [VIEW_ALL]), (MinespaceUserListResource, 'get', [MINE_ADMIN]),
+     (SimpleSearchResource, "get", [VIEW_ALL]), 
+     (MinespaceUserListResource, 'get', [VIEW_ALL, MINESPACE_PROPONENT]),
      (MinespaceUserListResource, 'post', [MINE_ADMIN]),
      (MinespaceUserResource, 'get', [MINE_ADMIN]), (MinespaceUserResource, 'delete', [MINE_ADMIN]),
+     (MinespaceUserResource, 'put', [MINE_ADMIN]),
      (MinespaceUserMineListResource, 'post', [MINE_ADMIN]),
      (MinespaceUserMineResource, 'delete', [MINE_ADMIN]),
-     (UserResource, 'get', [VIEW_ALL]),
+     (NewMinespaceUserResource, 'get', []),
+     (NewMinespaceUserResource, 'post', []),
+     (NewMinespaceUserDataResource, 'get', []),
+     (NewMinespaceUserDocumentResource, 'post', []),
+     (UserResource, 'get', [VIEW_ALL, MINESPACE_PROPONENT]),
      (UserListResource, 'get', [VIEW_ALL]),
      (NOWActivityTypeResource, 'get', [VIEW_ALL]),
      (NOWApplicationImportResource, 'post', [EDIT_PERMIT]),
@@ -289,7 +309,7 @@ from app.api.utils.access_decorators import (
      (AssignUserToPermitConditionCategory, 'post', [EDIT_STANDARD_PERMIT_CONDITIONS]),
      (AssignUserToPermitConditionCategory, 'put', [VIEW_ALL]),
      (StandardPermitConditionsListResource, 'post', [EDIT_STANDARD_PERMIT_CONDITIONS]),
-     (StandardPermitConditionsListResource, 'get', [EDIT_STANDARD_PERMIT_CONDITIONS]),
+     (StandardPermitConditionsListResource, 'get', [EDIT_PERMIT]),
      (StandardPermitConditionsResource, 'put', [EDIT_STANDARD_PERMIT_CONDITIONS]),
      (StandardPermitConditionsResource, 'delete', [EDIT_STANDARD_PERMIT_CONDITIONS]),
      (ProjectSummaryListGetResource, 'get', [VIEW_ALL, MINESPACE_PROPONENT]),

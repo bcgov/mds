@@ -7,8 +7,8 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import {
   createParty,
   setAddPartyFormState,
-} from "@mds/common/redux/actionCreators/partiesActionCreator";
-import { getAddPartyFormState } from "@mds/common/redux/selectors/partiesSelectors";
+} from "@mds/common/redux/slices/partiesSlice";
+import { getAddPartyFormState } from "@mds/common/redux/slices/partiesSlice";
 import AddQuickPartyForm from "@/components/Forms/parties/AddQuickPartyForm";
 import { getDropdownProvinceOptions } from "@mds/common/redux/selectors/staticContentSelectors";
 import LinkButton from "../buttons/LinkButton";

@@ -1,6 +1,6 @@
-from enum import Enum
-import os
 import json
+import os
+from enum import Enum
 
 from app.config import Config
 from flagsmith import Flagsmith
@@ -19,6 +19,10 @@ class Feature(Enum):
     VC_ANONCREDS_MINESPACE = "vc_anoncreds_minespace"
     VC_W3C = "vc_w3c"
     AMS_AGENT = 'ams_agent'
+    RECURRING_REPORTS = 'recurring_reports'
+    RECURRING_CRR_REPORTS= 'recurring_crr_reports'
+    MINESPACE_SIGNUP = 'minespace_signup'
+    GLOBAL_SEARCH_V2 = 'global_search_v2'
 
     def __str__(self):
         return self.value

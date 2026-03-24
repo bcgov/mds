@@ -206,7 +206,7 @@ exports[`EditPartyModal renders properly 1`] = `
                           id="email"
                           name="email"
                           type="text"
-                          value=""
+                          value="mock@example.com"
                         />
                       </div>
                     </div>
@@ -345,7 +345,7 @@ exports[`EditPartyModal renders properly 1`] = `
                           name="phone_no"
                           placeholder="e.g. xxx-xxx-xxxx"
                           type="text"
-                          value=""
+                          value="123-456-7890"
                         />
                       </div>
                     </div>
@@ -1198,7 +1198,6 @@ exports[`EditPartyModal renders properly 1`] = `
           style="padding-left: 24px; padding-right: 24px;"
         />
       </div>
-      <br />
       <div
         class="right center-mobile"
       >

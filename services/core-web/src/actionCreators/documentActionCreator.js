@@ -2,13 +2,13 @@ import { notification } from "antd";
 import { showLoading, hideLoading } from "react-redux-loading-bar";
 import { error, request, success } from "@mds/common/redux/actions/genericActions";
 import { ENVIRONMENT } from "@mds/common/constants/environment";
-import { createRequestHeader } from "@common/utils/RequestHeaders";
-import CustomAxios from "@common/customAxios";
+import { createRequestHeader } from "@mds/common/redux/utils/RequestHeaders";
+import CustomAxios from "@mds/common/redux/customAxios";
 import * as COMMON_API from "@mds/common/constants/API";
 import * as API from "@/constants/API";
 import { NetworkReducerTypes } from "@mds/common/constants/networkReducerTypes";
 import * as documentActions from "@/actions/documentActions";
-import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
+import { downloadFileFromDocumentManager } from "@mds/common/redux/utils/actionlessNetworkCalls";
 
 // Notice of Work
 

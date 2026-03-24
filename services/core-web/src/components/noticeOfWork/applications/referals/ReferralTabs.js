@@ -261,6 +261,13 @@ export class ReferralTabs extends Component {
                   fixedTop={this.props.fixedTop}
                   noticeOfWork={this.props.noticeOfWork}
                 />
+                <div className="consultation-advisor-text">
+                  Consultation Advisor: {
+                    this.props.noticeOfWork?.consultation_advisor?.party_guid
+                      ? `${this.props.noticeOfWork?.consultation_advisor?.first_name} ${this.props.noticeOfWork.consultation_advisor?.party_name}`
+                      : "Not Assigned"
+                  }
+                </div>
                 <div className={this.props.fixedTop ? "side-menu--fixed" : "side-menu"}>
                   <NOWSideMenu tabSection="consultation" />
                 </div>

@@ -122,15 +122,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
     path="/home/"
   />
   <Route
-    component={
-      Object {
-        "$$typeof": Symbol(react.memo),
-        "WrappedComponent": [Function],
-        "compare": null,
-        "displayName": "Connect(CustomHomePage)",
-        "type": [Function],
-      }
-    }
+    component={[Function]}
     exact={true}
     key="/my-dashboard/"
     path="/my-dashboard/"
@@ -206,18 +198,16 @@ exports[`DashboardRoutes  renders properly 1`] = `
     path="/mine-dashboard/:id/mine-information/contacts"
   />
   <Route
-    component={
-      Object {
-        "$$typeof": Symbol(react.memo),
-        "WrappedComponent": [Function],
-        "compare": null,
-        "displayName": "Connect(MineSummary)",
-        "type": [Function],
-      }
-    }
+    component={[Function]}
     exact={true}
     key="/mine-dashboard/:id/mine-information/general"
     path="/mine-dashboard/:id/mine-information/general"
+  />
+  <Route
+    component={[Function]}
+    exact={true}
+    key="/mine-dashboard/:id/mine-information/user-access"
+    path="/mine-dashboard/:id/mine-information/user-access"
   />
   <Route
     component={
@@ -356,6 +346,12 @@ exports[`DashboardRoutes  renders properly 1`] = `
   <Route
     component={[Function]}
     exact={true}
+    key="/projects/:projectGuid/ema-application/success"
+    path="/projects/:projectGuid/ema-application/success"
+  />
+  <Route
+    component={[Function]}
+    exact={true}
     key="/projects/:projectGuid/project-summary/:projectSummaryGuid/application/:projectSummaryAuthorizationGuid/:tab"
     path="/projects/:projectGuid/project-summary/:projectSummaryGuid/application/:projectSummaryAuthorizationGuid/:tab"
   />
@@ -480,15 +476,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
     path="/dashboard/:id/profile"
   />
   <Route
-    component={
-      Object {
-        "$$typeof": Symbol(react.memo),
-        "WrappedComponent": [Function],
-        "compare": null,
-        "displayName": "Connect(RelationshipProfile)",
-        "type": [Function],
-      }
-    }
+    component={[Function]}
     exact={true}
     key="/dashboard/:id/history/:typeCode"
     path="/dashboard/:id/history/:typeCode"
@@ -583,7 +571,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
         "$$typeof": Symbol(react.memo),
         "WrappedComponent": [Function],
         "compare": null,
-        "displayName": "Connect(Connect(authorizationGuard))",
+        "displayName": "Connect(authorizationGuard)",
         "type": [Function],
       }
     }
@@ -626,15 +614,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
     path="/admin/tag-management"
   />
   <Route
-    component={
-      Object {
-        "$$typeof": Symbol(react.memo),
-        "WrappedComponent": [Function],
-        "compare": null,
-        "displayName": "Connect(SearchResults)",
-        "type": [Function],
-      }
-    }
+    component={[Function]}
     exact={true}
     key="/search"
     path="/search"
@@ -660,15 +640,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
     path="/dashboard/reporting/notice-of-work"
   />
   <Route
-    component={
-      Object {
-        "$$typeof": Symbol(react.memo),
-        "WrappedComponent": [Function],
-        "compare": null,
-        "displayName": "Connect(Connect(applicationGuard))",
-        "type": [Function],
-      }
-    }
+    component={[Function]}
     exact={true}
     key="/dashboard/notice-of-work/app/:id/:tab"
     path="/dashboard/notice-of-work/app/:id/:tab"
@@ -685,7 +657,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
         "$$typeof": Symbol(react.memo),
         "WrappedComponent": [Function],
         "compare": null,
-        "displayName": "Connect(Connect(applicationGuard))",
+        "displayName": "Connect(ApplicationGuardInner)",
         "type": [Function],
       }
     }
@@ -699,7 +671,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
         "$$typeof": Symbol(react.memo),
         "WrappedComponent": [Function],
         "compare": null,
-        "displayName": "Connect(Connect(applicationGuard))",
+        "displayName": "Connect(ApplicationGuardInner)",
         "type": [Function],
       }
     }

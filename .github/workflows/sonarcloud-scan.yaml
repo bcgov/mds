@@ -29,7 +29,7 @@ jobs:
           sed -i 's/home\/runner\/work\/mds\/mds/github\/workspace/g' ${{ inputs.project-dir }}/reports/test-reporter.xml
 
       - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@v2.1.1
+        uses: SonarSource/sonarqube-scan-action@v6.0.0
         with:
           projectBaseDir: ${{ inputs.project-dir }}
           args: >

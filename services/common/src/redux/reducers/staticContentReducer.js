@@ -1,5 +1,6 @@
 import * as actionTypes from "@mds/common/constants/actionTypes";
 import { STATIC_CONTENT } from "@mds/common/constants/reducerTypes";
+import { isFeatureEnabled, Feature } from "@mds/common/utils/featureFlag";
 
 /**
  * @file staticContentReducer.js
@@ -60,6 +61,7 @@ const initialState = {
   projectSummaryPermitTypes: [],
   projectDecisionPackageStatusCodes: [],
   municipalityOptions: [],
+  noticeOfWorkTierOptions: [],
 };
 
 export const staticContentReducer = (state = initialState, action) => {
@@ -170,12 +172,19 @@ export const getProjectSummaryPermitTypes = (state) =>
 export const getProjectDecisionPackageStatusCodes = (state) =>
   state[STATIC_CONTENT].projectDecisionPackageStatusCodes;
 export const getMunicipalityOptions = (state) => state[STATIC_CONTENT].municipalityOptions;
+export const getNoticeOfWorkTierOptions = (state) => state[STATIC_CONTENT].noticeOfWorkTierOptions;
 
-const isStaticContentLoaded = (state) =>
-  Object.keys(state)
+const isStaticContentLoaded = (state) => {
+  const staticContentExceptions = [];
+  if (!isFeatureEnabled(Feature.NOTICE_OF_WORK_TIER)) {
+    staticContentExceptions.push("noticeOfWorkTierOptions");
+  }
+
+  return Object.keys(state)
     // eslint-disable-next-line no-prototype-builtins
-    .filter((p) => state.hasOwnProperty(p) && Array.isArray(state[p]))
+    .filter((p) => state.hasOwnProperty(p) && Array.isArray(state[p]) && !staticContentExceptions.includes(p))
     .every((p) => state[p].length > 0);
+};
 
 export const getStaticContentLoadingIsComplete = (state) =>
   isStaticContentLoaded(state[STATIC_CONTENT]);

@@ -17,6 +17,7 @@ export {
     formValueSelector,
     getFormSubmitErrors,
     getFormSyncErrors,
+    getFormMeta,
     getFormValues,
     hasSubmitFailed,
     initialize,
@@ -28,8 +29,14 @@ export {
     reset,
     submit,
     touch,
-    Field,
     Fields,
-    FieldArray,
-    FormSection,
 } from "redux-form";
+
+import FormField from "./FormField";
+import FormSection from "./FormSection";
+import FormFieldArray from "./FormFieldArray";
+export {
+    FormField as Field,
+    FormSection,
+    FormFieldArray as FieldArray
+};

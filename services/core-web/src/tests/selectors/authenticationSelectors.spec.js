@@ -2,13 +2,19 @@ import {
   isAuthenticated,
   getUserAccessData,
   getUserInfo,
+  getSystemFlag,
+  userHasRole,
+  getFormattedUserName,
 } from "@mds/common/redux/selectors/authenticationSelectors";
 import { authenticationReducer } from "@mds/common/redux/reducers/authenticationReducer";
 import {
   authenticateUser,
   logoutUser,
   storeUserAccessData,
+  storeSystemFlag,
 } from "@mds/common/redux/actions/authenticationActions";
+import { SystemFlagEnum } from "@mds/common/constants/enums";
+import { USER_ROLES } from "@mds/common/constants/environment";
 import { AUTHENTICATION } from "@mds/common/constants/reducerTypes";
 import * as ROUTES from "../../constants/routes";
 
@@ -51,5 +57,45 @@ describe("authSelectors", () => {
 
     expect(isAuthenticated(mockState)).toEqual(false);
     expect(getUserInfo(mockState)).toEqual({});
+  });
+
+  it("`getSystemFlag` calls `authReducer.getSystemFlag`", () => {
+    const systemFlagAction = storeSystemFlag(SystemFlagEnum.core);
+    const systemFlagState = authenticationReducer({}, systemFlagAction);
+    const mockState = {
+      [AUTHENTICATION]: systemFlagState,
+    };
+
+    expect(getSystemFlag(mockState)).toEqual(SystemFlagEnum.core);
+  });
+
+  it("`userHasRole` returns true when user has the role", () => {
+    const userAccessAction = storeUserAccessData([USER_ROLES.role_admin]);
+    const userAccessState = authenticationReducer({}, userAccessAction);
+    const mockState = {
+      [AUTHENTICATION]: userAccessState,
+    };
+
+    expect(userHasRole("role_admin")(mockState)).toEqual(true);
+  });
+
+  it("`userHasRole` returns false when user does not have the role", () => {
+    const userAccessAction = storeUserAccessData(["other_role"]);
+    const userAccessState = authenticationReducer({}, userAccessAction);
+    const mockState = {
+      [AUTHENTICATION]: userAccessState,
+    };
+
+    expect(userHasRole("role_admin")(mockState)).toEqual(false);
+  });
+
+  it("`getFormattedUserName` formats IDIR username correctly", () => {
+    const authAction = authenticateUser({ preferred_username: "testuser", identity_provider: "idir" });
+    const authState = authenticationReducer({}, authAction);
+    const mockState = {
+      [AUTHENTICATION]: authState,
+    };
+
+    expect(getFormattedUserName(mockState)).toEqual("idir\\testuser");
   });
 });

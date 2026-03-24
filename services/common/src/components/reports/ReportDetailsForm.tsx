@@ -52,8 +52,8 @@ import { BaseViewInput } from "../forms/BaseInput";
 import {
   fetchPartyById,
   fetchPartyRelationships,
-} from "@mds/common/redux/actionCreators/partiesActionCreator";
-import { getParties, getPartyRelationships } from "@mds/common/redux/selectors/partiesSelectors";
+} from "@mds/common/redux/slices/partiesSlice";
+import { getParties, getPartyRelationships } from "@mds/common/redux/slices/partiesSlice";
 import { uniqBy } from "lodash";
 import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
 import ExportOutlined from "@ant-design/icons/ExportOutlined";
@@ -72,8 +72,7 @@ import {
 import AuthorizationWrapper from "@mds/common/wrappers/AuthorizationWrapper";
 import { USER_ROLES } from "@mds/common/constants/environment";
 import { getMineById } from "@mds/common/redux/selectors/mineSelectors";
-import { fetchMinistryContactsByRegion } from "@mds/common/redux/actionCreators/minespaceActionCreator";
-import { getMinistryContactsByRegion } from "@mds/common/redux/selectors/minespaceSelector";
+import { fetchMinistryContactsByRegion, getMinistryContactsByRegion } from "@mds/common/redux/slices/minespaceSlice";
 import { useParams } from "react-router-dom";
 import {
   MINE_REPORT_SUBMISSION_CODES,
@@ -252,7 +251,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
 
   useEffect(() => {
     if (mine?.mine_region) {
-      dispatch(fetchMinistryContactsByRegion(mine.mine_region, mine.major_mine_ind));
+      dispatch(fetchMinistryContactsByRegion({ region: mine.mine_region, isMajorMine: mine.major_mine_ind }));
     }
   }, [mine]);
 
@@ -434,6 +433,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
         isEditMode={isEditMode}
         reduxFormConfig={{ enableReinitialize: !!reportGuid }}
         initialValues={initialValues}
+        forceRedux
       >
         {!isMS && formButtons}
         <Row gutter={[16, 8]}>

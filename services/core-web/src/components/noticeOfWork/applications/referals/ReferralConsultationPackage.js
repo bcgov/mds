@@ -29,7 +29,7 @@ import {
   documentsCompression,
   pollDocumentsCompressionProgress,
 } from "@mds/common/redux/actionCreators/documentActionCreator";
-import { downloadFileFromDocumentManager } from "@mds/core-web/common/utils/actionlessNetworkCalls";
+import { downloadFileFromDocumentManager } from "@mds/common/redux/utils/actionlessNetworkCalls";
 
 /**
  * @constant ReviewNOWApplication renders edit/view for the NoW Application review step

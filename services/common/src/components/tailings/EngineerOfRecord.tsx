@@ -4,7 +4,7 @@ import React, { FC, useContext } from "react";
 import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
 import { IMine, IMinePartyAppt, ITailingsStorageFacilityForm } from "@mds/common/interfaces";
 import { TailingsContext } from "./TailingsContext";
-import { getPartyRelationships } from "@mds/common/redux/selectors/partiesSelectors";
+import { getPartyRelationships } from "@mds/common/redux/slices/partiesSlice";
 import {
   dateInFuture,
   dateNotInFuture,

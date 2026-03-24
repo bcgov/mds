@@ -15,8 +15,9 @@ import Loading from "../../common/Loading";
 import { getMineById } from "@mds/common/redux/selectors/mineSelectors";
 import { AMS_ENVIRONMENTAL_MANAGEMENT_ACT_TYPES_TEXT } from "@mds/common/constants/strings";
 import { Tag } from "antd";
-import { isProponent, userHasRole } from "@mds/common/redux/selectors/authenticationSelectors";
+import { isProponent, userHasRole, getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
 import { USER_ROLES } from "@mds/common/constants/environment";
+import { SystemFlagEnum } from "@mds/common/constants/enums";
 
 const EnvApplicationPage = () => {
     const { projectGuid, projectSummaryGuid, projectSummaryAuthorizationGuid, tab } = useParams<{
@@ -40,7 +41,9 @@ const EnvApplicationPage = () => {
     const trackingNumber = auth?.ams_tracking_number;
     const canEditMajorMineApplications = useAppSelector(userHasRole(USER_ROLES.role_edit_major_mine_applications));
     const isUserProponent = useAppSelector(isProponent);
-    const [isEditMode] = useState(canEditMajorMineApplications || isUserProponent);
+    const [isEditMode, setIsEditMode] = useState((canEditMajorMineApplications || isUserProponent));
+    const systemFlag = useAppSelector(getSystemFlag);
+    const isCore = systemFlag === SystemFlagEnum.core;
 
     const loaded = amsFinalAppLoaded && projectSummaryLoaded;
 
@@ -51,20 +54,40 @@ const EnvApplicationPage = () => {
         dispatch(fetchAmsFinalApp({ projectSummaryGuid, projectSummaryAuthorizationGuid }));
     }, []);
 
-    const handleSaveData = (values, _newActiveTab) => {
+    useEffect(() => {
+        if (amsFinalApp && !isCore && !amsFinalApp.editable) {
+            setIsEditMode(false);
+        }
+    }, [amsFinalApp]);
+
+    const handleSaveData = async (values, _newActiveTab) => {
         const payload = {
             projectSummaryGuid,
             projectSummaryAuthorizationGuid,
             application: values
         };
+
         if (values.ams_final_application_guid) {
-            return dispatch(updateAmsFinalApp(payload)).then((resp) => { });
+            const projectTitle = projectSummary?.project_summary_title;
+            return await dispatch(updateAmsFinalApp(payload)).then((resp) => {
+                if (!_newActiveTab) {
+                    history.push({
+                        pathname: GLOBAL_ROUTES?.ENVIRONMENTAL_MANAGEMENT_ACT_FINAL_APPLICATION_SUCCESS.dynamicRoute(
+                            projectGuid),
+                        state: { projectTitle },
+                    });
+                }
+            });
         } else {
-            return dispatch(createAmsFinalApp(payload)).then((resp) => { });
+            return await dispatch(createAmsFinalApp(payload)).then((resp) => { });
         }
     }
 
     const handleTabChange = (newTab: string) => {
+        if (!newTab) {
+            return;
+        }
+
         return history.push(
             GLOBAL_ROUTES?.AMS_FINAL_APPLICATION.dynamicRoute(
                 projectGuid, projectSummaryGuid, projectSummaryAuthorizationGuid, newTab
@@ -73,7 +96,7 @@ const EnvApplicationPage = () => {
     };
 
     const allTabs = {
-        "basic-information": <EnvBasicInformationTab />,
+        "basic-information": <EnvBasicInformationTab trackingNumber={trackingNumber} />,
         "documents": <EnvDocumentsTab />,
         "declaration": <EnvDeclarationTab />
     };
@@ -103,8 +126,11 @@ const EnvApplicationPage = () => {
                         initialValues={initialValues}
                         isEditMode={isEditMode}
                         handleSaveData={handleSaveData}
+                        forceRedux={true}
                         handleTabChange={handleTabChange}
                         activeTab={tab}
+                        confirmOnSubmit={true}
+                        confirmSubmissionText={"Are you sure you want to submit your application package? Once submitted, the Ministry will be notified and your application will enter the formal screening process."}
                     >
                         {Object.entries(allTabs).map(([key, component]) => {
                             return <Step key={key}>{component}</Step>

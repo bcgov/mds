@@ -55,6 +55,7 @@ from app.api.mines.reports.models.mine_report_comment import MineReportComment
 from app.api.mines.reports.models.mine_report_definition_compliance_article_xref import (
     MineReportDefinitionComplianceArticleXref,
 )
+from app.api.compliance.models.compliance_article import ComplianceArticle
 from app.api.mines.reports.models.mine_report_permit_requirement import (
     CimOrCpo,
     MineReportPermitRequirement,
@@ -134,6 +135,7 @@ from app.extensions import db
 from pytz import timezone, utc
 from tests.mines import permit
 from tests.status_code_gen import *
+from app.api.email_tracking.models.email_tracking import EmailTracking, EmailStatus, RecipientType
 
 GUID = factory.LazyFunction(uuid.uuid4)
 TODAY = factory.LazyFunction(datetime.now)
@@ -896,8 +898,7 @@ class MinespaceUserFactory(BaseFactory):
     class Meta:
         model = MinespaceUser
 
-    keycloak_guid = GUID
-    email_or_username = factory.Faker('email')
+    bceid_username = factory.Sequence(lambda n: f"testuser{n}@bceid")
 
 
 # Core subscriptions
@@ -938,7 +939,7 @@ class MineFactory(BaseFactory):
 
     class Params:
         minimal = factory.Trait(
-            mine_no=None,
+            mine_no='123456',
             mine_note=None,
             mine_region='NE',
             latitude=None,
@@ -1229,7 +1230,7 @@ class PermitConditionsFactory(BaseFactory):
     condition_type_code = factory.LazyFunction(RandomConditionTypeCode)
     condition = factory.Faker('sentence', nb_words=6, variable_nb_words=True)
     display_order = factory.Sequence(lambda n: n + 1)
-    permit_condition_status_code = factory.LazyFunction(RandomConditionStatusCode)
+    permit_condition_status_code = 'COM'
 
 
 class StandardPermitConditionsFactory(BaseFactory):
@@ -1888,6 +1889,29 @@ class MineReportDefinitionComplianceArticleXrefFactory(BaseFactory):
     mine_report_definition_id = factory.LazyFunction(RandomMineReportDefinition)
     compliance_article_id = factory.LazyFunction(RandomComplianceArticleId)
 
+class ComplianceArticleFactory(BaseFactory):
+
+    class Meta:
+        model = ComplianceArticle
+
+    article_act_code = "MA"
+    section = factory.Faker("bothify", text="?")
+    sub_section = factory.Faker("bothify", text="?")
+    paragraph = factory.Faker("bothify", text="?")
+    sub_paragraph = factory.Faker("bothify", text="?")
+    description = factory.Faker("sentence")
+    long_description = factory.Faker("paragraph")
+    effective_date = factory.LazyFunction(datetime.utcnow)
+    expiry_date = None  # None = not expired
+
+    # For when testing expiry_date is expired
+    class Params:
+        expired = factory.Trait(
+            expiry_date=factory.LazyFunction(
+                lambda: datetime.utcnow() - timedelta(days=1)
+            )
+        )
+
 class MineReportPermitRequirementFactory(BaseFactory):
     class Meta:
         model = MineReportPermitRequirement
@@ -1995,7 +2019,7 @@ class AmsFinalApplicationFactory(BaseFactory):
         model = AmsFinalApplication
 
     class Params:
-        project_summary_authorization = factory.SubFactory(ProjectSummaryAuthorizationFactory)
+        project_summary_authorization = factory.SubFactory(ProjectSummaryAmsAuthorizationFactory)
         is_submitted = factory.Trait(
             submitted_timestamp=TODAY,
             is_draft=False
@@ -2006,6 +2030,7 @@ class AmsFinalApplicationFactory(BaseFactory):
     submitter_name = factory.Faker('name')
     is_agent = factory.Faker('boolean', chance_of_getting_true=30)
     pre_submitted_files = []
+    editable = True
 
     @factory.post_generation
     def documents(obj, create, extracted, **kwargs):
@@ -2017,3 +2042,56 @@ class AmsFinalApplicationFactory(BaseFactory):
 
         AmsFinalApplicationDocumentXrefFactory.create_batch(
             size=extracted, ams_final_application=obj, mine_document__mine=None, **kwargs)
+
+class EmailTrackingFactory(BaseFactory):
+
+    class Meta:
+        model = EmailTracking
+
+    class Params:
+        major_mine_application = factory.SubFactory('tests.factories.MajorMineApplicationFactory')
+        project_summary = factory.SubFactory('tests.factories.ProjectSummaryFactory')
+
+        # Email status traits
+        sent = factory.Trait(
+            email_status=EmailStatus.sent,
+            sent_timestamp=TODAY
+        )
+        delivered = factory.Trait(
+            email_status=EmailStatus.completed,
+            sent_timestamp=TODAY,
+            delivered_timestamp=TODAY
+        )
+        failed = factory.Trait(
+            email_status=EmailStatus.failed,
+            failed_timestamp=TODAY,
+            error_message='Email delivery failed',
+            error_code='500'
+        )
+
+    email_tracking_guid = GUID
+    reference_id = factory.SelfAttribute('major_mine_application.major_mine_application_guid')
+    reference_table = 'major_mine_application'
+    reference_email_type = factory.LazyFunction(lambda: random.choice([
+        'mma_submit_email',
+        'ministry_project_section_email',
+        'minespace_project_section_email'
+    ]))
+    email_template_name = factory.LazyFunction(lambda: random.choice([
+        'ministry_project_section_email',
+        'minespace_project_section_email',
+        'mma_submit_email'
+    ]))
+    email_subject = factory.Faker('sentence', nb_words=6)
+    recipient_email = factory.Faker('email')
+    recipient_name = factory.Faker('name')
+    recipient_type = RecipientType.primary
+    email_status = EmailStatus.pending
+    sent_timestamp = None
+    delivered_timestamp = None
+    failed_timestamp = None
+    error_message = None
+    ches_message_id = GUID
+    ches_transaction_id = GUID
+    retry_count = 0
+    max_retries = 3

@@ -1,7 +1,7 @@
 import * as Strings from "@mds/common/constants/strings";
-import { IOption } from "@mds/common/interfaces/";
+import { removeNullValues } from "@mds/common/constants/utils";
 
-import { memoize } from "lodash";
+import { isEmpty, memoize } from "lodash";
 import moment from "moment-timezone";
 
 /**
@@ -11,7 +11,7 @@ class Validator {
   // eslint-disable-next-line no-control-regex
   ASCII_REGEX = /^[\x00-\x7F\s]*$/;
 
-  CAN_POSTAL_CODE_REGEX = /^[ABCEGHJ-NPRSTVXY]\d[ABCEGHJ-NPRSTV-Z]\d[ABCEGHJ-NPRSTV-Z]\d$/;
+  CAN_POSTAL_CODE_REGEX = /^[ABCEGHJ-NPRSTVXY]\d[ABCEGHJ-NPRSTV-Z][ -]?\d[ABCEGHJ-NPRSTV-Z]\d$/i;
 
   US_POSTAL_CODE_REGEX = /(^\d{5}$)|(^\d{9}$)|(^\d{5}-\d{4}$)/;
 
@@ -203,7 +203,6 @@ export const lonNegative = (value) =>
 export const phoneNumber = (value) =>
   value && !Validate.checkPhone(value) ? "Invalid phone number e.g. xxx-xxx-xxxx" : undefined;
 
-
 export const postalCodeWithCountry = memoize((address_type_code = "CAN") => (value) => {
   const code_type = address_type_code === "USA" ? "zip code" : "postal code";
   if (!["CAN", "USA"].includes(address_type_code)) {
@@ -257,6 +256,27 @@ export const dateNotInFutureTZ = (value) => {
   return value && !moment(value).isBefore() ? "Date cannot be in the future" : undefined;
 };
 
+export const partyHasAddress = memoize(
+  (dropdownOptions: { value: any; address: any }[], message: string) =>
+    (value) => {
+      if (!value) {
+        return undefined;
+      }
+
+      const selectedOption = dropdownOptions?.find((opt) => opt.value === value);
+      if (!selectedOption) {
+        return undefined;
+      }
+
+      const address = selectedOption.address;
+      const firstAddress = Array.isArray(address) ? address[0] : address;
+
+      const hasProperties = Boolean(firstAddress) && !isEmpty(removeNullValues(firstAddress));
+      return hasProperties ? undefined : message;
+    },
+  (dropdownOptions, message) => `${dropdownOptions.map((o) => o.value).join()}-${message}`
+);
+
 export const dateTimezoneRequired = memoize((timezoneField) => (_value, allValues) => {
   const formTimezone = allValues[timezoneField];
   return formTimezone && formTimezone.length > 0 ? undefined : "Please select a timezone";
@@ -276,8 +296,12 @@ export const dateNotBeforeOther = memoize((other: string, otherLabel?: string) =
   return `Date cannot be before ${otherDateText}`
 }, (other, otherLabel) => `${other}_${otherLabel}`);
 
-export const dateNotBeforeStrictOther = memoize((other) => (value) =>
-  value && other && moment(value).isBefore(other) ? `Date cannot be before ${other}` : undefined
+export const dateNotBeforeStrictOther = memoize(
+  (other: string, otherLabel?: string) => (value: string) =>
+    value && other && moment(value).isBefore(other)
+      ? `Date cannot be before ${otherLabel ? `${otherLabel} - ` : ""}${moment(other).format("YYYY-MM-DD HH:mm Z z")}`
+      : undefined,
+  (other, otherLabel) => `${other}_${otherLabel}`
 );
 
 export const timeNotBeforeOther = memoize(
@@ -374,7 +398,7 @@ export const validateDateRanges = (
   } else {
     // If (NewApptEnd >= ApptStart) and (NewApptStart <= ApptEnd) ; “Overlap”)
     conflictingAppointments = dateAppointments.filter(
-      (appt) => newDateAppt.end_date >= appt.start_date && newDateAppt.start_date <= appt.end_date
+      (appt) => newDateAppt.end_date >= appt.start_date && newDateAppt.start_date < appt.end_date
     );
   }
   if (conflictingAppointments.length > 0) {

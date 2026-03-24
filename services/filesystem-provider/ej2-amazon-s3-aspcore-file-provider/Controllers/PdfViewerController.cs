@@ -42,32 +42,51 @@ namespace EJ2AmazonS3ASPCoreFileProvider.Controllers
         [Authorize("View")]
         public IActionResult Load([FromBody] Dictionary<string, string> jsonObject)
         {
-            PdfRenderer.ReferencePath = _hostingEnvironment.WebRootPath + "\\";
-            PdfRenderer pdfviewer = new PdfRenderer(_mCache);
-            MemoryStream stream = new MemoryStream();
-            object jsonResult = new object();
-            if (jsonObject != null && jsonObject.ContainsKey("document"))
+            try
             {
-                if (bool.Parse(jsonObject["isFileName"]))
+                // Resolve a safe, writable ReferencePath for Syncfusion assets (avoid root '/')
+                var webRoot = _hostingEnvironment.WebRootPath;
+                var basePath = !string.IsNullOrWhiteSpace(webRoot)
+                    ? webRoot
+                    : Path.Combine(AppContext.BaseDirectory ?? ".", "wwwroot");
+                Directory.CreateDirectory(basePath);
+                // Some Syncfusion components probe ReferencePath/x64; pre-create to avoid permission issues
+                Directory.CreateDirectory(Path.Combine(basePath, "x64"));
+                PdfRenderer.ReferencePath = basePath.EndsWith(Path.DirectorySeparatorChar)
+                    ? basePath
+                    : basePath + Path.DirectorySeparatorChar;
+
+                PdfRenderer pdfviewer = new PdfRenderer(_mCache);
+                MemoryStream stream = new MemoryStream();
+                object jsonResult = new object();
+                if (jsonObject != null && jsonObject.ContainsKey("document"))
                 {
-                    string path = Path.GetDirectoryName(jsonObject["document"]) + "/";
-                    string filename = Path.GetFileName(jsonObject["document"]);
-                    FileStreamResult fsr = this.operation.Download(path, new string[] { filename });
-                    if (fsr == null)
+                    if (bool.TryParse(jsonObject.GetValueOrDefault("isFileName"), out bool isFileName) && isFileName)
                     {
-                        return this.Content(jsonObject["document"] + " is not found");
+                        string path = Path.GetDirectoryName(jsonObject["document"]) + "/";
+                        string filename = Path.GetFileName(jsonObject["document"]);
+                        FileStreamResult fsr = this.operation.Download(path, new string[] { filename });
+                        if (fsr == null)
+                        {
+                            return NotFound(jsonObject["document"] + " is not found");
+                        }
+                        fsr.FileStream.CopyTo(stream);
                     }
-                    fsr.FileStream.CopyTo(stream);
+                    else if (jsonObject.TryGetValue("document", out var base64))
+                    {
+                        byte[] bytes = Convert.FromBase64String(base64);
+                        stream = new MemoryStream(bytes);
+                    }
                 }
-                else
-                {
-                    byte[] bytes = Convert.FromBase64String(jsonObject["document"]);
-                    stream = new MemoryStream(bytes);
-                }
+                jsonResult = pdfviewer.Load(stream, jsonObject);
+                return Content(JsonConvert.SerializeObject(jsonResult));
             }
-            jsonResult = pdfviewer.Load(stream, jsonObject);
-            ContentResult result = Content(JsonConvert.SerializeObject(jsonResult));
-            return result;
+            catch (Exception ex)
+            {
+                // Provide clearer error to client instead of 204/no content
+                var error = new { message = "Failed to load PDF", detail = ex.Message, type = ex.GetType().FullName };
+                return StatusCode(500, JsonConvert.SerializeObject(error));
+            }
         }
 
         [AcceptVerbs("Post")]
@@ -89,6 +108,17 @@ namespace EJ2AmazonS3ASPCoreFileProvider.Controllers
         {
             PdfRenderer pdfviewer = new PdfRenderer(_mCache);
             object jsonResult = pdfviewer.GetPage(jsonObject);
+            return Content(JsonConvert.SerializeObject(jsonResult));
+        }
+
+        [AcceptVerbs("Post")]
+        [HttpPost]
+        [Route("RenderPdfTexts")]
+        [Authorize("View")]
+        public IActionResult RenderPdfTexts([FromBody] Dictionary<string, string> jsonObject)
+        {
+            PdfRenderer pdfviewer = new PdfRenderer(_mCache);
+            object jsonResult = pdfviewer.GetDocumentText(jsonObject);
             return Content(JsonConvert.SerializeObject(jsonResult));
         }
 

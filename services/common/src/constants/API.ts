@@ -1,6 +1,7 @@
 import queryString from "query-string";
 
 export const CORE_STATIC_CONTENT = "/exports/core-static-content";
+export const EMAIL_PREVIEW = (template?) => `/email-preview${template ? `/${template}` : ""}`;
 
 // Network URL's
 export const MINE = "/mines";
@@ -40,8 +41,11 @@ export const DOCUMENT_MANAGER_TOKEN_GET_URL = (documentManagerGuid) =>
   `/download-token/${documentManagerGuid}`;
 export const DOCUMENT_MANAGER_DOCUMENT = (documentManagerGuid) =>
   `/documents/${documentManagerGuid}`;
-export const MINESPACE_USER = "/users/minespace";
+export const MINESPACE_USER = (mine_guid?) => `/users/minespace${mine_guid ? `?${queryString.stringify({ mine_guid })}` : ""}`;
 export const UPDATE_MINESPACE_USER = (id) => `/users/minespace/${id}`;
+export const NEW_MINESPACE_USER_MINES = (params = {}) => `/users/minespace/mines?${queryString.stringify(params)}`;
+export const NEW_MINESPACE_USER_DOCUMENTS = `/users/minespace/documents`;
+export const NEW_MINESPACE_USER_ACCESS_REQUEST = `/users/minespace/access-request`;
 export const PROVINCE_CODES = "/parties/sub-division-codes";
 
 // MCM contacts
@@ -135,7 +139,7 @@ export const REPORT_ERROR = `/report-error`;
 export const EPIC_INFO = (mineGuid) => `/mines/${mineGuid}/epic`;
 
 // Search
-export const SEARCH = (params) => (params ? `/search?${queryString.stringify(params)}` : "/search");
+export const SEARCH = (params) => (params ? `/search?${queryString.stringify(params, { arrayFormat: 'comma' })}` : "/search");
 export const SEARCH_OPTIONS = "/search/options";
 export const SIMPLE_SEARCH = "/search/simple";
 
@@ -182,6 +186,9 @@ export const PROJECT_SUMMARY_ENVIRONMENT_FINAL_APPLICATION_GET = (projectSummary
 
 export const PROJECT_SUMMARY_ENVIRONMENT_FINAL_APPLICATION = (projectSummaryGuid: string, project_summary_authorization_guid = "") =>
   `/projects/${projectSummaryGuid}/ams-final-application/${project_summary_authorization_guid}`;
+
+export const PROJECT_SUMMARY_ENVIRONMENT_FINAL_APPLICATION_MINESPACE_EDITABILITY = (projectSummaryGuid: string, project_summary_authorization_guid = "") =>
+  `/projects/${projectSummaryGuid}/ams-final-application/${project_summary_authorization_guid}/minespace-edit`;
 
 export const PROJECT_SUMMARY_ENVIRONMENT_FINAL_APPLICATION_DOCUMENTS = (projectSummaryGuid: string) =>
   `/projects/${projectSummaryGuid}/ams-final-application/documents`;
@@ -287,8 +294,11 @@ export const MINE_REPORT_DEFINITION = "/mines/reports/definitions";
 export const MINE_REPORT_DUE_DATE_TYPES = "/mines/reports/due-date-types";
 export const MINE_REPORTS = (mineGuid, params?) =>
   `/mines/${mineGuid}/reports?${queryString.stringify(params)}`;
+export const MINE_UPCOMING_REPORTS = (mineGuid, params?) =>
+  `/mines/${mineGuid}/reports?${queryString.stringify({ ...params, upcoming: true })}`;
 export const MINE_REPORT = (mineGuid, mineReportGuid) =>
   `/mines/${mineGuid}/reports/${mineReportGuid}`;
+export const MINE_REPORT_STATS = (mineGuid: string) => `/mines/${mineGuid}/reports/stats`;
 export const MINE_REPORT_SUBMISSIONS = (
   params: { mine_report_guid?: string },
   latest_submission = true

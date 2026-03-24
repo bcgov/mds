@@ -20,6 +20,7 @@ using System.Linq;
 using System.Collections.Specialized;
 using Microsoft.AspNetCore.Http;
 using System.Web;
+using Syncfusion.Licensing;
 
 namespace EJ2FileManagerService
 {
@@ -117,6 +118,15 @@ namespace EJ2FileManagerService
             // Register Syncfusion License (https://help.syncfusion.com/common/essential-studio/licensing/license-key)
             string syncfusionLicenseKey = System.Environment.GetEnvironmentVariable("SYNCFUSION_LICENSE_KEY");
             Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(syncfusionLicenseKey);
+            bool isValidLicense = Syncfusion.Licensing.SyncfusionLicenseProvider.ValidateLicense(Platform.PDF);
+                        if (!isValidLicense)
+                        {
+                            Console.WriteLine("Invalid License");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Valid License");
+                        }
 
             if (IsDevelopment)
             {

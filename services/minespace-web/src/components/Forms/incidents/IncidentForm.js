@@ -21,7 +21,7 @@ import {
 } from "@mds/common/redux/utils/Validate";
 import { normalizePhone, normalizeDatetime } from "@common/utils/helpers";
 import * as Strings from "@mds/common/constants/strings";
-import { getDropdownInspectors } from "@mds/common/redux/selectors/partiesSelectors";
+import { getDropdownInspectors } from "@mds/common/redux/slices/partiesSlice";
 import {
   getDropdownIncidentStatusCodeOptions,
   getDropdownIncidentFollowupActionOptions,
@@ -34,7 +34,7 @@ import {
   documentNameColumn,
   uploadDateColumn,
   uploadedByColumn,
-} from "@/components/common/DocumentColumns";
+} from "@mds/common/components/documents/DocumentColumns";
 import { renderConfig } from "@/components/common/config";
 import Callout from "@/components/common/Callout";
 import customPropTypes from "@/customPropTypes";
@@ -344,8 +344,10 @@ const renderIncidentDetails = (childProps) => {
           label="Number of injuries"
           id="number_of_injuries"
           name="number_of_injuries"
+          required
+          placeholder="Enter the number of injuries. If none, enter '0'."
           component={renderConfig.FIELD}
-          validate={[wholeNumber, maxLength(10)]}
+          validate={[wholeNumber, required, maxLength(10)]}
           disabled={formDisabled}
         />
       </Col>
@@ -645,7 +647,7 @@ const renderUploadInitialNotificationDocuments = (
               onRemoveFile={parentHandlers?.deleteDocument}
               mineGuid={match.params?.mineGuid}
               component={IncidentFileUpload}
-              labelIdle='<strong class="filepond--label-action">Drag & drop your files or Browse</strong><div>Accepted filetypes: .kmz .doc .docx .xlsx .pdf .msg .png .jpeg .tiff .hiec</div>'
+              labelIdle='<strong class="filepond--label-action">Drag & drop your files or Browse</strong><div>Accepted filetypes: .kmz .doc .docx .xlsx .pdf .msg .png .jpeg .tiff .heic</div>'
             />
           </Col>
         </>
@@ -718,7 +720,7 @@ const renderUploadInitialNotificationDocuments = (
                 onRemoveFile={parentHandlers?.deleteDocument}
                 mineGuid={match.params?.mineGuid}
                 component={IncidentFileUpload}
-                labelIdle='<strong class="filepond--label-action">Final Report Upload</strong><div>Accepted filetypes: .kmz .doc .docx .xlsx .pdf .msg .png .jpeg .tiff .hiec</div>'
+                labelIdle='<strong class="filepond--label-action">Final Report Upload</strong><div>Accepted filetypes: .kmz .doc .docx .xlsx .pdf .msg .png .jpeg .tiff .heic</div>'
               />
             </Col>
           </>

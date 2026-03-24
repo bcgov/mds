@@ -17,7 +17,7 @@ exports[`PaymentContact Component should render the component with expected fiel
       <div
         class="ant-typography"
       >
-        Provide contact information for the responsible person for application payments.
+        Provide contact information for the person responsible for application payments.
       </div>
       <div
         class="ant-row"

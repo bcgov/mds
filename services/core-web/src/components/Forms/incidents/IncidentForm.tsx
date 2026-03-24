@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { change, getFormValues, isPristine } from "@mds/common/components/forms/form";
 import { Col, Row } from "antd";
 import { IMineIncident } from "@mds/common/interfaces";
-import { getDropdownInspectors } from "@mds/common/redux/selectors/partiesSelectors";
+import { getDropdownInspectors } from "@mds/common/redux/slices/partiesSlice";
 import {
   getDangerousOccurrenceSubparagraphOptions,
   getDropdownIncidentDeterminationOptions,
@@ -16,7 +16,7 @@ import {
   documentNameColumn,
   uploadDateColumn,
   uploadedByColumn,
-} from "@/components/common/DocumentColumns";
+} from "@mds/common/components/documents/DocumentColumns";
 import IncidentFormDocuments from "@/components/Forms/incidents/IncidentFormDocuments";
 import IncidentFormInternalDocumentComments from "@/components/Forms/incidents/IncidentFormInternalDocumentComments";
 import IncidentFormInitialReport from "@/components/Forms/incidents/IncidentFormInitialReport";

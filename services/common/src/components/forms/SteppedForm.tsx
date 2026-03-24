@@ -1,12 +1,20 @@
 import React, { FC, ReactElement, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getFormSyncErrors, getFormValues, submit } from "@mds/common/components/forms/form";
+import {
+  getFormSyncErrors,
+  getFormValues,
+  isDirty,
+  getFormMeta,
+  reset,
+  submit,
+} from "@mds/common/components/forms/form";
 import { Button, Col, Menu, Popconfirm, Row, StepProps } from "antd";
 import LeftOutlined from "@ant-design/icons/LeftOutlined";
 import RightOutlined from "@ant-design/icons/RightOutlined";
 import { indexOf } from "lodash";
 import { flattenObject, formatUrlToUpperCaseString } from "@mds/common/redux/utils/helpers";
 import FormWrapper, { FormWrapperProps } from "./FormWrapper";
+import { cancelConfirmWrapper } from "./RenderCancelButton";
 
 interface SteppedFormProps extends Omit<FormWrapperProps, "onSubmit"> {
   children: Array<ReactElement<StepProps>>;
@@ -22,6 +30,10 @@ interface SteppedFormProps extends Omit<FormWrapperProps, "onSubmit"> {
   sectionChangeText?: string; // Save & Continue
   nextText?: string; // "Next"
   disableTabsOnError?: boolean;
+  confirmOnSubmit?: boolean;
+  confirmSubmissionOkText?: string;
+  confirmSubmissionCancelText?: string;
+  confirmSubmissionText?: string;
 }
 
 const SteppedForm: FC<SteppedFormProps> = ({
@@ -41,7 +53,12 @@ const SteppedForm: FC<SteppedFormProps> = ({
   cancelConfirmMessage,
   sectionChangeText = "Save & Continue",
   nextText = "Next",
-  disableTabsOnError = true,
+  disableTabsOnError = false,
+  forceRedux,
+  confirmOnSubmit = false,
+  confirmSubmissionText = "",
+  confirmSubmissionOkText = "Confirm Submission",
+  confirmSubmissionCancelText = "Cancel",
 }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [tabIndex, setTabIndex] = useState(0);
@@ -50,6 +67,11 @@ const SteppedForm: FC<SteppedFormProps> = ({
   const formValues = useSelector(getFormValues(name));
   const formErrors = useSelector((state) => getFormSyncErrors(name)(state));
   const errors = Object.keys(flattenObject(formErrors));
+  const isFormDirty = useSelector(isDirty(name));
+  const meta = useSelector(getFormMeta(name));
+  // sometimes isFormDirty is false positive because of automatic changes to form values
+  // but if the fields are actually touched then the meta will not equal {}
+  const isFormTouched = Object.keys(meta).length > 0;
 
   useEffect(() => {
     setTabIndex(tabs.indexOf(activeTab));
@@ -63,11 +85,19 @@ const SteppedForm: FC<SteppedFormProps> = ({
 
   const handleTabClick = (tab) => {
     if (tabIndex !== tabs.indexOf(tab)) {
-      setTabIndex(indexOf(tabs, tab));
+      const changeTab = () => {
+        // use isFormDirty here because automatic changes have to be reset too
+        if (isFormDirty) {
+          dispatch(reset(name));
+        }
+        setTabIndex(indexOf(tabs, tab));
 
-      if (handleTabChange) {
-        handleTabChange(tab);
-      }
+        if (handleTabChange) {
+          handleTabChange(tab);
+        }
+      };
+      // but isFormTouched here will avoid prompting user unnecessarily
+      cancelConfirmWrapper(changeTab, isEditMode && isFormTouched);
     }
   };
 
@@ -144,13 +174,14 @@ const SteppedForm: FC<SteppedFormProps> = ({
           <div className="stepped-form-form-container">
             <FormWrapper
               name={name}
-              onSubmit={() => { }}
+              onSubmit={() => {}}
               initialValues={initialValues}
               isEditMode={isEditMode}
+              forceRedux={forceRedux}
               reduxFormConfig={
                 reduxFormConfig ?? {
                   touchOnBlur: true,
-                  touchOnChange: false,
+                  touchOnChange: true,
                   enableReinitialize: true,
                 }
               }
@@ -212,15 +243,29 @@ const SteppedForm: FC<SteppedFormProps> = ({
                   {nextText}
                 </Button>
               )}
-              {isEditMode && isLast && (
-                <Button
-                  type="primary"
-                  onClick={(e) => handleNextClick(e, null)}
-                  disabled={isSubmitting}
-                >
-                  {submitText || "Submit"}
-                </Button>
-              )}
+              {isEditMode &&
+                isLast &&
+                (confirmOnSubmit ? (
+                  <Popconfirm
+                    placement="topRight"
+                    title={confirmSubmissionText}
+                    onConfirm={(e) => handleNextClick(e, null)}
+                    okText={confirmSubmissionOkText}
+                    cancelText={confirmSubmissionCancelText}
+                  >
+                    <Button type="primary" disabled={isSubmitting}>
+                      {submitText || "Submit"}
+                    </Button>
+                  </Popconfirm>
+                ) : (
+                  <Button
+                    type="primary"
+                    onClick={(e) => handleNextClick(e, null)}
+                    disabled={isSubmitting}
+                  >
+                    {submitText || "Submit"}
+                  </Button>
+                ))}
             </Row>
           </div>
         )}

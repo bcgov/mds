@@ -1,11 +1,9 @@
-import React, { Component } from "react";
+import React, { FC, useState, useEffect } from "react";
 import { Tabs } from "antd";
-import { connect } from "react-redux";
+import { useAppSelector } from "@mds/common/redux/rootState";
+import { useParams, useHistory } from "react-router-dom";
 import { kebabCase, isEmpty } from "lodash";
 import { getNoticeOfWork, getOriginalNoticeOfWork } from "@mds/common/redux/selectors/noticeOfWorkSelectors";
-import { getMines } from "@mds/common/redux/selectors/mineSelectors";
-import { getGeneratableNoticeOfWorkApplicationDocumentTypeOptions } from "@mds/common/redux/selectors/staticContentSelectors";
-import { getDocumentContextTemplate } from "@/reducers/documentReducer";
 import * as routes from "@/constants/routes";
 import DraftPermitTab from "@/components/noticeOfWork/applications/permitGeneration/DraftPermitTab";
 import VerificationTab from "@/components/noticeOfWork/applications/verification/VerificationTab";
@@ -18,217 +16,210 @@ import ProcessPermit from "@/components/noticeOfWork/applications/process/Proces
 import ApplicationGuard from "@/HOC/ApplicationGuard";
 import { getDraftPermitForNOW } from "@mds/common/redux/selectors/permitSelectors";
 import ManageDocumentsTab from "@/components/noticeOfWork/applications/manageDocuments/ManageDocumentsTab";
+import { IPermit } from "@mds/common/interfaces";
 
-import { INoticeOfWorkApplication, INoticeOfWorkDraftPermit } from "@mds/common/interfaces";
 /**
- * @class NoticeOfWorkApplication- contains all tabs needed for a CORE notice of work application.
+ * NoticeOfWorkApplication - contains all tabs needed for a CORE notice of work application.
  */
 
-interface NowApplicationState {
-  isTabLoaded: boolean;
-  activeTab: string;
-  initialPermitGuid: string;
+interface NoticeOfWorkApplicationProps {
+  mineGuid: string;
+  fixedTop: boolean;
+  applicationPageFromRoute: { route: string; title: string };
+  renderTabTitle: (title: string, badgeCode: string) => React.ReactNode;
 }
 
-export class NoticeOfWorkApplication extends Component<
-  INoticeOfWorkApplication,
-  NowApplicationState,
-  INoticeOfWorkDraftPermit
-> {
-  state = {
-    isTabLoaded: false,
-    activeTab: "verification",
-    initialPermitGuid: "",
+export const NoticeOfWorkApplication: FC<NoticeOfWorkApplicationProps> = (props) => {
+  const [isTabLoaded, setIsTabLoaded] = useState(false);
+  const [activeTab, setActiveTab] = useState("verification");
+  const { tab } = useParams<{ tab: string }>();
+  const history = useHistory();
+
+  const noticeOfWork = useAppSelector(getNoticeOfWork);
+  const originalNoticeOfWork = useAppSelector(getOriginalNoticeOfWork);
+  const draftPermit: Partial<IPermit> = useAppSelector(getDraftPermitForNOW);
+
+  const setActiveTabState = (tab: string) => {
+    setActiveTab(tab);
+    setIsTabLoaded(true);
   };
 
-  componentDidMount() {
-    if (
-      this.props.noticeOfWork.imported_to_core &&
-      this.props.match.params.tab === "verification"
-    ) {
-      this.handleTabChange("application");
-    }
-
-    if (this.props.match.params.tab) {
-      this.setActiveTab(this.props.match.params.tab);
-    }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.match.params.tab !== this.props.match.params.tab) {
-      this.setState({ isTabLoaded: false });
-      this.setActiveTab(nextProps.match.params.tab);
-    }
-    if (nextProps.noticeOfWork.imported_to_core !== this.props.noticeOfWork.imported_to_core) {
-      this.handleTabChange("application");
-    }
-  }
-
-  setActiveTab = (tab) => {
-    this.setState({ activeTab: tab, isTabLoaded: true });
-  };
-
-  handleTabChange = (key) => {
-    this.props.history.replace(
+  const handleTabChange = (key: string) => {
+    history.replace(
       routes.NOTICE_OF_WORK_APPLICATION.dynamicRoute(
-        this.props.noticeOfWork.now_application_guid,
+        noticeOfWork.now_application_guid,
         kebabCase(key)
       )
     );
   };
 
-  render() {
-    const isImported = this.props.noticeOfWork.imported_to_core;
-    const verificationComplete = isImported && this.props.noticeOfWork.lead_inspector_party_guid;
+  useEffect(() => {
+    if (
+      noticeOfWork.imported_to_core &&
+      tab === "verification"
+    ) {
+      handleTabChange("application");
+    }
 
-    const constructedProps = {
-      isNoticeOfWorkTypeDisabled:
-        (this.props.draftPermit && !isEmpty(this.props.draftPermit.permit_guid)) ||
-        !["SAG", "QIM", "QCA"].includes(this.props.noticeOfWork.notice_of_work_type_code),
-      fixedTop: this.props.fixedTop,
-    };
+    if (tab) {
+      setActiveTabState(tab);
+    }
+  }, []);
 
-    return (
-      <div className="page">
-        <NoticeOfWorkPageHeader
-          noticeOfWork={this.props.noticeOfWork}
-          applicationPageFromRoute={this.props.applicationPageFromRoute}
-          fixedTop={this.props.fixedTop}
-        />
-        <Tabs
-          size="large"
-          activeKey={this.state.activeTab}
-          animated={{ inkBar: true, tabPane: false }}
-          className="now-tabs"
-          onTabClick={this.handleTabChange}
-          style={{ margin: "0" }}
-          centered
+  useEffect(() => {
+    if (tab && tab !== activeTab) {
+      setIsTabLoaded(false);
+      setActiveTabState(tab);
+    }
+  }, [tab]);
+
+  useEffect(() => {
+    // Equivalent to the previous componentWillReceiveProps check for imported_to_core
+    if (noticeOfWork.imported_to_core) {
+      handleTabChange("application");
+    }
+  }, [noticeOfWork.imported_to_core]);
+
+  const isImported = noticeOfWork.imported_to_core;
+  const verificationComplete = isImported && noticeOfWork.lead_inspector_party_guid;
+
+  const constructedProps = {
+    isNoticeOfWorkTypeDisabled:
+      (draftPermit && !isEmpty(draftPermit.permit_guid)) ||
+      !["SAG", "QIM", "QCA"].includes(noticeOfWork.notice_of_work_type_code),
+    fixedTop: props.fixedTop,
+  };
+
+  return (
+    <div className="page">
+      <NoticeOfWorkPageHeader
+        noticeOfWork={noticeOfWork}
+        applicationPageFromRoute={props.applicationPageFromRoute}
+        fixedTop={props.fixedTop}
+      />
+      <Tabs
+        size="large"
+        activeKey={activeTab}
+        animated={{ inkBar: true, tabPane: false }}
+        className="now-tabs"
+        onChange={handleTabChange}
+        style={{ margin: "0" }}
+        centered
+      >
+        {!isImported && (
+          <Tabs.TabPane tab="Verification" key="verification">
+            <VerificationTab
+              noticeOfWork={noticeOfWork}
+              mineGuid={props.mineGuid}
+              originalNoticeOfWork={originalNoticeOfWork}
+            />
+          </Tabs.TabPane>
+        )}
+
+        <Tabs.TabPane
+          tab={props.renderTabTitle("Application", "REV")}
+          key="application"
+          disabled={!isImported}
         >
-          {!isImported && (
-            <Tabs.TabPane tab="Verification" key="verification">
-              <VerificationTab
-                noticeOfWork={this.props.noticeOfWork}
-                mineGuid={this.props.mineGuid}
-                initialPermitGuid={this.state.initialPermitGuid}
-                originalNoticeOfWork={this.props.originalNoticeOfWork}
-              />
-            </Tabs.TabPane>
+          {isImported && (
+            <LoadingWrapper condition={isTabLoaded}>
+              <ApplicationTab {...constructedProps} />
+            </LoadingWrapper>
           )}
+        </Tabs.TabPane>
 
-          <Tabs.TabPane
-            tab={this.props.renderTabTitle("Application", "REV")}
-            key="application"
-            disabled={!isImported}
-          >
-            {isImported && (
-              <LoadingWrapper condition={this.state.isTabLoaded}>
-                <ApplicationTab {...constructedProps} />
-              </LoadingWrapper>
-            )}
-          </Tabs.TabPane>
+        <Tabs.TabPane
+          tab={props.renderTabTitle("Referral", "REF")}
+          key="referral"
+          disabled={!verificationComplete}
+        >
+          {verificationComplete && (
+            <LoadingWrapper condition={isTabLoaded}>
+              <ReferralTabs
+                mineGuid={noticeOfWork.mine_guid}
+                noticeOfWork={noticeOfWork}
+                type="REF"
+                fixedTop={props.fixedTop}
+              />
+            </LoadingWrapper>
+          )}
+        </Tabs.TabPane>
 
-          <Tabs.TabPane
-            tab={this.props.renderTabTitle("Referral", "REF")}
-            key="referral"
-            disabled={!verificationComplete}
-          >
-            {verificationComplete && (
-              <LoadingWrapper condition={this.state.isTabLoaded}>
-                <ReferralTabs
-                  mineGuid={this.props.noticeOfWork.mine_guid}
-                  noticeOfWork={this.props.noticeOfWork}
-                  type="REF"
-                  fixedTop={this.props.fixedTop}
-                />
-              </LoadingWrapper>
-            )}
-          </Tabs.TabPane>
+        <Tabs.TabPane
+          tab={props.renderTabTitle("Consultation", "CON")}
+          key="consultation"
+          disabled={!verificationComplete}
+        >
+          {verificationComplete && (
+            <LoadingWrapper condition={isTabLoaded}>
+              <ReferralTabs
+                mineGuid={noticeOfWork.mine_guid}
+                noticeOfWork={noticeOfWork}
+                type="FNC"
+                fixedTop={props.fixedTop}
+              />
+            </LoadingWrapper>
+          )}
+        </Tabs.TabPane>
+        <Tabs.TabPane
+          tab={props.renderTabTitle("Public Comment", "PUB")}
+          key="public-comment"
+          disabled={!verificationComplete}
+        >
+          {verificationComplete && (
+            <LoadingWrapper condition={isTabLoaded}>
+              <ReferralTabs
+                mineGuid={noticeOfWork.mine_guid}
+                type="PUB"
+                fixedTop={props.fixedTop}
+              />
+            </LoadingWrapper>
+          )}
+        </Tabs.TabPane>
+        <Tabs.TabPane
+          tab={props.renderTabTitle("Draft", "DFT")}
+          key="draft-permit"
+          disabled={!verificationComplete}
+        >
+          {verificationComplete && (
+            <LoadingWrapper condition={isTabLoaded}>
+              <DraftPermitTab {...constructedProps} />
+            </LoadingWrapper>
+          )}
+        </Tabs.TabPane>
 
-          <Tabs.TabPane
-            tab={this.props.renderTabTitle("Consultation", "CON")}
-            key="consultation"
-            disabled={!verificationComplete}
-          >
-            {verificationComplete && (
-              <LoadingWrapper condition={this.state.isTabLoaded}>
-                <ReferralTabs
-                  mineGuid={this.props.noticeOfWork.mine_guid}
-                  noticeOfWork={this.props.noticeOfWork}
-                  type="FNC"
-                  fixedTop={this.props.fixedTop}
-                />
-              </LoadingWrapper>
-            )}
-          </Tabs.TabPane>
-          <Tabs.TabPane
-            tab={this.props.renderTabTitle("Public Comment", "PUB")}
-            key="public-comment"
-            disabled={!verificationComplete}
-          >
-            {verificationComplete && (
-              <LoadingWrapper condition={this.state.isTabLoaded}>
-                <ReferralTabs
-                  mineGuid={this.props.noticeOfWork.mine_guid}
-                  type="PUB"
-                  fixedTop={this.props.fixedTop}
-                />
-              </LoadingWrapper>
-            )}
-          </Tabs.TabPane>
-          <Tabs.TabPane
-            tab={this.props.renderTabTitle("Draft", "DFT")}
-            key="draft-permit"
-            disabled={!verificationComplete}
-          >
-            {verificationComplete && (
-              <LoadingWrapper condition={this.state.isTabLoaded}>
-                <DraftPermitTab {...constructedProps} />
-              </LoadingWrapper>
-            )}
-          </Tabs.TabPane>
+        <Tabs.TabPane tab="Process" key="process-permit" disabled={!verificationComplete}>
+          {verificationComplete && (
+            <LoadingWrapper condition={isTabLoaded}>
+              <ProcessPermit
+                mineGuid={noticeOfWork.mine_guid}
+                noticeOfWork={noticeOfWork}
+                fixedTop={props.fixedTop}
+              />
+            </LoadingWrapper>
+          )}
+        </Tabs.TabPane>
+        <Tabs.TabPane tab="Administrative" key="administrative" disabled={!verificationComplete}>
+          {verificationComplete && (
+            <LoadingWrapper condition={isTabLoaded}>
+              <AdministrativeTab fixedTop={props.fixedTop} />
+            </LoadingWrapper>
+          )}
+        </Tabs.TabPane>
+        <Tabs.TabPane
+          tab="Manage Documents"
+          key="manage-documents"
+          disabled={!verificationComplete}
+        >
+          {verificationComplete && (
+            <LoadingWrapper condition={isTabLoaded}>
+              <ManageDocumentsTab fixedTop={props.fixedTop} />
+            </LoadingWrapper>
+          )}
+        </Tabs.TabPane>
+      </Tabs>
+    </div>
+  );
+};
 
-          <Tabs.TabPane tab="Process" key="process-permit" disabled={!verificationComplete}>
-            {verificationComplete && (
-              <LoadingWrapper condition={this.state.isTabLoaded}>
-                <ProcessPermit
-                  mineGuid={this.props.noticeOfWork.mine_guid}
-                  noticeOfWork={this.props.noticeOfWork}
-                  fixedTop={this.props.fixedTop}
-                />
-              </LoadingWrapper>
-            )}
-          </Tabs.TabPane>
-          <Tabs.TabPane tab="Administrative" key="administrative" disabled={!verificationComplete}>
-            {verificationComplete && (
-              <LoadingWrapper condition={this.state.isTabLoaded}>
-                <AdministrativeTab fixedTop={this.props.fixedTop} />
-              </LoadingWrapper>
-            )}
-          </Tabs.TabPane>
-          <Tabs.TabPane
-            tab="Manage Documents"
-            key="manage-documents"
-            disabled={!verificationComplete}
-          >
-            {verificationComplete && (
-              <LoadingWrapper condition={this.state.isTabLoaded}>
-                <ManageDocumentsTab fixedTop={this.props.fixedTop} />
-              </LoadingWrapper>
-            )}
-          </Tabs.TabPane>
-        </Tabs>
-      </div>
-    );
-  }
-}
-
-const mapStateToProps = (state) => ({
-  noticeOfWork: getNoticeOfWork(state),
-  originalNoticeOfWork: getOriginalNoticeOfWork(state),
-  mines: getMines(state),
-  generatableApplicationDocuments: getGeneratableNoticeOfWorkApplicationDocumentTypeOptions(state),
-  documentContextTemplate: getDocumentContextTemplate(state),
-  draftPermit: getDraftPermitForNOW(state),
-});
-
-export default connect(mapStateToProps)(ApplicationGuard(NoticeOfWorkApplication));
+export default ApplicationGuard(NoticeOfWorkApplication);

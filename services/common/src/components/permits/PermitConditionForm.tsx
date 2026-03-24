@@ -324,7 +324,7 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
                 </Col>
                 <Col className="condition-column" {...editableProps}>
                     <Col className="condition-editor">
-                        {showVariableConditionMenu && <VariableConditionMenu inputRef={conditionInputRef} isManagementView={isStandardConditionEditor} conditionForm={editingFormName}/>}
+                        {showVariableConditionMenu && <VariableConditionMenu inputRef={conditionInputRef} isManagementView={isStandardConditionEditor} conditionForm={editingFormName} />}
                         <Field
                             name="condition"
                             component={RenderAutoSizeField}

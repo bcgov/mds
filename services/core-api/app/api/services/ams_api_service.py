@@ -406,6 +406,7 @@ class AMSApiService():
                         payload = json.dumps(ams_authorization_data)
                         response = requests.post(f'{Config.AMS_URL}/auth', data=payload, headers=headers)
                         response_data = response.json()
+                        current_app.logger.error(f'AMS Payload: {payload}')
                         current_app.logger.error(f'AMS Result: {response_data}')
 
                         ams_result = {}
@@ -578,6 +579,7 @@ class AMSApiService():
                     payload = json.dumps(ams_authorization_data)
                     response = requests.post(f'{Config.AMS_URL}/authamend', data=payload, headers=headers)
                     response_data = response.json()
+                    current_app.logger.error(f'AMS Payload: {payload}')
                     current_app.logger.error(f'AMS Result: {response_data}')
 
                     ams_result = {}

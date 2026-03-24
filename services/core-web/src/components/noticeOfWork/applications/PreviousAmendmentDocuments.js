@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { FormSection, Field } from "@mds/common/components/forms/form";
 import CoreTable from "@mds/common/components/common/CoreTable";
-import DocumentLink from "@/components/common/DocumentLink";
+import DocumentLink from "@mds/common/components/documents/DocumentLink";
 import { renderConfig } from "@/components/common/config";
 
 const propTypes = {

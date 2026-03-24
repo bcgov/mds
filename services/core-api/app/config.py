@@ -2,11 +2,11 @@ import logging
 import os
 import traceback
 
-from dotenv import load_dotenv, find_dotenv
+import requests
 from celery.schedules import crontab
+from dotenv import find_dotenv, load_dotenv
 from flask import current_app, has_app_context, has_request_context
 from opentelemetry import trace
-import requests
 
 ENV_FILE = find_dotenv()
 if ENV_FILE:
@@ -72,6 +72,11 @@ class Config(object):
     WERKZEUG_LOGGING_LEVEL = os.environ.get('WERKZEUG_LOGGING_LEVEL',
                                             'CRITICAL')               # ['DEBUG','INFO','WARN','ERROR','CRITICAL']
     DISPLAY_WERKZEUG_LOG = os.environ.get('DISPLAY_WERKZEUG_LOG', True)
+
+    ELASTICSEARCH_URL = os.environ.get('ELASTICSEARCH_URL', 'https://elasticsearch:9200')
+    ELASTICSEARCH_USERNAME = os.environ.get('ELASTICSEARCH_USERNAME', 'elastic')
+    ELASTICSEARCH_PASSWORD = os.environ.get('ELASTICSEARCH_PASSWORD', 'changeme')
+    ELASTICSEARCH_CA_CERTS = os.environ.get('ELASTICSEARCH_CA_CERTS', '/usr/share/elasticsearch/config/certs/ca/ca.crt')
 
     LOGGING_DICT_CONFIG = {
         'version': 1,
@@ -141,7 +146,7 @@ class Config(object):
     # SqlAlchemy config
     SQLALCHEMY_DATABASE_URI = DB_URL
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    SQLALCHEMY_ENGINE_OPTIONS = {"pool_pre_ping": True}
+    SQLALCHEMY_WARN_20 = True
 
     JWT_OIDC_WELL_KNOWN_CONFIG = os.environ.get(
         'JWT_OIDC_WELL_KNOWN_CONFIG',
@@ -192,7 +197,7 @@ class Config(object):
     RESTPLUS_JSON = {'indent': None, 'separators': (',', ':')}
     COMPRESS_LEVEL = 9
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    SQLALCHEMY_ENGINE_OPTIONS = {'pool_timeout': 300, 'max_overflow': 20}
+    SQLALCHEMY_ENGINE_OPTIONS = {'pool_timeout': 300, 'max_overflow': 20, 'pool_pre_ping': True}
 
     # Flagsmith
     FLAGSMITH_URL = os.environ.get('FLAGSMITH_URL',
@@ -281,6 +286,14 @@ class Config(object):
         'notify_and_update_expired_party_appointments': {
             'task': 'app.api.parties.party_appt.tasks.notify_and_update_expired_party_appointments',
             'schedule': crontab(minute="*/15"),
+        },
+        'create_new_recurring_report_requests': {
+            'task': 'app.api.mines.reports.tasks.create_new_recurring_report_requests',
+            'schedule': crontab(hour="10", minute="0"),  # Run daily at 2am (10am UTC)
+        },
+        'create_new_recurring_crr_report_requests': {
+            'task': 'app.api.mines.reports.tasks.create_new_recurring_crr_report_requests',
+            'schedule': crontab(hour="11", minute="0"),  # Run daily at 3am (11am UTC)
         },
         'push_untp_map_data_to_publisher': {
             'task': 'app.api.verifiable_credentials.manager.push_untp_map_data_to_publisher',

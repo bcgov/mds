@@ -8,6 +8,8 @@ import { renderActivities, sideMenuOptions } from "@/constants/NOWConditions";
 import { getDraftPermitAmendmentForNOW } from "@mds/common/redux/selectors/permitSelectors";
 import { useAppSelector } from "@mds/common/redux/rootState";
 import { IPermitAmendment } from "@mds/common/interfaces";
+import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
+import { Feature } from "@mds/common/utils/featureFlag";
 
 /**
  * @constant NOWSideMenu renders react children with an active indicator if the id is in the url.
@@ -20,6 +22,7 @@ interface NOWSideMenuProps {
 export const NOWSideMenu: FC<NOWSideMenuProps> = ({
   tabSection,
 }) => {
+  const { isFeatureEnabled } = useFeatureFlag();
   const [showNested, setShowNested] = useState(false);
   const [urlRoute, setUrlRoute] = useState<string>();
   const location = useLocation();
@@ -109,11 +112,12 @@ export const NOWSideMenu: FC<NOWSideMenuProps> = ({
       >
         {sideMenuOptions(tabSection, hasPermitConditionsFlow)
           .filter(
-            ({ href, alwaysVisible, applicationType }) =>
+            ({ href, alwaysVisible, applicationType, featureFlag }) =>
               (alwaysVisible ||
                 renderActivities(noticeOfWork.notice_of_work_type_code, href)) &&
               applicationType &&
-              applicationType.includes(noticeOfWork.application_type_code)
+              applicationType.includes(noticeOfWork.application_type_code) &&
+              (!featureFlag || isFeatureEnabled(Feature[featureFlag]))
           )
           .map(({ href, title, children }) => (
             <Anchor.Link href={`#${href}`} title={title} className="now-menu-link" key={href}>

@@ -1,0 +1,95 @@
+<!-- Reusable Email Components -->
+
+{# Centralized Brand Colors Dictionary #}
+{%- set BRAND_COLORS = {
+'minespace': {
+'primary': '#003366',
+'text': '#6B6363',
+'border': '#DED9D9',
+'background': '#ffffff',
+'button': {'background': '#003366', 'border': '#003366', 'text': '#ffffff'}
+},
+'core': {
+'primary': '#5e46a1',
+'text': '#6B6363',
+'border': '#DED9D9',
+'background': '#ffffff',
+'button': {'background': '#5e46a1', 'border': '#5e46a1', 'text': '#ffffff'}
+}
+} -%}
+
+<!-- Paragraph Component -->
+{# Macro to create consistent paragraphs #}
+{% macro paragraph(content, align='left', margin_top=0, margin_bottom=15, brand='minespace') %}
+{%- set brand_colors = BRAND_COLORS[brand] -%}
+<tr>
+    <td style="vertical-align: top; font-family: sans-serif; font-size: 16px; font-weight: 400; line-height: 20px; color: {{ brand_colors.text }}; text-align: {{ align }}; margin: {{ margin_top }}px 0px {{ margin_bottom }}px;"
+        valign="top">
+        <p style="margin: {{ margin_top }}px 0px {{ margin_bottom }}px;">
+            {{ content }}
+        </p>
+    </td>
+</tr>
+{% endmacro %}
+
+<!-- Button Component -->
+{% macro button_link(link, text, brand="core", margin_top=16) %}
+{%- set colors = BRAND_COLORS[brand] -%}
+<tr>
+    <td>
+        <div style="text-align: center; padding-top: {{ margin_top }}px;">
+            <a href="{{ link }}" role="button"
+                style="border: solid 1px {{ colors.button.border }}; border-radius: 5px; box-sizing: border-box; cursor: pointer; display: inline-block; font-size: 14px; font-weight: bold; margin: 0; padding: 12px 25px; text-decoration: none; text-transform: capitalize; background-color: {{ colors.button.background }}; color: {{ colors.button.text }};"
+                aria-label="{{ text }} (opens in new window)">
+                {{ text }}
+            </a>
+        </div>
+    </td>
+</tr>
+{% endmacro %}
+
+<!-- Info Block Component -->
+{% macro info_block(label, value, bold_label=true) %}
+{% if bold_label %}
+<b>{{ label }}:</b> {{ value }}<br />
+{% else %}
+{{ label }}: {{ value }}<br />
+{% endif %}
+{% endmacro %}
+
+<!-- Document List Component -->
+{% macro document_list(documents, brand='minespace') %}
+{%- set text_color = BRAND_COLORS[brand].text -%}
+<tr>
+    <td style="vertical-align: top; font-family: sans-serif; font-size: 16px; font-weight: 400; line-height: 20px; color: {{ text_color }}; margin: 0; margin-bottom: 15px;"
+        valign="top">
+        <ul style="margin: 0; margin-bottom: 15px; padding-left: 20px;">
+            {% for document in documents %}
+            <li>{{ document }}</li>
+            {% endfor %}
+        </ul>
+    </td>
+</tr>
+{% endmacro %}
+
+<!-- Inline Link Component -->
+{% macro inline_link(url, text, brand="minespace") -%}
+{%- set link_color = BRAND_COLORS[brand].primary -%}
+<a href="{{ url }}" style="color: {{ link_color }}; text-decoration: underline;" target="_blank" rel="noopener">{{ text
+    }}</a>
+{%- endmacro %}
+
+<!-- Mine Info Component -->
+{% macro mine_info(mine, brand="minespace") %}
+{%- set text_color = BRAND_COLORS[brand].text -%}
+<tr>
+    <td style="vertical-align: top; font-family: sans-serif; font-size: 16px; font-weight: 400; line-height: 20px; color: {{ text_color }}; margin: 0; margin-bottom: 15px; text-align: center;"
+        valign="top">
+        <p
+            style="font-family: sans-serif; font-size: 16px; font-weight: normal; margin: 0; margin-bottom: 15px; text-align: center;">
+            {% if mine.mine_name %}{{ info_block("Mine Name", mine.mine_name) }}{% endif %}
+            {% if mine.mine_no %}{{ info_block("Mine Number", mine.mine_no) }}{% endif %}
+        </p>
+    </td>
+</tr>
+{% endmacro %}

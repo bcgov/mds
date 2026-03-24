@@ -12,6 +12,25 @@ exports[`EnvDocumentsTab renders properly 1`] = `
       Documents
     </h3>
     <div
+      class="ant-typography"
+    >
+      Please upload your Environmental Management Act waste discharge final application for screening. The application must include all documents and information as listed in the Application Instruction Document (AID) and Information Requirements Table (IRT) issued for this application. Incomplete submissions may lead to delays or rejection of your application.
+    </div>
+    <div
+      class="ant-typography"
+    >
+      If you did not receive an AID or IRT it is recommended that you consult with Ministry staff to confirm information requirements prior to submission.
+    </div>
+    <div
+      class="ant-typography"
+    >
+      When uploading your application files, you will be required to 
+      <b>
+        tag each file by type
+      </b>
+      , which supports efficient screening and review.
+    </div>
+    <div
       class="ant-form-item ant-form-item-with-help"
     >
       <div
@@ -23,9 +42,9 @@ exports[`EnvDocumentsTab renders properly 1`] = `
           <label
             class=""
             for="ADD_EDIT_AMS_FINAL_APPLICATION_pre_submitted_files"
-            title="Check those that were submitted as part of the Project Description"
+            title="Please check any of the following forms that were submitted as during the Project Description phase of this application"
           >
-            Check those that were submitted as part of the Project Description
+            Please check any of the following forms that were submitted as during the Project Description phase of this application
           </label>
         </div>
         <div
@@ -143,7 +162,7 @@ exports[`EnvDocumentsTab renders properly 1`] = `
               >
                 <label
                   class="ant-form-item-required"
-                  for="ADD_EDIT_AMS_FINAL_APPLICATION_documents[0]document_name"
+                  for="ADD_EDIT_AMS_FINAL_APPLICATION_documents[0].document_name"
                   title=""
                 >
                   <div
@@ -163,11 +182,11 @@ exports[`EnvDocumentsTab renders properly 1`] = `
                     class="ant-form-item-control-input-content"
                   >
                     <input
-                      aria-label="documents[0]document_name"
+                      aria-label="documents[0].document_name"
                       class="ant-input ant-input-disabled"
-                      data-testid="documents[0]document_name"
+                      data-testid="documents[0].document_name"
                       disabled=""
-                      name="documents[0]document_name"
+                      name="documents[0].document_name"
                       type="text"
                       value="my document.pdf"
                     />
@@ -178,7 +197,7 @@ exports[`EnvDocumentsTab renders properly 1`] = `
                 >
                   <div
                     class="ant-form-item-explain ant-form-item-explain-connected"
-                    id="ADD_EDIT_AMS_FINAL_APPLICATION_documents[0]document_name_help"
+                    id="ADD_EDIT_AMS_FINAL_APPLICATION_documents[0].document_name_help"
                     role="alert"
                   >
                     <div
@@ -205,7 +224,7 @@ exports[`EnvDocumentsTab renders properly 1`] = `
               >
                 <label
                   class="ant-form-item-required"
-                  for="ADD_EDIT_AMS_FINAL_APPLICATION_documents[0]ams_final_application_document_type_code"
+                  for="ADD_EDIT_AMS_FINAL_APPLICATION_documents[0].ams_final_application_document_type_code"
                   title=""
                 >
                   <div
@@ -227,7 +246,7 @@ exports[`EnvDocumentsTab renders properly 1`] = `
                     <div
                       aria-required="true"
                       class="ant-select ant-select-in-form-item ant-select-single ant-select-show-arrow ant-select-show-search"
-                      data-cy="documents[0]ams_final_application_document_type_code"
+                      data-cy="documents[0].ams_final_application_document_type_code"
                     >
                       <div
                         class="ant-select-selector"
@@ -236,15 +255,15 @@ exports[`EnvDocumentsTab renders properly 1`] = `
                           class="ant-select-selection-search"
                         >
                           <input
-                            aria-activedescendant="ADD_EDIT_AMS_FINAL_APPLICATION_documents[0]ams_final_application_document_type_code_list_0"
+                            aria-activedescendant="ADD_EDIT_AMS_FINAL_APPLICATION_documents[0].ams_final_application_document_type_code_list_0"
                             aria-autocomplete="list"
-                            aria-controls="ADD_EDIT_AMS_FINAL_APPLICATION_documents[0]ams_final_application_document_type_code_list"
+                            aria-controls="ADD_EDIT_AMS_FINAL_APPLICATION_documents[0].ams_final_application_document_type_code_list"
                             aria-haspopup="listbox"
-                            aria-owns="ADD_EDIT_AMS_FINAL_APPLICATION_documents[0]ams_final_application_document_type_code_list"
+                            aria-owns="ADD_EDIT_AMS_FINAL_APPLICATION_documents[0].ams_final_application_document_type_code_list"
                             aria-required="true"
                             autocomplete="off"
                             class="ant-select-selection-search-input"
-                            id="ADD_EDIT_AMS_FINAL_APPLICATION_documents[0]ams_final_application_document_type_code"
+                            id="ADD_EDIT_AMS_FINAL_APPLICATION_documents[0].ams_final_application_document_type_code"
                             role="combobox"
                             type="search"
                             value=""
@@ -291,7 +310,7 @@ exports[`EnvDocumentsTab renders properly 1`] = `
                 >
                   <div
                     class="ant-form-item-explain ant-form-item-explain-connected"
-                    id="ADD_EDIT_AMS_FINAL_APPLICATION_documents[0]ams_final_application_document_type_code_help"
+                    id="ADD_EDIT_AMS_FINAL_APPLICATION_documents[0].ams_final_application_document_type_code_help"
                     role="alert"
                   >
                     <div
@@ -329,7 +348,7 @@ exports[`EnvDocumentsTab renders properly 1`] = `
               >
                 <label
                   class="ant-form-item-required"
-                  for="ADD_EDIT_AMS_FINAL_APPLICATION_documents[1]document_name"
+                  for="ADD_EDIT_AMS_FINAL_APPLICATION_documents[1].document_name"
                   title=""
                 >
                   <div
@@ -349,11 +368,11 @@ exports[`EnvDocumentsTab renders properly 1`] = `
                     class="ant-form-item-control-input-content"
                   >
                     <input
-                      aria-label="documents[1]document_name"
+                      aria-label="documents[1].document_name"
                       class="ant-input ant-input-disabled"
-                      data-testid="documents[1]document_name"
+                      data-testid="documents[1].document_name"
                       disabled=""
-                      name="documents[1]document_name"
+                      name="documents[1].document_name"
                       type="text"
                       value="my archived document.pdf"
                     />
@@ -364,7 +383,7 @@ exports[`EnvDocumentsTab renders properly 1`] = `
                 >
                   <div
                     class="ant-form-item-explain ant-form-item-explain-connected"
-                    id="ADD_EDIT_AMS_FINAL_APPLICATION_documents[1]document_name_help"
+                    id="ADD_EDIT_AMS_FINAL_APPLICATION_documents[1].document_name_help"
                     role="alert"
                   >
                     <div
@@ -391,7 +410,7 @@ exports[`EnvDocumentsTab renders properly 1`] = `
               >
                 <label
                   class="ant-form-item-required"
-                  for="ADD_EDIT_AMS_FINAL_APPLICATION_documents[1]ams_final_application_document_type_code"
+                  for="ADD_EDIT_AMS_FINAL_APPLICATION_documents[1].ams_final_application_document_type_code"
                   title=""
                 >
                   <div
@@ -413,7 +432,7 @@ exports[`EnvDocumentsTab renders properly 1`] = `
                     <div
                       aria-required="true"
                       class="ant-select ant-select-in-form-item ant-select-single ant-select-show-arrow ant-select-show-search"
-                      data-cy="documents[1]ams_final_application_document_type_code"
+                      data-cy="documents[1].ams_final_application_document_type_code"
                     >
                       <div
                         class="ant-select-selector"
@@ -422,15 +441,15 @@ exports[`EnvDocumentsTab renders properly 1`] = `
                           class="ant-select-selection-search"
                         >
                           <input
-                            aria-activedescendant="ADD_EDIT_AMS_FINAL_APPLICATION_documents[1]ams_final_application_document_type_code_list_0"
+                            aria-activedescendant="ADD_EDIT_AMS_FINAL_APPLICATION_documents[1].ams_final_application_document_type_code_list_0"
                             aria-autocomplete="list"
-                            aria-controls="ADD_EDIT_AMS_FINAL_APPLICATION_documents[1]ams_final_application_document_type_code_list"
+                            aria-controls="ADD_EDIT_AMS_FINAL_APPLICATION_documents[1].ams_final_application_document_type_code_list"
                             aria-haspopup="listbox"
-                            aria-owns="ADD_EDIT_AMS_FINAL_APPLICATION_documents[1]ams_final_application_document_type_code_list"
+                            aria-owns="ADD_EDIT_AMS_FINAL_APPLICATION_documents[1].ams_final_application_document_type_code_list"
                             aria-required="true"
                             autocomplete="off"
                             class="ant-select-selection-search-input"
-                            id="ADD_EDIT_AMS_FINAL_APPLICATION_documents[1]ams_final_application_document_type_code"
+                            id="ADD_EDIT_AMS_FINAL_APPLICATION_documents[1].ams_final_application_document_type_code"
                             role="combobox"
                             type="search"
                             value=""
@@ -438,9 +457,9 @@ exports[`EnvDocumentsTab renders properly 1`] = `
                         </span>
                         <span
                           class="ant-select-selection-item"
-                          title="Clause Form"
+                          title="Clause Amendment Form"
                         >
-                          Clause Form
+                          Clause Amendment Form
                         </span>
                       </div>
                       <span
@@ -477,7 +496,7 @@ exports[`EnvDocumentsTab renders properly 1`] = `
                 >
                   <div
                     class="ant-form-item-explain ant-form-item-explain-connected"
-                    id="ADD_EDIT_AMS_FINAL_APPLICATION_documents[1]ams_final_application_document_type_code_help"
+                    id="ADD_EDIT_AMS_FINAL_APPLICATION_documents[1].ams_final_application_document_type_code_help"
                     role="alert"
                   >
                     <div

@@ -84,16 +84,21 @@ interface BaseViewInputProps {
   label?: string | ReactNode;
   value: string | number;
   showNA?: boolean;
+  displayOverride?: ReactNode;
 }
-export const BaseViewInput: FC<BaseViewInputProps> = ({ label = "", value = "", showNA = true }) => {
+export const BaseViewInput: FC<BaseViewInputProps> = ({ label = "", value = "", showNA = true, displayOverride }) => {
   const hasValue = value !== "";
   const displayValue = hasValue ? value.toString() : EMPTY_FIELD;
+
+  const valueElement = displayOverride && hasValue
+    ? displayOverride
+    : <Typography.Paragraph className="view-item-value">{displayValue}</Typography.Paragraph>;
   return (
     <div className="view-item ant-form-item">
       {label && label !== "" && (
         <Typography.Paragraph className="view-item-label">{label}</Typography.Paragraph>
       )}
-      {(hasValue || showNA) && (<Typography.Paragraph className="view-item-value">{displayValue}</Typography.Paragraph>)}
+      {(hasValue || showNA) && valueElement}
     </div>
   );
 };

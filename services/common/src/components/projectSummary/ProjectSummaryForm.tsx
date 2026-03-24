@@ -43,7 +43,7 @@ export const getProjectFormTabs = (
 ) => {
   const projectFormTabs = [
     "basic-information",
-    "related-projects",
+    "link-related-projects",
     "purpose-and-authorization",
     "project-contacts",
     "applicant-information",
@@ -67,7 +67,7 @@ export const getProjectFormTabs = (
     ? projectFormTabs
     : [
       "basic-information",
-      "related-projects",
+      "link-related-projects",
       "project-contacts",
       "project-dates",
       "document-upload",
@@ -117,7 +117,7 @@ export const ProjectSummaryForm: FC<ProjectSummaryFormProps> = ({
     "ministry-contact": <ProjectManagement />,
     "location-access-and-land-use": <LegalLandOwnerInformation fieldsDisabled={fieldsDisabled} />,
     "basic-information": <BasicInformation fieldsDisabled={fieldsDisabled} />,
-    "related-projects": (
+    "link-related-projects": (
       <ProjectLinks
         fieldsDisabled={fieldsDisabled}
         viewProject={(p) => GLOBAL_ROUTES?.EDIT_PROJECT.dynamicRoute(p.project_guid)}
@@ -138,14 +138,15 @@ export const ProjectSummaryForm: FC<ProjectSummaryFormProps> = ({
     <SteppedForm
       name={FORM.ADD_EDIT_PROJECT_SUMMARY}
       initialValues={initialValues}
-      isEditMode={isEditMode}
+      isEditMode={isCore ? isEditMode : (isEditMode || !docFieldsDisabled)}
       handleSaveData={handleSaveData}
       handleTabChange={handleTabChange}
       transformPayload={handleTransformPayload}
       activeTab={activeTab}
+      forceRedux
     >
       {projectFormTabs
-        .filter((tab) => majorProjectsFeatureEnabled || tab !== "related-projects")
+        .filter((tab) => majorProjectsFeatureEnabled || tab !== "link-related-projects")
         .map((tab) => (
           <Step key={tab}>{renderTabComponent(tab)}</Step>
         ))}

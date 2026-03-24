@@ -97,7 +97,9 @@ from app.api.mines.permits.permit_amendment.resources.permit_amendment_document 
 from app.api.mines.permits.permit_amendment.resources.permit_amendment_vc import (
     PermitAmendmentVCResource,
 )
-from app.api.mines.permits.permit_conditions.models.permit_condition_tag import PermitConditionTag
+from app.api.mines.permits.permit_conditions.models.permit_condition_tag import (
+    PermitConditionTag,
+)
 from app.api.mines.permits.permit_conditions.resources.permit_amendment_condition_category_list_resource import (
     PermitAmendmentConditionCategoryListResource,
 )
@@ -110,9 +112,12 @@ from app.api.mines.permits.permit_conditions.resources.permit_amendment_conditio
 from app.api.mines.permits.permit_conditions.resources.permit_condition_category_resource import (
     PermitConditionCategoryResource,
 )
-from app.api.mines.permits.permit_conditions.resources.permit_condition_tag_resource import PermitConditionTagResource
-from app.api.mines.permits.permit_conditions.resources.permit_condition_template_resource import \
-    PermitConditionTemplateResource
+from app.api.mines.permits.permit_conditions.resources.permit_condition_tag_resource import (
+    PermitConditionTagResource,
+)
+from app.api.mines.permits.permit_conditions.resources.permit_condition_template_resource import (
+    PermitConditionTemplateResource,
+)
 from app.api.mines.permits.permit_conditions.resources.permit_condition_type_resource import (
     PermitConditionTypeResource,
 )
@@ -125,6 +130,9 @@ from app.api.mines.permits.permit_conditions.resources.standard_permit_condition
 )
 from app.api.mines.permits.permit_conditions.resources.standard_permit_conditions_resource import (
     StandardPermitConditionsResource,
+)
+from app.api.mines.permits.permit_conditions.resources.standard_report_permit_requirement_resource import (
+    StandardReportPermitRequirementResource,
 )
 from app.api.mines.permits.permit_extraction.resources.permit_condition_extraction_resource import (
     PermitConditionExtractionProgressResource,
@@ -145,7 +153,9 @@ from app.api.mines.reports.resources.mine_report_definition_compliance_article_x
 from app.api.mines.reports.resources.mine_report_definition_list_resource import (
     MineReportDefinitionListResource,
 )
-from app.api.mines.reports.resources.mine_report_definition_resource import MineReportDefinitionResource
+from app.api.mines.reports.resources.mine_report_definition_resource import (
+    MineReportDefinitionResource,
+)
 from app.api.mines.reports.resources.mine_report_document import (
     MineReportDocumentListResource,
 )
@@ -153,11 +163,9 @@ from app.api.mines.reports.resources.mine_report_due_date_type_resource import (
     MineReportDueDateTypeResource,
 )
 from app.api.mines.reports.resources.mine_report_permit_requirement import (
-    MineReportPermitRequirementResource
+    MineReportPermitRequirementResource,
 )
-from app.api.mines.permits.permit_conditions.resources.standard_report_permit_requirement_resource import (
-    StandardReportPermitRequirementResource
-)
+from app.api.mines.reports.resources.mine_report_stats import MineReportStatsResource
 from app.api.mines.reports.resources.mine_report_submission_resource import (
     ReportSubmissionResource,
 )
@@ -197,10 +205,12 @@ from app.api.mines.work_information.resources.work_information_list import (
 from app.api.notice_of_departure.resources.notice_of_departure_document import (
     MineNoticeOfDepartureNewDocumentUploadResource,
 )
+from app.api.now_applications.resources.now_application_list_proponent_resource import (
+    NOWApplicationListProponentResource,
+)
 from app.api.parties.party_appt.resources.mine_party_appt_document_upload_resource import (
     MinePartyApptDocumentUploadResource,
 )
-from app.api.now_applications.resources.now_application_list_proponent_resource import NOWApplicationListProponentResource
 from flask_restx import Namespace
 
 api = Namespace('mines', description='Mine related operations')
@@ -265,6 +275,7 @@ api.add_resource(MineIncidentDocumentListResource, '/<string:mine_guid>/incident
 api.add_resource(ReportsResource, '/reports')
 api.add_resource(MineReportListResource, '/<string:mine_guid>/reports')
 api.add_resource(MineReportResource, '/<string:mine_guid>/reports/<string:mine_report_guid>')
+api.add_resource(MineReportStatsResource, '/<string:mine_guid>/reports/stats')
 api.add_resource(ReportSubmissionResource, '/reports/submissions')
 api.add_resource(MineReportDefinitionListResource, '/reports/definitions')
 api.add_resource(

@@ -6,13 +6,13 @@ from marshmallow.exceptions import MarshmallowError
 from app.extensions import api
 from app.api.mines.response_models import STANDARD_PERMIT_CONDITION_MODEL
 from app.api.mines.permits.permit_conditions.models import StandardPermitConditions
-from app.api.utils.access_decorators import requires_role_edit_standard_permit_conditions
+from app.api.utils.access_decorators import requires_role_edit_standard_permit_conditions, requires_role_edit_permit
 from app.api.utils.resources_mixins import UserMixin
 
 
 class StandardPermitConditionsListResource(Resource, UserMixin):
     @api.doc(description='Get all standard permit conditions for a notice of work type')
-    @requires_role_edit_standard_permit_conditions
+    @requires_role_edit_permit
     @api.marshal_with(STANDARD_PERMIT_CONDITION_MODEL, code=200, envelope='records')
     def get(self, notice_of_work_type):
         standard_permit_condition = StandardPermitConditions.find_by_notice_of_work_type_code(

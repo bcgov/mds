@@ -1,6 +1,8 @@
 import json
 
 from tests.factories import PartyFactory
+from app.api.constants import GET_ALL_CONSULTATION_ADVISORS_KEY
+from app.extensions import cache
 
 
 # GET
@@ -60,3 +62,30 @@ def test_search_org_by_explicit(test_client, db_session, auth_headers):
     assert get_resp.status_code == 200
     assert len(get_data['records']) == 1
     assert get_data['records'][0]['party_name'] == 'a company'
+
+def test_get_consultation_advisors_cache_miss(test_client, db_session, auth_headers):
+    PartyFactory.create_batch(size=3, person=True)
+
+    resp = test_client.get(
+        "/parties?business_role=CNA&per_page=all",
+        headers=auth_headers["full_auth_header"],
+    )
+
+    data = json.loads(resp.data.decode())
+
+    assert resp.status_code == 200
+    assert "records" in data
+
+def test_get_consultation_advisors_cache_hit(test_client, db_session, auth_headers):
+    cached_value = {"records": [], "total": 0}
+
+    cache.set(GET_ALL_CONSULTATION_ADVISORS_KEY, cached_value)
+
+    resp = test_client.get(
+        "/parties?business_role=CNA&per_page=all",
+        headers=auth_headers["full_auth_header"],
+    )
+
+    data = json.loads(resp.data.decode())
+
+    assert resp.status_code == 200

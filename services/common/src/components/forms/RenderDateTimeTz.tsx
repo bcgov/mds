@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Form, DatePicker, Select } from "antd";
 import { useSelector, connect } from "react-redux";
@@ -12,7 +12,8 @@ import {
   BC_TIMEZONE_NAMES,
   CANADA_TIMEZONE_MAP,
 } from "@mds/common/constants/strings";
-import { getFormItemLabel } from "./BaseInput";
+import { BaseViewInput, getFormItemLabel } from "./BaseInput";
+import { FormContext } from "./FormWrapper";
 
 const propTypes = {
   input: PropTypes.objectOf(PropTypes.any).isRequired,
@@ -48,6 +49,8 @@ const RenderDateTimeTz = (props) => {
     showTimezones,
   } = props;
 
+  const { isEditMode } = useContext(FormContext);
+
   const tzGuess = moment.tz.guess();
   // find the matching zone within Canada
   const userCanadaTz = Object.entries(CANADA_TIMEZONE_MAP).find(
@@ -56,7 +59,7 @@ const RenderDateTimeTz = (props) => {
   // return the tz name OR use the default if not within Canada.
   const userTz = userCanadaTz ? userCanadaTz[0] : DEFAULT_TIMEZONE;
   let formTimezone;
-  if (timezoneFieldProps) {
+  if (timezoneFieldProps && isEditMode) {
     const formValues = useSelector((state) => getFormValues(meta.form)(state));
     formTimezone = formValues[timezoneFieldProps.name];
   }
@@ -97,6 +100,15 @@ const RenderDateTimeTz = (props) => {
       setDatetime(input.value);
     }
   }, [input.value]);
+
+  if (!isEditMode) {
+    return (
+      <BaseViewInput
+        label={props.label}
+        value={datePickerFormat(input?.value)}
+      />
+    );
+  }
 
   return (
     <Form.Item

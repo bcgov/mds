@@ -51,6 +51,7 @@ from app.api.mines.permits.permit_amendment.models.permit_amendment_type_code im
 from app.api.now_applications.models.administrative_amendments.application_reason_code import ApplicationReasonCode
 from app.api.now_applications.models.administrative_amendments.application_source_type_code import ApplicationSourceTypeCode
 from app.api.now_applications.models.application_type_code import ApplicationTypeCode
+from app.api.now_applications.models.notice_of_work_tier import NoticeOfWorkTier
 from app.api.mines.government_agencies.models.government_agency_type import GovernmentAgencyType
 from app.api.mines.tailings.models.tsf_operating_status_code import TSFOperatingStatusCode
 from app.api.mines.tailings.models.consequence_classification_status_code import ConsequenceClassificationStatusCode
@@ -67,6 +68,7 @@ from app.api.projects.information_requirements_table.models.information_requirem
 from app.api.projects.information_requirements_table.models.information_requirements_table_document_type import InformationRequirementsTableDocumentType
 from app.api.projects.major_mine_application.models.major_mine_application_status_code import MajorMineApplicationStatusCode
 from app.api.projects.major_mine_application.models.major_mine_application_document_type import MajorMineApplicationDocumentType
+from app.api.projects.major_mine_application.models.major_mine_application_document_subtype import MajorMineApplicationDocumentSubtype
 from app.api.projects.project_decision_package.models.project_decision_package_status_code import ProjectDecisionPackageStatusCode
 from app.api.projects.project_decision_package.models.project_decision_package_document_type import ProjectDecisionPackageDocumentType
 
@@ -83,11 +85,12 @@ MODELS_GET_ACTIVE = [
     ExemptionFeeStatus, PermitConditionType, PermitConditionCategory, PartyBusinessRoleCode,
     NOWApplicationDelayType, PermitAmendmentTypeCode, ApplicationReasonCode,
     ApplicationSourceTypeCode, ApplicationTypeCode, GovernmentAgencyType, TSFOperatingStatusCode,
+    NoticeOfWorkTier,
     ConsequenceClassificationStatusCode, ITRBExemptionStatusCode, ExplosivesPermitStatus,
     ExplosivesPermitMagazineType, ExplosivesPermitDocumentType, ProjectSummaryDocumentType,
     ProjectSummaryStatusCode, MinistryContactType, ProjectSummaryAuthorizationType,
     ProjectSummaryPermitType, InformationRequirementsTableStatusCode, InformationRequirementsTableDocumentType,
-    MajorMineApplicationStatusCode, MajorMineApplicationDocumentType, ProjectDecisionPackageStatusCode, ProjectDecisionPackageDocumentType, Municipality
+    MajorMineApplicationStatusCode, MajorMineApplicationDocumentType, MajorMineApplicationDocumentSubtype, ProjectDecisionPackageStatusCode, ProjectDecisionPackageDocumentType, Municipality
 ]
 
 

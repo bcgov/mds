@@ -1,0 +1,18 @@
+@use "../settings/variables.scss" as *;
+@use "../settings/theme.scss" as *;
+
+.gov-grey-border-box {
+    border: 1px solid $gov-grey;
+    border-radius: 5px;
+    padding: 16px;
+}
+
+.ant-collapse.primary-title-collapse>.ant-collapse-item>.ant-collapse-header {
+    background-color: $gov-blue;
+    color: $white;
+
+    .ant-collapse-expand-icon {
+        margin-top: auto;
+        margin-bottom: auto;
+    }
+}

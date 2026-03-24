@@ -4,8 +4,8 @@ import { bindActionCreators } from "redux";
 import PropTypes from "prop-types";
 import { Radio } from "antd";
 import { isEmpty } from "lodash";
-import { createParty } from "@mds/common/redux/actionCreators/partiesActionCreator";
-import { getAddPartyFormState } from "@mds/common/redux/selectors/partiesSelectors";
+import { createParty } from "@mds/common/redux/slices/partiesSlice";
+import { getAddPartyFormState } from "@mds/common/redux/slices/partiesSlice";
 import AddQuickPartyForm from "@/components/Forms/parties/AddQuickPartyForm";
 import { getDropdownProvinceOptions } from "@mds/common/redux/selectors/staticContentSelectors";
 import CustomPropTypes from "@/customPropTypes";
@@ -24,7 +24,7 @@ const defaultProps = {
     initialValues: undefined,
   },
   initialValues: undefined,
-  afterSubmit: () => {},
+  afterSubmit: () => { },
 };
 
 export class AddQuickPartyModal extends Component {
@@ -55,7 +55,7 @@ export class AddQuickPartyModal extends Component {
       })
       .catch()
       .finally(() => {
-        this.props.afterSubmit(response?.party_guid);
+        this.props.afterSubmit(response?.party_guid, response);
       });
   };
 

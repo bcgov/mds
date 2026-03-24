@@ -34,7 +34,6 @@ export const ENVIRONMENT = {
   geoMarkUrl: "<GEOMARK_URL_BASE>",
 };
 
-
 export const KEYCLOAK = {
   realm: "standard",
   "ssl-required": "external",
@@ -201,4 +200,5 @@ export const USER_ROLES = {
   role_abandoned_mines: "core_abandoned_mines",
   role_edit_compliance_codes: "core_edit_code",
   role_edit_helpdesk: "core_helpdesk",
+  role_manage_orgbook: "core_manage_orgbook",
 };

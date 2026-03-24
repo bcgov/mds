@@ -1,5 +1,6 @@
 from flask_restx import Namespace
 
+from app.api.verifiable_credentials.resources.dependency_tests import OrgbookPublisherConnectionResource
 from app.api.verifiable_credentials.resources.vc_connections import VerifiableCredentialConnectionResource
 from app.api.verifiable_credentials.resources.vc_connection_invitations import VerifiableCredentialConnectionInvitationsResource
 from app.api.verifiable_credentials.resources.traction_webhook import TractionWebhookResource
@@ -25,3 +26,4 @@ api.add_resource(VerifiableCredentialRevocationResource,
 
 api.add_resource(W3CCredentialResource, '/credentials/<string:vc_unsigned_hash>')
 api.add_resource(W3CCredentialIssueResource, '/credentials/issue')
+api.add_resource(OrgbookPublisherConnectionResource, '/test/orgbook-publisher-connection')

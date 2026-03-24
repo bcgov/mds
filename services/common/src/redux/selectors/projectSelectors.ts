@@ -121,6 +121,11 @@ export const getFormattedProjectApplication = createSelector(
         d.major_mine_application_document_type_code ===
         MAJOR_MINES_APPLICATION_DOCUMENT_TYPE_CODE.PRIMARY
     );
+    const appendix_documents = allDocuments.filter(
+      (d) =>
+        d.major_mine_application_document_type_code ===
+        MAJOR_MINES_APPLICATION_DOCUMENT_TYPE_CODE.APPENDIX
+    );
     const spatial_documents = allDocuments.filter(
       (d) =>
         d.major_mine_application_document_type_code ===
@@ -134,7 +139,7 @@ export const getFormattedProjectApplication = createSelector(
 
     const primaryContact = project?.contacts?.filter((contact) => contact.is_primary === true)[0];
     const primary_contact = getContactName(primaryContact);
-    return { ...app, primary_documents, spatial_documents, supporting_documents, primary_contact };
+    return { ...app, primary_documents, spatial_documents, supporting_documents, appendix_documents, primary_contact };
   }
 );
 

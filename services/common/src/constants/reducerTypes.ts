@@ -46,9 +46,6 @@ export const INCIDENTS = "INCIDENTS";
 // Work Information
 export const MINE_WORK_INFORMATIONS = "MINE_WORK_INFORMATIONS";
 
-// Reports
-export const REPORTS = "REPORTS";
-
 // Notices of Work
 export const NOTICE_OF_WORK = "NOTICE_OF_WORK";
 

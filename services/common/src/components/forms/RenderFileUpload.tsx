@@ -462,6 +462,10 @@ export const FileUpload: FC<FileUploadProps> = ({
     };
   }, []);
 
+  if (!isEditMode) {
+    return null;
+  }
+
   const handleFileAdd = (err, file) => {
     // Add ID to file metadata so we can reference it later
     file.setMetadata("filepondid", file.id);

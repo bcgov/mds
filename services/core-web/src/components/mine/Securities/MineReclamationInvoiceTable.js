@@ -8,7 +8,7 @@ import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
 import { EDIT, EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import CoreTable from "@mds/common/components/common/CoreTable";
-import DocumentLink from "@/components/common/DocumentLink";
+import DocumentLink from "@mds/common/components/documents/DocumentLink";
 import { CoreTooltip } from "@/components/common/CoreTooltip";
 
 /**
@@ -120,13 +120,13 @@ export const MineReclamationInvoiceTable = (props) => {
         <div title="Documents">
           {record.documents.length > 0
             ? record.documents.map((file) => (
-                <div key={file.mine_document_guid} title={file.document_name}>
-                  <DocumentLink
-                    documentManagerGuid={file.document_manager_guid}
-                    documentName={file.document_name}
-                  />
-                </div>
-              ))
+              <div key={file.mine_document_guid} title={file.document_name}>
+                <DocumentLink
+                  documentManagerGuid={file.document_manager_guid}
+                  documentName={file.document_name}
+                />
+              </div>
+            ))
             : Strings.EMPTY_FIELD}
         </div>
       ),

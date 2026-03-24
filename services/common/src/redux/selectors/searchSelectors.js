@@ -1,8 +1,17 @@
-import * as searchReducer from "../reducers/searchReducer";
-
-export const {
+import {
   getSearchResults,
+  getSearchFacets,
   getSearchTerms,
   getSearchBarResults,
+  getSearchBarFacets,
   getSearchSubsetResults,
-} = searchReducer;
+} from "../slices/searchSlice";
+
+export {
+  getSearchResults,
+  getSearchFacets,
+  getSearchTerms,
+  getSearchBarResults,
+  getSearchBarFacets,
+  getSearchSubsetResults,
+};

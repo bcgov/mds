@@ -25,10 +25,11 @@ import {
   lonNegative,
   maxLength,
   number,
+  partyHasAddress,
   required,
 } from "@mds/common/redux/utils/Validate";
 import { createDropDownList, formatDate } from "@common/utils/helpers";
-import { getAllPartyRelationships } from "@mds/common/redux/selectors/partiesSelectors";
+import { getAllPartyRelationships } from "@mds/common/redux/slices/partiesSlice";
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 import { getIsFormLoading } from "@mds/common/redux/reducers/modalReducer";
 import { renderConfig } from "@/components/common/config";
@@ -137,11 +138,13 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
         return {
           value: item.mine_party_appt_id,
           label: `${item.party.name} (${formatDate(item.start_date)} - ${endDate})`,
+          address: item.party.address,
         };
       });
     const mineManagersDropdown = dropdown(mineManagers);
     const permitteeDropdown = dropdown(permittee);
     const permitDropdown = createDropDownList(props.permits, "permit_no", "permit_guid");
+    const partyValidationMessage = "Add an address to this contact to proceed with issuing the permit";
     const nowDropdown = createDropDownList(
       props.noticeOfWorkApplications,
       "now_number",
@@ -464,7 +467,7 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
                   placeholder="Select Mine Manager"
                   partyLabel="Mine Manager"
                   required={!isHistoric}
-                  validate={isHistoric ? [] : [required]}
+                  validate={isHistoric ? [] : [required, partyHasAddress(mineManagersDropdown, partyValidationMessage)]}
                   component={renderConfig.SELECT}
                   data={mineManagersDropdown}
                   disabled={disabled}
@@ -478,7 +481,7 @@ export const ExplosivesPermitFormNew: FC<ExplosivesPermitFormProps &
                   component={renderConfig.SELECT}
                   placeholder="Select Permittee"
                   required
-                  validate={[required]}
+                  validate={isHistoric ? [required] : [required, partyHasAddress(permitteeDropdown, partyValidationMessage)]}
                   data={permitteeDropdown}
                   disabled={disabled || !mines_permit_guid}
                 />

@@ -3,14 +3,10 @@ import { render } from "@testing-library/react";
 import { NoticeOfWorkPageHeader } from "@/components/noticeOfWork/applications/NoticeOfWorkPageHeader";
 import * as NOW_MOCK from "@mds/common/tests/mocks/noticeOfWorkMock";
 import { BrowserRouter } from "react-router-dom";
+import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
-const dispatchProps = {
-  renderTabTitle: jest.fn(),
-};
-const reducerProps = {
-  noticeOfWorkApplicationStatusOptionsHash: {},
-  inspectorsHash: {},
-  noticeOfWork: NOW_MOCK.NOTICE_OF_WORK,
+const props = {
+  noticeOfWork: NOW_MOCK.NOTICE_OF_WORK as any,
   applicationPageFromRoute: { title: "Mock Title", route: "mock/url" },
   fixedTop: false,
 };
@@ -18,12 +14,11 @@ const reducerProps = {
 describe("NoticeOfWorkPageHeader", () => {
   it("renders properly", () => {
     const { container: component } = render(
-      <BrowserRouter>
-        <NoticeOfWorkPageHeader
-          {...dispatchProps}
-          {...reducerProps}
-        />
-      </BrowserRouter>
+      <ReduxWrapper>
+        <BrowserRouter>
+          <NoticeOfWorkPageHeader {...props} />
+        </BrowserRouter>
+      </ReduxWrapper>
     );
     expect(component).toMatchSnapshot();
   });

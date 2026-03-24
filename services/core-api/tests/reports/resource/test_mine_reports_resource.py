@@ -1,13 +1,19 @@
 import json
 import uuid
-from datetime import datetime, timedelta, date
-from flask import current_app
+from datetime import date, datetime, timedelta
 
+from app.api.constants import MINE_REPORT_TYPE
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.reports.models.mine_report_definition import MineReportDefinition
-from app.api.constants import MINE_REPORT_TYPE
-
-from tests.factories import MineFactory, MineReportFactory
+from flask import current_app
+from pytz import timezone as pytz_timezone
+from tests.factories import (
+    MineFactory,
+    MineReportFactory,
+    MineReportPermitRequirementFactory,
+    MineReportSubmissionFactory,
+    create_mine_and_permit,
+)
 
 THREE_REPORTS = 3
 ONE_REPORT = 1
@@ -53,32 +59,77 @@ def test_get_code_required_reports_for_mine(test_client, db_session, auth_header
     assert get_resp.status_code == 200
     assert all(report['report_name'] == specific_report_name for report in get_data['records'])
 
-    # Test filter by received date range
-    start_date = mine.mine_reports[0].received_date - timedelta(days=1)
-    end_date = mine.mine_reports[0].received_date + timedelta(days=1)
+    # Test filter by received date range (robust to date or datetime values from factories)
+    base_rd = mine.mine_reports[0].received_date
+    base_rd_date = base_rd.date() if isinstance(base_rd, datetime) else base_rd
+    start_date = base_rd_date - timedelta(days=1)
+    end_date = base_rd_date + timedelta(days=1)
 
     get_resp = test_client.get(
-        f'/mines/{mine.mine_guid}/reports?mine_reports_type=CRR&due_date_start={start_date.strftime("%Y-%m-%d")}&due_date_end={end_date.strftime("%Y-%m-%d")}',
+        f'/mines/{mine.mine_guid}/reports?mine_reports_type=CRR&received_date_start={start_date.strftime("%Y-%m-%d")}&received_date_end={end_date.strftime("%Y-%m-%d")}',
         headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
     assert get_resp.status_code == 200
 
     for report in get_data['records']:
-        received_date = datetime.strptime(report['received_date'], '%Y-%m-%d')
+        received_date = datetime.strptime(report['received_date'], '%Y-%m-%d').date()
 
-        assert (start_date.date() <= received_date.date())
-        assert (received_date.date() <= end_date)
+        assert (start_date <= received_date)
+        assert (received_date <= end_date)
 
 
 def test_get_permit_required_reports_for_mine(test_client, db_session, auth_headers):
-    mine = MineFactory(mine_reports=THREE_REPORTS)
-    mine_reports = MineReportFactory(mine=mine, permit_required_reports=True)
+    mine, permit = create_mine_and_permit(mine_kwargs={"mine_reports": 0}, num_permit_amendments=2)
+    # Set distinct issue_dates so the filter can determine the latest amendment
+    today = date.today()
+    for i, amendment in enumerate(permit.permit_amendments):
+        amendment.issue_date = today - timedelta(days=10 - i)
+    db_session.flush()
+    latest_amendment = max(permit.permit_amendments, key=lambda amendment: amendment.issue_date)
+    previous_amendment = min(permit.permit_amendments, key=lambda amendment: amendment.issue_date)
+
+    latest_requirement = MineReportPermitRequirementFactory(
+        permit_amendment=latest_amendment,
+        report_name="Latest PRR",
+        due_date_period_months=0,
+        initial_due_date=date.today() + timedelta(days=10),
+        active_ind=True,
+        deleted_ind=False,
+    )
+    previous_requirement = MineReportPermitRequirementFactory(
+        permit_amendment=previous_amendment,
+        report_name="Old PRR",
+        due_date_period_months=0,
+        initial_due_date=date.today() + timedelta(days=10),
+        active_ind=True,
+        deleted_ind=False,
+    )
+
+    MineReportFactory(
+        mine=mine,
+        permit=permit,
+        mine_report_definition_id=None,
+        mine_report_permit_requirement=latest_requirement,
+        due_date=date.today() + timedelta(days=10),
+        mine_report_submissions=0,
+    )
+    MineReportFactory(
+        mine=mine,
+        permit=permit,
+        mine_report_definition_id=None,
+        mine_report_permit_requirement=previous_requirement,
+        due_date=date.today() + timedelta(days=10),
+        mine_report_submissions=0,
+    )
+
     get_resp = test_client.get(
         f'/mines/{mine.mine_guid}/reports?mine_reports_type={MINE_REPORT_TYPE["PERMIT REQUIRED REPORTS"]}',
         headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
+
     assert len(get_data['records']) == 1
     assert get_resp.status_code == 200
+    assert get_data['records'][0]['mine_report_permit_requirement_id'] == latest_requirement.mine_report_permit_requirement_id
 
 
 def test_get_a_report_for_a_mine(test_client, db_session, auth_headers):
@@ -91,6 +142,103 @@ def test_get_a_report_for_a_mine(test_client, db_session, auth_headers):
     get_data = json.loads(get_resp.data.decode())
     assert get_data['mine_report_guid'] == str(mine_report.mine_report_guid)
     assert get_resp.status_code == 200
+    assert 'is_overdue' in get_data
+
+
+def test_is_overdue_flag_in_list_and_detail(test_client, db_session, auth_headers):
+    today_pst = datetime.now(pytz_timezone('US/Pacific')).date()
+    yesterday = today_pst - timedelta(days=1)
+    apr_1_2025 = date(2025, 4, 1)
+
+    mine = MineFactory(mine_reports=0)
+
+    # Overdue record: due yesterday but not submitted (NON) and after threshold
+    overdue = MineReportFactory(
+        mine=mine,
+        mine_report_submissions=0,
+        due_date=max(yesterday, apr_1_2025),
+        received_date=None,
+    )
+
+    assert overdue.is_overdue is True
+
+    # Not overdue: due in future
+    not_overdue = MineReportFactory(
+        mine=mine,
+        mine_report_submissions=0,
+        due_date=today_pst + timedelta(days=5),
+        received_date=None,
+    )
+
+    assert not_overdue.is_overdue is False
+
+    list_resp = test_client.get(
+        f'/mines/{mine.mine_guid}/reports', headers=auth_headers['full_auth_header']
+    )
+    list_data = json.loads(list_resp.data.decode())
+    assert list_resp.status_code == 200
+    assert len(list_data['records']) >= 2
+
+    flags = {r['mine_report_guid']: r.get('is_overdue') for r in list_data['records']}
+    assert flags[str(overdue.mine_report_guid)] is True
+    assert flags[str(not_overdue.mine_report_guid)] is False
+
+    det_resp = test_client.get(
+        f'/mines/{mine.mine_guid}/reports/{overdue.mine_report_guid}',
+        headers=auth_headers['full_auth_header'],
+    )
+    det_data = json.loads(det_resp.data.decode())
+    assert det_resp.status_code == 200
+    assert det_data['is_overdue'] is True
+
+
+def test_is_overdue_false_when_latest_submission_present(test_client, db_session, auth_headers):
+    today_pst = datetime.now(pytz_timezone('US/Pacific')).date()
+    yesterday = today_pst - timedelta(days=1)
+    apr_1_2025 = date(2025, 4, 1)
+
+    mine = MineFactory(mine_reports=0)
+
+    # Past-due report but add a submission so status != 'NON' => not overdue
+    report = MineReportFactory(
+        mine=mine,
+        mine_report_submissions=0,
+        due_date=max(yesterday, apr_1_2025),
+        received_date=None,
+    )
+
+    MineReportSubmissionFactory(
+        report=report,
+        mine_report_submission_status_code='INI',
+    )
+
+    # Detail endpoint should reflect not overdue
+    det_resp = test_client.get(
+        f'/mines/{mine.mine_guid}/reports/{report.mine_report_guid}',
+        headers=auth_headers['full_auth_header'],
+    )
+    det_data = json.loads(det_resp.data.decode())
+    assert det_resp.status_code == 200
+    assert det_data['is_overdue'] is False
+
+
+def test_is_overdue_false_when_due_before_apr_1_2025(test_client, db_session, auth_headers):
+    mine = MineFactory(mine_reports=0)
+
+    report = MineReportFactory(
+        mine=mine,
+        mine_report_submissions=0,
+        due_date=date(2025, 3, 31),
+        received_date=None,
+    )
+
+    det_resp = test_client.get(
+        f'/mines/{mine.mine_guid}/reports/{report.mine_report_guid}',
+        headers=auth_headers['full_auth_header'],
+    )
+    det_data = json.loads(det_resp.data.decode())
+    assert det_resp.status_code == 200
+    assert det_data['is_overdue'] is False
 
 
 # Create
@@ -243,3 +391,196 @@ def test_delete_mine_report(test_client, db_session, auth_headers):
         f'/mines/{mine.mine_guid}/reports/{mine.mine_reports[0].mine_report_guid}',
         headers=auth_headers['full_auth_header'])
     assert delete_resp.status_code == 204, delete_resp.response
+
+
+def test_get_prr_and_crr_reports_for_mine(test_client, db_session, auth_headers):
+    # Create a mine with no reports, then add one CRR (non-TSF) and one PRR
+    mine, permit = create_mine_and_permit(mine_kwargs={"mine_reports": 0}, num_permit_amendments=1)
+
+    # Pick a non-TSF code-required report definition to avoid TAR filtering
+    defs = MineReportDefinition.get_all()
+    non_tsf_def = next(
+        d for d in defs if not any(getattr(c, 'mine_report_category', None) == 'TSF' for c in d.categories)
+    )
+
+    # Create CRR (has definition) and PRR (no definition) reports
+    MineReportFactory(mine=mine, mine_report_definition_id=non_tsf_def.mine_report_definition_id)
+    requirement = MineReportPermitRequirementFactory(
+        permit_amendment=permit.permit_amendments[0],
+        report_name="Current PRR",
+        due_date_period_months=0,
+        initial_due_date=date.today() + timedelta(days=10),
+        active_ind=True,
+        deleted_ind=False,
+    )
+    MineReportFactory(
+        mine=mine,
+        permit=permit,
+        mine_report_definition_id=None,
+        mine_report_permit_requirement=requirement,
+        due_date=date.today() + timedelta(days=10),
+        mine_report_submissions=0,
+    )
+
+    # Request only CRR
+    get_resp = test_client.get(
+        f'/mines/{mine.mine_guid}/reports?mine_reports_type=CRR',
+        headers=auth_headers['full_auth_header']
+    )
+    get_data = json.loads(get_resp.data.decode())
+
+    assert get_resp.status_code == 200
+    assert len(get_data['records']) == 1
+
+
+    # Request both CRR and PRR
+    get_resp = test_client.get(
+        f'/mines/{mine.mine_guid}/reports?mine_reports_type=CRR&mine_reports_type=PRR',
+        headers=auth_headers['full_auth_header']
+    )
+    get_data = json.loads(get_resp.data.decode())
+
+    assert get_resp.status_code == 200
+    assert len(get_data['records']) == 2
+    has_prr = any(r.get('mine_report_definition_guid') is None for r in get_data['records'])
+    has_crr = any(r.get('mine_report_definition_guid') is not None for r in get_data['records'])
+    assert has_prr and has_crr
+
+
+
+def test_get_upcoming_reports_for_mine(test_client, db_session, auth_headers):
+    # Create a mine with a mix of due dates
+    today = date.today()
+    mine = MineFactory(mine_reports=0)
+
+    in_window_1 = MineReportFactory(
+        mine=mine,
+        mine_report_submissions=0,
+        due_date=today + timedelta(days=1),  # tomorrow
+        received_date=None,
+    )
+    in_window_2 = MineReportFactory(
+        mine=mine,
+        mine_report_submissions=0,
+        due_date=today + timedelta(days=30),  # within 90d window
+        received_date=None,
+    )
+    past_due = MineReportFactory(
+        mine=mine,
+        mine_report_submissions=0,
+        due_date=today - timedelta(days=1),  # yesterday → should be included when upcoming=true
+        received_date=None,
+    )
+    far_future = MineReportFactory(
+        mine=mine,
+        mine_report_submissions=0,
+        due_date=today + timedelta(days=400),  # beyond 90d window → should be excluded
+        received_date=None,
+    )
+
+    # Request upcoming with explicit 90d window
+    resp = test_client.get(
+        f"/mines/{mine.mine_guid}/reports?upcoming=true&time_range=90d",
+        headers=auth_headers["full_auth_header"],
+    )
+
+    assert resp.status_code == 200
+    data = json.loads(resp.data.decode())
+    returned = {r["mine_report_guid"] for r in data["records"]}
+
+    assert str(in_window_1.mine_report_guid) in returned
+    assert str(in_window_2.mine_report_guid) in returned
+    assert str(past_due.mine_report_guid) in returned
+    assert str(far_future.mine_report_guid) not in returned
+
+
+def test_get_upcoming_reports_for_mine_only_shows_latest_permit_required_reports(test_client, db_session, auth_headers):
+    today = date.today()
+    mine, permit = create_mine_and_permit(mine_kwargs={"mine_reports": 0}, num_permit_amendments=2)
+    # Set distinct issue_dates so the filter can determine the latest amendment
+    for i, amendment in enumerate(permit.permit_amendments):
+        amendment.issue_date = today - timedelta(days=10 - i)
+    db_session.flush()
+    latest_amendment = max(permit.permit_amendments, key=lambda amendment: amendment.issue_date)
+    previous_amendment = min(permit.permit_amendments, key=lambda amendment: amendment.issue_date)
+
+    latest_requirement = MineReportPermitRequirementFactory(
+        permit_amendment=latest_amendment,
+        report_name="Latest Upcoming PRR",
+        due_date_period_months=0,
+        initial_due_date=today + timedelta(days=10),
+        active_ind=True,
+        deleted_ind=False,
+    )
+    previous_requirement = MineReportPermitRequirementFactory(
+        permit_amendment=previous_amendment,
+        report_name="Old Upcoming PRR",
+        due_date_period_months=0,
+        initial_due_date=today + timedelta(days=10),
+        active_ind=True,
+        deleted_ind=False,
+    )
+
+    latest_report = MineReportFactory(
+        mine=mine,
+        permit=permit,
+        mine_report_definition_id=None,
+        mine_report_permit_requirement=latest_requirement,
+        due_date=today + timedelta(days=10),
+        received_date=None,
+        mine_report_submissions=0,
+    )
+    old_report = MineReportFactory(
+        mine=mine,
+        permit=permit,
+        mine_report_definition_id=None,
+        mine_report_permit_requirement=previous_requirement,
+        due_date=today + timedelta(days=10),
+        received_date=None,
+        mine_report_submissions=0,
+    )
+
+    resp = test_client.get(
+        f"/mines/{mine.mine_guid}/reports?upcoming=true&time_range=90d&mine_reports_type=PRR",
+        headers=auth_headers["full_auth_header"],
+    )
+
+    assert resp.status_code == 200
+    data = json.loads(resp.data.decode())
+    returned = {r["mine_report_guid"] for r in data["records"]}
+
+    assert str(latest_report.mine_report_guid) in returned
+    assert str(old_report.mine_report_guid) not in returned
+
+
+def test_get_pending_reports_for_mine_status_filter(test_client, db_session, auth_headers):
+    # Pending here corresponds to reports with no latest submission (`mine_report_status_code` == 'NON')
+    mine = MineFactory(mine_reports=0)
+
+    pending = MineReportFactory(
+        mine=mine,
+        mine_report_submissions=0,  # ensures status is 'NON'
+        received_date=None,
+    )
+
+    non_pending = MineReportFactory(
+        mine=mine,
+        mine_report_submissions=0,
+    )
+    # Add a submission so status is not 'NON'
+    MineReportSubmissionFactory(
+        report=non_pending,
+        mine_report_submission_status_code="INI",
+    )
+
+    resp = test_client.get(
+        f"/mines/{mine.mine_guid}/reports?status=NON",
+        headers=auth_headers["full_auth_header"],
+    )
+
+    assert resp.status_code == 200
+    data = json.loads(resp.data.decode())
+    returned = {r["mine_report_guid"] for r in data["records"]}
+
+    assert str(pending.mine_report_guid) in returned
+    assert str(non_pending.mine_report_guid) not in returned

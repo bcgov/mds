@@ -18,9 +18,9 @@ jobs:
         name: checkout
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
-          node-version: 20.x
+          node-version-file: '.nvmrc'
       - name: Install oc
         uses: redhat-actions/openshift-tools-installer@v1
         with:
@@ -35,6 +35,17 @@ jobs:
           INPUT=yes LOAD_EXTERNAL=yes make env
           # Run app in production mode
           sed -i "s/NODE_ENV=.*/NODE_ENV=production/g" ./services/core-web/.env
+
+      - name: Free up disk space
+        run: |
+          echo "Disk usage before cleanup:"
+          df -h
+          sudo docker system prune -af
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc
+          sudo apt-get clean
+          echo "Disk usage after cleanup:"
+          df -h
+
       - name: Run keycloak
         run: |
           make keycloak

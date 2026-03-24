@@ -1,10 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { formatDate, compareCodes, formatDateTime, dateSorter } from "@common/utils/helpers";
-import { downloadNrisDocument } from "@common/utils/actionlessNetworkCalls";
+import { downloadNrisDocument } from "@mds/common/redux/utils/actionlessNetworkCalls";
 import { RED_CLOCK } from "@/constants/assets";
 import CustomPropTypes from "@/customPropTypes";
-import DocumentLink from "@/components/common/DocumentLink";
+import DocumentLink from "@mds/common/components/documents/DocumentLink";
 import CoreTable from "@mds/common/components/common/CoreTable";
 import {
   renderDateColumn,

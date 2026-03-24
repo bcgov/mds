@@ -79,7 +79,7 @@ def test_post_mine_manager_overlap_one_day_end(test_client, db_session, auth_hea
         'mine_guid': setup_info['mine_guid'],
         'party_guid': setup_info['party_guid'],
         'mine_party_appt_type_code': "MMG",
-        'start_date': str(setup_info['existing_mine_manager'].end_date.date()),
+        'start_date': str(setup_info['existing_mine_manager'].end_date.date() - timedelta(days=1)),
         'end_date': None,
     }
     post_resp = test_client.post(
@@ -124,7 +124,7 @@ def test_put_mine_manager_overlap_one_day_start(test_client, db_session, auth_he
 
     test_data = {
         'start_date': str(existing_start - APPT_LENGTH),
-        'end_date': str(existing_start),
+        'end_date': str(existing_start + timedelta(days=1)),
     }
     put_resp = test_client.put(
         f'/parties/mines/{setup_info["moving_mine_manager"].mine_party_appt_guid}',
@@ -136,7 +136,7 @@ def test_put_mine_manager_overlap_one_day_start(test_client, db_session, auth_he
 
 def test_put_mine_manager_overlap_one_day_end(test_client, db_session, auth_headers, setup_info):
     test_data = {
-        'start_date': str(setup_info['existing_mine_manager'].end_date.date()),
+        'start_date': str(setup_info['existing_mine_manager'].end_date.date() - timedelta(days=1)),
         'end_date': None,
     }
     put_resp = test_client.put(

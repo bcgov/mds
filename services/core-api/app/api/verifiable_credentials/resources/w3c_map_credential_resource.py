@@ -1,4 +1,5 @@
 from json import dumps, loads
+from hashlib import md5
 from datetime import datetime
 from flask import current_app, request
 from werkzeug.exceptions import BadRequest, ServiceUnavailable
@@ -65,7 +66,28 @@ class W3CCredentialIssueResource(Resource, UserMixin):
             public_did, permit_amendment)
 
         signed_credential = traction_service.sign_add_data_integrity_proof(
-            Config.CHIEF_PERMITTING_OFFICER_DID_WEB_VERIFICATION_METHOD, public_verkey,
+            Config.CHIEF_PERMITTING_OFFICER_DID_WEB_VERIFICATION_METHOD,
             credential_dict)
 
         return signed_credential["securedDocument"]
+
+    @api.expect(parser)
+    @api.doc(
+        description=
+        "returns the preparad payload to be sent to the orgbook publisher"
+    )
+    @requires_any_of([EDIT_PARTY, MINESPACE_PROPONENT])
+    def get(self):
+        if not is_feature_enabled(Feature.VC_W3C):
+            raise ServiceUnavailable("This feature is not enabled.")
+
+        data = self.parser.parse_args()
+        permit_amendment = PermitAmendment.find_by_permit_amendment_guid(
+            data["permit_amendment_guid"])
+        
+        payload = VerifiableCredentialManager.prepare_permit_amendment_untp_credential_without_id( data["permit_amendment_guid"])
+        payload_hash = md5(dumps(payload).encode('utf-8')).hexdigest()
+
+        existing: bool = PermitAmendmentOrgBookPublish.find_by_unsigned_payload_hash(payload_hash) is not None
+
+        return {"hash": payload_hash, "existing": existing, "payload": payload}

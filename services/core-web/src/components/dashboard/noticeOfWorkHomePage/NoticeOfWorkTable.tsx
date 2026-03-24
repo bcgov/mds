@@ -3,7 +3,7 @@ import { Input, Button, Badge } from "antd";
 import { isEmpty } from "lodash";
 import { SearchOutlined, EyeOutlined } from "@ant-design/icons";
 import { Link, RouteComponentProps, useLocation, withRouter } from "react-router-dom";
-import { downloadNowDocument } from "@common/utils/actionlessNetworkCalls";
+import { downloadNowDocument } from "@mds/common/redux/utils/actionlessNetworkCalls";
 import {
   formatDate,
   optionsFilterLabelAndValue,
@@ -12,7 +12,7 @@ import {
 import * as Strings from "@mds/common/constants/strings";
 import * as router from "@/constants/routes";
 import CoreTable from "@mds/common/components/common/CoreTable";
-import DocumentLink from "@/components/common/DocumentLink";
+import DocumentLink from "@mds/common/components/documents/DocumentLink";
 import { INoticeOfWork, IOption } from "@mds/common/interfaces";
 import { ColumnType } from "antd/es/table";
 import { SortOrder } from "antd/es/table/interface";

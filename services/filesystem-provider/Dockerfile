@@ -2,15 +2,20 @@ FROM mcr.microsoft.com/dotnet/sdk:7.0
 
 USER 0
 
-RUN apt-get update \     
-    && apt-get install -y --allow-unauthenticated \     
-    libc6-dev \     
-    libgdiplus \     
-    libx11-dev \     
-    curl \     
-    vim \     
-    supervisor \     
+RUN apt-get update \
+    && apt-get install -y --allow-unauthenticated \
+    libc6-dev \
+    libgdiplus \
+    libx11-dev \
+    curl \
+    vim \
+    supervisor \
     procps
+
+RUN ln -s /lib/x86_64-linux-gnu/libdl-2.24.so /lib/x86_64-linux-gnu/libdl.so
+    # install System.Drawing native dependencies
+RUN apt-get update && apt-get install -y --allow-unauthenticated libgdiplus libc6-dev libx11-dev
+RUN ln -s libgdiplus.so gdiplus.dll
 
 COPY ej2-amazon-s3-aspcore-file-provider ${APP_ROOT}/app
 

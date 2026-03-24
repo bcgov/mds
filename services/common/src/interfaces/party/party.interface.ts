@@ -40,4 +40,6 @@ export interface IParty {
   phone_ter_ext?: string;
   postnominal_letters?: string;
   signature?: string;
+  is_project_lead_contact?: boolean;
+  project_contact_guid?: string;
 }

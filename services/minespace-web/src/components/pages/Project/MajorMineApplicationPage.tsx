@@ -133,6 +133,7 @@ export const MajorMineApplicationPage: FC = () => {
   const transformPayload = (values, status_code = "DFT") => {
     const documents = [
       ...(values?.primary_documents || []),
+      ...(values?.appendix_documents || []),
       ...(values?.spatial_documents || []),
       ...(values?.supporting_documents || []),
     ];
@@ -252,9 +253,10 @@ export const MajorMineApplicationPage: FC = () => {
           </Button>
           <Popconfirm
             placement="topRight"
-            title="Are you sure you want to submit your final major mine application? No changes can be made after submitting."
-            okText="Yes"
-            cancelText="No"
+            title="Are you sure you want to submit your application package? Once submitted, the Ministry will be notified and your application will
+            enter the formal review process."
+            okText="Confirm Submission"
+            cancelText="Cancel"
             onConfirm={async (e) => dispatch(submit(FORM.ADD_MINE_MAJOR_APPLICATION))}
           >
             <Button
@@ -332,7 +334,7 @@ export const MajorMineApplicationPage: FC = () => {
                       <Typography.Text>
                         <b>
                           {Strings.MINES_ACT_INCLUDES_EMA_AUTH_TEXT}
-                          <i>Mines Act</i>
+                          <i>Environmental Management Act</i>
                         </b>
                         <br />
                         {Strings.MINES_ACT_ENSURE_REVIEW_EMA_AUTH_TEXT}

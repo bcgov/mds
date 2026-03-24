@@ -9,6 +9,7 @@ from flask_restx import Resource, reqparse
 from werkzeug.exceptions import BadRequest, Forbidden, NotFound
 from app.utils.include.user_info import User
 from app.docman.models.document_version import DocumentVersion
+from app.docman.resources.document import check_upload_authorization
 
 CACHE_TIMEOUT = TIMEOUT_24_HOURS
 
@@ -24,14 +25,16 @@ class DocumentUploadResource(Resource):
         'parts', type=list, required=True, help='List of multipart upload parts.', location='json',
     )
 
-    @requires_any_of(DOCUMENT_UPLOAD_ROLES)
     def patch(self, document_guid):
+        check_upload_authorization(document_guid=document_guid)
+        
         data = self.parser.parse_args()
 
-        document = Document.query.filter_by(
-            document_guid=document_guid).one_or_none()
+
+        document = Document.query.filter_by(document_guid=document_guid).one_or_none()
 
         is_bundle = data.get('is_bundle', False)
+        
 
         if not document:
             raise NotFound('Document not found')
@@ -39,7 +42,9 @@ class DocumentUploadResource(Resource):
         if document.status == str(DocumentUploadStatus.SUCCESS) and not data.get('version_guid'):
             raise BadRequest('Forbidden, Document upload has already been completed.')
         
-        if document.create_user != User().get_user_username() and not data.get('version_guid'):
+        # Skip user validation for minespace access requests
+        is_access_request = 'minespace_access_requests' in (document.full_storage_path or '')
+        if not is_access_request and document.create_user != User().get_user_username() and not data.get('version_guid'):
             raise Forbidden("Cannot complete upload of file you did not upload")
 
         version = None

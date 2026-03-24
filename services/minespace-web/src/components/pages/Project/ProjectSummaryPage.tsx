@@ -50,6 +50,7 @@ interface IParams {
   projectGuid?: string;
   projectSummaryGuid?: string;
   tab?: string;
+  mode?: string;
 }
 
 export const ProjectSummaryPage = () => {
@@ -59,7 +60,7 @@ export const ProjectSummaryPage = () => {
   const systemFlag = useSelector(getSystemFlag);
   const isCore = systemFlag === SystemFlagEnum.core;
 
-  const { mineGuid, projectGuid, projectSummaryGuid, tab } = useParams<IParams>();
+  const { mineGuid, projectGuid, projectSummaryGuid, tab, mode } = useParams<IParams>();
   const anyTouched = useAppSelector(
     (state) => state.form[FORM.ADD_EDIT_PROJECT_SUMMARY]?.anyTouched || false
   );
@@ -71,13 +72,14 @@ export const ProjectSummaryPage = () => {
 
   const { isFeatureEnabled } = useFeatureFlag();
   const amsFeatureEnabled = isFeatureEnabled(Feature.AMS_AGENT);
-  const isDefaultEditMode = Boolean(projectGuid && projectSummaryGuid);
-  const isDefaultLoaded = isDefaultEditMode
+  const isExistingProject = Boolean(projectGuid && projectSummaryGuid);
+  const isEditMode = !isExistingProject || mode === "edit";
+  const isDefaultLoaded = isExistingProject
     ? formattedProjectSummary?.project_summary_guid === projectSummaryGuid &&
       formattedProjectSummary?.project_guid === projectGuid
     : mine?.mine_guid === mineGuid;
   const [isLoaded, setIsLoaded] = useState(isDefaultLoaded);
-  const [isEditMode, setIsEditMode] = useState(isDefaultEditMode);
+  const [isNewProject, setIsNewProject] = useState(!isExistingProject);
   const projectFormTabs = getProjectFormTabs(
     amsFeatureEnabled,
     isCore,
@@ -87,7 +89,7 @@ export const ProjectSummaryPage = () => {
 
   const handleFetchData = async () => {
     if (projectGuid && projectSummaryGuid) {
-      setIsEditMode(true);
+      setIsNewProject(false);
       await dispatch(fetchProjectById(projectGuid));
     } else {
       await dispatch(fetchMineRecordById(mineGuid));
@@ -171,7 +173,12 @@ export const ProjectSummaryPage = () => {
       )
     ).then(({ data: { project_guid, project_summary_guid } }) => {
       history.replace(
-        EDIT_PROJECT_SUMMARY.dynamicRoute(project_guid, project_summary_guid, projectFormTabs[1])
+        EDIT_PROJECT_SUMMARY.dynamicRoute(
+          project_guid,
+          project_summary_guid,
+          projectFormTabs[1],
+          !isEditMode
+        )
       );
     });
   };
@@ -180,8 +187,8 @@ export const ProjectSummaryPage = () => {
     if (!newTab) {
       return;
     }
-    const url = isEditMode
-      ? EDIT_PROJECT_SUMMARY.dynamicRoute(projectGuid, projectSummaryGuid, newTab)
+    const url = !isNewProject
+      ? EDIT_PROJECT_SUMMARY.dynamicRoute(projectGuid, projectSummaryGuid, newTab, !isEditMode)
       : ADD_PROJECT_SUMMARY.dynamicRoute(mineGuid, newTab);
     history.push(url);
   };
@@ -201,7 +208,7 @@ export const ProjectSummaryPage = () => {
       // If a proponent re-submits the declaration, when changes are made to the project description,
       // change it back to under review.
       status_code = "UNR";
-    } else if ((!status_code || !isEditMode) && status_code !== "UNR") {
+    } else if ((!status_code || isNewProject) && status_code !== "UNR") {
       status_code = "DFT";
     } else if (!newActiveTab && status_code !== "UNR") {
       status_code = "SUB";
@@ -213,7 +220,7 @@ export const ProjectSummaryPage = () => {
 
     const values = { ...formValues, status_code };
     try {
-      if (!isEditMode) {
+      if (isNewProject) {
         await handleCreateProjectSummary(values, message);
       }
       if (projectGuid && projectSummaryGuid) {
@@ -227,12 +234,12 @@ export const ProjectSummaryPage = () => {
     }
   };
 
-  const mineName = isEditMode ? formattedProjectSummary?.mine_name || "" : mine?.mine_name || "";
-  const title = isEditMode
-    ? `Edit project description - ${projectSummary?.project_summary_title}`
+  const mineName = !isNewProject ? formattedProjectSummary?.mine_name || "" : mine?.mine_name || "";
+  const title = !isNewProject
+    ? `${isEditMode ? "Edit" : "View"} project description - ${projectSummary?.project_summary_title}`
     : `New project description for ${mineName}`;
 
-  const initialValues = isEditMode
+  const initialValues = !isNewProject
     ? {
         ...formattedProjectSummary,
         mrc_review_required: project.mrc_review_required,
@@ -262,7 +269,7 @@ export const ProjectSummaryPage = () => {
         </Row>
         <Row>
           <Col span={24}>
-            {isEditMode ? (
+            {!isNewProject ? (
               <Link to={EDIT_PROJECT.dynamicRoute(projectSummary.project_guid)}>
                 <ArrowLeftOutlined className="padding-sm--right" />
                 Back to: {project.project_title} Project Overview page
@@ -281,6 +288,7 @@ export const ProjectSummaryPage = () => {
           handleSaveData={handleSaveData}
           handleTabChange={handleTabChange}
           activeTab={activeTab}
+          isEditMode={isEditMode}
         />
       </>
     )) || <Loading />

@@ -22,10 +22,10 @@ import {
   fetchPartyById,
   updateParty,
   deleteParty,
-} from "@mds/common/redux/actionCreators/partiesActionCreator";
+} from "@mds/common/redux/slices/partiesSlice";
 import { fetchMineBasicInfoList } from "@mds/common/redux/actionCreators/mineActionCreator";
 import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
-import { getParties } from "@mds/common/redux/selectors/partiesSelectors";
+import { getParties } from "@mds/common/redux/slices/partiesSlice";
 import { getMineBasicInfoListHash } from "@mds/common/redux/selectors/mineSelectors";
 import {
   getDropdownProvinceOptions,
@@ -98,10 +98,10 @@ export class PartyProfile extends Component {
     }
   };
 
-  openEditPartyModal = (event, partyGuid, onSubmit, title, provinceOptions) => {
+  openEditPartyModal = (event, partyGuid, onSubmit, title) => {
     event.preventDefault();
     this.props.openModal({
-      props: { partyGuid, onSubmit, title, provinceOptions },
+      props: { partyGuid, onSubmit, title },
       content: modalConfig.EDIT_PARTY,
       width: "75vw",
       clearOnSubmit: false,
@@ -110,7 +110,7 @@ export class PartyProfile extends Component {
 
   editParty = (values) => {
     const { id } = this.props.match.params;
-    return this.props.updateParty(values, id).then(() => {
+    return this.props.updateParty({ data: values, partyGuid: id }).then(() => {
       this.props.fetchPartyById(id);
       this.props.closeModal();
     });
@@ -156,6 +156,9 @@ export class PartyProfile extends Component {
             return "N/A";
           }
           if (record.relationship.party_business_role_code === "PRL") {
+            return "N/A";
+          }
+          if (record.relationship.party_business_role_code === "CNA") {
             return "N/A";
           }
           if (record.relationship.mine_party_appt_type_code === "AGT") {
@@ -246,8 +249,7 @@ export class PartyProfile extends Component {
                         event,
                         party.party_guid,
                         this.editParty,
-                        ModalContent.EDIT_PARTY(party.name),
-                        this.props.provinceOptions
+                        ModalContent.EDIT_PARTY(party.name)
                       )
                     }
                     disabled={this.state.deletingParty}

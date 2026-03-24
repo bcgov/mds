@@ -22,16 +22,18 @@ exports[`NavBar renders properly 1`] = `
         <div
           class="menu--search"
         >
-          <div>
+          <div
+            class="search-trigger-container"
+          >
             <span
-              class="ant-input-affix-wrapper ant-dropdown-trigger searchbar search-not-focussed"
+              class="ant-input-affix-wrapper ant-input-affix-wrapper-readonly searchbar search-not-focussed"
             >
               <span
                 class="ant-input-prefix"
               >
                 <span
                   aria-label="search"
-                  class="anticon anticon-search"
+                  class="anticon anticon-search search-icon"
                   role="img"
                 >
                   <svg
@@ -52,11 +54,8 @@ exports[`NavBar renders properly 1`] = `
               </span>
               <input
                 class="ant-input"
-                history="[object Object]"
-                location="[object Object]"
-                match="[object Object]"
                 placeholder="Search Core..."
-                searchbarresults=""
+                readonly=""
                 type="text"
                 value=""
               />

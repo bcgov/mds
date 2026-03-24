@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import moment from "moment";
 import PropTypes from "prop-types";
 import { Row, Col, Card, Descriptions, Typography } from "antd";
-import { getPartyRelationships } from "@mds/common/redux/selectors/partiesSelectors";
+import { getPartyRelationships } from "@mds/common/redux/slices/partiesSlice";
 import {
   getMineRegionHash,
   getDisturbanceOptionHash,
@@ -11,7 +11,7 @@ import {
   getMinistryContactTypesHash,
 } from "@mds/common/redux/selectors/staticContentSelectors";
 import { getTransformedMineTypes } from "@mds/common/redux/selectors/mineSelectors";
-import { getMinistryContactsByRegion } from "@mds/common/redux/selectors/minespaceSelector";
+import { getMinistryContactsByRegion } from "@mds/common/redux/slices/minespaceSlice";
 import WorkerInfoEmployee from "@/components/dashboard/mine/overview/WorkerInfoEmployee";
 import { getUserInfo } from "@mds/common/redux/selectors/authenticationSelectors";
 import CustomPropTypes from "@/customPropTypes";

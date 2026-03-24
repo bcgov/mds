@@ -1,12 +1,6 @@
 import React, { FC, useEffect, useState } from "react";
 import { Divider, Tabs } from "antd";
-import {
-  deleteMineReport,
-  fetchMineReports,
-} from "@mds/common/redux/actionCreators/reportActionCreator";
-import {
-  fetchMineRecordById,
-} from "@mds/common/redux/actionCreators/mineActionCreator";
+import { fetchMineRecordById } from "@mds/common/redux/actionCreators/mineActionCreator";
 import {
   createTailingsStorageFacility,
   fetchTsfsByMineGuid,
@@ -42,7 +36,7 @@ import { useHistory, useParams } from "react-router-dom";
 import { ADD_TAILINGS_STORAGE_FACILITY } from "@/constants/routes";
 import { resetForm } from "@mds/common/redux/utils/helpers";
 import { FORM } from "@mds/common/constants/forms";
-
+import { deleteMineReport, fetchMineReports } from "@mds/common/redux/slices/reportSlice";
 
 /**
  * @class  MineTailingsInfoTabs - all tenure information related to the mine.
@@ -65,7 +59,9 @@ export const MineTailingsInfoTabs: FC<MineTailingsInfoTabsProps> = (props) => {
 
   const mineReports: IMineReport[] = useAppSelector(getMineReports);
   const TSFOperatingStatusCodeHash = useAppSelector(getTSFOperatingStatusCodeOptionsHash);
-  const consequenceClassificationStatusCodeHash = useAppSelector(getConsequenceClassificationStatusCodeOptionsHash);
+  const consequenceClassificationStatusCodeHash = useAppSelector(
+    getConsequenceClassificationStatusCodeOptionsHash
+  );
   const itrbExemptionStatusCodeHash = useAppSelector(getITRBExemptionStatusCodeOptionsHash);
   const tailings = useAppSelector(getTsfsByMineGuid(mineGuid)) ?? [];
 
@@ -81,28 +77,39 @@ export const MineTailingsInfoTabs: FC<MineTailingsInfoTabsProps> = (props) => {
 
   useEffect(() => {
     Promise.all([
-      dispatch(fetchMineReports(mineGuid, defaultParams.mineReportType)),
-      dispatch(fetchTsfsByMineGuid(mineGuid))
+      dispatch(fetchMineReports({ mineGuid, reportsType: defaultParams.mineReportType })),
+      dispatch(fetchTsfsByMineGuid(mineGuid)),
     ]).then(() => {
       setIsLoaded(true);
     });
   }, []);
 
   const handleEditTailings = (values) => {
-    return dispatch(
-      updateTailingsStorageFacility(values))
+    return dispatch(updateTailingsStorageFacility(values))
       .then(() => {
-        dispatch(fetchMineReports(mineGuid, defaultParams.mineReportType, defaultParams));
+        dispatch(
+          fetchMineReports({
+            mineGuid,
+            reportsType: defaultParams.mineReportType,
+            params: defaultParams,
+          })
+        );
       })
       .then(() => dispatch(closeModal()));
   };
 
   const handleRemoveReport = (report) => {
     return dispatch(
-      deleteMineReport(report.mine_guid, report.mine_report_guid))
-      .then(() =>
-        dispatch(fetchMineReports(report.mine_guid, defaultParams.mineReportType, defaultParams))
-      );
+      deleteMineReport({ mineGuid: report.mine_guid, mineReportGuid: report.mine_report_guid })
+    ).then(() =>
+      dispatch(
+        fetchMineReports({
+          mineGuid: report.mine_guid,
+          reportsType: defaultParams.mineReportType,
+          params: defaultParams,
+        })
+      )
+    );
   };
 
   const openEditTailingsModal = (event, onSubmit, record) => {
@@ -112,15 +119,17 @@ export const MineTailingsInfoTabs: FC<MineTailingsInfoTabsProps> = (props) => {
     };
 
     event.preventDefault();
-    dispatch(openModal({
-      props: {
-        initialValues: record,
-        initialPartyValue,
-        onSubmit,
-        title: `Edit ${record.mine_tailings_storage_facility_name}`,
-      },
-      content: modalConfig.ADD_TAILINGS,
-    }));
+    dispatch(
+      openModal({
+        props: {
+          initialValues: record,
+          initialPartyValue,
+          onSubmit,
+          title: `Edit ${record.mine_tailings_storage_facility_name}`,
+        },
+        content: modalConfig.ADD_TAILINGS,
+      })
+    );
   };
 
   const handleReportFilterSubmit = (filterParams) => {
@@ -128,11 +137,16 @@ export const MineTailingsInfoTabs: FC<MineTailingsInfoTabsProps> = (props) => {
   };
 
   const handleAddTailings = (values) => {
-    return dispatch(
-      createTailingsStorageFacility({ mine_guid: mineGuid, ...values }))
+    return dispatch(createTailingsStorageFacility({ mine_guid: mineGuid, ...values }))
       .then(() => {
         dispatch(fetchMineRecordById(mineGuid));
-        dispatch(fetchMineReports(mineGuid, defaultParams.mineReportType, defaultParams));
+        dispatch(
+          fetchMineReports({
+            mineGuid,
+            reportsType: defaultParams.mineReportType,
+            params: defaultParams,
+          })
+        );
       })
       .finally(() => {
         dispatch(closeModal());
@@ -141,20 +155,26 @@ export const MineTailingsInfoTabs: FC<MineTailingsInfoTabsProps> = (props) => {
   };
 
   const onPageChange = (page, per_page) => {
-    dispatch(fetchMineReports(mineGuid, defaultParams.mineReportType, {
-      ...defaultParams,
-      page,
-      per_page,
-    }));
+    dispatch(
+      fetchMineReports({
+        mineGuid,
+        reportsType: defaultParams.mineReportType,
+        params: {
+          ...defaultParams,
+          page,
+          per_page,
+        },
+      })
+    );
   };
 
   const handleCreateTailings = async (event) => {
     if (tsfV2Enabled) {
       navigateToCreateTailings(event);
     } else {
-      openTailingsModal(event, handleAddTailings, "Add TSF")
+      openTailingsModal(event, handleAddTailings, "Add TSF");
     }
-  }
+  };
 
   const navigateToCreateTailings = async (event) => {
     event.preventDefault();
@@ -166,113 +186,115 @@ export const MineTailingsInfoTabs: FC<MineTailingsInfoTabsProps> = (props) => {
 
   const openTailingsModal = (event, onSubmit, title) => {
     event.preventDefault();
-    dispatch(openModal({
-      props: { onSubmit, title, initialPartyValue: {} },
-      content: modalConfig.ADD_TAILINGS,
-    }));
+    dispatch(
+      openModal({
+        props: { onSubmit, title, initialPartyValue: {} },
+        content: modalConfig.ADD_TAILINGS,
+      })
+    );
   };
 
   const tabItems = [
     {
       key: "tsfDetails",
       label: `Tailings Storage Facilities (${tailings.length})`,
-      children: <TailingsSummaryPageWrapper />
+      children: <TailingsSummaryPageWrapper />,
     },
     {
       key: "dam",
       label: `Tailings Storage Facilities (${tailings.length})`,
-      children: <DamsPage />
+      children: <DamsPage />,
     },
     {
       key: "tsf",
       label: `Tailings Storage Facilities (${tailings.length})`,
-      children: <div>
-        <br />
-        <div className="inline-flex between">
-          <h4 className="uppercase">Tailings Storage Facilities</h4>
-          {canEditTSF && (
-            <AddButton
-              onClick={(event) => handleCreateTailings(event)}
-            >
-              Add TSF
-            </AddButton>
-          )}
+      children: (
+        <div>
+          <br />
+          <div className="inline-flex between">
+            <h4 className="uppercase">Tailings Storage Facilities</h4>
+            {canEditTSF && (
+              <AddButton onClick={(event) => handleCreateTailings(event)}>Add TSF</AddButton>
+            )}
+          </div>
+          <MineTailingsTable
+            tailings={tailings}
+            isLoaded={isLoaded}
+            openEditTailingsModal={openEditTailingsModal}
+            handleEditTailings={handleEditTailings}
+            tsfV2Enabled={tsfV2Enabled}
+            canEditTSF={canEditTSF}
+          />
         </div>
-        <MineTailingsTable
-          tailings={tailings}
-          isLoaded={isLoaded}
-          openEditTailingsModal={openEditTailingsModal}
-          handleEditTailings={handleEditTailings}
-          tsfV2Enabled={tsfV2Enabled}
-          canEditTSF={canEditTSF}
-        />
-      </div>
+      ),
     },
     {
       key: "reports",
       label: "Tailings Reports",
-      children: <div>
-        <br />
-        <h4 className="uppercase">Reports</h4>
-        <br />
-        <MineReportTable
-          isLoaded={isLoaded}
-          mineReports={mineReports}
-          handleRemoveReport={handleRemoveReport}
-          handleTableChange={handleReportFilterSubmit}
-          sortField={params.sort_field}
-          sortDir={params.sort_dir}
-          mineReportType={Strings.MINE_REPORTS_TYPE.codeRequiredReports}
-        />
-        <div className="center">
-          <ResponsivePagination
-            onPageChange={onPageChange}
-            currentPage={Number(pageData.current_page)}
-            pageTotal={Number(pageData.total)}
-            itemsPerPage={Number(pageData.items_per_page)}
+      children: (
+        <div>
+          <br />
+          <h4 className="uppercase">Reports</h4>
+          <br />
+          <MineReportTable
+            isLoaded={isLoaded}
+            mineReports={mineReports}
+            handleRemoveReport={handleRemoveReport}
+            handleTableChange={handleReportFilterSubmit}
+            sortField={params.sort_field}
+            sortDir={params.sort_dir}
+            mineReportType={Strings.MINE_REPORTS_TYPE.codeRequiredReports}
           />
+          <div className="center">
+            <ResponsivePagination
+              onPageChange={onPageChange}
+              currentPage={Number(pageData?.current_page)}
+              pageTotal={Number(pageData?.total)}
+              itemsPerPage={Number(pageData?.items_per_page)}
+            />
+          </div>
         </div>
-      </div>
+      ),
     },
     {
       key: "map",
       label: "Map",
-      children: <div>
-        <br />
-        <h4 className="uppercase">Map</h4>
-        <div className="inline-flex">
-          <p>
-            <img
-              src={SMALL_PIN}
-              className="icon-sm--img"
-              alt="Mine Pin"
-              style={{ marginTop: "10px" }}
+      children: (
+        <div>
+          <br />
+          <h4 className="uppercase">Map</h4>
+          <div className="inline-flex">
+            <p>
+              <img
+                src={SMALL_PIN}
+                className="icon-sm--img"
+                alt="Mine Pin"
+                style={{ marginTop: "10px" }}
+              />
+              Location of Mine Site
+            </p>
+            <p>
+              <img
+                src={SMALL_PIN_SELECTED}
+                className="icon-sm--img"
+                alt="TSF Pin"
+                style={{ marginTop: "10px" }}
+              />
+              Location of TSF
+            </p>
+          </div>
+          <LoadingWrapper condition={isLoaded}>
+            <MineTailingsMap
+              mine={mine}
+              tailings={tailings}
+              TSFOperatingStatusCodeHash={TSFOperatingStatusCodeHash}
+              consequenceClassificationStatusCodeHash={consequenceClassificationStatusCodeHash}
+              itrbExemptionStatusCodeHash={itrbExemptionStatusCodeHash}
             />
-            Location of Mine Site
-          </p>
-          <p>
-            <img
-              src={SMALL_PIN_SELECTED}
-              className="icon-sm--img"
-              alt="TSF Pin"
-              style={{ marginTop: "10px" }}
-            />
-            Location of TSF
-          </p>
+          </LoadingWrapper>
         </div>
-        <LoadingWrapper condition={isLoaded}>
-          <MineTailingsMap
-            mine={mine}
-            tailings={tailings}
-            TSFOperatingStatusCodeHash={TSFOperatingStatusCodeHash}
-            consequenceClassificationStatusCodeHash={
-              consequenceClassificationStatusCodeHash
-            }
-            itrbExemptionStatusCodeHash={itrbExemptionStatusCodeHash}
-          />
-        </LoadingWrapper>
-      </div>
-    }
+      ),
+    },
   ].filter((tab) => !!props.enabledTabs.includes(tab.key));
 
   return (
@@ -285,6 +307,5 @@ export const MineTailingsInfoTabs: FC<MineTailingsInfoTabsProps> = (props) => {
     </div>
   );
 };
-
 
 export default MineTailingsInfoTabs;

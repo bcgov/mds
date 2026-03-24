@@ -23,6 +23,13 @@
 @forward "./components/HomePage.scss";
 @forward "./components/NoticeOfWork.scss";
 @forward "./components/SearchBar.scss";
+@forward "./components/GlobalSearch.scss";
+@forward "./components/SearchFilters.scss";
+@forward "./components/SearchResultItem.scss";
+@forward "./components/RecentSearches.scss";
+@forward "./components/EmptySearchState.scss";
+@forward "./components/GlobalSearchResults.scss";
+@forward "./components/SearchResultsV2.scss";
 @forward "./components/CoreTooltip.scss";
 @forward "./components/MergeContacts.scss";
 @forward "./components/NoticeOfDeparture.scss";
@@ -49,6 +56,7 @@
 @forward "./components/RichTextEditor.scss";
 @forward "./components/markdown";
 @forward "./components/ComparePermitConditionHistoryModal.scss";
+@forward "./components/Project.scss";
 
 // UTILITIES - utilities and helper classes. This layer has the highest specificity.
 

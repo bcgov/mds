@@ -1799,6 +1799,7 @@ exports[`NOWPermitGeneration renders properly 1`] = `
                                     class="ant-form-item-control-input-content"
                                   >
                                     <div
+                                      aria-required="false"
                                       class="ant-select ant-select-sm ant-select-in-form-item ant-select-multiple ant-select-show-arrow ant-select-show-search"
                                       style="width: 100%;"
                                     >
@@ -1822,6 +1823,7 @@ exports[`NOWPermitGeneration renders properly 1`] = `
                                                 aria-controls="mine_disturbance_code_list"
                                                 aria-haspopup="listbox"
                                                 aria-owns="mine_disturbance_code_list"
+                                                aria-required="false"
                                                 autocomplete="off"
                                                 class="ant-select-selection-search-input"
                                                 id="mine_disturbance_code"
@@ -2362,12 +2364,21 @@ exports[`NOWPermitGeneration renders properly 1`] = `
                       <div
                         class="inline-flex between"
                       >
-                        <div>
+                        <div
+                          style="width: 75%;"
+                        >
                           <h4>
                             Permit Package
                           </h4>
                           <p>
                             All files in this list will appear in the Preamble on the permit.
+                          </p>
+                          <br />
+                          <p>
+                            <b>
+                              Warning
+                            </b>
+                            : Files uploaded here will be visible to the proponent and may be publicly posted on external websites including BC Mines Information Website without further review. Please ensure all attachments comply with FOIPPA (Freedom of Information and Protection of Privacy Act) requirements and do not include personal or sensitive information.
                           </p>
                         </div>
                         <div>

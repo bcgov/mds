@@ -1,11 +1,41 @@
 import { ICreatePermitSiteProperties, IimportedNOWApplication, IMineDocument, INoticeOfWorkApplicationProgress, IParty } from "@mds/common/interfaces";
 
+export interface INoticeOfWorkContact {
+  type: string;
+  org_legalname: string;
+  org_doingbusinessas: string;
+  ind_firstname: string;
+  ind_lastname: string;
+  ind_middlename: string;
+  ind_phonenumber: string;
+  dayphonenumber: string;
+  dayphonenumberext: string;
+  faxnumber: string;
+  email: string;
+  org_bcfedincorpnumber: string;
+  org_bcregnumber: string;
+  org_societynumber: string;
+  org_hstregnumber: string;
+  org_contactname: string;
+  mailingaddressline1: string;
+  contacttype: string;
+  contactcertificationtype: string;
+  contactcertificationid: string;
+  mailingaddressline2: string;
+  mailingaddresscity: string;
+  mailingaddressprovstate: string;
+  mailingaddresscountry: string;
+  mailingaddresspostalzip: string;
+  seq_no: number;
+}
+
 export interface INoticeOfWork {
   mine_region: any;
   notice_of_work_type_description: string;
   lead_inspector_name: string;
   issuing_inspector_name: string;
   issuing_inspector_party_guid: string;
+  consultation_advisor_party_guid: string;
   now_application_status_description: string;
   received_date: string;
   originating_system: string;
@@ -19,7 +49,14 @@ export interface INoticeOfWork {
   now_number: string;
   mine_name: string;
   mine_no?: string;
+  longitude?: string;
+  latitude?: string;
+  contacts?: INoticeOfWorkContact[];
   application_progress?: INoticeOfWorkApplicationProgress[];
+  now_application_tier_code?: string;
+  now_application_tier_description?: string;
+  application_type_code?: string;
+  now_application_status_code?: string;
 }
 
 export interface IConditionSection {

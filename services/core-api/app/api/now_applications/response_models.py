@@ -458,6 +458,10 @@ NOW_APPLICATION_MODEL = api.model(
         fields.String,
         'issuing_inspector':
         fields.Nested(PARTY),
+        'consultation_advisor_party_guid':
+        fields.String,
+        'consultation_advisor':
+        fields.Nested(PARTY),
         'imported_to_core':
         fields.Boolean,
         'is_historic':
@@ -642,6 +646,10 @@ NOW_APPLICATION_MODEL = api.model(
         fields.String,
         'submitted_to_core_date':
         fields.Date,
+        'now_application_tier_code':
+        fields.String,
+        'now_application_tier_description':
+        fields.String,
     })
 
 NOW_APPLICATION_MODEL_EXPORT = api.model(
@@ -785,6 +793,10 @@ NOW_VIEW_MODEL = api.model(
         fields.String,
         'issuing_inspector_name':
         fields.String,
+        'consultation_advisor_party_guid':
+        fields.String,
+        'consultation_advisor_name':
+        fields.String,
         'now_application_status_code':
         fields.String,
         'decision_date':
@@ -798,6 +810,10 @@ NOW_VIEW_MODEL = api.model(
         'regional_contact':
         fields.String,
         'mine_purpose':
+        fields.String,
+        'now_application_tier_code':
+        fields.String,
+        'now_application_tier_description':
         fields.String,
     })
 
@@ -846,6 +862,13 @@ NOW_ACTIVITY_TYPES = api.model('ActivityType', {
 APPLICATION_TYPE_CODE = api.model('ApplicationTypeCode', {
     'application_type_code': fields.String,
     'description': fields.String,
+    'active_ind': fields.Boolean
+})
+
+NOTICE_OF_WORK_TIER = api.model('NoticeOfWorkTier', {
+    'notice_of_work_tier_code': fields.String,
+    'description': fields.String,
+    'display_order': fields.Integer,
     'active_ind': fields.Boolean
 })
 

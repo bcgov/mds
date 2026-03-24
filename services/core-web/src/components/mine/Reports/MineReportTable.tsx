@@ -2,10 +2,10 @@ import React, { FC, useState } from "react";
 import { useSelector } from "react-redux";
 import * as Strings from "@mds/common/constants/strings";
 import {
-  formatDate,
   dateSorter,
-  nullableStringSorter,
   formatComplianceCodeValueOrLabel,
+  formatDate,
+  nullableStringSorter,
 } from "@common/utils/helpers";
 import {
   getMineReportCategoryOptionsHash,
@@ -13,7 +13,7 @@ import {
 } from "@mds/common/redux/selectors/staticContentSelectors";
 import { Link, useHistory } from "react-router-dom";
 import { Badge } from "antd";
-import DocumentLink from "@/components/common/DocumentLink";
+import DocumentLink from "@mds/common/components/documents/DocumentLink";
 import CoreTable from "@mds/common/components/common/CoreTable";
 import * as router from "@/constants/routes";
 import { getReportSubmissionBadgeStatusType } from "@mds/common/constants/badgeStatusTypes";
@@ -30,6 +30,8 @@ import DocumentCompression from "@mds/common/components/documents/DocumentCompre
 import { MineDocument } from "@mds/common/models/documents/document";
 import { getMineReportDefinitionHash } from "@mds/common/redux/slices/complianceReportsSlice";
 import { PresetStatusColorType } from "antd/lib/_util/colors";
+import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
+import { Feature } from "@mds/common/utils/featureFlag";
 
 interface MineReportTableProps {
   mineReports: IMineReport[];
@@ -49,7 +51,7 @@ export const MineReportTable: FC<MineReportTableProps> = ({
   handleRemoveReport,
   isLoaded,
   mineReportType,
-  handleTableChange = () => { },
+  handleTableChange = () => {},
   filters = {},
   sortField = undefined,
   sortDir = undefined,
@@ -62,12 +64,12 @@ export const MineReportTable: FC<MineReportTableProps> = ({
   const mineReportCategoryOptionsHash = useSelector(getMineReportCategoryOptionsHash);
   const mineReportStatusOptionsHash = useSelector(getMineReportStatusOptionsHash);
   const mineReportDefinitionHash = useSelector(getMineReportDefinitionHash);
+  const { isFeatureEnabled } = useFeatureFlag();
+  const showOverdueLabel = isFeatureEnabled(Feature.REPORT_MANAGEMENT_V2);
 
   const hideColumn = (condition) => (condition ? "column-hide" : "");
 
-  const userIsCoreEditReports = useSelector(
-    userHasRole(USER_ROLES.role_edit_reports)
-  );
+  const userIsCoreEditReports = useSelector(userHasRole(USER_ROLES.role_edit_reports));
   const history = useHistory();
 
   const openReportPage = (mineReport) => {
@@ -77,7 +79,7 @@ export const MineReportTable: FC<MineReportTableProps> = ({
   };
 
   const handleDownloadAll = (mineReport) => {
-    const mineDocuments = (mineReport.documents).map((doc) => new MineDocument(doc));
+    const mineDocuments = mineReport.documents.map((doc) => new MineDocument(doc));
     setDocumentsToDownload(mineDocuments);
     setIsCompressionModalVisible(true);
   };
@@ -117,9 +119,9 @@ export const MineReportTable: FC<MineReportTableProps> = ({
   const getComplianceCodeValue = (guid) => {
     return mineReportDefinitionHash && mineReportDefinitionHash[guid]
       ? formatComplianceCodeValueOrLabel(
-        mineReportDefinitionHash[guid].compliance_articles[0],
-        false
-      )
+          mineReportDefinitionHash[guid].compliance_articles[0],
+          false
+        )
       : null;
   };
 
@@ -162,12 +164,16 @@ export const MineReportTable: FC<MineReportTableProps> = ({
       dataIndex: "mine_report_status",
       sortField: "mine_report_status",
       sorter: isDashboardView || nullableStringSorter("mine_report_status"),
-      render: (text) => (
+      render: (text, record) => (
         <div title="Status">
-          <Badge
-            status={getReportSubmissionBadgeStatusType(text) as PresetStatusColorType}
-            text={text || Strings.EMPTY_FIELD}
-          />
+          {record?.report?.is_overdue && showOverdueLabel ? (
+            <Badge status="error" text="Overdue" />
+          ) : (
+            <Badge
+              status={getReportSubmissionBadgeStatusType(text) as PresetStatusColorType}
+              text={text || Strings.EMPTY_FIELD}
+            />
+          )}
         </div>
       ),
     },
@@ -192,8 +198,7 @@ export const MineReportTable: FC<MineReportTableProps> = ({
       dataIndex: "created_by_idir",
       key: "created_by_idir",
       sortField: "created_by_idir",
-      sorter:
-        isDashboardView || ((a, b) => a.created_by_idir.localeCompare(b.created_by_idir)),
+      sorter: isDashboardView || ((a, b) => a.created_by_idir.localeCompare(b.created_by_idir)),
       className: hideColumn(isDashboardView),
       render: (text) => (
         <div title="Requested By" className={hideColumn(isDashboardView)}>
@@ -236,8 +241,7 @@ export const MineReportTable: FC<MineReportTableProps> = ({
     key: "code_section",
     render: (record) => (
       <div title="Code Section">{getComplianceCodeValue(record.mine_report_definition_guid)}</div>
-    )
-    ,
+    ),
   };
 
   const permitColumn = {
@@ -262,7 +266,7 @@ export const MineReportTable: FC<MineReportTableProps> = ({
   }
 
   const transformRowData = (reports) =>
-    reports.map((report) => ({
+    reports?.map((report) => ({
       key: report.mine_report_guid,
       mine_report_id: Number(report.mine_report_id),
       permit_number: report.permit_number,
@@ -287,7 +291,7 @@ export const MineReportTable: FC<MineReportTableProps> = ({
       mine_guid: report.mine_guid,
       mine_name: report.mine_name,
       report,
-    }));
+    })) ?? [];
 
   const applySortIndicator = (_columns, field, dir) =>
     _columns.map((column) => ({
@@ -295,14 +299,15 @@ export const MineReportTable: FC<MineReportTableProps> = ({
       sortOrder: dir && column.sortField === field ? dir.concat("end") : false,
     }));
 
-  const mineReportHandleTableChange = (updateReportList, tableFilters) => (pagination, filters, sorter) => {
-    const params = {
-      ...tableFilters,
-      sort_field: sorter.order ? sorter.field : undefined,
-      sort_dir: sorter.order ? sorter.order.replace("end", "") : undefined,
+  const mineReportHandleTableChange =
+    (updateReportList, tableFilters) => (pagination, filters, sorter) => {
+      const params = {
+        ...tableFilters,
+        sort_field: sorter.order ? sorter.field : undefined,
+        sort_dir: sorter.order ? sorter.order.replace("end", "") : undefined,
+      };
+      updateReportList(params);
     };
-    updateReportList(params);
-  };
 
   return (
     <div>

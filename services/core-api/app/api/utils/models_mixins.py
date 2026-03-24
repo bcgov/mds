@@ -491,7 +491,12 @@ class AuditMixin(object):
         db.DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
 
 class HistoryMixin(object):
-    __versioned__ = {}
+    
+    def __init_subclass__(cls, **kwargs):
+        super().__init_subclass__(**kwargs)
+        # Only set default __versioned__ if the model hasn't already defined it
+        if not hasattr(cls, '__versioned__'):
+            cls.__versioned__ = {}
 
     @hybrid_property
     def history(self):
@@ -519,7 +524,7 @@ class HistoryMixin(object):
 class DocumentXrefMixin(object):
     @declared_attr
     def mine_document(cls):
-        return db.relationship('MineDocument', lazy='select')
+        return db.relationship('MineDocument', lazy='select', overlaps=f"{cls.__tablename__}")
     
     @declared_attr
     def mine_document_guid(cls):

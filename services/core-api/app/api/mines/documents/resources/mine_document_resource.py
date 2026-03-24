@@ -12,7 +12,7 @@ from datetime import datetime
 from werkzeug.exceptions import BadRequest, NotFound
 
 from app.extensions import api
-from app.api.utils.access_decorators import EDIT_MAJOR_MINE_APPLICATIONS, MINE_ADMIN, requires_any_of, VIEW_ALL, MINESPACE_PROPONENT
+from app.api.utils.access_decorators import EDIT_MAJOR_MINE_APPLICATIONS, MINE_ADMIN, requires_any_of, VIEW_ALL, MINESPACE_PROPONENT, is_minespace_user
 from app.api.utils.resources_mixins import UserMixin
 
 from app.api.mines.documents.models.mine_document import MineDocument
@@ -23,6 +23,8 @@ from app.api.mines.response_models import ARCHIVE_MINE_DOCUMENT, MINE_DOCUMENT_M
 
 from app.api.services.document_manager_service import DocumentManagerService
 from app.api.projects.project.project_util import notify_file_updates
+from app.api.projects.ams_final_application.models.ams_final_application_document_xref import AmsFinalApplicationDocumentXref
+from app.api.projects.ams_final_application.models.ams_final_application import AmsFinalApplication
 
 class MineDocumentListResource(Resource, UserMixin):
     @api.doc(description='Returns list of documents associated with mines')
@@ -116,7 +118,15 @@ class MineDocumentArchiveResource(Resource, UserMixin):
             raise NotFound('Mine not found.')
 
         args = self.parser.parse_args()
-        mine_document_guids = args.get('mine_document_guids')
+        mine_document_guids = args.get('mine_document_guids', [])
+
+        if is_minespace_user():
+            ams_final_application_document_xref = AmsFinalApplicationDocumentXref.find_by_mine_document_guid(mine_document_guids[0])
+            if ams_final_application_document_xref:
+                ams_final_application_guid = ams_final_application_document_xref.ams_final_application_guid
+                ams_final_application = AmsFinalApplication.find_by_ams_final_application_guid(ams_final_application_guid)
+                if ams_final_application and not ams_final_application.editable:
+                        raise BadRequest("The following document(s) cannot currently be changed for this application")
 
         documents = MineDocument.find_by_mine_document_guid_many(mine_document_guids)
 
@@ -222,8 +232,8 @@ class DocumentUploadStatusResource(Resource, UserMixin):
         'Returns the status of the document upload.',
         )
 
-    @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
     def get(self, mine_document_guid):
-
+        # Allow checking upload status without authentication
+        # The document manager will handle authorization based on the document type
         return DocumentManagerService.poll_upload_progress(request, mine_document_guid)
     

@@ -10,7 +10,7 @@ import {
   createExplosivesPermitAmendment,
   updateExplosivesPermitAmendment,
 } from "@mds/common/redux/actionCreators/explosivesPermitAmendmentActionCreator";
-import { getDropdownInspectors } from "@mds/common/redux/selectors/partiesSelectors";
+import { getDropdownInspectors } from "@mds/common/redux/slices/partiesSlice";
 import { getExplosivesPermits } from "@mds/common/redux/selectors/explosivesPermitSelectors";
 import {
   getExplosivesPermitDocumentTypeDropdownOptions,

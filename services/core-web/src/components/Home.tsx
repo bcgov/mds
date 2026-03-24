@@ -8,6 +8,7 @@ import { getStaticContentLoadingIsComplete } from "@mds/common/redux/selectors/s
 import {
   fetchInspectors,
   fetchProjectLeads,
+  fetchConsultationAdvisors,
   loadBulkStaticContent,
 } from "@mds/common/redux/actionCreators/staticContentActionCreator";
 import { detectDevelopmentEnvironment, detectIE, detectTestEnvironment } from "@mds/common/utils";
@@ -70,6 +71,7 @@ export const Home: FC = () => {
     dispatch(loadBulkStaticContent());
     dispatch(fetchInspectors());
     dispatch(fetchProjectLeads());
+    dispatch(fetchConsultationAdvisors());
     dispatch(fetchUser());
   };
 

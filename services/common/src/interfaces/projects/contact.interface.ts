@@ -6,8 +6,9 @@ export interface IContact {
   job_title?: string;
   phone_extension?: string;
   company_name?: string;
-  is_primary: boolean;
+  is_primary?: boolean;
   first_name: string;
   last_name: string;
   address?: IPartyAddress;
+  party_name?: string;
 }

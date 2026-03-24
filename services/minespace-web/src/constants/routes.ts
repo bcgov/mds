@@ -1,6 +1,9 @@
 import React from "react";
 import queryString from "query-string";
 import ExplosivesPermit from "@/components/dashboard/mine/permits/ExplosivesPermit";
+const MinespaceAccessRequest = React.lazy(
+  () => import("@/components/pages/MinespaceAccessRequest")
+);
 const DamsPage = React.lazy(() => import("@mds/common/components/tailings/dam/DamsPage"));
 const InformationRequirementsTablePage = React.lazy(
   () => import("@/components/pages/Project/InformationRequirementsTablePage")
@@ -14,6 +17,9 @@ const MajorMineApplicationPage = React.lazy(
 );
 const MajorMineApplicationSuccessPage = React.lazy(
   () => import("@/components/pages/Project/MajorMineApplicationSuccessPage")
+);
+const EmaApplicationSuccessPage = React.lazy(
+  () => import("@mds/common/components/project/EmaApplicationSuccessPage")
 );
 const MineDashboard = React.lazy(() => import("@/components/dashboard/mine/MineDashboard"));
 const MinesPage = React.lazy(() => import("@/components/pages/MinesPage"));
@@ -55,10 +61,20 @@ const ProjectSubmissionStatusPage = React.lazy(
   () => import("@mds/common/components/projectSummary/ProjectSubmissionStatusPage")
 );
 
+const ReportManagementPage = React.lazy(
+  () => import("@/components/dashboard/mine/reports/ReportManagement")
+);
+
 export const HOME = {
   route: "/",
   component: LandingPage,
   helpKey: "Home",
+};
+
+export const NEW_USER = {
+  route: "/access-request",
+  component: MinespaceAccessRequest,
+  helpKey: "Minespace-Access-Request",
 };
 
 export const RETURN_PAGE = {
@@ -95,9 +111,14 @@ export const ADD_PROJECT_SUMMARY = {
 };
 
 export const EDIT_PROJECT_SUMMARY = {
-  route: "/projects/:projectGuid/project-description/:projectSummaryGuid/:tab",
-  dynamicRoute: (projectGuid, projectSummaryGuid, activeTab = "basic-information") =>
-    `/projects/${projectGuid}/project-description/${projectSummaryGuid}/${activeTab}`,
+  route: "/projects/:projectGuid/project-description/:projectSummaryGuid/:mode/:tab",
+  dynamicRoute: (
+    projectGuid,
+    projectSummaryGuid,
+    activeTab = "basic-information",
+    viewMode = true
+  ) =>
+    `/projects/${projectGuid}/project-description/${projectSummaryGuid}/${viewMode ? "view" : "edit"}/${activeTab}`,
   component: ProjectSummaryPage,
   helpKey: "Edit-Project-Summary",
 };
@@ -117,6 +138,13 @@ export const EDIT_PROJECT = {
     `/projects/${projectGuid}/${activeTab}/${link}`,
   component: ProjectPage,
   helpKey: "Edit-Project",
+};
+
+export const ENVIRONMENTAL_MANAGEMENT_ACT_FINAL_APPLICATION_SUCCESS = {
+  route: "/projects/:projectGuid/ema-application/success",
+  dynamicRoute: (projectGuid) => `/projects/${projectGuid}/ema-application/success`,
+  component: EmaApplicationSuccessPage,
+  helpKey: "Ema-Final-Application-Submitted",
 };
 
 export const AMS_FINAL_APPLICATION = {
@@ -352,6 +380,14 @@ export const REPORT_VIEW_EDIT = {
     `/mines/${mineGuid}/reports/${reportGuid}`,
   component: ReportPage,
   helpKey: "Report",
+};
+
+export const MINE_REPORTS = {
+  route: "/mines/:id/dashboard/reports",
+  dynamicRoute: (id, filterParams) =>
+    `/mines/${id}/dashboard/reports?${queryString.stringify(filterParams)}`,
+  component: ReportManagementPage,
+  helpKey: "Mine-Reports",
 };
 
 export const VIEW_MINE_PERMIT_AMENDMENT = {
