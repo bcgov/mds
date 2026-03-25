@@ -92,7 +92,7 @@ export const NoticeOfWorkTable: FC<NoticeOfWorkTableProps> = ({ isLoaded, applic
             key: "now_application_tier_code",
             dataIndex: "now_application_tier_code",
             width: "120px",
-            sorter: dateSorter("now_application_tier_code"),
+            sorter: (a, b) => (a.now_application_tier_code > b.now_application_tier_code ? -1 : 1),
             defaultSortOrder: "descend" as SortOrder,
             render: (text, record) => {
               const isExploration =
