@@ -839,6 +839,14 @@ NOW_VIEW_MODEL_PROPONENT = api.model(
         fields.List(fields.Nested(IMPORTED_NOW_SUBMISSION_DOCUMENT), skip_none=True),
         'application_progress':
         fields.Nested(NOW_APPLICATION_PROGRESS, skip_none=True),
+        'now_application_tier_code':
+        fields.String,
+        'now_application_tier_description':
+        fields.String,
+        'now_application_tier_created_date':
+        Date,
+        'now_application_tier_updated_date':
+        Date,
     })
 
 PAGINATED_LIST = api.model(
