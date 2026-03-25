@@ -11,6 +11,8 @@ import { NOW_APPLICATION_TIER_EXPLAINATION_LINK } from "@/constants/strings";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { Feature } from "@mds/common/utils";
 
+const { Paragraph } = Typography;
+
 interface NoticeOfWorkOverviewTabProps {
   noticeOfWork: INoticeOfWork;
 }
@@ -70,13 +72,13 @@ export const NoticeOfWorkOverviewTab: FC<NoticeOfWorkOverviewTabProps> = ({ noti
         isTypeMineralOrCoal &&
         noticeOfWork?.now_application_tier_code ? (
           <Alert
-            message=""
+            message={
+              <Paragraph strong>Assigned Tier: {noticeOfWork?.now_application_tier_code}</Paragraph>
+            }
             description={
               <Row justify="space-between" align="middle">
                 <Col xs={24} md={18}>
                   <p>
-                    <b>Assigned Tier: {noticeOfWork?.now_application_tier_code}</b>
-                    <br />
                     This tier sets the target service timeline for review.
                     <br />
                     Assigned on: {noticeOfWork?.now_application_tier_created_date}
@@ -96,12 +98,7 @@ export const NoticeOfWorkOverviewTab: FC<NoticeOfWorkOverviewTabProps> = ({ noti
               </Row>
             }
             type="info"
-            style={{
-              backgroundColor: "#FFC943",
-              border: "1.5px solid #E8A302",
-              marginBottom: "20px",
-            }}
-            className="ant-alert-info ant-alert-info-custom-with-black-icon"
+            className="margin-large--bottom"
           />
         ) : null}
         <Typography.Title level={4}>Application Stages</Typography.Title>
