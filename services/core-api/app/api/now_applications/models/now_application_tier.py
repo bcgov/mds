@@ -33,3 +33,7 @@ class NOWApplicationTier(AuditMixin, Base):
 
     def __repr__(self):
         return '<NOWApplicationTier %r>' % self.now_application_tier_id
+    
+    @classmethod
+    def find_by_id(cls, now_application_id):
+        return cls.query.filter_by(now_application_id=now_application_id).one_or_none()

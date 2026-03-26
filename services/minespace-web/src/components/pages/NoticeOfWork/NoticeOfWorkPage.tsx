@@ -59,7 +59,7 @@ const NoticeOfWorkPage: FC = () => {
       key: "overview",
       children: (
         <div className={pageClass}>
-          <NoticeOfWorkOverviewTab />
+          <NoticeOfWorkOverviewTab noticeOfWork={noticeOfWork} />
         </div>
       ),
     },

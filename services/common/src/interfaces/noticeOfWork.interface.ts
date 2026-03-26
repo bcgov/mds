@@ -55,6 +55,8 @@ export interface INoticeOfWork {
   application_progress?: INoticeOfWorkApplicationProgress[];
   now_application_tier_code?: string;
   now_application_tier_description?: string;
+  now_application_tier_created_date?: string;
+  now_application_tier_updated_date?: string;
   application_type_code?: string;
   now_application_status_code?: string;
 }
