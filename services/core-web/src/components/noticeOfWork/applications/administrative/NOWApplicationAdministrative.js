@@ -33,6 +33,9 @@ const defaultProps = { importNowSubmissionDocumentsJob: {} };
 export const NOWApplicationAdministrative = (props) => {
   const { isFeatureEnabled } = useFeatureFlag();
   const isNoWApplication = props.noticeOfWork.application_type_code === "NOW";
+  const isExploration =
+    props.noticeOfWork.notice_of_work_type_code === "MIN" ||
+    props.noticeOfWork.notice_of_work_type_code === "COL";
   return (
     <div>
       <ScrollContentWrapper id="permit-package" title="Permit Package" isLoaded={props.isLoaded}>
@@ -126,7 +129,7 @@ export const NOWApplicationAdministrative = (props) => {
           isLoaded={props.isLoaded}
         />
       </ScrollContentWrapper>
-      {isFeatureEnabled(Feature.NOTICE_OF_WORK_TIER) && (
+      {isFeatureEnabled(Feature.NOTICE_OF_WORK_TIER) && isExploration && (
         <ScrollContentWrapper id="tier-category" title="Tier Category" isLoaded={props.isLoaded}>
           <AssignTier
             noticeOfWork={props.noticeOfWork}

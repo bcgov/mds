@@ -87,6 +87,27 @@ describe("VerifyApplicationInformationForm", () => {
     );
     expect(screen.getByText(/Verify Mine/i)).toBeInTheDocument();
     expect(asFragment()).toMatchSnapshot();
+    expect(screen.queryByTestId("mock-field-now_application_tier_code")).not.toBeInTheDocument();
+  });
+
+  it("renders Tier Category for MIN type applications", () => {
+    const explorationReducerProps = {
+      ...reducerProps,
+      noticeOfWork: {
+        ...reducerProps.noticeOfWork,
+        notice_of_work_type_code: "MIN",
+      },
+    };
+    render(
+      <ReduxWrapper initialState={baseInitialFormState}>
+        <VerifyApplicationInformationForm
+          {...dispatchProps}
+          {...explorationReducerProps}
+          isImporting={false}
+        />
+      </ReduxWrapper>
+    );
+    expect(screen.getByTestId("mock-field-now_application_tier_code")).toBeInTheDocument();
   });
 
   it("shows confirmed contacts count and disables submit until all contacts have party and mine is selected", async () => {

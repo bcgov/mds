@@ -21,26 +21,6 @@ exports[`VerifyApplicationInformationForm renders core text and snapshot (smoke)
     />
     <br />
     <br />
-    <div
-      class="margin-large--bottom"
-    >
-      <div
-        class="field-title"
-      >
-        Tier Category
-      </div>
-      <div
-        data-testid="mock-field-now_application_tier_code"
-      />
-      <div
-        class="field-title"
-      >
-        Tier Rationale
-      </div>
-      <div
-        data-testid="mock-field-now_application_tier_description"
-      />
-    </div>
     <h4>
       Match the contacts from the Notice of Work application to contacts in Core.
     </h4>

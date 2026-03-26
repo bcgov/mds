@@ -57,6 +57,10 @@ export const NoticeOfWorkPageHeader: FC<NoticeOfWorkPageHeaderProps> = (props) =
       ? "Notice of Work"
       : "Administrative Amendment";
 
+  const isExploration =
+    props.noticeOfWork?.notice_of_work_type_code === "MIN" ||
+    props.noticeOfWork?.notice_of_work_type_code === "COL";
+
   const nowTierCategoryName =
     noticeOfWorkTierOptionsHash[props.noticeOfWork.now_application_tier_code] || Strings.UNASSIGNED;
 
@@ -92,7 +96,7 @@ export const NoticeOfWorkPageHeader: FC<NoticeOfWorkPageHeaderProps> = (props) =
   return (
     <div className="padding-lg">
       <h1>
-        {headerName}:&nbsp;{nowNumber}&nbsp;
+        {headerName}:&nbsp;{nowNumber}&nbsp;{`Is Exploration - ${isExploration}`}
         <span>
           <Tag title={`Mine: ${nowMineName}`}>
             {props.noticeOfWork.mine_guid ? (
@@ -130,7 +134,7 @@ export const NoticeOfWorkPageHeader: FC<NoticeOfWorkPageHeaderProps> = (props) =
             <TagOutlined className="padding-sm--right" />
             {nowStatus}
           </Tag>
-          {isFeatureEnabled(Feature.NOTICE_OF_WORK_TIER) && (
+          {isFeatureEnabled(Feature.NOTICE_OF_WORK_TIER) && isExploration && (
             <Tag title={`Tier Category: ${nowTierCategoryName}`}>
               <TagOutlined className="padding-sm--right" />
               Timeline Tier: {nowTierCategoryName}
@@ -138,7 +142,14 @@ export const NoticeOfWorkPageHeader: FC<NoticeOfWorkPageHeaderProps> = (props) =
                 <Button
                   type="text"
                   onClick={openUpdateTierModal}
-                  style={{ border: "none", padding: 0, margin: 0, marginLeft: "10px", height: "auto", background: "transparent" }}
+                  style={{
+                    border: "none",
+                    padding: 0,
+                    margin: 0,
+                    marginLeft: "10px",
+                    height: "auto",
+                    background: "transparent",
+                  }}
                 >
                   <img
                     src={EDIT_OUTLINE}

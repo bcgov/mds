@@ -133,21 +133,19 @@ export const VerifyApplicationInformationForm: React.FC<VerifyApplicationInforma
             <EditNOWMineAndLocation latitude={latitude} longitude={longitude} />
             <br />
             <br />
-            {isFeatureEnabled(Feature.NOTICE_OF_WORK_TIER) && (
+            {isFeatureEnabled(Feature.NOTICE_OF_WORK_TIER) && isExploration && (
                 <div className="margin-large--bottom">
                     <div className="field-title">Tier Category</div>
-                    {isExploration && (
-                        <p className="field-title--description">
-                            Tier selection is required for Mineral or Coal exploration applications.
-                        </p>
-                    )}
+                    <p className="field-title--description">
+                        Tier selection is required for Mineral or Coal exploration applications.
+                    </p>
                     <Field
                         id="now_application_tier_code"
                         name="now_application_tier_code"
                         component={renderConfig.SELECT}
                         data={noticeOfWorkTierOptions}
-                        required={isExploration}
-                        validate={isExploration ? [required] : []}
+                        required
+                        validate={[required]}
                     />
                     <div className="field-title">Tier Rationale</div>
                     <Field
