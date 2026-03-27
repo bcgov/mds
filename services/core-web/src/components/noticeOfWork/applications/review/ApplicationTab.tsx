@@ -1,4 +1,4 @@
-import React, { FC, useRef, useState } from "react";
+import React, { FC, useRef, useState, useEffect } from "react";
 import { Prompt, useLocation } from "react-router-dom";
 import { Alert, Button, Divider, Dropdown, Menu, Popconfirm } from "antd";
 import { DownOutlined } from "@ant-design/icons";
@@ -15,7 +15,7 @@ import {
   fetchImportedNoticeOfWorkApplication,
   updateNoticeOfWorkApplication,
 } from "@mds/common/redux/actionCreators/noticeOfWorkActionCreator";
-import { getDropdownInspectors, getDropdownConsultationAdvisors } from "@mds/common/redux/slices/partiesSlice";
+import { getDropdownInspectors, getDropdownConsultationAdvisors, fetchInspectors, fetchConsultationAdvisors } from "@mds/common/redux/slices/partiesSlice";
 import {
   getImportNowSubmissionDocumentsJob,
   getNoticeOfWork,
@@ -65,6 +65,11 @@ export const ApplicationTab: FC<ApplicationTabProps> = ({
   const [exportingNow, setExportingNow] = useState(false);
 
   const count = useRef(1);
+
+  useEffect(() => {
+    dispatch(fetchInspectors());
+    dispatch(fetchConsultationAdvisors());
+  }, []);
 
   const noticeOfWork = useAppSelector(getNoticeOfWork);
   const originalNoticeOfWork = useAppSelector(getOriginalNoticeOfWork);
