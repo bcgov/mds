@@ -1,5 +1,5 @@
 import React from "react";
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { NoticeOfWorkPageHeader } from "@/components/noticeOfWork/applications/NoticeOfWorkPageHeader";
 import * as NOW_MOCK from "@mds/common/tests/mocks/noticeOfWorkMock";
 import { BrowserRouter } from "react-router-dom";
@@ -21,5 +21,24 @@ describe("NoticeOfWorkPageHeader", () => {
       </ReduxWrapper>
     );
     expect(component).toMatchSnapshot();
+    expect(screen.queryByText(/Timeline Tier:/i)).not.toBeInTheDocument();
+  });
+
+  it("renders Tier Category for MIN type applications", () => {
+    const explorationProps = {
+      ...props,
+      noticeOfWork: {
+        ...props.noticeOfWork,
+        notice_of_work_type_code: "MIN",
+      },
+    };
+    render(
+      <ReduxWrapper>
+        <BrowserRouter>
+          <NoticeOfWorkPageHeader {...explorationProps} />
+        </BrowserRouter>
+      </ReduxWrapper>
+    );
+    expect(screen.getByText(/Timeline Tier:/i)).toBeInTheDocument();
   });
 });

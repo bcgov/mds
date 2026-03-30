@@ -13,6 +13,7 @@ exports[`NoticeOfWorkApplication renders properly 1`] = `
         : 
         N/A
          
+        Is Exploration - false
         <span>
           <span
             class="ant-tag"
@@ -94,33 +95,6 @@ exports[`NoticeOfWorkApplication renders properly 1`] = `
                 />
               </svg>
             </span>
-            Unassigned
-          </span>
-          <span
-            class="ant-tag"
-            title="Tier Category: Unassigned"
-          >
-            <span
-              aria-label="tag"
-              class="anticon anticon-tag padding-sm--right"
-              role="img"
-            >
-              <svg
-                aria-hidden="true"
-                class=""
-                data-icon="tag"
-                fill="currentColor"
-                focusable="false"
-                height="1em"
-                viewBox="64 64 896 896"
-                width="1em"
-              >
-                <path
-                  d="M938 458.8l-29.6-312.6c-1.5-16.2-14.4-29-30.6-30.6L565.2 86h-.4c-3.2 0-5.7 1-7.6 2.9L88.9 557.2a9.96 9.96 0 000 14.1l363.8 363.8c1.9 1.9 4.4 2.9 7.1 2.9s5.2-1 7.1-2.9l468.3-468.3c2-2.1 3-5 2.8-8zM459.7 834.7L189.3 564.3 589 164.6 836 188l23.4 247-399.7 399.7zM680 256c-48.5 0-88 39.5-88 88s39.5 88 88 88 88-39.5 88-88-39.5-88-88-88zm0 120c-17.7 0-32-14.3-32-32s14.3-32 32-32 32 14.3 32 32-14.3 32-32 32z"
-                />
-              </svg>
-            </span>
-            Timeline Tier: 
             Unassigned
           </span>
         </span>
@@ -692,150 +666,6 @@ exports[`NoticeOfWorkApplication renders properly 1`] = `
                 </div>
                 <br />
                 <br />
-                <div
-                  class="margin-large--bottom"
-                >
-                  <div
-                    class="field-title"
-                  >
-                    Tier Category
-                  </div>
-                  <div
-                    class="ant-form-item ant-form-item-with-help"
-                  >
-                    <div
-                      class="ant-row ant-form-item-row"
-                    >
-                      <div
-                        class="ant-col ant-form-item-control"
-                      >
-                        <div
-                          class="ant-form-item-control-input"
-                        >
-                          <div
-                            class="ant-form-item-control-input-content"
-                          >
-                            <div
-                              class="ant-select ant-select-in-form-item ant-select-single ant-select-allow-clear ant-select-show-arrow ant-select-show-search"
-                              data-cy="now_application_tier_code"
-                            >
-                              <div
-                                class="ant-select-selector"
-                              >
-                                <span
-                                  class="ant-select-selection-search"
-                                >
-                                  <input
-                                    aria-activedescendant="now_application_tier_code_list_0"
-                                    aria-autocomplete="list"
-                                    aria-controls="now_application_tier_code_list"
-                                    aria-haspopup="listbox"
-                                    aria-owns="now_application_tier_code_list"
-                                    autocomplete="off"
-                                    class="ant-select-selection-search-input"
-                                    id="now_application_tier_code"
-                                    role="combobox"
-                                    type="search"
-                                    value=""
-                                  />
-                                </span>
-                                <span
-                                  class="ant-select-selection-placeholder"
-                                >
-                                  Please select
-                                </span>
-                              </div>
-                              <span
-                                aria-hidden="true"
-                                class="ant-select-arrow"
-                                style="user-select: none;"
-                                unselectable="on"
-                              >
-                                <span
-                                  aria-label="down"
-                                  class="anticon anticon-down ant-select-suffix"
-                                  role="img"
-                                >
-                                  <svg
-                                    aria-hidden="true"
-                                    data-icon="down"
-                                    fill="currentColor"
-                                    focusable="false"
-                                    height="1em"
-                                    viewBox="64 64 896 896"
-                                    width="1em"
-                                  >
-                                    <path
-                                      d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
-                                    />
-                                  </svg>
-                                </span>
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                        <div
-                          style="display: flex; flex-wrap: nowrap;"
-                        >
-                          <div
-                            class="ant-form-item-explain ant-form-item-explain-connected"
-                            id="VERIFY_NOW_APPLICATION_FORM_now_application_tier_code_help"
-                            role="alert"
-                          >
-                            <div
-                              class=""
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div
-                    class="field-title"
-                  >
-                    Tier Rationale
-                  </div>
-                  <div
-                    class="ant-form-item ant-form-item-with-help"
-                  >
-                    <div
-                      class="ant-row ant-form-item-row"
-                    >
-                      <div
-                        class="ant-col ant-form-item-control"
-                      >
-                        <div
-                          class="ant-form-item-control-input"
-                        >
-                          <div
-                            class="ant-form-item-control-input-content"
-                          >
-                            <textarea
-                              class="ant-input"
-                              id="now_application_tier_description"
-                              name="now_application_tier_description"
-                              placeholder="Optionally provide the rationale behind the selected Tier Category"
-                              style="height: 0px; resize: none; min-height: -12px;"
-                            />
-                          </div>
-                        </div>
-                        <div
-                          style="display: flex; flex-wrap: nowrap;"
-                        >
-                          <div
-                            class="ant-form-item-explain ant-form-item-explain-connected"
-                            id="VERIFY_NOW_APPLICATION_FORM_now_application_tier_description_help"
-                            role="alert"
-                          >
-                            <div
-                              class=""
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
                 <h4>
                   Match the contacts from the Notice of Work application to contacts in Core.
                 </h4>
