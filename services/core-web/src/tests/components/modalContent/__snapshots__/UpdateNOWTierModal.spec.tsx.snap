@@ -107,6 +107,11 @@ exports[`UpdateNOWTierModal renders properly 1`] = `
       >
         Tier Rationale
       </div>
+      <p
+        class="field-title--description"
+      >
+        Provide 1-2 paragraph high-level description of reason for tier category rationale.
+      </p>
       <div
         class="ant-form-item ant-form-item-with-help"
       >
@@ -129,6 +134,18 @@ exports[`UpdateNOWTierModal renders properly 1`] = `
                   placeholder="Optionally provide the rationale behind the selected Tier Category"
                   style="height: 0px; resize: none; min-height: -12px;"
                 />
+                <div
+                  class="ant-row ant-row-space-between form-item-help now_application_tier_description-form-help"
+                >
+                  <span>
+                    Maximum 1500 characters
+                  </span>
+                  <span
+                    class="flex-end"
+                  >
+                    1500 / 1500
+                  </span>
+                </div>
               </div>
             </div>
             <div
@@ -299,6 +316,11 @@ exports[`UpdateNOWTierModal renders properly with provided initialValues 1`] = `
       >
         Tier Rationale
       </div>
+      <p
+        class="field-title--description"
+      >
+        Provide 1-2 paragraph high-level description of reason for tier category rationale.
+      </p>
       <div
         class="ant-form-item ant-form-item-with-help"
       >
@@ -323,6 +345,18 @@ exports[`UpdateNOWTierModal renders properly with provided initialValues 1`] = `
                 >
                   Test description
                 </textarea>
+                <div
+                  class="ant-row ant-row-space-between form-item-help now_application_tier_description-form-help"
+                >
+                  <span>
+                    Maximum 1500 characters
+                  </span>
+                  <span
+                    class="flex-end"
+                  >
+                    1484 / 1500
+                  </span>
+                </div>
               </div>
             </div>
             <div

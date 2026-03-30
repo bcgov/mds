@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { Field } from "@mds/common/components/forms/form";
 import { Button, Popconfirm } from "antd";
-import { required } from "@mds/common/redux/utils/Validate";
+import { maxLength, required } from "@mds/common/redux/utils/Validate";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
 import { getDropdownNoticeOfWorkTierOptions } from "@mds/common/redux/selectors/staticContentSelectors";
@@ -64,9 +64,14 @@ export const UpdateNOWTierForm: FC<UpdateNOWTierFormProps> = (props) => {
         disabled={props.isAdminView && !props.isEditMode}
       />
       <div className="field-title">Tier Rationale</div>
+      <p className="field-title--description">
+        Provide 1-2 paragraph high-level description of reason for tier category rationale.
+      </p>
       <Field
         id="now_application_tier_description"
         name="now_application_tier_description"
+        maximumCharacters={1500}
+        validate={[maxLength(1500)]}
         component={renderConfig.AUTO_SIZE_FIELD}
         placeholder="Optionally provide the rationale behind the selected Tier Category"
         disabled={props.isAdminView && !props.isEditMode}

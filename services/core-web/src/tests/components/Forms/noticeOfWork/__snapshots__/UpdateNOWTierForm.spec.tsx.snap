@@ -141,6 +141,11 @@ exports[`UpdateNOWTierForm renders properly 1`] = `
     >
       Tier Rationale
     </div>
+    <p
+      class="field-title--description"
+    >
+      Provide 1-2 paragraph high-level description of reason for tier category rationale.
+    </p>
     <div
       class="ant-form-item ant-form-item-with-help"
     >
@@ -165,6 +170,18 @@ exports[`UpdateNOWTierForm renders properly 1`] = `
               >
                 Rationale
               </textarea>
+              <div
+                class="ant-row ant-row-space-between form-item-help now_application_tier_description-form-help"
+              >
+                <span>
+                  Maximum 1500 characters
+                </span>
+                <span
+                  class="flex-end"
+                >
+                  1491 / 1500
+                </span>
+              </div>
             </div>
           </div>
           <div

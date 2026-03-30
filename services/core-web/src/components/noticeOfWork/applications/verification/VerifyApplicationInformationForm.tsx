@@ -24,7 +24,7 @@ import { getDropdownNoticeOfWorkTierOptions } from "@mds/common/redux/selectors/
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import { Field } from "@mds/common/components/forms/form";
 import { renderConfig } from "@/components/common/config";
-import { required } from "@mds/common/redux/utils/Validate";
+import { maxLength, required } from "@mds/common/redux/utils/Validate";
 import { INoticeOfWork, IParty } from "@mds/common/interfaces";
 
 export interface NoticeOfWorkContact {
@@ -148,7 +148,12 @@ export const VerifyApplicationInformationForm: React.FC<VerifyApplicationInforma
                         validate={[required]}
                     />
                     <div className="field-title">Tier Rationale</div>
+                    <p className="field-title--description">
+                        Provide 1-2 paragraph high-level description of reason for tier category rationale.
+                    </p>
                     <Field
+                        maximumCharacters={1500}
+                        validate={[maxLength(1500)]}
                         id="now_application_tier_description"
                         name="now_application_tier_description"
                         component={renderConfig.AUTO_SIZE_FIELD}
