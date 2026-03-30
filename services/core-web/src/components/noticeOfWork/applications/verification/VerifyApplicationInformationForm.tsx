@@ -152,8 +152,8 @@ export const VerifyApplicationInformationForm: React.FC<VerifyApplicationInforma
                         Provide 1-2 paragraph high-level description of reason for tier category rationale.
                     </p>
                     <Field
-                        maximumCharacters={4000}
-                        validate={[maxLength(4000)]}
+                        maximumCharacters={1500}
+                        validate={[maxLength(1500)]}
                         id="now_application_tier_description"
                         name="now_application_tier_description"
                         component={renderConfig.AUTO_SIZE_FIELD}
