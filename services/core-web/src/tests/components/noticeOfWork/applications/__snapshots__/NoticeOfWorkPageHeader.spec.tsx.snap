@@ -10,6 +10,7 @@ exports[`NoticeOfWorkPageHeader renders properly 1`] = `
       : 
       N/A
        
+      Is Exploration - false
       <span>
         <span
           class="ant-tag"
