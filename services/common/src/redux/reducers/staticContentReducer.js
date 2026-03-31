@@ -175,10 +175,12 @@ export const getMunicipalityOptions = (state) => state[STATIC_CONTENT].municipal
 export const getNoticeOfWorkTierOptions = (state) => state[STATIC_CONTENT].noticeOfWorkTierOptions;
 
 const isStaticContentLoaded = (state) => {
+  console.log("loading static content")
   const staticContentExceptions = [];
   if (!isFeatureEnabled(Feature.NOTICE_OF_WORK_TIER)) {
     staticContentExceptions.push("noticeOfWorkTierOptions");
   }
+  console.log("staticContentExceptions", staticContentExceptions);
 
   return Object.keys(state)
     // eslint-disable-next-line no-prototype-builtins

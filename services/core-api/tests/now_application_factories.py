@@ -543,3 +543,15 @@ class NOWApplicationIdentityFactory(BaseFactory):
     #         extracted = 1
 
     #     NOWApplicationDelayFactory.create_batch(size=extracted, now_application=obj, **kwargs)
+
+
+class NOWApplicationTierFactory(BaseFactory):
+
+    class Meta:
+        model = app_models.NOWApplicationTier
+
+    class Params:
+        now_application = factory.SubFactory('tests.now_application_factories.NOWApplicationFactory')
+
+    now_application_id = factory.SelfAttribute('now_application.now_application_id')
+    notice_of_work_tier_code = factory.LazyFunction(RandomNoticeOfWorkTierCode)

@@ -2638,8 +2638,8 @@ exports[`AdministrativeTab renders properly 1`] = `
                                 <div
                                   class="field-title"
                                 >
-                                  Tier Category 
-                                  (initial intake)
+                                  Tier Category
+                                   (initial intake)
                                 </div>
                                 <p
                                   class="field-title--description"

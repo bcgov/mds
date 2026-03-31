@@ -48,7 +48,13 @@ export const UpdateNOWTierForm: FC<UpdateNOWTierFormProps> = (props) => {
       onSubmit={props.onSubmit}
       initialValues={props.initialValues}
     >
-      <div className="field-title">Tier Category {props.isAdminView && "(initial intake)"}</div>
+      <div className="field-title">
+        Tier Category
+        {props.noticeOfWork?.now_application_tier_created_date &&
+          props.noticeOfWork?.now_application_tier_created_date ===
+            props.noticeOfWork?.now_application_tier_updated_date &&
+          " (initial intake)"}
+      </div>
       {isExploration && (
         <p className="field-title--description">
           Tier selection is required for Mineral or Coal exploration applications.

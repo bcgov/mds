@@ -23,6 +23,7 @@ from app.api.now_applications.resources.now_application_export_resource import N
 from app.api.now_applications.resources.administrative_amendment_list_resource import AdministrativeAmendmentListResource
 from app.api.now_applications.resources.now_application_import_submission_documents_job import NOWApplicationImportSubmissionDocumentsJobResource
 from app.api.now_applications.resources.now_application_proponent_resource import NOWApplicationProponentResource
+from app.api.now_applications.resources.now_application_tier_history_resource import NOWApplicationTierHistoryResource
 
 api = Namespace('now-applications', description='Core Notice of Work operations')
 
@@ -34,6 +35,7 @@ api.add_resource(NOWApplicationImportSubmissionDocumentsJobResource,
                  '/<string:application_guid>/import-submission-documents-job')
 api.add_resource(NOWApplicationStatusResource, '/<string:application_guid>/status')
 api.add_resource(NOWApplicationResource, '/<string:application_guid>')
+api.add_resource(NOWApplicationTierHistoryResource, '/<string:application_guid>/tier-history')
 api.add_resource(NOWApplicationProgressResource,
                  '/<string:application_guid>/progress/<string:application_progress_status_code>')
 api.add_resource(NOWApplicationReviewListResource, '/<string:application_guid>/reviews')

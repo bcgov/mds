@@ -573,3 +573,19 @@ export const createAdminAmendmentApplication = (payload) => (dispatch) => {
     })
     .finally(() => dispatch(hideLoading("modal")));
 };
+
+export const fetchNoticeOfWorkApplicationTierHistory = (applicationGuid) => (dispatch) => {
+  dispatch(request(NetworkReducerTypes.GET_NOTICE_OF_WORK_APPLICATION_TIER_HISTORY));
+  dispatch(showLoading());
+  return CustomAxios()
+    .get(
+      `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_APPLICATION_TIER_HISTORY(applicationGuid)}`,
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(success(NetworkReducerTypes.GET_NOTICE_OF_WORK_APPLICATION_TIER_HISTORY));
+      return response;
+    })
+    .catch(() => dispatch(error(NetworkReducerTypes.GET_NOTICE_OF_WORK_APPLICATION_TIER_HISTORY)))
+    .finally(() => dispatch(hideLoading()));
+};

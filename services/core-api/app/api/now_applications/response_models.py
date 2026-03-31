@@ -650,6 +650,10 @@ NOW_APPLICATION_MODEL = api.model(
         fields.String,
         'now_application_tier_description':
         fields.String,
+        'now_application_tier_created_date':
+        DateTime,
+        'now_application_tier_updated_date':
+        DateTime,
     })
 
 NOW_APPLICATION_MODEL_EXPORT = api.model(
@@ -954,3 +958,13 @@ NOW_APPLICATION_DELAY_TYPE = api.model(
         'active_ind': fields.Boolean,
         'display_order': fields.Integer,
     })
+
+NOW_APPLICATION_TIER_HISTORY = api.model('NOWApplicationTierHistory', {
+    'updated_by': fields.String,
+    'updated_at': fields.DateTime,
+    'changeset': fields.List(fields.Nested(api.model('IndividualChange', {
+        'field_name': fields.String,
+        'from': fields.Raw,
+        'to': fields.Raw
+    })))
+})

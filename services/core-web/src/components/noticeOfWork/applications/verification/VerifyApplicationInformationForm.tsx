@@ -135,10 +135,18 @@ export const VerifyApplicationInformationForm: React.FC<VerifyApplicationInforma
             <br />
             {isFeatureEnabled(Feature.NOTICE_OF_WORK_TIER) && isExploration && (
                 <div className="margin-large--bottom">
-                    <div className="field-title">Tier Category</div>
-                    <p className="field-title--description">
-                        Tier selection is required for Mineral or Coal exploration applications.
-                    </p>
+                    <div className="field-title">
+                        Tier Category
+                        {props.noticeOfWork?.now_application_tier_created_date &&
+                            props.noticeOfWork?.now_application_tier_created_date ===
+                                props.noticeOfWork?.now_application_tier_updated_date &&
+                            " (initial intake)"}
+                    </div>
+                    {isExploration && (
+                        <p className="field-title--description">
+                            Tier selection is required for Mineral or Coal exploration applications.
+                        </p>
+                    )}
                     <Field
                         id="now_application_tier_code"
                         name="now_application_tier_code"
