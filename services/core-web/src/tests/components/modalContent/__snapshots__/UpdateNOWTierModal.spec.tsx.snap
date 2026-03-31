@@ -10,7 +10,7 @@ exports[`UpdateNOWTierModal renders properly 1`] = `
       <div
         class="field-title"
       >
-        Tier Category 
+        Tier Category
       </div>
       <div
         class="ant-form-item ant-form-item-with-help"
@@ -191,7 +191,7 @@ exports[`UpdateNOWTierModal renders properly with provided initialValues 1`] = `
       <div
         class="field-title"
       >
-        Tier Category 
+        Tier Category
       </div>
       <div
         class="ant-form-item ant-form-item-with-help"

@@ -9,7 +9,7 @@ exports[`UpdateNOWTierForm renders properly 1`] = `
     <div
       class="field-title"
     >
-      Tier Category 
+      Tier Category
     </div>
     <p
       class="field-title--description"
