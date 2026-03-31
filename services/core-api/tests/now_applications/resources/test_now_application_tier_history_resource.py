@@ -1,3 +1,7 @@
+import json
+from tests.now_application_factories import NOWApplicationIdentityFactory, NOWApplicationTierFactory
+from tests.status_code_gen import RandomNoticeOfWorkTierCode
+
 def test_get_now_application_tier_history_success(test_client, db_session, auth_headers):
     now_application_identity = NOWApplicationIdentityFactory()
     application = now_application_identity.now_application
