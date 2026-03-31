@@ -64,12 +64,14 @@ export const NoticeOfWorkPageHeader: FC<NoticeOfWorkPageHeaderProps> = (props) =
 
   let nowTierCategoryName =
     noticeOfWorkTierOptionsHash[props.noticeOfWork.now_application_tier_code] || Strings.UNASSIGNED;
-  if (
-    props.noticeOfWork.now_application_tier_code &&
+  const isInitialIntake =
     props.noticeOfWork.now_application_tier_created_date &&
     props.noticeOfWork.now_application_tier_created_date ===
-      props.noticeOfWork.now_application_tier_updated_date
-  ) {
+    props.noticeOfWork.now_application_tier_updated_date;
+
+  console.log('isInitialIntake', isInitialIntake)
+
+  if (isInitialIntake) {
     nowTierCategoryName = `${nowTierCategoryName} (initial intake)`;
   }
 

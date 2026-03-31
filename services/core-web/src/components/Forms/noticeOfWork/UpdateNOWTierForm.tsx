@@ -39,6 +39,11 @@ export const UpdateNOWTierForm: FC<UpdateNOWTierFormProps> = (props) => {
     }
   };
 
+  const isInitialIntake =
+    props.noticeOfWork?.now_application_tier_created_date &&
+    props.noticeOfWork?.now_application_tier_created_date ===
+      props.noticeOfWork?.now_application_tier_updated_date;
+
   return (
     <FormWrapper
       name={props.formName ?? FORM.UPDATE_NOW_TIER}
@@ -50,10 +55,7 @@ export const UpdateNOWTierForm: FC<UpdateNOWTierFormProps> = (props) => {
     >
       <div className="field-title">
         Tier Category
-        {props.noticeOfWork?.now_application_tier_created_date &&
-          props.noticeOfWork?.now_application_tier_created_date ===
-            props.noticeOfWork?.now_application_tier_updated_date &&
-          " (initial intake)"}
+        {isInitialIntake && " (initial intake)"}
       </div>
       {isExploration && (
         <p className="field-title--description">

@@ -108,6 +108,11 @@ export const VerifyApplicationInformationForm: React.FC<VerifyApplicationInforma
     const disabled = contactFormValues.length > formValuesWithParty || !mine_guid;
     const noMine = mine_guid ? "" : "A mine must be associated to this application";
 
+    const isInitialIntake =
+        props.noticeOfWork?.now_application_tier_created_date &&
+        props.noticeOfWork?.now_application_tier_created_date ===
+            props.noticeOfWork?.now_application_tier_updated_date;
+
     return (
         <FormWrapper
             name={FORM.VERIFY_NOW_APPLICATION_FORM}
@@ -137,10 +142,7 @@ export const VerifyApplicationInformationForm: React.FC<VerifyApplicationInforma
                 <div className="margin-large--bottom">
                     <div className="field-title">
                         Tier Category
-                        {props.noticeOfWork?.now_application_tier_created_date &&
-                            props.noticeOfWork?.now_application_tier_created_date ===
-                                props.noticeOfWork?.now_application_tier_updated_date &&
-                            " (initial intake)"}
+                        {isInitialIntake && " (initial intake)"}
                     </div>
                     {isExploration && (
                         <p className="field-title--description">
