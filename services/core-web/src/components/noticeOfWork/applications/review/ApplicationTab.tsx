@@ -72,6 +72,9 @@ export const ApplicationTab: FC<ApplicationTabProps> = ({
   }, []);
 
   const noticeOfWork = useAppSelector(getNoticeOfWork);
+  const isExploration =
+    noticeOfWork?.notice_of_work_type_code === "MIN" ||
+    noticeOfWork?.notice_of_work_type_code === "COL";
   const originalNoticeOfWork = useAppSelector(getOriginalNoticeOfWork);
   const importNowSubmissionDocumentsJob = useAppSelector(getImportNowSubmissionDocumentsJob);
   const formValues: Partial<INoticeOfWorkApplication> = useAppSelector(
@@ -404,7 +407,7 @@ export const ApplicationTab: FC<ApplicationTabProps> = ({
                 isLoaded={isInspectorsLoaded}
               />
             </ScrollContentWrapper>
-            {isFeatureEnabled(Feature.NOTICE_OF_WORK_TIER) && (
+            {isFeatureEnabled(Feature.NOTICE_OF_WORK_TIER) && isExploration && (
               <ScrollContentWrapper id="tier-category" title="Assign Tier Category" isActive>
                 <AssignTier
                   noticeOfWork={noticeOfWork}

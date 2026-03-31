@@ -96,7 +96,7 @@ export const NoticeOfWorkPageHeader: FC<NoticeOfWorkPageHeaderProps> = (props) =
   return (
     <div className="padding-lg">
       <h1>
-        {headerName}:&nbsp;{nowNumber}&nbsp;{`Is Exploration - ${isExploration}`}
+        {headerName}:&nbsp;{nowNumber}
         <span>
           <Tag title={`Mine: ${nowMineName}`}>
             {props.noticeOfWork.mine_guid ? (

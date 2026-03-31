@@ -12,8 +12,6 @@ exports[`NoticeOfWorkApplication renders properly 1`] = `
         Administrative Amendment
         : 
         N/A
-         
-        Is Exploration - false
         <span>
           <span
             class="ant-tag"

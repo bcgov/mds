@@ -6,8 +6,8 @@ export const activityConditions = {
   QCA: ["sand-and-gravel"],
   SAG: ["sand-and-gravel"],
   QIM: ["sand-and-gravel"],
-  COL: ["surface-bulk-sample", "cut-lines-polarization-survey", "underground-exploration"],
-  MIN: ["surface-bulk-sample", "cut-lines-polarization-survey", "underground-exploration"],
+  COL: ["surface-bulk-sample", "cut-lines-polarization-survey", "underground-exploration", "tier-category"],
+  MIN: ["surface-bulk-sample", "cut-lines-polarization-survey", "underground-exploration", "tier-category"],
   PLA: ["placer-operation", "cut-lines-polarization-survey", "underground-exploration"],
 };
 
@@ -308,7 +308,7 @@ export const sideMenuOptions = (tab, hasPermitConditionsFlow = true) => {
       {
         href: "tier-category",
         title: "Tier Category",
-        alwaysVisible: true,
+        alwaysVisible: false,
         children: [],
         applicationType: ["NOW", "ADA"],
         featureFlag: "NOTICE_OF_WORK_TIER",
