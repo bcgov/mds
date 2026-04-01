@@ -1,7 +1,19 @@
 import React from "react";
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { UpdateNOWTierForm } from "@/components/Forms/noticeOfWork/UpdateNOWTierForm";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
+import { STATIC_CONTENT } from "@mds/common/constants/reducerTypes";
+
+jest.mock("antd", () => {
+    const actual = jest.requireActual("antd");
+    const Popconfirm = ({ onConfirm, children }: any) => (
+        <div data-testid="popconfirm-mock" onClick={onConfirm}>
+            {children}
+        </div>
+    );
+    return { ...actual, Popconfirm };
+});
 
 const dispatchProps = {
     onSubmit: jest.fn(),
@@ -23,10 +35,22 @@ const props = {
     } as any,
 };
 
+const initialState = {
+    [STATIC_CONTENT]: {
+      noticeOfWorkTierOptions: [
+          { notice_of_work_tier_code: "1", description: "Tier 1", display_order: 1 }
+      ],
+    }
+};
+
 describe("UpdateNOWTierForm", () => {
+    beforeEach(() => {
+        jest.clearAllMocks();
+    });
+
     it("renders properly", () => {
         const { container: component } = render(
-            <ReduxWrapper>
+            <ReduxWrapper initialState={initialState}>
                 <UpdateNOWTierForm {...props} {...dispatchProps} />
             </ReduxWrapper>
         );
@@ -41,13 +65,13 @@ describe("UpdateNOWTierForm", () => {
                 notice_of_work_type_code: "MIN",
             },
         };
-        const { getByText } = render(
-            <ReduxWrapper>
+        render(
+            <ReduxWrapper initialState={initialState}>
                 <UpdateNOWTierForm {...explorationProps} {...dispatchProps} />
             </ReduxWrapper>
         );
         expect(
-            getByText("Tier selection is required for Mineral or Coal exploration applications.")
+            screen.getByText("Tier selection is required for Mineral or Coal exploration applications.")
         ).toBeInTheDocument();
     });
 
@@ -59,13 +83,55 @@ describe("UpdateNOWTierForm", () => {
                 notice_of_work_type_code: "PLP",
             },
         };
-        const { queryByText } = render(
-            <ReduxWrapper>
+        render(
+            <ReduxWrapper initialState={initialState}>
                 <UpdateNOWTierForm {...nonExplorationProps} {...dispatchProps} />
             </ReduxWrapper>
         );
         expect(
-            queryByText("Tier selection is required for Mineral or Coal exploration applications.")
+            screen.queryByText("Tier selection is required for Mineral or Coal exploration applications.")
         ).not.toBeInTheDocument();
+    });
+
+    it("displays (initial intake) when created and updated dates are equal", () => {
+        const initialIntakeProps = {
+            ...props,
+            noticeOfWork: {
+                ...props.noticeOfWork,
+                now_application_tier_created_date: "2023-01-01",
+                now_application_tier_updated_date: "2023-01-01",
+            },
+        };
+        render(
+            <ReduxWrapper initialState={initialState}>
+                <UpdateNOWTierForm {...initialIntakeProps} {...dispatchProps} />
+            </ReduxWrapper>
+        );
+        expect(screen.getByText((content) => content.includes("Tier Category") && content.includes("(initial intake)"))).toBeInTheDocument();
+    });
+
+    it("calls onCancel when cancel button is clicked and onConfirm is triggered", async () => {
+        const onCancel = jest.fn();
+        const cancelProps = { ...props, onCancel };
+        render(
+            <ReduxWrapper initialState={initialState}>
+                <UpdateNOWTierForm {...cancelProps} {...dispatchProps} />
+            </ReduxWrapper>
+        );
+        const cancelBtn = screen.getByText("Cancel");
+        await userEvent.click(cancelBtn);
+        expect(onCancel).toHaveBeenCalled();
+    });
+
+    it("calls closeModal when cancel button is clicked and onCancel is not provided", async () => {
+        const cancelProps = { ...props, onCancel: undefined };
+        render(
+            <ReduxWrapper initialState={initialState}>
+                <UpdateNOWTierForm {...cancelProps} {...dispatchProps} />
+            </ReduxWrapper>
+        );
+        const cancelBtn = screen.getByText("Cancel");
+        await userEvent.click(cancelBtn);
+        expect(dispatchProps.closeModal).toHaveBeenCalled();
     });
 });

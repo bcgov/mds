@@ -42,6 +42,10 @@ jest.mock("@/components/common/wrappers/AuthorizationWrapper", () => ({ children
   <>{children}</>
 ));
 
+jest.mock("@mds/common/providers/featureFlags/useFeatureFlag", () => ({
+  useFeatureFlag: () => ({ isFeatureEnabled: () => true }),
+}));
+
 
 const dispatchProps = {
   onSubmit: jest.fn(),
@@ -108,6 +112,28 @@ describe("VerifyApplicationInformationForm", () => {
       </ReduxWrapper>
     );
     expect(screen.getByTestId("mock-field-now_application_tier_code")).toBeInTheDocument();
+  });
+
+  it("renders (initial intake) label when created and updated dates are equal", () => {
+    const initialIntakeReducerProps = {
+      ...reducerProps,
+      noticeOfWork: {
+        ...reducerProps.noticeOfWork,
+        notice_of_work_type_code: "MIN",
+        now_application_tier_created_date: "2023-01-01",
+        now_application_tier_updated_date: "2023-01-01",
+      },
+    };
+    render(
+      <ReduxWrapper initialState={baseInitialFormState}>
+        <VerifyApplicationInformationForm
+          {...dispatchProps}
+          {...initialIntakeReducerProps}
+          isImporting={false}
+        />
+      </ReduxWrapper>
+    );
+    expect(screen.getByText(/initial intake/i)).toBeInTheDocument();
   });
 
   it("shows confirmed contacts count and disables submit until all contacts have party and mine is selected", async () => {
