@@ -1,4 +1,6 @@
 
+DROP VIEW IF EXISTS public.applications_view CASCADE;
+
 CREATE OR REPLACE VIEW public.applications_view AS
 SELECT nid.now_application_guid,
     m.mine_guid,
