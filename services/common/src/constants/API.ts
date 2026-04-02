@@ -369,6 +369,8 @@ export const NOTICE_OF_WORK_APPLICATION_DELAY = (applicationGuid, delayGuid?) =>
   delayGuid
     ? `/now-applications/${applicationGuid}/delays/${delayGuid}`
     : `/now-applications/${applicationGuid}/delays`;
+export const NOTICE_OF_WORK_APPLICATION_TIER_HISTORY = (applicationGuid) =>
+  `${NOTICE_OF_WORK_APPLICATION(applicationGuid)}/tier-history`;
 
 // Proponent Notice Of Work
 export const PROPONENT_NOTICE_OF_WORK_APPLICATION_LIST = (mineGuid) =>

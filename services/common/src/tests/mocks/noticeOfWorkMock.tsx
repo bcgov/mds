@@ -486,6 +486,8 @@ export const NOTICE_OF_WORK_APP_FORM: INoWApplicationForm = {
     regional_contact: "SouthwestMinesDivision@gov.bc.ca",
     submitted_to_core_date: "2025-04-25",
     last_updated_date: "2025-07-28T17:55:33.060133+00:00",
+    now_application_tier_created_date: "2025-04-25 10:00",
+    now_application_tier_updated_date: "2025-04-25 10:00",
     filtered_submission_documents: [],
     // --- IimportedNOWApplication fields ---
     now_application_guid: "0f9718ad-f955-4f33-a126-8874456f6518",
@@ -725,7 +727,9 @@ export const IMPORTED_NOTICE_OF_WORK = {
     filtered_submission_documents: [],
     application_documents: [],
     lead_inspector: {},
-    application_progress: []
+    application_progress: [],
+    now_application_tier_created_date: "2025-04-25 10:00",
+    now_application_tier_updated_date: "2025-04-25 10:00",
 };
 
 export const NOTICE_OF_WORK_ACTIVITY_TYPES = {

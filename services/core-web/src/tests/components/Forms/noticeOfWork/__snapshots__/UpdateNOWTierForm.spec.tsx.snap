@@ -9,7 +9,7 @@ exports[`UpdateNOWTierForm renders properly 1`] = `
     <div
       class="field-title"
     >
-      Tier Category 
+      Tier Category
     </div>
     <p
       class="field-title--description"
@@ -59,9 +59,9 @@ exports[`UpdateNOWTierForm renders properly 1`] = `
                   </span>
                   <span
                     class="ant-select-selection-item"
-                    title="1"
+                    title="Tier 1"
                   >
-                    1
+                    Tier 1
                   </span>
                 </div>
                 <span
@@ -203,14 +203,18 @@ exports[`UpdateNOWTierForm renders properly 1`] = `
     <div
       class="right center-mobile"
     >
-      <button
-        class="ant-btn ant-btn-default full-mobile"
-        type="button"
+      <div
+        data-testid="popconfirm-mock"
       >
-        <span>
-          Cancel
-        </span>
-      </button>
+        <button
+          class="ant-btn ant-btn-default full-mobile"
+          type="button"
+        >
+          <span>
+            Cancel
+          </span>
+        </button>
+      </div>
     </div>
   </form>
 </div>

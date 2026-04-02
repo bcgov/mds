@@ -179,6 +179,18 @@ class NOWApplication(Base, AuditMixin):
             return self.application_tier.description
         return None
 
+    @hybrid_property
+    def now_application_tier_created_date(self):
+        if self.application_tier:
+            return self.application_tier.create_timestamp
+        return None
+
+    @hybrid_property
+    def now_application_tier_updated_date(self):
+        if self.application_tier:
+            return self.application_tier.update_timestamp
+        return None
+
     # Documents that are not associated with a review
     documents = db.relationship(
         'NOWApplicationDocumentXref',

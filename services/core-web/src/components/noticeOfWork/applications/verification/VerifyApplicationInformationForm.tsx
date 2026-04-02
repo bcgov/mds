@@ -108,6 +108,11 @@ export const VerifyApplicationInformationForm: React.FC<VerifyApplicationInforma
     const disabled = contactFormValues.length > formValuesWithParty || !mine_guid;
     const noMine = mine_guid ? "" : "A mine must be associated to this application";
 
+    const isInitialIntake =
+        props.noticeOfWork?.now_application_tier_created_date &&
+        props.noticeOfWork?.now_application_tier_created_date ===
+            props.noticeOfWork?.now_application_tier_updated_date;
+
     return (
         <FormWrapper
             name={FORM.VERIFY_NOW_APPLICATION_FORM}
@@ -135,10 +140,15 @@ export const VerifyApplicationInformationForm: React.FC<VerifyApplicationInforma
             <br />
             {isFeatureEnabled(Feature.NOTICE_OF_WORK_TIER) && isExploration && (
                 <div className="margin-large--bottom">
-                    <div className="field-title">Tier Category</div>
-                    <p className="field-title--description">
-                        Tier selection is required for Mineral or Coal exploration applications.
-                    </p>
+                    <div className="field-title">
+                        Tier Category
+                        {isInitialIntake && " (initial intake)"}
+                    </div>
+                    {isExploration && (
+                        <p className="field-title--description">
+                            Tier selection is required for Mineral or Coal exploration applications.
+                        </p>
+                    )}
                     <Field
                         id="now_application_tier_code"
                         name="now_application_tier_code"

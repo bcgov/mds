@@ -76,6 +76,8 @@ exports[`UpdateStatusGenerateLetterModal renders properly 1`] = `
           "notice_of_work_type_code": "MIN",
           "now_application_guid": "1346wesrt22",
           "now_application_id": "",
+          "now_application_tier_created_date": "2025-04-25 10:00",
+          "now_application_tier_updated_date": "2025-04-25 10:00",
           "now_message_id": 47284,
           "now_tracking_number": 47284,
           "placer_operation": Object {

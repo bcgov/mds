@@ -58,6 +58,7 @@ import UpdateMineReportSubmissionStatusModal from "./UpdateMineReportSubmissionS
 import RevokeCredentialModal from "@/components/mine/DigitalPermitCredential/RevokeCredentialModal";
 import CredentialContentModal from "@/components/mine/DigitalPermitCredential/CredentialContentModal";
 import UpdateNOWTierModal from "./UpdateNOWTierModal";
+import NOWTierHistoryModal from "./NOWTierHistoryModal";
 
 export const modalConfig = {
   MINE_RECORD: MineRecordModal,
@@ -120,6 +121,7 @@ export const modalConfig = {
   REVOKE_CREDENTIAL_MODAL: RevokeCredentialModal,
   CREDENTIAL_CONTENT_MODAL: CredentialContentModal,
   UPDATE_NOW_TIER_MODAL: UpdateNOWTierModal,
+  NOW_TIER_HISTORY_MODAL: NOWTierHistoryModal,
 };
 
 export default modalConfig;

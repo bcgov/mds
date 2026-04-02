@@ -2,10 +2,11 @@ import uuid
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from app.extensions import db
-from app.api.utils.models_mixins import AuditMixin, Base
+from app.api.utils.models_mixins import AuditMixin, Base, HistoryMixin
 
-class NOWApplicationTier(AuditMixin, Base):
+class NOWApplicationTier(AuditMixin, Base, HistoryMixin):
     __tablename__ = 'now_application_tier'
+    __versioned__ = {}
 
     now_application_tier_id = db.Column(db.Integer, primary_key=True)
     now_application_id = db.Column(db.Integer, db.ForeignKey('now_application.now_application_id'), nullable=False, unique=True)

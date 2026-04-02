@@ -5,6 +5,7 @@ import {
   UserOutlined,
   TagOutlined,
   EnvironmentOutlined,
+  HistoryOutlined,
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import * as Strings from "@mds/common/constants/strings";
@@ -61,8 +62,18 @@ export const NoticeOfWorkPageHeader: FC<NoticeOfWorkPageHeaderProps> = (props) =
     props.noticeOfWork?.notice_of_work_type_code === "MIN" ||
     props.noticeOfWork?.notice_of_work_type_code === "COL";
 
-  const nowTierCategoryName =
+  let nowTierCategoryName =
     noticeOfWorkTierOptionsHash[props.noticeOfWork.now_application_tier_code] || Strings.UNASSIGNED;
+  const isInitialIntake =
+    props.noticeOfWork.now_application_tier_created_date &&
+    props.noticeOfWork.now_application_tier_created_date ===
+    props.noticeOfWork.now_application_tier_updated_date;
+
+  console.log('isInitialIntake', isInitialIntake)
+
+  if (isInitialIntake) {
+    nowTierCategoryName = `${nowTierCategoryName} (initial intake)`;
+  }
 
   const handleUpdateTier = (values) => {
     return dispatch(
@@ -89,6 +100,18 @@ export const NoticeOfWorkPageHeader: FC<NoticeOfWorkPageHeaderProps> = (props) =
           onSubmit: handleUpdateTier,
         },
         content: modalConfig.UPDATE_NOW_TIER_MODAL,
+      })
+    );
+  };
+
+  const openTierHistoryModal = () => {
+    dispatch(
+      openModal({
+        props: {
+          title: "Timeline Tier History",
+          applicationGuid: props.noticeOfWork.now_application_guid,
+        },
+        content: modalConfig.NOW_TIER_HISTORY_MODAL,
       })
     );
   };
@@ -159,6 +182,13 @@ export const NoticeOfWorkPageHeader: FC<NoticeOfWorkPageHeaderProps> = (props) =
                   />
                 </Button>
               )}
+              <Button
+                type="text"
+                onClick={openTierHistoryModal}
+                style={{ border: "none", padding: 0, margin: 0, marginLeft: "10px", height: "auto", background: "transparent" }}
+              >
+                <HistoryOutlined style={{ fontSize: "18px", color: "rgba(0, 0, 0, 0.45)" }} title="History" />
+              </Button>
             </Tag>
           )}
         </span>
