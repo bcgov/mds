@@ -79,8 +79,10 @@ class ReportFilterHelper:
         return filtered_query.filter(
             or_(
                 MineReport.mine_report_definition_id.isnot(None),
+                MineReport.mine_report_status_code != 'NON',
                 MineReportPermitRequirement.permit_amendment_id == latest_amendment_ids.c.latest_permit_amendment_id,
                 PermitConditionCategory.permit_amendment_id == latest_amendment_ids.c.latest_permit_amendment_id,
+                PermitConditionCategory.permit_amendment_id.is_(None),
             )
         )
 
