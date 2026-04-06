@@ -79,8 +79,21 @@ class ReportFilterHelper:
         return filtered_query.filter(
             or_(
                 MineReport.mine_report_definition_id.isnot(None),
-                MineReportPermitRequirement.permit_amendment_id == latest_amendment_ids.c.latest_permit_amendment_id,
-                PermitConditionCategory.permit_amendment_id == latest_amendment_ids.c.latest_permit_amendment_id,
+                MineReport.mine_report_status_code != 'NON',
+                and_(
+                    MineReport.mine_report_permit_requirement_id.isnot(None),
+                    MineReportPermitRequirement.permit_amendment_id == latest_amendment_ids.c.latest_permit_amendment_id
+                ),
+                # New Categories: must match latest amendment
+                and_(
+                    MineReport.permit_condition_category_code.isnot(None),
+                    PermitConditionCategory.permit_amendment_id == latest_amendment_ids.c.latest_permit_amendment_id
+                ),
+                # Legacy Standard Categories: no amendment ID, but must have a category code
+                and_(
+                    MineReport.permit_condition_category_code.isnot(None),
+                    PermitConditionCategory.permit_amendment_id.is_(None)
+                )
             )
         )
 
