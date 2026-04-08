@@ -509,7 +509,7 @@ class HistoryMixin(object):
         if self.versions:
             hs = list(map(lambda version: {
                 'updated_by': version.update_user,
-                'updated_at': version.update_timestamp,
+                'updated_at': dt_to_str(version.update_timestamp),
                 'changeset': list(map(lambda key: json.loads(json.dumps({
                     'field_name': key,
                     'from': dt_to_str(version.changeset[key][0]),
