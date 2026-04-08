@@ -36,9 +36,10 @@ import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 
 interface HelpGuideProps {
   helpKey: string;
+  showText?: boolean;
 }
 
-export const HelpGuideContent: FC<HelpGuideProps> = ({ helpKey }) => {
+export const HelpGuideContent: FC<HelpGuideProps> = ({ helpKey, showText = false }) => {
   const dispatch = useAppDispatch();
   const system: SystemFlagEnum = useSelector(getSystemFlag);
   const params = useParams<any>();
@@ -50,7 +51,11 @@ export const HelpGuideContent: FC<HelpGuideProps> = ({ helpKey }) => {
   const [open, setOpen] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const canEditHelp = useSelector(userHasRole(USER_ROLES.role_edit_helpdesk));
-  const helpGuide = useAppSelector(getHelpByKey(helpKey, pageTab)) ?? { help_guid: null, help_key: helpKey, content: "" };
+  const helpGuide = useAppSelector(getHelpByKey(helpKey, pageTab)) ?? {
+    help_guid: null,
+    help_key: helpKey,
+    content: "",
+  };
   const { help_guid, help_key } = helpGuide;
   const hasHelpGuide = Boolean(help_guid);
   const defaultGuide = help_key === EMPTY_HELP_KEY;
@@ -61,11 +66,14 @@ export const HelpGuideContent: FC<HelpGuideProps> = ({ helpKey }) => {
 
   const cancelEdit = () => {
     cancelConfirmWrapper(() => setIsEditMode(false), isFormDirty);
-  }
+  };
 
   const showDrawer = () => setOpen(true);
   const hideDrawer = () => {
-    cancelConfirmWrapper(() => { setIsEditMode(false); setOpen(false) }, isFormDirty);
+    cancelConfirmWrapper(() => {
+      setIsEditMode(false);
+      setOpen(false);
+    }, isFormDirty);
   };
 
   const handleFetchData = () => {
@@ -114,11 +122,7 @@ export const HelpGuideContent: FC<HelpGuideProps> = ({ helpKey }) => {
         {hasHelpGuide ? "Edit Help Guide" : "Create Help Guide"}
       </Button>
     );
-    const cancelEditButton = (
-      <Button onClick={cancelEdit}>
-        Cancel Edit
-      </Button>
-    );
+    const cancelEditButton = <Button onClick={cancelEdit}>Cancel Edit</Button>;
     const submitButton = (
       <Button type="primary" onClick={triggerSubmit}>
         Publish Help Guide
@@ -142,7 +146,9 @@ export const HelpGuideContent: FC<HelpGuideProps> = ({ helpKey }) => {
     return <Row justify={justify}>{buttons}</Row>;
   };
   const initialValues =
-    hasHelpGuide && !defaultGuide ? helpGuide : { help_key: helpKey, page_tab: pageTab, content: "" };
+    hasHelpGuide && !defaultGuide
+      ? helpGuide
+      : { help_key: helpKey, page_tab: pageTab, content: "" };
   const mainContent = isEditMode ? (
     <HelpGuideForm
       initialValues={initialValues}
@@ -163,6 +169,7 @@ export const HelpGuideContent: FC<HelpGuideProps> = ({ helpKey }) => {
         type="text"
       >
         <FontAwesomeIcon icon={faQuestionCircle} />
+        {showText && <span className="margin-small--left">Help</span>}
       </Button>
       <Drawer
         placement="right"
@@ -192,7 +199,7 @@ export const HelpGuideContent: FC<HelpGuideProps> = ({ helpKey }) => {
   );
 };
 
-const HelpGuide: FC = () => {
+const HelpGuide: FC<{ showText?: boolean }> = ({ showText = false }) => {
   const dispatch = useDispatch();
   const system: SystemFlagEnum = useSelector(getSystemFlag);
   const authenticated = useSelector(isAuthenticated);
@@ -215,7 +222,7 @@ const HelpGuide: FC = () => {
         const { route = "", helpKey = "" } = routeData as any;
         return (
           <Route key={routeName} exact={true} path={route}>
-            {helpKey && <HelpGuideContent helpKey={helpKey} />}
+            {helpKey && <HelpGuideContent helpKey={helpKey} showText={showText} />}
           </Route>
         );
       })}

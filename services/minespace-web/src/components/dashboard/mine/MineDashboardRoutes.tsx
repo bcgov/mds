@@ -11,6 +11,7 @@ import Variances from "./variances/Variances";
 import Incidents from "./incidents/Incidents";
 import NoticesOfDeparture from "@/components/dashboard/mine/noticeOfDeparture/NoticeOfDeparture";
 import MineUserAccessPage from "./users/MineUserAccessPage";
+import { MINESPACE_USER_GUIDE } from "@/constants/assets";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faHouse,
@@ -24,6 +25,7 @@ import {
   faHouseWater,
   faUserMagnifyingGlass,
   faUsers,
+  faCircleQuestion,
 } from "@fortawesome/pro-light-svg-icons";
 
 export const getMineDashboardRoutes = (showApplications, reportsBadgeCount?: number) =>
@@ -96,6 +98,12 @@ export const getMineDashboardRoutes = (showApplications, reportsBadgeCount?: num
       label: "Tailings & Dams",
       icon: <FontAwesomeIcon icon={faHouseWater} style={{ width: "24px" }} />,
       component: Tailings,
+    },
+    {
+      key: "help-guide",
+      label: "How to use MineSpace",
+      icon: <FontAwesomeIcon icon={faCircleQuestion} style={{ width: "24px" }} />,
+      onClick: () => window.open(MINESPACE_USER_GUIDE, "_blank"),
     },
     {
       key: "user-access",
