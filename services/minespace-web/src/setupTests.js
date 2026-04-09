@@ -3,6 +3,10 @@ import Adapter from "enzyme-adapter-react-16";
 import path from "path";
 import server from "@/tests/server";
 import "@testing-library/jest-dom";
+import moment from "moment-timezone";
+
+process.env.TZ = "UTC";
+moment.tz.setDefault("UTC");
 
 beforeAll(() => {
   server.listen({ onUnhandledRequest: "warn" });
