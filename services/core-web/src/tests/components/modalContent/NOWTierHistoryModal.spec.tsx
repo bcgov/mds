@@ -87,4 +87,26 @@ describe("NOWTierHistoryModal", () => {
 
     expect(await screen.findByText("No tier change recorded")).toBeInTheDocument();
   });
+
+  it("renders properly with only description change", async () => {
+    const descriptionChangeHistory = [
+      {
+        updated_by: "User 3",
+        updated_at: "2023-01-03T12:00:00Z",
+        changeset: [{ field_name: "description", from: "old", to: "new rationale" }],
+      },
+    ];
+    (NOW_ACTIONS.fetchNoticeOfWorkApplicationTierHistory as jest.Mock).mockReturnValue(() =>
+      Promise.resolve({ data: descriptionChangeHistory })
+    );
+
+    render(
+      <ReduxWrapper initialState={initialState}>
+        <NOWTierHistoryModal {...props} />
+      </ReduxWrapper>
+    );
+
+    expect(await screen.findByText("Rationale updated")).toBeInTheDocument();
+    expect(await screen.findByText("new rationale")).toBeInTheDocument();
+  });
 });
