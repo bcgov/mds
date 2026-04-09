@@ -36,7 +36,7 @@ export const Header: FC<HeaderProps> = ({ xs, lg, xl, xxl, isAuthenticated = fal
             <div className="inline-flex items-center">
               <HeaderDropdown />
               {isAuthenticated && !isNewUser && <NotificationDrawer />}
-              {!isNewUser && <HelpGuide />}
+              {!isNewUser && <HelpGuide showText={true} />}
             </div>
           </div>
         </Col>

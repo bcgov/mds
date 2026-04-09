@@ -11,5 +11,6 @@ export { default as MAP_LOGO } from "../assets/images/maplogo.svg";
 export { default as LANDING_BG } from "../assets/images/minespace-landing-bg.jpg";
 
 export { default as USER_GUIDE } from "../assets/downloads/User Guide - Register of Tailings Storage Facilities and Dams.pdf";
+export { default as MINESPACE_USER_GUIDE } from "../assets/downloads/MineSpace_User_Guide_2026.pdf";
 export { default as TAILINGS_DOCUMENT } from "../assets/downloads/Register of Tailings Storage Facilities and Dams.xlsm";
 export { default as LOADER } from "../assets/images/loader.gif";
