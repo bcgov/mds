@@ -6,4 +6,6 @@ export interface IPartyAppt extends IAddPartyAppointment {
   update_user?: string;
   party: IParty;
   documents?: IMineDocument[];
+  status?: string;
+  mine_party_acknowledgement_status?: string;
 }
