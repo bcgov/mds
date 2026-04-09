@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from "react";
-import { Button, Table } from "antd";
+import { Button, Table, Tooltip } from "antd";
 import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 import { fetchNoticeOfWorkApplicationTierHistory } from "@mds/common/redux/actionCreators/noticeOfWorkActionCreator";
 import { formatDateTime } from "@mds/common/redux/utils/helpers";
@@ -45,13 +45,33 @@ export const NOWTierHistoryModal: FC<NOWTierHistoryModalProps> = (props) => {
       key: "changeset",
       render: (changeset) => {
         const tierChange = changeset.find((c) => c.field_name === "notice_of_work_tier_code");
+        const descriptionChange = changeset.find((c) => c.field_name === "description");
         if (tierChange) {
-           const from = tierOptionsHash[tierChange.from] || Strings.EMPTY_FIELD;
-           const to = tierOptionsHash[tierChange.to] || Strings.EMPTY_FIELD;
-           const suffix = !tierChange.from ? " (initial intake)" : "";
-           return `Changed from ${from} to ${to}${suffix}`;
+          const from = tierOptionsHash[tierChange.from] || Strings.EMPTY_FIELD;
+          const to = tierOptionsHash[tierChange.to] || Strings.EMPTY_FIELD;
+          const suffix = !tierChange.from ? " (initial intake)" : "";
+          return `Changed from ${from} to ${to}${suffix}`;
+        }
+        if (descriptionChange) {
+          return "Rationale updated";
         }
         return "No tier change recorded";
+      },
+    },
+    {
+      title: "Rationale",
+      dataIndex: "changeset",
+      key: "rationale",
+      render: (changeset) => {
+        const descriptionChange = changeset.find((c) => c.field_name === "description");
+        const rationale = descriptionChange?.to || Strings.EMPTY_FIELD;
+        return (
+          <Tooltip title={rationale} placement="topLeft">
+            <div className="ellipsis-text nowrap" style={{ maxWidth: 200 }}>
+              {rationale}
+            </div>
+          </Tooltip>
+        );
       },
     },
   ];
