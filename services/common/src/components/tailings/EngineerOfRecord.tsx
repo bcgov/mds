@@ -45,7 +45,7 @@ export const EngineerOfRecord: FC<EngineerOfRecordProps> = (props) => {
 
   const { addContactModalConfig } = useContext(TailingsContext);
   const tsfFormName = FORM.ADD_TAILINGS_STORAGE_FACILITY;
-  const partyRelationships: IMinePartyAppt[] = useAppSelector(getPartyRelationships);
+  const partyRelationships = useAppSelector(getPartyRelationships) as unknown as IMinePartyAppt[];
   const mine: IMine = useAppSelector(getMineById(mineGuid));
 
   const formValues = useAppSelector(getFormValues(tsfFormName)) as ITailingsStorageFacilityForm;

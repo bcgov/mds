@@ -38,23 +38,21 @@ const EditTsfAppointmentForm: FC<EditTsfProps> = ({
     const partyTitle = useAppSelector(getPartyRelationshipTitle(partyAppointment.mine_party_appt_type_code))
 
     const onSubmit = (values) => {
-        dispatch(updatePartyRelationship({ data: values })).then((resp) => {
-            if (resp?.data) {
-                const mineGuid = partyAppointment.mine_guid;
+        dispatch(updatePartyRelationship({ data: values })).unwrap().then(() => {
+            const mineGuid = partyAppointment.mine_guid;
 
-                Promise.all([
-                    dispatch(fetchTailingsStorageFacility({ mineGuid, tsfGuid })),
-                    dispatch(
-                        fetchPartyRelationships({
-                            mine_guid: mineGuid,
-                            relationships: "party",
-                            mine_tailings_storage_facility_guid: tsfGuid,
-                        })
-                    )
-                ]);
-                if (isModal) {
-                    dispatch(closeModal());
-                }
+            Promise.all([
+                dispatch(fetchTailingsStorageFacility({ mineGuid, tsfGuid })),
+                dispatch(
+                    fetchPartyRelationships({
+                        mine_guid: mineGuid,
+                        relationships: "party",
+                        mine_tailings_storage_facility_guid: tsfGuid,
+                    })
+                )
+            ]);
+            if (isModal) {
+                dispatch(closeModal());
             }
         });
     };

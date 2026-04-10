@@ -18,16 +18,14 @@ export const InactiveContact: FC<InactiveContactProps> = ({
 }) => {
   const [redirectToProfile, setRedirectToProfile] = useState(false);
 
-  useEffect(() => {
-    if (redirectToProfile) {
-      return (
-        <Redirect
-          to={router.RELATIONSHIP_PROFILE.dynamicRoute(mine.mine_guid, partyRelationshipTypeCode)}
-          push
-        />
-      );
-    }
-  }, []);
+  if (redirectToProfile) {
+    return (
+      <Redirect
+        to={router.RELATIONSHIP_PROFILE.dynamicRoute(mine.mine_guid, partyRelationshipTypeCode)}
+        push
+      />
+    );
+  }
 
   return (
     <Card

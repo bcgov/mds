@@ -1,4 +1,5 @@
 import React, { FC, useEffect, useMemo } from "react";
+import moment from "moment";
 import { arrayPush, arrayRemove, Field, getFormValues } from "@mds/common/components/forms/form";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import RenderField from "@mds/common/components/forms/RenderField";
@@ -279,7 +280,9 @@ const MinespaceAccessRequest: FC = () => {
         </Typography.Paragraph>
         <Typography.Paragraph>
           Submitted on:{" "}
-          {new Date(currentUserAccessRequest.access_request.submitted_timestamp).toLocaleString()}
+          {moment(currentUserAccessRequest.access_request.submitted_timestamp).format(
+            "M/D/YYYY, h:mm:ss A"
+          )}
         </Typography.Paragraph>
       </div>
     );

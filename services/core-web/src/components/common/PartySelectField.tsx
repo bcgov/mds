@@ -20,7 +20,7 @@ import { FormContext } from "@mds/common/components/forms/FormWrapper";
 interface IPartySelectOption {
   value: string | undefined,
   originalValue?: IParty,
-  label: JSX.Element
+  label: React.ReactNode
 };
 
 const renderAddPartyFooter = (showAddParty, partyLabel) => (

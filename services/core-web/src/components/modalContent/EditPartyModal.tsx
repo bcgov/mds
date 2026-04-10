@@ -6,7 +6,7 @@ import EditFullPartyForm, {
 import moment from "moment";
 import { formatDate } from "@common/utils/helpers";
 import { useAppSelector } from "@mds/common/redux/rootState";
-import { IParty } from "@mds/common/interfaces";
+import { IParty, ItemMap } from "@mds/common/interfaces";
 
 interface EditPartyProps {
   onSubmit: () => any;
@@ -14,9 +14,9 @@ interface EditPartyProps {
 }
 
 export const EditPartyModal: FC<EditPartyProps> = ({ onSubmit, partyGuid }) => {
-  const parties = useAppSelector(getParties) as IParty[];
+  const parties = useAppSelector(getParties) as ItemMap<IParty>;
   const partyFromStore = parties[partyGuid];
-  const party: EditFullPartyFormValues = partyFromStore ? { ...partyFromStore } : null;
+  const party = partyFromStore ? ({ ...partyFromStore } as EditFullPartyFormValues) : null;
   const today = moment().utc();
   const sortedBusinessRoleAppts = [...(party?.business_role_appts ?? [])].sort(
     (a, b) => b.party_business_role_appt_id - a.party_business_role_appt_id
