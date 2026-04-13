@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { connect, useSelector } from "react-redux";
+import { connect } from "react-redux";
 import moment from "moment";
 import PropTypes from "prop-types";
 import { Row, Col, Card, Descriptions, Typography } from "antd";
@@ -22,6 +22,7 @@ import Map from "@/components/common/Map";
 import MineWorkInformation from "./MineWorkInformation";
 import { SidebarContext } from "@mds/common/components/common/SidebarWrapper";
 import { getMineReportStatsByMineGuid } from "@mds/common/redux/slices/mineReportStatsSlice";
+import { useAppSelector } from "@mds/common/redux/rootState";
 
 const propTypes = {
   partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship).isRequired,
@@ -49,7 +50,7 @@ const getMineManager = (partyRelationships) => {
 
 export const Overview = (props) => {
   const { mine } = useContext(SidebarContext);
-  const stats = useSelector(getMineReportStatsByMineGuid(mine.mine_guid));
+  const stats = useAppSelector(getMineReportStatsByMineGuid(mine.mine_guid));
   return (
     <>
       <Row>
@@ -102,7 +103,7 @@ export const Overview = (props) => {
                 <div>
                   {mine.mine_permit_numbers.join(", ")}
                   <p>
-                    <i>Active: {stats?.active_permits ?? Strings.UNKNOWN}</i>
+                    <i>Active: {stats?.active_permits ?? Strings.NONE}</i>
                   </p>
                 </div>
               ) : (

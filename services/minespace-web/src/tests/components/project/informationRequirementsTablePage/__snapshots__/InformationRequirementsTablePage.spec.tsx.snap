@@ -353,6 +353,7 @@ exports[`InformationRequirementsTablePage renders properly 1`] = `
                       </div>
                       <div
                         class="ant-tabs-ink-bar ant-tabs-ink-bar-animated"
+                        style="top: 0px; height: 0px;"
                       />
                     </div>
                   </div>
