@@ -21,6 +21,8 @@ import * as Strings from "@/constants/strings";
 import Map from "@/components/common/Map";
 import MineWorkInformation from "./MineWorkInformation";
 import { SidebarContext } from "@mds/common/components/common/SidebarWrapper";
+import { getMineReportStatsByMineGuid } from "@mds/common/redux/slices/mineReportStatsSlice";
+import { useAppSelector } from "@mds/common/redux/rootState";
 
 const propTypes = {
   partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship).isRequired,
@@ -48,6 +50,7 @@ const getMineManager = (partyRelationships) => {
 
 export const Overview = (props) => {
   const { mine } = useContext(SidebarContext);
+  const stats = useAppSelector(getMineReportStatsByMineGuid(mine.mine_guid));
   return (
     <>
       <Row>
@@ -95,10 +98,17 @@ export const Overview = (props) => {
                     .join(", ")
                 : Strings.UNKNOWN}
             </Descriptions.Item>
-            <Descriptions.Item span={2} label="Active Permits">
-              {mine.mine_permit_numbers && mine.mine_permit_numbers.length > 0
-                ? mine.mine_permit_numbers.join(", ")
-                : Strings.NONE}
+            <Descriptions.Item span={2} label="Mines Act Permits (All)">
+              {mine.mine_permit_numbers && mine.mine_permit_numbers.length > 0 ? (
+                <div>
+                  {mine.mine_permit_numbers.join(", ")}
+                  <p>
+                    <i>Active: {stats?.active_permits ?? Strings.NONE}</i>
+                  </p>
+                </div>
+              ) : (
+                Strings.NONE
+              )}
             </Descriptions.Item>
           </Descriptions>
           <div className="padding-md--top padding-md--bottom">
