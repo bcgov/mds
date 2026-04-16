@@ -56,7 +56,6 @@ services:
     build:
       context: services/postgres
       dockerfile: Dockerfile
-      platform: linux/amd64
     environment:
       - POSTGRES_USER=mds
       - POSTGRES_PASSWORD=test
@@ -330,21 +329,35 @@ services:
       - document_manager_celery
       - tusd
     env_file: ./services/document-manager/backend/.env
+  flower:
+    restart: always
+    container_name: flower
+    build:
+      context: services/document-manager/backend
+    entrypoint: celery -A app.tasks.celery flower --basic_auth=flower:flower
+    ports:
+      - 5555:5555
+    volumes:
+      - ./services/document-manager/backend:/app
+    depends_on:
+      - postgres
+      - redis
+    env_file: ./services/document-manager/backend/.env
 
   document_manager_celery:
     restart: always
     container_name: document_manager_celery
+    entrypoint: celery -A app.tasks.celery worker --loglevel=info --pidfile=/tmp/celery/celery.pid --concurrency=3 -n document_manager_service@%h
+
     build:
       context: services/document-manager/backend
-    entrypoint: ./celery.sh
-    ports:
-      - 5555:5555
     volumes:
       - ./services/document-manager/backend:/app
       - document_manager_logs:/var/log/document-manager
     depends_on:
       - postgres
       - redis
+      - flower
       - tusd
     env_file: ./services/document-manager/backend/.env
 

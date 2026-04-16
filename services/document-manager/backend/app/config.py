@@ -2,7 +2,7 @@ import logging
 import os
 import traceback
 
-from flask import current_app
+from flask import current_app, has_request_context
 from opentelemetry import trace
 
 
@@ -12,7 +12,7 @@ class CustomFormatter(logging.Formatter):
         def get_key_cloak_client_id():
             try:
                 # Check if the request is a valid HTTP request
-                if current_app and hasattr(current_app, 'extensions'):
+                if current_app and hasattr(current_app, 'extensions') and has_request_context():
                     from app.extensions import getJwtManager
                     from flask import request
 
@@ -24,6 +24,7 @@ class CustomFormatter(logging.Formatter):
             except Exception as e:
                 #print error only when there is a major error with implementation of getJwtManager()
                 print(traceback.format_exc())
+
 
             return None
 
@@ -130,10 +131,16 @@ class Config(object):
 
     FLASK_LOGGING_LEVEL = os.environ.get('FLASK_LOGGING_LEVEL',
                                          'INFO')  # ['DEBUG','INFO','WARN','ERROR','CRITICAL']
+    CELERY_LOGGING_LEVEL = os.environ.get('CELERY_LOGGING_LEVEL',
+                                          FLASK_LOGGING_LEVEL)  # ['DEBUG','INFO','WARN','ERROR','CRITICAL']
     WERKZEUG_LOGGING_LEVEL = os.environ.get('WERKZEUG_LOGGING_LEVEL',
                                             'CRITICAL')  # ['DEBUG','INFO','WARN','ERROR','CRITICAL']
     DISPLAY_WERKZEUG_LOG = os.environ.get('DISPLAY_WERKZEUG_LOG',
                                           True)
+
+    CELERYD_HIJACK_ROOT_LOGGER = False
+    CELERYD_LOG_FORMAT = '%(asctime)s %(levelname)s [%(name)s] [%(filename)s:%(lineno)d]'
+    CELERYD_TASK_LOG_FORMAT = '%(asctime)s %(levelname)s [%(name)s] [%(filename)s:%(lineno)d]'
     
     GEOMARK_URL_BASE = os.environ.get('GEOMARK_URL_BASE', 'https://test.apps.gov.bc.ca/pub/geomark')
     GEOMARK_SECRET_KEY = os.environ.get('GEOMARK_SECRET_KEY', None)
@@ -142,6 +149,7 @@ class Config(object):
 
     LOGGING_DICT_CONFIG = {
         'version': 1,
+        'disable_existing_loggers': False,
         'formatters': {
             'default': {
                 '()': CustomFormatter,
@@ -161,6 +169,21 @@ class Config(object):
             'handlers': ['console']
         },
         'loggers': {
+            'celery': {
+                'level': CELERY_LOGGING_LEVEL,
+                'handlers': ['console'],
+                'propagate': False
+            },
+            'celery.app.trace': {
+                'level': CELERY_LOGGING_LEVEL,
+                'handlers': ['console'],
+                'propagate': False
+            },
+            'celery.task': {
+                'level': CELERY_LOGGING_LEVEL,
+                'handlers': ['console'],
+                'propagate': False
+            },
             'werkzeug': {
                 'level': WERKZEUG_LOGGING_LEVEL,
                 'handlers': ['console'],
