@@ -347,7 +347,7 @@ services:
   document_manager_celery:
     restart: always
     container_name: document_manager_celery
-    entrypoint: celery -A app.tasks.celery worker --loglevel=info --logfile=/tmp/celery/celery.log --pidfile=/tmp/celery/celery.pid --concurrency=3 -n document_manager_service@%h
+    entrypoint: celery -A app.tasks.celery worker --loglevel=info --pidfile=/tmp/celery/celery.pid --concurrency=3 -n document_manager_service@%h
 
     build:
       context: services/document-manager/backend
