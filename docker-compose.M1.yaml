@@ -53,6 +53,7 @@ services:
     restart: always
     container_name: mds_postgres
     user: postgres
+    platform: linux/amd64
     build:
       context: services/postgres
       dockerfile: Dockerfile
