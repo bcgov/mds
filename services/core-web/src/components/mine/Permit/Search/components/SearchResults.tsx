@@ -2,9 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { List, Space, Tag, Empty, Row, Col, Button, Badge, Skeleton, Typography, Divider } from 'antd';
 import ResultItem from './ResultItem';
 import { FilterOutlined } from '@ant-design/icons';
-import { useAppSelector } from '@mds/common/redux/rootState';
-import { selectSearchResults, selectSearchFilters, selectSearchQuery, selectDocumentLoading } from '@mds/common/redux/slices/permitSearchSlice';
-import { HaystackDocumentSearchResult } from '@mds/common/interfaces/search/facet-search.interface';
+import { useAppSelector, RootState } from '@mds/common/redux/rootState';
+import {
+    selectSearchResults,
+    selectSearchFilters,
+    selectSearchQuery,
+    selectDocumentLoading,
+} from '@mds/common/redux/slices/permitSearchSlice';
+import { Facet, HaystackDocumentSearchResult, SearchResult } from '@mds/common/interfaces/search/facet-search.interface';
 import FilterDrawer from './FilterDrawer';
 import { startCase } from 'lodash';
 import dayjs from 'dayjs';
@@ -16,21 +21,33 @@ export interface SelectedFilter {
 
 export interface SearchResultsProps {
     onFilterChange: (selectedFilters: SelectedFilter[]) => void;
+    /**
+     * Optional selector overrides — pass these when using SearchResults outside of the
+     * permit condition search context (e.g. NoW application document search).
+     * Defaults to the permit search slice selectors so existing usage is unchanged.
+     */
+    selectors?: {
+        selectResults?: (state: RootState) => SearchResult | null;
+        selectFilters?: (state: RootState) => SelectedFilter[];
+        selectQuery?: (state: RootState) => string;
+        selectDocumentLoading?: (state: RootState) => boolean;
+        selectAllFacets?: (state: RootState) => { [key: string]: Facet[] };
+    };
 }
 
 /**
  * Component to display search results and filter options.
- * 
+ *
  * Maintains a local state for pending filters, which are filters that have been checked but not yet applied.
  * - When a filter is checked, it is added to the pending filters.
  * - When a filter is unchecked, it is removed from the pending filters.
  * - When the user clicks "Apply Filters", the pending filters are applied to the search results.
  */
-const SearchResults: React.FC<SearchResultsProps> = ({ onFilterChange }) => {
-    const results = useAppSelector(selectSearchResults);
-    const documentLoading = useAppSelector(selectDocumentLoading);
-    const selectedFilters = useAppSelector(selectSearchFilters);
-    const query = useAppSelector(selectSearchQuery);
+const SearchResults: React.FC<SearchResultsProps> = ({ onFilterChange, selectors }) => {
+    const results = useAppSelector(selectors?.selectResults ?? selectSearchResults);
+    const documentLoading = useAppSelector(selectors?.selectDocumentLoading ?? selectDocumentLoading);
+    const selectedFilters = useAppSelector(selectors?.selectFilters ?? selectSearchFilters);
+    const query = useAppSelector(selectors?.selectQuery ?? selectSearchQuery);
 
     const [pendingFilters, setPendingFilters] = useState<SelectedFilter[]>(selectedFilters);
     const [hasFilterChanges, setHasFilterChanges] = useState(false);
@@ -198,6 +215,7 @@ const SearchResults: React.FC<SearchResultsProps> = ({ onFilterChange }) => {
                 }}
                 onClearFilters={clearAllFilters}
                 hasFilterChanges={hasFilterChanges}
+                selectAllFacetsOverride={selectors?.selectAllFacets}
             />
         </Row >
     );

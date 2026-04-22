@@ -29,6 +29,10 @@ from app.api.now_applications.resources.now_application_nation_event_resource im
 from app.api.now_applications.resources.now_application_nation_resource import NOWApplicationNationResource
 from app.api.now_applications.resources.pip_consultation_areas_resource import PIPConsultationAreaResource
 from app.api.now_applications.resources.now_application_nation_status_resource import NOWApplicationNationStatusResource
+from app.api.now_applications.resources.now_application_document_search_resource import (
+    NOWApplicationDocumentSearchResource,
+    NOWApplicationDocumentIndexResource,
+)
 
 api = Namespace('now-applications', description='Core Notice of Work operations')
 
@@ -80,3 +84,5 @@ api.add_resource(NOWApplicationReviewTypeResource, '/review-types')
 api.add_resource(NOWApplicationExportResource, '/application-export/<string:document_type_code>')
 api.add_resource(NOWApplicationNationEventCodeResource, '/nation-event-codes')
 api.add_resource(NOWApplicationNationStatusResource, '/nation-statuses')
+api.add_resource(NOWApplicationDocumentSearchResource, '/<string:now_application_guid>/document-search')
+api.add_resource(NOWApplicationDocumentIndexResource, '/<string:now_application_guid>/document-search/index')

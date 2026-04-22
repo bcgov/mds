@@ -1,4 +1,4 @@
-import { Button, Col, Row, Typography } from "antd";
+import { Alert, Button, Col, Row, Typography } from "antd";
 import React, { FC, ReactNode, useEffect, useState } from "react";
 import { Field, getFormValues, change } from "@mds/common/components/forms/form";
 import ArrowRightOutlined from "@ant-design/icons/ArrowRightOutlined";
@@ -13,8 +13,10 @@ import {
   MINE_REPORTS_ENUM,
   MineReportType,
   REPORT_TYPE_CODES,
+  SystemFlagEnum,
 } from "@mds/common/constants/enums";
 import { FORM } from "@mds/common/constants/forms";
+import { MMO_EMAIL } from "@mds/common/constants/strings";
 import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 import {
   getReportDefinitionsLoaded,
@@ -132,6 +134,24 @@ const ReportGetStarted: FC<ReportGetStartedProps> = ({
             },
           ]}
         />
+        {system !== SystemFlagEnum.core &&
+          mine.major_mine_ind &&
+          formValues?.report_type === REPORT_TYPE_CODES.PRR && (
+            <Alert
+              description={
+                <>
+                  Please note that the Major Mines Office (MMO) is currently unable to receive
+                  permit-required reports through MineSpace. You must submit your permit-required
+                  report to the MMO general intake inbox at {MMO_EMAIL}. Please request assistance
+                  for transferring large files by contacting{" "}
+                  <a href={`mailto:${MMO_EMAIL}`}>{MMO_EMAIL}</a>
+                </>
+              }
+              type="warning"
+              showIcon
+              className="margin-small--bottom"
+            />
+          )}
         {formValues?.report_type === REPORT_TYPE_CODES.PRR && (
           <RenderPRRFields mineGuid={mine.mine_guid} />
         )}

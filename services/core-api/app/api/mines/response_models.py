@@ -938,6 +938,12 @@ PERMIT_CONDITION_SEARCH_MODEL = api.model(
         'filters': fields.Nested(QUERY_FILTER_MODEL, required=False),
     })
 
+NOW_DOCUMENT_SEARCH_MODEL = api.model(
+    'NowDocumentSearch', {
+        'query': fields.String(required=True),
+        'filters': fields.Nested(QUERY_FILTER_MODEL, required=False),
+    })
+
 
 PERMIT_SERVICE_DOCUMENT_MODEL = api.model(
     'PermitServiceDocumentModel', {

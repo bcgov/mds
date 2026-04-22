@@ -1,7 +1,6 @@
 import logging
 from typing import Any, Dict, List, Optional
 
-from app.pipelines.permit_condition_search.search_index_fields import fields
 from azure.search.documents.models import (
     QueryCaptionType,
     QueryType,
@@ -17,7 +16,7 @@ logger = logging.getLogger(__name__)
 
 # There's a bug in the Haystack Azure AI Search integration where it doesn't handle collection index field types correctly.
 # Issue: Filters on a field of the type Collection(...) fails with an error (it works for single fields).
-# Expected Odata filter syntax for a collection field is: 
+# Expected Odata filter syntax for a collection field is:
 # `field/any(field: <filter>)` where `field` is the name of the field and `value` is the value to filter on. The haystack integration spits out just the <filter> part.
 # Example: `search.in(field, 'value1,value2', ',')` should be `field/any(field: search.in(field, 'value1,value2', ','))`
 #
@@ -27,21 +26,26 @@ logger = logging.getLogger(__name__)
 
 # Reference: https://learn.microsoft.com/en-us/azure/search/search-query-odata-filter
 
-fields_dict = {field.name: field for field in fields}
-og_fltr = fltrs.COMPARISON_OPERATORS
 
-def override_comparison_operators(op, func):
-    def handle_collection_index_field_type(field, value, **kwargs):
-        res = func(field, value, **kwargs)
+def _build_collection_aware_operators(fields_list):
+    """
+    Patches Haystack's OData filter operators so that Collection(Edm.String) fields
+    are wrapped with the required `field/any(field: ...)` syntax.
+    Accepts the index field list so each document store instance can manage its own schema.
+    """
+    fields_dict = {field.name: field for field in fields_list}
+    og_fltr = fltrs.COMPARISON_OPERATORS
 
-        if fields_dict.get(field) and fields_dict[field].type.startswith("Collection("):
-            # If the field is a collection, we need to format the value as a list
-            res = f"{field}/any({field}: {res})"
-        return res
-    return handle_collection_index_field_type
+    def override_comparison_operators(op, func):
+        def handle_collection_index_field_type(field, value, **kwargs):
+            res = func(field, value, **kwargs)
+            if fields_dict.get(field) and fields_dict[field].type.startswith("Collection("):
+                res = f"{field}/any({field}: {res})"
+            return res
+        return handle_collection_index_field_type
 
-new_comparison_operators = {op: override_comparison_operators(op, func) for op, func in og_fltr.items()}
-fltrs.COMPARISON_OPERATORS = new_comparison_operators
+    return {op: override_comparison_operators(op, func) for op, func in og_fltr.items()}
+
 
 # This class is used to configure additional search parameters for the Azure AI Search Document Store that are not part of the standard Haystack configuration.
 # It allows for highlighting fields and customizing highlight tags.
@@ -74,10 +78,14 @@ class AzureSearchDocumentStore(AzureAISearchDocumentStore):
     The AzureSearchDocumentStore extends the AzureAISearchDocumentStore
     to add support for facets, highlights, in the search results and additional configuration that haystack
     does not support out of the box.
+
+    Pass the index ``fields`` list so Collection(Edm.String) filter handling is scoped
+    to the correct schema — allowing multiple stores with different schemas to coexist.
     """
 
     def __init__(
         self,
+        index_fields: Optional[list] = None,
         search_config: Optional[AdditionalAISearchConfig] = None,
         semantic_configuration_name=None,
         **kwargs,
@@ -85,6 +93,10 @@ class AzureSearchDocumentStore(AzureAISearchDocumentStore):
         super(AzureSearchDocumentStore, self).__init__(**kwargs)
         self.search_config = search_config or AdditionalAISearchConfig()
         self.semantic_configuration_name = semantic_configuration_name
+
+        # Apply the collection-aware filter patch scoped to this store's field schema.
+        if index_fields:
+            fltrs.COMPARISON_OPERATORS = _build_collection_aware_operators(index_fields)
 
     def _convert_search_result_to_documents(
         self, azure_docs: List[Dict[str, Any]]

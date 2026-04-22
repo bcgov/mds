@@ -15,12 +15,13 @@ from flask_restx import Resource
 from pytz import timezone
 from werkzeug.exceptions import NotFound
 
+
 class MineReportStatsResource(Resource, UserMixin):
     @api.marshal_with(MINE_REPORT_STATS_MODEL, code=200)
     @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
     def get(self, mine_guid):
         """Return stats for the given mine:
-        - active_permits: count of non-draft, non-closed status permits associated with the mine
+        - active_permits: count of non-draft permits associated with the mine
         - overdue_reports: due_date before today AND on/after 2025-04-01 (this is when report submissions became mandatory through Minespace) AND not yet submitted
         - due_next_90_days: due_date within [today, today+90] AND not yet submitted
         """
@@ -29,7 +30,7 @@ class MineReportStatsResource(Resource, UserMixin):
             raise NotFound('Mine not found')
 
         # Active permits are those surfaced by Mine.mine_permit (excludes drafts)
-        active_permits = len([permit for permit in mine.mine_permit if permit.permit_status_code != 'C'])
+        active_permits = len(mine.mine_permit_numbers)
 
         # Compute 'today' in Pacific Time to evaluate overdue and upcoming windows
         today = datetime.now(timezone('US/Pacific')).date()
