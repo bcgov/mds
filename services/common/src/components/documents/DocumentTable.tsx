@@ -102,6 +102,15 @@ export const DocumentTable: FC<DocumentTableProps> = ({
     setDocuments(parseDocuments(props.documents ?? []));
   }, [props.documents]);
 
+  const normalizeSelectedRows = (selectedRows: MineDocument[]) => {
+    const latestByDocManager = new Map<string, MineDocument>();
+    documents.forEach((doc) => {
+      latestByDocManager.set(doc.document_manager_guid, doc);
+    });
+
+    return selectedRows.map((row) => latestByDocManager.get(row.document_manager_guid) ?? row)
+  };
+
   const openArchiveModal = (docs: MineDocument[]) => {
     const mineGuid = docs[0].mine_guid;
     dispatch(
@@ -312,8 +321,9 @@ export const DocumentTable: FC<DocumentTableProps> = ({
     </Row>;
   };
 
-  const handleRowSelectionChange = (value) => {
-    setRowSelection(value);
+  const handleRowSelectionChange = (selectedRows) => {
+    const normalized = normalizeSelectedRows(selectedRows);
+    setRowSelection(normalized);
   };
 
   const rowSelectionObject: any = {
