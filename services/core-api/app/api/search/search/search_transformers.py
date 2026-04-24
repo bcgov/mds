@@ -64,7 +64,7 @@ def prepare_party_source(source):
     
     prepared = dict(source)
     prepared['name'] = f"{first_name} {party_name}".strip() if first_name else party_name
-    prepared['party_orgbook_entity'] = None
+    prepared['party_orgbook_entity'] = source.get('party_orgbook_entity') #.get() returns None by default
     prepared['business_role_appts'] = []
     prepared['mine_party_appt'] = transformed_appts
     prepared['address'] = []
