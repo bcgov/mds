@@ -79,7 +79,8 @@ class TestPreparePartySources:
             'party_name': 'Doe',
             'party_type_code': 'PER',
             'email': 'john.doe@example.com',
-            'phone_no': '555-1234'
+            'phone_no': '555-1234',
+            'party_orgbook_entity': {'registration_id': 'BC123456'}
         }
         
         result = prepare_party_source(source)
@@ -89,9 +90,17 @@ class TestPreparePartySources:
         assert result['first_name'] == 'John'
         assert result['party_name'] == 'Doe'
         assert result['email'] == 'john.doe@example.com'
-        assert result['party_orgbook_entity'] is None
+        assert result['party_orgbook_entity'] == {'registration_id': 'BC123456'}
         assert result['business_role_appts'] == []
         assert result['address'] == []
+    
+    def test_prepare_party_source_without_orgbook_entity(self):
+        source = {} 
+
+        result = prepare_party_source(source)
+
+        assert result['party_orgbook_entity'] is None
+
 
     def test_prepare_party_source_organization(self):
         source = {
