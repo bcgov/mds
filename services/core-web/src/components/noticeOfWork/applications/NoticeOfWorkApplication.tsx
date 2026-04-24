@@ -17,6 +17,7 @@ import ApplicationGuard from "@/HOC/ApplicationGuard";
 import { getDraftPermitForNOW } from "@mds/common/redux/selectors/permitSelectors";
 import ManageDocumentsTab from "@/components/noticeOfWork/applications/manageDocuments/ManageDocumentsTab";
 import { IPermit } from "@mds/common/interfaces";
+import NowApplicationDocumentSearchForm from "@/components/noticeOfWork/applications/search/NowApplicationDocumentSearch";
 
 /**
  * NoticeOfWorkApplication - contains all tabs needed for a CORE notice of work application.
@@ -214,6 +215,17 @@ export const NoticeOfWorkApplication: FC<NoticeOfWorkApplicationProps> = (props)
           {verificationComplete && (
             <LoadingWrapper condition={isTabLoaded}>
               <ManageDocumentsTab fixedTop={props.fixedTop} />
+            </LoadingWrapper>
+          )}
+        </Tabs.TabPane>
+        <Tabs.TabPane
+          tab={props.renderTabTitle("Search Documents", "SEA")}
+          key="search-documents"
+          disabled={!verificationComplete}
+        >
+          {verificationComplete && (
+            <LoadingWrapper condition={isTabLoaded}>
+              <NowApplicationDocumentSearchForm nowApplicationGuid={noticeOfWork.now_application_guid} />
             </LoadingWrapper>
           )}
         </Tabs.TabPane>

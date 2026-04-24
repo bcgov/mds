@@ -1,5 +1,6 @@
 from app.pipelines.document_search.config import config
 from azure.core.credentials import AzureKeyCredential
+from azure.core.exceptions import HttpResponseError
 from azure.search.documents.indexes import SearchIndexerClient
 from azure.search.documents.indexes.models import (
     AzureOpenAIEmbeddingSkill,
@@ -26,6 +27,10 @@ indexer_client = SearchIndexerClient(
 )
 
 
+def _already_exists(e: HttpResponseError) -> bool:
+    return "ResourceNameAlreadyInUse" in str(e) or "already exists" in str(e).lower()
+
+
 def create_data_source():
     data_source = SearchIndexerDataSourceConnection(
         name=config.search.data_source.resolve_value(),
@@ -35,7 +40,13 @@ def create_data_source():
             name=config.storage.container_name, query="now-indexing"
         ),
     )
-    return indexer_client.create_or_update_data_source_connection(data_source)
+    try:
+        return indexer_client.create_data_source_connection(data_source)
+    except HttpResponseError as e:
+        if _already_exists(e):
+            print(f"Data source '{data_source.name}' already exists, skipping.")
+            return indexer_client.get_data_source_connection(data_source.name)
+        raise
 
 
 def create_skillset():
@@ -47,7 +58,7 @@ def create_skillset():
                 name="ChunkEmbedder",
                 description="Generate embeddings for document chunks",
                 context="/document",
-                resource_url=config.openai.endpoint.resolve_value(),
+                resource_url=config.openai.get_resource_url(),
                 api_key=config.openai.api_key.resolve_value(),
                 model_name=config.openai.embedding_model,
                 deployment_name=config.openai.embedding_model,
@@ -60,7 +71,13 @@ def create_skillset():
             )
         ],
     )
-    return indexer_client.create_or_update_skillset(skillset)
+    try:
+        return indexer_client.create_skillset(skillset)
+    except HttpResponseError as e:
+        if _already_exists(e):
+            print(f"Skillset '{skillset.name}' already exists, skipping.")
+            return indexer_client.get_skillset(skillset.name)
+        raise
 
 
 def create_indexer():
@@ -96,7 +113,13 @@ def create_indexer():
             FieldMapping(source_field_name="/document/embedding", target_field_name="embedding"),
         ],
     )
-    return indexer_client.create_or_update_indexer(indexer)
+    try:
+        return indexer_client.create_indexer(indexer)
+    except HttpResponseError as e:
+        if _already_exists(e):
+            print(f"Indexer '{indexer.name}' already exists, skipping.")
+            return indexer_client.get_indexer(indexer.name)
+        raise
 
 
 def create_search_indexer():

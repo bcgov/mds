@@ -13,6 +13,7 @@ import {
 } from "@mds/common/interfaces/search/facet-search.interface";
 import { createEventSource } from "eventsource-client";
 import * as API from "@mds/common/constants/API";
+import CustomAxios from "@mds/common/redux/customAxios";
 
 export const nowApplicationSearchReducerType = "nowApplicationSearch";
 
@@ -32,6 +33,7 @@ interface NowApplicationSearchState {
   loading: boolean;
   documentLoading: boolean;
   aiLoading: boolean;
+  indexing: boolean;
   query: string;
   filters: NowApplicationSearchFilters;
   allFacets: { [key: string]: Facet[] };
@@ -43,6 +45,7 @@ const initialState: NowApplicationSearchState = {
   loading: false,
   documentLoading: false,
   aiLoading: false,
+  indexing: false,
   query: "",
   filters: [],
   allFacets: {},
@@ -80,6 +83,36 @@ const nowApplicationSearchSlice = createAppSlice({
     setNowDocumentLoading: create.reducer((state, action: { payload: boolean }) => {
       state.documentLoading = action.payload;
     }),
+
+    /**
+     * Triggers document indexing for a NoW application via the core-api proxy.
+     * Downloads all application documents from Document Manager and indexes them
+     * in Azure AI Search via the permits service. Safe to re-run — existing records
+     * are overwritten by deterministic chunk IDs.
+     */
+    indexNowApplicationDocuments: create.asyncThunk(
+      async (nowApplicationGuid: string, thunkApi) => {
+        thunkApi.dispatch(showLoading());
+        const headers = createRequestHeader();
+        await CustomAxios({ errorToastMessage: "Failed to index documents" }).post(
+          `${ENVIRONMENT.apiUrl}${API.NOW_APPLICATION_DOCUMENT_INDEX(nowApplicationGuid)}`,
+          {},
+          headers
+        );
+        thunkApi.dispatch(hideLoading());
+      },
+      {
+        pending: (state) => {
+          state.indexing = true;
+        },
+        fulfilled: (state) => {
+          state.indexing = false;
+        },
+        rejected: (state) => {
+          state.indexing = false;
+        },
+      }
+    ),
 
     /**
      * Search documents within a specific NoW application.
@@ -230,6 +263,7 @@ const nowApplicationSearchSlice = createAppSlice({
     selectNowDocumentLoading: (state: NowApplicationSearchState): boolean =>
       state.documentLoading,
     selectNowAiLoading: (state: NowApplicationSearchState): boolean => state.aiLoading,
+    selectNowIndexing: (state: NowApplicationSearchState): boolean => state.indexing,
     selectNowAllFacets: (
       state: NowApplicationSearchState
     ): { [key: string]: Facet[] } => state.allFacets,
@@ -238,6 +272,7 @@ const nowApplicationSearchSlice = createAppSlice({
 
 export const {
   searchNowApplicationDocuments,
+  indexNowApplicationDocuments,
   setNowQuery,
   setNowFilters,
   updateNowSearchResults,
@@ -253,6 +288,7 @@ export const {
   selectNowSearchLoading,
   selectNowDocumentLoading,
   selectNowAiLoading,
+  selectNowIndexing,
   selectNowAllFacets,
 } = nowApplicationSearchSlice.selectors;
 

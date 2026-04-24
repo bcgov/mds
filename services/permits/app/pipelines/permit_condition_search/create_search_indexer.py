@@ -45,7 +45,7 @@ def create_skillset():
                 name="ChunkEmbedder",
                 description="Generate embeddings for chunks",
                 context="/document",
-                resource_url=config.openai.endpoint.resolve_value(),
+                resource_url=config.openai.get_resource_url(),
                 api_key=config.openai.api_key.resolve_value(),
                 model_name=config.openai.embedding_model,
                 deployment_name=config.openai.embedding_model,

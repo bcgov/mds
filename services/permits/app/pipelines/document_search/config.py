@@ -33,6 +33,7 @@ class DocumentSearchConfig:
             deployment_name=os.environ["AZURE_DEPLOYMENT_NAME"],
             api_version=os.environ.get("AZURE_API_VERSION", "2024-02-01"),
             embedding_model="text-embedding-3-large",
+            openai_resource_url=Secret.from_env_var("AZURE_OPENAI_ENDPOINT", strict=False) if os.environ.get("AZURE_OPENAI_ENDPOINT") else None,
         )
 
         # These env vars are dedicated to the document search index so it stays

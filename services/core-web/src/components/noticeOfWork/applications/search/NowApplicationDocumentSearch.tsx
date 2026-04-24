@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { Layout, Typography, Row, Col, Card, Skeleton } from 'antd';
+import { Layout, Typography, Row, Col, Card, Skeleton, Button, Tooltip } from 'antd';
+import { SyncOutlined } from '@ant-design/icons';
 import { useAppDispatch, useAppSelector } from '@mds/common/redux/rootState';
 import {
   searchNowApplicationDocuments,
+  indexNowApplicationDocuments,
   selectNowSearchResults,
   selectNowSearchLoading,
   selectNowSearchQuery,
   selectNowSearchFilters,
   selectNowAiLoading,
   selectNowDocumentLoading,
+  selectNowIndexing,
   selectNowAllFacets,
 } from '@mds/common/redux/slices/nowApplicationSearchSlice';
 import { debounce } from 'lodash';
@@ -50,6 +53,7 @@ const NowApplicationDocumentSearch: React.FC<NowApplicationDocumentSearchProps> 
   const results = useAppSelector(selectNowSearchResults);
   const loading = useAppSelector(selectNowSearchLoading);
   const aiLoading = useAppSelector(selectNowAiLoading);
+  const indexing = useAppSelector(selectNowIndexing);
   const query = useAppSelector(selectNowSearchQuery);
   const selectedFilters = useAppSelector(selectNowSearchFilters);
   const [isAIResponseExpanded, setIsAIResponseExpanded] = useState(false);
@@ -84,9 +88,24 @@ const NowApplicationDocumentSearch: React.FC<NowApplicationDocumentSearchProps> 
         ) : (
           <Row gutter={[16, 24]} style={{ width: '100%' }}>
             <Col span={24}>
-              <Typography.Title level={1} style={{ marginBottom: 0 }}>
-                Application Document Search
-              </Typography.Title>
+              <Row justify="space-between" align="middle">
+                <Col>
+                  <Typography.Title level={1} style={{ marginBottom: 0 }}>
+                    Application Document Search
+                  </Typography.Title>
+                </Col>
+                <Col>
+                  <Tooltip title="Download and index all application documents to make them searchable. Safe to re-run.">
+                    <Button
+                      icon={<SyncOutlined spin={indexing} />}
+                      loading={indexing}
+                      onClick={() => dispatch(indexNowApplicationDocuments(nowApplicationGuid))}
+                    >
+                      Index Documents
+                    </Button>
+                  </Tooltip>
+                </Col>
+              </Row>
             </Col>
             <Col span={24}>
               <SearchBox
