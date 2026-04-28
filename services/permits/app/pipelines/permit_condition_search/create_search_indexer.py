@@ -30,7 +30,7 @@ def create_data_source():
         name=config.search.data_source.resolve_value(),
         type="azureblob",
         connection_string=config.storage.connection_string,
-        container=SearchIndexerDataContainer(name=config.storage.container_name, query="indexing"),
+        container=SearchIndexerDataContainer(name=config.storage.container_name, query="indexing/permit"),
     )
     
     return indexer_client.create_or_update_data_source_connection(data_source)

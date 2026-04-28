@@ -84,6 +84,7 @@ def create_permit_condition_search_indexing_pipeline():
         connection_string=config.storage.connection_string,
         container_name=config.storage.container_name,
         blob_service_endpoint=config.storage.blob_service_endpoint,
+        folder_name="indexing/permit",
     )
 
     api_key = config.search.api_key.resolve_value()
@@ -94,6 +95,7 @@ def create_permit_condition_search_indexing_pipeline():
     indexer_runner = IndexerRunner(
         search_endpoint=search_endpoint,
         search_api_key=api_key,
+        indexer_name=config.search.indexer_name.resolve_value(),
     )
 
     index_pipeline.add_component("blob_uploader", blob_uploader)
@@ -113,6 +115,7 @@ def create_blob_uploader_pipeline():
         connection_string=config.storage.connection_string,
         container_name=config.storage.container_name,
         blob_service_endpoint=config.storage.blob_service_endpoint,
+        folder_name="indexing/permit",
     )
 
     blob_uploader_pipeline.add_component("blob_uploader", blob_uploader)

@@ -73,7 +73,8 @@ class NowApplicationSearchService:
             now_application_guid,
         )
 
-        tmp_files = []
+        tmp_paths = []
+        upload_handles = []
         multipart_files = []
 
         try:
@@ -84,15 +85,18 @@ class NowApplicationSearchService:
                     continue
 
                 tmp = tempfile.NamedTemporaryFile(delete=False)
-                tmp_files.append(tmp.name)
+                tmp_paths.append(tmp.name)
 
                 file_name, _ = DocumentManagerService().download_document_to_file(
                     document_manager_guid, tmp
                 )
-                tmp.seek(0)
+                tmp.close()
 
+                # Reopen a clean handle for the multipart upload; tracked for cleanup.
+                upload_fh = open(tmp.name, 'rb')
+                upload_handles.append(upload_fh)
                 multipart_files.append(
-                    ('files', (file_name or doc.get('document_name', 'document'), tmp, 'application/octet-stream'))
+                    ('files', (file_name or doc.get('document_name', 'document'), upload_fh, 'application/octet-stream'))
                 )
 
             if not multipart_files:
@@ -116,7 +120,12 @@ class NowApplicationSearchService:
             return result.json()
 
         finally:
-            for tmp_path in tmp_files:
+            for fh in upload_handles:
+                try:
+                    fh.close()
+                except OSError:
+                    pass
+            for tmp_path in tmp_paths:
                 try:
                     os.unlink(tmp_path)
                 except OSError:

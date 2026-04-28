@@ -4,6 +4,7 @@ import json
 import logging
 import os
 import tempfile
+import uuid
 from pathlib import Path
 from typing import AsyncIterator, List
 
@@ -25,6 +26,8 @@ from app.pipelines.permit_condition_extraction.components.azure_document_intelli
     AzureDocumentIntelligenceConverter,
 )
 from app.pipelines.document_search.config import config
+from azure.core.credentials import AzureKeyCredential
+from azure.search.documents.indexes import SearchIndexerClient
 from fastapi import APIRouter, File, Form, HTTPException, UploadFile
 from haystack.dataclasses import ChatMessage
 from openai import BadRequestError
@@ -48,6 +51,13 @@ _chunker = DocumentChunker()
 # ---------------------------------------------------------------------------
 # Indexing endpoint
 # ---------------------------------------------------------------------------
+
+def _validate_guid(value: str, label: str) -> None:
+    try:
+        uuid.UUID(value)
+    except ValueError:
+        raise HTTPException(400, f"{label} must be a valid UUID")
+
 
 @router.post("/document_search/{now_application_guid}/index")
 async def index_now_application_documents(
@@ -73,6 +83,9 @@ async def index_now_application_documents(
     Because chunk IDs are deterministic (guid + document_manager_guid + index), re-indexing
     the same documents always overwrites the same records, avoiding duplicates.
     """
+    _validate_guid(now_application_guid, "now_application_guid")
+    if now_document_search_indexing_pipeline is None:
+        raise HTTPException(503, "Indexing pipeline is not available in this environment")
     try:
         doc_metadata_list = json.loads(metadata)
     except json.JSONDecodeError:
@@ -196,6 +209,9 @@ async def search_now_application_documents(
     are merged on top. This guarantees that results are scoped exclusively to the
     requested application — documents from other applications can never appear.
     """
+    _validate_guid(now_application_guid, "now_application_guid")
+    if now_document_search_retrieval_pipeline is None:
+        raise HTTPException(503, "Search pipeline is not available in this environment")
     return EventSourceResponse(
         _stream_search_results(now_application_guid, params),
         media_type="text/event-stream",

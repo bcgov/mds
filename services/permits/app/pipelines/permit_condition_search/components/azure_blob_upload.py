@@ -23,17 +23,19 @@ def _parse_connection_string(connection_string: str) -> dict:
 
 @component
 class AzureBlobUploader:
-    def __init__(self, connection_string: str, container_name: str, blob_service_endpoint: str | None = None):
+    def __init__(self, connection_string: str, container_name: str, blob_service_endpoint: str | None = None, folder_name: str = "indexing"):
         """
         Initialize the blob uploader
         Args:
             connection_string: Azure Storage connection string
             container_name: Azure Storage container name
             blob_service_endpoint: Optional override for the blob service endpoint
+            folder_name: The folder (prefix) in the container to upload to
         """
         self.connection_string = connection_string
         self.container_name = container_name
         self.blob_service_endpoint = blob_service_endpoint
+        self.folder_name = folder_name
         
         if not self.connection_string:
             raise ValueError("connection_string cannot be empty")
@@ -70,8 +72,8 @@ class AzureBlobUploader:
 
         container_client = blob_service_client.get_container_client(self.container_name)
         
-        # Upload to an 'indexing' folder in the container
-        blob_name = f"indexing/{file_name if file_name else file_path.name}"
+        # Upload to the configured folder in the container
+        blob_name = f"{self.folder_name.strip('/')}/{file_name if file_name else file_path.name}"
         blob_client = container_client.get_blob_client(blob_name)
         
         with open(file_path, "rb") as data:

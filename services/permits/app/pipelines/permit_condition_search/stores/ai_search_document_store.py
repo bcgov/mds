@@ -27,24 +27,48 @@ logger = logging.getLogger(__name__)
 # Reference: https://learn.microsoft.com/en-us/azure/search/search-query-odata-filter
 
 
-def _build_collection_aware_operators(fields_list):
-    """
-    Patches Haystack's OData filter operators so that Collection(Edm.String) fields
-    are wrapped with the required `field/any(field: ...)` syntax.
-    Accepts the index field list so each document store instance can manage its own schema.
-    """
-    fields_dict = {field.name: field for field in fields_list}
-    og_fltr = fltrs.COMPARISON_OPERATORS
+# Module-level registry of all Collection(Edm.String) fields across every store that
+# has been initialised. Keyed by field name so later registrations can overwrite without
+# duplicating. The global COMPARISON_OPERATORS is rebuilt from this merged dict each time
+# a new store registers fields, so no store's __init__ can silently wipe another schema's
+# collection-wrapping rules.
+_registered_collection_fields: dict = {}
+
+
+def _rebuild_collection_aware_operators() -> None:
+    """Rebuilds fltrs.COMPARISON_OPERATORS from the current merged field registry."""
+    if not _registered_collection_fields:
+        return
+
+    og_fltr = fltrs._ORIGINAL_COMPARISON_OPERATORS
 
     def override_comparison_operators(op, func):
         def handle_collection_index_field_type(field, value, **kwargs):
             res = func(field, value, **kwargs)
-            if fields_dict.get(field) and fields_dict[field].type.startswith("Collection("):
+            if field in _registered_collection_fields:
                 res = f"{field}/any({field}: {res})"
             return res
         return handle_collection_index_field_type
 
-    return {op: override_comparison_operators(op, func) for op, func in og_fltr.items()}
+    fltrs.COMPARISON_OPERATORS = {
+        op: override_comparison_operators(op, func) for op, func in og_fltr.items()
+    }
+
+
+def _register_store_fields(fields_list) -> None:
+    """
+    Merges the provided field list into the global registry and rebuilds the operators.
+    Only Collection(Edm.String) fields need special OData wrapping; others are ignored.
+    """
+    for field in fields_list:
+        if field.type.startswith("Collection(Edm.String)"):
+            _registered_collection_fields[field.name] = field
+    _rebuild_collection_aware_operators()
+
+
+# Preserve the original operators once so rebuilds always start from a clean baseline.
+if not hasattr(fltrs, "_ORIGINAL_COMPARISON_OPERATORS"):
+    fltrs._ORIGINAL_COMPARISON_OPERATORS = dict(fltrs.COMPARISON_OPERATORS)
 
 
 # This class is used to configure additional search parameters for the Azure AI Search Document Store that are not part of the standard Haystack configuration.
@@ -94,9 +118,9 @@ class AzureSearchDocumentStore(AzureAISearchDocumentStore):
         self.search_config = search_config or AdditionalAISearchConfig()
         self.semantic_configuration_name = semantic_configuration_name
 
-        # Apply the collection-aware filter patch scoped to this store's field schema.
+        # Merge this store's fields into the global registry and rebuild the operators.
         if index_fields:
-            fltrs.COMPARISON_OPERATORS = _build_collection_aware_operators(index_fields)
+            _register_store_fields(index_fields)
 
     def _convert_search_result_to_documents(
         self, azure_docs: List[Dict[str, Any]]

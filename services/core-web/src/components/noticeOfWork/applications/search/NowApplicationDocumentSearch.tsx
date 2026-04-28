@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Layout, Typography, Row, Col, Card, Skeleton, Button, Tooltip } from 'antd';
 import { SyncOutlined } from '@ant-design/icons';
 import { useAppDispatch, useAppSelector } from '@mds/common/redux/rootState';
@@ -15,11 +15,8 @@ import {
   selectNowAllFacets,
 } from '@mds/common/redux/slices/nowApplicationSearchSlice';
 import { debounce } from 'lodash';
-import { change } from '@mds/common/components/forms/form';
-import { FORM } from '@mds/common/constants/forms';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExpand, faCompress } from '@fortawesome/pro-solid-svg-icons';
-import FormWrapper from '@mds/common/components/forms/FormWrapper';
 
 // Reuse the existing search UI sub-components from Permit Search — they are
 // generic enough to work for any document search backed by the same SSE contract.
@@ -61,21 +58,19 @@ const NowApplicationDocumentSearch: React.FC<NowApplicationDocumentSearchProps> 
   const hasActiveSearch = query || selectedFilters?.length > 0;
   const shouldShowSplash = !hasActiveSearch && !loading;
 
-  const performSearch = (searchQuery: string, filters: SelectedFilter[]) => {
-    dispatch(
-      searchNowApplicationDocuments({
-        nowApplicationGuid,
-        query: searchQuery,
-        filters,
-      })
-    );
-  };
-
-  const debouncedSearch = debounce(performSearch, 300);
-
-  useEffect(() => {
-    dispatch(change(FORM.NOW_APPLICATION_DOCUMENT_SEARCH, 'search', query));
-  }, [query]);
+  const debouncedSearch = useMemo(
+    () =>
+      debounce((searchQuery: string, filters: SelectedFilter[]) => {
+        dispatch(
+          searchNowApplicationDocuments({
+            nowApplicationGuid,
+            query: searchQuery,
+            filters,
+          })
+        );
+      }, 300),
+    [nowApplicationGuid]
+  );
 
   return (
     <Layout className="permit-search__layout">
@@ -163,12 +158,4 @@ const NowApplicationDocumentSearch: React.FC<NowApplicationDocumentSearchProps> 
   );
 };
 
-const NowApplicationDocumentSearchForm: React.FC<NowApplicationDocumentSearchProps> = (
-  props
-) => (
-  <FormWrapper name={FORM.NOW_APPLICATION_DOCUMENT_SEARCH} onSubmit={() => {}}>
-    <NowApplicationDocumentSearch {...props} />
-  </FormWrapper>
-);
-
-export default NowApplicationDocumentSearchForm;
+export default NowApplicationDocumentSearch;

@@ -1,5 +1,6 @@
 import logging
 import os
+import re
 
 import yaml
 from app.pipelines.document_search.config import config
@@ -61,10 +62,19 @@ def create_document_search_indexing_pipeline() -> Pipeline:
     """
     pipeline = Pipeline()
 
+    # Extract account name from connection string to satisfy proxy requirements
+    account_name_match = re.search(r"AccountName=([^;]+)", config.storage.connection_string)
+    account_name = account_name_match.group(1) if account_name_match else ""
+    
+    blob_endpoint = config.storage.blob_service_endpoint
+    if blob_endpoint and account_name and account_name not in blob_endpoint:
+        blob_endpoint = f"{blob_endpoint.rstrip('/')}/{account_name}"
+
     blob_uploader = AzureBlobUploader(
         connection_string=config.storage.connection_string,
         container_name=config.storage.container_name,
-        blob_service_endpoint=config.storage.blob_service_endpoint,
+        blob_service_endpoint=blob_endpoint,
+        folder_name="indexing/now",
     )
 
     api_key = config.search.api_key.resolve_value()
@@ -75,6 +85,8 @@ def create_document_search_indexing_pipeline() -> Pipeline:
     indexer_runner = IndexerRunner(
         search_endpoint=search_endpoint,
         search_api_key=api_key,
+        indexer_name=config.search.indexer_name.resolve_value(),
+        wait_for_completion=False,
     )
 
     pipeline.add_component("blob_uploader", blob_uploader)
