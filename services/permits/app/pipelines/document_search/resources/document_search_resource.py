@@ -151,6 +151,44 @@ async def index_now_application_documents(
 
 
 # ---------------------------------------------------------------------------
+# Cancel indexing endpoint
+# ---------------------------------------------------------------------------
+
+@router.delete("/document_search/{now_application_guid}/index")
+async def cancel_indexing(now_application_guid: str):
+    """
+    Revoke the active Celery indexing task for a NoW application.
+
+    Sends SIGTERM to the worker process handling the task and removes the
+    Redis key so subsequent status checks fall back to the Azure Search count.
+    Safe to call even if the task has already completed — returns 404 if no
+    active task is found.
+    """
+    _validate_guid(now_application_guid, "now_application_guid")
+
+    task_id = _redis.get(_task_key(now_application_guid))
+    if not task_id:
+        raise HTTPException(404, "No active indexing task found for this application")
+
+    from app.tasks.tasks import run_now_document_indexing
+    app = run_now_document_indexing.app
+    app.control.revoke(task_id, terminate=True)
+
+    # terminate=True kills the worker process before it can write a final state to the
+    # Elasticsearch backend, so Flower would show STARTED indefinitely. Write REVOKED
+    # explicitly so the backend reflects reality.
+    try:
+        app.backend.store_result(task_id, result=None, state="REVOKED")
+    except Exception as e:
+        logger.warning("Could not update backend state to REVOKED for task %s: %s", task_id, e)
+
+    _redis.delete(_task_key(now_application_guid))
+
+    logger.info("Revoked indexing task %s for NoW application %s", task_id, now_application_guid)
+    return {"status": "cancelled"}
+
+
+# ---------------------------------------------------------------------------
 # Search endpoint
 # ---------------------------------------------------------------------------
 

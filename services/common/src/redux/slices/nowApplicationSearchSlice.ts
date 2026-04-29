@@ -45,6 +45,7 @@ interface NowApplicationSearchState {
   documentLoading: boolean;
   aiLoading: boolean;
   indexing: boolean;
+  cancelling: boolean;
   indexerStatus: NowIndexerStatus | null;
   indexerStatusLoading: boolean;
   query: string;
@@ -59,6 +60,7 @@ const initialState: NowApplicationSearchState = {
   documentLoading: false,
   aiLoading: false,
   indexing: false,
+  cancelling: false,
   indexerStatus: null,
   indexerStatusLoading: false,
   query: "",
@@ -125,6 +127,34 @@ const nowApplicationSearchSlice = createAppSlice({
         },
         rejected: (state) => {
           state.indexing = false;
+        },
+      }
+    ),
+
+    /**
+     * Cancels the active Celery indexing task for a NoW application.
+     * Revokes the task server-side and clears the Redis tracking key so the
+     * status badge returns to its last known state on the next poll.
+     */
+    cancelNowIndexing: create.asyncThunk(
+      async (nowApplicationGuid: string, thunkApi) => {
+        const headers = createRequestHeader();
+        await CustomAxios({ errorToastMessage: "Failed to cancel indexing" }).delete(
+          `${ENVIRONMENT.apiUrl}${API.NOW_APPLICATION_DOCUMENT_INDEX(nowApplicationGuid)}`,
+          headers
+        );
+        // Re-fetch status immediately so the badge updates without waiting for the next poll.
+        thunkApi.dispatch(fetchNowIndexingStatus(nowApplicationGuid));
+      },
+      {
+        pending: (state) => {
+          state.cancelling = true;
+        },
+        fulfilled: (state) => {
+          state.cancelling = false;
+        },
+        rejected: (state) => {
+          state.cancelling = false;
         },
       }
     ),
@@ -301,6 +331,7 @@ const nowApplicationSearchSlice = createAppSlice({
       state.documentLoading,
     selectNowAiLoading: (state: NowApplicationSearchState): boolean => state.aiLoading,
     selectNowIndexing: (state: NowApplicationSearchState): boolean => state.indexing,
+    selectNowCancelling: (state: NowApplicationSearchState): boolean => state.cancelling,
     selectNowAllFacets: (
       state: NowApplicationSearchState
     ): { [key: string]: Facet[] } => state.allFacets,
@@ -314,6 +345,7 @@ const nowApplicationSearchSlice = createAppSlice({
 export const {
   searchNowApplicationDocuments,
   indexNowApplicationDocuments,
+  cancelNowIndexing,
   fetchNowIndexingStatus,
   setNowQuery,
   setNowFilters,
@@ -331,6 +363,7 @@ export const {
   selectNowDocumentLoading,
   selectNowAiLoading,
   selectNowIndexing,
+  selectNowCancelling,
   selectNowAllFacets,
   selectNowIndexerStatus,
   selectNowIndexerStatusLoading,

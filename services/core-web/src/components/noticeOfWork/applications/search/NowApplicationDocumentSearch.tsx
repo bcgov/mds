@@ -1,10 +1,11 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { Layout, Typography, Row, Col, Card, Skeleton, Button, Tooltip, Tag, Space } from 'antd';
-import { SyncOutlined, CheckCircleOutlined, CloseCircleOutlined, ClockCircleOutlined, ReloadOutlined } from '@ant-design/icons';
+import { Layout, Typography, Row, Col, Card, Skeleton, Button, Tooltip, Tag, Space, Popconfirm } from 'antd';
+import { SyncOutlined, CheckCircleOutlined, CloseCircleOutlined, ClockCircleOutlined, StopOutlined } from '@ant-design/icons';
 import { useAppDispatch, useAppSelector } from '@mds/common/redux/rootState';
 import {
   searchNowApplicationDocuments,
   indexNowApplicationDocuments,
+  cancelNowIndexing,
   fetchNowIndexingStatus,
   selectNowSearchResults,
   selectNowSearchLoading,
@@ -13,9 +14,9 @@ import {
   selectNowAiLoading,
   selectNowDocumentLoading,
   selectNowIndexing,
+  selectNowCancelling,
   selectNowAllFacets,
   selectNowIndexerStatus,
-  selectNowIndexerStatusLoading,
   NowIndexerStatus,
 } from '@mds/common/redux/slices/nowApplicationSearchSlice';
 import { debounce } from 'lodash';
@@ -49,10 +50,8 @@ interface NowApplicationDocumentSearchProps {
  */
 const STATUS_POLL_INTERVAL_MS = 10_000;
 
-function IndexerStatusBadge({ status, onRefresh, refreshing }: {
+function IndexerStatusBadge({ status }: {
   status: NowIndexerStatus | null;
-  onRefresh: () => void;
-  refreshing: boolean;
 }) {
   if (!status) return null;
 
@@ -86,13 +85,6 @@ function IndexerStatusBadge({ status, onRefresh, refreshing }: {
       {status.error_message && (
         <Typography.Text type="danger" style={{ fontSize: 12 }}>{status.error_message}</Typography.Text>
       )}
-      <Button
-        type="text"
-        size="small"
-        icon={<ReloadOutlined spin={refreshing} />}
-        onClick={onRefresh}
-        disabled={refreshing}
-      />
     </Space>
   );
 }
@@ -106,13 +98,14 @@ const NowApplicationDocumentSearch: React.FC<NowApplicationDocumentSearchProps> 
   const aiLoading = useAppSelector(selectNowAiLoading);
   const indexing = useAppSelector(selectNowIndexing);
   const indexerStatus = useAppSelector(selectNowIndexerStatus);
-  const indexerStatusLoading = useAppSelector(selectNowIndexerStatusLoading);
+  const cancelling = useAppSelector(selectNowCancelling);
   const query = useAppSelector(selectNowSearchQuery);
   const selectedFilters = useAppSelector(selectNowSearchFilters);
   const [isAIResponseExpanded, setIsAIResponseExpanded] = useState(false);
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const refreshStatus = () => dispatch(fetchNowIndexingStatus(nowApplicationGuid));
+  const isRunning = indexerStatus?.status === "running";
 
   // Fetch status on mount and whenever indexing is triggered.
   useEffect(() => {
@@ -127,6 +120,41 @@ const NowApplicationDocumentSearch: React.FC<NowApplicationDocumentSearchProps> 
     }
     return () => { if (pollRef.current) clearInterval(pollRef.current); };
   }, [indexerStatus?.status]);
+
+  const indexActions = (
+    <Space align="center">
+      <IndexerStatusBadge status={indexerStatus} />
+      {isRunning ? (
+        <Popconfirm
+          title="Cancel indexing?"
+          description="This will stop the current indexing job. You can re-index at any time."
+          okText="Cancel indexing"
+          okButtonProps={{ danger: true }}
+          cancelText="Keep running"
+          onConfirm={() => dispatch(cancelNowIndexing(nowApplicationGuid))}
+        >
+          <Button
+            type="primary"
+            icon={<StopOutlined />}
+            loading={cancelling}
+            danger
+          >
+            Cancel Indexing
+          </Button>
+        </Popconfirm>
+      ) : (
+        <Tooltip title="Download and index all application documents to make them searchable. Safe to re-run.">
+          <Button
+            icon={<SyncOutlined spin={indexing} />}
+            loading={indexing}
+            onClick={() => dispatch(indexNowApplicationDocuments(nowApplicationGuid))}
+          >
+            Index Documents
+          </Button>
+        </Tooltip>
+      )}
+    </Space>
+  );
 
   const hasActiveSearch = query || selectedFilters?.length > 0;
   const shouldShowSplash = !hasActiveSearch && !loading;
@@ -151,22 +179,7 @@ const NowApplicationDocumentSearch: React.FC<NowApplicationDocumentSearchProps> 
         {shouldShowSplash ? (
           <>
             <Row justify="end" style={{ marginBottom: 8 }}>
-              <Space>
-                <IndexerStatusBadge
-                  status={indexerStatus}
-                  onRefresh={refreshStatus}
-                  refreshing={indexerStatusLoading}
-                />
-                <Tooltip title="Download and index all application documents to make them searchable. Safe to re-run.">
-                  <Button
-                    icon={<SyncOutlined spin={indexing} />}
-                    loading={indexing}
-                    onClick={() => dispatch(indexNowApplicationDocuments(nowApplicationGuid))}
-                  >
-                    Index Documents
-                  </Button>
-                </Tooltip>
-              </Space>
+              {indexActions}
             </Row>
             <PermitConditionSearchSplashScreen
               onSearch={(q) => debouncedSearch(q, selectedFilters)}
@@ -183,22 +196,7 @@ const NowApplicationDocumentSearch: React.FC<NowApplicationDocumentSearchProps> 
                   </Typography.Title>
                 </Col>
                 <Col>
-                  <Space>
-                    <IndexerStatusBadge
-                      status={indexerStatus}
-                      onRefresh={refreshStatus}
-                      refreshing={indexerStatusLoading}
-                    />
-                    <Tooltip title="Download and index all application documents to make them searchable. Safe to re-run.">
-                      <Button
-                        icon={<SyncOutlined spin={indexing} />}
-                        loading={indexing}
-                        onClick={() => dispatch(indexNowApplicationDocuments(nowApplicationGuid))}
-                      >
-                        Index Documents
-                      </Button>
-                    </Tooltip>
-                  </Space>
+                  {indexActions}
                 </Col>
               </Row>
             </Col>

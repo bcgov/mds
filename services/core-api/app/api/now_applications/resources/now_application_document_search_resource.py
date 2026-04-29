@@ -69,6 +69,15 @@ class NOWApplicationDocumentIndexResource(Resource, UserMixin):
         result = NowApplicationSearchService().index_documents(now_application_guid, documents)
         return result, 200
 
+    @api.doc(description="Cancel the active indexing task for a Notice of Work application.")
+    @requires_role_view_all
+    def delete(self, now_application_guid):
+        now_application_identity = NOWApplicationIdentity.find_by_guid(now_application_guid)
+        if not now_application_identity:
+            raise NotFound('Notice of Work application not found.')
+
+        return NowApplicationSearchService().cancel_indexing(now_application_guid), 200
+
 
 class NOWApplicationDocumentIndexStatusResource(Resource, UserMixin):
     @api.doc(description="Returns the current Azure Search indexer status for a NoW application.")

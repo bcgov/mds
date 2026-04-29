@@ -60,6 +60,21 @@ class NowApplicationSearchService:
         )
         return response
 
+    def cancel_indexing(self, now_application_guid: str) -> dict:
+        """Revokes the active Celery indexing task for the given NoW application."""
+        response = self.session.delete(
+            f'{_SEARCH_BASE}/{now_application_guid}/index',
+            timeout=10,
+        )
+        if not response.ok:
+            current_app.logger.error(
+                'Permits service returned %d cancelling indexing for %s: %s',
+                response.status_code, now_application_guid, response.text,
+            )
+            from werkzeug.exceptions import BadGateway
+            raise BadGateway('Could not cancel indexing task in the permits service')
+        return response.json()
+
     def get_index_status(self, now_application_guid: str) -> dict:
         """Returns the current Azure Search indexer status for the given NoW application."""
         response = self.session.get(
