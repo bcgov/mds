@@ -28,12 +28,25 @@ export enum SearchEventType {
 
 export type NowApplicationSearchFilters = Array<{ category: string; value: string }>;
 
+export type NowIndexerStatusValue = "never_run" | "running" | "success" | "error" | "transientFailure";
+
+export interface NowIndexerStatus {
+  status: NowIndexerStatusValue;
+  items_processed: number;
+  error_count: number;
+  last_run_start: string | null;
+  last_run_end: string | null;
+  error_message: string | null;
+}
+
 interface NowApplicationSearchState {
   results: SearchResult | null;
   loading: boolean;
   documentLoading: boolean;
   aiLoading: boolean;
   indexing: boolean;
+  indexerStatus: NowIndexerStatus | null;
+  indexerStatusLoading: boolean;
   query: string;
   filters: NowApplicationSearchFilters;
   allFacets: { [key: string]: Facet[] };
@@ -46,6 +59,8 @@ const initialState: NowApplicationSearchState = {
   documentLoading: false,
   aiLoading: false,
   indexing: false,
+  indexerStatus: null,
+  indexerStatusLoading: false,
   query: "",
   filters: [],
   allFacets: {},
@@ -251,6 +266,28 @@ const nowApplicationSearchSlice = createAppSlice({
         },
       }
     ),
+    fetchNowIndexingStatus: create.asyncThunk(
+      async (nowApplicationGuid: string, thunkApi) => {
+        const headers = createRequestHeader();
+        const response = await CustomAxios({ errorToastMessage: "Failed to fetch indexing status" }).get(
+          `${ENVIRONMENT.apiUrl}${API.NOW_APPLICATION_DOCUMENT_INDEX_STATUS(nowApplicationGuid)}`,
+          headers
+        );
+        return response.data as NowIndexerStatus;
+      },
+      {
+        pending: (state) => {
+          state.indexerStatusLoading = true;
+        },
+        fulfilled: (state, action) => {
+          state.indexerStatusLoading = false;
+          state.indexerStatus = action.payload;
+        },
+        rejected: (state) => {
+          state.indexerStatusLoading = false;
+        },
+      }
+    ),
   }),
   selectors: {
     selectNowSearchQuery: (state: NowApplicationSearchState): string => state.query,
@@ -267,12 +304,17 @@ const nowApplicationSearchSlice = createAppSlice({
     selectNowAllFacets: (
       state: NowApplicationSearchState
     ): { [key: string]: Facet[] } => state.allFacets,
+    selectNowIndexerStatus: (state: NowApplicationSearchState): NowIndexerStatus | null =>
+      state.indexerStatus,
+    selectNowIndexerStatusLoading: (state: NowApplicationSearchState): boolean =>
+      state.indexerStatusLoading,
   },
 });
 
 export const {
   searchNowApplicationDocuments,
   indexNowApplicationDocuments,
+  fetchNowIndexingStatus,
   setNowQuery,
   setNowFilters,
   updateNowSearchResults,
@@ -290,6 +332,8 @@ export const {
   selectNowAiLoading,
   selectNowIndexing,
   selectNowAllFacets,
+  selectNowIndexerStatus,
+  selectNowIndexerStatusLoading,
 } = nowApplicationSearchSlice.selectors;
 
 export default nowApplicationSearchSlice.reducer;

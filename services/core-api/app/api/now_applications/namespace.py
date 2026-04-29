@@ -32,6 +32,7 @@ from app.api.now_applications.resources.now_application_nation_status_resource i
 from app.api.now_applications.resources.now_application_document_search_resource import (
     NOWApplicationDocumentSearchResource,
     NOWApplicationDocumentIndexResource,
+    NOWApplicationDocumentIndexStatusResource,
 )
 
 api = Namespace('now-applications', description='Core Notice of Work operations')
@@ -86,3 +87,4 @@ api.add_resource(NOWApplicationNationEventCodeResource, '/nation-event-codes')
 api.add_resource(NOWApplicationNationStatusResource, '/nation-statuses')
 api.add_resource(NOWApplicationDocumentSearchResource, '/<string:now_application_guid>/document-search')
 api.add_resource(NOWApplicationDocumentIndexResource, '/<string:now_application_guid>/document-search/index')
+api.add_resource(NOWApplicationDocumentIndexStatusResource, '/<string:now_application_guid>/document-search/index/status')

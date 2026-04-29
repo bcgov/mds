@@ -70,6 +70,17 @@ class NOWApplicationDocumentIndexResource(Resource, UserMixin):
         return result, 200
 
 
+class NOWApplicationDocumentIndexStatusResource(Resource, UserMixin):
+    @api.doc(description="Returns the current Azure Search indexer status for a NoW application.")
+    @requires_role_view_all
+    def get(self, now_application_guid):
+        now_application_identity = NOWApplicationIdentity.find_by_guid(now_application_guid)
+        if not now_application_identity:
+            raise NotFound('Notice of Work application not found.')
+
+        return NowApplicationSearchService().get_index_status(now_application_guid), 200
+
+
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------

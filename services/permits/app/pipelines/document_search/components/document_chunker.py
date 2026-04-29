@@ -1,6 +1,4 @@
-import csv
 import hashlib
-import io
 import logging
 from dataclasses import dataclass
 from typing import List, Optional
@@ -28,19 +26,18 @@ class DocumentChunkMetadata:
 class DocumentChunker:
     """
     Converts a list of Haystack Documents (paragraphs from Azure Document Intelligence)
-    into a CSV-formatted string ready for upload to Azure Blob Storage and processing
-    by the Azure Search indexer.
+    into a list of chunk dicts ready for direct upload to Azure AI Search.
 
-    Each paragraph becomes one row in the CSV. Very short paragraphs (e.g. page numbers,
+    Each paragraph becomes one dict. Very short paragraphs (e.g. page numbers,
     section headers with no content) are filtered out via MIN_CHUNK_LENGTH.
 
     The chunk ID is deterministic: sha256(now_application_guid + document_manager_guid + chunk_index)
-    so re-indexing the same document always overwrites the same records.
+    so re-indexing the same document always overwrites the same records without duplicates.
     """
 
-    @component.output_types(csv_content=str, chunk_count=int)
+    @component.output_types(chunks=list, chunk_count=int)
     def run(self, documents: List[Document], metadata: DocumentChunkMetadata) -> dict:
-        rows = []
+        chunks = []
         chunk_index = 0
 
         for doc in documents:
@@ -54,7 +51,7 @@ class DocumentChunker:
                 chunk_index,
             )
 
-            rows.append({
+            chunks.append({
                 "id": chunk_id,
                 "content": content,
                 "now_application_guid": metadata.now_application_guid,
@@ -62,17 +59,18 @@ class DocumentChunker:
                 "document_manager_guid": metadata.document_manager_guid,
                 "document_name": metadata.document_name,
                 "document_type": metadata.document_type,
-                "submitted_date": metadata.submitted_date or "",
+                # None is stored as null in Azure Search (DateTimeOffset field);
+                # empty string would cause a type error.
+                "submitted_date": metadata.submitted_date or None,
             })
             chunk_index += 1
 
-        csv_content = self._to_csv(rows)
         logger.info(
             "Chunked document '%s' into %d indexable chunks",
             metadata.document_name,
-            len(rows),
+            len(chunks),
         )
-        return {"csv_content": csv_content, "chunk_count": len(rows)}
+        return {"chunks": chunks, "chunk_count": len(chunks)}
 
     # ------------------------------------------------------------------
     # Helpers
@@ -81,13 +79,3 @@ class DocumentChunker:
     def _make_id(self, now_application_guid: str, document_manager_guid: str, index: int) -> str:
         key = f"{now_application_guid}:{document_manager_guid}:{index}"
         return hashlib.sha256(key.encode()).hexdigest()[:16]
-
-    def _to_csv(self, rows: List[dict]) -> str:
-        if not rows:
-            return ""
-
-        output = io.StringIO()
-        writer = csv.DictWriter(output, fieldnames=rows[0].keys(), quoting=csv.QUOTE_ALL)
-        writer.writeheader()
-        writer.writerows(rows)
-        return output.getvalue()

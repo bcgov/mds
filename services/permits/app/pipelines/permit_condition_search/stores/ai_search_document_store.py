@@ -4,7 +4,7 @@ from typing import Any, Dict, List, Optional
 from azure.search.documents.models import (
     QueryCaptionType,
     QueryType,
-    VectorizableTextQuery,
+    VectorizedQuery,
 )
 from haystack import Document
 from haystack_integrations.document_stores.azure_ai_search import (
@@ -166,8 +166,8 @@ class AzureSearchDocumentStore(AzureAISearchDocumentStore):
             msg = "query_embedding must be a non-empty list of floats"
             raise ValueError(msg)
 
-        vector_query = VectorizableTextQuery(
-            text=query, k_nearest_neighbors=top_k, fields="embedding", exhaustive=True
+        vector_query = VectorizedQuery(
+            vector=query_embedding, k_nearest_neighbors=top_k, fields="embedding", exhaustive=True
         )
 
         result = self.client.search(

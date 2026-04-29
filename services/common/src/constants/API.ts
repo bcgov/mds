@@ -149,6 +149,8 @@ export const NOW_APPLICATION_DOCUMENT_SEARCH = (nowApplicationGuid: string) =>
   `/now-applications/${nowApplicationGuid}/document-search`;
 export const NOW_APPLICATION_DOCUMENT_INDEX = (nowApplicationGuid: string) =>
   `/now-applications/${nowApplicationGuid}/document-search/index`;
+export const NOW_APPLICATION_DOCUMENT_INDEX_STATUS = (nowApplicationGuid: string) =>
+  `/now-applications/${nowApplicationGuid}/document-search/index/status`;
 
 // Reporting
 export const DASHBOARD = (dashboardId, type = "dashboard") => `/reporting/${type}/${dashboardId}`;

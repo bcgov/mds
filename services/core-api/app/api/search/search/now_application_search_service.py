@@ -46,13 +46,33 @@ class NowApplicationSearchService:
         )
         response = self.session.post(
             f'{_SEARCH_BASE}/{now_application_guid}/search',
-            data=json.dumps({
+            json={
                 'query': search_params.get('query', ''),
                 'filters': search_params.get('filters'),
-            }),
+            },
             stream=True,
+            timeout=(10, 300),  # (connect timeout, read timeout in seconds)
+        )
+        current_app.logger.info(
+            'Haystack search response status for guid=%s: %d',
+            now_application_guid,
+            response.status_code,
         )
         return response
+
+    def get_index_status(self, now_application_guid: str) -> dict:
+        """Returns the current Azure Search indexer status for the given NoW application."""
+        response = self.session.get(
+            f'{_SEARCH_BASE}/{now_application_guid}/index/status',
+        )
+        if not response.ok:
+            current_app.logger.error(
+                'Permits service returned %d fetching index status for %s: %s',
+                response.status_code, now_application_guid, response.text,
+            )
+            from werkzeug.exceptions import BadGateway
+            raise BadGateway('Could not retrieve indexer status from the permits service')
+        return response.json()
 
     def index_documents(self, now_application_guid: str, documents: list) -> dict:
         """
