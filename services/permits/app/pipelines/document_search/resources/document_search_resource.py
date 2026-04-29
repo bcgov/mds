@@ -6,10 +6,9 @@ import uuid
 from pathlib import Path
 from typing import AsyncIterator, List
 
-from app.pipelines.document_search.components.document_chunker import (
-    DocumentChunkMetadata,
-    DocumentChunker,
-)
+import redis as redis_lib
+
+from app.celery import CACHE_REDIS_URL
 from app.pipelines.document_search.document_search_pipeline import (
     now_document_search_retrieval_pipeline,
     now_document_search_search_client,
@@ -19,14 +18,11 @@ from app.pipelines.permit_condition_search.models.search_models import (
     IndexStats,
     SearchParams,
 )
-from app.pipelines.permit_condition_extraction.components.azure_document_intelligence_converter import (
-    AzureDocumentIntelligenceConverter,
-)
 from app.pipelines.document_search.config import config
 from azure.search.documents import SearchClient
 from fastapi import APIRouter, File, Form, HTTPException, UploadFile
 from haystack.dataclasses import ChatMessage
-from openai import AzureOpenAI, BadRequestError
+from openai import BadRequestError
 from sse_starlette import ServerSentEvent
 from sse_starlette.sse import EventSourceResponse
 
@@ -35,33 +31,18 @@ logger = logging.getLogger(__name__)
 
 FILE_UPLOAD_PATH = os.environ.get("FILE_UPLOAD_PATH", "/file-uploads")
 
-# Tracks which now_application_guids are currently being indexed.
-# In-memory only — resets on server restart, which is acceptable since a restart
-# also clears any in-flight work. Prevents duplicate concurrent index runs and
-# lets the status endpoint return "running" during the embed+push phase.
-_indexing_in_progress: set[str] = set()
+# ---------------------------------------------------------------------------
+# Redis — stores now_application_guid → Celery task_id so the status endpoint
+# can report "running" / "success" / "failed" without polling Azure Search for
+# every in-flight request.
+# ---------------------------------------------------------------------------
+_redis = redis_lib.Redis.from_url(CACHE_REDIS_URL, decode_responses=True)
+_TASK_KEY_PREFIX = "now_doc_index:"
+_TASK_KEY_TTL = 60 * 60 * 24 * 7  # 7 days
 
-# Batch sizes chosen to stay comfortably within Azure OpenAI and Azure Search limits.
-# Azure OpenAI embeddings API: up to 2048 items per request.
-# Azure Search upload_documents: up to 1000 documents per batch.
-_EMBED_BATCH_SIZE = 100
-_PUSH_BATCH_SIZE = 500
 
-_document_intelligence = AzureDocumentIntelligenceConverter(
-    endpoint=config.document_intelligence.endpoint,
-    api_key=config.document_intelligence.api_key.resolve_value(),
-    api_version=config.document_intelligence.api_version,
-)
-
-_chunker = DocumentChunker()
-
-# OpenAI client used exclusively for batch embedding during indexing.
-# The same proxy endpoint that works for retrieval also works here.
-_openai_client = AzureOpenAI(
-    azure_endpoint=config.openai.endpoint.resolve_value(),
-    api_key=config.openai.api_key.resolve_value(),
-    api_version=config.openai.api_version,
-)
+def _task_key(now_application_guid: str) -> str:
+    return f"{_TASK_KEY_PREFIX}{now_application_guid}"
 
 
 # ---------------------------------------------------------------------------
@@ -75,40 +56,16 @@ def _validate_guid(value: str, label: str) -> None:
         raise HTTPException(400, f"{label} must be a valid UUID")
 
 
-def _embed_chunks(chunks: List[dict]) -> List[dict]:
-    """
-    Generates embeddings for all chunks and attaches them in-place.
-    Batches calls to stay within Azure OpenAI request limits.
-    Returns the same list with an 'embedding' key added to each dict.
-    """
-    texts = [chunk["content"] for chunk in chunks]
-
-    embeddings: List[List[float]] = []
-    for i in range(0, len(texts), _EMBED_BATCH_SIZE):
-        batch = texts[i: i + _EMBED_BATCH_SIZE]
-        response = _openai_client.embeddings.create(
-            input=batch,
-            model=config.openai.embedding_model,
-        )
-        embeddings.extend(item.embedding for item in response.data)
-
-    for chunk, embedding in zip(chunks, embeddings):
-        chunk["embedding"] = embedding
-
-    return chunks
+def _get_task_status(task_id: str) -> str:
+    """Returns the Celery task state string for *task_id*."""
+    from app.tasks.tasks import run_now_document_indexing
+    result = run_now_document_indexing.app.AsyncResult(task_id)
+    return result.state  # PENDING, STARTED, PROGRESS, SUCCESS, FAILURE, REVOKED
 
 
-def _push_to_index(search_client: SearchClient, chunks: List[dict]) -> int:
-    """
-    Pushes all chunks to Azure AI Search in batches.
-    Returns the total number of successfully indexed documents.
-    """
-    succeeded = 0
-    for i in range(0, len(chunks), _PUSH_BATCH_SIZE):
-        batch = chunks[i: i + _PUSH_BATCH_SIZE]
-        results = search_client.upload_documents(documents=batch)
-        succeeded += sum(1 for r in results if r.succeeded)
-    return succeeded
+def _is_task_running(task_id: str) -> bool:
+    state = _get_task_status(task_id)
+    return state in ("PENDING", "STARTED", "PROGRESS", "RETRY")
 
 
 # ---------------------------------------------------------------------------
@@ -122,7 +79,7 @@ async def index_now_application_documents(
     metadata: str = Form(...),
 ) -> IndexingResponse:
     """
-    Index all documents belonging to a NoW application for search.
+    Enqueue an async indexing job for all documents belonging to a NoW application.
 
     Accepts one or more files (PDFs and other Document Intelligence-supported formats)
     alongside a JSON metadata array. Each metadata entry corresponds positionally to
@@ -130,11 +87,9 @@ async def index_now_application_documents(
         document_manager_guid, document_name, document_type,
         mine_guid, submitted_date (optional)
 
-    Processing steps:
-        1. Convert each file to text via Azure Document Intelligence
-        2. Chunk paragraphs into dicts (filtering fragments too short to be useful)
-        3. Generate embeddings for all chunks via Azure OpenAI (batched)
-        4. Push chunks + embeddings directly to the Azure AI Search index (batched)
+    Returns immediately with status="running". The actual work (Document Intelligence,
+    embedding, Azure Search push) happens inside a Celery worker. Poll the status
+    endpoint to track progress.
 
     Because chunk IDs are deterministic (sha256 of guid + document_manager_guid + index),
     re-indexing the same documents always overwrites the same records, avoiding duplicates.
@@ -142,7 +97,10 @@ async def index_now_application_documents(
     _validate_guid(now_application_guid, "now_application_guid")
     if now_document_search_search_client is None:
         raise HTTPException(503, "Search client is not available in this environment")
-    if now_application_guid in _indexing_in_progress:
+
+    # Reject duplicate concurrent runs.
+    existing_task_id = _redis.get(_task_key(now_application_guid))
+    if existing_task_id and _is_task_running(existing_task_id):
         raise HTTPException(409, "Indexing already in progress for this application. Please wait for it to complete.")
 
     try:
@@ -156,83 +114,40 @@ async def index_now_application_documents(
             f"files count ({len(files)}) must match metadata count ({len(doc_metadata_list)})",
         )
 
-    all_chunks: List[dict] = []
+    # Write uploads to the shared fileuploads volume so the Celery worker can read them.
     tmp_paths: List[str] = []
-    _indexing_in_progress.add(now_application_guid)
-
     try:
-        for file, doc_meta in zip(files, doc_metadata_list):
-            # Write upload to a temp file so Document Intelligence can read it
+        for file in files:
             tmp = tempfile.NamedTemporaryFile(
                 dir=FILE_UPLOAD_PATH, delete=False, suffix=Path(file.filename or "doc").suffix
             )
             tmp_paths.append(tmp.name)
-
             contents = await file.read()
             with open(tmp.name, "wb") as f:
                 f.write(contents)
-
-            chunk_metadata = DocumentChunkMetadata(
-                now_application_guid=now_application_guid,
-                mine_guid=doc_meta.get("mine_guid", ""),
-                document_manager_guid=doc_meta.get("document_manager_guid", ""),
-                document_name=doc_meta.get("document_name", file.filename or ""),
-                document_type=doc_meta.get("document_type", ""),
-                submitted_date=doc_meta.get("submitted_date"),
-            )
-
-            logger.info(
-                "Processing document '%s' for NoW application %s",
-                chunk_metadata.document_name,
-                now_application_guid,
-            )
-
-            # Extract text from the document
-            di_result = _document_intelligence.run(file_path=Path(tmp.name))
-            documents = di_result["documents"]
-
-            # Convert extracted paragraphs to chunk dicts
-            chunk_result = _chunker.run(documents=documents, metadata=chunk_metadata)
-            all_chunks.extend(chunk_result["chunks"])
-
-        if not all_chunks:
-            raise HTTPException(422, "No indexable content found in the provided documents")
-
-        logger.info(
-            "Embedding and pushing %d chunks for NoW application %s",
-            len(all_chunks),
-            now_application_guid,
-        )
-
-        # Generate embeddings then push directly to Azure AI Search.
-        # No blob storage or indexer required.
-        chunks_with_embeddings = _embed_chunks(all_chunks)
-        succeeded = _push_to_index(now_document_search_search_client, chunks_with_embeddings)
-
-        return IndexingResponse(
-            id=now_application_guid,
-            status="success",
-            stats=IndexStats(
-                document_count=succeeded,
-                storage_size=0,
-            ),
-        )
-
-    except HTTPException:
-        raise
     except Exception as e:
-        logger.error(
-            "Error indexing NoW application %s: %s", now_application_guid, str(e), exc_info=True
-        )
-        raise HTTPException(500, f"Indexing failed: {str(e)}")
-
-    finally:
-        _indexing_in_progress.discard(now_application_guid)
+        # Clean up any files we managed to write before failing.
         for path in tmp_paths:
             try:
                 os.unlink(path)
             except OSError:
                 pass
+        logger.error("Failed to write upload files for NoW application %s: %s", now_application_guid, e)
+        raise HTTPException(500, f"Failed to store uploaded files: {e}")
+
+    # Enqueue the Celery task and record its ID in Redis.
+    from app.tasks.tasks import run_now_document_indexing
+    task = run_now_document_indexing.delay(now_application_guid, tmp_paths, doc_metadata_list)
+    _redis.setex(_task_key(now_application_guid), _TASK_KEY_TTL, task.id)
+
+    logger.info(
+        "Enqueued indexing task %s for NoW application %s (%d files)",
+        task.id,
+        now_application_guid,
+        len(files),
+    )
+
+    return IndexingResponse(id=now_application_guid, status="running")
 
 
 # ---------------------------------------------------------------------------
@@ -354,28 +269,66 @@ def _format_event(event_type: str, data) -> ServerSentEvent:
 @router.get("/document_search/{now_application_guid}/index/status")
 async def get_indexing_status(now_application_guid: str):
     """
-    Returns the indexing status for a NoW application by querying the search index
-    for documents belonging to it.
+    Returns the indexing status for a NoW application.
 
-    Since indexing is now push-based (no async Azure Search indexer), status is
-    derived from what's actually in the index:
-      never_run  — no documents found for this application
-      success    — documents are present; items_processed reflects the chunk count
+    Checks Redis for a Celery task ID first (written at enqueue time), then maps
+    Celery task state to the canonical status vocabulary:
+      running    — task is PENDING / STARTED / PROGRESS / RETRY
+      success    — task succeeded; items_processed comes from the task result
+      failed     — task raised an unhandled exception
+      never_run  — no task found in Redis AND no documents in the index
+
+    If no task ID is in Redis but documents exist in the index (e.g. after a server
+    restart or a legacy index run), the status is inferred from the Azure Search count.
     """
     _validate_guid(now_application_guid, "now_application_guid")
     if now_document_search_search_client is None:
         raise HTTPException(503, "Search client is not available in this environment")
 
-    if now_application_guid in _indexing_in_progress:
-        return {
-            "status": "running",
-            "items_processed": 0,
-            "error_count": 0,
-            "last_run_start": None,
-            "last_run_end": None,
-            "error_message": None,
-        }
+    task_id = _redis.get(_task_key(now_application_guid))
 
+    if task_id:
+        from app.tasks.tasks import run_now_document_indexing
+        result = run_now_document_indexing.app.AsyncResult(task_id)
+        state = result.state
+
+        if state in ("PENDING", "STARTED", "PROGRESS", "RETRY"):
+            meta = result.info or {}
+            return {
+                "status": "running",
+                "items_processed": 0,
+                "error_count": 0,
+                "last_run_start": None,
+                "last_run_end": None,
+                "error_message": None,
+                "stage": meta.get("stage"),
+            }
+
+        if state == "SUCCESS":
+            task_result = result.result or {}
+            return {
+                "status": "success",
+                "items_processed": task_result.get("succeeded", 0),
+                "error_count": 0,
+                "last_run_start": None,
+                "last_run_end": None,
+                "error_message": None,
+            }
+
+        if state == "FAILURE":
+            return {
+                "status": "failed",
+                "items_processed": 0,
+                "error_count": 1,
+                "last_run_start": None,
+                "last_run_end": None,
+                "error_message": str(result.result),
+            }
+
+        # REVOKED or unknown — fall through to Azure Search count below.
+
+    # No task in Redis (or task in an unknown terminal state) — derive status
+    # from what's actually present in the index.
     try:
         results = now_document_search_search_client.search(
             search_text="*",
