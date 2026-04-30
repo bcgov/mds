@@ -109,6 +109,7 @@ const NowApplicationDocumentSearch: React.FC<NowApplicationDocumentSearchProps> 
 
   const refreshStatus = () => dispatch(fetchNowIndexingStatus(nowApplicationGuid));
   const isRunning = indexerStatus?.status === "running";
+  const isIndexed = indexerStatus?.status && indexerStatus?.status !== "never_run";
 
   // Fetch status on mount and whenever indexing is triggered.
   useEffect(() => {
@@ -121,8 +122,24 @@ const NowApplicationDocumentSearch: React.FC<NowApplicationDocumentSearchProps> 
     if (indexerStatus?.status === "running") {
       pollRef.current = setInterval(refreshStatus, STATUS_POLL_INTERVAL_MS);
     }
-    return () => { if (pollRef.current) clearInterval(pollRef.current); };
+    return () => {
+      if (pollRef.current) clearInterval(pollRef.current);
+    };
   }, [indexerStatus?.status]);
+
+  const indexButton = (
+    <Button
+      icon={<SyncOutlined spin={indexing} />}
+      loading={indexing}
+      onClick={() => {
+        if (!isIndexed) {
+          dispatch(indexNowApplicationDocuments(nowApplicationGuid));
+        }
+      }}
+    >
+      {isIndexed ? "Re-Index Documents" : "Index Documents"}
+    </Button>
+  );
 
   const indexActions = (
     <Space align="center">
@@ -136,24 +153,25 @@ const NowApplicationDocumentSearch: React.FC<NowApplicationDocumentSearchProps> 
           cancelText="Keep running"
           onConfirm={() => dispatch(cancelNowIndexing(nowApplicationGuid))}
         >
-          <Button
-            type="primary"
-            icon={<StopOutlined />}
-            loading={cancelling}
-            danger
-          >
+          <Button className='margin-none' type="primary" icon={<StopOutlined />} loading={cancelling} danger>
             Cancel Indexing
           </Button>
         </Popconfirm>
       ) : (
-        <Tooltip title="Download and index all application documents to make them searchable. Safe to re-run.">
-          <Button
-            icon={<SyncOutlined spin={indexing} />}
-            loading={indexing}
-            onClick={() => dispatch(indexNowApplicationDocuments(nowApplicationGuid))}
-          >
-            Index Documents
-          </Button>
+        <Tooltip title="This process downloads and analyzes all application documents to make their content searchable by the AI. This is only necessary if new documents have been added since the last index.">
+          {isIndexed ? (
+            <Popconfirm
+              title="Re-index documents?"
+              description="This will re-scan all application documents. It is only necessary if new documents have been added since the last time this was run."
+              onConfirm={() => dispatch(indexNowApplicationDocuments(nowApplicationGuid))}
+              okText="Re-index"
+              cancelText="Cancel"
+            >
+              {indexButton}
+            </Popconfirm>
+          ) : (
+            indexButton
+          )}
         </Tooltip>
       )}
     </Space>

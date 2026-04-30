@@ -2,11 +2,17 @@ from app.api.mines.response_models import NOW_DOCUMENT_SEARCH_MODEL
 from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
 from app.api.search.search.now_application_search_service import NowApplicationSearchService
 from app.api.utils.access_decorators import requires_role_view_all
+from app.api.utils.feature_flag import Feature, is_feature_enabled
 from app.api.utils.resources_mixins import UserMixin
 from app.extensions import api
 from flask import Response, request, stream_with_context
 from flask_restx import Resource
-from werkzeug.exceptions import NotFound
+from werkzeug.exceptions import NotFound, ServiceUnavailable
+
+
+def _require_feature():
+    if not is_feature_enabled(Feature.NOW_APPLICATION_DOCUMENT_SEARCH):
+        raise ServiceUnavailable("NoW application document search is not enabled.")
 
 
 class NOWApplicationDocumentSearchResource(Resource, UserMixin):
@@ -21,6 +27,7 @@ class NOWApplicationDocumentSearchResource(Resource, UserMixin):
     @requires_role_view_all
     @api.expect(NOW_DOCUMENT_SEARCH_MODEL, validate=True)
     def post(self, now_application_guid):
+        _require_feature()
         now_application_identity = NOWApplicationIdentity.find_by_guid(now_application_guid)
         if not now_application_identity:
             raise NotFound('Notice of Work application not found.')
@@ -51,6 +58,7 @@ class NOWApplicationDocumentIndexResource(Resource, UserMixin):
     )
     @requires_role_view_all
     def post(self, now_application_guid):
+        _require_feature()
         now_application_identity = NOWApplicationIdentity.find_by_guid(now_application_guid)
         if not now_application_identity:
             raise NotFound('Notice of Work application not found.')
@@ -72,6 +80,7 @@ class NOWApplicationDocumentIndexResource(Resource, UserMixin):
     @api.doc(description="Cancel the active indexing task for a Notice of Work application.")
     @requires_role_view_all
     def delete(self, now_application_guid):
+        _require_feature()
         now_application_identity = NOWApplicationIdentity.find_by_guid(now_application_guid)
         if not now_application_identity:
             raise NotFound('Notice of Work application not found.')
@@ -83,6 +92,7 @@ class NOWApplicationDocumentIndexStatusResource(Resource, UserMixin):
     @api.doc(description="Returns the current Azure Search indexer status for a NoW application.")
     @requires_role_view_all
     def get(self, now_application_guid):
+        _require_feature()
         now_application_identity = NOWApplicationIdentity.find_by_guid(now_application_guid)
         if not now_application_identity:
             raise NotFound('Notice of Work application not found.')
