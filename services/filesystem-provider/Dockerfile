@@ -12,7 +12,7 @@ RUN apt-get update \
     supervisor \
     procps
 
-RUN ln -s /lib/x86_64-linux-gnu/libdl-2.24.so /lib/x86_64-linux-gnu/libdl.so
+RUN ln -s /lib/x86_64-linux-gnu/libdl-2.24.so /lib/x86_64-linux-gnu/libdl.so || true
     # install System.Drawing native dependencies
 RUN apt-get update && apt-get install -y --allow-unauthenticated libgdiplus libc6-dev libx11-dev
 RUN ln -s libgdiplus.so gdiplus.dll

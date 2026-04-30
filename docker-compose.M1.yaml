@@ -167,7 +167,7 @@ services:
       - certs:/certs
     depends_on:
       - flyway
-      - nris_backend
+      # - nris_backend
       - document_manager_backend
       - tusd
       - filesystem_provider
@@ -179,7 +179,7 @@ services:
       - keycloak
       - core_api_celery
     healthcheck:
-      test: ["CMD", "curl", "localhost:5000/health"]
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:5000/health')\""]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -260,38 +260,38 @@ services:
       retries: 5
 
   ####################### NRIS_BACKEND Definition #######################
-  nris_backend:
-    restart: always
-    container_name: nris_python
-    build:
-      context: services/nris-api/backend
-    ports:
-      - 5500:5500
-    volumes:
-      - ./services/nris-api/backend:/app
-    depends_on:
-      - flyway
-      - redis
-      - nris_migrate
-    env_file: ./services/nris-api/backend/.env
-    healthcheck:
-      test: ["CMD", "curl", "localhost:5500/health"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
+  # nris_backend:
+  #   restart: always
+  #   container_name: nris_python
+  #   build:
+  #     context: services/nris-api/backend
+  #   ports:
+  #     - 5500:5500
+  #   volumes:
+  #     - ./services/nris-api/backend:/app
+  #   depends_on:
+  #     - flyway
+  #     - redis
+  #     - nris_migrate
+  #   env_file: ./services/nris-api/backend/.env
+  #   healthcheck:
+  #     test: ["CMD", "curl", "localhost:5500/health"]
+  #     interval: 5s
+  #     timeout: 5s
+  #     retries: 5
 
-  nris_migrate:
-    restart: on-failure
-    container_name: nris_migrate
-    build:
-      dockerfile: Dockerfile.migrate
-      context: services/nris-api/backend
-    volumes:
-      - ./services/nris-api/backend:/app
-    depends_on:
-      - flyway
-      - redis
-    env_file: ./services/nris-api/backend/.env
+  # nris_migrate:
+  #   restart: on-failure
+  #   container_name: nris_migrate
+  #   build:
+  #     dockerfile: Dockerfile.migrate
+  #     context: services/nris-api/backend
+  #   volumes:
+  #     - ./services/nris-api/backend:/app
+  #   depends_on:
+  #     - flyway
+  #     - redis
+  #   env_file: ./services/nris-api/backend/.env
 
   ####################### TUSD Definition #######################
   tusd:
@@ -305,7 +305,6 @@ services:
   ####################### Syncfusion Filesystem Provider Definition #######################
   filesystem_provider:
     container_name: filesystem_provider
-    platform: linux/amd64
     build:
       context: services/filesystem-provider
     ports:
