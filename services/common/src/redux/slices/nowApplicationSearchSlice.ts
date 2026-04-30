@@ -37,6 +37,8 @@ export interface NowIndexerStatus {
   last_run_start: string | null;
   last_run_end: string | null;
   error_message: string | null;
+  percent?: number;
+  stage?: string;
 }
 
 interface NowApplicationSearchState {

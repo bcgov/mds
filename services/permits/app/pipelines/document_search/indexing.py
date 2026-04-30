@@ -67,11 +67,13 @@ __all__ = [
 # Helper functions
 # ---------------------------------------------------------------------------
 
-def embed_chunks(chunks: List[dict]) -> List[dict]:
+def embed_chunks(chunks: List[dict], on_progress=None) -> List[dict]:
     """
     Generates embeddings for all chunks and attaches them in-place.
     Batches calls to stay within Azure OpenAI request limits.
     Returns the same list with an 'embedding' key added to each dict.
+
+    *on_progress(done, total)* is called after each batch if provided.
     """
     texts = [chunk["content"] for chunk in chunks]
 
@@ -83,6 +85,8 @@ def embed_chunks(chunks: List[dict]) -> List[dict]:
             model=config.openai.embedding_model,
         )
         embeddings.extend(item.embedding for item in response.data)
+        if on_progress:
+            on_progress(min(i + EMBED_BATCH_SIZE, len(texts)), len(texts))
 
     for chunk, embedding in zip(chunks, embeddings):
         chunk["embedding"] = embedding
@@ -90,16 +94,20 @@ def embed_chunks(chunks: List[dict]) -> List[dict]:
     return chunks
 
 
-def push_to_index(search_client: SearchClient, chunks: List[dict]) -> int:
+def push_to_index(search_client: SearchClient, chunks: List[dict], on_progress=None) -> int:
     """
     Pushes all chunks to Azure AI Search in batches.
     Returns the total number of successfully indexed documents.
+
+    *on_progress(done, total)* is called after each batch if provided.
     """
     succeeded = 0
     for i in range(0, len(chunks), PUSH_BATCH_SIZE):
         batch = chunks[i: i + PUSH_BATCH_SIZE]
         results = search_client.upload_documents(documents=batch)
         succeeded += sum(1 for r in results if r.succeeded)
+        if on_progress:
+            on_progress(min(i + PUSH_BATCH_SIZE, len(chunks)), len(chunks))
     return succeeded
 
 

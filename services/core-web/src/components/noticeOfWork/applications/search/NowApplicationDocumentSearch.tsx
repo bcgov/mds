@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { Layout, Typography, Row, Col, Card, Skeleton, Button, Tooltip, Tag, Space, Popconfirm } from 'antd';
+import { Layout, Typography, Row, Col, Card, Skeleton, Button, Tooltip, Tag, Space, Popconfirm, Progress } from 'antd';
 import { SyncOutlined, CheckCircleOutlined, CloseCircleOutlined, ClockCircleOutlined, StopOutlined } from '@ant-design/icons';
 import { useAppDispatch, useAppSelector } from '@mds/common/redux/rootState';
 import {
@@ -30,7 +30,7 @@ import SearchResults, {
   SelectedFilter,
 } from '@/components/mine/Permit/Search/components/SearchResults';
 import MarkdownViewer from '@/components/mine/Permit/Search/components/MarkdownViewer';
-import PermitConditionSearchSplashScreen from '@/components/mine/Permit/Search/components/PermitConditionSearchSplashScreen';
+import NowApplicationDocumentSearchSplashScreen from './NowApplicationDocumentSearchSplashScreen';
 
 interface NowApplicationDocumentSearchProps {
   nowApplicationGuid: string;
@@ -78,9 +78,12 @@ function IndexerStatusBadge({ status }: {
         </Typography.Text>
       )}
       {status.status === "running" && (
-        <Typography.Text type="secondary" style={{ fontSize: 12 }}>
-          {status.items_processed > 0 ? `${status.items_processed.toLocaleString()} chunks so far` : "Starting…"}
-        </Typography.Text>
+        <Progress
+          percent={status.percent ?? 0}
+          size="small"
+          style={{ width: 140, marginBottom: 0 }}
+          format={(pct) => `${pct}%`}
+        />
       )}
       {status.error_message && (
         <Typography.Text type="danger" style={{ fontSize: 12 }}>{status.error_message}</Typography.Text>
@@ -181,7 +184,7 @@ const NowApplicationDocumentSearch: React.FC<NowApplicationDocumentSearchProps> 
             <Row justify="end" style={{ marginBottom: 8 }}>
               {indexActions}
             </Row>
-            <PermitConditionSearchSplashScreen
+            <NowApplicationDocumentSearchSplashScreen
               onSearch={(q) => debouncedSearch(q, selectedFilters)}
               loading={loading}
             />

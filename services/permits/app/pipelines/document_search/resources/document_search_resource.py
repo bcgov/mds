@@ -340,6 +340,7 @@ async def get_indexing_status(now_application_guid: str):
                 "last_run_end": None,
                 "error_message": None,
                 "stage": meta.get("stage"),
+                "percent": meta.get("percent", 0),
             }
 
         if state == "SUCCESS":

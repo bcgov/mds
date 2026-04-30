@@ -46,12 +46,28 @@ def run_now_document_indexing(self, now_application_guid: str, tmp_paths: list, 
     Each path corresponds positionally to an entry in *doc_metadata_list*.
     Temp files are always deleted in the finally block, whether the task succeeds or fails.
     """
+    # Phase weight boundaries (percent):
+    #   0 – 25  : extraction  (Document Intelligence, one call per file)
+    #  25 – 75  : embedding   (batched Azure OpenAI calls)
+    #  75 – 100 : pushing     (batched Azure Search uploads)
+    total_files = len(tmp_paths)
+
+    def _pct(phase_start: int, phase_end: int, done: int, total: int) -> int:
+        if total == 0:
+            return phase_end
+        return phase_start + int((done / total) * (phase_end - phase_start))
+
     try:
-        self.update_state(state="PROGRESS", meta={"stage": "extracting", "now_application_guid": now_application_guid})
-        logger.info("Indexing task started for NoW application %s (%d files)", now_application_guid, len(tmp_paths))
+        logger.info("Indexing task started for NoW application %s (%d files)", now_application_guid, total_files)
 
         all_chunks = []
-        for tmp_path, doc_meta in zip(tmp_paths, doc_metadata_list):
+        for idx, (tmp_path, doc_meta) in enumerate(zip(tmp_paths, doc_metadata_list)):
+            self.update_state(state="PROGRESS", meta={
+                "stage": "extracting",
+                "percent": _pct(0, 25, idx, total_files),
+                "files_processed": idx,
+                "total_files": total_files,
+            })
             chunks = extract_and_chunk_file(tmp_path, now_application_guid, doc_meta)
             all_chunks.extend(chunks)
 
@@ -59,16 +75,33 @@ def run_now_document_indexing(self, now_application_guid: str, tmp_paths: list, 
             logger.warning("No indexable content found for NoW application %s", now_application_guid)
             return {"succeeded": 0, "chunk_count": 0}
 
-        logger.info("Embedding %d chunks for NoW application %s", len(all_chunks), now_application_guid)
-        self.update_state(state="PROGRESS", meta={"stage": "embedding", "chunk_count": len(all_chunks)})
-        chunks_with_embeddings = embed_chunks(all_chunks)
+        total_chunks = len(all_chunks)
+        logger.info("Embedding %d chunks for NoW application %s", total_chunks, now_application_guid)
 
-        logger.info("Pushing %d chunks to index for NoW application %s", len(all_chunks), now_application_guid)
-        self.update_state(state="PROGRESS", meta={"stage": "pushing", "chunk_count": len(all_chunks)})
-        succeeded = push_to_index(now_document_search_search_client, chunks_with_embeddings)
+        def on_embed_progress(done: int, total: int) -> None:
+            self.update_state(state="PROGRESS", meta={
+                "stage": "embedding",
+                "percent": _pct(25, 75, done, total),
+                "chunk_count": total,
+                "chunks_embedded": done,
+            })
 
-        logger.info("Indexed %d/%d chunks for NoW application %s", succeeded, len(all_chunks), now_application_guid)
-        return {"succeeded": succeeded, "chunk_count": len(all_chunks)}
+        chunks_with_embeddings = embed_chunks(all_chunks, on_progress=on_embed_progress)
+
+        logger.info("Pushing %d chunks to index for NoW application %s", total_chunks, now_application_guid)
+
+        def on_push_progress(done: int, total: int) -> None:
+            self.update_state(state="PROGRESS", meta={
+                "stage": "pushing",
+                "percent": _pct(75, 100, done, total),
+                "chunk_count": total,
+                "chunks_pushed": done,
+            })
+
+        succeeded = push_to_index(now_document_search_search_client, chunks_with_embeddings, on_progress=on_push_progress)
+
+        logger.info("Indexed %d/%d chunks for NoW application %s", succeeded, total_chunks, now_application_guid)
+        return {"succeeded": succeeded, "chunk_count": total_chunks}
 
     finally:
         for path in tmp_paths:
