@@ -14152,3 +14152,69 @@ export const MOCK_MINE_REPORT_STATS: MineReportStats = {
   overdue_reports: 4,
   due_next_90_days: 5,
 };
+
+export const MOCK_NOW_NATION_EVENT_OPTIONS = [
+  {
+    now_application_nation_event_code: "SCN",
+    description: "Start consultation",
+    display_order: 10
+  },
+  {
+    now_application_nation_event_code: "ICS",
+    description: "Initial consultation sent",
+    display_order: 20
+  },
+  {
+    now_application_nation_event_code: "INS",
+    description: "Information sent",
+    display_order: 30
+  },
+  {
+    now_application_nation_event_code: "INR",
+    description: "Information received",
+    display_order: 40
+  },
+  {
+    now_application_nation_event_code: "MPR",
+    description: "Materials provided for review",
+    display_order: 50
+  },
+  {
+    now_application_nation_event_code: "DMR",
+    description: "Decision-maker review",
+    display_order: 60
+  },
+  {
+    now_application_nation_event_code: "PSP",
+    description: "Process pause",
+    display_order: 70
+  }
+];
+
+export const MOCK_NOW_NATION_STATUS_OPTIONS = [
+  {
+    now_application_nation_status_code: "NOS",
+    description: "Not Started",
+    display_order: "10"
+  },
+  {
+    now_application_nation_status_code: "IPG",
+    description: "In Progress",
+    display_order: "20"
+  },
+  {
+    now_application_nation_status_code: "OHD",
+    description: "On Hold",
+    display_order: "30"
+  },
+  {
+    now_application_nation_status_code: "IRV",
+    description: "In Review",
+    display_order: "40"
+  },
+  {
+    now_application_nation_status_code: "COM",
+    description: "Complete",
+    display_order: "50"
+  }
+];

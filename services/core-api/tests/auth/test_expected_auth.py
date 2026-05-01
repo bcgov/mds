@@ -180,6 +180,11 @@ from app.api.users.minespace.resources.new_minespace_user import (
     NewMinespaceUserDataResource,
     NewMinespaceUserDocumentResource,
 )
+from app.api.now_applications.resources.now_application_nation_resource import NOWApplicationNationResource
+from app.api.now_applications.resources.now_application_nation_event_code_resource import NOWApplicationNationEventCodeResource
+from app.api.now_applications.resources.now_application_nation_event_resource import NOWApplicationNationEventResource
+from app.api.now_applications.resources.now_application_nation_status_resource import NOWApplicationNationStatusResource
+from app.api.now_applications.resources.pip_consultation_areas_resource import PIPConsultationAreaResource
 from app.api.users.resources.user_list_resource import UserListResource
 from app.api.users.resources.user_resource import UserResource
 from app.api.utils.access_decorators import (
@@ -206,6 +211,7 @@ from app.api.utils.access_decorators import (
     MINE_EDIT,
     MINESPACE_PROPONENT,
     VIEW_ALL,
+    MANAGE_CONSULTATION_ADVISORS,
 )
 
 
@@ -259,6 +265,10 @@ from app.api.utils.access_decorators import (
      (PartyListResource, "get", [VIEW_ALL, MINESPACE_PROPONENT]),
      (PartyListResource, "post", [EDIT_PARTY, MINESPACE_PROPONENT]), (PartyResource, "get", [VIEW_ALL]),
      (PartyResource, "put", [EDIT_PARTY, MINESPACE_PROPONENT, MANAGE_ORGBOOK]), (PartyResource, "delete", [MINE_ADMIN]),
+     (NOWApplicationNationResource, "get", [VIEW_ALL]), (NOWApplicationNationResource, "post", [MANAGE_CONSULTATION_ADVISORS]),
+     (NOWApplicationNationResource, "delete", [MANAGE_CONSULTATION_ADVISORS]), (NOWApplicationNationEventCodeResource, "get", [VIEW_ALL]),
+     (NOWApplicationNationEventResource, "post", [MANAGE_CONSULTATION_ADVISORS]),
+     (NOWApplicationNationStatusResource, "get", [VIEW_ALL]), (PIPConsultationAreaResource, "get", [VIEW_ALL]),
      (PermitResource, "get", [VIEW_ALL]), (PermitListResource, "post", [EDIT_PERMIT]),
      (PermitResource, "put", [EDIT_SECURITIES]),
      (PermitAmendmentListResource, "post", [EDIT_PERMIT]),

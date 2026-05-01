@@ -372,6 +372,17 @@ export const NOTICE_OF_WORK_APPLICATION_DELAY = (applicationGuid, delayGuid?) =>
 export const NOTICE_OF_WORK_APPLICATION_TIER_HISTORY = (applicationGuid) =>
   `${NOTICE_OF_WORK_APPLICATION(applicationGuid)}/tier-history`;
 
+// Temporary PIP data
+export const PIP_CONSULTATION_AREA_DATA = `/now-applications/pip-consultation-area`;
+
+// Notice of Work nation consultation
+export const NOTICE_OF_WORK_APPLICATION_NATION = (applicationGuid, nationGuid?) =>
+  nationGuid
+    ? `${NOTICE_OF_WORK_APPLICATION(applicationGuid)}/nation/${nationGuid}`
+    : `${NOTICE_OF_WORK_APPLICATION(applicationGuid)}/nation`;
+export const NOTICE_OF_WORK_APPLICATION_NATION_EVENT = (applicationGuid, nationGuid) =>
+  `${NOTICE_OF_WORK_APPLICATION(applicationGuid)}/nation/${nationGuid}/event`;
+
 // Proponent Notice Of Work
 export const PROPONENT_NOTICE_OF_WORK_APPLICATION_LIST = (mineGuid) =>
   `/mines/${mineGuid}/now-applications`;

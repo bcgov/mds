@@ -71,6 +71,8 @@ from app.api.projects.major_mine_application.models.major_mine_application_docum
 from app.api.projects.major_mine_application.models.major_mine_application_document_subtype import MajorMineApplicationDocumentSubtype
 from app.api.projects.project_decision_package.models.project_decision_package_status_code import ProjectDecisionPackageStatusCode
 from app.api.projects.project_decision_package.models.project_decision_package_document_type import ProjectDecisionPackageDocumentType
+from app.api.now_applications.models.now_application_nation_event_code import NOWApplicationNationEventCode
+from app.api.now_applications.models.now_application_nation_status import NOWApplicationNationStatus
 
 
 MODELS_GET_ACTIVE = [
@@ -90,7 +92,8 @@ MODELS_GET_ACTIVE = [
     ExplosivesPermitMagazineType, ExplosivesPermitDocumentType, ProjectSummaryDocumentType,
     ProjectSummaryStatusCode, MinistryContactType, ProjectSummaryAuthorizationType,
     ProjectSummaryPermitType, InformationRequirementsTableStatusCode, InformationRequirementsTableDocumentType,
-    MajorMineApplicationStatusCode, MajorMineApplicationDocumentType, MajorMineApplicationDocumentSubtype, ProjectDecisionPackageStatusCode, ProjectDecisionPackageDocumentType, Municipality
+    MajorMineApplicationStatusCode, MajorMineApplicationDocumentType, MajorMineApplicationDocumentSubtype, ProjectDecisionPackageStatusCode, ProjectDecisionPackageDocumentType, Municipality,
+    NOWApplicationNationEventCode, NOWApplicationNationStatus
 ]
 
 

@@ -34,6 +34,7 @@ EDIT_INCIDENTS = "core_edit_incidents"
 EDIT_TSF = "core_edit_tsf"
 EDIT_PROJECT_DECISION_PACKAGES = "core_edit_project_decision_packages"
 EDIT_HELPDESK = "core_helpdesk"
+MANAGE_CONSULTATION_ADVISORS = "core_manage_consultation_advisor"
 
 def require_auth():
     return getJwtManager()._require_auth_validation()
@@ -130,6 +131,10 @@ def requires_role_edit_tsf(func):
 
 def requires_role_edit_requirements(func):
     return _inner_wrapper(func, EDIT_REQUIREMENTS)
+
+def requires_role_manage_consultation_advisors(func):
+    return _inner_wrapper(func, MANAGE_CONSULTATION_ADVISORS)
+
 
 
 def requires_any_of(roles):

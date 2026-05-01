@@ -10,6 +10,8 @@ const initialState = {
   noticeOfWorkReviews: [],
   documentDownloadState: { downloading: false, currentFile: 1, totalFiles: 1 },
   applicationDelays: [],
+  pipConsultationData: [],
+  noticeOfWorkNations: [],
 };
 
 export const noticeOfWorkReducer = (state = initialState, action) => {
@@ -67,6 +69,16 @@ export const noticeOfWorkReducer = (state = initialState, action) => {
         ...state,
         applicationDelays: action.payload.records,
       };
+    case actionTypes.STORE_PIP_CONSULTATION_AREA_DATA:
+      return {
+        ...state,
+        pipConsultationData: action.payload.records,
+      };
+    case actionTypes.STORE_NOTICE_OF_WORK_APPLICATION_NATIONS:
+      return {
+        ...state,
+        noticeOfWorkNations: action.payload.records,
+      };
     default:
       return state;
   }
@@ -85,4 +97,6 @@ export const getNoticeOfWorkPageData = (state) => state[NOTICE_OF_WORK].noticeOf
 export const getNoticeOfWorkReviews = (state) => state[NOTICE_OF_WORK].noticeOfWorkReviews;
 export const getDocumentDownloadState = (state) => state[NOTICE_OF_WORK].documentDownloadState;
 export const getApplicationDelays = (state) => state[NOTICE_OF_WORK].applicationDelays;
+export const getPipConsultationData = (state) => state[NOTICE_OF_WORK].pipConsultationData;
+export const getNoticeOfWorkNations = (state) => state[NOTICE_OF_WORK].noticeOfWorkNations;
 export default noticeOfWorkReducerObject;

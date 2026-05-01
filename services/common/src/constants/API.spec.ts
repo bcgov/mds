@@ -6,6 +6,23 @@ describe("API", () => {
     expect(API.NOTICE_OF_WORK_APPLICATION_TIER_HISTORY(guid)).toBe(`/now-applications/${guid}/tier-history`);
   });
 
+  it("should have correct values for NOTICE_OF_WORK_APPLICATION_NATION", () => {
+    const guid = "123";
+    const nationGuid = "456";
+    expect(API.NOTICE_OF_WORK_APPLICATION_NATION(guid, nationGuid)).toBe(`/now-applications/${guid}/nation/${nationGuid}`);
+    expect(API.NOTICE_OF_WORK_APPLICATION_NATION(guid)).toBe(`/now-applications/${guid}/nation`);
+  });
+
+  it("should have correct values for NOTICE_OF_WORK_APPLICATION_NATION_EVENT", () => {
+    const guid = "123";
+    const nationGuid = "456";
+    expect(API.NOTICE_OF_WORK_APPLICATION_NATION_EVENT(guid, nationGuid)).toBe(`/now-applications/${guid}/nation/${nationGuid}/event`);
+  });
+
+  it("should have correct values for PIP_CONSULTATION_AREA_DATA", () => {
+    expect(API.PIP_CONSULTATION_AREA_DATA).toBe(`/now-applications/pip-consultation-area`);
+  });
+
   it("should have correct values for MINE_RECLAMATION_INVOICES", () => {
     const guid = "123";
     expect(API.MINE_RECLAMATION_INVOICES(guid)).toBe(`/securities/reclamation-invoices?mine_guid=${guid}`);

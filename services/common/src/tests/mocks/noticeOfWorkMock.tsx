@@ -2938,3 +2938,61 @@ export const NOW_APPLICATION_DELAY = [
         end_date: "2021-10-26T18:05:56.475794+00:00",
     },
 ];
+
+export const PIP_CONSULTATION_AREA_RESPONSE = {
+    records: [
+        {
+            internal_mds_id: 1,
+            cnsltn_area_guid: "123e4567-e89b-12d3-a456-426614174000",
+            cnsltn_area_name: "Consultation Area 1",
+            organization_guid: "123e4567-e89b-12d3-a456-426614174001",
+            cnsltn_area_update_date: "2021-10-26T18:05:56.475794+00:00",
+            contact_organization_name: "Organization 1",
+        }
+    ]
+}
+
+export const NOW_APPLICATION_NATION_RESPONSE = {
+    records: [{
+        now_application_nation_guid: "123e4567-e89b-12d3-a456-426614174002",
+        now_application_nation_id: 1,
+        now_application_guid: "123e4567-e89b-12d3-a456-426614174003",
+        status: {
+            now_application_nation_status_code: "CNSLTN",
+            description: "Consultation",
+            display_order: 1,
+        },
+        events: [
+            {
+                now_application_nation_event_guid: "123e4567-e89b-12d3-a456-426614174004",
+                now_application_nation_event_id: 1,
+                now_application_nation_guid: "123e4567-e89b-12d3-a456-426614174002",
+                event_code: {
+                    now_application_nation_event_code: "BCR",
+                    description: "Begin Consultation Request",
+                    display_order: 1,
+                },
+                event_from: "2021-10-26T18:05:56.475794+00:00",
+                event_to: "2021-10-27T18:05:56.475794+00:00",
+                start_date: "2021-10-26T18:05:56.475794+00:00",
+                end_date: "2021-10-27T18:05:56.475794+00:00",
+                update_user: "test_user",
+                update_timestamp: "2021-10-26T18:05:56.475794+00:00",
+                create_user: "test_user",
+                create_timestamp: "2021-10-26T18:05:56.475794+00:00",
+            },
+        ],
+        consultation_started_by_client: true,
+        due_date: "2021-11-26T18:05:56.475794+00:00",
+        contact_organization_name: "Organization 1",
+        organization_guid: "123e4567-e89b-12d3-a456-426614174001",
+        consultation_area_name: "Consultation Area 1",
+        consultation_area_guid: "123e4567-e89b-12d3-a456-426614174000",
+        consultation_area_update_date: "2021-10-26T18:05:56.475794+00:00",
+        update_user: "test_user",
+        update_timestamp: "2021-10-26T18:05:56.475794+00:00",
+        create_user: "test_user",
+        create_timestamp: "2021-10-26T18:05:56.475794+00:00",
+    }
+    ]
+}

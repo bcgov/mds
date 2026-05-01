@@ -1,5 +1,5 @@
 import uuid
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 from os import path
 from sqlalchemy.orm.scoping import scoped_session
 
@@ -555,3 +555,42 @@ class NOWApplicationTierFactory(BaseFactory):
 
     now_application_id = factory.SelfAttribute('now_application.now_application_id')
     notice_of_work_tier_code = factory.LazyFunction(RandomNoticeOfWorkTierCode)
+
+
+class NOWApplicationNationEventCodeFactory(BaseFactory):
+    class Meta:
+        model = app_models.NOWApplicationNationEventCode
+
+    now_application_nation_event_code = factory.Sequence(lambda n: f"E{n:02}"[:3])
+    description = "Decision-maker review"
+    active_ind = True
+    display_order = factory.Sequence(lambda n: n)
+
+
+class NOWApplicationNationFactory(BaseFactory):
+    class Meta:
+        model = app_models.NOWApplicationNation
+
+    now_application_guid = factory.Faker("uuid4")
+    now_application_nation_guid = factory.Faker("uuid4")
+    now_application_nation_id = factory.Sequence(lambda n: n)
+
+    now_application_nation_status_code = "COM"
+    consultation_started_by_client = False
+    due_date = factory.LazyFunction(date.today)
+
+    contact_organization_name = factory.Sequence(lambda n: f"Nation {n}")
+    organization_guid = factory.Sequence(lambda n: f"organization-guid-{n}")
+    consultation_area_name = factory.Sequence(lambda n: f"Consultation Area {n}")
+    consultation_area_guid = factory.Sequence(lambda n: f"consultation-area-guid-{n}")
+    consultation_area_update_date = factory.LazyFunction(datetime.utcnow)
+
+
+class NOWApplicationNationStatusFactory(BaseFactory):
+    class Meta:
+        model = app_models.NOWApplicationNationStatus
+
+    now_application_nation_status_code = factory.Sequence(lambda n: f"E{n:02}"[:3])
+    description = factory.Sequence(lambda n: f"Status {n}")
+    active_ind = True
+    display_order = factory.Sequence(lambda n: n)

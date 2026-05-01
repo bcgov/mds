@@ -24,6 +24,11 @@ from app.api.now_applications.resources.administrative_amendment_list_resource i
 from app.api.now_applications.resources.now_application_import_submission_documents_job import NOWApplicationImportSubmissionDocumentsJobResource
 from app.api.now_applications.resources.now_application_proponent_resource import NOWApplicationProponentResource
 from app.api.now_applications.resources.now_application_tier_history_resource import NOWApplicationTierHistoryResource
+from app.api.now_applications.resources.now_application_nation_event_code_resource import NOWApplicationNationEventCodeResource
+from app.api.now_applications.resources.now_application_nation_event_resource import NOWApplicationNationEventResource
+from app.api.now_applications.resources.now_application_nation_resource import NOWApplicationNationResource
+from app.api.now_applications.resources.pip_consultation_areas_resource import PIPConsultationAreaResource
+from app.api.now_applications.resources.now_application_nation_status_resource import NOWApplicationNationStatusResource
 
 api = Namespace('now-applications', description='Core Notice of Work operations')
 
@@ -53,6 +58,11 @@ api.add_resource(NOWApplicationDelayListResource, '/<string:now_application_guid
 api.add_resource(AdministrativeAmendmentListResource, '/administrative-amendments')
 api.add_resource(NOWApplicationDelayResource,
                  '/<string:now_application_guid>/delays/<string:now_application_delay_guid>')
+api.add_resource(NOWApplicationNationResource, '/<string:now_application_guid>/nation', '/<string:now_application_guid>/nation/<string:now_application_nation_guid>')
+api.add_resource(NOWApplicationNationEventResource, '/<string:now_application_guid>/nation/<string:now_application_nation_guid>/event')
+
+# temporary pip data
+api.add_resource(PIPConsultationAreaResource, '/pip-consultation-area')
 
 # now static content
 api.add_resource(NOWActivityTypeResource, '/activity-types')
@@ -68,3 +78,5 @@ api.add_resource(NOWApplicationProgressStatusResource, '/application-progress-st
 api.add_resource(NOWApplicationPermitTypeResource, '/application-permit-types')
 api.add_resource(NOWApplicationReviewTypeResource, '/review-types')
 api.add_resource(NOWApplicationExportResource, '/application-export/<string:document_type_code>')
+api.add_resource(NOWApplicationNationEventCodeResource, '/nation-event-codes')
+api.add_resource(NOWApplicationNationStatusResource, '/nation-statuses')

@@ -16,6 +16,10 @@ from .now_application_review import NOWApplicationReview, NOWApplicationReviewDo
 from .now_application_review_type import NOWApplicationReviewType
 from .notice_of_work_tier import NoticeOfWorkTier
 from .now_application_tier import NOWApplicationTier
+from .now_application_nation import NOWApplicationNation
+from .now_application_nation_status import NOWApplicationNationStatus
+from .now_application_nation_event import NOWApplicationNationEvent
+from .now_application_nation_event_code import NOWApplicationNationEventCode
 
 from .blasting_operation import BlastingOperation
 from .unit_type import UnitType
@@ -50,5 +54,9 @@ model_list = [
     NOWPartyAppointment,
     NOWApplicationProgress,
     NoticeOfWorkTier,
-    NOWApplicationTier
+    NOWApplicationTier,
+    NOWApplicationNation,
+    NOWApplicationNationStatus,
+    NOWApplicationNationEvent,
+    NOWApplicationNationEventCode
 ]

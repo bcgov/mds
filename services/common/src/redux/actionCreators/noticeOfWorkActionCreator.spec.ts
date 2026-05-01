@@ -27,6 +27,11 @@ import {
     fetchProponentNoticeOfWorkApplication,
     fetchNoticeOfWorkApplication,
     fetchNoticeOfWorkApplicationTierHistory,
+    fetchPipConsultationAreaData,
+    fetchNoticeOfWorkApplicationNations,
+    createNoticeOfWorkApplicationNation,
+    deleteNoticeOfWorkApplicationNation,
+    createNoticeOfWorkApplicationNationEvent,
 } from "@mds/common/redux/actionCreators/noticeOfWorkActionCreator";
 import * as genericActions from "@mds/common/redux/actions/genericActions";
 import { ENVIRONMENT } from "@mds/common/constants/environment";
@@ -780,3 +785,162 @@ describe("`fetchNoticeOfWorkApplication` action creator", () => {
     });
 });
 
+describe("`fetchPipConsultationAreaData` action creator", () => {
+    const url = `${ENVIRONMENT.apiUrl}${API.PIP_CONSULTATION_AREA_DATA}`;
+
+    it("Request successful, dispatches `success` with correct response", () => {
+        const mockResponse = { data: { records: [] } };
+        mockAxios.onGet(url).reply(200, mockResponse);
+
+        return fetchPipConsultationAreaData()(dispatch).then(() => {
+            expect(requestSpy).toHaveBeenCalledTimes(1);
+            expect(successSpy).toHaveBeenCalledTimes(1);
+            expect(dispatch).toHaveBeenCalledTimes(5);
+        });
+    });
+
+    it("Request failure, dispatches `error` with correct response", () => {
+        mockAxios.onGet(url).reply(418, MOCK.ERROR);
+
+        return fetchPipConsultationAreaData()(dispatch).then(() => {
+            expect(requestSpy).toHaveBeenCalledTimes(1);
+            expect(errorSpy).toHaveBeenCalledTimes(1);
+            expect(dispatch).toHaveBeenCalledTimes(4);
+        });
+    });
+});
+
+describe("`fetchNoticeOfWorkApplicationNations` action creator", () => {
+    const applicationGuid = NOW_MOCK.NOTICE_OF_WORK.now_application_guid;
+    const url = `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_APPLICATION_NATION(applicationGuid)}`;
+
+    it("Request successful, dispatches `success` with correct response", () => {
+        const mockResponse = { data: { records: [] } };
+        mockAxios.onGet(url).reply(200, mockResponse);
+
+        return fetchNoticeOfWorkApplicationNations(applicationGuid)(dispatch).then(() => {
+            expect(requestSpy).toHaveBeenCalledTimes(1);
+            expect(successSpy).toHaveBeenCalledTimes(1);
+            expect(dispatch).toHaveBeenCalledTimes(5);
+        });
+    });
+
+    it("Request failure, dispatches `error` with correct response", () => {
+        mockAxios.onGet(url).reply(418, MOCK.ERROR);
+
+        return fetchNoticeOfWorkApplicationNations(applicationGuid)(dispatch).then(() => {
+            expect(requestSpy).toHaveBeenCalledTimes(1);
+            expect(errorSpy).toHaveBeenCalledTimes(1);
+            expect(dispatch).toHaveBeenCalledTimes(4);
+        });
+    });
+});
+
+describe("`createNoticeOfWorkApplicationNation` action creator", () => {
+    const applicationGuid = NOW_MOCK.NOTICE_OF_WORK.now_application_guid;
+    const payload = {
+        contact_organization_name: "Test Nation",
+        organization_guid: "735224023BBC4C948F821D023536CA84",
+        consultation_area_name: "Test Consultation Area",
+        consultation_area_guid: "C48144DB40A54B27B0CCDEA9B499DFA8",
+        consultation_started_by_client: false,
+        due_date: "2026-04-30",
+    };
+    const url = `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_APPLICATION_NATION(applicationGuid)}`;
+
+    it("Request successful, dispatches `success` with correct response", () => {
+        const mockResponse = { data: { success: true } };
+        mockAxios.onPost(url, payload).reply(200, mockResponse);
+
+        return createNoticeOfWorkApplicationNation(applicationGuid, payload)(dispatch).then(() => {
+            expect(requestSpy).toHaveBeenCalledTimes(1);
+            expect(successSpy).toHaveBeenCalledTimes(1);
+            expect(dispatch).toHaveBeenCalledTimes(4);
+        });
+    });
+
+    it("Request failure, dispatches `error` with correct response", () => {
+        mockAxios.onPost(url).reply(418, MOCK.ERROR);
+
+        return createNoticeOfWorkApplicationNation(applicationGuid, payload)(dispatch).then(() => {
+            expect(requestSpy).toHaveBeenCalledTimes(1);
+            expect(errorSpy).toHaveBeenCalledTimes(1);
+            expect(dispatch).toHaveBeenCalledTimes(4);
+        });
+    });
+});
+
+describe("`deleteNoticeOfWorkApplicationNation` action creator", () => {
+    const applicationGuid = NOW_MOCK.NOTICE_OF_WORK.now_application_guid;
+    const nationGuid = "ed488158-e85b-42ef-bd66-9a62655c55f0";
+    const url = `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_APPLICATION_NATION(
+        applicationGuid,
+        nationGuid
+    )}`;
+
+    it("Request successful, dispatches `success` with correct response", () => {
+        const mockResponse = { data: { success: true } };
+        mockAxios.onDelete(url).reply(200, mockResponse);
+
+        return deleteNoticeOfWorkApplicationNation(applicationGuid, nationGuid)(dispatch).then(() => {
+            expect(requestSpy).toHaveBeenCalledTimes(1);
+            expect(successSpy).toHaveBeenCalledTimes(1);
+            expect(dispatch).toHaveBeenCalledTimes(4);
+        });
+    });
+
+    it("Request failure, dispatches `error` with correct response", () => {
+        mockAxios.onDelete(url).reply(418, MOCK.ERROR);
+
+        return deleteNoticeOfWorkApplicationNation(applicationGuid, nationGuid)(dispatch).then(() => {
+            expect(requestSpy).toHaveBeenCalledTimes(1);
+            expect(errorSpy).toHaveBeenCalledTimes(1);
+            expect(dispatch).toHaveBeenCalledTimes(4);
+        });
+    });
+});
+
+describe("`createNoticeOfWorkApplicationNationEvent` action creator", () => {
+    const applicationGuid = NOW_MOCK.NOTICE_OF_WORK.now_application_guid;
+    const nationGuid = "ed488158-e85b-42ef-bd66-9a62655c55f0";
+    const payload = {
+        now_application_nations_events_code: "DMR",
+        event_from: "Proponent",
+        event_to: "Nation",
+        start_date: "2026-04-30",
+        end_date: "2026-05-01",
+    };
+    const url = `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_APPLICATION_NATION_EVENT(
+        applicationGuid,
+        nationGuid
+    )}`;
+
+    it("Request successful, dispatches `success` with correct response", () => {
+        const mockResponse = { data: { success: true } };
+        mockAxios.onPost(url, payload).reply(200, mockResponse);
+
+        return createNoticeOfWorkApplicationNationEvent(
+            applicationGuid,
+            nationGuid,
+            payload
+        )(dispatch).then(() => {
+            expect(requestSpy).toHaveBeenCalledTimes(1);
+            expect(successSpy).toHaveBeenCalledTimes(1);
+            expect(dispatch).toHaveBeenCalledTimes(4);
+        });
+    });
+
+    it("Request failure, dispatches `error` with correct response", () => {
+        mockAxios.onPost(url).reply(418, MOCK.ERROR);
+
+        return createNoticeOfWorkApplicationNationEvent(
+            applicationGuid,
+            nationGuid,
+            payload
+        )(dispatch).then(() => {
+            expect(requestSpy).toHaveBeenCalledTimes(1);
+            expect(errorSpy).toHaveBeenCalledTimes(1);
+            expect(dispatch).toHaveBeenCalledTimes(4);
+        });
+    });
+});

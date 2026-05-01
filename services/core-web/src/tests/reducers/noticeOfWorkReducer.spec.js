@@ -4,6 +4,8 @@ import {
   storeNoticeOfWorkApplication,
   storeNoticeOfWorkApplicationReviews,
   storeProponentNoticeOfWorkApplicationsList,
+  storePipConsultationAreaData,
+  storeNoticeOfWorkApplicationNation
 } from "@mds/common/redux/actions/noticeOfWorkActions";
 import * as MOCK from "@mds/common/tests/mocks/noticeOfWorkMock";
 
@@ -16,6 +18,8 @@ const baseExpectedValue = {
   noticeOfWorkReviews: [],
   applicationDelays: [],
   documentDownloadState: { downloading: false, currentFile: 1, totalFiles: 1 },
+  pipConsultationData: [],
+  noticeOfWorkNations: [],
 };
 
 // Creates deep copy of javascript object instead of setting a reference
@@ -86,6 +90,30 @@ describe("noticeOfWorkReducer", () => {
       undefined,
       storeNoticeOfWorkApplication(MOCK.IMPORT_NOTICE_OF_WORK_SUBMISSION_DOCUMENTS_JOB)
     );
+    expect(result).toEqual(expectedValue);
+  });
+
+  it("receives STORE_PIP_CONSULTATION_AREA_DATA", () => {
+    const expectedValue = getBaseExpectedValue();
+    expectedValue.pipConsultationData = MOCK.PIP_CONSULTATION_AREA_RESPONSE.records;
+
+    const result = noticeOfWorkReducer(
+      undefined,
+      storePipConsultationAreaData(MOCK.PIP_CONSULTATION_AREA_RESPONSE)
+    );
+
+    expect(result).toEqual(expectedValue);
+  });
+
+  it("receives STORE_NOTICE_OF_WORK_APPLICATION_NATIONS", () => {
+    const expectedValue = getBaseExpectedValue();
+    expectedValue.noticeOfWorkNations = MOCK.NOTICE_OF_WORK_NATIONS_RESPONSE.records;
+
+    const result = noticeOfWorkReducer(
+      undefined,
+      storeNoticeOfWorkApplicationNation(MOCK.NOTICE_OF_WORK_NATIONS_RESPONSE)
+    );
+
     expect(result).toEqual(expectedValue);
   });
 });
