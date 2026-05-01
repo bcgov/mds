@@ -167,7 +167,6 @@ services:
       - certs:/certs
     depends_on:
       - flyway
-      # - nris_backend
       - document_manager_backend
       - tusd
       - filesystem_provider
