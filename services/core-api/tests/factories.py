@@ -546,7 +546,7 @@ class MineVerifiedStatusFactory(BaseFactory):
     healthy_ind = factory.Faker('boolean', chance_of_getting_true=50)
     verifying_user = factory.Faker('name')
     verifying_timestamp = TODAY
-    update_user = factory.Faker('name')
+    update_user = 'system'
     update_timestamp = TODAY
 
 
@@ -620,8 +620,8 @@ class MineIncidentNoteFactory(BaseFactory):
     mine_incident_note_guid = GUID
     mine_incident_guid = factory.SelfAttribute('mine_incident.mine_incident_guid')
     content = factory.Faker('sentence')
-    create_user = factory.Faker('name')
-    update_user = factory.Faker('name')
+    create_user = 'system'
+    update_user = 'system'
     create_timestamp = TODAY
     update_timestamp = TODAY
     deleted_ind = False
