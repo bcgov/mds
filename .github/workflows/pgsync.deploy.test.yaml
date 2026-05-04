@@ -42,7 +42,7 @@ jobs:
           ssh-private-key: ${{ secrets.GITOPS_REPO_DEPLOY_KEY }}
 
       - name: Git Ops Push
-        run: ./gitops/commit.sh ${{ env.IMAGE }} dev test ${{ github.actor }}
+        run: ./gitops/commit.sh ${{ env.IMAGE }} dev test ${{ github.actor }} permits
       - name: Install oc
         uses: redhat-actions/openshift-tools-installer@v1
         with:
