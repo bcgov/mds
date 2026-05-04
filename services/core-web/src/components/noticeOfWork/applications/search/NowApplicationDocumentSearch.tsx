@@ -1,36 +1,55 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { Layout, Typography, Row, Col, Card, Skeleton, Button, Tooltip, Tag, Space, Popconfirm, Progress } from 'antd';
-import { SyncOutlined, CheckCircleOutlined, CloseCircleOutlined, ClockCircleOutlined, StopOutlined } from '@ant-design/icons';
-import { useAppDispatch, useAppSelector } from '@mds/common/redux/rootState';
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
-  searchNowApplicationDocuments,
-  indexNowApplicationDocuments,
+  Button,
+  Card,
+  Col,
+  Layout,
+  Popconfirm,
+  Progress,
+  Row,
+  Skeleton,
+  Space,
+  Tag,
+  Typography,
+} from "antd";
+import {
+  CheckCircleOutlined,
+  ClockCircleOutlined,
+  CloseCircleOutlined,
+  StopOutlined,
+  SyncOutlined,
+} from "@ant-design/icons";
+import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
+import {
   cancelNowIndexing,
   fetchNowIndexingStatus,
-  selectNowSearchResults,
+  indexNowApplicationDocuments,
+  NowIndexerStatus,
+  searchNowApplicationDocuments,
+  selectNowAiLoading,
+  selectNowAllFacets,
+  selectNowCancelling,
+  selectNowDocumentLoading,
+  selectNowIndexerStatus,
+  selectNowIndexing,
+  selectNowSearchFilters,
   selectNowSearchLoading,
   selectNowSearchQuery,
-  selectNowSearchFilters,
-  selectNowAiLoading,
-  selectNowDocumentLoading,
-  selectNowIndexing,
-  selectNowCancelling,
-  selectNowAllFacets,
-  selectNowIndexerStatus,
-  NowIndexerStatus,
-} from '@mds/common/redux/slices/nowApplicationSearchSlice';
-import { debounce } from 'lodash';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faExpand, faCompress } from '@fortawesome/pro-solid-svg-icons';
+  selectNowSearchResults,
+} from "@mds/common/redux/slices/nowApplicationSearchSlice";
+import { debounce } from "lodash";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCompress, faExpand } from "@fortawesome/pro-solid-svg-icons";
 
 // Reuse the existing search UI sub-components from Permit Search — they are
 // generic enough to work for any document search backed by the same SSE contract.
-import SearchBox from '@/components/mine/Permit/Search/components/SearchBox';
+import SearchBox from "@/components/mine/Permit/Search/components/SearchBox";
 import SearchResults, {
   SelectedFilter,
-} from '@/components/mine/Permit/Search/components/SearchResults';
-import MarkdownViewer from '@/components/mine/Permit/Search/components/MarkdownViewer';
-import NowApplicationDocumentSearchSplashScreen from './NowApplicationDocumentSearchSplashScreen';
+} from "@/components/mine/Permit/Search/components/SearchResults";
+import MarkdownViewer from "@/components/mine/Permit/Search/components/MarkdownViewer";
+import { CoreTooltip } from "@/components/common/CoreTooltip";
+import NowApplicationDocumentSearchSplashScreen from "./NowApplicationDocumentSearchSplashScreen";
 
 interface NowApplicationDocumentSearchProps {
   nowApplicationGuid: string;
@@ -50,27 +69,25 @@ interface NowApplicationDocumentSearchProps {
  */
 const STATUS_POLL_INTERVAL_MS = 10_000;
 
-function IndexerStatusBadge({ status }: {
-  status: NowIndexerStatus | null;
-}) {
+function IndexerStatusBadge({ status }: { status: NowIndexerStatus | null }) {
   if (!status) return null;
 
   const configs: Record<string, { color: string; icon: React.ReactNode; label: string }> = {
-    never_run:       { color: "default", icon: <ClockCircleOutlined />, label: "Never indexed" },
-    running:         { color: "processing", icon: <SyncOutlined spin />, label: "Indexing…" },
-    success:         { color: "success", icon: <CheckCircleOutlined />, label: "Indexed" },
-    error:           { color: "error", icon: <CloseCircleOutlined />, label: "Index error" },
-    transientFailure:{ color: "warning", icon: <CloseCircleOutlined />, label: "Index warning" },
+    never_run: { color: "default", icon: <ClockCircleOutlined />, label: "Never indexed" },
+    running: { color: "processing", icon: <SyncOutlined spin />, label: "Indexing…" },
+    success: { color: "success", icon: <CheckCircleOutlined />, label: "Indexed" },
+    error: { color: "error", icon: <CloseCircleOutlined />, label: "Index error" },
+    transientFailure: { color: "warning", icon: <CloseCircleOutlined />, label: "Index warning" },
   };
 
   const cfg = configs[status.status] ?? configs.never_run;
-  const lastRun = status.last_run_end
-    ? new Date(status.last_run_end).toLocaleString()
-    : null;
+  const lastRun = status.last_run_end ? new Date(status.last_run_end).toLocaleString() : null;
 
   return (
     <Space size="small" align="center">
-      <Tag icon={cfg.icon} color={cfg.color}>{cfg.label}</Tag>
+      <Tag icon={cfg.icon} color={cfg.color}>
+        {cfg.label}
+      </Tag>
       {lastRun && status.status !== "running" && (
         <Typography.Text type="secondary" style={{ fontSize: 12 }}>
           Last run: {lastRun}
@@ -86,7 +103,9 @@ function IndexerStatusBadge({ status }: {
         />
       )}
       {status.error_message && (
-        <Typography.Text type="danger" style={{ fontSize: 12 }}>{status.error_message}</Typography.Text>
+        <Typography.Text type="danger" style={{ fontSize: 12 }}>
+          {status.error_message}
+        </Typography.Text>
       )}
     </Space>
   );
@@ -146,23 +165,27 @@ const NowApplicationDocumentSearch: React.FC<NowApplicationDocumentSearchProps> 
       <IndexerStatusBadge status={indexerStatus} />
       {isRunning ? (
         <Popconfirm
-          title="Cancel indexing?"
-          description="This will stop the current indexing job. You can re-index at any time."
+          title="Cancel indexing? This will stop the current indexing job. You can re-index at any time."
           okText="Cancel indexing"
           okButtonProps={{ danger: true }}
           cancelText="Keep running"
           onConfirm={() => dispatch(cancelNowIndexing(nowApplicationGuid))}
         >
-          <Button className='margin-none' type="primary" icon={<StopOutlined />} loading={cancelling} danger>
+          <Button
+            className="margin-none"
+            type="primary"
+            icon={<StopOutlined />}
+            loading={cancelling}
+            danger
+          >
             Cancel Indexing
           </Button>
         </Popconfirm>
       ) : (
-        <Tooltip title="This process downloads and analyzes all application documents to make their content searchable by the AI. This is only necessary if new documents have been added since the last index.">
+        <Space size="middle">
           {isIndexed ? (
             <Popconfirm
-              title="Re-index documents?"
-              description="This will re-scan all application documents. It is only necessary if new documents have been added since the last time this was run."
+              title="Re-index documents? This will re-scan all application documents. It is only necessary if new documents have been added since the last time this was run."
               onConfirm={() => dispatch(indexNowApplicationDocuments(nowApplicationGuid))}
               okText="Re-index"
               cancelText="Cancel"
@@ -172,7 +195,11 @@ const NowApplicationDocumentSearch: React.FC<NowApplicationDocumentSearchProps> 
           ) : (
             indexButton
           )}
-        </Tooltip>
+          <CoreTooltip
+            icon="question"
+            title="This process downloads and analyzes all application documents to make their content searchable by the AI. This is only necessary if new documents have been added since the last index."
+          />
+        </Space>
       )}
     </Space>
   );
@@ -208,7 +235,7 @@ const NowApplicationDocumentSearch: React.FC<NowApplicationDocumentSearchProps> 
             />
           </>
         ) : (
-          <Row gutter={[16, 24]} style={{ width: '100%' }}>
+          <Row gutter={[16, 24]} style={{ width: "100%" }}>
             <Col span={24}>
               <Row justify="space-between" align="middle">
                 <Col>
@@ -216,16 +243,11 @@ const NowApplicationDocumentSearch: React.FC<NowApplicationDocumentSearchProps> 
                     Application Document Search
                   </Typography.Title>
                 </Col>
-                <Col>
-                  {indexActions}
-                </Col>
+                <Col>{indexActions}</Col>
               </Row>
             </Col>
             <Col span={24}>
-              <SearchBox
-                onSearch={(q) => debouncedSearch(q, selectedFilters)}
-                loading={loading}
-              />
+              <SearchBox onSearch={(q) => debouncedSearch(q, selectedFilters)} loading={loading} />
             </Col>
             <Col span={24}>
               <Row className="permit-search__results-container" gutter={[16, 0]}>
@@ -246,7 +268,7 @@ const NowApplicationDocumentSearch: React.FC<NowApplicationDocumentSearchProps> 
                     title="AI-Generated Response"
                     loading={false}
                     className={`permit-search__ai-response ${
-                      isAIResponseExpanded ? 'permit-search__ai-response--expanded' : ''
+                      isAIResponseExpanded ? "permit-search__ai-response--expanded" : ""
                     }`}
                   >
                     <FontAwesomeIcon
@@ -254,7 +276,7 @@ const NowApplicationDocumentSearch: React.FC<NowApplicationDocumentSearchProps> 
                       onClick={() => setIsAIResponseExpanded(!isAIResponseExpanded)}
                       className="expand-button"
                       titleId="expand-button"
-                      title={isAIResponseExpanded ? 'Compress' : 'Expand'}
+                      title={isAIResponseExpanded ? "Compress" : "Expand"}
                     />
                     {aiLoading ? (
                       <Skeleton active paragraph={{ rows: 3 }} />
