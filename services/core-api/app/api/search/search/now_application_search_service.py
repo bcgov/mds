@@ -1,6 +1,5 @@
+import io
 import json
-import os
-import tempfile
 
 import requests
 from app.api.services.document_manager_service import DocumentManagerService
@@ -8,6 +7,8 @@ from app.config import Config
 from authlib.integrations.requests_client import OAuth2Session
 from flask import current_app
 from werkzeug.exceptions import InternalServerError
+
+import os
 
 JWT_OIDC_WELL_KNOWN_CONFIG = os.getenv('JWT_OIDC_WELL_KNOWN_CONFIG')
 
@@ -91,16 +92,16 @@ class NowApplicationSearchService:
 
     def index_documents(self, now_application_guid: str, documents: list) -> dict:
         """
-        Indexes all provided documents for the given NoW application.
+        Indexes all provided documents for the given NoW application, one at a time.
+
+        Each document is downloaded from Document Manager into an in-memory buffer,
+        forwarded to the permits service as a single-file multipart upload, then the
+        buffer is released before the next document is downloaded. This keeps peak
+        memory bounded to roughly one document at a time rather than the full set.
 
         ``documents`` is a list of dicts, each containing:
             document_manager_guid, document_name, document_type,
-            mine_guid, mine_name, mine_number, submitted_date (optional)
-
-        For each document, this method downloads the file from Document Manager and
-        streams it to the permits service as a multipart upload together with the
-        metadata array. All Azure integrations (Document Intelligence, blob storage,
-        Azure Search) happen inside the permits service.
+            mine_guid, submitted_date (optional)
         """
         current_app.logger.info(
             'Indexing %d documents for NoW application guid=%s',
@@ -108,60 +109,46 @@ class NowApplicationSearchService:
             now_application_guid,
         )
 
-        tmp_paths = []
-        upload_handles = []
-        multipart_files = []
+        queued = 0
+        for doc in documents:
+            document_manager_guid = doc.get('document_manager_guid')
+            if not document_manager_guid:
+                current_app.logger.warning('Skipping document with no document_manager_guid')
+                continue
 
-        try:
-            for doc in documents:
-                document_manager_guid = doc.get('document_manager_guid')
-                if not document_manager_guid:
-                    current_app.logger.warning('Skipping document with no document_manager_guid')
-                    continue
-
-                tmp = tempfile.NamedTemporaryFile(delete=False)
-                tmp_paths.append(tmp.name)
-
-                file_name, _ = DocumentManagerService().download_document_to_file(
-                    document_manager_guid, tmp
-                )
-                tmp.close()
-
-                # Reopen a clean handle for the multipart upload; tracked for cleanup.
-                upload_fh = open(tmp.name, 'rb')
-                upload_handles.append(upload_fh)
-                multipart_files.append(
-                    ('files', (file_name or doc.get('document_name', 'document'), upload_fh, 'application/octet-stream'))
-                )
-
-            if not multipart_files:
-                raise InternalServerError('No downloadable documents found for this NoW application')
+            buf = io.BytesIO()
+            file_name, _ = DocumentManagerService().download_document_to_file(
+                document_manager_guid, buf
+            )
+            buf.seek(0)
 
             result = self.session.post(
                 f'{_SEARCH_BASE}/{now_application_guid}/index',
-                files=multipart_files,
-                data={'metadata': json.dumps(documents)},
+                files=[('files', (file_name or doc.get('document_name', 'document'), buf, 'application/octet-stream'))],
+                data={'metadata': json.dumps([doc])},
             )
 
-            if result.status_code != 200:
+            # buf goes out of scope here; CPython will free the memory immediately.
+
+            if result.status_code == 200:
+                queued += 1
+            elif result.status_code == 409:
+                current_app.logger.warning(
+                    'Document %s already being indexed for NoW application %s, skipping',
+                    document_manager_guid,
+                    now_application_guid,
+                )
+            else:
                 current_app.logger.error(
-                    'Permits service returned %d while indexing NoW application %s: %s',
+                    'Permits service returned %d indexing document %s for NoW application %s: %s',
                     result.status_code,
+                    document_manager_guid,
                     now_application_guid,
                     result.text,
                 )
                 raise InternalServerError('Failed to index NoW application documents')
 
-            return result.json()
+        if queued == 0:
+            raise InternalServerError('No documents were successfully queued for indexing')
 
-        finally:
-            for fh in upload_handles:
-                try:
-                    fh.close()
-                except OSError:
-                    pass
-            for tmp_path in tmp_paths:
-                try:
-                    os.unlink(tmp_path)
-                except OSError:
-                    pass
+        return {'status': 'running', 'queued': queued}

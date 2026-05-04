@@ -16,7 +16,6 @@ now_document_search_prompt:
 
     """ <documents>
     {% for document in documents %}
-        ID: {{ document.id }}
         Document: {{ document.meta.document_name | default('Unknown') }}
         {% if document.meta.document_type %}
         Type: {{ document.meta.document_type }}

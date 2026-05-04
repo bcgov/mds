@@ -29,7 +29,9 @@ logger = logging.getLogger(__name__)
 # Azure OpenAI embeddings API: up to 2048 items per request.
 EMBED_BATCH_SIZE = 100
 # Azure Search upload_documents: up to 1000 documents per batch.
-PUSH_BATCH_SIZE = 500
+# Kept at 100 (vs the 1000 max) so the push phase emits frequent enough progress
+# updates for the status endpoint to reflect meaningful movement.
+PUSH_BATCH_SIZE = 100
 
 # ---------------------------------------------------------------------------
 # Shared singleton components
@@ -56,6 +58,7 @@ __all__ = [
     "document_intelligence",
     "chunker",
     "openai_client",
+    "delete_document_chunks",
     "embed_chunks",
     "push_to_index",
     "EMBED_BATCH_SIZE",
@@ -66,6 +69,35 @@ __all__ = [
 # ---------------------------------------------------------------------------
 # Helper functions
 # ---------------------------------------------------------------------------
+
+def delete_document_chunks(search_client: SearchClient, document_manager_guid: str) -> int:
+    """
+    Deletes all indexed chunks for a given document_manager_guid before re-indexing.
+
+    The chunk-count can change between runs (e.g. the plain-text fix produces fewer
+    chunks than the old JSON-encoded content did), so overwriting by ID alone leaves
+    stale orphan chunks in the index. Deleting first guarantees a clean slate.
+
+    Paginates in batches of 500 to handle large documents safely.
+    """
+    deleted = 0
+    while True:
+        results = search_client.search(
+            search_text="*",
+            filter=f"document_manager_guid eq '{document_manager_guid}'",
+            select=["id"],
+            top=500,
+        )
+        ids = [{"id": r["id"]} for r in results]
+        if not ids:
+            break
+        delete_results = search_client.delete_documents(documents=ids)
+        deleted += sum(1 for r in delete_results if r.succeeded)
+
+    if deleted:
+        logger.info("Deleted %d stale chunks for document %s", deleted, document_manager_guid)
+    return deleted
+
 
 def embed_chunks(chunks: List[dict], on_progress=None) -> List[dict]:
     """

@@ -10,6 +10,7 @@ import {
   Skeleton,
   Space,
   Tag,
+  Tooltip,
   Typography,
 } from "antd";
 import {
@@ -50,6 +51,9 @@ import SearchResults, {
 import MarkdownViewer from "@/components/mine/Permit/Search/components/MarkdownViewer";
 import { CoreTooltip } from "@/components/common/CoreTooltip";
 import NowApplicationDocumentSearchSplashScreen from "./NowApplicationDocumentSearchSplashScreen";
+import NowDocumentResultItem from "./NowDocumentResultItem";
+import { NowDocumentSearchResult } from "@mds/common/interfaces/search/facet-search.interface";
+import CoreButton from "@mds/common/components/common/CoreButton";
 
 interface NowApplicationDocumentSearchProps {
   nowApplicationGuid: string;
@@ -67,7 +71,10 @@ interface NowApplicationDocumentSearchProps {
  * The isolation guarantee lives in the backend. This component never passes
  * nowApplicationGuid as a filter to the query body — it goes in the URL path only.
  */
-const STATUS_POLL_INTERVAL_MS = 10_000;
+// Poll frequently while indexing so the progress bar moves smoothly.
+// Falls back to a slower rate once indexing settles to reduce server load.
+const STATUS_POLL_INTERVAL_ACTIVE_MS = 2_000;
+const STATUS_POLL_INTERVAL_IDLE_MS = 10_000;
 
 function IndexerStatusBadge({ status }: { status: NowIndexerStatus | null }) {
   if (!status) return null;
@@ -136,10 +143,14 @@ const NowApplicationDocumentSearch: React.FC<NowApplicationDocumentSearchProps> 
   }, [nowApplicationGuid, indexing]);
 
   // Auto-poll while the indexer is running; stop once it settles.
+  // Use a fast interval while active so progress bar movement is visible,
+  // and a slow interval otherwise to reduce unnecessary server load.
   useEffect(() => {
     if (pollRef.current) clearInterval(pollRef.current);
     if (indexerStatus?.status === "running") {
-      pollRef.current = setInterval(refreshStatus, STATUS_POLL_INTERVAL_MS);
+      pollRef.current = setInterval(refreshStatus, STATUS_POLL_INTERVAL_ACTIVE_MS);
+    } else if (indexerStatus?.status) {
+      pollRef.current = setInterval(refreshStatus, STATUS_POLL_INTERVAL_IDLE_MS);
     }
     return () => {
       if (pollRef.current) clearInterval(pollRef.current);
@@ -149,6 +160,7 @@ const NowApplicationDocumentSearch: React.FC<NowApplicationDocumentSearchProps> 
   const indexButton = (
     <Button
       icon={<SyncOutlined spin={indexing} />}
+      className="margin-none"
       loading={indexing}
       onClick={() => {
         if (!isIndexed) {
@@ -171,15 +183,17 @@ const NowApplicationDocumentSearch: React.FC<NowApplicationDocumentSearchProps> 
           cancelText="Keep running"
           onConfirm={() => dispatch(cancelNowIndexing(nowApplicationGuid))}
         >
-          <Button
-            className="margin-none"
-            type="primary"
-            icon={<StopOutlined />}
-            loading={cancelling}
-            danger
-          >
-            Cancel Indexing
-          </Button>
+          <Tooltip title="Cancel Indexing">
+            <CoreButton
+              aria-label="Cancel"
+              loading={loading}
+              className={"form-btn margin-none"}
+              type={"primary"}
+              danger
+            >
+              Cancel
+            </CoreButton>
+          </Tooltip>
         </Popconfirm>
       ) : (
         <Space size="middle">
@@ -254,6 +268,13 @@ const NowApplicationDocumentSearch: React.FC<NowApplicationDocumentSearchProps> 
                 <Col span={isAIResponseExpanded ? 8 : 16}>
                   <SearchResults
                     onFilterChange={(filters) => debouncedSearch(query, filters)}
+                    renderItem={(result, onFilterClick, index) => (
+                      <NowDocumentResultItem
+                        result={result as unknown as NowDocumentSearchResult}
+                        onFilterClick={onFilterClick}
+                        index={index}
+                      />
+                    )}
                     selectors={{
                       selectResults: selectNowSearchResults,
                       selectFilters: selectNowSearchFilters,

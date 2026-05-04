@@ -22,6 +22,12 @@ export interface SelectedFilter {
 export interface SearchResultsProps {
     onFilterChange: (selectedFilters: SelectedFilter[]) => void;
     /**
+     * Optional custom renderer for each result row. When omitted the default
+     * permit-condition ResultItem is used. Pass this when embedding SearchResults
+     * in a different search context (e.g. NoW document search).
+     */
+    renderItem?: (result: HaystackDocumentSearchResult, onFilterClick: (category: string, value: string) => void, index?: number) => React.ReactNode;
+    /**
      * Optional selector overrides — pass these when using SearchResults outside of the
      * permit condition search context (e.g. NoW application document search).
      * Defaults to the permit search slice selectors so existing usage is unchanged.
@@ -43,7 +49,7 @@ export interface SearchResultsProps {
  * - When a filter is unchecked, it is removed from the pending filters.
  * - When the user clicks "Apply Filters", the pending filters are applied to the search results.
  */
-const SearchResults: React.FC<SearchResultsProps> = ({ onFilterChange, selectors }) => {
+const SearchResults: React.FC<SearchResultsProps> = ({ onFilterChange, renderItem, selectors }) => {
     const results = useAppSelector(selectors?.selectResults ?? selectSearchResults);
     const documentLoading = useAppSelector(selectors?.selectDocumentLoading ?? selectDocumentLoading);
     const selectedFilters = useAppSelector(selectors?.selectFilters ?? selectSearchFilters);
@@ -191,12 +197,11 @@ const SearchResults: React.FC<SearchResultsProps> = ({ onFilterChange, selectors
                             background: '#fff',
                             borderRadius: '8px',
                         }}
-                        renderItem={(result) => (
-                            <ResultItem
-                                result={result}
-                                onFilterClick={handleTagFilter}
-                            />
-                        )}
+                        renderItem={(result, index) =>
+                            renderItem
+                                ? renderItem(result, handleTagFilter, index)
+                                : <ResultItem result={result} onFilterClick={handleTagFilter} />
+                        }
                         className="permit-search__results-list"
                     />
                 )}

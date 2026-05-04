@@ -32,17 +32,28 @@ logger = logging.getLogger(__name__)
 FILE_UPLOAD_PATH = os.environ.get("FILE_UPLOAD_PATH", "/file-uploads")
 
 # ---------------------------------------------------------------------------
-# Redis — stores now_application_guid → Celery task_id so the status endpoint
-# can report "running" / "success" / "failed" without polling Azure Search for
-# every in-flight request.
+# Redis key scheme:
+#   now_doc_index:{now_guid}:{doc_guid}  — task_id for a single document
+#   now_doc_index_tasks:{now_guid}       — Redis set of all task_ids for an application
+#
+# One Celery task is enqueued per document so files are processed one at a time
+# and never accumulate in memory simultaneously. The set allows the status and
+# cancel endpoints to aggregate across all tasks for an application.
 # ---------------------------------------------------------------------------
 _redis = redis_lib.Redis.from_url(CACHE_REDIS_URL, decode_responses=True)
 _TASK_KEY_PREFIX = "now_doc_index:"
+_TASK_SET_PREFIX = "now_doc_index_tasks:"
 _TASK_KEY_TTL = 60 * 60 * 24 * 7  # 7 days
 
+_RUNNING_STATES = {"PENDING", "STARTED", "PROGRESS", "RETRY"}
 
-def _task_key(now_application_guid: str) -> str:
-    return f"{_TASK_KEY_PREFIX}{now_application_guid}"
+
+def _task_key(now_application_guid: str, document_manager_guid: str) -> str:
+    return f"{_TASK_KEY_PREFIX}{now_application_guid}:{document_manager_guid}"
+
+
+def _task_set_key(now_application_guid: str) -> str:
+    return f"{_TASK_SET_PREFIX}{now_application_guid}"
 
 
 # ---------------------------------------------------------------------------
@@ -56,16 +67,9 @@ def _validate_guid(value: str, label: str) -> None:
         raise HTTPException(400, f"{label} must be a valid UUID")
 
 
-def _get_task_status(task_id: str) -> str:
-    """Returns the Celery task state string for *task_id*."""
-    from app.tasks.tasks import run_now_document_indexing
-    result = run_now_document_indexing.app.AsyncResult(task_id)
-    return result.state  # PENDING, STARTED, PROGRESS, SUCCESS, FAILURE, REVOKED
-
-
 def _is_task_running(task_id: str) -> bool:
-    state = _get_task_status(task_id)
-    return state in ("PENDING", "STARTED", "PROGRESS", "RETRY")
+    from app.tasks.tasks import run_now_document_indexing
+    return run_now_document_indexing.app.AsyncResult(task_id).state in _RUNNING_STATES
 
 
 # ---------------------------------------------------------------------------
@@ -79,29 +83,27 @@ async def index_now_application_documents(
     metadata: str = Form(...),
 ) -> IndexingResponse:
     """
-    Enqueue an async indexing job for all documents belonging to a NoW application.
+    Enqueue an async indexing task for a single document belonging to a NoW application.
 
-    Accepts one or more files (PDFs and other Document Intelligence-supported formats)
-    alongside a JSON metadata array. Each metadata entry corresponds positionally to
-    a file and must include:
+    The caller (core-api) sends documents one at a time so that only one file's bytes
+    are held in memory on either side at once. Each call enqueues one Celery task;
+    the status endpoint aggregates across all tasks for the application.
+
+    Accepts a single file alongside a one-element JSON metadata array containing:
         document_manager_guid, document_name, document_type,
         mine_guid, submitted_date (optional)
 
-    Returns immediately with status="running". The actual work (Document Intelligence,
-    embedding, Azure Search push) happens inside a Celery worker. Poll the status
-    endpoint to track progress.
+    Returns immediately with status="running". De-duplication is per document — a
+    second call for the same document_manager_guid is rejected with 409 if that
+    document's task is still running, but other documents for the same application
+    are accepted concurrently.
 
     Because chunk IDs are deterministic (sha256 of guid + document_manager_guid + index),
-    re-indexing the same documents always overwrites the same records, avoiding duplicates.
+    re-indexing the same document always overwrites the same records, avoiding duplicates.
     """
     _validate_guid(now_application_guid, "now_application_guid")
     if now_document_search_search_client is None:
         raise HTTPException(503, "Search client is not available in this environment")
-
-    # Reject duplicate concurrent runs.
-    existing_task_id = _redis.get(_task_key(now_application_guid))
-    if existing_task_id and _is_task_running(existing_task_id):
-        raise HTTPException(409, "Indexing already in progress for this application. Please wait for it to complete.")
 
     try:
         doc_metadata_list = json.loads(metadata)
@@ -113,6 +115,13 @@ async def index_now_application_documents(
             400,
             f"files count ({len(files)}) must match metadata count ({len(doc_metadata_list)})",
         )
+
+    # Reject duplicate concurrent runs for the same document.
+    doc_guid = doc_metadata_list[0].get("document_manager_guid", "") if doc_metadata_list else ""
+    if doc_guid:
+        existing_task_id = _redis.get(_task_key(now_application_guid, doc_guid))
+        if existing_task_id and _is_task_running(existing_task_id):
+            raise HTTPException(409, f"Indexing already in progress for document {doc_guid}.")
 
     # Write uploads to the shared fileuploads volume so the Celery worker can read them.
     tmp_paths: List[str] = []
@@ -126,7 +135,6 @@ async def index_now_application_documents(
             with open(tmp.name, "wb") as f:
                 f.write(contents)
     except Exception as e:
-        # Clean up any files we managed to write before failing.
         for path in tmp_paths:
             try:
                 os.unlink(path)
@@ -135,16 +143,19 @@ async def index_now_application_documents(
         logger.error("Failed to write upload files for NoW application %s: %s", now_application_guid, e)
         raise HTTPException(500, f"Failed to store uploaded files: {e}")
 
-    # Enqueue the Celery task and record its ID in Redis.
+    # Enqueue the Celery task; register its ID per-document and in the application set.
     from app.tasks.tasks import run_now_document_indexing
     task = run_now_document_indexing.delay(now_application_guid, tmp_paths, doc_metadata_list)
-    _redis.setex(_task_key(now_application_guid), _TASK_KEY_TTL, task.id)
+    if doc_guid:
+        _redis.setex(_task_key(now_application_guid, doc_guid), _TASK_KEY_TTL, task.id)
+    _redis.sadd(_task_set_key(now_application_guid), task.id)
+    _redis.expire(_task_set_key(now_application_guid), _TASK_KEY_TTL)
 
     logger.info(
-        "Enqueued indexing task %s for NoW application %s (%d files)",
+        "Enqueued indexing task %s for document %s in NoW application %s",
         task.id,
+        doc_guid,
         now_application_guid,
-        len(files),
     )
 
     return IndexingResponse(id=now_application_guid, status="running")
@@ -157,34 +168,33 @@ async def index_now_application_documents(
 @router.delete("/document_search/{now_application_guid}/index")
 async def cancel_indexing(now_application_guid: str):
     """
-    Revoke the active Celery indexing task for a NoW application.
+    Revoke all active Celery indexing tasks for a NoW application.
 
-    Sends SIGTERM to the worker process handling the task and removes the
-    Redis key so subsequent status checks fall back to the Azure Search count.
-    Safe to call even if the task has already completed — returns 404 if no
-    active task is found.
+    Sends SIGTERM to every worker process handling a document for this application
+    and removes the task set from Redis. Safe to call even if tasks have already
+    completed — returns 404 if no tasks are tracked for the application.
     """
     _validate_guid(now_application_guid, "now_application_guid")
 
-    task_id = _redis.get(_task_key(now_application_guid))
-    if not task_id:
-        raise HTTPException(404, "No active indexing task found for this application")
+    task_ids = _redis.smembers(_task_set_key(now_application_guid))
+    if not task_ids:
+        raise HTTPException(404, "No active indexing tasks found for this application")
 
     from app.tasks.tasks import run_now_document_indexing
-    app = run_now_document_indexing.app
-    app.control.revoke(task_id, terminate=True)
+    celery_app = run_now_document_indexing.app
 
-    # terminate=True kills the worker process before it can write a final state to the
-    # Elasticsearch backend, so Flower would show STARTED indefinitely. Write REVOKED
-    # explicitly so the backend reflects reality.
-    try:
-        app.backend.store_result(task_id, result=None, state="REVOKED")
-    except Exception as e:
-        logger.warning("Could not update backend state to REVOKED for task %s: %s", task_id, e)
+    for task_id in task_ids:
+        celery_app.control.revoke(task_id, terminate=True)
+        # terminate=True kills the worker before it can write a final state to the
+        # backend, so write REVOKED explicitly so Flower reflects reality.
+        try:
+            celery_app.backend.store_result(task_id, result=None, state="REVOKED")
+        except Exception as e:
+            logger.warning("Could not update backend state to REVOKED for task %s: %s", task_id, e)
 
-    _redis.delete(_task_key(now_application_guid))
+    _redis.delete(_task_set_key(now_application_guid))
 
-    logger.info("Revoked indexing task %s for NoW application %s", task_id, now_application_guid)
+    logger.info("Revoked %d indexing tasks for NoW application %s", len(task_ids), now_application_guid)
     return {"status": "cancelled"}
 
 
@@ -307,76 +317,103 @@ def _format_event(event_type: str, data) -> ServerSentEvent:
 @router.get("/document_search/{now_application_guid}/index/status")
 async def get_indexing_status(now_application_guid: str):
     """
-    Returns the indexing status for a NoW application.
+    Returns the aggregated indexing status across all per-document Celery tasks
+    for a NoW application.
 
-    Checks Redis for a Celery task ID first (written at enqueue time), then maps
-    Celery task state to the canonical status vocabulary:
-      running    — task is PENDING / STARTED / PROGRESS / RETRY
-      success    — task succeeded; items_processed comes from the task result
-      failed     — task raised an unhandled exception
-      never_run  — no task found in Redis AND no documents in the index
+    Status vocabulary:
+      running    — at least one task is still PENDING / STARTED / PROGRESS / RETRY;
+                   percent reflects how many documents have completed so far
+      success    — all tasks succeeded; items_processed is total chunks indexed
+      failed     — at least one task raised an unhandled exception
+      never_run  — no tasks in Redis AND no documents in the index
 
-    If no task ID is in Redis but documents exist in the index (e.g. after a server
-    restart or a legacy index run), the status is inferred from the Azure Search count.
+    Falls back to the Azure Search document count when no task IDs are in Redis
+    (e.g. after a server restart or the set TTL has expired).
     """
     _validate_guid(now_application_guid, "now_application_guid")
     if now_document_search_search_client is None:
         raise HTTPException(503, "Search client is not available in this environment")
 
-    task_id = _redis.get(_task_key(now_application_guid))
+    task_ids = _redis.smembers(_task_set_key(now_application_guid))
 
-    if task_id:
+    if task_ids:
         from app.tasks.tasks import run_now_document_indexing
-        result = run_now_document_indexing.app.AsyncResult(task_id)
-        state = result.state
+        celery_app = run_now_document_indexing.app
+        task_results = [celery_app.AsyncResult(tid) for tid in task_ids]
+        states = [r.state for r in task_results]
+        total = len(states)
 
-        if state in ("PENDING", "STARTED", "PROGRESS", "RETRY"):
-            meta = result.info or {}
+        if any(s in _RUNNING_STATES for s in states):
+            # Weight each task's progress by its chunk count so that larger documents
+            # contribute proportionally more to the overall percent. chunk_count is
+            # available in task meta once extraction completes; before that we use 1
+            # as a placeholder so the task still registers in the weighted average.
+            weights_and_progress = []
+            for r in task_results:
+                if r.state == "SUCCESS":
+                    chunk_count = max((r.result or {}).get("chunk_count", 1), 1)
+                    weights_and_progress.append((chunk_count, 1.0))
+                elif r.state in _RUNNING_STATES:
+                    meta = r.info or {}
+                    chunk_count = max(meta.get("chunk_count", 1), 1)
+                    weights_and_progress.append((chunk_count, meta.get("percent", 0) / 100.0))
+                else:
+                    weights_and_progress.append((1, 0.0))
+
+            total_weight = sum(w for w, _ in weights_and_progress)
+            overall_percent = (
+                int(sum(w * p for w, p in weights_and_progress) / total_weight * 100)
+                if total_weight > 0 else 0
+            )
+
             return {
                 "status": "running",
-                "items_processed": 0,
+                "items_processed": sum(1 for s in states if s == "SUCCESS"),
                 "error_count": 0,
                 "last_run_start": None,
                 "last_run_end": None,
                 "error_message": None,
-                "stage": meta.get("stage"),
-                "percent": meta.get("percent", 0),
+                "stage": "indexing",
+                "percent": overall_percent,
             }
 
-        if state == "SUCCESS":
-            task_result = result.result or {}
-            return {
-                "status": "success",
-                "items_processed": task_result.get("succeeded", 0),
-                "error_count": 0,
-                "last_run_start": None,
-                "last_run_end": None,
-                "error_message": None,
-            }
-
-        if state == "FAILURE":
+        if any(s == "FAILURE" for s in states):
+            failed_result = next(r for r in task_results if r.state == "FAILURE")
             return {
                 "status": "failed",
                 "items_processed": 0,
-                "error_count": 1,
+                "error_count": sum(1 for s in states if s == "FAILURE"),
                 "last_run_start": None,
                 "last_run_end": None,
-                "error_message": str(result.result),
+                "error_message": str(failed_result.result),
             }
 
-        # REVOKED or unknown — fall through to Azure Search count below.
+        if all(s == "SUCCESS" for s in states):
+            total_succeeded = sum(
+                (r.result or {}).get("succeeded", 0) for r in task_results
+            )
+            return {
+                "status": "success",
+                "items_processed": total_succeeded,
+                "error_count": 0,
+                "last_run_start": None,
+                "last_run_end": None,
+                "error_message": None,
+            }
 
-    # No task in Redis (or task in an unknown terminal state) — derive status
-    # from what's actually present in the index.
+        # Mixed terminal states (some REVOKED, etc.) — fall through to Azure Search count.
+
+    # No task set in Redis (or mixed terminal states) — derive status from what's
+    # actually present in the index.
     try:
-        results = now_document_search_search_client.search(
+        search_results = now_document_search_search_client.search(
             search_text="*",
             filter=f"now_application_guid eq '{now_application_guid}'",
             select=["id"],
             include_total_count=True,
             top=0,
         )
-        count = results.get_count() or 0
+        count = search_results.get_count() or 0
     except Exception as e:
         logger.error(
             "Failed to fetch index status for NoW application %s: %s", now_application_guid, e

@@ -1,4 +1,5 @@
 import hashlib
+import json
 import logging
 from dataclasses import dataclass
 from typing import List, Optional
@@ -41,7 +42,14 @@ class DocumentChunker:
         chunk_index = 0
 
         for doc in documents:
-            content = doc.content.strip() if doc.content else ""
+            # AzureDocumentIntelligenceConverter serialises each paragraph as a JSON
+            # dict: {"id": ..., "text": "<actual paragraph text>", ...}.
+            # Extract just the human-readable text for indexing and display.
+            try:
+                content = json.loads(doc.content).get("text", "") if doc.content else ""
+            except (json.JSONDecodeError, AttributeError):
+                content = doc.content or ""
+            content = content.strip()
             if len(content) < MIN_CHUNK_LENGTH:
                 continue
 

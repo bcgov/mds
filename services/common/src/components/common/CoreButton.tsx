@@ -24,7 +24,7 @@ const CoreButton: FC<CoreButtonProps> = ({ type, className, children, ...props }
   const buttonClassName = ["core-btn", `core-btn-${type}`, className].filter(Boolean).join(" ").trim();
 
   return (
-    <Button {...props} type={buttonType} className={buttonClassName}>
+    <Button {...props} type={buttonType} className={buttonClassName} >
       {children}
     </Button>
   );

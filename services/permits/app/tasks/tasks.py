@@ -5,6 +5,7 @@ from contextlib import contextmanager
 from app.celery import celery_app
 from app.common.types.context import context
 from app.pipelines.document_search.indexing import (
+    delete_document_chunks,
     embed_chunks,
     extract_and_chunk_file,
     push_to_index,
@@ -46,10 +47,11 @@ def run_now_document_indexing(self, now_application_guid: str, tmp_paths: list, 
     Each path corresponds positionally to an entry in *doc_metadata_list*.
     Temp files are always deleted in the finally block, whether the task succeeds or fails.
     """
-    # Phase weight boundaries (percent):
-    #   0 – 25  : extraction  (Document Intelligence, one call per file)
-    #  25 – 75  : embedding   (batched Azure OpenAI calls)
-    #  75 – 100 : pushing     (batched Azure Search uploads)
+    # Phase boundaries (percent) — each phase is visible in the status endpoint.
+    #   0 – 15  : deleting stale chunks from the previous index run
+    #  15 – 30  : extraction via Azure Document Intelligence
+    #  30 – 75  : embedding (batched Azure OpenAI calls)
+    #  75 – 100 : pushing to Azure Search (batched uploads)
     total_files = len(tmp_paths)
 
     def _pct(phase_start: int, phase_end: int, done: int, total: int) -> int:
@@ -62,9 +64,20 @@ def run_now_document_indexing(self, now_application_guid: str, tmp_paths: list, 
 
         all_chunks = []
         for idx, (tmp_path, doc_meta) in enumerate(zip(tmp_paths, doc_metadata_list)):
+            doc_guid = doc_meta.get("document_manager_guid", "")
+
+            self.update_state(state="PROGRESS", meta={
+                "stage": "deleting",
+                "percent": _pct(0, 15, idx, total_files),
+                "files_processed": idx,
+                "total_files": total_files,
+            })
+            if doc_guid and now_document_search_search_client:
+                delete_document_chunks(now_document_search_search_client, doc_guid)
+
             self.update_state(state="PROGRESS", meta={
                 "stage": "extracting",
-                "percent": _pct(0, 25, idx, total_files),
+                "percent": _pct(15, 30, idx, total_files),
                 "files_processed": idx,
                 "total_files": total_files,
             })
@@ -81,7 +94,7 @@ def run_now_document_indexing(self, now_application_guid: str, tmp_paths: list, 
         def on_embed_progress(done: int, total: int) -> None:
             self.update_state(state="PROGRESS", meta={
                 "stage": "embedding",
-                "percent": _pct(25, 75, done, total),
+                "percent": _pct(30, 75, done, total),
                 "chunk_count": total,
                 "chunks_embedded": done,
             })
