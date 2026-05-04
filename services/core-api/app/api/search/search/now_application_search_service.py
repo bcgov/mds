@@ -1,5 +1,6 @@
 import io
 import json
+import os
 
 import requests
 from app.api.services.document_manager_service import DocumentManagerService
@@ -7,14 +8,6 @@ from app.config import Config
 from authlib.integrations.requests_client import OAuth2Session
 from flask import current_app
 from werkzeug.exceptions import InternalServerError
-
-import os
-
-JWT_OIDC_WELL_KNOWN_CONFIG = os.getenv('JWT_OIDC_WELL_KNOWN_CONFIG')
-
-oidc_configuration = requests.get(JWT_OIDC_WELL_KNOWN_CONFIG).json()
-
-_SEARCH_BASE = f'{Config.PERMITS_ENDPOINT}/document_search'
 
 
 class NowApplicationSearchService:
@@ -25,15 +18,34 @@ class NowApplicationSearchService:
     The now_application_guid is always passed as a URL path segment so the permits service
     can enforce the isolation filter — it is never derived from request body content.
     """
+    _oidc_configuration = None
 
-    def __init__(self):
-        self.session = OAuth2Session(
-            client_id=Config.PERMITS_CLIENT_ID,
-            client_secret=Config.PERMITS_CLIENT_SECRET,
-            token_endpoint=oidc_configuration['token_endpoint'],
-            grant_type='client_credentials',
-        )
-        self.session.fetch_token()
+    @property
+    def oidc_configuration(self):
+        if not self._oidc_configuration:
+            if Config.TESTING:
+                self._oidc_configuration = {'token_endpoint': 'https://test.endpoint/token'}
+            else:
+                well_known_config = os.getenv('JWT_OIDC_WELL_KNOWN_CONFIG')
+                self._oidc_configuration = requests.get(well_known_config).json()
+        return self._oidc_configuration
+
+    @property
+    def search_base(self):
+        return f'{Config.PERMITS_ENDPOINT}/document_search'
+
+    @property
+    def session(self):
+        if not hasattr(self, '_session'):
+            self._session = OAuth2Session(
+                client_id=Config.PERMITS_CLIENT_ID,
+                client_secret=Config.PERMITS_CLIENT_SECRET,
+                token_endpoint=self.oidc_configuration['token_endpoint'],
+                grant_type='client_credentials',
+            )
+            if not Config.TESTING:
+                self._session.fetch_token()
+        return self._session
 
     def search(self, now_application_guid: str, search_params: dict):
         """
@@ -46,7 +58,7 @@ class NowApplicationSearchService:
             search_params.get('query'),
         )
         response = self.session.post(
-            f'{_SEARCH_BASE}/{now_application_guid}/search',
+            f'{self.search_base}/{now_application_guid}/search',
             json={
                 'query': search_params.get('query', ''),
                 'filters': search_params.get('filters'),
@@ -64,7 +76,7 @@ class NowApplicationSearchService:
     def cancel_indexing(self, now_application_guid: str) -> dict:
         """Revokes the active Celery indexing task for the given NoW application."""
         response = self.session.delete(
-            f'{_SEARCH_BASE}/{now_application_guid}/index',
+            f'{self.search_base}/{now_application_guid}/index',
             timeout=10,
         )
         if not response.ok:
@@ -79,7 +91,7 @@ class NowApplicationSearchService:
     def get_index_status(self, now_application_guid: str) -> dict:
         """Returns the current Azure Search indexer status for the given NoW application."""
         response = self.session.get(
-            f'{_SEARCH_BASE}/{now_application_guid}/index/status',
+            f'{self.search_base}/{now_application_guid}/index/status',
         )
         if not response.ok:
             current_app.logger.error(
@@ -123,7 +135,7 @@ class NowApplicationSearchService:
             buf.seek(0)
 
             result = self.session.post(
-                f'{_SEARCH_BASE}/{now_application_guid}/index',
+                f'{self.search_base}/{now_application_guid}/index',
                 files=[('files', (file_name or doc.get('document_name', 'document'), buf, 'application/octet-stream'))],
                 data={'metadata': json.dumps([doc])},
             )
