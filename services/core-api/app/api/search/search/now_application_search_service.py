@@ -23,11 +23,8 @@ class NowApplicationSearchService:
     @property
     def oidc_configuration(self):
         if not self._oidc_configuration:
-            if Config.TESTING:
-                self._oidc_configuration = {'token_endpoint': 'https://test.endpoint/token'}
-            else:
-                well_known_config = os.getenv('JWT_OIDC_WELL_KNOWN_CONFIG')
-                self._oidc_configuration = requests.get(well_known_config).json()
+            well_known_config = os.getenv('JWT_OIDC_WELL_KNOWN_CONFIG')
+            self._oidc_configuration = requests.get(well_known_config).json()
         return self._oidc_configuration
 
     @property
@@ -43,8 +40,7 @@ class NowApplicationSearchService:
                 token_endpoint=self.oidc_configuration['token_endpoint'],
                 grant_type='client_credentials',
             )
-            if not Config.TESTING:
-                self._session.fetch_token()
+            self._session.fetch_token()
         return self._session
 
     def search(self, now_application_guid: str, search_params: dict):
