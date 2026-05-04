@@ -264,6 +264,19 @@ exports[`NoticeOfWorkApplication renders properly 1`] = `
               </div>
             </div>
             <div
+              class="ant-tabs-tab ant-tabs-tab-disabled"
+              data-node-key="search-documents"
+            >
+              <div
+                aria-controls="rc-tabs-test-panel-search-documents"
+                aria-disabled="true"
+                aria-selected="false"
+                class="ant-tabs-tab-btn"
+                id="rc-tabs-test-tab-search-documents"
+                role="tab"
+              />
+            </div>
+            <div
               class="ant-tabs-ink-bar ant-tabs-ink-bar-animated"
             />
           </div>
