@@ -12,6 +12,8 @@ from werkzeug.exceptions import NotFound, BadRequest, InternalServerError, Servi
 from app.api.utils.feature_flag import Feature, is_feature_enabled
 from app.api.now_applications.response_models import NOW_APPLICATION_NATION
 
+NOW_APPLICATION_IDENTITY_NOT_FOUND = 'NoW application identity not found.'
+
 class NOWApplicationNationResource(Resource, UserMixin):
     parser = CustomReqparser()
     parser.add_argument(
@@ -74,7 +76,7 @@ class NOWApplicationNationResource(Resource, UserMixin):
         
         now_application_identity = NOWApplicationIdentity.find_by_guid(now_application_guid)
         if now_application_identity is None:
-            raise NotFound('NoW application identity not found.')
+            raise NotFound(NOW_APPLICATION_IDENTITY_NOT_FOUND)
         try:
             now_application_nations = NOWApplicationNation.find_by_now_application_guid(now_application_guid)
         except Exception as e:
@@ -96,7 +98,7 @@ class NOWApplicationNationResource(Resource, UserMixin):
         
         now_application_identity = NOWApplicationIdentity.find_by_guid(now_application_guid)
         if now_application_identity is None:
-            raise NotFound('NoW application identity not found.')
+            raise NotFound(NOW_APPLICATION_IDENTITY_NOT_FOUND)
         
         data = self.parser.parse_args()
         status = NOWApplicationNationStatus.find_by_now_application_nation_status_code(data.get('now_application_nation_status_code'))
@@ -134,7 +136,7 @@ class NOWApplicationNationResource(Resource, UserMixin):
 
         now_application_identity = NOWApplicationIdentity.find_by_guid(now_application_guid)
         if now_application_identity is None:
-            raise NotFound('NoW application identity not found.')
+            raise NotFound(NOW_APPLICATION_IDENTITY_NOT_FOUND)
         now_application_nation = NOWApplicationNation.find_by_now_application_nation_guid(now_application_nation_guid)
         if now_application_nation is None:
             raise NotFound('NoW application nation not found.')

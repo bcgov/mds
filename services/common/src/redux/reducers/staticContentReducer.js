@@ -185,8 +185,7 @@ const isStaticContentLoaded = (state) => {
   }
 
   if (!isFeatureEnabled(Feature.NOTICE_OF_WORK_NATIONS)) {
-    staticContentExceptions.push("noticeOfWorkNationEventOptions");
-    staticContentExceptions.push("noticeOfWorkNationStatusOptions");
+    staticContentExceptions.push("noticeOfWorkNationEventOptions", "noticeOfWorkNationStatusOptions");
   }
 
   return Object.keys(state)

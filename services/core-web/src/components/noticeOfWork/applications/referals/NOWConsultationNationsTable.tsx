@@ -56,6 +56,53 @@ interface NationEventRow {
 
 }
 
+interface NationEventsExpandedRowProps {
+    record: NationRow;
+    childColumns: ColumnsType<NationEventRow>;
+    nationEvents: (record: NationRow) => NationEventRow[];
+    userCanManageConsultationAdvisor?: boolean;
+    openAddNationEventModal: any;
+}
+
+const NationEventsExpandedRow: React.FC<NationEventsExpandedRowProps> = ({
+    record,
+    childColumns,
+    nationEvents,
+    userCanManageConsultationAdvisor,
+    openAddNationEventModal,
+}) => (
+    <Table
+        columns={childColumns}
+        dataSource={nationEvents(record)}
+        locale={{ emptyText: "No Data Yet" }}
+        pagination={false}
+        size="small"
+        className="now-events-table nested-table"
+        rowClassName="now-events-table expanded-row fade-in"
+        rowKey="key"
+        footer={
+            userCanManageConsultationAdvisor ?
+                () => (
+                    <NOWActionWrapper
+                        permission={Permission.EDIT_PERMITS}
+                        tab={CONSULTATION_TAB_CODE}
+                        ignoreDelay
+                    >
+                        <div className="right center-mobile">
+                            <AddButton
+                                onClick={(event) => openAddNationEventModal(event, record.nation)}
+                                type="secondary"
+                            >
+                                Add event
+                            </AddButton>
+                        </div>
+                    </NOWActionWrapper>
+                )
+                : undefined
+        }
+    />
+);
+
 export const NOWConsultationNationsTable: React.FC<NOWConsultationNationsTableProps> = ({
     nations,
     isLoaded,
@@ -201,38 +248,13 @@ export const NOWConsultationNationsTable: React.FC<NOWConsultationNationsTablePr
     const rowData = nations?.map((nation) => transformRowData(nation));
 
     const renderNationEventsExpandedRow = (record: NationRow) => (
-        <>
-            <Table
-                columns={childColumns}
-                dataSource={nationEvents(record)}
-                locale={{ emptyText: "No Data Yet" }}
-                pagination={false}
-                size="small"
-                className="now-events-table nested-table"
-                rowClassName="now-events-table expanded-row fade-in"
-                rowKey="key"
-                footer={
-                    userCanManageConsultationAdvisor ?
-                        () => (
-                            <NOWActionWrapper
-                                permission={Permission.EDIT_PERMITS}
-                                tab={CONSULTATION_TAB_CODE}
-                                ignoreDelay
-                            >
-                                <div className="right center-mobile">
-                                    <AddButton
-                                        onClick={(event) => openAddNationEventModal(event, record.nation)}
-                                        type="secondary"
-                                    >
-                                        Add event
-                                    </AddButton>
-                                </div>
-                            </NOWActionWrapper>
-                        )
-                        : undefined
-                }
-            />
-        </>
+        <NationEventsExpandedRow
+            record={record}
+            childColumns={childColumns}
+            nationEvents={nationEvents}
+            userCanManageConsultationAdvisor={userCanManageConsultationAdvisor}
+            openAddNationEventModal={openAddNationEventModal}
+        />
     );
 
     return (

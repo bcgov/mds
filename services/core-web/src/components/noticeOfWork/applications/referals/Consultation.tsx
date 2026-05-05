@@ -23,10 +23,9 @@ import {
 } from "@mds/common/redux/actionCreators/noticeOfWorkActionCreator";
 import { modalConfig } from "@/components/modalContent/config";
 import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
-import { createDropDownList } from "@common/utils/helpers";
+import { createDropDownList, getLatestEvent } from "@common/utils/helpers";
 import { NOW_APPLICATION_NATION_STATUS_CODE } from "@mds/common/constants/enums";
 import { USER_ROLES } from "@mds/common/constants/environment";
-import { getLatestEvent } from "@common/utils/helpers";
 
 /**
  * @constant Consultation renders edit/view for the Consultation step
