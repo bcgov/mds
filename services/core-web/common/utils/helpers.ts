@@ -603,4 +603,4 @@ export const getLatestEvent = (events = []) => {
   );
 
   return sortedEvents[sortedEvents.length - 1];
-}
+};
