@@ -85,15 +85,16 @@ class TestDocumentSearchResource:
     @patch("app.pipelines.document_search.resources.document_search_resource.now_document_search_search_client")
     async def test_index_now_application_documents_duplicate(self, mock_search_client, mock_redis, valid_guid):
         mock_redis.get.return_value = "task-123"
+        metadata = json.dumps([{"document_manager_guid": "doc-123"}])
         with patch("app.pipelines.document_search.resources.document_search_resource._is_task_running", return_value=True):
             with pytest.raises(HTTPException) as exc:
-                await index_now_application_documents(valid_guid, [], "[]")
+                await index_now_application_documents(valid_guid, [MagicMock(spec=UploadFile)], metadata)
             assert exc.value.status_code == 409
 
     @pytest.mark.asyncio
     @patch("app.tasks.tasks.run_now_document_indexing")
     async def test_cancel_indexing_success(self, mock_task, mock_redis, valid_guid):
-        mock_redis.get.return_value = "task-123"
+        mock_redis.smembers.return_value = {"task-123"}
         mock_app = MagicMock()
         mock_task.app = mock_app
         
@@ -104,7 +105,7 @@ class TestDocumentSearchResource:
 
     @pytest.mark.asyncio
     async def test_cancel_indexing_not_found(self, mock_redis, valid_guid):
-        mock_redis.get.return_value = None
+        mock_redis.smembers.return_value = set()
         with pytest.raises(HTTPException) as exc:
             await cancel_indexing(valid_guid)
         assert exc.value.status_code == 404
@@ -113,7 +114,7 @@ class TestDocumentSearchResource:
     @patch("app.pipelines.document_search.resources.document_search_resource.now_document_search_search_client")
     @patch("app.tasks.tasks.run_now_document_indexing")
     async def test_get_indexing_status_success(self, mock_task, mock_search_client, mock_redis, valid_guid):
-        mock_redis.get.return_value = "task-123"
+        mock_redis.smembers.return_value = {"task-123"}
         mock_result = MagicMock()
         mock_result.state = "SUCCESS"
         mock_result.result = {"succeeded": 10}
@@ -127,7 +128,7 @@ class TestDocumentSearchResource:
     @patch("app.pipelines.document_search.resources.document_search_resource.now_document_search_search_client")
     @patch("app.tasks.tasks.run_now_document_indexing")
     async def test_get_indexing_status_running(self, mock_task, mock_search_client, mock_redis, valid_guid):
-        mock_redis.get.return_value = "task-123"
+        mock_redis.smembers.return_value = {"task-123"}
         mock_result = MagicMock()
         mock_result.state = "PROGRESS"
         mock_result.info = {"percent": 50, "stage": "embedding"}
@@ -141,7 +142,7 @@ class TestDocumentSearchResource:
     @pytest.mark.asyncio
     @patch("app.pipelines.document_search.resources.document_search_resource.now_document_search_search_client")
     async def test_get_indexing_status_never_run(self, mock_search_client, mock_redis, valid_guid):
-        mock_redis.get.return_value = None
+        mock_redis.smembers.return_value = set()
         mock_search_results = MagicMock()
         mock_search_results.get_count.return_value = 0
         mock_search_client.search.return_value = mock_search_results

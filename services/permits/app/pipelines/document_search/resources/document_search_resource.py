@@ -368,6 +368,13 @@ async def get_indexing_status(now_application_guid: str):
                 if total_weight > 0 else 0
             )
 
+            # Use the stage from the first running task if available
+            current_stage = "indexing"
+            running_results = [r for r in task_results if r.state in _RUNNING_STATES]
+            if running_results:
+                meta = running_results[0].info or {}
+                current_stage = meta.get("stage", "indexing")
+
             return {
                 "status": "running",
                 "items_processed": sum(1 for s in states if s == "SUCCESS"),
@@ -375,7 +382,7 @@ async def get_indexing_status(now_application_guid: str):
                 "last_run_start": None,
                 "last_run_end": None,
                 "error_message": None,
-                "stage": "indexing",
+                "stage": current_stage,
                 "percent": overall_percent,
             }
 
