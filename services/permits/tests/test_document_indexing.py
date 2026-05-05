@@ -38,11 +38,13 @@ def test_embed_chunks():
         ]
         mock_openai.embeddings.create.return_value = mock_response
         
-        result = embed_chunks(chunks)
+        mock_progress = MagicMock()
+        result = embed_chunks(chunks, on_progress=mock_progress)
         
         assert len(result) == 2
         assert result[0]["embedding"] == [0.1, 0.2]
         assert result[1]["embedding"] == [0.3, 0.4]
+        mock_progress.assert_called()
 
 def test_push_to_index(mock_search_client):
     chunks = [{"id": "1", "content": "text1"}, {"id": "2", "content": "text2"}]
@@ -51,10 +53,12 @@ def test_push_to_index(mock_search_client):
         MagicMock(succeeded=True)
     ]
     
-    succeeded = push_to_index(mock_search_client, chunks)
+    mock_progress = MagicMock()
+    succeeded = push_to_index(mock_search_client, chunks, on_progress=mock_progress)
     
     assert succeeded == 2
     mock_search_client.upload_documents.assert_called_once_with(documents=chunks)
+    mock_progress.assert_called()
 
 def test_extract_and_chunk_file():
     tmp_path = "/tmp/test.pdf"

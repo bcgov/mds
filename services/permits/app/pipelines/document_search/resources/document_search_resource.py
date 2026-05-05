@@ -128,9 +128,9 @@ async def index_now_application_documents(
     try:
         for file in files:
             # Generate a unique path manually to avoid blocking tempfile and open calls.
-            # We use uuid.uuid4() to guarantee uniqueness in the shared volume.
-            suffix = Path(file.filename or "doc").suffix
-            tmp_path = os.path.join(FILE_UPLOAD_PATH, f"{uuid.uuid4()}{suffix}")
+            # We use uuid.uuid4() to guarantee uniqueness and avoid path injection
+            # by ignoring user-provided filenames.
+            tmp_path = os.path.join(FILE_UPLOAD_PATH, str(uuid.uuid4()))
             tmp_paths.append(tmp_path)
 
             async with await anyio.open_file(tmp_path, "wb") as f:

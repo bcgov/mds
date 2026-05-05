@@ -16,6 +16,7 @@ from app.pipelines.document_search.resources.document_search_resource import (
 )
 from app.pipelines.permit_condition_search.models.search_models import SearchParams
 from haystack.dataclasses import ChatMessage
+from openai import BadRequestError
 
 @pytest.fixture
 def mock_redis():
@@ -186,6 +187,58 @@ class TestDocumentSearchResource:
         assert events[4].event == "ai_complete"
 
     @pytest.mark.asyncio
+    @patch("app.pipelines.document_search.resources.document_search_resource.now_document_search_search_client")
+    @patch("app.pipelines.document_search.resources.document_search_resource._is_task_running")
+    @patch("app.pipelines.document_search.resources.document_search_resource.anyio.open_file", new_callable=AsyncMock)
+    async def test_index_now_application_documents_write_error(
+        self, mock_anyio_open, mock_is_running, mock_search_client, mock_redis, valid_guid
+    ):
+        mock_redis.get.return_value = None
+        mock_is_running.return_value = False
+
+        mock_file = MagicMock(spec=UploadFile)
+        mock_file.filename = "test.pdf"
+        mock_file.read = AsyncMock(return_value=b"content")
+
+        mock_anyio_open.side_effect = Exception("Disk full")
+
+        metadata = json.dumps([{"document_manager_guid": "123"}])
+
+        with patch("os.unlink") as mock_unlink:
+            with pytest.raises(HTTPException) as exc:
+                await index_now_application_documents(valid_guid, [mock_file], metadata)
+            assert exc.value.status_code == 500
+            assert "Disk full" in str(exc.value.detail)
+
+    @pytest.mark.asyncio
+    @patch("app.pipelines.document_search.resources.document_search_resource.now_document_search_search_client")
+    @patch("app.tasks.tasks.run_now_document_indexing")
+    async def test_get_indexing_status_failed(self, mock_task, mock_search_client, mock_redis, valid_guid):
+        mock_redis.smembers.return_value = {"task-123"}
+        mock_result = MagicMock()
+        mock_result.state = "FAILURE"
+        mock_result.result = Exception("indexing failed")
+        mock_task.app.AsyncResult.return_value = mock_result
+        
+        res = await get_indexing_status(valid_guid)
+        assert res["status"] == "failed"
+        assert res["error_message"] == "indexing failed"
+
+    def test_is_task_running(self, mock_redis):
+        from app.pipelines.document_search.resources.document_search_resource import _is_task_running
+        from app.tasks.tasks import run_now_document_indexing
+        
+        with patch("app.tasks.tasks.run_now_document_indexing.app.AsyncResult") as mock_async_result:
+            mock_res = MagicMock()
+            mock_res.state = "PROGRESS"
+            mock_async_result.return_value = mock_res
+            
+            assert _is_task_running("task-1") is True
+            
+            mock_res.state = "SUCCESS"
+            assert _is_task_running("task-1") is False
+
+    @pytest.mark.asyncio
     @patch("app.pipelines.document_search.resources.document_search_resource.now_document_search_retrieval_pipeline")
     async def test_stream_search_results_error(self, mock_pipeline, valid_guid):
         params = SearchParams(query="test", filters=None)
@@ -198,3 +251,63 @@ class TestDocumentSearchResource:
         assert len(events) == 2
         assert events[0].event == "status"
         assert events[1].event == "error"
+
+    @pytest.mark.asyncio
+    @patch("app.pipelines.document_search.resources.document_search_resource.now_document_search_retrieval_pipeline")
+    async def test_stream_search_results_bad_request(self, mock_pipeline, valid_guid):
+        params = SearchParams(query="test", filters=None)
+        
+        mock_response = MagicMock()
+        mock_response.json.return_value = {"error": {"message": "Invalid API key"}}
+        mock_pipeline.run_async_generator.side_effect = BadRequestError(
+            message="bad", response=mock_response, body=None
+        )
+        
+        events = []
+        async for e in _stream_search_results(valid_guid, params):
+            events.append(e)
+            
+        assert len(events) == 2
+        assert events[1].event == "error"
+        assert "Invalid API key" in events[1].data
+
+    @pytest.mark.asyncio
+    async def test_index_now_application_documents_no_client(self, valid_guid):
+        with patch("app.pipelines.document_search.resources.document_search_resource.now_document_search_search_client", None):
+            with pytest.raises(HTTPException) as exc:
+                await index_now_application_documents(valid_guid, [], "[]")
+            assert exc.value.status_code == 503
+
+    @pytest.mark.asyncio
+    @patch("app.pipelines.document_search.resources.document_search_resource.now_document_search_search_client")
+    async def test_index_now_application_documents_invalid_json(self, mock_client, valid_guid):
+        with pytest.raises(HTTPException) as exc:
+            await index_now_application_documents(valid_guid, [MagicMock()], "invalid-json")
+        assert exc.value.status_code == 400
+
+    @pytest.mark.asyncio
+    @patch("app.pipelines.document_search.resources.document_search_resource.now_document_search_search_client")
+    async def test_index_now_application_documents_count_mismatch(self, mock_client, valid_guid):
+        with pytest.raises(HTTPException) as exc:
+            await index_now_application_documents(valid_guid, [MagicMock()], "[]")
+        assert exc.value.status_code == 400
+
+    @pytest.mark.asyncio
+    @patch("app.tasks.tasks.run_now_document_indexing")
+    async def test_cancel_indexing_backend_error(self, mock_task, mock_redis, valid_guid):
+        mock_redis.smembers.return_value = {"task-123"}
+        mock_app = MagicMock()
+        mock_app.backend.store_result.side_effect = Exception("Backend down")
+        mock_task.app = mock_app
+        
+        res = await cancel_indexing(valid_guid)
+        assert res["status"] == "cancelled"
+
+    @pytest.mark.asyncio
+    async def test_get_indexing_status_no_client(self, valid_guid):
+        with patch("app.pipelines.document_search.resources.document_search_resource.now_document_search_search_client", None):
+            with pytest.raises(HTTPException) as exc:
+                await get_indexing_status(valid_guid)
+            assert exc.value.status_code == 503
+
+
