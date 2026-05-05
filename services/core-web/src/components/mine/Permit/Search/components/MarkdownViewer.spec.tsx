@@ -93,4 +93,51 @@ describe('MarkdownViewer', () => {
         expect(mockEvent.preventDefault).not.toHaveBeenCalled();
         expect(mockScrollIntoView).not.toHaveBeenCalled();
     });
+
+    test('handles click on reference link with element found', () => {
+        const mockMarkdown = 'Check this [doc:abc123]';
+        const { container } = render(<MarkdownViewer markdown={mockMarkdown} />);
+
+        const markdownDiv: any = container.querySelector('.permit-search__markdown');
+
+        const mockElement = document.createElement('div');
+        mockElement.id = 'condition-abc123';
+        document.body.appendChild(mockElement);
+
+        const mockEvent = {
+            preventDefault: jest.fn(),
+            target: {
+                tagName: 'A',
+                href: 'http://localhost/#condition-abc123'
+            }
+        };
+
+        markdownDiv!.onclick!(mockEvent as any);
+
+        expect(mockEvent.preventDefault).toHaveBeenCalled();
+        expect(mockScrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth' });
+        expect(window.location.hash).toBe('#condition-abc123');
+
+        document.body.removeChild(mockElement);
+    });
+
+    test('handles click on reference link with element not found', () => {
+        const mockMarkdown = 'Check this [doc:notfound]';
+        const { container } = render(<MarkdownViewer markdown={mockMarkdown} />);
+
+        const markdownDiv: any = container.querySelector('.permit-search__markdown');
+
+        const mockEvent = {
+            preventDefault: jest.fn(),
+            target: {
+                tagName: 'A',
+                href: 'http://localhost/#condition-notfound'
+            }
+        };
+
+        markdownDiv!.onclick!(mockEvent as any);
+
+        expect(mockEvent.preventDefault).toHaveBeenCalled();
+        expect(mockScrollIntoView).not.toHaveBeenCalled();
+    });
 });
