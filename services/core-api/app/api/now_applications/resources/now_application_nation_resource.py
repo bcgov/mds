@@ -2,7 +2,7 @@ from flask.globals import current_app
 from flask_restx import Resource, inputs
 
 from app.extensions import api
-from app.api.utils.access_decorators import requires_any_of, VIEW_ALL, requires_role_manage_consultation_advisors, MANAGE_CONSULTATION_ADVISORS
+from app.api.utils.access_decorators import requires_any_of, VIEW_ALL, requires_role_manage_consultation_advisors
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity

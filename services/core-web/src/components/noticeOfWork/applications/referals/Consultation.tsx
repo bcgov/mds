@@ -52,7 +52,7 @@ export const Consultation: FC<ConsultationProps> = (props) => {
   const userCanManageConsultationAdvisor = useAppSelector(userHasRole(USER_ROLES.role_manage_consultation_advisor));
   const { id } = useParams<{ id: string }>();
   const dispatch = useAppDispatch();
-  const noticeOfWOrkNationEventOptions = useAppSelector(getDropdownNoticeOfWorkNationEventOptions);
+  const noticeOfWorkNationEventOptions = useAppSelector(getDropdownNoticeOfWorkNationEventOptions);
   const pipConsultationAreas = useAppSelector(getPipConsultationData);
   const nations = useAppSelector(getNoticeOfWorkNations);
   const pipConsultationAreaOptions = createDropDownList(
@@ -67,9 +67,11 @@ export const Consultation: FC<ConsultationProps> = (props) => {
     );
 
   useEffect(() => {
-    dispatch(fetchPipConsultationAreaData());
-    dispatch(fetchNoticeOfWorkApplicationNations(id));
-  }, []);
+    if (isNoticeOfWorkNationsEnabled) {
+      dispatch(fetchPipConsultationAreaData());
+      dispatch(fetchNoticeOfWorkApplicationNations(id));
+    }
+  }, [isNoticeOfWorkNationsEnabled]);
 
   const handleCloseModal = () => {
     dispatch(closeModal());
@@ -147,7 +149,7 @@ export const Consultation: FC<ConsultationProps> = (props) => {
     dispatch(openModal({
       props: {
         initialValues,
-        eventOptions: noticeOfWOrkNationEventOptions,
+        eventOptions: noticeOfWorkNationEventOptions,
         startDateDisabled: latestCompletedEvent?.end_date ? true : false,
         onSubmit: (values) => handleAddNationEvent(values, nation),
         title: "Add a new nation event",

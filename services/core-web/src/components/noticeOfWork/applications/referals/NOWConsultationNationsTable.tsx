@@ -4,7 +4,7 @@ import {
     EditOutlined,
     DeleteOutlined,
 } from "@ant-design/icons";
-import { formatDate } from "@common/utils/helpers";
+import { formatDate, getLatestEvent } from "@common/utils/helpers";
 import * as Strings from "@mds/common/constants/strings";
 import CoreTable from "@mds/common/components/common/CoreTable";
 import { INoticeOfWorkApplicationNation, INoticeOfWorkApplicationNationEvent } from "@mds/common/interfaces";
@@ -18,7 +18,6 @@ import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 import * as Permission from "@/constants/permissions";
 import { CONSULTATION_TAB_CODE } from "@/constants/NOWConditions";
 import AddButton from "@/components/common/buttons/AddButton";
-import { getLatestEvent } from "@common/utils/helpers";
 
 /**
  * @class  NOWConsultationNationsTable - displays a table of nations and their events

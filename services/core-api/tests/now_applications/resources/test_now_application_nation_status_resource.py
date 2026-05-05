@@ -1,4 +1,3 @@
-import json
 from unittest.mock import patch
 
 from tests.now_application_factories import NOWApplicationNationStatusFactory
@@ -16,7 +15,7 @@ def test_get_now_application_nation_status_success(
 ):
     mock_feature_flag.return_value = True
 
-    inactive_status = NOWApplicationNationStatusFactory(
+    NOWApplicationNationStatusFactory(
         description="Inactive",
         active_ind=False,
         display_order=1,
@@ -40,3 +39,12 @@ def test_get_now_application_nation_status_success(
     )
 
     assert get_resp.status_code == 200
+
+    data = get_resp.json
+    returned_codes = [s["now_application_nation_status_code"] for s in data]
+
+    assert active_status_1.now_application_nation_status_code in returned_codes
+    assert active_status_2.now_application_nation_status_code in returned_codes
+
+    for status in data:
+        assert status["active_ind"] is True, f"Inactive status {status['now_application_nation_status_code']} should not be returned"
