@@ -1,11 +1,11 @@
 import json
 import logging
 import os
-import tempfile
 import uuid
 from pathlib import Path
 from typing import AsyncIterator, List
 
+import anyio
 import redis as redis_lib
 
 from app.celery import CACHE_REDIS_URL
@@ -127,13 +127,15 @@ async def index_now_application_documents(
     tmp_paths: List[str] = []
     try:
         for file in files:
-            tmp = tempfile.NamedTemporaryFile(
-                dir=FILE_UPLOAD_PATH, delete=False, suffix=Path(file.filename or "doc").suffix
-            )
-            tmp_paths.append(tmp.name)
-            contents = await file.read()
-            with open(tmp.name, "wb") as f:
-                f.write(contents)
+            # Generate a unique path manually to avoid blocking tempfile and open calls.
+            # We use uuid.uuid4() to guarantee uniqueness in the shared volume.
+            suffix = Path(file.filename or "doc").suffix
+            tmp_path = os.path.join(FILE_UPLOAD_PATH, f"{uuid.uuid4()}{suffix}")
+            tmp_paths.append(tmp_path)
+
+            async with await anyio.open_file(tmp_path, "wb") as f:
+                while chunk := await file.read(1024 * 1024):
+                    await f.write(chunk)
     except Exception as e:
         for path in tmp_paths:
             try:

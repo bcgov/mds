@@ -42,35 +42,38 @@ class TestDocumentSearchResource:
     @pytest.mark.asyncio
     @patch("app.pipelines.document_search.resources.document_search_resource.now_document_search_search_client")
     @patch("app.pipelines.document_search.resources.document_search_resource._is_task_running")
-    @patch("app.pipelines.document_search.resources.document_search_resource.tempfile.NamedTemporaryFile")
+    @patch("app.pipelines.document_search.resources.document_search_resource.anyio.open_file", new_callable=AsyncMock)
     @patch("app.tasks.tasks.run_now_document_indexing.delay")
     async def test_index_now_application_documents_success(
-        self, mock_delay, mock_temp, mock_is_running, mock_search_client, mock_redis, valid_guid
+        self, mock_delay, mock_anyio_open, mock_is_running, mock_search_client, mock_redis, valid_guid
     ):
         mock_redis.get.return_value = None
         mock_is_running.return_value = False
-        
+
         mock_file = MagicMock(spec=UploadFile)
         mock_file.filename = "test.pdf"
-        mock_file.read = AsyncMock(return_value=b"content")
-        
-        mock_temp_instance = MagicMock()
-        mock_temp_instance.name = "/tmp/test.pdf"
-        mock_temp.return_value = mock_temp_instance
-        
+        # Mock read(size) to return content then None to end the loop
+        mock_file.read = AsyncMock(side_effect=[b"content", b""])
+
+        mock_f = AsyncMock()
+        # anyio.open_file is an AsyncMock, its return value (the context manager) 
+        # must also have an AsyncMock for __aenter__
+        mock_anyio_open.return_value.__aenter__.return_value = mock_f
+
         mock_task = MagicMock()
         mock_task.id = "task-123"
         mock_delay.return_value = mock_task
-        
+
         metadata = json.dumps([{"document_manager_guid": "123", "document_name": "test.pdf", "document_type": "doc", "mine_guid": "mine1"}])
-        
-        with patch("builtins.open", MagicMock()):
-            response = await index_now_application_documents(valid_guid, [mock_file], metadata)
-            
+
+        response = await index_now_application_documents(valid_guid, [mock_file], metadata)
+
         assert response.status == "running"
         assert response.id == valid_guid
         mock_delay.assert_called_once()
         mock_redis.setex.assert_called_once()
+        mock_anyio_open.assert_called_once()
+        assert mock_f.write.called
 
     @pytest.mark.asyncio
     async def test_index_now_application_documents_invalid_guid(self):
