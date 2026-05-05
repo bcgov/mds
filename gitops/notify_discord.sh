@@ -6,6 +6,7 @@ ENV=${2?"Enter ENV Name !"}
 GIT_SHA=${3?"Enter GIT SHA of commit!"}
 DISCORD_URL=${4?"Enter DISCORD Webhook!"}
 SUCCESS=${5?"Success-0 or Fail-1?"}
+ARGOCD_APP=${6:-"mds-$TARGET_APP-$ENV"}
 
 if [ $SUCCESS == 0 ]; then
     MSG_COLOR=65280
@@ -25,7 +26,7 @@ curl -X POST -H 'Content-Type: application/json' --data \
     "embeds": [
         {
             "title": "'"Argo CD: $TARGET_APP"'",
-            "description": "'"Deployment $MSG - $TARGET_APP - $ENV [click here](https://argocd-shared.apps.silver.devops.gov.bc.ca/applications/mds-$TARGET_APP-$ENV)"'",
+            "description": "'"Deployment $MSG - $TARGET_APP - $ENV [click here](https://argocd-shared.apps.silver.devops.gov.bc.ca/applications/$ARGOCD_APP)"'",
             "color": "'"$MSG_COLOR"'"
         },
         {
