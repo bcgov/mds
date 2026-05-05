@@ -35,7 +35,7 @@ fi
 
 echo "Target Revision is achieved $CURRENT_REVISION"
 
-echo "Watching rollout of new revision! "
+echo "Watching rollout of new revision "
 kubectl rollout status -w deploy/$TARGET_APP -n 4c2ba9-$ENV
 
 ROLLOUT_STATUS=$?
