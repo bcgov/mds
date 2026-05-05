@@ -40,7 +40,7 @@ def test_get_now_application_nation_status_success(
 
     assert get_resp.status_code == 200
 
-    data = get_resp.json
+    data = get_resp.json["records"]
     returned_codes = [s["now_application_nation_status_code"] for s in data]
 
     assert active_status_1.now_application_nation_status_code in returned_codes
