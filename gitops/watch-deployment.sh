@@ -7,6 +7,7 @@ GIT_SHA=${3?"Enter GIT SHA of commit!"}
 DISCORD_DEPLOYMENT_WEBHOOK=${4?"Enter DISCORD_DEPLOYMENT_WEBHOOK!"}
 ARGOCD_SERVER=${5?"Enter ARGOCD_SERVER!"}
 ARGOCD_AUTH_TOKEN=${6?"Enter ARGOCD_AUTH_TOKEN!"}
+ARGOCD_APP=${7:-"mds-$TARGET_APP-$ENV"}
 
 REPO_LOCATION=$(git rev-parse --show-toplevel)
 
@@ -26,9 +27,8 @@ echo -e "\n"
 echo "Watching for new revision of $TARGET_APP to be rolled out"
 echo "Waiting for $TARGET_APP to sync and be in healthy state"
 
-APP="mds-$TARGET_APP-$ENV"
-argocd app sync $APP --server $ARGOCD_SERVER --auth-token $ARGOCD_AUTH_TOKEN
-argocd app wait $APP --server $ARGOCD_SERVER --auth-token $ARGOCD_AUTH_TOKEN
+argocd app sync $ARGOCD_APP --grpc-web --server $ARGOCD_SERVER --auth-token $ARGOCD_AUTH_TOKEN
+argocd app wait $ARGOCD_APP --grpc-web --server $ARGOCD_SERVER --auth-token $ARGOCD_AUTH_TOKEN
 
 echo "Target Revision is achieved $CURRENT_REVISION"
 
