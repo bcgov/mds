@@ -93,6 +93,11 @@ const nowApplicationSearchSlice = createAppSlice({
       (state, action: { payload: HaystackPromptSearchResult }) => {
         if (state.results) {
           state.results.prompt = action.payload;
+        } else {
+          state.results = {
+            documents: [],
+            prompt: action.payload,
+          };
         }
       }
     ),
