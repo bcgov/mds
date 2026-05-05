@@ -9,6 +9,14 @@ import { NOTICE_OF_WORK } from "@mds/common/constants/reducerTypes";
 const initialState = {
     [NOTICE_OF_WORK]: {
         noticeOfWork: { application_type_code: "NOW" },
+        applicationDelays: [],
+        noticeOfWorkNations: [],
+        noticeOfWorkList: [],
+        originalNoticeOfWork: {},
+        noticeOfWorkPageData: {},
+        noticeOfWorkReviews: [],
+        documentDownloadState: { downloading: false, currentFile: 1, totalFiles: 1 },
+        pipConsultationData: [],
     },
 };
 
