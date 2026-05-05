@@ -19,7 +19,7 @@ describe('FilterDrawer', () => {
         });
         const onApplyFilters = jest.fn();
         const onClearFilters = jest.fn();
-        const setPendingFilters = jest.fn();
+        const onFilterChange = jest.fn();
 
         return {
             ...render(
@@ -28,7 +28,8 @@ describe('FilterDrawer', () => {
                         visible={true}
                         onClose={jest.fn()}
                         pendingFilters={[]}
-                        setPendingFilters={setPendingFilters}
+                        selectedFilters={[]}
+                        onFilterChange={onFilterChange}
                         onApplyFilters={onApplyFilters}
                         onClearFilters={onClearFilters}
                         hasFilterChanges={false}
@@ -38,7 +39,8 @@ describe('FilterDrawer', () => {
             ),
             store,
             onApplyFilters,
-            onClearFilters
+            onClearFilters,
+            onFilterChange
         };
     };
 

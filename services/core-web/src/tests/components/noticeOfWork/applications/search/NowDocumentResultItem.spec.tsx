@@ -12,15 +12,16 @@ const mockResult: NowDocumentSearchResult = {
   content: "This is a test snippet of document content that should show up in the result item.",
   score: 3.5,
   meta: {
+    now_application_guid: "app-guid-123",
     document_name: "Test_Document.pdf",
     document_type: "Technical Report",
     document_manager_guid: "doc-guid-123",
     submitted_date: "2024-05-01T12:00:00Z",
     mine_guid: "mine-guid-456",
     highlights: {
-      content: ["This is a **test snippet** of document content"]
-    }
-  }
+      content: ["This is a **test snippet** of document content"],
+    },
+  },
 };
 
 describe("NowDocumentResultItem", () => {

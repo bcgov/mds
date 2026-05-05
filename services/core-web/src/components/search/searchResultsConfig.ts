@@ -11,6 +11,7 @@ import {
 export interface FacetBucket {
   key: string;
   count: number;
+  meta?: any;
 }
 
 export interface FacetGroup {

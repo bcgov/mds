@@ -124,6 +124,7 @@ export interface SearchResultsProps {
 export interface Facet {
     value: string;
     count: number;
+    meta?: any;
 }
 
 export interface FacetGroup {

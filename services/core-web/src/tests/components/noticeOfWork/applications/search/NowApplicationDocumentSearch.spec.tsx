@@ -32,7 +32,7 @@ describe("NowApplicationDocumentSearch", () => {
   it("renders splash screen when no results", () => {
     const { container } = render(
       <ReduxWrapper initialState={initialState}>
-        <NowApplicationDocumentSearch />
+        <NowApplicationDocumentSearch nowApplicationGuid={""} />
       </ReduxWrapper>
     );
     expect(container).toMatchSnapshot();
@@ -50,7 +50,7 @@ describe("NowApplicationDocumentSearch", () => {
     };
     const { container } = render(
       <ReduxWrapper initialState={stateWithResults}>
-        <NowApplicationDocumentSearch />
+        <NowApplicationDocumentSearch nowApplicationGuid={""} />
       </ReduxWrapper>
     );
     expect(container).toMatchSnapshot();
@@ -69,7 +69,7 @@ describe("NowApplicationDocumentSearch", () => {
     };
     const { container } = render(
       <ReduxWrapper initialState={stateIndexing}>
-        <NowApplicationDocumentSearch />
+        <NowApplicationDocumentSearch nowApplicationGuid={""} />
       </ReduxWrapper>
     );
     expect(container).toMatchSnapshot();
