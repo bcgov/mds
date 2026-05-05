@@ -62,7 +62,7 @@ export const NOWActionWrapper: FC<RouteComponentProps & NOWActionWrapperProps> =
     } else {
       const tabShouldIncludeProgress = APPLICATION_PROGRESS_TRACKING[
         props.noticeOfWork.application_type_code
-      ].includes(props.tab);
+      ]?.includes(props.tab);
       if (tabShouldIncludeProgress) {
         handleDisableTab(props.tab, props.progress, props.isDisabledReviewButton);
       } else {
@@ -100,7 +100,7 @@ export const NOWActionWrapper: FC<RouteComponentProps & NOWActionWrapperProps> =
     if (!isAdminDashboard) {
       const tabShouldIncludeProgress = APPLICATION_PROGRESS_TRACKING[
         prevProps.noticeOfWork.application_type_code
-      ].includes(props.tab);
+      ]?.includes(props.tab);
 
       if ((tabChanged || progressNoWExists || progressChanged) && tabShouldIncludeProgress) {
         handleDisableTab(props.tab, props.progress, props.isDisabledReviewButton);
