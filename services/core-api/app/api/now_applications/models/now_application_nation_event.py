@@ -3,9 +3,6 @@ from app.extensions import db
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 
-from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
-from app.extensions import db
-
 
 class NOWApplicationNationEvent(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = 'now_application_nation_event'

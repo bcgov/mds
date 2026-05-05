@@ -2957,21 +2957,13 @@ export const NOW_APPLICATION_NATION_RESPONSE = {
         now_application_nation_guid: "123e4567-e89b-12d3-a456-426614174002",
         now_application_nation_id: 1,
         now_application_guid: "123e4567-e89b-12d3-a456-426614174003",
-        status: {
-            now_application_nation_status_code: "CNSLTN",
-            description: "Consultation",
-            display_order: 1,
-        },
+        status: "Consultation",
         events: [
             {
                 now_application_nation_event_guid: "123e4567-e89b-12d3-a456-426614174004",
                 now_application_nation_event_id: 1,
                 now_application_nation_guid: "123e4567-e89b-12d3-a456-426614174002",
-                event_code: {
-                    now_application_nation_event_code: "BCR",
-                    description: "Begin Consultation Request",
-                    display_order: 1,
-                },
+                event_name: "Begin Consultation Request",
                 event_from: "2021-10-26T18:05:56.475794+00:00",
                 event_to: "2021-10-27T18:05:56.475794+00:00",
                 start_date: "2021-10-26T18:05:56.475794+00:00",

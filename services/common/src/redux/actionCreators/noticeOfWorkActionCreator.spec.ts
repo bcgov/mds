@@ -845,12 +845,13 @@ describe("`createNoticeOfWorkApplicationNation` action creator", () => {
         consultation_area_guid: "C48144DB40A54B27B0CCDEA9B499DFA8",
         consultation_started_by_client: false,
         due_date: "2026-04-30",
+        now_application_nation_status_code: "NOS",
     };
     const url = `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_APPLICATION_NATION(applicationGuid)}`;
 
     it("Request successful, dispatches `success` with correct response", () => {
         const mockResponse = { data: { success: true } };
-        mockAxios.onPost(url, payload).reply(200, mockResponse);
+        mockAxios.onPost(url, payload).reply(201, mockResponse);
 
         return createNoticeOfWorkApplicationNation(applicationGuid, payload)(dispatch).then(() => {
             expect(requestSpy).toHaveBeenCalledTimes(1);
@@ -880,7 +881,7 @@ describe("`deleteNoticeOfWorkApplicationNation` action creator", () => {
 
     it("Request successful, dispatches `success` with correct response", () => {
         const mockResponse = { data: { success: true } };
-        mockAxios.onDelete(url).reply(200, mockResponse);
+        mockAxios.onDelete(url).reply(204, mockResponse);
 
         return deleteNoticeOfWorkApplicationNation(applicationGuid, nationGuid)(dispatch).then(() => {
             expect(requestSpy).toHaveBeenCalledTimes(1);
@@ -904,7 +905,7 @@ describe("`createNoticeOfWorkApplicationNationEvent` action creator", () => {
     const applicationGuid = NOW_MOCK.NOTICE_OF_WORK.now_application_guid;
     const nationGuid = "ed488158-e85b-42ef-bd66-9a62655c55f0";
     const payload = {
-        now_application_nations_events_code: "DMR",
+        now_application_nation_event_code: "DMR",
         event_from: "Proponent",
         event_to: "Nation",
         start_date: "2026-04-30",
@@ -917,7 +918,7 @@ describe("`createNoticeOfWorkApplicationNationEvent` action creator", () => {
 
     it("Request successful, dispatches `success` with correct response", () => {
         const mockResponse = { data: { success: true } };
-        mockAxios.onPost(url, payload).reply(200, mockResponse);
+        mockAxios.onPost(url, payload).reply(201, mockResponse);
 
         return createNoticeOfWorkApplicationNationEvent(
             applicationGuid,

@@ -60,7 +60,9 @@ class NOWApplicationNationEventResource(Resource, UserMixin):
         now_application_nation = NOWApplicationNation.find_by_now_application_nation_guid(now_application_nation_guid)
         if now_application_nation is None:
             raise NotFound('NoW application nation not found.')
-        
+        if str(now_application_nation.now_application_guid) != str(now_application_guid):
+            raise BadRequest('Nation does not belong to provided NoW application.')
+
         data = self.parser.parse_args()
         event_code = NOWApplicationNationEventCode.find_by_now_application_nation_event_code(data.get('now_application_nation_event_code'))
         if event_code is None:

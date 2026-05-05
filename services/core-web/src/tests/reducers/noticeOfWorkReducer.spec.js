@@ -107,11 +107,11 @@ describe("noticeOfWorkReducer", () => {
 
   it("receives STORE_NOTICE_OF_WORK_APPLICATION_NATIONS", () => {
     const expectedValue = getBaseExpectedValue();
-    expectedValue.noticeOfWorkNations = MOCK.NOTICE_OF_WORK_NATIONS_RESPONSE.records;
+    expectedValue.noticeOfWorkNations = MOCK.NOW_APPLICATION_NATION_RESPONSE.records;
 
     const result = noticeOfWorkReducer(
       undefined,
-      storeNoticeOfWorkApplicationNation(MOCK.NOTICE_OF_WORK_NATIONS_RESPONSE)
+      storeNoticeOfWorkApplicationNation(MOCK.NOW_APPLICATION_NATION_RESPONSE)
     );
 
     expect(result).toEqual(expectedValue);

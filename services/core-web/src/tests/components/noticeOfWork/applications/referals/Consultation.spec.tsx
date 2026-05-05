@@ -82,7 +82,6 @@ const reducerProps = {
 
 describe("Consultation", () => {
     it("renders properly", () => {
-        console.log("Consultation test file loaded");
         const { container: component } = render(
             <BrowserRouter>
                 <ReduxWrapper>

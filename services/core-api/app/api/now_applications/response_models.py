@@ -969,7 +969,7 @@ NOW_APPLICATION_TIER_HISTORY = api.model('NOWApplicationTierHistory', {
     })))
 })
 
-PIP_CONSULTATION_AREA = api.model('NOWApplicationNation', {
+PIP_CONSULTATION_AREA = api.model('PIPConsultationArea', {
     'internal_mds_id': fields.Integer,
     'cnsltn_area_guid': fields.String,
     'cnsltn_area_name': fields.String,
@@ -987,7 +987,7 @@ NOW_APPLICATION_NATION_EVENT_CODE = api.model('NOWApplicationNationEventCode', {
 NOW_APPLICATION_NATION_STATUS = api.model('NOWApplicationNationStatus', {
     'now_application_nation_status_code': fields.String,
     'description': fields.String,
-    'display_order': fields.String
+    'display_order': fields.Integer
 })
 
 NOW_APPLICATION_NATION_EVENT = api.model('NOWApplicationNationEvent', {

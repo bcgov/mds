@@ -99,7 +99,7 @@ export const NOWConsultationNationsTable: React.FC<NOWConsultationNationsTablePr
     const actions: ITableAction[] = [
         {
             key: "edit-dates",
-            label: "Edite Dates",
+            label: "Edit Dates",
             clickFunction: (_, record) => { },
             icon: <EditOutlined />,
             disabled: true,

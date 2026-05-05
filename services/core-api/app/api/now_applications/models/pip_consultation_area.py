@@ -2,9 +2,6 @@ from app.api.utils.models_mixins import Base
 from app.extensions import db
 from sqlalchemy.schema import FetchedValue
 
-from app.api.utils.models_mixins import Base
-from app.extensions import db
-
 
 class PIPConsultationArea(Base):
     __tablename__ = 'pip_consultation_area'
