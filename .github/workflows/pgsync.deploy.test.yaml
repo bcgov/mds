@@ -30,7 +30,7 @@ jobs:
 
   trigger-gitops:
     runs-on: ubuntu-24.04
-    timeout-minutes: 10
+    timeout-minutes: 15
     needs: promote-image
     steps:
       - name: Checkout
@@ -44,6 +44,7 @@ jobs:
       - name: Git Ops Push
         run: ./gitops/commit.sh ${{ env.IMAGE }} dev test ${{ github.actor }} permits
       - name: Install oc
+        if: ${{ env.NEEDS_ROLLOUT=='true' }}
         uses: redhat-actions/openshift-tools-installer@v1
         with:
           oc: "4.7"
@@ -52,8 +53,10 @@ jobs:
         with:
           version: v2.7.9 # optional
       - name: oc login
+        if: ${{ env.NEEDS_ROLLOUT=='true' }}
         run: oc login --token=${{ secrets.BUILD_TOKEN }} --server=${{ secrets.CLUSTER_API }}
       - name: Notification
+        if: ${{ env.NEEDS_ROLLOUT=='true' }}
         run: ./gitops/watch-deployment.sh pgsync test ${{ github.sha }} ${{ secrets.DISCORD_DEPLOYMENT_WEBHOOK }} ${{ secrets.ARGOCD_SERVER }} ${{ secrets.ARGO_CD_CLI_JWT }} mds-permits-test
 
   run-if-failed:
