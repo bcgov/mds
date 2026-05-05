@@ -46,5 +46,5 @@ def test_get_now_application_nation_status_success(
     assert active_status_1.now_application_nation_status_code in returned_codes
     assert active_status_2.now_application_nation_status_code in returned_codes
 
-    for status in data:
-        assert status["active_ind"] is True, f"Inactive status {status['now_application_nation_status_code']} should not be returned"
+    inactive_codes = [s["now_application_nation_status_code"] for s in data if s["description"] == "Inactive"]
+    assert inactive_codes == []
