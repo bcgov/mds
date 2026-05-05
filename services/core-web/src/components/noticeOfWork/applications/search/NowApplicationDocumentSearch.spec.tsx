@@ -4,15 +4,19 @@ import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import NowApplicationDocumentSearch from './NowApplicationDocumentSearch';
 import nowApplicationSearchReducer from '@mds/common/redux/slices/nowApplicationSearchSlice';
+import customAxios from '@mds/common/redux/customAxios';
 
 // Mock dependencies
 jest.mock('@mds/common/redux/customAxios', () => {
-    return jest.fn(() => ({
-        get: jest.fn().mockResolvedValue({ data: { status: 'never_run' } }),
-        post: jest.fn().mockResolvedValue({ data: {} }),
-        delete: jest.fn().mockResolvedValue({ data: {} }),
-    }));
+    const mock = {
+        get: jest.fn(),
+        post: jest.fn(),
+        delete: jest.fn(),
+    };
+    return jest.fn(() => mock);
 });
+
+const mockAxios = customAxios() as jest.Mocked<any>;
 
 jest.mock('@/components/mine/Permit/Search/components/SearchBox', () => () => <div data-testid="mock-search-box">SearchBox</div>);
 jest.mock('@/components/mine/Permit/Search/components/SearchResults', () => () => <div data-testid="mock-search-results">SearchResults</div>);
@@ -45,6 +49,13 @@ const createMockStore = (preloadedState = {}) => {
 };
 
 describe('NowApplicationDocumentSearch', () => {
+    beforeEach(() => {
+        jest.clearAllMocks();
+        mockAxios.get.mockResolvedValue({ data: { status: 'never_run' } });
+        mockAxios.post.mockResolvedValue({ data: {} });
+        mockAxios.delete.mockResolvedValue({ data: {} });
+    });
+
     it('renders splash screen initially when no query or filters exist', async () => {
         const store = createMockStore();
         render(
@@ -83,6 +94,7 @@ describe('NowApplicationDocumentSearch', () => {
     });
 
     it('shows index button and handles index click', async () => {
+        mockAxios.get.mockResolvedValue({ data: { status: 'never_run' } });
         const store = createMockStore({ indexerStatus: { status: 'never_run' } });
         render(
             <Provider store={store}>
@@ -97,6 +109,7 @@ describe('NowApplicationDocumentSearch', () => {
     });
 
     it('shows re-index button and handles popconfirm', async () => {
+        mockAxios.get.mockResolvedValue({ data: { status: 'success' } });
         const store = createMockStore({ indexerStatus: { status: 'success' } });
         render(
             <Provider store={store}>
@@ -109,6 +122,7 @@ describe('NowApplicationDocumentSearch', () => {
     });
 
     it('shows cancel indexing when running', async () => {
+        mockAxios.get.mockResolvedValue({ data: { status: 'running', percent: 50 } });
         const store = createMockStore({ indexerStatus: { status: 'running', percent: 50 } });
         render(
             <Provider store={store}>
@@ -116,7 +130,7 @@ describe('NowApplicationDocumentSearch', () => {
             </Provider>
         );
 
-        const cancelBtn = await screen.findByText('Cancel Indexing');
+        const cancelBtn = await screen.findByText('Cancel');
         expect(cancelBtn).toBeInTheDocument();
     });
 
