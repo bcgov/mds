@@ -13,5 +13,6 @@
   "recurring_crr_reports": true,
   "minespace_signup": true,
   "global_search_v2": true,
-  "notice_of_work_tier": true
+  "notice_of_work_tier": true,
+  "notice_of_work_nations": true
 }

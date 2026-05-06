@@ -23,6 +23,7 @@ class Feature(Enum):
     RECURRING_CRR_REPORTS= 'recurring_crr_reports'
     MINESPACE_SIGNUP = 'minespace_signup'
     GLOBAL_SEARCH_V2 = 'global_search_v2'
+    NOTICE_OF_WORK_NATIONS = 'notice_of_work_nations'
 
     def __str__(self):
         return self.value

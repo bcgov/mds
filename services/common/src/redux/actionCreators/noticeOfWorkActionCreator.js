@@ -589,3 +589,106 @@ export const fetchNoticeOfWorkApplicationTierHistory = (applicationGuid) => (dis
     .catch(() => dispatch(error(NetworkReducerTypes.GET_NOTICE_OF_WORK_APPLICATION_TIER_HISTORY)))
     .finally(() => dispatch(hideLoading()));
 };
+
+export const fetchPipConsultationAreaData = () => (dispatch) => {
+  dispatch(request(NetworkReducerTypes.GET_PIP_CONSULTATION_AREA_DATA));
+  dispatch(showLoading());
+  return CustomAxios()
+    .get(
+      `${ENVIRONMENT.apiUrl}${API.PIP_CONSULTATION_AREA_DATA}`,
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(success(NetworkReducerTypes.GET_PIP_CONSULTATION_AREA_DATA));
+      dispatch(noticeOfWorkActions.storePipConsultationAreaData(response.data));
+      return response;
+    })
+    .catch(() => dispatch(error(NetworkReducerTypes.GET_PIP_CONSULTATION_AREA_DATA)))
+    .finally(() => dispatch(hideLoading()));
+}
+
+export const fetchNoticeOfWorkApplicationNations = (applicationGuid) => (dispatch) => {
+  dispatch(request(NetworkReducerTypes.GET_NOTICE_OF_WORK_APPLICATION_NATIONS));
+  dispatch(showLoading());
+  return CustomAxios()
+    .get(
+      `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_APPLICATION_NATION(applicationGuid)}`,
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(success(NetworkReducerTypes.GET_NOTICE_OF_WORK_APPLICATION_NATIONS));
+      dispatch(noticeOfWorkActions.storeNoticeOfWorkApplicationNation(response.data));
+      return response;
+    })
+    .catch(() => dispatch(error(NetworkReducerTypes.GET_NOTICE_OF_WORK_APPLICATION_NATIONS)))
+    .finally(() => dispatch(hideLoading()));
+}
+
+export const createNoticeOfWorkApplicationNation = (applicationGuid, payload) => (dispatch) => {
+  dispatch(request(NetworkReducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_NATION));
+  dispatch(showLoading());
+  return CustomAxios()
+    .post(
+      `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_APPLICATION_NATION(applicationGuid)}`,
+      payload,
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(success(NetworkReducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_NATION));
+      notification.success({
+        message: "Successfully created a Notice of work application nation.",
+        duration: 10,
+      });
+
+      return response;
+    })
+    .catch(() => {
+      dispatch(error(NetworkReducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_NATION));
+    })
+    .finally(() => dispatch(hideLoading()));
+};
+
+export const deleteNoticeOfWorkApplicationNation = (applicationGuid, nationGuid) => (
+  dispatch
+) => {
+  dispatch(request(NetworkReducerTypes.REMOVE_NOTICE_OF_WORK_APPLICATION_NATION));
+  dispatch(showLoading());
+  return CustomAxios()
+    .delete(
+      `${ENVIRONMENT.apiUrl + API.NOTICE_OF_WORK_APPLICATION_NATION(applicationGuid, nationGuid)}`,
+      createRequestHeader()
+    )
+    .then((response) => {
+      notification.success({
+        message: "Successfully removed the nation.",
+        duration: 10,
+      });
+      dispatch(success(NetworkReducerTypes.REMOVE_NOTICE_OF_WORK_APPLICATION_NATION));
+      return response;
+    })
+    .catch(() => dispatch(error(NetworkReducerTypes.REMOVE_NOTICE_OF_WORK_APPLICATION_NATION)))
+    .finally(() => dispatch(hideLoading()));
+};
+
+export const createNoticeOfWorkApplicationNationEvent = (applicationGuid, nationGuid, payload) => (dispatch) => {
+  dispatch(request(NetworkReducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_NATION_EVENT));
+  dispatch(showLoading());
+  return CustomAxios()
+    .post(
+      `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_APPLICATION_NATION_EVENT(applicationGuid, nationGuid)}`,
+      payload,
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(success(NetworkReducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_NATION_EVENT));
+      notification.success({
+        message: "Successfully created a Notice of work application nation event.",
+        duration: 10,
+      });
+      return response;
+    })
+    .catch(() => {
+      dispatch(error(NetworkReducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_NATION_EVENT));
+    })
+    .finally(() => dispatch(hideLoading()));
+};

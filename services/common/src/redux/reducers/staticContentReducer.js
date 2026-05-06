@@ -62,6 +62,8 @@ const initialState = {
   projectDecisionPackageStatusCodes: [],
   municipalityOptions: [],
   noticeOfWorkTierOptions: [],
+  noticeOfWorkNationEventOptions: [],
+  noticeOfWorkNationStatusOptions: [],
 };
 
 export const staticContentReducer = (state = initialState, action) => {
@@ -173,11 +175,17 @@ export const getProjectDecisionPackageStatusCodes = (state) =>
   state[STATIC_CONTENT].projectDecisionPackageStatusCodes;
 export const getMunicipalityOptions = (state) => state[STATIC_CONTENT].municipalityOptions;
 export const getNoticeOfWorkTierOptions = (state) => state[STATIC_CONTENT].noticeOfWorkTierOptions;
+export const getNoticeOfWorkNationEventOptions = (state) => state[STATIC_CONTENT].noticeOfWorkNationEventOptions;
+export const getNoticeOfWorkNationStatusOptions = (state) => state[STATIC_CONTENT].noticeOfWorkNationStatusOptions;
 
 const isStaticContentLoaded = (state) => {
   const staticContentExceptions = [];
   if (!isFeatureEnabled(Feature.NOTICE_OF_WORK_TIER)) {
     staticContentExceptions.push("noticeOfWorkTierOptions");
+  }
+
+  if (!isFeatureEnabled(Feature.NOTICE_OF_WORK_NATIONS)) {
+    staticContentExceptions.push("noticeOfWorkNationEventOptions", "noticeOfWorkNationStatusOptions");
   }
 
   return Object.keys(state)

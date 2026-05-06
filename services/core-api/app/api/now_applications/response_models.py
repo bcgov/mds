@@ -968,3 +968,58 @@ NOW_APPLICATION_TIER_HISTORY = api.model('NOWApplicationTierHistory', {
         'to': fields.Raw
     })))
 })
+
+PIP_CONSULTATION_AREA = api.model('PIPConsultationArea', {
+    'internal_mds_id': fields.Integer,
+    'cnsltn_area_guid': fields.String,
+    'cnsltn_area_name': fields.String,
+    'organization_guid': fields.String,
+    'cnsltn_area_update_date': fields.DateTime,
+    'contact_organization_name': fields.String,
+})
+
+NOW_APPLICATION_NATION_EVENT_CODE = api.model('NOWApplicationNationEventCode', {
+    'now_application_nation_event_code': fields.String,
+    'description': fields.String,
+    'display_order': fields.Integer,
+})
+
+NOW_APPLICATION_NATION_STATUS = api.model('NOWApplicationNationStatus', {
+    'now_application_nation_status_code': fields.String,
+    'description': fields.String,
+    'display_order': fields.Integer
+})
+
+NOW_APPLICATION_NATION_EVENT = api.model('NOWApplicationNationEvent', {
+    'now_application_nation_event_guid': fields.String,
+    'now_application_nation_event_id': fields.Integer,
+    'now_application_nation_guid': fields.String,
+    'event_name': fields.String(attribute='event_code.description'),
+    'event_from': fields.String,
+    'event_to': fields.String,
+    'start_date': fields.Date,
+    'end_date': fields.Date,
+    'update_user': fields.String,
+    'update_timestamp': fields.DateTime,
+    'create_user': fields.String,
+    'create_timestamp': fields.DateTime
+})
+
+NOW_APPLICATION_NATION = api.model('NOWApplicationNation', {
+    'now_application_nation_guid': fields.String,
+    'now_application_nation_id': fields.Integer,
+    'now_application_guid': fields.String,
+    'status': fields.String(attribute='now_application_nation_status.description'),
+    'events': fields.List(fields.Nested(NOW_APPLICATION_NATION_EVENT),attribute='now_application_nation_events'),
+    'consultation_started_by_client': fields.Boolean,
+    'due_date': fields.Date,
+    'contact_organization_name': fields.String,
+    'organization_guid': fields.String,
+    'consultation_area_name': fields.String,
+    'consultation_area_guid': fields.String,
+    'consultation_area_update_date': fields.DateTime,
+    'update_user': fields.String,
+    'update_timestamp': fields.DateTime,
+    'create_user': fields.String,
+    'create_timestamp': fields.DateTime
+})

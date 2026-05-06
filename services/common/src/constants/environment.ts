@@ -201,4 +201,5 @@ export const USER_ROLES = {
   role_edit_compliance_codes: "core_edit_code",
   role_edit_helpdesk: "core_helpdesk",
   role_manage_orgbook: "core_manage_orgbook",
+  role_manage_consultation_advisor: "core_manage_consultation_advisor",
 };

@@ -59,6 +59,8 @@ import RevokeCredentialModal from "@/components/mine/DigitalPermitCredential/Rev
 import CredentialContentModal from "@/components/mine/DigitalPermitCredential/CredentialContentModal";
 import UpdateNOWTierModal from "./UpdateNOWTierModal";
 import NOWTierHistoryModal from "./NOWTierHistoryModal";
+import AddNOWApplicationNationModal from "./AddNOWApplicationNationModal";
+import AddNOWApplicationNationEventModal from "./AddNOWApplicationNationEventModal";
 
 export const modalConfig = {
   MINE_RECORD: MineRecordModal,
@@ -122,6 +124,8 @@ export const modalConfig = {
   CREDENTIAL_CONTENT_MODAL: CredentialContentModal,
   UPDATE_NOW_TIER_MODAL: UpdateNOWTierModal,
   NOW_TIER_HISTORY_MODAL: NOWTierHistoryModal,
+  ADD_NOW_NATION_MODAL: AddNOWApplicationNationModal,
+  ADD_NOW_NATION_EVENT_MODAL: AddNOWApplicationNationEventModal,
 };
 
 export default modalConfig;

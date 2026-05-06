@@ -320,3 +320,18 @@ export enum PERMIT_CONDITION_STATUS_CODE {
   INP = "INP",
   NST = "NST"
 }
+
+export enum NOW_APPLICATION_NATION_STATUS_CODE {
+  NOS = "NOS",
+  COM = "COM",
+  IPG = "IPG",
+  IRV = "IRV",
+  OHD = "OHD",
+}
+
+export enum NOW_APPLICATION_NATION_EVENT_PARTY_OPTIONS {
+  nation = "Nation",
+  consultation_advisor = "Consultation Advisor",
+  permitting_inspector = "Permitting Inspector",
+  proponent = "Proponent",
+}

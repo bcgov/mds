@@ -81,6 +81,8 @@ import {
   getDropdownMinistryContactTypes,
   getDropdownProjectSummaryAliasStatusCodes,
   getProjectSummaryAliasStatusCodesHash,
+  getNoticeOfWorkNationEventOptions,
+  getNoticeOfWorkNationStatusOptions,
 } from "@mds/common/redux/selectors/staticContentSelectors";
 import { STATIC_CONTENT } from "@mds/common/constants/reducerTypes";
 import * as Mock from "@mds/common/tests/mocks/dataMocks";
@@ -531,5 +533,13 @@ describe("staticContentSelectors", () => {
 
   it("`getMinistryContactTypesHash` calls `staticContentReducer.getMinistryContactTypesHash`", () => {
     expect(getMinistryContactTypesHash(mockState)).toEqual(Mock.MINISTRY_TYPE_CODES_HASH);
+  });
+
+  it("`getNoticeOfWorkNationEventOptions` calls `staticContentReducer.getNoticeOfWorkNationEventOptions`", () => {
+    expect(getNoticeOfWorkNationEventOptions(mockState)).toEqual(Mock.MOCK_NOW_NATION_EVENT_OPTIONS);
+  });
+
+  it("`getNoticeOfWorkNationStatusOptions` calls `staticContentReducer.getNoticeOfWorkNationStatusOptions`", () => {
+    expect(getNoticeOfWorkNationStatusOptions(mockState)).toEqual(Mock.MOCK_NOW_NATION_STATUS_OPTIONS);
   });
 });

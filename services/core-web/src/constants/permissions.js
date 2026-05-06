@@ -25,3 +25,4 @@ export const EDIT_INCIDENTS = "role_edit_incidents";
 export const EDIT_TSF = "role_edit_tsf";
 export const ABANDONED_MINES = "role_abandoned_mines";
 export const EDIT_COMPLIANCE_CODES = "role_edit_compliance_codes";
+export const MANAGE_CONSULTATION_ADVISORS = "role_manage_consultation_advisor";

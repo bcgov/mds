@@ -48,3 +48,13 @@ export const storeNoticeOfWorkApplicationDelay = (payload) => ({
   type: actionTypes.STORE_NOTICE_OF_WORK_APPLICATION_DELAY,
   payload,
 });
+
+export const storeNoticeOfWorkApplicationNation = (payload) => ({
+  type: actionTypes.STORE_NOTICE_OF_WORK_APPLICATION_NATIONS,
+  payload,
+});
+
+export const storePipConsultationAreaData = (payload) => ({
+  type: actionTypes.STORE_PIP_CONSULTATION_AREA_DATA,
+  payload,
+});
