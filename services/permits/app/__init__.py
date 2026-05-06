@@ -25,7 +25,7 @@ dummy_env = {
     "AZURE_STORAGE_CONTAINER": "dummy-container",
     "DOCUMENTINTELLIGENCE_ENDPOINT": "https://dummy-di.cognitiveservices.azure.com/",
     "DOCUMENTINTELLIGENCE_API_KEY": "dummy-di-key",
-    "FILE_UPLOAD_PATH": "/tmp/mds-test-uploads",
+    "FILE_UPLOAD_PATH": "test-app-uploads",
     "FLAGSMITH_KEY": "dummy-flagsmith-key",
     "FLAGSMITH_URL": "https://flagsmith.dummy.com/api/v1/",
 }
