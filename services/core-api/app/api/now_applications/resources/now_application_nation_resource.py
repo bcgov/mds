@@ -118,7 +118,7 @@ class NOWApplicationNationResource(Resource, UserMixin):
             now_application_nation.save()
         except Exception as e:
             current_app.logger.error(e)
-            raise InternalServerError(f'Error when saving: {e}')
+            raise InternalServerError(f'NoW application nation creation failed due to an internal error.')
         else:
             return now_application_nation, 201
 

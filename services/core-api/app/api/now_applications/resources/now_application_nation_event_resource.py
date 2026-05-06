@@ -78,6 +78,6 @@ class NOWApplicationNationEventResource(Resource, UserMixin):
             now_application_nation_event.save()
         except Exception as e:
             current_app.logger.error(e)
-            raise InternalServerError(f'Error when saving: {e}')
+            raise InternalServerError(f'NoW application nation event creation failed due to an internal error.')
         else:
             return now_application_nation_event, 201
