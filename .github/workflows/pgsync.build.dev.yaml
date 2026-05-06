@@ -6,7 +6,7 @@ on:
     branches:
       - develop
     paths:
-      - services/pgsync/**
+      - services/pgsync/*
       - .github/workflows/pgsync.build.dev.yaml
 
 env:
