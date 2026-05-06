@@ -8,6 +8,7 @@ from typing import AsyncIterator, List
 import anyio
 import redis as redis_lib
 
+from app.common.utils.logging import sanitize_log
 from app.celery import CACHE_REDIS_URL
 from app.pipelines.document_search.document_search_pipeline import (
     now_document_search_retrieval_pipeline,
@@ -142,7 +143,7 @@ async def index_now_application_documents(
                 os.unlink(path)
             except OSError:
                 pass
-        logger.error("Failed to write upload files for NoW application %s: %s", now_application_guid, e)
+        logger.error("Failed to write upload files for NoW application %s: %s", sanitize_log(now_application_guid), e)
         raise HTTPException(500, f"Failed to store uploaded files: {e}")
 
     # Enqueue the Celery task; register its ID per-document and in the application set.
@@ -156,8 +157,8 @@ async def index_now_application_documents(
     logger.info(
         "Enqueued indexing task %s for document %s in NoW application %s",
         task.id,
-        doc_guid,
-        now_application_guid,
+        sanitize_log(doc_guid),
+        sanitize_log(now_application_guid),
     )
 
     return IndexingResponse(id=now_application_guid, status="running")
@@ -196,7 +197,7 @@ async def cancel_indexing(now_application_guid: str):
 
     _redis.delete(_task_set_key(now_application_guid))
 
-    logger.info("Revoked %d indexing tasks for NoW application %s", len(task_ids), now_application_guid)
+    logger.info("Revoked %d indexing tasks for NoW application %s", len(task_ids), sanitize_log(now_application_guid))
     return {"status": "cancelled"}
 
 
@@ -218,7 +219,7 @@ async def search_now_application_documents(
     """
     _validate_guid(now_application_guid, "now_application_guid")
     if now_document_search_retrieval_pipeline is None:
-        raise HTTPException(503, "Search pipeline is not available in this environment")
+        raise HTTPException(503, "Search client is not available in this environment")
     return EventSourceResponse(
         _stream_search_results(now_application_guid, params),
         media_type="text/event-stream",
@@ -425,7 +426,7 @@ async def get_indexing_status(now_application_guid: str):
         count = search_results.get_count() or 0
     except Exception as e:
         logger.error(
-            "Failed to fetch index status for NoW application %s: %s", now_application_guid, e
+            "Failed to fetch index status for NoW application %s: %s", sanitize_log(now_application_guid), e
         )
         raise HTTPException(502, "Could not retrieve status from Azure Search")
 
