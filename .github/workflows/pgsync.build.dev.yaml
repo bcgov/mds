@@ -6,6 +6,7 @@ on:
     branches:
       - develop
     paths:
+      - services/pgsync/*
       - .github/workflows/pgsync.build.dev.yaml
 
 env:
@@ -31,3 +32,11 @@ jobs:
       - name: Push
         run: |
           docker push --all-tags ${{ secrets.CLUSTER_REGISTRY }}/${{ secrets.NS_TOOLS }}/${{ env.NAME }}
+
+      - name: Setup SSH Agent
+        uses: ./.github/actions/setup-ssh
+        with:
+          ssh-private-key: ${{ secrets.GITOPS_REPO_DEPLOY_KEY }}
+
+      - name: Commit and Push
+        run: ./gitops/commit.sh ${{ env.NAME }} dev dev ${{ github.actor }} permits

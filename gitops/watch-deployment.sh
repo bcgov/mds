@@ -7,6 +7,8 @@ GIT_SHA=${3?"Enter GIT SHA of commit!"}
 DISCORD_DEPLOYMENT_WEBHOOK=${4?"Enter DISCORD_DEPLOYMENT_WEBHOOK!"}
 ARGOCD_SERVER=${5?"Enter ARGOCD_SERVER!"}
 ARGOCD_AUTH_TOKEN=${6?"Enter ARGOCD_AUTH_TOKEN!"}
+ARGOCD_APP=${7:-"mds-$TARGET_APP-$ENV"}
+ARGOCD_WAIT=${8:-true}
 
 REPO_LOCATION=$(git rev-parse --show-toplevel)
 
@@ -26,13 +28,14 @@ echo -e "\n"
 echo "Watching for new revision of $TARGET_APP to be rolled out"
 echo "Waiting for $TARGET_APP to sync and be in healthy state"
 
-APP="mds-$TARGET_APP-$ENV"
-argocd app sync $APP --server $ARGOCD_SERVER --auth-token $ARGOCD_AUTH_TOKEN
-argocd app wait $APP --server $ARGOCD_SERVER --auth-token $ARGOCD_AUTH_TOKEN
+argocd app sync $ARGOCD_APP --grpc-web --server $ARGOCD_SERVER --auth-token $ARGOCD_AUTH_TOKEN
+if [ "$ARGOCD_WAIT" == "true" ]; then
+    argocd app wait $ARGOCD_APP --grpc-web --server $ARGOCD_SERVER --auth-token $ARGOCD_AUTH_TOKEN
+fi
 
 echo "Target Revision is achieved $CURRENT_REVISION"
 
-echo "Watching rollout of new revision! "
+echo "Watching rollout of new revision "
 kubectl rollout status -w deploy/$TARGET_APP -n 4c2ba9-$ENV
 
 ROLLOUT_STATUS=$?
