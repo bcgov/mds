@@ -1,6 +1,6 @@
 import React from "react";
 import { Field } from "@mds/common/components/forms/form";
-import { Row, Col, Typography } from "antd";
+import { Alert, Row, Col, Typography } from "antd";
 import {
   required,
   maxLength,
@@ -37,6 +37,18 @@ export const HSRCEditForm = (props: HSRCEditFormProps) => {
 
   return (
     <>
+      <Row gutter={[16, 16]} className="form-row-margin">
+        <Col span={24}>
+          <Alert
+            message="Before you continue"
+            showIcon
+            type="warning"
+            description="If this HSRC clause includes a reporting requirement, ensure the report has already been created.
+            Reports are managed seperately and must exist before they can be linked to a code clause."
+          />
+        </Col>
+      </Row >
+      <br />
       <Row gutter={[16, 16]} className="form-row-margin">
         <Col span={24}>
           <Typography.Text strong>HSRC Details</Typography.Text>
@@ -101,7 +113,7 @@ export const HSRCEditForm = (props: HSRCEditFormProps) => {
         <Col span={12}>
           <Field
             name="expiry_date"
-            label="Date Expire"
+            label="Expiry Date"
             component={RenderDate}
             placeholder="Select date"
           />
@@ -111,16 +123,22 @@ export const HSRCEditForm = (props: HSRCEditFormProps) => {
         <Col span={24}>
           <Field
             name="description"
-            label="Description"
-            component={RenderField}
+            label="Clause Heading"
+            placeholder="Enter the heading the appears above the clause text in the HSRC (for example: 'Acquisition of a mine')"
+            // labelSubtitle={(<p><i>Enter the heading the appears above the clause text in the HSRC (for example: 'Acquisition of a mine')</i></p>)}
+            component={RenderAutoSizeField}
             required
-            validate={[required, maxLength(100)]}
+            validate={[required, maxLength(80)]}
+            maximumCharacters={80}
           />
         </Col>
         <Col span={24}>
           <Field
             name="long_description"
-            label="Long Description"
+            label="Clause Text"
+            placeholder="Enter the HSRC wording that applies to this specific section, subsection, paragraph, or subparagraph.This should reflect the wording of the Code, not a summary."
+            // labelSubtitle={(<p><i>Enter the HSRC wording that applies to this specific section, subsection, paragraph, or subparagraph.
+            // This should reflect the wording of the Code, not a summary."</i></p>)}
             component={RenderAutoSizeField}
             required
             validate={[required, maxLength(3000)]}
@@ -128,12 +146,11 @@ export const HSRCEditForm = (props: HSRCEditFormProps) => {
           />
         </Col>
         <Col span={24}>
-          <Typography.Text strong>Regulatory Authority</Typography.Text>
-        </Col>
-        <Col span={24}>
           <Field
             name="cim_or_cpo"
-            label="Who is the report for?"
+            label="Regulatory Authority"
+            labelSubtitle={(<p><i>Select the regulatory authority that has statutory responsibility for this HSRC clause.
+              This is used to determine associated reporting and review requirements</i></p>)}
             component={RenderRadioButtons}
             required
             validate={[requiredRadioButton]}
@@ -161,9 +178,11 @@ export const HSRCEditForm = (props: HSRCEditFormProps) => {
         <Col span={24}>
           <Field
             name="help_reference_link"
-            label="Resource Information Link"
-            component={RenderField}
-            validate={[protocol]}
+            label="External Guidance Link"
+            labelSubtitle={(<p><i>Add a public web link to guidance or reference material that supports interpretation or application of this clause, if available.</i></p>)}
+            component={RenderAutoSizeField}
+            validate={[protocol, maxLength(2000)]}
+            maximumCharacters={2000}
           />
         </Col>
       </Row>
