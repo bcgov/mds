@@ -44,7 +44,7 @@ export const HSRCEditForm = (props: HSRCEditFormProps) => {
             showIcon
             type="warning"
             description="If this HSRC clause includes a reporting requirement, ensure the report has already been created.
-            Reports are managed seperately and must exist before they can be linked to a code clause."
+            Reports are managed separately and must exist before they can be linked to a code clause."
           />
         </Col>
       </Row >
@@ -124,8 +124,7 @@ export const HSRCEditForm = (props: HSRCEditFormProps) => {
           <Field
             name="description"
             label="Clause Heading"
-            placeholder="Enter the heading the appears above the clause text in the HSRC (for example: 'Acquisition of a mine')"
-            // labelSubtitle={(<p><i>Enter the heading the appears above the clause text in the HSRC (for example: 'Acquisition of a mine')</i></p>)}
+            labelSubtitle={(<p><i>Enter the heading the appears above the clause text in the HSRC (for example: 'Acquisition of a mine')</i></p>)}
             component={RenderAutoSizeField}
             required
             validate={[required, maxLength(80)]}
@@ -136,9 +135,8 @@ export const HSRCEditForm = (props: HSRCEditFormProps) => {
           <Field
             name="long_description"
             label="Clause Text"
-            placeholder="Enter the HSRC wording that applies to this specific section, subsection, paragraph, or subparagraph.This should reflect the wording of the Code, not a summary."
-            // labelSubtitle={(<p><i>Enter the HSRC wording that applies to this specific section, subsection, paragraph, or subparagraph.
-            // This should reflect the wording of the Code, not a summary."</i></p>)}
+            labelSubtitle={(<p><i>Enter the HSRC wording that applies to this specific section, subsection, paragraph, or subparagraph.
+              This should reflect the wording of the Code, not a summary.</i></p>)}
             component={RenderAutoSizeField}
             required
             validate={[required, maxLength(3000)]}

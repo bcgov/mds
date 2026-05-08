@@ -53,10 +53,9 @@ const AddReportDefinitionForm: FC<{
         component={RenderAutoSizeField}
         name="description"
         label="Description"
-        // labelSubtitle={(<p><i>A short, plain-language summary of what the report is and when it is required.
-        //   This text is shown to mines when they choose a report to submit in MineSpace.</i></p>)}
+        labelSubtitle={(<p><i>A short, plain-language summary of what the report is and when it is required.
+          This text is shown to mines when they choose a report to submit in MineSpace.</i></p>)}
         maximumCharacters={3000}
-        placeholder="A short, plain-language summary of what the report is and when it is required. This text is shown to mines when they choose a report to submit in MineSpace."
         validate={[required, maxLength(3000)]}
       />
       <Row gutter={16}>

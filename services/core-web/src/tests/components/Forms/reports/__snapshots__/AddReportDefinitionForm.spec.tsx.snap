@@ -10,6 +10,13 @@ exports[`AddReportDefinitionForm renders properly 1`] = `
   >
     Report Details
   </h3>
+  <span
+    class="ant-typography"
+  >
+    <i>
+      The information entered here is displayed to mine proponents in MineSpace when they select and submit this report.
+    </i>
+  </span>
   <div
     class="ant-form-item ant-form-item-with-help"
   >
@@ -40,14 +47,23 @@ exports[`AddReportDefinitionForm renders properly 1`] = `
           <div
             class="ant-form-item-control-input-content"
           >
-            <input
-              aria-label="report_name"
+            <textarea
               class="ant-input"
-              data-testid="report_name"
               name="report_name"
-              type="text"
-              value=""
+              style="height: 0px; resize: none; min-height: -12px;"
             />
+            <div
+              class="ant-row ant-row-space-between form-item-help report_name-form-help"
+            >
+              <span>
+                Maximum 200 characters
+              </span>
+              <span
+                class="flex-end"
+              >
+                200 / 200
+              </span>
+            </div>
           </div>
         </div>
         <div
@@ -84,6 +100,16 @@ exports[`AddReportDefinitionForm renders properly 1`] = `
             style="width: 100%;"
           >
             Description
+            <br />
+            <span
+              class="label-subtitle"
+            >
+              <p>
+                <i>
+                  A short, plain-language summary of what the report is and when it is required. This text is shown to mines when they choose a report to submit in MineSpace.
+                </i>
+              </p>
+            </span>
           </div>
         </label>
       </div>
@@ -99,9 +125,20 @@ exports[`AddReportDefinitionForm renders properly 1`] = `
             <textarea
               class="ant-input"
               name="description"
-              placeholder="Describe the report's definition / purpose for the mine proponent"
               style="height: 0px; resize: none; min-height: -12px;"
             />
+            <div
+              class="ant-row ant-row-space-between form-item-help description-form-help"
+            >
+              <span>
+                Maximum 3000 characters
+              </span>
+              <span
+                class="flex-end"
+              >
+                3000 / 3000
+              </span>
+            </div>
           </div>
         </div>
         <div
@@ -352,13 +389,6 @@ exports[`AddReportDefinitionForm renders properly 1`] = `
     </div>
   </div>
   <div
-    class="ant-typography margin-small--bottom"
-  >
-    <strong>
-      Report Type
-    </strong>
-  </div>
-  <div
     class="ant-form-item ant-form-item-with-help"
   >
     <div
@@ -375,7 +405,17 @@ exports[`AddReportDefinitionForm renders properly 1`] = `
           <div
             style="width: 100%;"
           >
-            What is the type of the report?
+            Report Type
+            <br />
+            <span
+              class="label-subtitle"
+            >
+              <p>
+                <i>
+                  This determines where the report appears in MineSpace and how mines are directed to submit it.
+                </i>
+              </p>
+            </span>
           </div>
         </label>
       </div>
@@ -478,7 +518,17 @@ exports[`AddReportDefinitionForm renders properly 1`] = `
           <div
             style="width: 100%;"
           >
-            Is this a common report
+            Available as a common report?
+            <br />
+            <span
+              class="label-subtitle"
+            >
+              <p>
+                <i>
+                  Common reports appear as quick-select options for mines when starting a new report submission in MineSpace.
+                </i>
+              </p>
+            </span>
           </div>
         </label>
       </div>

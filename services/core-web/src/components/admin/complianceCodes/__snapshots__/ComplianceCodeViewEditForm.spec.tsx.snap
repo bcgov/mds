@@ -77,6 +77,60 @@ exports[`ComplianceCodeViewEditForm renders properly 1`] = `
           class="ant-col ant-col-24"
           style="padding: 8px 8px 8px 8px;"
         >
+          <div
+            class="ant-alert ant-alert-warning ant-alert-with-description"
+            data-show="true"
+            role="alert"
+          >
+            <span
+              aria-label="exclamation-circle"
+              class="anticon anticon-exclamation-circle ant-alert-icon"
+              role="img"
+            >
+              <svg
+                aria-hidden="true"
+                data-icon="exclamation-circle"
+                fill="currentColor"
+                focusable="false"
+                height="1em"
+                viewBox="64 64 896 896"
+                width="1em"
+              >
+                <path
+                  d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
+                />
+                <path
+                  d="M464 688a48 48 0 1096 0 48 48 0 10-96 0zm24-112h48c4.4 0 8-3.6 8-8V296c0-4.4-3.6-8-8-8h-48c-4.4 0-8 3.6-8 8v272c0 4.4 3.6 8 8 8z"
+                />
+              </svg>
+            </span>
+            <div
+              class="ant-alert-content"
+            >
+              <div
+                class="ant-alert-message"
+              >
+                Before you continue
+              </div>
+              <div
+                class="ant-alert-description"
+              >
+                If this HSRC clause includes a reporting requirement, ensure the report has already been created.
+            Reports are managed separately and must exist before they can be linked to a code clause.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br />
+      <div
+        class="ant-row form-row-margin"
+        style="margin: -8px -8px -8px -8px;"
+      >
+        <div
+          class="ant-col ant-col-24"
+          style="padding: 8px 8px 8px 8px;"
+        >
           <span
             class="ant-typography"
           >
@@ -532,7 +586,7 @@ exports[`ComplianceCodeViewEditForm renders properly 1`] = `
                   title=""
                 >
                   <div>
-                    Date Expire
+                    Expiry Date
                      
                     <span
                       class="form-item-optional"
@@ -637,7 +691,17 @@ exports[`ComplianceCodeViewEditForm renders properly 1`] = `
                   <div
                     style="width: 100%;"
                   >
-                    Description
+                    Clause Heading
+                    <br />
+                    <span
+                      class="label-subtitle"
+                    >
+                      <p>
+                        <i>
+                          Enter the heading the appears above the clause text in the HSRC (for example: 'Acquisition of a mine')
+                        </i>
+                      </p>
+                    </span>
                   </div>
                 </label>
               </div>
@@ -650,14 +714,23 @@ exports[`ComplianceCodeViewEditForm renders properly 1`] = `
                   <div
                     class="ant-form-item-control-input-content"
                   >
-                    <input
-                      aria-label="description"
+                    <textarea
                       class="ant-input"
-                      data-testid="description"
                       name="description"
-                      type="text"
-                      value=""
+                      style="height: 0px; resize: none; min-height: -12px;"
                     />
+                    <div
+                      class="ant-row ant-row-space-between form-item-help description-form-help"
+                    >
+                      <span>
+                        Maximum 80 characters
+                      </span>
+                      <span
+                        class="flex-end"
+                      >
+                        80 / 80
+                      </span>
+                    </div>
                   </div>
                 </div>
                 <div
@@ -698,7 +771,17 @@ exports[`ComplianceCodeViewEditForm renders properly 1`] = `
                   <div
                     style="width: 100%;"
                   >
-                    Long Description
+                    Clause Text
+                    <br />
+                    <span
+                      class="label-subtitle"
+                    >
+                      <p>
+                        <i>
+                          Enter the HSRC wording that applies to this specific section, subsection, paragraph, or subparagraph. This should reflect the wording of the Code, not a summary.
+                        </i>
+                      </p>
+                    </span>
                   </div>
                 </label>
               </div>
@@ -751,18 +834,6 @@ exports[`ComplianceCodeViewEditForm renders properly 1`] = `
           class="ant-col ant-col-24"
           style="padding: 8px 8px 8px 8px;"
         >
-          <span
-            class="ant-typography"
-          >
-            <strong>
-              Regulatory Authority
-            </strong>
-          </span>
-        </div>
-        <div
-          class="ant-col ant-col-24"
-          style="padding: 8px 8px 8px 8px;"
-        >
           <div
             class="ant-form-item ant-form-item-with-help"
           >
@@ -780,7 +851,17 @@ exports[`ComplianceCodeViewEditForm renders properly 1`] = `
                   <div
                     style="width: 100%;"
                   >
-                    Who is the report for?
+                    Regulatory Authority
+                    <br />
+                    <span
+                      class="label-subtitle"
+                    >
+                      <p>
+                        <i>
+                          Select the regulatory authority that has statutory responsibility for this HSRC clause. This is used to determine associated reporting and review requirements
+                        </i>
+                      </p>
+                    </span>
                   </div>
                 </label>
               </div>
@@ -915,12 +996,22 @@ exports[`ComplianceCodeViewEditForm renders properly 1`] = `
                   title=""
                 >
                   <div>
-                    Resource Information Link
+                    External Guidance Link
                      
                     <span
                       class="form-item-optional"
                     >
                        (optional)
+                    </span>
+                    <br />
+                    <span
+                      class="label-subtitle"
+                    >
+                      <p>
+                        <i>
+                          Add a public web link to guidance or reference material that supports interpretation or application of this clause, if available.
+                        </i>
+                      </p>
                     </span>
                   </div>
                 </label>
@@ -934,14 +1025,23 @@ exports[`ComplianceCodeViewEditForm renders properly 1`] = `
                   <div
                     class="ant-form-item-control-input-content"
                   >
-                    <input
-                      aria-label="help_reference_link"
+                    <textarea
                       class="ant-input"
-                      data-testid="help_reference_link"
                       name="help_reference_link"
-                      type="text"
-                      value=""
+                      style="height: 0px; resize: none; min-height: -12px;"
                     />
+                    <div
+                      class="ant-row ant-row-space-between form-item-help help_reference_link-form-help"
+                    >
+                      <span>
+                        Maximum 2000 characters
+                      </span>
+                      <span
+                        class="flex-end"
+                      >
+                        2000 / 2000
+                      </span>
+                    </div>
                   </div>
                 </div>
                 <div
@@ -1056,6 +1156,60 @@ exports[`ComplianceCodeViewEditForm renders properly 1`] = `
           </div>
         </div>
       </div>
+      <div
+        class="ant-row form-row-margin"
+        style="margin: -8px -8px -8px -8px;"
+      >
+        <div
+          class="ant-col ant-col-24"
+          style="padding: 8px 8px 8px 8px;"
+        >
+          <div
+            class="ant-alert ant-alert-warning ant-alert-with-description"
+            data-show="true"
+            role="alert"
+          >
+            <span
+              aria-label="exclamation-circle"
+              class="anticon anticon-exclamation-circle ant-alert-icon"
+              role="img"
+            >
+              <svg
+                aria-hidden="true"
+                data-icon="exclamation-circle"
+                fill="currentColor"
+                focusable="false"
+                height="1em"
+                viewBox="64 64 896 896"
+                width="1em"
+              >
+                <path
+                  d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
+                />
+                <path
+                  d="M464 688a48 48 0 1096 0 48 48 0 10-96 0zm24-112h48c4.4 0 8-3.6 8-8V296c0-4.4-3.6-8-8-8h-48c-4.4 0-8 3.6-8 8v272c0 4.4 3.6 8 8 8z"
+                />
+              </svg>
+            </span>
+            <div
+              class="ant-alert-content"
+            >
+              <div
+                class="ant-alert-message"
+              >
+                Before you continue
+              </div>
+              <div
+                class="ant-alert-description"
+              >
+                If this HSRC clause includes a reporting requirement, ensure the report has already been created.
+            Reports are managed separately and must exist before they can be linked to a code clause.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br />
       <div
         class="ant-row form-row-margin"
         style="margin: -8px -8px -8px -8px;"
@@ -1206,7 +1360,7 @@ exports[`ComplianceCodeViewEditForm renders properly 1`] = `
             <div
               class="ant-typography view-item-label"
             >
-              Date Expire
+              Expiry Date
             </div>
             <div
               class="ant-typography view-item-value"
@@ -1230,7 +1384,7 @@ exports[`ComplianceCodeViewEditForm renders properly 1`] = `
             <div
               class="ant-typography view-item-label"
             >
-              Description
+              Clause Heading
             </div>
             <div
               class="ant-typography view-item-value"
@@ -1249,7 +1403,7 @@ exports[`ComplianceCodeViewEditForm renders properly 1`] = `
             <div
               class="ant-typography view-item-label"
             >
-              Long Description
+              Clause Text
             </div>
             <div
               class="ant-typography view-item-value"
@@ -1257,18 +1411,6 @@ exports[`ComplianceCodeViewEditForm renders properly 1`] = `
               N/A
             </div>
           </div>
-        </div>
-        <div
-          class="ant-col ant-col-24"
-          style="padding: 8px 8px 8px 8px;"
-        >
-          <span
-            class="ant-typography"
-          >
-            <strong>
-              Regulatory Authority
-            </strong>
-          </span>
         </div>
         <div
           class="ant-col ant-col-24"
@@ -1292,8 +1434,18 @@ exports[`ComplianceCodeViewEditForm renders properly 1`] = `
                     class="view-item-label"
                   >
                     <div>
-                      Who is the report for?
+                      Regulatory Authority
                        
+                      <br />
+                      <span
+                        class="label-subtitle"
+                      >
+                        <p>
+                          <i>
+                            Select the regulatory authority that has statutory responsibility for this HSRC clause. This is used to determine associated reporting and review requirements
+                          </i>
+                        </p>
+                      </span>
                     </div>
                   </div>
                 </label>
@@ -1411,7 +1563,7 @@ exports[`ComplianceCodeViewEditForm renders properly 1`] = `
             <div
               class="ant-typography view-item-label"
             >
-              Resource Information Link
+              External Guidance Link
             </div>
             <div
               class="ant-typography view-item-value"
