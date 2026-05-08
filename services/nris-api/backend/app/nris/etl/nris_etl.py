@@ -1,4 +1,7 @@
 import re
+import resource
+import sys
+from collections import defaultdict
 
 from flask import current_app
 
@@ -84,40 +87,63 @@ def import_nris_xml():
     db.session.commit()
 
 
+def _get_memory_mb():
+    usage = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
+    # ru_maxrss is bytes on macOS, kilobytes on Linux
+    if sys.platform == 'darwin':
+        return usage / (1024 * 1024)
+    return usage / 1024
+
+
 def etl_nris_data():
-    nris_data = db.session.query(NRISRawData) \
-        .paginate(per_page=100)
+    nris_data = db.session.query(NRISRawData).paginate(per_page=100)
 
     has_next_page = True
     i = 0
     processed = 0
-    skipped_missing_status = 0
-    skipped_deleted = 0
+    failure_reasons = defaultdict(int)
 
-    print('Parsing {} assessments'.format(nris_data.total))
+    total = nris_data.total
+    current_app.logger.info(f'Parsing {total} assessments')
 
-    # Parse nris elements iteratively using pagination
-    # Print "progress" as we go
     while has_next_page:
         has_next_page = bool(nris_data.next_num)
 
         for item in nris_data.items:
-            i = i+1
+            i += 1
 
-            if(i % 100 == 0):
-                print(i, '/', nris_data.total)
+            if i % 500 == 0:
+                current_app.logger.info(
+                    f'Progress: {i}/{total} records processed | Memory (peak RSS): {_get_memory_mb():.1f} MB'
+                )
 
-            result = _parse_nris_element(item.nris_data)
-            if result == 'processed':
-                processed += 1
-            elif result == 'missing_status':
-                skipped_missing_status += 1
-            elif result == 'deleted':
-                skipped_deleted += 1
-        nris_data = nris_data.next()
+            try:
+                result = _parse_nris_element(item.nris_data)
+                if result == 'processed':
+                    processed += 1
+                elif result == 'missing_status':
+                    failure_reasons['Missing assessment_status element in XML'] += 1
+                elif result == 'deleted':
+                    failure_reasons['Assessment status: Deleted (excluded by design)'] += 1
+            except Exception as e:
+                db.session.rollback()
+                reason = f'{type(e).__name__}: {str(e)[:200]}'
+                failure_reasons[reason] += 1
 
-    print('NRIS ETL summary: processed={}, excluded_missing_status={}, excluded_deleted={}'.format(
-        processed, skipped_missing_status, skipped_deleted))
+        if has_next_page:
+            nris_data = nris_data.next()
+
+    total_failed = sum(failure_reasons.values())
+    current_app.logger.info(f'NRIS ETL complete: {processed}/{total} records saved successfully')
+
+    if total_failed > 0:
+        current_app.logger.warning(
+            f'NRIS ETL: {total_failed} records were not saved. Reason breakdown ({len(failure_reasons)} distinct reason(s)):'
+        )
+        for reason, count in sorted(failure_reasons.items(), key=lambda x: -x[1]):
+            current_app.logger.warning(f'  [{count:>6}]  {reason}')
+    else:
+        current_app.logger.info('NRIS ETL: All records saved successfully, no failures.')
 
 
 
@@ -133,9 +159,8 @@ def _parse_nris_element(input):
     external_id = _parse_element_text(assessment_id_element)
     assessment_status = data.find('assessment_status')
 
-    # Tracer
     if assessment_status is None:
-        print(f"No assessment status \n Data: {data}")
+        current_app.logger.debug(f'Skipping assessment_id={external_id}: no assessment_status element in XML')
         return 'missing_status'
 
     if assessment_status is not None and assessment_status.text != 'Deleted':
