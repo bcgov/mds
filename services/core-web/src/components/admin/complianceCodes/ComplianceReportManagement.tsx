@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from "react";
-import { Button, Input, Row, Typography } from "antd";
+import { Alert, Button, Input, Row, Typography } from "antd";
 import queryString from "query-string";
 import PlusOutlined from "@ant-design/icons/PlusOutlined";
 import CoreTable from "@mds/common/components/common/CoreTable";
@@ -75,9 +75,9 @@ const ComplianceReportManagement: FC = () => {
 
     const sortParams = order
       ? {
-          sort_dir: order.replace("end", ""),
-          sort_field,
-        }
+        sort_dir: order.replace("end", ""),
+        sort_field,
+      }
       : {};
 
     const newParams = {
@@ -230,10 +230,17 @@ const ComplianceReportManagement: FC = () => {
 
   return (
     <div>
-      <Typography.Text>
-        Manage Code Required Reports that are associated to HSRC. Create a new report before adding
-        it to a code in Health, Safety and Reclamation Code page.
-      </Typography.Text>
+      <Typography.Paragraph>
+        Manage Code Required Reports that are associated to HSRC.
+      </Typography.Paragraph>
+      <Alert
+        message="Important - Create the report before adding a code clause"
+        showIcon
+        type="warning"
+        description="If an HSRC clause requires a report, you must create the report first.
+        Reports created here can then be selected when adding the clause in the Health, Safety and Reclamation Code table."
+      />
+      <br />
       <Row justify="end">
         <Button onClick={() => openAddModal()} type="primary" icon={<PlusOutlined />}>
           Create Report

@@ -2,7 +2,6 @@ import React, { FC } from "react";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import { ADD_REPORT_DEFINITION } from "@/constants/forms";
 import { Col, Row, Typography } from "antd";
-import RenderField from "@mds/common/components/forms/RenderField";
 import RenderSelect from "@mds/common/components/forms/RenderSelect";
 import RenderRadioButtons from "@mds/common/components/forms/RenderRadioButtons";
 import RenderAutoSizeField from "@mds/common/components/forms/RenderAutoSizeField";
@@ -40,21 +39,24 @@ const AddReportDefinitionForm: FC<{
       reduxFormConfig={{ destroyOnUnmount: true }}
     >
       <Title level={3}>Report Details</Title>
+      <Typography.Text><i>The information entered here is displayed to mine proponents in MineSpace when they select and submit this report.</i></Typography.Text>
       <Field
         required
-        component={RenderField}
+        component={RenderAutoSizeField}
         name="report_name"
         label="Report Name"
-        validate={[required, maxLength(100)]}
+        validate={[required, maxLength(200)]}
+        maximumCharacters={200}
       />
       <Field
         required
         component={RenderAutoSizeField}
         name="description"
         label="Description"
-        maximumCharacter={300}
-        placeholder="Describe the report's definition / purpose for the mine proponent"
-        validate={[required, maxLength(300)]}
+        labelSubtitle={(<p><i>A short, plain-language summary of what the report is and when it is required.
+          This text is shown to mines when they choose a report to submit in MineSpace.</i></p>)}
+        maximumCharacters={3000}
+        validate={[required, maxLength(3000)]}
       />
       <Row gutter={16}>
         <Col span={12}>
@@ -81,15 +83,13 @@ const AddReportDefinitionForm: FC<{
           />
         </Col>
       </Row>
-      <Paragraph strong className="margin-small--bottom">
-        Report Type
-      </Paragraph>
       <Field
         required
         isVertical={true}
         component={RenderRadioButtons}
         name="report_type"
-        label="What is the type of the report?"
+        label="Report Type"
+        labelSubtitle={(<p><i>This determines where the report appears in MineSpace and how mines are directed to submit it.</i></p>)}
         customOptions={[
           { label: `Code Required Report`, value: "CRR" },
           {
@@ -112,7 +112,8 @@ const AddReportDefinitionForm: FC<{
         required
         component={RenderRadioButtons}
         name="is_common"
-        label="Is this a common report"
+        label="Available as a common report?"
+        labelSubtitle={(<p><i>Common reports appear as quick-select options for mines when starting a new report submission in MineSpace.</i></p>)}
         validate={[requiredRadioButton]}
       />
 
