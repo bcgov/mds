@@ -29,6 +29,7 @@ WORKDIR /app
 
 # Install the requirements
 COPY requirements.txt .
+ENV PIP_CONSTRAINT=requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Oracle config files

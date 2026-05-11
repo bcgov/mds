@@ -32,6 +32,7 @@ RUN chmod 777 /opt/oracle/instantclient/network/admin/sqlnet.ora
 
 # Copy files over and install the requirements
 COPY . .
+ENV PIP_CONSTRAINT=requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Oracle config files
