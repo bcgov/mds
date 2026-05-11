@@ -6,7 +6,7 @@ WORKDIR /app
 
 # Install the requirements
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install "setuptools<70.0.0" wheel && pip install --no-cache-dir --no-build-isolation -r requirements.txt
 
 # Run the server
 EXPOSE 5500
