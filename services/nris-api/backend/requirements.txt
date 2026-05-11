@@ -1,5 +1,5 @@
 cached_property==1.5.1
-setuptools
+setuptools<70.0.0
 cx_Oracle==8.3
 factory-boy==3.3.0
 Flask==3.0.1
