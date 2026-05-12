@@ -45,6 +45,8 @@ RUN chmod 775 /app/
 
 USER 1001
 
+ENV PYTHONUNBUFFERED=1
+
 # Run the server
 EXPOSE 5500
 CMD ["./app.sh"]
