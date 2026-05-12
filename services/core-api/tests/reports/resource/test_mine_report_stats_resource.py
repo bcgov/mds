@@ -14,13 +14,15 @@ from tests.factories import (
 )
 
 
-def test_report_stats_active_permits_excludes_drafts(test_client, db_session, auth_headers):
+def test_report_stats_active_permits_excludes_inactive_permits(test_client, db_session, auth_headers):
     mine = MineFactory(mine_reports=0, minimal=True)
 
     p_draft = PermitFactory(permit_status_code='D')
     p_open = PermitFactory(permit_status_code='O')
+    p_closed = PermitFactory(permit_status_code='C') 
     MinePermitXrefFactory(permit=p_draft, mine=mine)
     MinePermitXrefFactory(permit=p_open, mine=mine)
+    MinePermitXrefFactory(permit=p_closed, mine=mine)
 
     resp = test_client.get(
         f"/mines/{mine.mine_guid}/reports/stats", headers=auth_headers['full_auth_header']
