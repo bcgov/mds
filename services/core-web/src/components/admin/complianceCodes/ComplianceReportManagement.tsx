@@ -187,7 +187,8 @@ const ComplianceReportManagement: FC = () => {
       ...sectionFilter,
     },
     {
-      ...renderTextColumn("is_prr_only", "Report Type"),
+      ...renderTextColumn("report_type_label", "Report Type"),
+      key: "is_prr_only",
       filters: [
         { value: false, text: "Code Required Report" },
         { value: true, text: "Permit Required Report" },
@@ -219,10 +220,10 @@ const ComplianceReportManagement: FC = () => {
   const transformData = (reports: IMineReportDefinition[]) => {
     return reports.map((r) => {
       const formattedComplianceArticle = formatCode(r.compliance_articles[0]);
-      const is_prr_only = r.is_prr_only ? "Permit Required Report" : "Code Required Report";
+      const report_type_label = r.is_prr_only ? "Permit Required Report" : "Code Required Report";
       return {
         ...r,
-        is_prr_only,
+        report_type_label,
         ...formattedComplianceArticle,
       };
     });
