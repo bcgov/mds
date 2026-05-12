@@ -7,12 +7,12 @@ from app.api.utils.resources_mixins import UserMixin
 from app.extensions import api
 from flask import Response, request, stream_with_context
 from flask_restx import Resource
-from werkzeug.exceptions import NotFound, ServiceUnavailable
+from werkzeug.exceptions import Forbidden, NotFound
 
 
 def _require_feature():
     if not is_feature_enabled(Feature.NOW_APPLICATION_DOCUMENT_SEARCH):
-        raise ServiceUnavailable("NoW application document search is not enabled.")
+        raise Forbidden("NoW application document search is not enabled.")
 
 
 class NOWApplicationDocumentSearchResource(Resource, UserMixin):

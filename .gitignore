@@ -63,3 +63,4 @@ openshift-client-linux-*.tar.gz*
 kubectl
 /services/nris-api/nris-api.iml
 /.claude/
+.junie
