@@ -1,6 +1,7 @@
 import re
 import resource
 import sys
+import traceback
 from collections import defaultdict
 
 from flask import current_app
@@ -96,7 +97,7 @@ def _get_memory_mb():
 
 
 def etl_nris_data():
-    nris_data = db.session.query(NRISRawData).paginate(per_page=100)
+    nris_data = db.session.query(NRISRawData).order_by(NRISRawData.id).paginate(per_page=100)
 
     has_next_page = True
     i = 0
@@ -111,6 +112,7 @@ def etl_nris_data():
 
         for item in nris_data.items:
             i += 1
+            current_external_id = None
 
             if i % 500 == 0:
                 current_app.logger.info(
@@ -118,7 +120,7 @@ def etl_nris_data():
                 )
 
             try:
-                result = _parse_nris_element(item.nris_data)
+                result, current_external_id = _parse_nris_element(item.nris_data)
                 if result == 'processed':
                     processed += 1
                 elif result == 'missing_status':
@@ -129,6 +131,10 @@ def etl_nris_data():
                 db.session.rollback()
                 reason = f'{type(e).__name__}: {str(e)[:200]}'
                 failure_reasons[reason] += 1
+                current_app.logger.error(
+                    f'NRIS ETL Error: Failed to process record {i} (external_id={current_external_id}): {reason}'
+                )
+                current_app.logger.debug(traceback.format_exc())
 
         if has_next_page:
             nris_data = nris_data.next()
@@ -161,7 +167,7 @@ def _parse_nris_element(input):
 
     if assessment_status is None:
         current_app.logger.debug(f'Skipping assessment_id={external_id}: no assessment_status element in XML')
-        return 'missing_status'
+        return 'missing_status', external_id
 
     if assessment_status is not None and assessment_status.text != 'Deleted':
         assessment_status_code = assessment_status.text
@@ -240,11 +246,12 @@ def _parse_nris_element(input):
         for attendance in data.findall('attendance'):
             _save_attendee(attendance, inspection)
 
+        current_app.logger.debug(f'Committing inspection for external_id={external_id}')
         db.session.commit()
-        return 'processed'
+        return 'processed', external_id
     if assessment_status is not None and assessment_status.text == 'Deleted':
-        return 'deleted'
-    return 'missing_status'
+        return 'deleted', external_id
+    return 'missing_status', external_id
 
 
 def _find_or_save_inspection_status(assessment_status_code):
