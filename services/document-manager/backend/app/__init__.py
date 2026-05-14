@@ -36,7 +36,7 @@ def create_app(test_config=None):
     def log_response_info(response):
         # Get request information
         method = request.method
-        path = request.path
+        path = request.full_path
         ip_address = request.remote_addr
         http_version = request.environ.get('SERVER_PROTOCOL', 'HTTP/1.1')
 
@@ -70,6 +70,11 @@ def create_app(test_config=None):
             'message': str(error),
         }, getattr(error, 'code', 500)
 
+    @app.cli.command("fix-versions")
+    def fix_versions_command():
+        from fix_versions import fix_all_versions
+        fix_all_versions()
+
     return app
 
 
@@ -93,7 +98,7 @@ def register_extensions(app, test_config=None):
             jwt_cypress.init_app(app)
         except Exception as e:
             with app.app_context():
-                current_app.logger.error('Failed to initialize cypress auth. Make sure keycloak is running', e)
+                current_app.logger.error(f'Failed to initialize cypress auth. Make sure keycloak is running: {e}')
 
     migrate.init_app(app, db)
     CORS(app)

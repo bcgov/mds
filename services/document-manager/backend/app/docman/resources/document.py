@@ -135,17 +135,18 @@ class DocumentListResource(Resource):
         else:
             as_attachment = '.pdf' not in document.file_display_name.lower()
 
+        display_name = document_version.file_display_name if document_version else document.file_display_name
         if document.object_store_path:
             return ObjectStoreStorageService().download_file(
                 path=document.object_store_path,
-                display_name=quote(document.file_display_name),
+                display_name=quote(display_name),
                 as_attachment=as_attachment,
                 version_id=version_id
             )
         else:
             return send_file(
                 path_or_file=document.full_storage_path,
-                download_name=document.file_display_name,
+                download_name=display_name,
                 as_attachment=as_attachment)
         cache.delete(DOWNLOAD_TOKEN(token_guid))
 
