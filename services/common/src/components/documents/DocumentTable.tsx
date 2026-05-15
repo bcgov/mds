@@ -353,7 +353,7 @@ export const DocumentTable: FC<DocumentTableProps> = ({
     : {};
 
   const coreTableProps = {
-    rowKey: "document_manager_guid",
+    rowKey: (record: any) => record.mine_document_version_guid ?? record.document_manager_guid,
     condition: isLoaded,
     dataSource: documents,
     columns: columns,
