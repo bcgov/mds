@@ -55,7 +55,7 @@ const EnvApplicationPage = () => {
     }, []);
 
     useEffect(() => {
-        if (amsFinalApp && !isCore && !amsFinalApp.editable) {
+        if (amsFinalApp && !amsFinalApp.editable) {
             setIsEditMode(false);
         }
     }, [amsFinalApp]);
