@@ -271,8 +271,8 @@ const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({
         <DocumentTable
           documents={primaryDocument}
           documentParent="Major Mine Application"
-          canArchiveDocuments={canModifyMmaDocs}
-          canReplaceDocuments={canModifyMmaDocs}
+          canArchiveDocuments={false}
+          canReplaceDocuments={false}
           onArchivedDocuments={refreshData}
           enableBulkActions={true}
           showVersionHistory={true}
@@ -330,8 +330,8 @@ const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({
         <DocumentTable
           documents={appendix_documents}
           documentParent="Major Mine Application"
-          canArchiveDocuments={canModifyMmaDocs}
-          canReplaceDocuments={canModifyMmaDocs}
+          canArchiveDocuments={false}
+          canReplaceDocuments={false}
           onArchivedDocuments={refreshData}
           enableBulkActions={true}
           showVersionHistory={true}
@@ -415,8 +415,8 @@ const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({
         <DocumentTable
           documents={supportDocuments}
           documentParent="Major Mine Application"
-          canArchiveDocuments={canModifyMmaDocs}
-          canReplaceDocuments={canModifyMmaDocs}
+          canArchiveDocuments={false}
+          canReplaceDocuments={false}
           onArchivedDocuments={refreshData}
           enableBulkActions={true}
           showVersionHistory={true}
