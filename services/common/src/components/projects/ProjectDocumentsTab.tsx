@@ -76,9 +76,9 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
 
   const refreshAmsApps = async () => {
     setIsLoaded(false);
-    dispatch(
+    await dispatch(
       fetchAmsFinalAppsByProjectSummary(project.project_summary.project_summary_guid)
-    ).then(() => setIsLoaded(true));
+    );
     setIsLoaded(true);
   };
 
