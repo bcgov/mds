@@ -110,7 +110,7 @@ const EnvDocumentsTab = () => {
     const onRemoveFile = (_error, file) => {
         const document_manager_guid = file?.serverId;
         const docIndex = formValues.documents.findIndex((d) => d.document_manager_guid === document_manager_guid);
-        if (docIndex) {
+        if (docIndex !== -1) {
             dispatch(arrayRemove(formName, "documents", docIndex));
         }
     };
