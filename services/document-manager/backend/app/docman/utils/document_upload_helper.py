@@ -243,7 +243,8 @@ class DocumentUploadHelper:
             oss.copy_file(source_key=key, key=new_key)
 
             if version_guid is not None and versions is None:
-                versions = oss.list_versions(new_key)['Versions']
+                all_versions = oss.list_versions(new_key).get('Versions', [])
+                versions = [v for v in all_versions if v['Key'] == new_key]
 
         except Exception as e:
             handle_status_and_update_doc(e, doc_guid)
@@ -264,14 +265,12 @@ class DocumentUploadHelper:
                 db.session.add(doc)
 
             # update the record of the previous version
-            if versions is not None and len(versions) >= 1:
+            if versions is not None and len(versions) >= 2:
                 # Sort the versions
                 versions.sort(key=lambda v: v["LastModified"], reverse=True)
 
-                # create a version record for the previous version
-                previous_version_data = versions[0]
-
-                # get the versionId of the previous version
+                # get the versionId of the previous version (the second newest)
+                previous_version_data = versions[1]
                 previous_version_id = previous_version_data["VersionId"]
 
                 # find the corresponding DocumentVersion record
