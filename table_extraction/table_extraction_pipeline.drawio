@@ -1,0 +1,57 @@
+<mxfile host="65bd71144e">
+    <diagram id="pipeline-1" name="Pipeline">
+        <mxGraphModel dx="2575" dy="1465" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2200" pageHeight="850" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="n1" value="Annual Reclamation Report" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;" parent="1" vertex="1">
+                    <mxGeometry x="40" y="160" width="190" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="n2" value="Identify Pages with tables" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
+                    <mxGeometry x="280" y="160" width="190" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="n3" value="Table Extraction" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
+                    <mxGeometry x="520" y="160" width="190" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="n4" value="Structure Normalization (e.g. rotate vertical tables)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
+                    <mxGeometry x="760" y="160" width="220" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="n6" value="Table Selection with Prompt" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" vertex="1">
+                    <mxGeometry x="1030" y="160" width="220" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="n7" value="Field Extraction with Prompt" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" vertex="1">
+                    <mxGeometry x="1300" y="160" width="220" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="n8" value="Validation and Output Packaging" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" parent="1" vertex="1">
+                    <mxGeometry x="1570" y="160" width="250" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="n9" value="Structured Data (JSON/CSV) + Review Artifacts" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;" parent="1" vertex="1">
+                    <mxGeometry x="1870" y="160" width="300" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="e1" style="endArrow=block;endFill=1;strokeWidth=2;" parent="1" source="n1" target="n2" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e2" style="endArrow=block;endFill=1;strokeWidth=2;" parent="1" source="n2" target="n3" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e3" style="endArrow=block;endFill=1;strokeWidth=2;" parent="1" source="n3" target="n4" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e5" style="endArrow=block;endFill=1;strokeWidth=2;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="n4" target="n6" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="1280.0000000000005" y="195" as="sourcePoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="e6" style="endArrow=block;endFill=1;strokeWidth=2;" parent="1" source="n6" target="n7" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e7" style="endArrow=block;endFill=1;strokeWidth=2;" parent="1" source="n7" target="n8" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e8" style="endArrow=block;endFill=1;strokeWidth=2;" parent="1" source="n8" target="n9" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

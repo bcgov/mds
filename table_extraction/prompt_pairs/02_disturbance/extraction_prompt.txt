@@ -1,0 +1,72 @@
+You are given a JSON array of selected tables from an annual mining reclamation report.
+
+Task:
+Extract disturbance and reclamation matrix values and return a single JSON object only.
+
+Use only the provided tables. Do not use outside knowledge. Do not guess values that are not explicitly present.
+
+Extraction rules:
+- Focus on disturbance/reclamation matrix tables with grouped headers and ha units.
+- For totals, prefer the row labeled TOTAL (or equivalent) and current-report columns.
+- Populate disturbance.total_year_ha from the current-year disturbed total.
+- Populate disturbance.metrics with normalized keys for current-year and cumulative totals.
+- In disturbance.breakdown_by_type, use row labels as written in the table.
+- Every disturbance.breakdown_by_type item must include type, year_ha, and total_ha.
+- Use report_year to determine the yearly key suffix (for example _2025).
+- Use captions/subtitles and footnotes as supporting context for period, units, and current-vs-total interpretation.
+- Treat blank cells as null.
+- Parse numbers as numbers, removing commas and symbols.
+- If a value is in parentheses, interpret it as negative.
+- If a field cannot be found, set it to null.
+- If you have the choice of multiple dates (e.g. 2012 and 2013), prefer the most recent year
+- If caption/footnote context materially changes interpretation, mention it briefly in notes.
+
+
+Return valid JSON only in this format:
+{
+  "report_year": 2025,
+  "disturbance": {
+    "total_year_ha": null,
+    "metrics": {
+      "area_disturbed_2025": null,
+      "area_disturbed_total": null,
+      "area_recontoured_2025": null,
+      "area_recontoured_total": null,
+      "area_seeded_planted_2025": null,
+      "area_seeded_planted_total": null,
+      "area_fertilized_2025": null,
+      "area_fertilized_total": null,
+      "area_revegetated_2025": null,
+      "area_revegetated_total": null
+    },
+    "breakdown_by_type": [
+      {
+        "type": "Administrative area/building",
+        "year_ha": null,
+        "total_ha": null
+      }
+    ]
+  },
+  "table_extractions": [
+    {
+      "table_id": "...",
+      "page_number": null,
+      "matched_fields": [
+        {
+          "field": "...",
+          "value": null,
+          "row_label": "...",
+          "column_label": "...",
+          "evidence": "short quote from the table"
+        }
+      ]
+    }
+  ],
+  "notes": ["short caveats only"]
+}
+
+Rules:
+- Output JSON only.
+- Do not wrap in markdown.
+- Do not include commentary.
+- Keep evidence short and direct.
