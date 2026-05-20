@@ -108,7 +108,14 @@ export const DocumentTable: FC<DocumentTableProps> = ({
       latestByDocManager.set(doc.document_manager_guid, doc);
     });
 
-    return selectedRows.map((row) => latestByDocManager.get(row.document_manager_guid) ?? row)
+    const seen = new Set<string>();
+    return selectedRows
+      .map((row) => latestByDocManager.get(row.document_manager_guid) ?? row)
+      .filter((row) => {
+        if (seen.has(row.document_manager_guid)) return false;
+        seen.add(row.document_manager_guid);
+        return true;
+      });
   };
 
   const openArchiveModal = (docs: MineDocument[]) => {
@@ -353,7 +360,7 @@ export const DocumentTable: FC<DocumentTableProps> = ({
     : {};
 
   const coreTableProps = {
-    rowKey: "document_manager_guid",
+    rowKey: (record: any) => record.mine_document_version_guid ?? record.document_manager_guid,
     condition: isLoaded,
     dataSource: documents,
     columns: columns,
