@@ -13,21 +13,43 @@ from authlib.integrations.requests_client import OAuth2Session
 from flask import current_app
 from werkzeug.exceptions import InternalServerError
 
-JWT_OIDC_WELL_KNOWN_CONFIG = os.getenv('JWT_OIDC_WELL_KNOWN_CONFIG')
-
-oidc_configuration = requests.get(JWT_OIDC_WELL_KNOWN_CONFIG).json()
-SEARCH_ENDPOINT = f'{Config.PERMITS_ENDPOINT}/permit_conditions/search'
-EXTRACTION_ENDPOINT = f'{Config.PERMITS_ENDPOINT}/permit_conditions'
-EXTRACTION_STATUS_ENDPOINT = f'{Config.PERMITS_ENDPOINT}/permit_conditions/status'
-EXTRACTION_RESULTS_ENDPOINT = f'{Config.PERMITS_ENDPOINT}/permit_conditions/results'
-
 
 class PermitSearchService:
+    _oidc_configuration = None
 
-    def __init__(self):
-        self.session = OAuth2Session(client_id=Config.PERMITS_CLIENT_ID, client_secret=Config.PERMITS_CLIENT_SECRET, token_endpoint=oidc_configuration['token_endpoint'], grant_type='client_credentials')
-        self.session.fetch_token()
-        
+    @property
+    def oidc_configuration(self):
+        if not self._oidc_configuration:
+            well_known_config = os.getenv('JWT_OIDC_WELL_KNOWN_CONFIG')
+            self._oidc_configuration = requests.get(well_known_config).json()
+        return self._oidc_configuration
+
+    @property
+    def session(self):
+        if not hasattr(self, '_session'):
+            self._session = OAuth2Session(
+                client_id=Config.PERMITS_CLIENT_ID,
+                client_secret=Config.PERMITS_CLIENT_SECRET,
+                token_endpoint=self.oidc_configuration['token_endpoint'],
+                grant_type='client_credentials')
+            self._session.fetch_token()
+        return self._session
+
+    @property
+    def search_endpoint(self):
+        return f'{Config.PERMITS_ENDPOINT}/permit_conditions/search'
+
+    @property
+    def extraction_endpoint(self):
+        return f'{Config.PERMITS_ENDPOINT}/permit_conditions'
+
+    @property
+    def extraction_status_endpoint(self):
+        return f'{Config.PERMITS_ENDPOINT}/permit_conditions/status'
+
+    @property
+    def extraction_results_endpoint(self):
+        return f'{Config.PERMITS_ENDPOINT}/permit_conditions/results'
 
     def search(self, search_term):
         """
@@ -36,7 +58,7 @@ class PermitSearchService:
         """
         print(f'Searching for permit conditions with term: {search_term}')
         response = self.session.post(
-            SEARCH_ENDPOINT,
+            self.search_endpoint,
             data=json.dumps({'query': search_term['query'], 'filters': search_term.get('filters')}),
             stream=True,
         )
@@ -50,7 +72,7 @@ class PermitSearchService:
         """
         print(f'Uploading file {filename}')
         result = self.session.post(
-            SEARCH_ENDPOINT+"/upload",
+            self.search_endpoint+"/upload",
             files={"file": (filename, file, 'text/csv')},
         )
         if result.status_code != 200:
@@ -80,7 +102,7 @@ class PermitSearchService:
 
             try:
                 files = {'file': (file_name or 'permit.pdf', fle, 'application/pdf')}
-                result = self.session.post(EXTRACTION_ENDPOINT, files=files)
+                result = self.session.post(self.extraction_endpoint, files=files)
                 
                 if result.status_code != 200:
                     current_app.logger.error(f'Failed to extract permit conditions for document {document_manager_guid}. Status code: {result.status_code}. Response: {result.text}')
@@ -110,7 +132,7 @@ class PermitSearchService:
         if not task:
             raise InternalServerError('Task not found')
 
-        result = self.session.get(f'{EXTRACTION_STATUS_ENDPOINT}?task_id={task.task_id}')
+        result = self.session.get(f'{self.extraction_status_endpoint}?task_id={task.task_id}')
 
         if result.status_code != 200:
             current_app.logger.error(f'Failed to retrieve status of task from PermitService: {task.task_id}, status code: {result.status_code}. Response: {result.text}')
@@ -125,7 +147,7 @@ class PermitSearchService:
         task.meta = data['meta']
 
         if data['status'] == 'SUCCESS':
-            results_response = self.session.get(f'{EXTRACTION_RESULTS_ENDPOINT}?task_id={task.task_id}')
+            results_response = self.session.get(f'{self.extraction_results_endpoint}?task_id={task.task_id}')
 
             if results_response.status_code != 200:
                 current_app.logger.error(f'Failed to retrieve the result of task from PermitService: {task.task_id}, status code: {result.status_code}. Response: {result.text}')

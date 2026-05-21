@@ -18,6 +18,15 @@ class AzureOpenAIConfig:
     deployment_name: str
     api_version: str
     embedding_model: str = "text-embedding-3-large"
+    # Direct Azure OpenAI endpoint for use in Azure Search vectorizer/skillset
+    # definitions, which validate the URL domain. Falls back to `endpoint` if
+    # not set (i.e. when endpoint already points at the real service).
+    openai_resource_url: Optional[Secret] = None
+
+    def get_resource_url(self) -> str:
+        if self.openai_resource_url:
+            return self.openai_resource_url.resolve_value()
+        return self.endpoint.resolve_value()
 
 @dataclass
 class AzureSearchConfig:
@@ -59,7 +68,8 @@ class Config:
             endpoint=Secret.from_env_var("AZURE_BASE_URL", strict=True),
             deployment_name=os.environ["AZURE_DEPLOYMENT_NAME"],
             api_version=os.environ.get("AZURE_API_VERSION", "2024-02-01"),
-            embedding_model="text-embedding-3-large"
+            embedding_model="text-embedding-3-large",
+            openai_resource_url=Secret.from_env_var("AZURE_OPENAI_ENDPOINT", strict=False) if os.environ.get("AZURE_OPENAI_ENDPOINT") else None,
         )
 
         # Azure Search configuration

@@ -1,0 +1,315 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NowDocumentResultItem renders properly with highlights 1`] = `
+<div>
+  <div
+    class="ant-row permit-search__result-item"
+    style="margin-top: -4px; margin-bottom: -4px;"
+  >
+    <div
+      class="ant-col ant-col-24"
+      style="padding-top: 4px; padding-bottom: 4px;"
+    >
+      <div
+        class="ant-row ant-row-space-between ant-row-top"
+      >
+        <div
+          class="ant-col"
+          style="flex-basis: auto;"
+        >
+          <span
+            class="ant-typography"
+            style="font-size: 14px;"
+          >
+            <strong>
+              Test_Document.pdf
+            </strong>
+          </span>
+        </div>
+        <div
+          class="ant-col"
+        >
+          <span
+            class="ant-tag ant-tag-green"
+          >
+            83
+            % match
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
+      class="ant-col ant-col-24 now-search__highlight-excerpt"
+      style="padding-top: 4px; padding-bottom: 4px;"
+    >
+      <div />
+    </div>
+    <div
+      class="ant-col ant-col-24"
+      style="padding-top: 4px; padding-bottom: 4px;"
+    >
+      <div
+        class="ant-row ant-row-space-between ant-row-middle"
+      >
+        <div
+          class="ant-col"
+        >
+          <div
+            class="ant-space ant-space-horizontal ant-space-align-center"
+            style="flex-wrap: wrap; margin-bottom: -4px;"
+          >
+            <div
+              class="ant-space-item"
+              style="padding-bottom: 4px;"
+            >
+              <span
+                class="ant-tag ant-tag-blue"
+                style="cursor: default;"
+              >
+                Technical Report
+              </span>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-col"
+        >
+          <div
+            class="ant-space ant-space-horizontal ant-space-align-center"
+          >
+            <div
+              class="ant-space-item"
+              style="margin-right: 16px;"
+            >
+              <div />
+            </div>
+            <div
+              class="ant-space-item"
+            >
+              <span
+                class="ant-typography ant-typography-secondary permit-search__document-info"
+              >
+                May 1, 2024
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`NowDocumentResultItem renders properly without highlights 1`] = `
+<div>
+  <div
+    class="ant-row permit-search__result-item"
+    style="margin-top: -4px; margin-bottom: -4px;"
+  >
+    <div
+      class="ant-col ant-col-24"
+      style="padding-top: 4px; padding-bottom: 4px;"
+    >
+      <div
+        class="ant-row ant-row-space-between ant-row-top"
+      >
+        <div
+          class="ant-col"
+          style="flex-basis: auto;"
+        >
+          <span
+            class="ant-typography"
+            style="font-size: 14px;"
+          >
+            <strong>
+              Test_Document.pdf
+            </strong>
+          </span>
+        </div>
+        <div
+          class="ant-col"
+        >
+          <span
+            class="ant-tag ant-tag-green"
+          >
+            83
+            % match
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
+      class="ant-col ant-col-24 now-search__highlight-excerpt"
+      style="padding-top: 4px; padding-bottom: 4px;"
+    >
+      <span
+        class="ant-typography ant-typography-secondary"
+      >
+        This is a test snippet of document content that should show up in the result item.
+      </span>
+    </div>
+    <div
+      class="ant-col ant-col-24"
+      style="padding-top: 4px; padding-bottom: 4px;"
+    >
+      <div
+        class="ant-row ant-row-space-between ant-row-middle"
+      >
+        <div
+          class="ant-col"
+        >
+          <div
+            class="ant-space ant-space-horizontal ant-space-align-center"
+            style="flex-wrap: wrap; margin-bottom: -4px;"
+          >
+            <div
+              class="ant-space-item"
+              style="padding-bottom: 4px;"
+            >
+              <span
+                class="ant-tag ant-tag-blue"
+                style="cursor: default;"
+              >
+                Technical Report
+              </span>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-col"
+        >
+          <div
+            class="ant-space ant-space-horizontal ant-space-align-center"
+          >
+            <div
+              class="ant-space-item"
+              style="margin-right: 16px;"
+            >
+              <div />
+            </div>
+            <div
+              class="ant-space-item"
+            >
+              <span
+                class="ant-typography ant-typography-secondary permit-search__document-info"
+              >
+                May 1, 2024
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`NowDocumentResultItem renders with permit package styling 1`] = `
+<div>
+  <div
+    class="ant-row permit-search__result-item"
+    style="margin-top: -4px; margin-bottom: -4px;"
+  >
+    <div
+      class="ant-col ant-col-24"
+      style="padding-top: 4px; padding-bottom: 4px;"
+    >
+      <div
+        class="ant-row ant-row-space-between ant-row-top"
+      >
+        <div
+          class="ant-col"
+          style="flex-basis: auto;"
+        >
+          <span
+            class="ant-typography"
+            style="font-size: 14px;"
+          >
+            <strong>
+              Test_Document.pdf
+            </strong>
+          </span>
+        </div>
+        <div
+          class="ant-col"
+        >
+          <span
+            class="ant-tag ant-tag-green"
+          >
+            83
+            % match
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
+      class="ant-col ant-col-24 now-search__highlight-excerpt"
+      style="padding-top: 4px; padding-bottom: 4px;"
+    >
+      <div />
+    </div>
+    <div
+      class="ant-col ant-col-24"
+      style="padding-top: 4px; padding-bottom: 4px;"
+    >
+      <div
+        class="ant-row ant-row-space-between ant-row-middle"
+      >
+        <div
+          class="ant-col"
+        >
+          <div
+            class="ant-space ant-space-horizontal ant-space-align-center"
+            style="flex-wrap: wrap; margin-bottom: -4px;"
+          >
+            <div
+              class="ant-space-item"
+              style="margin-right: 4px; padding-bottom: 4px;"
+            >
+              <span
+                class="ant-tag ant-tag-orange"
+                style="cursor: default;"
+              >
+                Permit Package
+              </span>
+            </div>
+            <div
+              class="ant-space-item"
+              style="padding-bottom: 4px;"
+            >
+              <span
+                class="ant-tag ant-tag-gold"
+              >
+                Permit Package
+              </span>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-col"
+        >
+          <div
+            class="ant-space ant-space-horizontal ant-space-align-center"
+          >
+            <div
+              class="ant-space-item"
+              style="margin-right: 16px;"
+            >
+              <div />
+            </div>
+            <div
+              class="ant-space-item"
+            >
+              <span
+                class="ant-typography ant-typography-secondary permit-search__document-info"
+              >
+                May 1, 2024
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

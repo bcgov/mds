@@ -47,6 +47,25 @@ export interface HaystackDocumentSearchResult {
     score: number;
 }
 
+export interface NowDocumentMeta {
+    now_application_guid: string;
+    mine_guid: string;
+    document_manager_guid: string;
+    document_name: string;
+    document_type: string;
+    submitted_date: string | null;
+    highlights?: {
+        content?: string[];
+    };
+}
+
+export interface NowDocumentSearchResult {
+    id: string;
+    content: string;
+    meta: NowDocumentMeta;
+    score: number;
+}
+
 export interface HaystackPromptSearchResult {
     answers: string[];
 }
@@ -105,6 +124,7 @@ export interface SearchResultsProps {
 export interface Facet {
     value: string;
     count: number;
+    meta?: any;
 }
 
 export interface FacetGroup {

@@ -1,11 +1,11 @@
 import React from 'react';
 import { Drawer, Button, Space, Row, Col, Badge } from 'antd';
 import { SelectedFilter } from './SearchResults';
-import { useAppSelector } from '@mds/common/redux/rootState';
+import { useAppSelector, RootState } from '@mds/common/redux/rootState';
 import { selectAllFacets } from '@mds/common/redux/slices/permitSearchSlice';
 import FacetFilters from './FacetFilters';
 import { FilterOutlined } from '@ant-design/icons';
-import { SearchResult } from '@mds/common/interfaces/search/facet-search.interface';
+import { Facet, SearchResult } from '@mds/common/interfaces/search/facet-search.interface';
 
 interface FilterDrawerProps {
     visible: boolean;
@@ -17,6 +17,8 @@ interface FilterDrawerProps {
     onApplyFilters: () => void;
     onClearFilters: () => void;
     hasFilterChanges: boolean;
+    /** Override the facets selector when using outside the permit search context. */
+    selectAllFacetsOverride?: (state: RootState) => { [key: string]: Facet[] };
 }
 
 const FilterDrawer: React.FC<FilterDrawerProps> = ({
@@ -29,8 +31,9 @@ const FilterDrawer: React.FC<FilterDrawerProps> = ({
     onApplyFilters,
     onClearFilters,
     hasFilterChanges,
+    selectAllFacetsOverride,
 }) => {
-    const allFacets = useAppSelector(selectAllFacets);
+    const allFacets = useAppSelector(selectAllFacetsOverride ?? selectAllFacets);
 
     const findFacetCount = (facetValue: string, currentFacets: any[]) => {
         const found = currentFacets.find(cf => cf.value === facetValue);

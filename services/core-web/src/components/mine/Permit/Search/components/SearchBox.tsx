@@ -5,13 +5,14 @@ interface Props {
     onSearch: (query: string) => void;
     loading?: boolean;
     size?: 'large' | 'middle';
+    placeholder?: string;
 }
 
-const SearchBox: React.FC<Props> = ({ onSearch, loading, size = 'middle' }) => {
+const SearchBox: React.FC<Props> = ({ onSearch, loading, size = 'middle', placeholder = 'Search permit conditions...' }) => {
     return (
         <Form.Item name="search">
             <Input.Search
-                placeholder="Search permit conditions..."
+                placeholder={placeholder}
                 allowClear
                 enterButton
                 size={size}

@@ -7,7 +7,6 @@ import FormWrapper from "../forms/FormWrapper";
 import RenderRadioButtons from "../forms/RenderRadioButtons";
 import { required, requiredRadioButton } from "@mds/common/redux/utils/Validate";
 import RenderSelect from "../forms/RenderSelect";
-import { getSystemFlag } from "@mds/common/redux/selectors/authenticationSelectors";
 import { useParams } from "react-router-dom";
 import {
   MINE_REPORTS_ENUM,
@@ -41,7 +40,6 @@ const ReportGetStarted: FC<ReportGetStartedProps> = ({
 }) => {
   const dispatch = useAppDispatch();
   const { reportType } = useParams<{ reportType?: string }>();
-  const system = useAppSelector(getSystemFlag);
   const formValues = useAppSelector(getFormValues(FORM.VIEW_EDIT_REPORT)) as IMineReportSubmission;
   const [commonReportDefinitionOptions, setCommonReportDefinitionOptions] = useState([]);
   const mineReportDefinitionOptions = useAppSelector(getFormattedMineReportDefinitionOptions);

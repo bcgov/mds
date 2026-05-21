@@ -17,6 +17,9 @@ import ApplicationGuard from "@/HOC/ApplicationGuard";
 import { getDraftPermitForNOW } from "@mds/common/redux/selectors/permitSelectors";
 import ManageDocumentsTab from "@/components/noticeOfWork/applications/manageDocuments/ManageDocumentsTab";
 import { IPermit } from "@mds/common/interfaces";
+import NowApplicationDocumentSearch from "@/components/noticeOfWork/applications/search/NowApplicationDocumentSearch";
+import { Feature } from "@mds/common/utils/featureFlag";
+import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 
 /**
  * NoticeOfWorkApplication - contains all tabs needed for a CORE notice of work application.
@@ -30,6 +33,7 @@ interface NoticeOfWorkApplicationProps {
 }
 
 export const NoticeOfWorkApplication: FC<NoticeOfWorkApplicationProps> = (props) => {
+  const { isFeatureEnabled } = useFeatureFlag();
   const [isTabLoaded, setIsTabLoaded] = useState(false);
   const [activeTab, setActiveTab] = useState("verification");
   const { tab } = useParams<{ tab: string }>();
@@ -217,6 +221,19 @@ export const NoticeOfWorkApplication: FC<NoticeOfWorkApplicationProps> = (props)
             </LoadingWrapper>
           )}
         </Tabs.TabPane>
+        {isFeatureEnabled(Feature.NOW_APPLICATION_DOCUMENT_SEARCH) && (
+          <Tabs.TabPane
+            tab={props.renderTabTitle("Search Documents", "SEA")}
+            key="search-documents"
+            disabled={!isImported}
+          >
+            {isImported && (
+              <LoadingWrapper condition={isTabLoaded}>
+                <NowApplicationDocumentSearch nowApplicationGuid={noticeOfWork.now_application_guid} />
+              </LoadingWrapper>
+            )}
+          </Tabs.TabPane>
+        )}
       </Tabs>
     </div>
   );

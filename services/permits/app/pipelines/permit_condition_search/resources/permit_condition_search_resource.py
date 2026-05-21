@@ -4,6 +4,7 @@ from pathlib import Path
 from typing import AsyncIterator
 
 from app.helpers.temporary_file import store_temporary
+from app.common.utils.logging import sanitize_log
 from app.pipelines.permit_condition_search.models.search_models import (
     IndexingResponse,
     IndexStats,
@@ -39,7 +40,7 @@ async def upload_permit_conditions(file: UploadFile = File(...)) -> str:
         pipeline = permit_condition_blob_uploader_pipeline
 
         res = pipeline.run({"blob_uploader": {"file_path": Path(tmp.name), "file_name": file.filename}})
-        logger.debug(f"Pipeline response: {res}")
+        logger.debug("Pipeline response: %s", res)
         return res["blob_uploader"]["blob_url"]
 
     except Exception as e:
@@ -75,10 +76,10 @@ async def index_permit_conditions(file: UploadFile = File(...)) -> IndexingRespo
 
     try:
         pipeline = permit_condition_search_indexing_pipeline
-        logger.info(f"Starting indexing pipeline for file {file.filename}")
+        logger.info("Starting indexing pipeline for file %s", sanitize_log(file.filename))
 
         res = pipeline.run({"blob_uploader": {"file_path": Path(tmp.name), "file_name": file.filename}})
-        logger.debug(f"Pipeline response: {res}")
+        logger.debug("Pipeline response: %s", res)
 
         return IndexingResponse(
             id="",
@@ -101,7 +102,7 @@ async def index_permit_conditions(file: UploadFile = File(...)) -> IndexingRespo
 @router.post("/permit_conditions/search")
 async def search_permit_conditions_endpoint(params: SearchParams) -> EventSourceResponse:
     """Search permit conditions and stream results."""
-    logger.info(f"Received search request: {params.query}")
+    logger.info("Received search request: %s", sanitize_log(params.query))
     return EventSourceResponse(
         stream_search_results(params),
         media_type="text/event-stream",
@@ -149,14 +150,14 @@ async def stream_search_results(params: SearchParams) -> AsyncIterator[ServerSen
                 async for event in _process_llm_output(partial_output["llm"]["replies"]):
                     yield event
     except BadRequestError as e:
-        logger.info(f"Error during search: {str(e)}")
+        logger.info("Error during search: %s", e)
 
         err = e.response.json() or {}
         message = err.get('error', {}).get('message', 'Search failed. Please try again.')
         yield _format_event("error", {"message": message})
 
     except Exception as e:
-        logger.exception(f"Error during search: {str(e)}")
+        logger.exception("Error during search: %s", e)
         yield _format_event("error", {"message": "Search failed. Please try again."})
 
 

@@ -82,6 +82,7 @@ def test_post_permit_condition_extraction(delay, test_client, auth_headers, pc_t
 
     amendment, amendment_document = pc_test_data
     PermitConditions.query.filter_by(permit_amendment_id=amendment.permit_amendment_id).delete()
+    responses.add(responses.GET, Config.JWT_OIDC_WELL_KNOWN_CONFIG, json={'token_endpoint': 'https://test.loginproxy.gov.bc.ca/auth/realms/standard/protocol/openid-connect/token'})
     responses.add(responses.POST, f'https://test.loginproxy.gov.bc.ca/auth/realms/standard/protocol/openid-connect/token', json={'access_token':'123'})
     responses.add(responses.GET, f'{Config.DOCUMENT_MANAGER_URL}/documents', body="abc", headers={'Content-Type': 'application/octet-stream', 'Content-Disposition': 'filename=test.pdf'}, status=200)
     responses.add(responses.POST, f'{Config.PERMITS_ENDPOINT}/permit_conditions', json={'id': '123', 'status': 'PENDING', 'meta': {}}, status=200)

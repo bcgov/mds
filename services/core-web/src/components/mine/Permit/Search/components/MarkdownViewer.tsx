@@ -38,6 +38,8 @@ const MarkdownViewer: React.FC<MarkdownViewerProps> = ({ markdown }) => {
             if (element) {
                 element.scrollIntoView({ behavior: 'smooth' });
                 window.location.hash = hash;
+                element.classList.add('permit-search__result-item--highlighted');
+                setTimeout(() => element.classList.remove('permit-search__result-item--highlighted'), 2000);
             }
         }
     };

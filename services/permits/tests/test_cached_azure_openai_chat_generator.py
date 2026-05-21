@@ -8,6 +8,7 @@ from app.pipelines.permit_condition_extraction.components.CachedAzureOpenAIChatG
 )
 from haystack import Document
 from haystack.dataclasses import ChatMessage
+from haystack.document_stores.types import DuplicatePolicy
 
 logger = MagicMock()
 
@@ -191,3 +192,52 @@ def test_run_with_multiple_message_groups_calls_gpt_for_both():
         assert len(result["data"].messages) == 2
         assert result["data"].messages[0][0].text == expected_reply1.text
         assert result["data"].messages[1][0].text == expected_reply2.text
+
+def test_fetch_result_with_cache_miss():
+    with patch("app.pipelines.permit_condition_extraction.components.CachedAzureOpenAIChatGenerator.ElasticsearchDocumentStore"):
+        with patch("app.pipelines.permit_condition_extraction.components.CachedAzureOpenAIChatGenerator.CacheChecker") as MockCacheChecker:
+            mock_cache_checker_instance = MockCacheChecker.return_value
+            mock_cache_checker_instance.run.return_value = {"hits": []}
+            
+            generator = CachedAzureOpenAIChatGenerator()
+            
+            # Mock super().run
+            expected_reply = ChatMessage.from_assistant(
+                text="Fresh reply",
+                meta={"usage": {"completion_tokens": 1, "prompt_tokens": 1, "total_tokens": 2}, "model": "m", "index": 0, "finish_reason": "stop"}
+            )
+            
+            # Since we can't easily patch super().run, we'll patch the fetch_result's dependency on it
+            # Actually, fetch_result calls super().run directly if no cache hit.
+            # Let's patch 'haystack.components.generators.azure.AzureOpenAIChatGenerator.run'
+            with patch("haystack.components.generators.chat.AzureOpenAIChatGenerator.run", return_value={"replies": [expected_reply]}):
+                result = generator.fetch_result(messages=[], generation_kwargs={})
+                assert result.text == "Fresh reply"
+
+def test_fetch_result_error():
+    with patch("app.pipelines.permit_condition_extraction.components.CachedAzureOpenAIChatGenerator.ElasticsearchDocumentStore"):
+        with patch("app.pipelines.permit_condition_extraction.components.CachedAzureOpenAIChatGenerator.CacheChecker") as MockCacheChecker:
+            mock_cache_checker_instance = MockCacheChecker.return_value
+            mock_cache_checker_instance.run.return_value = {"hits": []}
+            
+            generator = CachedAzureOpenAIChatGenerator()
+            
+            with patch("haystack.components.generators.chat.AzureOpenAIChatGenerator.run", side_effect=Exception("OpenAI down")):
+                with pytest.raises(Exception) as exc:
+                    generator.fetch_result(messages=[], generation_kwargs={})
+                assert "OpenAI down" in str(exc.value)
+
+def test_debug_mode_logging():
+    with patch("app.pipelines.permit_condition_extraction.components.CachedAzureOpenAIChatGenerator.DEBUG_MODE", True):
+        data = ChatData(messages=[[ChatMessage.from_user("test")]], documents=[])
+        reply = ChatMessage.from_assistant(
+            text="Debug reply",
+            meta={"usage": {"completion_tokens": 1, "prompt_tokens": 1, "total_tokens": 2}, "finish_reason": "stop"}
+        )
+        
+        generator = CachedAzureOpenAIChatGenerator()
+        with patch.object(generator, "fetch_result", return_value=reply):
+            with patch("builtins.open", MagicMock()) as mock_open:
+                generator.run(data)
+                assert mock_open.called
+

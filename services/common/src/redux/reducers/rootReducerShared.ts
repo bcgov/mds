@@ -44,6 +44,7 @@ import permitConditionTagReducer, { permitConditionTagReducerType } from "@mds/c
 import mineReportPermitRequirementReducer, { mineReportPermitRequirementReducerType } from "../slices/mineReportPermitRequirementSlice";
 import permitConditionDiffReducer, { permitConditionDiffReducerType } from "../slices/permitConditionDiffSlice";
 import permitSearchReducer, { permitSearchReducerType } from "../slices/permitSearchSlice";
+import nowApplicationSearchReducer, { nowApplicationSearchReducerType } from "../slices/nowApplicationSearchSlice";
 import damReducer, { damReducerType } from "../slices/damSlice";
 import tailingsReducer, { tsfReducerType } from "../slices/tailingsSlice";
 import amsFinalAppReducer, { amsAppReducerType } from "../slices/amsFinalApplicationSlice";
@@ -91,6 +92,7 @@ export const sharedReducer = {
   [mineReportPermitRequirementReducerType]: mineReportPermitRequirementReducer,
   [permitConditionDiffReducerType]: permitConditionDiffReducer,
   [permitSearchReducerType]: permitSearchReducer,
+  [nowApplicationSearchReducerType]: nowApplicationSearchReducer,
   [permitConditionTagReducerType]: permitConditionTagReducer,
   [amsAppReducerType]: amsFinalAppReducer,
   [mineReportStatsReducerType]: mineReportStatsReducer,

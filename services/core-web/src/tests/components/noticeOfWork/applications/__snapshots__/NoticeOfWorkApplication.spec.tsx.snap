@@ -164,7 +164,9 @@ exports[`NoticeOfWorkApplication renders properly 1`] = `
                 class="ant-tabs-tab-btn"
                 id="rc-tabs-test-tab-application"
                 role="tab"
-              />
+              >
+                Application
+              </div>
             </div>
             <div
               class="ant-tabs-tab ant-tabs-tab-disabled"
@@ -177,7 +179,9 @@ exports[`NoticeOfWorkApplication renders properly 1`] = `
                 class="ant-tabs-tab-btn"
                 id="rc-tabs-test-tab-referral"
                 role="tab"
-              />
+              >
+                Referral
+              </div>
             </div>
             <div
               class="ant-tabs-tab ant-tabs-tab-disabled"
@@ -190,7 +194,9 @@ exports[`NoticeOfWorkApplication renders properly 1`] = `
                 class="ant-tabs-tab-btn"
                 id="rc-tabs-test-tab-consultation"
                 role="tab"
-              />
+              >
+                Consultation
+              </div>
             </div>
             <div
               class="ant-tabs-tab ant-tabs-tab-disabled"
@@ -203,7 +209,9 @@ exports[`NoticeOfWorkApplication renders properly 1`] = `
                 class="ant-tabs-tab-btn"
                 id="rc-tabs-test-tab-public-comment"
                 role="tab"
-              />
+              >
+                Public Comment
+              </div>
             </div>
             <div
               class="ant-tabs-tab ant-tabs-tab-disabled"
@@ -216,7 +224,9 @@ exports[`NoticeOfWorkApplication renders properly 1`] = `
                 class="ant-tabs-tab-btn"
                 id="rc-tabs-test-tab-draft-permit"
                 role="tab"
-              />
+              >
+                Draft
+              </div>
             </div>
             <div
               class="ant-tabs-tab ant-tabs-tab-disabled"
@@ -261,6 +271,21 @@ exports[`NoticeOfWorkApplication renders properly 1`] = `
                 role="tab"
               >
                 Manage Documents
+              </div>
+            </div>
+            <div
+              class="ant-tabs-tab ant-tabs-tab-disabled"
+              data-node-key="search-documents"
+            >
+              <div
+                aria-controls="rc-tabs-test-panel-search-documents"
+                aria-disabled="true"
+                aria-selected="false"
+                class="ant-tabs-tab-btn"
+                id="rc-tabs-test-tab-search-documents"
+                role="tab"
+              >
+                Search Documents
               </div>
             </div>
             <div

@@ -93,9 +93,11 @@
         padding-bottom: 16px;
         border-bottom: 1px solid #f0f0f0;
         position: relative;
+        transition: background-color 1.5s ease;
 
         &--highlighted {
             background-color: rgba(255, 255, 0, 0.2);
+            transition: none;
         }
     }
 
@@ -140,5 +142,30 @@
 
     &__result-meta {
         margin-bottom: 8px;
+    }
+}
+
+// Client-side query term highlight (fallback path when no server highlight snippet).
+.now-search__term-highlight {
+    background-color: #fff7a1;
+    font-weight: 600;
+    padding: 0 2px;
+    border-radius: 2px;
+    color: inherit;
+}
+
+// Highlighted excerpt block for NoW document search results.
+// Azure Search wraps matched terms in **...** which MarkdownViewer renders as <strong>.
+// We give those <strong> elements a yellow highlight background to make matches scannable.
+.now-search__highlight-excerpt {
+    font-size: 14px;
+    line-height: 1.6;
+    color: rgba(0, 0, 0, 0.65);
+
+    strong {
+        background-color: #fff7a1;
+        font-weight: 600;
+        padding: 0 2px;
+        border-radius: 2px;
     }
 }

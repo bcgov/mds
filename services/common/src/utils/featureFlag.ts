@@ -38,6 +38,7 @@ export enum Feature {
   MINESPACE_SIGNUP = "minespace_signup",
   GLOBAL_SEARCH_V2 = "global_search_v2",
   NOTICE_OF_WORK_TIER = "notice_of_work_tier",
+  NOW_APPLICATION_DOCUMENT_SEARCH = "now_application_document_search",
   NOTICE_OF_WORK_NATIONS = 'notice_of_work_nations',
 }
 
