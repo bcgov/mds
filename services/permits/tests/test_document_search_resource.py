@@ -93,16 +93,22 @@ class TestDocumentSearchResource:
             assert exc.value.status_code == 409
 
     @pytest.mark.asyncio
+    @patch("app.pipelines.document_search.resources.document_search_resource.now_document_search_search_client")
+    @patch("app.pipelines.document_search.indexing.delete_document_chunks")
     @patch("app.tasks.tasks.run_now_document_indexing")
-    async def test_cancel_indexing_success(self, mock_task, mock_redis, valid_guid):
+    async def test_cancel_indexing_success(self, mock_task, mock_delete_chunks, mock_search_client, mock_redis, valid_guid):
         mock_redis.smembers.return_value = {"task-123"}
+        mock_redis.keys.return_value = [f"now_doc_index:{valid_guid}:doc-123"]
+        mock_redis.get.return_value = "task-123"
         mock_app = MagicMock()
         mock_task.app = mock_app
         
         res = await cancel_indexing(valid_guid)
         assert res["status"] == "cancelled"
         mock_app.control.revoke.assert_called_once_with("task-123", terminate=True)
-        mock_redis.delete.assert_called_once()
+        mock_delete_chunks.assert_called_once_with(mock_search_client, "doc-123")
+        mock_redis.delete.assert_any_call(f"now_doc_index:{valid_guid}:doc-123")
+        mock_redis.delete.assert_any_call(f"now_doc_index_tasks:{valid_guid}")
 
     @pytest.mark.asyncio
     async def test_cancel_indexing_not_found(self, mock_redis, valid_guid):
@@ -293,9 +299,13 @@ class TestDocumentSearchResource:
         assert exc.value.status_code == 400
 
     @pytest.mark.asyncio
+    @patch("app.pipelines.document_search.resources.document_search_resource.now_document_search_search_client")
+    @patch("app.pipelines.document_search.indexing.delete_document_chunks")
     @patch("app.tasks.tasks.run_now_document_indexing")
-    async def test_cancel_indexing_backend_error(self, mock_task, mock_redis, valid_guid):
+    async def test_cancel_indexing_backend_error(self, mock_task, mock_delete_chunks, mock_search_client, mock_redis, valid_guid):
         mock_redis.smembers.return_value = {"task-123"}
+        mock_redis.keys.return_value = [f"now_doc_index:{valid_guid}:doc-123"]
+        mock_redis.get.return_value = "task-123"
         mock_app = MagicMock()
         mock_app.backend.store_result.side_effect = Exception("Backend down")
         mock_task.app = mock_app

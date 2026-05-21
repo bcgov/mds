@@ -186,6 +186,32 @@ async def cancel_indexing(now_application_guid: str):
     from app.tasks.tasks import run_now_document_indexing
     celery_app = run_now_document_indexing.app
 
+    # Identify document GUIDs associated with these tasks to clean up their chunks
+    doc_keys = _redis.keys(f"{_TASK_KEY_PREFIX}{now_application_guid}:*")
+    doc_guids_to_clean = []
+    for key in doc_keys:
+        tid = _redis.get(key)
+        if tid in task_ids:
+            # Key is "now_doc_index:{now_guid}:{doc_guid}"
+            parts = key.split(":")
+            if len(parts) >= 3:
+                doc_guids_to_clean.append(parts[2])
+
+    # Delete any partially-indexed chunks from Azure Search and clear the Redis document task mapping
+    if doc_guids_to_clean and now_document_search_search_client:
+        from app.pipelines.document_search.indexing import delete_document_chunks
+        for doc_guid in doc_guids_to_clean:
+            try:
+                delete_document_chunks(now_document_search_search_client, doc_guid)
+                _redis.delete(f"{_TASK_KEY_PREFIX}{now_application_guid}:{doc_guid}")
+            except Exception as e:
+                logger.error(
+                    "Failed to delete chunks for document %s during cancellation of NoW application %s: %s",
+                    doc_guid,
+                    sanitize_log(now_application_guid),
+                    e
+                )
+
     for task_id in task_ids:
         celery_app.control.revoke(task_id, terminate=True)
         # terminate=True kills the worker before it can write a final state to the
