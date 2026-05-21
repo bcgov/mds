@@ -151,16 +151,52 @@ class TestPreparePermitSources:
                 'first_name': 'John',
                 'party_name': 'Doe'
             }],
-            'mine_guids': ['mine-guid-1', 'mine-guid-2']
+            'mine_guids': [
+                {
+                    'mine_guid': 'mine-guid-1',
+                    'permit_id': 1,
+                    'mine': {'mine_guid': 'mine-guid-1', 'mine_name': 'Test Mine One', 'mine_no': 'M-001'}
+                },
+                {
+                    'mine_guid': 'mine-guid-2',
+                    'permit_id': 1,
+                    'mine': {'mine_guid': 'mine-guid-2', 'mine_name': 'Test Mine Two', 'mine_no': 'M-002'}
+                }
+            ]
         }
-        
+
         result = prepare_permit_source(source)
-        
+
         assert result['permit_guid'] == 'permit-123'
         assert result['permit_no'] == 'P-001'
         assert result['current_permittee'] == 'John Doe'
         assert len(result['mine']) == 2
         assert result['mine'][0]['mine_guid'] == 'mine-guid-1'
+        assert result['mine'][0]['mine_name'] == 'Test Mine One'
+        assert result['mine'][0]['mine_no'] == 'M-001'
+        assert result['mine'][1]['mine_guid'] == 'mine-guid-2'
+        assert result['mine'][1]['mine_name'] == 'Test Mine Two'
+        assert result['mine'][1]['mine_no'] == 'M-002'
+
+    def test_prepare_permit_source_mine_with_missing_name(self):
+        source = {
+            'permit_guid': 'permit-789',
+            'permit_no': 'P-003',
+            'mine_guids': [
+                {
+                    'mine_guid': 'mine-guid-3',
+                    'permit_id': 2,
+                    'mine': {}
+                }
+            ]
+        }
+
+        result = prepare_permit_source(source)
+
+        assert len(result['mine']) == 1
+        assert result['mine'][0]['mine_guid'] == 'mine-guid-3'
+        assert result['mine'][0]['mine_name'] == ''
+        assert result['mine'][0]['mine_no'] == ''
 
     def test_prepare_permit_source_organization_permittee(self):
         source = {

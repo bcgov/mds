@@ -282,7 +282,7 @@ class SimpleSearchService:
             return source.get('mine_guid')
         elif doc_type == 'permit':
             mine_guids = source.get('mine_guids', [])
-            return mine_guids[0] if mine_guids and isinstance(mine_guids, list) else None
+            return mine_guids[0].get('mine_guid') if mine_guids and isinstance(mine_guids, list) else None
         elif doc_type in ['notice_of_departure', 'explosives_permit', 'now_application']:
             mine_info = source.get('mine')
             return mine_info.get('mine_guid') if isinstance(mine_info, dict) else None
