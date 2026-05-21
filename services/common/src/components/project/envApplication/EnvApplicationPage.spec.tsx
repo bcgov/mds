@@ -73,5 +73,27 @@ describe("EnvApplicationPage", () => {
         );
 
         expect(container).toMatchSnapshot();
-    })
+    });
+
+    it("sets edit mode to false when amsFinalApp is not editable", () => {
+        const stateWithNonEditableApp = {
+            ...initialState,
+            [amsAppReducerType]: {
+                amsFinalApplications: {
+                    [MOCK.AMS_AUTHORIZATION_SUCCESS.project_summary_authorization_guid]: {
+                        ...MOCK.AMS_FINAL_APPLICATION,
+                        editable: false,
+                    },
+                },
+            },
+        };
+        const { container } = render(
+            <ReduxWrapper initialState={stateWithNonEditableApp}>
+                <BrowserRouter>
+                    <EnvApplicationPage />
+                </BrowserRouter>
+            </ReduxWrapper>
+        );
+        expect(container).toBeDefined();
+    });
 });

@@ -195,7 +195,7 @@ export const MajorMineApplicationPage: FC = () => {
     },
     {
       title: "Create Submission",
-      content: <MajorMineApplicationForm refreshData={handleFetchData} project={project} />,
+      content: <MajorMineApplicationForm project={project} />,
       buttons: [
         <React.Fragment key="step-2-buttons">
           {isFormDirty && project?.major_mine_application?.status_code === "DFT" && (

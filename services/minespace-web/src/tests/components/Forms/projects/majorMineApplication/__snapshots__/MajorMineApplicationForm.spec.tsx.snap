@@ -241,11 +241,7 @@ exports[`MajorMineApplicationForm renders properly 1`] = `
           </div>
         </div>
       </div>
-      <div>
-        <button>
-          Archive Documents
-        </button>
-      </div>
+      <div />
       <br />
       <h5
         class="ant-typography"
@@ -896,11 +892,7 @@ exports[`MajorMineApplicationForm renders properly 1`] = `
           </div>
         </div>
       </div>
-      <div>
-        <button>
-          Archive Documents
-        </button>
-      </div>
+      <div />
       <br />
       <h5
         class="ant-typography"
@@ -2018,11 +2010,7 @@ exports[`MajorMineApplicationForm renders properly 1`] = `
           </div>
         </div>
       </div>
-      <div>
-        <button>
-          Archive Documents
-        </button>
-      </div>
+      <div />
       <br />
       <div
         id="archived-documents"
@@ -2057,11 +2045,7 @@ exports[`MajorMineApplicationForm renders properly 1`] = `
         >
           These files are not reviewed as part of the submission.
         </div>
-        <div>
-          <button>
-            Archive Documents
-          </button>
-        </div>
+        <div />
       </div>
       <br />
     </div>

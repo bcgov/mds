@@ -24,13 +24,10 @@ import { required } from "@mds/common/redux/utils/Validate";
 import { IMajorMinesApplication, IProject } from "@mds/common/interfaces/projects";
 import { FORM } from "@mds/common/constants/forms";
 import { DOCUMENT, MODERN_EXCEL, SPATIAL } from "@mds/common/constants/fileTypes";
-import { SystemFlagEnum } from "@mds/common/constants/enums";
-import { areDocumentFieldsDisabled } from "@mds/common/components/projects/projectUtils";
 import RenderSelect from "@mds/common/components/forms/RenderSelect";
 
 interface MajorMineApplicationFormProps {
   project: IProject;
-  refreshData: () => void | Promise<void>;
 }
 
 const DocumentCategoryForm = ({ fields, typeCode }) => {
@@ -78,20 +75,12 @@ const DocumentCategoryForm = ({ fields, typeCode }) => {
   );
 };
 
-const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({
-  project,
-  refreshData,
-}) => {
+const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({ project }) => {
   const dispatch = useDispatch();
 
   const formValues = useSelector(getFormValues(FORM.ADD_MINE_MAJOR_APPLICATION)) ?? {};
   const { primary_documents, appendix_documents, spatial_documents, supporting_documents } =
     formValues as IMajorMinesApplication;
-  const canModifyMmaDocs = !areDocumentFieldsDisabled(
-    SystemFlagEnum.ms,
-    project?.major_mine_application?.status_code
-  );
-
   const mineDocuments = useSelector(getMineDocuments);
   const [uploadedFiles, setUploadedFiles] = useState<any[]>([]);
 
@@ -271,9 +260,8 @@ const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({
         <DocumentTable
           documents={primaryDocument}
           documentParent="Major Mine Application"
-          canArchiveDocuments={canModifyMmaDocs}
-          canReplaceDocuments={canModifyMmaDocs}
-          onArchivedDocuments={refreshData}
+          canArchiveDocuments={false}
+          canReplaceDocuments={false}
           enableBulkActions={true}
           showVersionHistory={true}
         />
@@ -330,9 +318,8 @@ const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({
         <DocumentTable
           documents={appendix_documents}
           documentParent="Major Mine Application"
-          canArchiveDocuments={canModifyMmaDocs}
-          canReplaceDocuments={canModifyMmaDocs}
-          onArchivedDocuments={refreshData}
+          canArchiveDocuments={false}
+          canReplaceDocuments={false}
           enableBulkActions={true}
           showVersionHistory={true}
         />
@@ -415,9 +402,8 @@ const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({
         <DocumentTable
           documents={supportDocuments}
           documentParent="Major Mine Application"
-          canArchiveDocuments={canModifyMmaDocs}
-          canReplaceDocuments={canModifyMmaDocs}
-          onArchivedDocuments={refreshData}
+          canArchiveDocuments={false}
+          canReplaceDocuments={false}
           enableBulkActions={true}
           showVersionHistory={true}
         />

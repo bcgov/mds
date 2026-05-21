@@ -18,6 +18,8 @@ import RenderGroupCheckbox, { normalizeGroupCheckBox } from "../../forms/RenderG
 import { deleteConfirmWrapper } from "../../common/ActionMenu";
 import { IAmsFinalApplication } from "@mds/common/interfaces/projects/amsFinalApplication.interface";
 import { AMS_FINAL_APPLICATION_DOCUMENT_TYPES } from "@mds/common/constants/enums";
+import ProjectDocumentsTabSection from "../../projects/ProjectDocumentsTabSection";
+import { MineDocument } from "@mds/common/models/documents/document";
 
 const formName = FORM.ADD_EDIT_AMS_FINAL_APPLICATION;
 const documentTypeOptions = Object.entries(AMS_FINAL_APPLICATION_DOCUMENT_TYPES).map(([type, description]) => {
@@ -108,10 +110,14 @@ const EnvDocumentsTab = () => {
     const onRemoveFile = (_error, file) => {
         const document_manager_guid = file?.serverId;
         const docIndex = formValues.documents.findIndex((d) => d.document_manager_guid === document_manager_guid);
-        if (docIndex) {
+        if (docIndex !== -1) {
             dispatch(arrayRemove(formName, "documents", docIndex));
         }
     };
+
+    const savedDocuments = formValues?.documents
+        ?.filter((d) => d.mine_document_guid)
+        .map((d) => new MineDocument(d)) ?? [];
 
     return (
         <>
@@ -149,6 +155,16 @@ const EnvDocumentsTab = () => {
                 onFileLoad={onFileLoad}
                 onRemoveFile={onRemoveFile}
             />
+            {savedDocuments.length > 0 && (
+                <ProjectDocumentsTabSection
+                    id="env-uploaded-documents"
+                    title="Uploaded Documents"
+                    titleLevel={4}
+                    documents={savedDocuments}
+                    canArchive={false}
+                    canReplace={false}
+                />
+            )}
         </>)
 };
 

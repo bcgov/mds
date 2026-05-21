@@ -41,6 +41,10 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
   const isCore = systemFlag === SystemFlagEnum.core;
   const [isLoaded, setIsLoaded] = useState(true);
   const canManageAmsFiles = canEditMajorMineApplications || isUserProponent;
+  const userRoles = [
+    canEditMajorMineApplications && USER_ROLES.role_edit_major_mine_applications,
+    isUserProponent && USER_ROLES.role_minespace_proponent,
+  ].filter(Boolean) as string[];
 
 
   const authsWithDocs =
@@ -72,9 +76,9 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
 
   const refreshAmsApps = async () => {
     setIsLoaded(false);
-    dispatch(
+    await dispatch(
       fetchAmsFinalAppsByProjectSummary(project.project_summary.project_summary_guid)
-    ).then(() => setIsLoaded(true));
+    );
     setIsLoaded(true);
   };
 
@@ -138,6 +142,7 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
         new MajorMineApplicationDocument({
           ...d,
           category: CATEGORY_CODE[d.major_mine_application_document_type_code],
+          user_roles: userRoles,
         })
     ) ?? [];
 
@@ -227,7 +232,7 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
             id={href}
             title={titleText}
             key={auth.project_summary_authorization_guid}
-            canArchive={false}
+            canArchive={canModifySummaryDocs}
             canReplace={canModifySummaryDocs}
             documents={auth.amendment_documents.map(
               (d) =>
