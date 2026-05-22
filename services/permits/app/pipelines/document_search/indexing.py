@@ -50,6 +50,7 @@ openai_client = AzureOpenAI(
     azure_endpoint=config.openai.endpoint.resolve_value(),
     api_key=config.openai.api_key.resolve_value(),
     api_version=config.openai.api_version,
+    default_headers={"Authorization": f"Bearer {config.openai.api_key.resolve_value()}"},
 )
 
 # Re-export for convenience so callers only need to import from this module.

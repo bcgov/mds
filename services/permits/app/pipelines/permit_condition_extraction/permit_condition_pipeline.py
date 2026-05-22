@@ -95,6 +95,7 @@ def permit_condition_pipeline():
         api_key=config.openai.api_key,
         timeout=600,
         generation_kwargs={"temperature": temperature, "max_tokens": max_tokens},
+        default_headers={"Authorization": f"Bearer {config.openai.api_key.resolve_value()}"},
     )
 
     logger.info(
