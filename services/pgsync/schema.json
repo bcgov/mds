@@ -263,7 +263,7 @@
                     ],
                     "label": "mine_guids",
                     "relationship": {
-                        "type": "many_to_many",
+                        "type": "one_to_many",
                         "through_tables": ["mine_permit_xref"],
                         "variant": "object"
                     }
