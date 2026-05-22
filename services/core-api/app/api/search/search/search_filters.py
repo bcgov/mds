@@ -36,8 +36,8 @@ def build_mine_guid_filter(mine_guid):
             "should": [
                 {"term": {"mine_guid": mine_guid}},
                 {"term": {"mine_guid.keyword": mine_guid}},
-                {"term": {"mine_guids": mine_guid}},
-                {"term": {"mine_guids.keyword": mine_guid}},
+                {"term": {"mine_guids.mine_guid": mine_guid}},
+                {"term": {"mine_guids.mine_guid.keyword": mine_guid}},
                 {"term": {"mine.mine_guid": mine_guid}},
                 {"term": {"mine.mine_guid.keyword": mine_guid}},
             ],

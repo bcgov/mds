@@ -83,11 +83,11 @@ def prepare_permit_source(source):
             party_name = first_permittee.get('party_name', '')
             current_permittee = f"{first_name} {party_name}".strip() if first_name else party_name
 
-    mine_guids = source.get('mine_guids', [])
+    mine_details = source.get('mine_guids', [])
     mines = []
-    if mine_guids:
-        for guid in (mine_guids if isinstance(mine_guids, list) else [mine_guids]):
-            mines.append({'mine_guid': guid, 'mine_name': '', 'mine_no': ''})
+    if mine_details:
+        for mine_xref in (mine_details if isinstance(mine_details, list) else [mine_details]):
+            mines.append({'mine_guid':mine_xref.get('mine_guid'), 'mine_name': mine_xref.get('mine', {}).get('mine_name', ''), 'mine_no': mine_xref.get('mine', {}).get('mine_no', '')}) 
 
     prepared = dict(source)
     prepared['current_permittee'] = current_permittee

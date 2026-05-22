@@ -6,8 +6,7 @@ import { Link } from "react-router-dom";
 import * as router from "@/constants/routes";
 import CoreTable from "@mds/common/components/common/CoreTable";
 import {
-  renderHighlightedTextColumn,
-  renderTextColumn,
+  renderHighlightedTextColumn
 } from "@mds/common/components/common/CoreTableCommonColumns";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { Feature } from "@mds/common/utils/featureFlag";
@@ -50,7 +49,6 @@ export const PermitResultsTable = (props) => {
       },
     },
     renderHighlightedTextColumn("current_permittee", "Permittee", props.highlightRegex),
-    renderTextColumn("current_permittee", "Permittee"),
     {
       title: "Mine(s)",
       key: "mine_guid",

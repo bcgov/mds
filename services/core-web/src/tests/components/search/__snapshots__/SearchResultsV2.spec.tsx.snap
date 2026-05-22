@@ -3741,11 +3741,6 @@ exports[`SearchResultsV2 Integration Tests Snapshots matches snapshot with searc
                                         <th
                                           class="ant-table-cell"
                                         >
-                                          Permittee
-                                        </th>
-                                        <th
-                                          class="ant-table-cell"
-                                        >
                                           Mine(s)
                                         </th>
                                       </tr>
@@ -3773,16 +3768,6 @@ exports[`SearchResultsV2 Integration Tests Snapshots matches snapshot with searc
                                               Current Permittee
                                             </span>
                                           </span>
-                                        </td>
-                                        <td
-                                          class="ant-table-cell"
-                                        >
-                                          <div
-                                            class="current_permittee-column"
-                                            title="Permittee"
-                                          >
-                                            Current Permittee
-                                          </div>
                                         </td>
                                         <td
                                           class="ant-table-cell"
