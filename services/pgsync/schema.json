@@ -261,6 +261,29 @@
                         "mine_name",
                         "mine_no"
                     ],
+                    "children": [
+                        {
+                            "table": "mine",
+                            "columns": [
+                                "mine_guid",
+                                "mine_name",
+                                "mine_no"
+                            ],
+                            "label": "mine",
+                            "relationship": {
+                                "type": "one_to_one",
+                                "variant": "object",
+                                "foreign_key": {
+                                    "child": [
+                                        "mine_guid"
+                                    ],
+                                    "parent": [
+                                        "mine_guid"
+                                    ]
+                                }
+                            }
+                        }
+                    ],
                     "label": "mine_guids",
                     "relationship": {
                         "type": "many_to_many",
