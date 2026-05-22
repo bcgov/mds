@@ -51,6 +51,7 @@ def create_now_document_search_store() -> AzureSearchDocumentStore:
             highlight_pre_tag="**",
             highlight_post_tag="**",
         ),
+        headers={"Authorization": f"Bearer {config.search.api_key.resolve_value()}"},
     )
 
 
@@ -64,6 +65,7 @@ def create_now_document_search_client() -> SearchClient:
         endpoint=config.search.endpoint.resolve_value(),
         index_name=config.search.index_name.resolve_value(),
         credential=AzureKeyCredential(config.search.api_key.resolve_value()),
+        headers={"Authorization": f"Bearer {config.search.api_key.resolve_value()}"},
     )
 
 

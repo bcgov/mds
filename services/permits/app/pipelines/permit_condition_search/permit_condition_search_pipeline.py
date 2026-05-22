@@ -60,6 +60,7 @@ def create_azure_search_document_store():
             highlight_pre_tag="**",
             highlight_post_tag="**",
         ),
+        headers={"Authorization": f"Bearer {config.search.api_key.resolve_value()}"},
     )
 
 
