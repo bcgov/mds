@@ -152,16 +152,8 @@ class TestPreparePermitSources:
                 'party_name': 'Doe'
             }],
             'mine_guids': [
-                {
-                    'mine_guid': 'mine-guid-1',
-                    'permit_id': 1,
-                    'mine': {'mine_guid': 'mine-guid-1', 'mine_name': 'Test Mine One', 'mine_no': 'M-001'}
-                },
-                {
-                    'mine_guid': 'mine-guid-2',
-                    'permit_id': 1,
-                    'mine': {'mine_guid': 'mine-guid-2', 'mine_name': 'Test Mine Two', 'mine_no': 'M-002'}
-                }
+                {'mine_guid': 'mine-guid-1', 'mine_name': 'Test Mine One', 'mine_no': 'M-001'},
+                {'mine_guid': 'mine-guid-2', 'mine_name': 'Test Mine Two', 'mine_no': 'M-002'}
             ]
         }
 
@@ -183,11 +175,7 @@ class TestPreparePermitSources:
             'permit_guid': 'permit-789',
             'permit_no': 'P-003',
             'mine_guids': [
-                {
-                    'mine_guid': 'mine-guid-3',
-                    'permit_id': 2,
-                    'mine': {}
-                }
+                {'mine_guid': 'mine-guid-3', 'mine_name': '', 'mine_no': ''}
             ]
         }
 

@@ -86,8 +86,8 @@ def prepare_permit_source(source):
     mine_details = source.get('mine_guids', [])
     mines = []
     if mine_details:
-        for mine_xref in (mine_details if isinstance(mine_details, list) else [mine_details]):
-            mines.append({'mine_guid':mine_xref.get('mine_guid'), 'mine_name': mine_xref.get('mine', {}).get('mine_name', ''), 'mine_no': mine_xref.get('mine', {}).get('mine_no', '')}) 
+        for mine in (mine_details if isinstance(mine_details, list) else [mine_details]):
+            mines.append({'mine_guid': mine.get('mine_guid'), 'mine_name': mine.get('mine_name', ''), 'mine_no': mine.get('mine_no', '')}) 
 
     prepared = dict(source)
     prepared['current_permittee'] = current_permittee
