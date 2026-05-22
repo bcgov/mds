@@ -140,6 +140,7 @@ def create_permit_condition_search_retrieval_pipeline():
         azure_endpoint=config.openai.endpoint.resolve_value(),
         azure_deployment=config.openai.embedding_model,
         api_key=config.openai.api_key,
+        default_headers={"Authorization": f"Bearer {config.openai.api_key.resolve_value()}"},
     )
 
     retriever = AzureAISearchHybridRetriever(
@@ -172,6 +173,7 @@ def create_permit_condition_search_retrieval_pipeline():
         api_key=config.openai.api_key,
         api_version=config.openai.api_version,
         generation_kwargs={"temperature": 0, "max_tokens": 16384, "n": 1},
+        default_headers={"Authorization": f"Bearer {config.openai.api_key.resolve_value()}"},
     )
 
     retrieval_pipeline.add_component("text_embedder", text_embedder)

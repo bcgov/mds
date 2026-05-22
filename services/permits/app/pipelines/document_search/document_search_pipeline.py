@@ -85,6 +85,7 @@ def create_document_search_retrieval_pipeline() -> AsyncPipeline:
         azure_endpoint=config.openai.endpoint.resolve_value(),
         azure_deployment=config.openai.embedding_model,
         api_key=config.openai.api_key,
+        default_headers={"Authorization": f"Bearer {config.openai.api_key.resolve_value()}"},
     )
 
     retriever = AzureAISearchHybridRetriever(
@@ -105,6 +106,7 @@ def create_document_search_retrieval_pipeline() -> AsyncPipeline:
         api_key=config.openai.api_key,
         api_version=config.openai.api_version,
         generation_kwargs={"temperature": 0, "max_tokens": 8192, "n": 1},
+        default_headers={"Authorization": f"Bearer {config.openai.api_key.resolve_value()}"},
     )
 
     pipeline.add_component("text_embedder", text_embedder)
