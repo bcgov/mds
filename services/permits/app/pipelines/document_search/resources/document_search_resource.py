@@ -149,10 +149,17 @@ async def index_now_application_documents(
     # Enqueue the Celery task; register its ID per-document and in the application set.
     from app.tasks.tasks import run_now_document_indexing
     task = run_now_document_indexing.delay(now_application_guid, tmp_paths, doc_metadata_list)
+
+    task_set_key = _task_set_key(now_application_guid)
+
     if doc_guid:
         _redis.setex(_task_key(now_application_guid, doc_guid), _TASK_KEY_TTL, task.id)
-    _redis.sadd(_task_set_key(now_application_guid), task.id)
-    _redis.expire(_task_set_key(now_application_guid), _TASK_KEY_TTL)
+    else:
+        # If we are indexing the whole application (not just a single doc), clear stale state
+        _redis.delete(task_set_key)
+
+    _redis.sadd(task_set_key, task.id)
+    _redis.expire(task_set_key, _TASK_KEY_TTL)
 
     logger.info(
         "Enqueued indexing task %s for document %s in NoW application %s",
@@ -413,6 +420,7 @@ async def get_indexing_status(now_application_guid: str):
                 "percent": overall_percent,
             }
 
+        # Only return 'failed' if all active tasks are finished and at least one failed.
         if any(s == "FAILURE" for s in states):
             failed_result = next(r for r in task_results if r.state == "FAILURE")
             return {
