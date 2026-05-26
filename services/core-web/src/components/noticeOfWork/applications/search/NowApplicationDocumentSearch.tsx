@@ -17,7 +17,6 @@ import {
   CheckCircleOutlined,
   ClockCircleOutlined,
   CloseCircleOutlined,
-  StopOutlined,
   SyncOutlined,
 } from "@ant-design/icons";
 import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
@@ -251,6 +250,13 @@ const NowApplicationDocumentSearch: React.FC<NowApplicationDocumentSearchProps> 
     debouncedSearch(query, updatedFilters);
   };
 
+  const clearAllArtifactFilters = () => {
+    const updatedFilters = selectedFilters.filter(
+      ({ category }) => category !== "artifact_type" && category !== "artifact_page_number"
+    );
+    debouncedSearch(query, updatedFilters);
+  };
+
   const formatArtifactFilterLabel = (category: string, value: string) => {
     if (category === "artifact_type") {
       return `Artifact: ${value}`;
@@ -305,12 +311,20 @@ const NowApplicationDocumentSearch: React.FC<NowApplicationDocumentSearchProps> 
                       {formatArtifactFilterLabel(category, value)}
                     </Tag>
                   ))}
+                  <Button
+                    type="link"
+                    size="small"
+                    className="permit-search__artifact-context-clear-all"
+                    onClick={clearAllArtifactFilters}
+                  >
+                    Clear all
+                  </Button>
                 </Space>
               </Col>
             )}
             <Col span={24}>
               <Row className="permit-search__results-container" gutter={[16, 0]}>
-                <Col span={isAIResponseExpanded ? 8 : 16}>
+                <Col xs={24} lg={isAIResponseExpanded ? 8 : 16}>
                   <SearchResults
                     onFilterChange={(filters) => debouncedSearch(query, filters)}
                     renderItem={(result, onFilterClick, index) => (
@@ -329,7 +343,7 @@ const NowApplicationDocumentSearch: React.FC<NowApplicationDocumentSearchProps> 
                     }}
                   />
                 </Col>
-                <Col span={isAIResponseExpanded ? 16 : 8}>
+                <Col xs={24} lg={isAIResponseExpanded ? 16 : 8}>
                   <Card
                     title="AI-Generated Response"
                     loading={false}

@@ -96,5 +96,6 @@ describe("NowApplicationDocumentSearch", () => {
     expect(screen.getByText("Showing results for:")).toBeInTheDocument();
     expect(screen.getByText("Artifact: table")).toBeInTheDocument();
     expect(screen.getByText("Page: 4")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Clear all" })).toBeInTheDocument();
   });
 });

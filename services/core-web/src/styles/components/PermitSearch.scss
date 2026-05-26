@@ -156,6 +156,10 @@
             margin-bottom: 0;
         }
     }
+
+    &__artifact-context-clear-all {
+        padding: 0;
+    }
 }
 
 // Client-side query term highlight (fallback path when no server highlight snippet).
@@ -187,19 +191,55 @@
     margin-top: 8px;
 }
 
+.now-search__artifact-preview-card {
+    width: auto;
+    padding: 12px;
+}
+
 .now-search__artifact-preview-image {
     display: block;
-    max-width: 100%;
-    border: 1px solid #e8e8e8;
+    width: auto;
+    max-height: 440px;
+    object-fit: contain;
+}
+
+.now-search__artifact-preview-mask {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.now-search__artifact-preview-fallback {
+    display: inline-block;
+    padding: 16px;
+    border: 1px dashed #d9d9d9;
     border-radius: 6px;
+    width: 100%;
+    text-align: center;
     background: #fff;
 }
 
 .now-search__artifact-table {
-    margin-top: 8px;
+    margin-top: 0;
+
+    &-content {
+        margin-top: 4px;
+        overflow-x: auto;
+    }
+
+    &-controls {
+        margin-top: 0;
+
+        &--top {
+            margin-top: 0;
+        }
+    }
+
+    &-title {
+        display: block;
+    }
 
     .permit-search__markdown {
-        margin-top: 4px;
+        margin-top: 0;
         overflow-x: auto;
     }
 }

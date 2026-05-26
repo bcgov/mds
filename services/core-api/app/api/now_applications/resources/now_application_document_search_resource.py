@@ -33,10 +33,10 @@ class NOWApplicationDocumentSearchResource(Resource, UserMixin):
             raise NotFound('Notice of Work application not found.')
 
         request_data = request.json
-        response = NowApplicationSearchService().search(now_application_guid, request_data)
+        response_stream = NowApplicationSearchService().search(now_application_guid, request_data)
 
         return Response(
-            stream_with_context(response.iter_content(chunk_size=1024)),
+            stream_with_context(response_stream),
             mimetype="text/event-stream",
             headers={
                 "Cache-Control": "no-cache",

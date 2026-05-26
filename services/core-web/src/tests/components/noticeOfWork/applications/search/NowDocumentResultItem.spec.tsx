@@ -7,6 +7,21 @@ import { NowDocumentSearchResult } from "@mds/common/interfaces/search/facet-sea
 jest.mock("@mds/common/components/documents/DocumentLink", () => () => <div />);
 jest.mock("@/components/mine/Permit/Search/components/MarkdownViewer", () => () => <div />);
 
+const LARGE_TABLE_MARKDOWN = [
+  "| A | B |",
+  "| - | - |",
+  "| 1 | 2 |",
+  "| 3 | 4 |",
+  "| 5 | 6 |",
+  "| 7 | 8 |",
+  "| 9 | 10 |",
+  "| 11 | 12 |",
+  "| 13 | 14 |",
+  "| 15 | 16 |",
+  "| 17 | 18 |",
+  "| 19 | 20 |",
+].join("\n");
+
 const mockResult: NowDocumentSearchResult = {
   id: "test-id",
   content: "This is a test snippet of document content that should show up in the result item.",
@@ -102,5 +117,80 @@ describe("NowDocumentResultItem", () => {
 
     expect(onFilterClick).toHaveBeenCalledWith("artifact_type", "figure");
     expect(onFilterClick).toHaveBeenCalledWith("artifact_page_number", "7");
+  });
+
+  it("shows artifact-first content and hides raw text by default when artifact exists", () => {
+    const artifactResult = {
+      ...mockResult,
+      meta: {
+        ...mockResult.meta,
+        highlights: null,
+        artifact_type: "table",
+        artifact_page_number: 4,
+        artifact_table_markdown: LARGE_TABLE_MARKDOWN,
+        artifact_presigned_url: "https://example.com/artifact.png",
+      },
+    };
+
+    render(
+      <ReduxWrapper>
+        <NowDocumentResultItem result={artifactResult} />
+      </ReduxWrapper>
+    );
+
+    const image = screen.getByAltText("Artifact preview for Test_Document.pdf");
+    const showMoreButton = screen.getByRole("link", { name: "Show more" });
+    expect(image.compareDocumentPosition(showMoreButton) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(screen.queryByText(/This is a test snippet of document content/i)).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Show raw text" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "View formatted table" })).not.toBeInTheDocument();
+  });
+
+  it("toggles table expansion controls", () => {
+    const artifactResult = {
+      ...mockResult,
+      meta: {
+        ...mockResult.meta,
+        highlights: null,
+        artifact_type: "table",
+        artifact_table_markdown: LARGE_TABLE_MARKDOWN,
+        artifact_presigned_url: "https://example.com/artifact.png",
+      },
+    };
+
+    render(
+      <ReduxWrapper>
+        <NowDocumentResultItem result={artifactResult} />
+      </ReduxWrapper>
+    );
+
+    expect(screen.queryByText("Formatted table")).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("link", { name: "Show more" }));
+    expect(screen.getByRole("link", { name: "Show less" })).toBeInTheDocument();
+    expect(screen.getByText("Formatted table")).toBeInTheDocument();
+  });
+
+  it("shows expansion controls for short tables as well", () => {
+    const artifactResult = {
+      ...mockResult,
+      meta: {
+        ...mockResult.meta,
+        artifact_type: "table",
+        artifact_table_markdown: "| A | B |\n| - | - |\n| 1 | 2 |",
+      },
+    };
+
+    render(
+      <ReduxWrapper>
+        <NowDocumentResultItem result={artifactResult} />
+      </ReduxWrapper>
+    );
+
+    expect(screen.getByRole("link", { name: "Show more" })).toBeInTheDocument();
+    expect(screen.queryByText("Formatted table")).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("link", { name: "Show more" }));
+    expect(screen.getByText("Formatted table")).toBeInTheDocument();
   });
 });

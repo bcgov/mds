@@ -1,8 +1,10 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import { Col, Row, Space, Tag, Typography } from "antd";
+import { DownOutlined, UpOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
 import DocumentLink from "@mds/common/components/documents/DocumentLink";
 import MarkdownViewer from "@/components/mine/Permit/Search/components/MarkdownViewer";
+import ArtifactImagePreview from "@/components/common/ArtifactImagePreview";
 import { NowDocumentSearchResult } from "@mds/common/interfaces/search/facet-search.interface";
 import { useAppSelector } from "@mds/common/redux/rootState";
 import { selectNowSearchQuery } from "@mds/common/redux/slices/nowApplicationSearchSlice";
@@ -72,11 +74,15 @@ const NowDocumentResultItem: React.FC<NowDocumentResultItemProps> = ({
     : null;
 
   const isPermitPackage = document_type?.toLowerCase().includes("permit");
+  const hasArtifactImage = Boolean(artifact_presigned_url);
+  const hasFormattedTable = artifact_type === "table" && Boolean(artifact_table_markdown);
+  const hasArtifactContent = hasArtifactImage || hasFormattedTable;
 
   const formattedDate = submitted_date ? dayjs(submitted_date).format("MMM D, YYYY") : null;
 
   const matchPercent = useMemo(() => normalizeScore(score), [score]);
-  console.log(artifact_presigned_url)
+  const [isTableExpanded, setIsTableExpanded] = useState(false);
+
   return (
     <Row
       id={index !== undefined ? `condition-${index + 1}` : undefined}
@@ -97,34 +103,54 @@ const NowDocumentResultItem: React.FC<NowDocumentResultItemProps> = ({
         </Row>
       </Col>
 
-      {/* Highlighted excerpt */}
-      <Col span={24} className="now-search__highlight-excerpt">
-        {highlightSnippet ? (
-          <MarkdownViewer markdown={highlightSnippet} />
-        ) : (
-          <Typography.Text type="secondary">
-            {highlightTerms(
-              content.length > 400 ? `${content.substring(0, 400)}…` : content,
-              query
-            )}
-          </Typography.Text>
-        )}
-      </Col>
-
-      {artifact_presigned_url && (
+      {hasArtifactImage && (
         <Col span={24} className="now-search__artifact-preview-image-wrap">
-          <img
+          <ArtifactImagePreview
             src={artifact_presigned_url}
             alt={`Artifact preview for ${document_name}`}
-            className="now-search__artifact-preview-image"
+            imageClassName="now-search__artifact-preview-image"
+            wrapperClassName="now-search__artifact-preview-card"
           />
         </Col>
       )}
 
-      {artifact_type === "table" && artifact_table_markdown && (
+      {hasFormattedTable && (
         <Col span={24} className="now-search__artifact-table">
-          <Typography.Text strong>Formatted table</Typography.Text>
-          <MarkdownViewer markdown={artifact_table_markdown} />
+          <div className="now-search__artifact-table-controls now-search__artifact-table-controls--top">
+            <Typography.Link
+              className="margin-none"
+              onClick={() => setIsTableExpanded((expanded) => !expanded)}
+            >
+              <span>{isTableExpanded ? "Show less " : "Show more "}</span>
+              {isTableExpanded ? <UpOutlined /> : <DownOutlined />}
+            </Typography.Link>
+          </div>
+          {isTableExpanded && (
+            <>
+              <Typography.Text strong className="now-search__artifact-table-title">
+                Formatted table
+              </Typography.Text>
+              <div className="now-search__artifact-table-content">
+                <MarkdownViewer markdown={artifact_table_markdown as string} />
+              </div>
+            </>
+          )}
+        </Col>
+      )}
+
+      {/* Only show OCR/highlight text when there is no artifact content. */}
+      {!hasArtifactContent && (
+        <Col span={24} className="now-search__highlight-excerpt">
+          {highlightSnippet ? (
+            <MarkdownViewer markdown={highlightSnippet} />
+          ) : (
+            <Typography.Text type="secondary">
+              {highlightTerms(
+                content.length > 400 ? `${content.substring(0, 400)}…` : content,
+                query
+              )}
+            </Typography.Text>
+          )}
         </Col>
       )}
 
