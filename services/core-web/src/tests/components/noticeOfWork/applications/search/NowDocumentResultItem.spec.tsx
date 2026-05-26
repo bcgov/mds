@@ -1,5 +1,5 @@
 import React from "react";
-import { render } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import NowDocumentResultItem from "@/components/noticeOfWork/applications/search/NowDocumentResultItem";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 import { NowDocumentSearchResult } from "@mds/common/interfaces/search/facet-search.interface";
@@ -58,5 +58,49 @@ describe("NowDocumentResultItem", () => {
       </ReduxWrapper>
     );
     expect(container).toMatchSnapshot();
+  });
+
+  it("renders artifact chips when artifact metadata is present", () => {
+    const artifactResult = {
+      ...mockResult,
+      meta: {
+        ...mockResult.meta,
+        artifact_type: "table",
+        artifact_page_number: 4,
+      },
+    };
+
+    render(
+      <ReduxWrapper>
+        <NowDocumentResultItem result={artifactResult} />
+      </ReduxWrapper>
+    );
+
+    expect(screen.getByText("Table")).toBeInTheDocument();
+    expect(screen.getByText("Page 4")).toBeInTheDocument();
+  });
+
+  it("invokes onFilterClick for artifact chips", () => {
+    const onFilterClick = jest.fn();
+    const artifactResult = {
+      ...mockResult,
+      meta: {
+        ...mockResult.meta,
+        artifact_type: "figure",
+        artifact_page_number: 7,
+      },
+    };
+
+    render(
+      <ReduxWrapper>
+        <NowDocumentResultItem result={artifactResult} onFilterClick={onFilterClick} />
+      </ReduxWrapper>
+    );
+
+    fireEvent.click(screen.getByText("Figure"));
+    fireEvent.click(screen.getByText("Page 7"));
+
+    expect(onFilterClick).toHaveBeenCalledWith("artifact_type", "figure");
+    expect(onFilterClick).toHaveBeenCalledWith("artifact_page_number", "7");
   });
 });

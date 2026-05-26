@@ -15,7 +15,7 @@ def test_document_chunker_run():
     )
     
     documents = [
-        Document(content=json.dumps({"text": "This is a long enough paragraph to be indexed. It has more than 50 characters."})),
+        Document(content=json.dumps({"text": "This is a long enough paragraph to be indexed. It has more than 50 characters."}), meta={"page": 3}),
         Document(content=json.dumps({"text": "Short"})),
         Document(content="This is another long enough paragraph that is not JSON encoded. It should also be handled.")
     ]
@@ -31,10 +31,15 @@ def test_document_chunker_run():
     assert chunk1["document_type"] == "Technical Report"
     assert chunk1["submitted_date"] == "2023-01-01"
     assert chunk1["now_application_guid"] == "now_guid"
+    assert chunk1["artifact_type"] == "text"
+    assert chunk1["artifact_id"] is None
+    assert chunk1["artifact_page_number"] == 3
     
     chunk2 = result["chunks"][1]
     assert chunk2["content"] == "This is another long enough paragraph that is not JSON encoded. It should also be handled."
     assert chunk2["document_manager_guid"] == "doc_guid"
+    assert chunk2["artifact_type"] == "text"
+    assert chunk2["artifact_page_number"] is None
 
 def test_document_chunker_make_id():
     chunker = DocumentChunker()

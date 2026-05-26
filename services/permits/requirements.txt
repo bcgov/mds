@@ -12,6 +12,7 @@ fastapi==0.115.6
 anyio==4.7.0
 flagsmith==3.8.0
 Pillow==10.3.0
+PyMuPDF==1.24.10
 pyyaml==6.0.1
 json-repair==0.25.3
 natsort==8.4.0

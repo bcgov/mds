@@ -1,13 +1,14 @@
 import io
 import json
 import os
+from typing import Iterator
 
 import requests
 from app.api.services.document_manager_service import DocumentManagerService
 from app.config import Config
 from authlib.integrations.requests_client import OAuth2Session
 from flask import current_app
-from werkzeug.exceptions import InternalServerError
+from werkzeug.exceptions import BadGateway, InternalServerError
 
 
 class NowApplicationSearchService:
@@ -19,6 +20,7 @@ class NowApplicationSearchService:
     can enforce the isolation filter — it is never derived from request body content.
     """
     _oidc_configuration = None
+    _docman_base_url = None
 
     @property
     def oidc_configuration(self):
@@ -30,6 +32,12 @@ class NowApplicationSearchService:
     @property
     def search_base(self):
         return f'{Config.PERMITS_ENDPOINT}/document_search'
+
+    @property
+    def docman_base_url(self):
+        if self._docman_base_url is None:
+            self._docman_base_url = (Config.DOCUMENT_MANAGER_URL or '').rstrip('/')
+        return self._docman_base_url
 
     @property
     def session(self):
@@ -46,7 +54,9 @@ class NowApplicationSearchService:
     def search(self, now_application_guid: str, search_params: dict):
         """
         Performs a streaming search against the permits service scoped to a single
-        NoW application. Returns the raw streaming response for the caller to proxy.
+        NoW application. Returns a transformed SSE stream where artifact hits are
+        enriched with a pre-authenticated Document Manager URL generated from
+        artifact_document_manager_guid.
         """
         current_app.logger.info(
             'Searching NoW application documents for guid=%s, query=%r',
@@ -67,7 +77,117 @@ class NowApplicationSearchService:
             now_application_guid,
             response.status_code,
         )
-        return response
+        if not response.ok:
+            current_app.logger.error(
+                'Permits service returned %d searching NoW application %s: %s',
+                response.status_code,
+                now_application_guid,
+                response.text,
+            )
+            raise BadGateway('Could not search NoW application documents in the permits service')
+
+        return self._iter_enriched_sse(response)
+
+    def _iter_enriched_sse(self, upstream_response) -> Iterator[bytes]:
+        token_cache = {}
+        event_lines = []
+
+        try:
+            for raw_line in upstream_response.iter_lines(decode_unicode=True):
+                if raw_line is None:
+                    continue
+
+                if raw_line == "":
+                    if event_lines:
+                        enriched_lines = self._enrich_documents_event(event_lines, token_cache)
+                        yield ("\n".join(enriched_lines) + "\n\n").encode("utf-8")
+                        event_lines = []
+                    else:
+                        yield b"\n"
+                    continue
+
+                event_lines.append(raw_line)
+
+            if event_lines:
+                enriched_lines = self._enrich_documents_event(event_lines, token_cache)
+                yield ("\n".join(enriched_lines) + "\n\n").encode("utf-8")
+        finally:
+            upstream_response.close()
+
+    def _enrich_documents_event(self, event_lines: list[str], token_cache: dict) -> list[str]:
+        event_type = None
+        data_lines = []
+
+        for line in event_lines:
+            if line.startswith("event:"):
+                event_type = line.split(":", 1)[1].strip()
+            elif line.startswith("data:"):
+                data_lines.append(line.split(":", 1)[1].lstrip())
+
+        if event_type != "documents" or not data_lines:
+            return event_lines
+
+        try:
+            payload = json.loads("\n".join(data_lines))
+        except (json.JSONDecodeError, TypeError):
+            return event_lines
+
+        documents = payload.get("documents")
+        if not isinstance(documents, list):
+            return event_lines
+
+        for document in documents:
+            meta = document.get("meta")
+            if not isinstance(meta, dict):
+                continue
+
+            artifact_document_manager_guid = meta.get("artifact_document_manager_guid")
+            if not artifact_document_manager_guid:
+                continue
+
+            token = token_cache.get(artifact_document_manager_guid)
+            if token is None:
+                token = str(DocumentManagerService.create_download_token(artifact_document_manager_guid))
+                token_cache[artifact_document_manager_guid] = token
+
+            if self.docman_base_url:
+                meta["artifact_presigned_url"] = self._resolve_artifact_presigned_url(token)
+
+        enriched_payload = json.dumps(payload)
+        rewritten_lines = []
+        data_written = False
+        for line in event_lines:
+            if line.startswith("data:"):
+                if not data_written:
+                    rewritten_lines.append(f"data: {enriched_payload}")
+                    data_written = True
+                continue
+            rewritten_lines.append(line)
+
+        if not data_written:
+            rewritten_lines.append(f"data: {enriched_payload}")
+
+        return rewritten_lines
+
+    def _resolve_artifact_presigned_url(self, token: str) -> str:
+        fallback_url = f"{self.docman_base_url}/documents?token={token}"
+        try:
+            response = requests.get(
+                f"{self.docman_base_url}/documents",
+                params={"token": token, "presigned_url": "true"},
+                timeout=10,
+            )
+            response.raise_for_status()
+            payload = response.json() if response.content else {}
+            presigned_url = payload.get("url") if isinstance(payload, dict) else None
+            if isinstance(presigned_url, str) and presigned_url:
+                return presigned_url
+            current_app.logger.warning("Docman presigned URL response did not include a usable url field.")
+        except requests.RequestException as exc:
+            current_app.logger.warning("Failed to fetch docman presigned URL, using token URL fallback: %s", exc)
+        except ValueError as exc:
+            current_app.logger.warning("Invalid JSON from docman presigned URL endpoint, using token URL fallback: %s", exc)
+        return fallback_url
 
     def cancel_indexing(self, now_application_guid: str) -> dict:
         """Revokes the active Celery indexing task for the given NoW application."""

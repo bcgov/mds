@@ -143,6 +143,19 @@
     &__result-meta {
         margin-bottom: 8px;
     }
+
+    &__artifact-tag {
+        font-size: 12px;
+    }
+
+    &__artifact-context-row {
+        margin-top: -8px;
+
+        .ant-tag {
+            margin-inline-end: 0;
+            margin-bottom: 0;
+        }
+    }
 }
 
 // Client-side query term highlight (fallback path when no server highlight snippet).
@@ -167,5 +180,26 @@
         font-weight: 600;
         padding: 0 2px;
         border-radius: 2px;
+    }
+}
+
+.now-search__artifact-preview-image-wrap {
+    margin-top: 8px;
+}
+
+.now-search__artifact-preview-image {
+    display: block;
+    max-width: 100%;
+    border: 1px solid #e8e8e8;
+    border-radius: 6px;
+    background: #fff;
+}
+
+.now-search__artifact-table {
+    margin-top: 8px;
+
+    .permit-search__markdown {
+        margin-top: 4px;
+        overflow-x: auto;
     }
 }

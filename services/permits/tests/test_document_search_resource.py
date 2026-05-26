@@ -278,6 +278,29 @@ class TestDocumentSearchResource:
         assert "Invalid API key" in events[1].data
 
     @pytest.mark.asyncio
+    async def test_process_documents_preserves_artifact_document_manager_guid(self):
+        doc = MagicMock()
+        doc.id = "doc-1"
+        doc.content = "figure content"
+        doc.meta = {
+            "artifact_type": "figure",
+            "artifact_document_manager_guid": "artifact-guid-123",
+        }
+        doc.score = 0.9
+
+        events = []
+        async for event in _process_documents([doc]):
+            events.append(event)
+
+        assert len(events) == 2
+        payload = json.loads(events[0].data)
+        assert (
+            payload["documents"][0]["meta"]["artifact_document_manager_guid"]
+            == "artifact-guid-123"
+        )
+        assert "artifact_presigned_url" not in payload["documents"][0]["meta"]
+
+    @pytest.mark.asyncio
     async def test_index_now_application_documents_no_client(self, valid_guid):
         with patch("app.pipelines.document_search.resources.document_search_resource.now_document_search_search_client", None):
             with pytest.raises(HTTPException) as exc:
@@ -319,5 +342,3 @@ class TestDocumentSearchResource:
             with pytest.raises(HTTPException) as exc:
                 await get_indexing_status(valid_guid)
             assert exc.value.status_code == 503
-
-

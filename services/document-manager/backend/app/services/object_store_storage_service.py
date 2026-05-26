@@ -101,6 +101,26 @@ class ObjectStoreStorageService():
         except ClientError as e:
             raise Exception(f'Failed to download the file: {e}')
 
+    def generate_download_presigned_url(self, path, display_name, as_attachment, version_id=None, expires_in=300):
+        try:
+            disposition_prefix = 'attachment; ' if as_attachment else ''
+            params = {
+                'Bucket': Config.OBJECT_STORE_BUCKET,
+                'Key': path,
+                'ResponseContentDisposition': f'{disposition_prefix}filename={display_name}',
+            }
+            if version_id:
+                params['VersionId'] = version_id
+
+            return self._client.generate_presigned_url(
+                ClientMethod='get_object',
+                HttpMethod='GET',
+                ExpiresIn=expires_in,
+                Params=params,
+            )
+        except ClientError as e:
+            raise Exception(f'Failed to generate pre-signed download url: {e}')
+
     def upload_file(self, filename, progress=False):
         key = f'{Config.S3_PREFIX}{filename[1:]}'
 
@@ -366,14 +386,19 @@ class ObjectStoreStorageService():
             Callback=zip_upload_progress_callback
         )
 
-    def create_multipart_upload(self, key, file_size):
+    def create_multipart_upload(self, key, file_size, content_type='application/octet-stream'):
         """
         Create a multipart upload for a file at the given key
         :param key: The key of the file
         :param file_size: The size of the file to upload
         """
         try:
-            upload = self._client.create_multipart_upload(Bucket=Config.OBJECT_STORE_BUCKET, Key=key, Expires=datetime.now() + timedelta(days=1), ContentType='application/pdf')
+            upload = self._client.create_multipart_upload(
+                Bucket=Config.OBJECT_STORE_BUCKET,
+                Key=key,
+                Expires=datetime.now() + timedelta(days=1),
+                ContentType=content_type,
+            )
 
             upload_id = upload['UploadId']
             parts = self.create_multipart_upload_urls(key, upload_id, file_size)

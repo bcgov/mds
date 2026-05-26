@@ -235,6 +235,32 @@ const NowApplicationDocumentSearch: React.FC<NowApplicationDocumentSearchProps> 
     [nowApplicationGuid]
   );
 
+  const artifactFilters = useMemo(
+    () =>
+      selectedFilters.filter(
+        ({ category }) =>
+          category === "artifact_type" || category === "artifact_page_number"
+      ),
+    [selectedFilters]
+  );
+
+  const clearArtifactFilter = (category: string, value: string) => {
+    const updatedFilters = selectedFilters.filter(
+      (filter) => !(filter.category === category && filter.value === value)
+    );
+    debouncedSearch(query, updatedFilters);
+  };
+
+  const formatArtifactFilterLabel = (category: string, value: string) => {
+    if (category === "artifact_type") {
+      return `Artifact: ${value}`;
+    }
+    if (category === "artifact_page_number") {
+      return `Page: ${value}`;
+    }
+    return value;
+  };
+
   return (
     <Layout className="permit-search__layout">
       <Layout.Content className="permit-search__content">
@@ -263,6 +289,25 @@ const NowApplicationDocumentSearch: React.FC<NowApplicationDocumentSearchProps> 
             <Col span={24}>
               <SearchBox onSearch={(q) => debouncedSearch(q, selectedFilters)} loading={loading} />
             </Col>
+            {artifactFilters.length > 0 && (
+              <Col span={24} className="permit-search__artifact-context-row">
+                <Space wrap align="center" size={[8, 8]}>
+                  <Typography.Text type="secondary">Showing results for:</Typography.Text>
+                  {artifactFilters.map(({ category, value }) => (
+                    <Tag
+                      key={`artifact-context-${category}-${value}`}
+                      closable
+                      onClose={(event) => {
+                        event.preventDefault();
+                        clearArtifactFilter(category, value);
+                      }}
+                    >
+                      {formatArtifactFilterLabel(category, value)}
+                    </Tag>
+                  ))}
+                </Space>
+              </Col>
+            )}
             <Col span={24}>
               <Row className="permit-search__results-container" gutter={[16, 0]}>
                 <Col span={isAIResponseExpanded ? 8 : 16}>
@@ -288,9 +333,8 @@ const NowApplicationDocumentSearch: React.FC<NowApplicationDocumentSearchProps> 
                   <Card
                     title="AI-Generated Response"
                     loading={false}
-                    className={`permit-search__ai-response ${
-                      isAIResponseExpanded ? "permit-search__ai-response--expanded" : ""
-                    }`}
+                    className={`permit-search__ai-response ${isAIResponseExpanded ? "permit-search__ai-response--expanded" : ""
+                      }`}
                   >
                     <FontAwesomeIcon
                       icon={isAIResponseExpanded ? faCompress : faExpand}

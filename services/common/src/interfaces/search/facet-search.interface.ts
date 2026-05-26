@@ -22,6 +22,7 @@ export interface HaystackDocumentMeta {
     }
     tenure: string[];
     verification_status: string;
+    artifact_presigned_url: string
 }
 
 export interface ContextItem {
@@ -53,6 +54,11 @@ export interface NowDocumentMeta {
     document_manager_guid: string;
     document_name: string;
     document_type: string;
+    artifact_type?: string;
+    artifact_id?: string;
+    artifact_page_number?: number;
+    artifact_table_markdown?: string;
+    artifact_presigned_url?: string;
     submitted_date: string | null;
     highlights?: {
         content?: string[];

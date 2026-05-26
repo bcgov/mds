@@ -120,6 +120,9 @@ def create_indexer():
             FieldMapping(source_field_name="/document/document_name", target_field_name="document_name"),
             FieldMapping(source_field_name="/document/document_type", target_field_name="document_type"),
             FieldMapping(source_field_name="/document/submitted_date", target_field_name="submitted_date"),
+            FieldMapping(source_field_name="/document/artifact_type", target_field_name="artifact_type"),
+            FieldMapping(source_field_name="/document/artifact_id", target_field_name="artifact_id"),
+            FieldMapping(source_field_name="/document/artifact_page_number", target_field_name="artifact_page_number"),
             FieldMapping(source_field_name="/document/embedding", target_field_name="embedding"),
         ],
     )

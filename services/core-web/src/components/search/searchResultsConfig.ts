@@ -56,7 +56,7 @@ export const FACET_GROUPS: FacetGroup[] = [
     label: "NoW Filters",
     icon: React.createElement(FileSearchOutlined),
     color: "#0288d1",
-    facets: ["now_application_status", "now_type"]
+    facets: ["now_application_status", "now_type", "artifact_type", "artifact_page_number"]
   },
   {
     key: "nod",
@@ -84,6 +84,8 @@ export const FACET_LABELS: Record<string, string> = {
   nod_status: "Status",
   now_application_status: "Status",
   now_type: "Type",
+  artifact_type: "Artifact Type",
+  artifact_page_number: "Artifact Page",
 };
 
 export interface SearchFacets {
@@ -103,5 +105,7 @@ export interface SearchFacets {
   nod_status?: FacetBucket[];
   now_application_status?: FacetBucket[];
   now_type?: FacetBucket[];
+  artifact_type?: FacetBucket[];
+  artifact_page_number?: FacetBucket[];
   type?: FacetBucket[];
 }

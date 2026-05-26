@@ -36,6 +36,13 @@ class MineDocument(SoftDeleteMixin, AuditMixin, Base):
 
     mine_document_bundle_id = db.Column(db.String, db.ForeignKey('mine_document_bundle.bundle_id'))
     mine_document_bundle = db.relationship('MineDocumentBundle', back_populates='bundle_documents', uselist=False)
+    artifacts = db.relationship(
+        'MineDocumentArtifact',
+        lazy='select',
+        back_populates='mine_document',
+        primaryjoin='and_(MineDocumentArtifact.mine_document_guid == MineDocument.mine_document_guid, MineDocumentArtifact.deleted_ind==False)',
+    )
+    table_artifacts = artifacts
 
     major_mine_application_document_xref = db.relationship(
         'MajorMineApplicationDocumentXref',
@@ -76,6 +83,11 @@ class MineDocument(SoftDeleteMixin, AuditMixin, Base):
     @classmethod
     def find_by_mine_document_guid(cls, mine_document_guid):
         return cls.query.filter_by(mine_document_guid=mine_document_guid).filter_by(
+            deleted_ind=False).first()
+
+    @classmethod
+    def find_by_document_manager_guid(cls, document_manager_guid):
+        return cls.query.filter_by(document_manager_guid=document_manager_guid).filter_by(
             deleted_ind=False).first()
 
     @classmethod

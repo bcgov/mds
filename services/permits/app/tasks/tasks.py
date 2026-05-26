@@ -1,6 +1,7 @@
 import logging
 import os
 from contextlib import contextmanager
+from typing import Dict, List
 
 from app.celery import celery_app
 from app.common.types.context import context
@@ -13,11 +14,36 @@ from app.pipelines.document_search.indexing import (
 from app.pipelines.document_search.document_search_pipeline import (
     now_document_search_search_client,
 )
+from app.pipelines.document_search.artifact_registration_client import (
+    register_document_artifacts,
+)
 from app.pipelines.permit_condition_extraction.permit_condition_pipeline import (
     permit_condition_pipeline,
 )
 
 logger = logging.getLogger(__name__)
+
+
+def _enrich_artifact_chunks_with_uploaded_documents(chunks: List[dict], artifact_documents: List[dict]) -> None:
+    artifact_documents_by_id: Dict[str, dict] = {
+        (artifact_doc.get('artifact_id') or ''): artifact_doc
+        for artifact_doc in (artifact_documents or [])
+        if artifact_doc.get('artifact_id')
+    }
+    if not artifact_documents_by_id:
+        return
+
+    for chunk in chunks:
+        artifact_id = chunk.get('artifact_id')
+        if not artifact_id:
+            continue
+
+        artifact_doc = artifact_documents_by_id.get(artifact_id)
+        if not artifact_doc:
+            continue
+
+        chunk['artifact_document_manager_guid'] = artifact_doc.get('document_manager_guid')
+        chunk['artifact_object_store_path'] = artifact_doc.get('object_store_path')
 
 
 @contextmanager
@@ -63,6 +89,12 @@ def run_now_document_indexing(self, now_application_guid: str, tmp_paths: list, 
         logger.info("Indexing task started for NoW application %s (%d files)", now_application_guid, total_files)
 
         all_chunks = []
+        artifact_upload_totals = {
+            'candidates': 0,
+            'uploaded': 0,
+            'skipped': 0,
+            'failed': 0,
+        }
         for idx, (tmp_path, doc_meta) in enumerate(zip(tmp_paths, doc_metadata_list)):
             doc_guid = doc_meta.get("document_manager_guid", "")
 
@@ -81,8 +113,37 @@ def run_now_document_indexing(self, now_application_guid: str, tmp_paths: list, 
                 "files_processed": idx,
                 "total_files": total_files,
             })
-            chunks = extract_and_chunk_file(tmp_path, now_application_guid, doc_meta)
+            chunks, artifacts = extract_and_chunk_file(tmp_path, now_application_guid, doc_meta)
             all_chunks.extend(chunks)
+
+            if artifacts:
+                registration_result = register_document_artifacts(
+                    source_document_manager_guid=doc_meta.get('document_manager_guid'),
+                    mine_guid=doc_meta.get('mine_guid'),
+                    now_application_guid=now_application_guid,
+                    now_application_document_xref_guid=doc_meta.get('now_application_document_xref_guid'),
+                    artifacts=artifacts,
+                    include_upload_stats=True,
+                )
+                if isinstance(registration_result, dict):
+                    upload_stats = registration_result.get('upload_stats') or {}
+                    for key in artifact_upload_totals:
+                        artifact_upload_totals[key] += int(upload_stats.get(key, 0) or 0)
+
+                    _enrich_artifact_chunks_with_uploaded_documents(
+                        all_chunks,
+                        registration_result.get('artifact_documents') or [],
+                    )
+
+                    callback_payload = registration_result.get('callback') or {}
+                    if callback_payload.get('status') == 'partial':
+                        rejected = (callback_payload.get('counts') or {}).get('rejected', 0)
+                        logger.warning(
+                            "Artifact registration partial for document %s in NoW application %s (rejected=%s)",
+                            doc_meta.get('document_manager_guid'),
+                            now_application_guid,
+                            rejected,
+                        )
 
         if not all_chunks:
             logger.warning("No indexable content found for NoW application %s", now_application_guid)
@@ -113,8 +174,21 @@ def run_now_document_indexing(self, now_application_guid: str, tmp_paths: list, 
 
         succeeded = push_to_index(now_document_search_search_client, chunks_with_embeddings, on_progress=on_push_progress)
 
-        logger.info("Indexed %d/%d chunks for NoW application %s", succeeded, total_chunks, now_application_guid)
-        return {"succeeded": succeeded, "chunk_count": total_chunks}
+        logger.info(
+            "Indexed %d/%d chunks for NoW application %s (artifact uploads: candidates=%d uploaded=%d skipped=%d failed=%d)",
+            succeeded,
+            total_chunks,
+            now_application_guid,
+            artifact_upload_totals['candidates'],
+            artifact_upload_totals['uploaded'],
+            artifact_upload_totals['skipped'],
+            artifact_upload_totals['failed'],
+        )
+        return {
+            "succeeded": succeeded,
+            "chunk_count": total_chunks,
+            "artifact_uploads": artifact_upload_totals,
+        }
 
     finally:
         for path in tmp_paths:

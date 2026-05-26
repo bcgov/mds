@@ -70,6 +70,9 @@ class DocumentChunker:
                 # None is stored as null in Azure Search (DateTimeOffset field);
                 # empty string would cause a type error.
                 "submitted_date": metadata.submitted_date or None,
+                "artifact_type": "text",
+                "artifact_id": None,
+                "artifact_page_number": doc.meta.get("page") if getattr(doc, "meta", None) else None,
             })
             chunk_index += 1
 
