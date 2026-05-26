@@ -255,46 +255,17 @@
             ],
             "children": [
                 {
-                    "table": "mine_permit_xref",
+                    "table": "mine",
                     "columns": [
                         "mine_guid",
-                        "permit_id"
-                    ],
-                    "children": [
-                        {
-                            "table": "mine",
-                            "columns": [
-                                "mine_guid",
-                                "mine_name",
-                                "mine_no"
-                            ],
-                            "label": "mine",
-                            "relationship": {
-                                "type": "one_to_one",
-                                "variant": "object",
-                                "foreign_key": {
-                                    "child": [
-                                        "mine_guid"
-                                    ],
-                                    "parent": [
-                                        "mine_guid"
-                                    ]
-                                }
-                            }
-                        }
+                        "mine_name",
+                        "mine_no"
                     ],
                     "label": "mine_guids",
                     "relationship": {
                         "type": "one_to_many",
-                        "variant": "object",
-                        "foreign_key": {
-                            "child": [
-                                "permit_id"
-                            ],
-                            "parent": [
-                                "permit_id"
-                            ]
-                        }
+                        "through_tables": ["mine_permit_xref"],
+                        "variant": "object"
                     }
                 }
             ]

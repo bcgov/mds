@@ -129,8 +129,8 @@ class TestSimpleSearchService:
         """Test extracting mine_guid from permit document."""
         source = {
             'mine_guids': [
-                {'mine_guid': 'def-456', 'permit_id': 1, 'mine': {'mine_guid': 'def-456', 'mine_name': 'Test Mine', 'mine_no': 'M-001'}},
-                {'mine_guid': 'ghi-789', 'permit_id': 1, 'mine': {'mine_guid': 'ghi-789', 'mine_name': 'Other Mine', 'mine_no': 'M-002'}},
+                {'mine_guid': 'def-456', 'mine_name': 'Test Mine', 'mine_no': 'M-001'},
+                {'mine_guid': 'ghi-789', 'mine_name': 'Other Mine', 'mine_no': 'M-002'},
             ],
             'permit_no': 'P-001'
         }
