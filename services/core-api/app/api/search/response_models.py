@@ -22,6 +22,7 @@ SIMPLE_SEARCH_MODEL = api.model('SimpleSearchResult', {
     'description': fields.String,
     'highlight': fields.String,
     'mine_guid': fields.String,
+    'mines': fields.List(fields.Nested(MINE_MODEL))
 })
 
 MINE_MODEL = api.model('Mine_simple ', {

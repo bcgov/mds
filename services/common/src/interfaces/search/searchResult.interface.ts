@@ -16,6 +16,10 @@ export interface ISimpleSearchResult {
   description?: string;
   highlight?: string;
   mine_guid?: string;
+  mines?: {
+    mine_guid: string;
+    mine_name: string;
+  }[];
 }
 
 export interface IExplosivesPermitSearchResult {
