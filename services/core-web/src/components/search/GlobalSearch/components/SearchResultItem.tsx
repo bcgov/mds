@@ -79,9 +79,13 @@ export const SearchResultItem: React.FC<SearchResultItemProps> = ({
                   </>
                 }
               >
-                <span onClick={(e) => e.stopPropagation()}>
+                <button
+                  type="button"
+                  onClick={(e) => e.stopPropagation()}
+                  style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', color: 'inherit', font: 'inherit' }} // Strip all styling, keep as inline text
+                >
                   Associated with {item.result.mines.length} Mines
-                </span>
+                </button>
               </Popover>
             )}
           </>
