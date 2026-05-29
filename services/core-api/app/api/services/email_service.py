@@ -318,7 +318,8 @@ class EmailService():
                    # Email tracking parameters
                    reference_id=None,
                    reference_table=None,
-                   reference_email_type=None):
+                   reference_email_type=None,
+                   distribution_list_guid=None):
         '''Sends an email.'''
 
         # Validate enum parameters.
@@ -363,6 +364,7 @@ class EmailService():
             'email_template_name': None,
             'reference_email_type': reference_email_type,
             'email_subject': subject,
+            'distribution_list_guid': distribution_list_guid,
         }
 
         # Create tracking records for all recipient types
@@ -458,7 +460,8 @@ class EmailService():
                             # Email tracking parameters
                             reference_id=None,
                             reference_table=None,
-                            reference_email_type=None):
+                            reference_email_type=None,
+                            distribution_list_guid=None):
         '''Sends an email using Jinja2 template rendering.
 
         Args:
@@ -526,6 +529,7 @@ class EmailService():
             'email_template_name': email_template_name,
             'reference_email_type': reference_email_type if reference_email_type else email_template_name,
             'email_subject': subject,
+            'distribution_list_guid': distribution_list_guid,
         }
 
         # Create tracking records for all recipient types
