@@ -231,11 +231,24 @@ class NoticeOfDeparture(SoftDeleteMixin, AuditMixin, Base):
         super(NoticeOfDeparture, self).delete()
 
     def nod_submission_email(self):
-        recipients = MAJOR_MINES_NOD_NOTFICATION_EMAILS
-        cc = [MDS_EMAIL]
+        from app.api.ministry_contacts.models.distribution_list import DistributionList
+        from app.api.email_tracking.email_status_tasks import send_email_task
+
+        dl = DistributionList.find_by_name('Notice of Departure')
+        recipients = dl.get_emails() if dl else []
+        distribution_list_guid = str(dl.distribution_list_guid) if dl else None
 
         subject = f'Notice of Departure Submitted for {self.mine.mine_name}'
         body = f'<p>{self.mine.mine_name} (Mine no: {self.mine.mine_no}) has submitted a "Notice of Departure from Approval" report.</p>'
         link = f'{Config.CORE_WEB_URL}/mine-dashboard/{self.mine.mine_guid}/permits-and-approvals/notices-of-departure'
         body += f'<p>View updates in Core: <a href="{link}" target="_blank">{link}</a></p>'
-        EmailService.send_email(subject, recipients, body, cc=cc)
+        
+        send_email_task.apply_async(kwargs={
+            "subject": subject,
+            "recipients": recipients,
+            "body": body,
+            "distribution_list_guid": distribution_list_guid,
+            "reference_id": str(self.nod_guid),
+            "reference_table": "notice_of_departure",
+            "reference_email_type": "nod_submission"
+        })

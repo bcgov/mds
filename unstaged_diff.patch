@@ -1,0 +1,787 @@
+diff --git a/services/common/src/constants/API.ts b/services/common/src/constants/API.ts
+index b94511373..24ddc282c 100644
+--- a/services/common/src/constants/API.ts
++++ b/services/common/src/constants/API.ts
+@@ -50,6 +50,7 @@ export const PROVINCE_CODES = "/parties/sub-division-codes";
+ 
+ // MCM contacts
+ export const MINISTRY_CONTACTS = "/ministry-contacts";
++export const DISTRIBUTION_LISTS = "/ministry-contacts/distribution-lists";
+ export const MINISTRY_CONTACTS_BY_REGION = (region, isMajorMine) =>
+   `/ministry-contacts/${region}/contacts?is_major_mine=${isMajorMine}`;
+ export const MINISTRY_CONTACT = (guid) => `/ministry-contacts/${guid}`;
+diff --git a/services/common/src/redux/slices/minespaceSlice.ts b/services/common/src/redux/slices/minespaceSlice.ts
+index ab59f3754..7152693d9 100644
+--- a/services/common/src/redux/slices/minespaceSlice.ts
++++ b/services/common/src/redux/slices/minespaceSlice.ts
+@@ -16,6 +16,7 @@ interface MinespaceState {
+     minespaceUsersByMine: { [mine_guid: string]: IMinespaceUser[] };
+     minespaceUserMines: IMinespaceUserMine[];
+     MinistryContacts: IMinistryContact[];
++    DistributionLists: any[];
+     MinistryContactsByRegion: IMinistryContact[];
+     currentUserAccessRequest: IMinespaceUser | null | undefined;
+ }
+@@ -25,6 +26,7 @@ const initialState: MinespaceState = {
+     minespaceUsersByMine: {},
+     minespaceUserMines: [],
+     MinistryContacts: [],
++    DistributionLists: [],
+     MinistryContactsByRegion: [],
+     currentUserAccessRequest: undefined,
+ };
+@@ -216,6 +218,30 @@ const minespaceSlice = createAppSlice({
+                 },
+             }
+         ),
++        fetchDistributionLists: create.asyncThunk(
++            async (_: undefined, thunkApi) => {
++                const headers = createRequestHeader();
++                thunkApi.dispatch(showLoading());
++
++                try {
++                    const response = await CustomAxios().get(
++                        `${ENVIRONMENT.apiUrl}${API.DISTRIBUTION_LISTS}`,
++                        headers
++                    );
++                    return response.data;
++                } finally {
++                    thunkApi.dispatch(hideLoading());
++                }
++            },
++            {
++                fulfilled: (state: MinespaceState, action) => {
++                    state.DistributionLists = action.payload.records;
++                },
++                rejected: (state: MinespaceState, action) => {
++                    rejectHandler(action);
++                },
++            }
++        ),
+         fetchMinistryContactsByRegion: create.asyncThunk(
+             async ({ region, isMajorMine }: { region: string; isMajorMine: boolean }, thunkApi) => {
+                 const headers = createRequestHeader();
+@@ -414,6 +440,7 @@ const minespaceSlice = createAppSlice({
+         getMinespaceUsersByMine: (state) => state.minespaceUsersByMine,
+         getMinespaceUserMines: (state) => state.minespaceUserMines,
+         getMinistryContacts: (state) => state.MinistryContacts,
++        getDistributionLists: (state) => state.DistributionLists,
+         getMinistryContactsByRegion: (state) => state.MinistryContactsByRegion,
+         getCurrentUserAccessRequest: (state) => state.currentUserAccessRequest,
+     },
+@@ -424,6 +451,7 @@ export const {
+     getMinespaceUsersByMine,
+     getMinespaceUserMines,
+     getMinistryContacts,
++    getDistributionLists,
+     getMinistryContactsByRegion,
+     getCurrentUserAccessRequest,
+ } = minespaceSlice.selectors;
+@@ -453,6 +481,7 @@ export const {
+     fetchMinespaceUserMines,
+     deleteMinespaceUser,
+     fetchMinistryContacts,
++    fetchDistributionLists,
+     fetchMinistryContactsByRegion,
+     createMinistryContact,
+     updateMinistryContact,
+diff --git a/services/core-api/app/api/email_tracking/email_status_tasks.py b/services/core-api/app/api/email_tracking/email_status_tasks.py
+index 3e6ce21ff..69ffe73ba 100644
+--- a/services/core-api/app/api/email_tracking/email_status_tasks.py
++++ b/services/core-api/app/api/email_tracking/email_status_tasks.py
+@@ -104,4 +104,53 @@ def poll_ches_email_status(self, ches_message_id):
+         else:
+             # (the email might have been delivered, we just can't verify it)
+             current_app.logger.error(f"Max retries reached for CHES status polling: {ches_message_id}")
+-            return {"status": "error", "message": f"Max retries reached: {str(exc)}"}
+\ No newline at end of file
++            return {"status": "error", "message": f"Max retries reached: {str(exc)}"}
++
++@celery.task(base=TaskBase, bind=True, max_retries=3, default_retry_delay=60)
++def send_email_task(self, subject, recipients, body, sender=None, cc=None, bcc=None, distribution_list_guid=None, **kwargs):
++    """
++    Celery task to send a standard email asynchronously.
++    """
++    try:
++        if sender is None:
++            from app.config import Config
++            sender = Config.MDS_NO_REPLY_EMAIL
++        
++        EmailService.send_email(
++            subject=subject,
++            recipients=recipients,
++            body=body,
++            sender=sender,
++            cc=cc,
++            bcc=bcc,
++            **kwargs
++        )
++        return {"status": "success"}
++    except Exception as exc:
++        current_app.logger.error(f"Error sending email async: {str(exc)}")
++        raise self.retry(exc=exc)
++
++@celery.task(base=TaskBase, bind=True, max_retries=3, default_retry_delay=60)
++def send_template_email_task(self, subject, recipients, template_path, context, sender=None, cc=None, bcc=None, distribution_list_guid=None, **kwargs):
++    """
++    Celery task to send a template email asynchronously.
++    """
++    try:
++        if sender is None:
++            from app.config import Config
++            sender = Config.MDS_NO_REPLY_EMAIL
++            
++        EmailService.send_template_email(
++            subject=subject,
++            recipients=recipients,
++            template_path=template_path,
++            context=context,
++            sender=sender,
++            cc=cc,
++            bcc=bcc,
++            **kwargs
++        )
++        return {"status": "success"}
++    except Exception as exc:
++        current_app.logger.error(f"Error sending template email async: {str(exc)}")
++        raise self.retry(exc=exc)
+\ No newline at end of file
+diff --git a/services/core-api/app/api/email_tracking/models/email_tracking.py b/services/core-api/app/api/email_tracking/models/email_tracking.py
+index e1519db0c..b25317ca0 100644
+--- a/services/core-api/app/api/email_tracking/models/email_tracking.py
++++ b/services/core-api/app/api/email_tracking/models/email_tracking.py
+@@ -57,6 +57,8 @@ class EmailTracking(AuditMixin, Base):
+     ches_message_id = db.Column(UUID(as_uuid=True))
+     ches_transaction_id = db.Column(UUID(as_uuid=True))
+ 
++    distribution_list_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('distribution_list.distribution_list_guid'), nullable=True)
++
+     retry_count = db.Column(db.Integer, default=0)
+     max_retries = db.Column(db.Integer, default=3)
+ 
+@@ -71,6 +73,7 @@ class EmailTracking(AuditMixin, Base):
+                recipient_name=None,
+                recipient_type=RecipientType.primary,
+                max_retries=3,
++               distribution_list_guid=None,
+                add_to_session=True):
+         new_email_tracking = cls(
+             reference_id=reference_id,
+@@ -82,6 +85,7 @@ class EmailTracking(AuditMixin, Base):
+             recipient_name=recipient_name,
+             recipient_type=recipient_type,
+             max_retries=max_retries,
++            distribution_list_guid=distribution_list_guid,
+             email_status=EmailStatus.pending
+         )
+ 
+diff --git a/services/core-api/app/api/incidents/models/mine_incident.py b/services/core-api/app/api/incidents/models/mine_incident.py
+index 7b849d6c5..004cebe47 100644
+--- a/services/core-api/app/api/incidents/models/mine_incident.py
++++ b/services/core-api/app/api/incidents/models/mine_incident.py
+@@ -275,7 +275,12 @@ class MineIncident(SoftDeleteMixin, AuditMixin, Base):
+         return value
+ 
+     def send_incidents_email(self):
+-        ministry_recipients = [INCIDENTS_EMAIL]
++        from app.api.ministry_contacts.models.distribution_list import DistributionList
++        from app.api.email_tracking.email_status_tasks import send_template_email_task
++
++        dl = DistributionList.find_by_name('Incidents')
++        ministry_recipients = dl.get_emails() if dl else []
++        distribution_list_guid = str(dl.distribution_list_guid) if dl else None
+         cc = None
+         minespace_recipients = [self.reported_by_email]
+         duration = self.reported_timestamp - self.incident_timestamp
+@@ -312,8 +317,27 @@ class MineIncident(SoftDeleteMixin, AuditMixin, Base):
+             },
+             "minespace_incident_link": f'{Config.MINESPACE_PROD_URL}/mines/{self.mine.mine_guid}/incidents/{self.mine_incident_guid}',
+         }
+-        EmailService.send_template_email(subject, ministry_recipients, ministry_template, ministry_context, cc=cc)
+-        EmailService.send_template_email(subject, minespace_recipients, minespace_template, minespace_context, cc=cc)
++        send_template_email_task.apply_async(kwargs={
++            "subject": subject,
++            "recipients": ministry_recipients,
++            "template_path": ministry_template,
++            "context": ministry_context,
++            "cc": cc,
++            "distribution_list_guid": distribution_list_guid,
++            "reference_id": str(self.mine_incident_guid),
++            "reference_table": "mine_incident",
++            "reference_email_type": "incident_notification"
++        })
++        send_template_email_task.apply_async(kwargs={
++            "subject": subject,
++            "recipients": minespace_recipients,
++            "template_path": minespace_template,
++            "context": minespace_context,
++            "cc": cc,
++            "reference_id": str(self.mine_incident_guid),
++            "reference_table": "mine_incident",
++            "reference_email_type": "incident_notification_minespace"
++        })
+ 
+     def send_awaiting_final_report_email(self, is_prop):
+         OCI_EMAIL = self.reported_to_inspector.email if self.reported_to_inspector is not None else None
+diff --git a/services/core-api/app/api/mines/reports/models/mine_report.py b/services/core-api/app/api/mines/reports/models/mine_report.py
+index 980c08279..151bde6da 100644
+--- a/services/core-api/app/api/mines/reports/models/mine_report.py
++++ b/services/core-api/app/api/mines/reports/models/mine_report.py
+@@ -263,13 +263,41 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
+             self.mine_report_guid,
+             recipients=ActivityRecipients.core_users)
+ 
++        from app.api.ministry_contacts.models.distribution_list import DistributionList
++        from app.api.email_tracking.email_status_tasks import send_template_email_task
++        
++        distribution_list_name = 'Report Submission - Major Mines' if self.mine.major_mine_ind else 'Report Submission - Regional Mines'
++        dl = DistributionList.find_by_name(distribution_list_name)
++        distribution_list_guid = str(dl.distribution_list_guid) if dl else None
++        
++        if dl:
++            core_recipients.extend(dl.get_emails())
++            core_recipients = list(set(core_recipients))
++
+         core_template = "email/report/core_new_report_submitted_email.html"
+-        EmailService.send_template_email(
+-            subject, core_recipients, core_template, email_context, cc=None)
++        send_template_email_task.apply_async(kwargs={
++            "subject": subject,
++            "recipients": core_recipients,
++            "template_path": core_template,
++            "context": email_context,
++            "cc": None,
++            "distribution_list_guid": distribution_list_guid,
++            "reference_id": str(self.mine_report_guid),
++            "reference_table": "mine_report",
++            "reference_email_type": "report_submitted_core"
++        })
+ 
+         ms_template = "email/report/ms_new_report_submitted_email.html"
+-        EmailService.send_template_email(
+-            subject, ms_recipients, ms_template, email_context, cc=None)
++        send_template_email_task.apply_async(kwargs={
++            "subject": subject,
++            "recipients": ms_recipients,
++            "template_path": ms_template,
++            "context": email_context,
++            "cc": None,
++            "reference_id": str(self.mine_report_guid),
++            "reference_table": "mine_report",
++            "reference_email_type": "report_submitted_ms"
++        })
+ 
+     def collectRecipients(self, is_proponent):
+         core_recipients = [MDS_EMAIL]
+@@ -319,9 +347,13 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
+         return list(unique_recipients)
+ 
+     def send_crr_report_update_email(self, is_edit):
+-        recipients = [self.mine.region.regional_contact_office.email, MDS_EMAIL]
+-        if self.mine.major_mine_ind:
+-            recipients = [MAJOR_MINES_OFFICE_EMAIL, MDS_EMAIL]
++        from app.api.ministry_contacts.models.distribution_list import DistributionList
++        from app.api.email_tracking.email_status_tasks import send_email_task
++
++        distribution_list_name = 'Report Submission - Major Mines' if self.mine.major_mine_ind else 'Report Submission - Regional Mines'
++        dl = DistributionList.find_by_name(distribution_list_name)
++        recipients = dl.get_emails() if dl else []
++        distribution_list_guid = str(dl.distribution_list_guid) if dl else None
+ 
+         subject_verb = 'Updated' if is_edit else 'Submitted'
+         subject = f'Code Required Report {subject_verb} for {self.mine.mine_name}'
+@@ -331,7 +363,16 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
+ 
+         link = f'{Config.CORE_WEB_URL}/mine-dashboard/{self.mine.mine_guid}/reports/code-required-reports'
+         body += f'<p>View updates in Core: <a href="{link}" target="_blank">{link}</a></p>'
+-        EmailService.send_email(subject, recipients, body)
++        
++        send_email_task.apply_async(kwargs={
++            "subject": subject,
++            "recipients": recipients,
++            "body": body,
++            "distribution_list_guid": distribution_list_guid,
++            "reference_id": str(self.mine_report_guid),
++            "reference_table": "mine_report",
++            "reference_email_type": "crr_report_update"
++        })
+ 
+     def send_report_requested_email(self, report_name, is_crr):
+         if self.mine.mine_manager:
+diff --git a/services/core-api/app/api/mines/tailings/models/tailings.py b/services/core-api/app/api/mines/tailings/models/tailings.py
+index 0bf98cd45..3a92bbc9b 100644
+--- a/services/core-api/app/api/mines/tailings/models/tailings.py
++++ b/services/core-api/app/api/mines/tailings/models/tailings.py
+@@ -192,9 +192,24 @@ class MineTailingsStorageFacility(AuditMixin, HistoryMixin, DraftMixin, Base):
+         return mine_tailings_storage_facility_name
+ 
+     def send_email_tsf_update(self):
+-        recipients = MINESPACE_TSF_UPDATE_EMAIL
++        from app.api.ministry_contacts.models.distribution_list import DistributionList
++        from app.api.email_tracking.email_status_tasks import send_email_task
++
++        dl = DistributionList.find_by_name('TSFs')
++        recipients = dl.get_emails() if dl else []
++        distribution_list_guid = str(dl.distribution_list_guid) if dl else None
++
+         subject = f'TSF Information Update for {self.mine.mine_name}'
+         body = f'<p>{self.mine.mine_name} (Mine No.: {self.mine.mine_no}) has requested to update their TSF information.</p>'
+         link = f'{Config.CORE_WEB_URL}/mine-dashboard/{self.mine.mine_guid}/permits-and-approvals/tailings'
+         body += f'<p>View updates in Core: <a href="{link}" target="_blank">{link}</a></p>'
+-        EmailService.send_email(subject, recipients, body)
++        
++        send_email_task.apply_async(kwargs={
++            "subject": subject,
++            "recipients": recipients,
++            "body": body,
++            "distribution_list_guid": distribution_list_guid,
++            "reference_id": str(self.mine_tailings_storage_facility_guid),
++            "reference_table": "mine_tailings_storage_facility",
++            "reference_email_type": "tsf_update"
++        })
+diff --git a/services/core-api/app/api/mines/work_information/models/mine_work_information.py b/services/core-api/app/api/mines/work_information/models/mine_work_information.py
+index 8aea22031..a0c0f4ff8 100644
+--- a/services/core-api/app/api/mines/work_information/models/mine_work_information.py
++++ b/services/core-api/app/api/mines/work_information/models/mine_work_information.py
+@@ -96,7 +96,18 @@ class MineWorkInformation(SoftDeleteMixin, AuditMixin, Base):
+         return work_stop_date
+ 
+     def send_work_status_update_email(self):
++        from app.api.ministry_contacts.models.distribution_list import DistributionList
++        from app.api.email_tracking.email_status_tasks import send_email_task
++
+         recipients = [self.mine.region.regional_contact_office.email]
++        
++        dl = DistributionList.find_by_name('Notice to Start/Stop Work')
++        distribution_list_guid = str(dl.distribution_list_guid) if dl else None
++        if dl:
++            recipients.extend(dl.get_emails())
++            # Ensure no duplicates
++            recipients = list(set(recipients))
++            
+         subject = f'Start/Stop Date Update for {self.mine.mine_name}'
+         body = f'<p>{self.mine.mine_name} (Mine no: {self.mine.mine_no}) has updated their start/stop information in MineSpace.</p>'
+         body += f'<p><b>Work Start Date: </b>{self.work_start_date}</p>'
+@@ -106,7 +117,16 @@ class MineWorkInformation(SoftDeleteMixin, AuditMixin, Base):
+         body += f'<p><b>Updated By: </b>{self.updated_by}</p>'
+         link = f'{Config.CORE_WEB_URL}/mine-dashboard/{self.mine.mine_guid}/mine-information/general'
+         body += f'<p>View updates in Core: <a href="{link}" target="_blank">{link}</a></p>'
+-        EmailService.send_email(subject, recipients, body)
++        
++        send_email_task.apply_async(kwargs={
++            "subject": subject,
++            "recipients": recipients,
++            "body": body,
++            "distribution_list_guid": distribution_list_guid,
++            "reference_id": str(self.mine_work_information_guid),
++            "reference_table": "mine_work_information",
++            "reference_email_type": "work_status_update"
++        })
+ 
+     @classmethod
+     def find_by_mine_guid(cls, mine_guid):
+diff --git a/services/core-api/app/api/ministry_contacts/models/__init__.py b/services/core-api/app/api/ministry_contacts/models/__init__.py
+index e69de29bb..5e9322b4f 100644
+--- a/services/core-api/app/api/ministry_contacts/models/__init__.py
++++ b/services/core-api/app/api/ministry_contacts/models/__init__.py
+@@ -0,0 +1,3 @@
++from .ministry_contact import MinistryContact
++from .distribution_list import DistributionList
++from .distribution_list_user import DistributionListUser
+diff --git a/services/core-api/app/api/ministry_contacts/models/ministry_contact.py b/services/core-api/app/api/ministry_contacts/models/ministry_contact.py
+index f476b9c20..68fe1e4fe 100644
+--- a/services/core-api/app/api/ministry_contacts/models/ministry_contact.py
++++ b/services/core-api/app/api/ministry_contacts/models/ministry_contact.py
+@@ -3,6 +3,7 @@ from sqlalchemy.dialects.postgresql import UUID
+ from app.api.utils.models_mixins import Base, AuditMixin
+ from sqlalchemy.schema import FetchedValue
+ from sqlalchemy import and_
++from sqlalchemy.ext.hybrid import hybrid_property
+ from app.api.utils.models_mixins import SoftDeleteMixin
+ 
+ 
+@@ -30,6 +31,12 @@ class MinistryContact(SoftDeleteMixin, AuditMixin, Base):
+         order_by='asc(MinistryContactType.display_order)',
+         lazy='joined')
+ 
++    @hybrid_property
++    def distribution_list_guids(self):
++        from app.api.ministry_contacts.models.distribution_list_user import DistributionListUser
++        dlu_records = DistributionListUser.find_by_contact_guid(self.contact_guid)
++        return [str(dlu.distribution_list_guid) for dlu in dlu_records]
++
+     @classmethod
+     def create(cls,
+                emli_contact_type_code,
+diff --git a/services/core-api/app/api/ministry_contacts/namespace.py b/services/core-api/app/api/ministry_contacts/namespace.py
+index 18da3fde2..200f5af80 100644
+--- a/services/core-api/app/api/ministry_contacts/namespace.py
++++ b/services/core-api/app/api/ministry_contacts/namespace.py
+@@ -3,7 +3,10 @@ from flask_restx import Namespace
+ from app.api.ministry_contacts.resources.ministry_contact_list import MinistryContactListResource
+ from app.api.ministry_contacts.resources.ministry_contact import MinistryContactResource
+ 
++from app.api.ministry_contacts.resources.distribution_list_list import DistributionListListResource
++
+ api = Namespace('ministry-contacts', description='MCM contact information')
+ 
+ api.add_resource(MinistryContactResource, '/<string:contact_guid>')
+ api.add_resource(MinistryContactListResource, '', '/<string:mine_region_code>/contacts')
++api.add_resource(DistributionListListResource, '/distribution-lists')
+diff --git a/services/core-api/app/api/ministry_contacts/resources/ministry_contact.py b/services/core-api/app/api/ministry_contacts/resources/ministry_contact.py
+index fdbbe9457..db41c8d86 100644
+--- a/services/core-api/app/api/ministry_contacts/resources/ministry_contact.py
++++ b/services/core-api/app/api/ministry_contacts/resources/ministry_contact.py
+@@ -31,6 +31,8 @@ class MinistryContactResource(Resource, UserMixin):
+         type=str,
+         help='MCM Regional Office mailing address line 2',
+         location='json')
++    parser.add_argument(
++        'distribution_list_guids', type=list, location='json', default=[])
+ 
+     @api.doc(description='Update an existing MCM contact.')
+     @api.marshal_with(MINISTRY_CONTACT_MODEL)
+@@ -42,9 +44,26 @@ class MinistryContactResource(Resource, UserMixin):
+ 
+         data = self.parser.parse_args()
+ 
++        distribution_list_guids = data.pop('distribution_list_guids', [])
++        
+         for key, value in data.items():
+             setattr(contact, key, value)
+ 
++        from app.api.ministry_contacts.models.distribution_list_user import DistributionListUser
++        
++        # Soft delete existing records
++        existing_dlu = DistributionListUser.find_by_contact_guid(contact.contact_guid)
++        for dlu in existing_dlu:
++            if str(dlu.distribution_list_guid) not in distribution_list_guids:
++                dlu.deleted_ind = True
++                dlu.save(commit=False)
++                
++        # Add new records
++        existing_guids = [str(dlu.distribution_list_guid) for dlu in existing_dlu if not dlu.deleted_ind]
++        for guid in distribution_list_guids:
++            if guid not in existing_guids:
++                DistributionListUser.create(guid, contact.contact_guid, add_to_session=True)
++
+         contact.save()
+ 
+         return contact
+diff --git a/services/core-api/app/api/ministry_contacts/resources/ministry_contact_list.py b/services/core-api/app/api/ministry_contacts/resources/ministry_contact_list.py
+index 8af6f2064..53d759772 100644
+--- a/services/core-api/app/api/ministry_contacts/resources/ministry_contact_list.py
++++ b/services/core-api/app/api/ministry_contacts/resources/ministry_contact_list.py
+@@ -43,6 +43,8 @@ class MinistryContactListResource(Resource, UserMixin):
+         'is_general_contact', type=bool, help='is is_general_contact? true/false', location='json')
+     parser.add_argument(
+         'deleted_ind', type=bool, help='Deleted indicator: true/false', location='json')
++    parser.add_argument(
++        'distribution_list_guids', type=list, location='json', default=[])
+ 
+     @api.doc(
+         params={'is_major_mine': 'MCM user is related to a major mine? true/false'},
+@@ -103,11 +105,20 @@ class MinistryContactListResource(Resource, UserMixin):
+             mailing_address_line_2=data.get('mailing_address_line_2', None),
+             is_major_mine=data.get('is_major_mine', False),
+             is_general_contact=data.get('is_general_contact', False),
+-            deleted_ind=data.get('deleted_ind', False))
++            deleted_ind=data.get('deleted_ind', False),
++            add_to_session=False)
+ 
+         if not contact:
+             raise BadRequest('Error: Failed to create MCM contact.')
+ 
++        contact.save(commit=False)
++
++        from app.api.ministry_contacts.models.distribution_list_user import DistributionListUser
++        
++        distribution_list_guids = data.get('distribution_list_guids', [])
++        for guid in distribution_list_guids:
++            DistributionListUser.create(guid, contact.contact_guid, add_to_session=True)
++            
+         contact.save()
+ 
+         return contact
+\ No newline at end of file
+diff --git a/services/core-api/app/api/ministry_contacts/response_models.py b/services/core-api/app/api/ministry_contacts/response_models.py
+index 4cd943324..8542dd2b3 100644
+--- a/services/core-api/app/api/ministry_contacts/response_models.py
++++ b/services/core-api/app/api/ministry_contacts/response_models.py
+@@ -17,6 +17,14 @@ MINISTRY_CONTACT_MODEL = api.model(
+         'mailing_address_line_1': fields.String,
+         'mailing_address_line_2': fields.String,
+         'deleted_ind': fields.Boolean,
++        'distribution_list_guids': fields.List(fields.String(attribute='distribution_list_guid'), attribute='distribution_list_guids'),
++    })
++
++DISTRIBUTION_LIST_MODEL = api.model(
++    'DistributionList', {
++        'distribution_list_guid': fields.String,
++        'distribution_list_name': fields.String,
++        'description': fields.String,
+     })
+ 
+ MINISTRY_CONTACT_TYPE = api.model('MinistryContactType', {
+diff --git a/services/core-api/app/api/notice_of_departure/models/notice_of_departure.py b/services/core-api/app/api/notice_of_departure/models/notice_of_departure.py
+index f17e2cc94..f34d8a4f6 100644
+--- a/services/core-api/app/api/notice_of_departure/models/notice_of_departure.py
++++ b/services/core-api/app/api/notice_of_departure/models/notice_of_departure.py
+@@ -231,11 +231,24 @@ class NoticeOfDeparture(SoftDeleteMixin, AuditMixin, Base):
+         super(NoticeOfDeparture, self).delete()
+ 
+     def nod_submission_email(self):
+-        recipients = MAJOR_MINES_NOD_NOTFICATION_EMAILS
+-        cc = [MDS_EMAIL]
++        from app.api.ministry_contacts.models.distribution_list import DistributionList
++        from app.api.email_tracking.email_status_tasks import send_email_task
++
++        dl = DistributionList.find_by_name('Notice of Departure')
++        recipients = dl.get_emails() if dl else []
++        distribution_list_guid = str(dl.distribution_list_guid) if dl else None
+ 
+         subject = f'Notice of Departure Submitted for {self.mine.mine_name}'
+         body = f'<p>{self.mine.mine_name} (Mine no: {self.mine.mine_no}) has submitted a "Notice of Departure from Approval" report.</p>'
+         link = f'{Config.CORE_WEB_URL}/mine-dashboard/{self.mine.mine_guid}/permits-and-approvals/notices-of-departure'
+         body += f'<p>View updates in Core: <a href="{link}" target="_blank">{link}</a></p>'
+-        EmailService.send_email(subject, recipients, body, cc=cc)
++        
++        send_email_task.apply_async(kwargs={
++            "subject": subject,
++            "recipients": recipients,
++            "body": body,
++            "distribution_list_guid": distribution_list_guid,
++            "reference_id": str(self.nod_guid),
++            "reference_table": "notice_of_departure",
++            "reference_email_type": "nod_submission"
++        })
+diff --git a/services/core-api/app/api/projects/project_summary/models/project_summary.py b/services/core-api/app/api/projects/project_summary/models/project_summary.py
+index f89c26e7f..926dcf53d 100644
+--- a/services/core-api/app/api/projects/project_summary/models/project_summary.py
++++ b/services/core-api/app/api/projects/project_summary/models/project_summary.py
+@@ -1399,23 +1399,32 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
+                     "message": message,
+                     "core_project_summary_link": f'{Config.CORE_WEB_URL}/pre-applications/{self.project.project_guid}/overview'
+                 }
+-                EmailService.send_template_email(
+-                    subject,
+-                    email_recipients,
+-                    ministry_template,
+-                    ministry_context,
+-                    cc=cc,
+-                    reference_id=self.project_summary_guid,
+-                    reference_table='project_summary'
+-                )
++                from app.api.email_tracking.email_status_tasks import send_template_email_task
++                
++                send_template_email_task.apply_async(kwargs={
++                    "subject": subject,
++                    "recipients": email_recipients,
++                    "template_path": ministry_template,
++                    "context": ministry_context,
++                    "cc": cc,
++                    "reference_id": str(self.project_summary_guid),
++                    "reference_table": 'project_summary'
++                })
+ 
+ 
+     def send_project_summary_email(self, mine, message) -> None:
+ 
+         project_lead_email = self.project_lead_email
+ 
++        from app.api.ministry_contacts.models.distribution_list import DistributionList
++        from app.api.email_tracking.email_status_tasks import send_template_email_task
++        
++        dl = DistributionList.find_by_name('Major Projects')
++        project_summary_emails = dl.get_emails() if dl else []
++        distribution_list_guid = str(dl.distribution_list_guid) if dl else None
++
+         ministry_emails = {
+-            'SUB': [PERM_RECL_EMAIL] + PROJECT_SUMMARY_EMAILS,
++            'SUB': [PERM_RECL_EMAIL] + project_summary_emails,
+             'ASG': [project_lead_email],
+             'OHD': [PERM_RECL_EMAIL, project_lead_email],
+             'WDN': [PERM_RECL_EMAIL, project_lead_email],
+@@ -1464,22 +1473,23 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
+         }
+ 
+         if ministry_recipients:
+-            EmailService.send_template_email(
+-                subject,
+-                ministry_recipients,
+-                ministry_template,
+-                ministry_context,
+-                cc=cc,
+-                reference_id=self.project_summary_guid,
+-                reference_table='project_summary'
+-            )
++            send_template_email_task.apply_async(kwargs={
++                "subject": subject,
++                "recipients": ministry_recipients,
++                "template_path": ministry_template,
++                "context": ministry_context,
++                "cc": cc,
++                "distribution_list_guid": distribution_list_guid,
++                "reference_id": str(self.project_summary_guid),
++                "reference_table": 'project_summary'
++            })
+         if send_ms_email and minespace_recipients:
+-            EmailService.send_template_email(
+-                subject,
+-                minespace_recipients,
+-                minespace_template,
+-                minespace_context,
+-                cc=cc,
+-                reference_id=self.project_summary_guid,
+-                reference_table='project_summary'
+-            )
+\ No newline at end of file
++            send_template_email_task.apply_async(kwargs={
++                "subject": subject,
++                "recipients": minespace_recipients,
++                "template_path": minespace_template,
++                "context": minespace_context,
++                "cc": cc,
++                "reference_id": str(self.project_summary_guid),
++                "reference_table": 'project_summary'
++            })
+\ No newline at end of file
+diff --git a/services/core-api/app/api/variances/models/variance.py b/services/core-api/app/api/variances/models/variance.py
+index 526906c4c..ead6e585a 100644
+--- a/services/core-api/app/api/variances/models/variance.py
++++ b/services/core-api/app/api/variances/models/variance.py
+@@ -174,7 +174,12 @@ class Variance(SoftDeleteMixin, AuditMixin, Base):
+         return applicant_guid
+ 
+     def send_variance_application_email(self):
+-        recipients = [VARIANCE_APPLICATION_EMAIL, MDS_EMAIL]
++        from app.api.ministry_contacts.models.distribution_list import DistributionList
++        from app.api.email_tracking.email_status_tasks import send_email_task
++
++        dl = DistributionList.find_by_name('Variances')
++        recipients = dl.get_emails() if dl else []
++        distribution_list_guid = str(dl.distribution_list_guid) if dl else None
+ 
+         status_code = VarianceApplicationStatusCode.query.get(self.variance_application_status_code)
+ 
+@@ -187,4 +192,13 @@ class Variance(SoftDeleteMixin, AuditMixin, Base):
+ 
+         link = f'{Config.CORE_WEB_URL}/mine-dashboard/{self.mine.mine_guid}/permits-and-approvals/variances/'
+         body += f'<p>View updates in Core: <a href="{link}" target="_blank">{link}</a></p>'
+-        EmailService.send_email(subject, recipients, body)
++        
++        send_email_task.apply_async(kwargs={
++            "subject": subject,
++            "recipients": recipients,
++            "body": body,
++            "distribution_list_guid": distribution_list_guid,
++            "reference_id": str(self.variance_guid),
++            "reference_table": "variance",
++            "reference_email_type": "variance_application"
++        })
+diff --git a/services/core-web/src/components/admin/contacts/MinistryContacts/MineSpaceMinistryContactManagement.js b/services/core-web/src/components/admin/contacts/MinistryContacts/MineSpaceMinistryContactManagement.js
+index 7be4b8cbe..dd1605d4e 100644
+--- a/services/core-web/src/components/admin/contacts/MinistryContacts/MineSpaceMinistryContactManagement.js
++++ b/services/core-web/src/components/admin/contacts/MinistryContacts/MineSpaceMinistryContactManagement.js
+@@ -9,9 +9,10 @@ import {
+   getMineRegionHash,
+   getMinistryContactTypesHash,
+ } from "@mds/common/redux/selectors/staticContentSelectors";
+-import { getMinistryContacts } from "@mds/common/redux/slices/minespaceSlice";
++import { getMinistryContacts, getDistributionLists } from "@mds/common/redux/slices/minespaceSlice";
+ import {
+   fetchMinistryContacts,
++  fetchDistributionLists,
+   updateMinistryContact,
+   deleteMinistryContact,
+   createMinistryContact,
+@@ -30,8 +31,10 @@ const propTypes = {
+   openModal: PropTypes.func.isRequired,
+   closeModal: PropTypes.func.isRequired,
+   MinistryContacts: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
++  DistributionLists: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
+   mineRegionHash: PropTypes.objectOf(PropTypes.string).isRequired,
+   MinistryContactTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
++  fetchDistributionLists: PropTypes.func.isRequired,
+ };
+ 
+ const defaultProps = {};
+@@ -44,7 +47,10 @@ export class MineSpaceMinistryContactManagement extends Component {
+   }
+ 
+   handleFetchMinistryContacts = () => {
+-    this.props.fetchMinistryContacts().then(() => {
++    Promise.all([
++      this.props.fetchMinistryContacts(),
++      this.props.fetchDistributionLists()
++    ]).then(() => {
+       this.setState({ isLoaded: true });
+     });
+   };
+@@ -69,6 +75,10 @@ export class MineSpaceMinistryContactManagement extends Component {
+   };
+ 
+   openContactModal = (isEdit, record = null) => {
++    const distributionListOptions = this.props.DistributionLists.map((dl) => ({
++      value: dl.distribution_list_guid,
++      label: dl.distribution_list_name,
++    }));
+     return this.props.openModal({
+       props: {
+         title: isEdit ? "Update MCM Contact" : "Create MCM Contact",
+@@ -77,6 +87,7 @@ export class MineSpaceMinistryContactManagement extends Component {
+         onSubmit: isEdit ? this.handleUpdateContact : this.handleCreateContact,
+         isEdit,
+         contacts: this.props.MinistryContacts,
++        distributionListOptions,
+       },
+       content: modalConfig.MINISTRY_CONTACT_MODAL,
+     });
+@@ -151,6 +162,7 @@ MineSpaceMinistryContactManagement.defaultProps = defaultProps;
+ 
+ const mapStateToProps = (state) => ({
+   MinistryContacts: getMinistryContacts(state),
++  DistributionLists: getDistributionLists(state),
+   mineRegionHash: getMineRegionHash(state),
+   MinistryContactTypesHash: getMinistryContactTypesHash(state),
+ });
+@@ -159,6 +171,7 @@ const mapDispatchToProps = (dispatch) =>
+   bindActionCreators(
+     {
+       fetchMinistryContacts,
++      fetchDistributionLists,
+       updateMinistryContact,
+       deleteMinistryContact,
+       createMinistryContact,
+diff --git a/services/core-web/src/tests/components/admin/contacts/MinistryContacts/MineSpaceMinistryContactManagement.spec.tsx b/services/core-web/src/tests/components/admin/contacts/MinistryContacts/MineSpaceMinistryContactManagement.spec.tsx
+index 39827f45d..0103e67b7 100644
+--- a/services/core-web/src/tests/components/admin/contacts/MinistryContacts/MineSpaceMinistryContactManagement.spec.tsx
++++ b/services/core-web/src/tests/components/admin/contacts/MinistryContacts/MineSpaceMinistryContactManagement.spec.tsx
+@@ -5,6 +5,7 @@ import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
+ 
+ const dispatchProps = {
+   fetchMinistryContacts: jest.fn(() => Promise.resolve()),
++  fetchDistributionLists: jest.fn(() => Promise.resolve()),
+   updateMinistryContact: jest.fn(),
+   deleteMinistryContact: jest.fn(),
+   createMinistryContact: jest.fn(),
+@@ -13,6 +14,7 @@ const dispatchProps = {
+ };
+ const props = {
+   MinistryContacts: [],
++  DistributionLists: [],
+   mineRegionHash: {},
+   MinistryContactTypesHash: {},
+ };
+diff --git a/services/core-web/src/tests/components/modalContent/MinistryContactModal.spec.tsx b/services/core-web/src/tests/components/modalContent/MinistryContactModal.spec.tsx
+index 48fc2dfd3..ac24aee90 100644
+--- a/services/core-web/src/tests/components/modalContent/MinistryContactModal.spec.tsx
++++ b/services/core-web/src/tests/components/modalContent/MinistryContactModal.spec.tsx
+@@ -13,6 +13,7 @@ const props = {
+   MinistryContactTypes: [],
+   isEdit: true,
+   contacts: [],
++  distributionListOptions: [],
+ };
+ 
+ describe("MinistryContactModal", () => {

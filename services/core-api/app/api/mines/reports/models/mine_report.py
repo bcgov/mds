@@ -263,13 +263,41 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
             self.mine_report_guid,
             recipients=ActivityRecipients.core_users)
 
+        from app.api.ministry_contacts.models.distribution_list import DistributionList
+        from app.api.email_tracking.email_status_tasks import send_template_email_task
+        
+        distribution_list_name = 'Report Submission - Major Mines' if self.mine.major_mine_ind else 'Report Submission - Regional Mines'
+        dl = DistributionList.find_by_name(distribution_list_name)
+        distribution_list_guid = str(dl.distribution_list_guid) if dl else None
+        
+        if dl:
+            core_recipients.extend(dl.get_emails())
+            core_recipients = list(set(core_recipients))
+
         core_template = "email/report/core_new_report_submitted_email.html"
-        EmailService.send_template_email(
-            subject, core_recipients, core_template, email_context, cc=None)
+        send_template_email_task.apply_async(kwargs={
+            "subject": subject,
+            "recipients": core_recipients,
+            "template_path": core_template,
+            "context": email_context,
+            "cc": None,
+            "distribution_list_guid": distribution_list_guid,
+            "reference_id": str(self.mine_report_guid),
+            "reference_table": "mine_report",
+            "reference_email_type": "report_submitted_core"
+        })
 
         ms_template = "email/report/ms_new_report_submitted_email.html"
-        EmailService.send_template_email(
-            subject, ms_recipients, ms_template, email_context, cc=None)
+        send_template_email_task.apply_async(kwargs={
+            "subject": subject,
+            "recipients": ms_recipients,
+            "template_path": ms_template,
+            "context": email_context,
+            "cc": None,
+            "reference_id": str(self.mine_report_guid),
+            "reference_table": "mine_report",
+            "reference_email_type": "report_submitted_ms"
+        })
 
     def collectRecipients(self, is_proponent):
         core_recipients = [MDS_EMAIL]
@@ -319,9 +347,17 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
         return list(unique_recipients)
 
     def send_crr_report_update_email(self, is_edit):
-        recipients = [self.mine.region.regional_contact_office.email, MDS_EMAIL]
-        if self.mine.major_mine_ind:
-            recipients = [MAJOR_MINES_OFFICE_EMAIL, MDS_EMAIL]
+        from app.api.ministry_contacts.models.distribution_list import DistributionList
+        from app.api.email_tracking.email_status_tasks import send_email_task
+
+        distribution_list_name = 'Report Submission - Major Mines' if self.mine.major_mine_ind else 'Report Submission - Regional Mines'
+        dl = DistributionList.find_by_name(distribution_list_name)
+        recipients = dl.get_emails() if dl else []
+        distribution_list_guid = str(dl.distribution_list_guid) if dl else None
+
+        if not self.mine.major_mine_ind and getattr(self.mine, 'region', None) and getattr(self.mine.region, 'regional_contact_office', None):
+            recipients.append(self.mine.region.regional_contact_office.email)
+            recipients = list(set(recipients))
 
         subject_verb = 'Updated' if is_edit else 'Submitted'
         subject = f'Code Required Report {subject_verb} for {self.mine.mine_name}'
@@ -331,7 +367,16 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
 
         link = f'{Config.CORE_WEB_URL}/mine-dashboard/{self.mine.mine_guid}/reports/code-required-reports'
         body += f'<p>View updates in Core: <a href="{link}" target="_blank">{link}</a></p>'
-        EmailService.send_email(subject, recipients, body)
+        
+        send_email_task.apply_async(kwargs={
+            "subject": subject,
+            "recipients": recipients,
+            "body": body,
+            "distribution_list_guid": distribution_list_guid,
+            "reference_id": str(self.mine_report_guid),
+            "reference_table": "mine_report",
+            "reference_email_type": "crr_report_update"
+        })
 
     def send_report_requested_email(self, report_name, is_crr):
         if self.mine.mine_manager:

@@ -16,6 +16,7 @@ interface MinespaceState {
     minespaceUsersByMine: { [mine_guid: string]: IMinespaceUser[] };
     minespaceUserMines: IMinespaceUserMine[];
     MinistryContacts: IMinistryContact[];
+    DistributionLists: any[];
     MinistryContactsByRegion: IMinistryContact[];
     currentUserAccessRequest: IMinespaceUser | null | undefined;
 }
@@ -25,6 +26,7 @@ const initialState: MinespaceState = {
     minespaceUsersByMine: {},
     minespaceUserMines: [],
     MinistryContacts: [],
+    DistributionLists: [],
     MinistryContactsByRegion: [],
     currentUserAccessRequest: undefined,
 };
@@ -210,6 +212,30 @@ const minespaceSlice = createAppSlice({
             {
                 fulfilled: (state: MinespaceState, action) => {
                     state.MinistryContacts = action.payload.records;
+                },
+                rejected: (state: MinespaceState, action) => {
+                    rejectHandler(action);
+                },
+            }
+        ),
+        fetchDistributionLists: create.asyncThunk(
+            async (_: undefined, thunkApi) => {
+                const headers = createRequestHeader();
+                thunkApi.dispatch(showLoading());
+
+                try {
+                    const response = await CustomAxios().get(
+                        `${ENVIRONMENT.apiUrl}${API.DISTRIBUTION_LISTS}`,
+                        headers
+                    );
+                    return response.data;
+                } finally {
+                    thunkApi.dispatch(hideLoading());
+                }
+            },
+            {
+                fulfilled: (state: MinespaceState, action) => {
+                    state.DistributionLists = action.payload.records;
                 },
                 rejected: (state: MinespaceState, action) => {
                     rejectHandler(action);
@@ -414,6 +440,7 @@ const minespaceSlice = createAppSlice({
         getMinespaceUsersByMine: (state) => state.minespaceUsersByMine,
         getMinespaceUserMines: (state) => state.minespaceUserMines,
         getMinistryContacts: (state) => state.MinistryContacts,
+        getDistributionLists: (state) => state.DistributionLists,
         getMinistryContactsByRegion: (state) => state.MinistryContactsByRegion,
         getCurrentUserAccessRequest: (state) => state.currentUserAccessRequest,
     },
@@ -424,6 +451,7 @@ export const {
     getMinespaceUsersByMine,
     getMinespaceUserMines,
     getMinistryContacts,
+    getDistributionLists,
     getMinistryContactsByRegion,
     getCurrentUserAccessRequest,
 } = minespaceSlice.selectors;
@@ -453,6 +481,7 @@ export const {
     fetchMinespaceUserMines,
     deleteMinespaceUser,
     fetchMinistryContacts,
+    fetchDistributionLists,
     fetchMinistryContactsByRegion,
     createMinistryContact,
     updateMinistryContact,

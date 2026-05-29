@@ -105,3 +105,52 @@ def poll_ches_email_status(self, ches_message_id):
             # (the email might have been delivered, we just can't verify it)
             current_app.logger.error(f"Max retries reached for CHES status polling: {ches_message_id}")
             return {"status": "error", "message": f"Max retries reached: {str(exc)}"}
+
+@celery.task(base=TaskBase, bind=True, max_retries=3, default_retry_delay=60)
+def send_email_task(self, subject, recipients, body, sender=None, cc=None, bcc=None, distribution_list_guid=None, **kwargs):
+    """
+    Celery task to send a standard email asynchronously.
+    """
+    try:
+        if sender is None:
+            from app.config import Config
+            sender = Config.MDS_NO_REPLY_EMAIL
+        
+        EmailService.send_email(
+            subject=subject,
+            recipients=recipients,
+            body=body,
+            sender=sender,
+            cc=cc,
+            bcc=bcc,
+            **kwargs
+        )
+        return {"status": "success"}
+    except Exception as exc:
+        current_app.logger.error(f"Error sending email async: {str(exc)}")
+        raise self.retry(exc=exc)
+
+@celery.task(base=TaskBase, bind=True, max_retries=3, default_retry_delay=60)
+def send_template_email_task(self, subject, recipients, template_path, context, sender=None, cc=None, bcc=None, distribution_list_guid=None, **kwargs):
+    """
+    Celery task to send a template email asynchronously.
+    """
+    try:
+        if sender is None:
+            from app.config import Config
+            sender = Config.MDS_NO_REPLY_EMAIL
+            
+        EmailService.send_template_email(
+            subject=subject,
+            recipients=recipients,
+            template_path=template_path,
+            context=context,
+            sender=sender,
+            cc=cc,
+            bcc=bcc,
+            **kwargs
+        )
+        return {"status": "success"}
+    except Exception as exc:
+        current_app.logger.error(f"Error sending template email async: {str(exc)}")
+        raise self.retry(exc=exc)

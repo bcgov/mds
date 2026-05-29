@@ -174,7 +174,12 @@ class Variance(SoftDeleteMixin, AuditMixin, Base):
         return applicant_guid
 
     def send_variance_application_email(self):
-        recipients = [VARIANCE_APPLICATION_EMAIL, MDS_EMAIL]
+        from app.api.ministry_contacts.models.distribution_list import DistributionList
+        from app.api.email_tracking.email_status_tasks import send_email_task
+
+        dl = DistributionList.find_by_name('Variances')
+        recipients = dl.get_emails() if dl else []
+        distribution_list_guid = str(dl.distribution_list_guid) if dl else None
 
         status_code = VarianceApplicationStatusCode.query.get(self.variance_application_status_code)
 
@@ -187,4 +192,13 @@ class Variance(SoftDeleteMixin, AuditMixin, Base):
 
         link = f'{Config.CORE_WEB_URL}/mine-dashboard/{self.mine.mine_guid}/permits-and-approvals/variances/'
         body += f'<p>View updates in Core: <a href="{link}" target="_blank">{link}</a></p>'
-        EmailService.send_email(subject, recipients, body)
+        
+        send_email_task.apply_async(kwargs={
+            "subject": subject,
+            "recipients": recipients,
+            "body": body,
+            "distribution_list_guid": distribution_list_guid,
+            "reference_id": str(self.variance_guid),
+            "reference_table": "variance",
+            "reference_email_type": "variance_application"
+        })

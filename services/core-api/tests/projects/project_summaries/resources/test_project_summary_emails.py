@@ -6,7 +6,7 @@ from app.config import Config
 
 from unittest.mock import patch, mock_open, call, ANY
 
-@patch("app.api.services.email_service.EmailService.send_template_email")
+@patch("app.api.email_tracking.email_status_tasks.send_template_email_task.apply_async")
 @patch("builtins.open", mock_open(read_data='email content'))
 
 @patch("app.api.projects.project.models.project.Project.has_mines_act_auths", return_value=True)
@@ -49,18 +49,18 @@ def test_sub_to_asg(mock_has_mines_act_auths, mock_send_template_email, test_cli
             "core_project_summary_link": f'{Config.CORE_WEB_URL}/pre-applications/{project_summary.project.project_guid}/overview'
         }
     
-    # ARGS: subject, recipients, body, context, cc (ignore comparison with ANY)
-    ministry_call = call(
-        f'Project Description Notification for {project_summary.mine_name}',
-        ANY,
-        ANY,
-        ministry_context,
-        cc=[MDS_EMAIL],
-        reference_id=project_summary.project_summary_guid,
-        reference_table='project_summary',
-
-    )
+    # ARGS: subject, recipients, template_path, context, cc, distribution_list_guid, reference_id, reference_table
+    ministry_call = call(kwargs={
+        "subject": f'Project Description Notification for {project_summary.mine_name}',
+        "recipients": ANY,
+        "template_path": ANY,
+        "context": ministry_context,
+        "cc": [MDS_EMAIL],
+        "distribution_list_guid": ANY,
+        "reference_id": str(project_summary.project_summary_guid),
+        "reference_table": 'project_summary'
+    })
 
     assert put_resp.status_code == 200
     calls = [ministry_call]
-    mock_send_template_email.assert_has_calls(calls, True)
+    mock_send_template_email.assert_has_calls(calls, any_order=True)

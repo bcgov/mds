@@ -96,7 +96,18 @@ class MineWorkInformation(SoftDeleteMixin, AuditMixin, Base):
         return work_stop_date
 
     def send_work_status_update_email(self):
+        from app.api.ministry_contacts.models.distribution_list import DistributionList
+        from app.api.email_tracking.email_status_tasks import send_email_task
+
         recipients = [self.mine.region.regional_contact_office.email]
+        
+        dl = DistributionList.find_by_name('Notice to Start/Stop Work')
+        distribution_list_guid = str(dl.distribution_list_guid) if dl else None
+        if dl:
+            recipients.extend(dl.get_emails())
+            # Ensure no duplicates
+            recipients = list(set(recipients))
+            
         subject = f'Start/Stop Date Update for {self.mine.mine_name}'
         body = f'<p>{self.mine.mine_name} (Mine no: {self.mine.mine_no}) has updated their start/stop information in MineSpace.</p>'
         body += f'<p><b>Work Start Date: </b>{self.work_start_date}</p>'
@@ -106,7 +117,16 @@ class MineWorkInformation(SoftDeleteMixin, AuditMixin, Base):
         body += f'<p><b>Updated By: </b>{self.updated_by}</p>'
         link = f'{Config.CORE_WEB_URL}/mine-dashboard/{self.mine.mine_guid}/mine-information/general'
         body += f'<p>View updates in Core: <a href="{link}" target="_blank">{link}</a></p>'
-        EmailService.send_email(subject, recipients, body)
+        
+        send_email_task.apply_async(kwargs={
+            "subject": subject,
+            "recipients": recipients,
+            "body": body,
+            "distribution_list_guid": distribution_list_guid,
+            "reference_id": str(self.mine_work_information_guid),
+            "reference_table": "mine_work_information",
+            "reference_email_type": "work_status_update"
+        })
 
     @classmethod
     def find_by_mine_guid(cls, mine_guid):

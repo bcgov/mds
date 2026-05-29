@@ -1399,23 +1399,32 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                     "message": message,
                     "core_project_summary_link": f'{Config.CORE_WEB_URL}/pre-applications/{self.project.project_guid}/overview'
                 }
-                EmailService.send_template_email(
-                    subject,
-                    email_recipients,
-                    ministry_template,
-                    ministry_context,
-                    cc=cc,
-                    reference_id=self.project_summary_guid,
-                    reference_table='project_summary'
-                )
+                from app.api.email_tracking.email_status_tasks import send_template_email_task
+                
+                send_template_email_task.apply_async(kwargs={
+                    "subject": subject,
+                    "recipients": email_recipients,
+                    "template_path": ministry_template,
+                    "context": ministry_context,
+                    "cc": cc,
+                    "reference_id": str(self.project_summary_guid),
+                    "reference_table": 'project_summary'
+                })
 
 
     def send_project_summary_email(self, mine, message) -> None:
 
         project_lead_email = self.project_lead_email
 
+        from app.api.ministry_contacts.models.distribution_list import DistributionList
+        from app.api.email_tracking.email_status_tasks import send_template_email_task
+        
+        dl = DistributionList.find_by_name('Major Projects')
+        project_summary_emails = dl.get_emails() if dl else []
+        distribution_list_guid = str(dl.distribution_list_guid) if dl else None
+
         ministry_emails = {
-            'SUB': [PERM_RECL_EMAIL] + PROJECT_SUMMARY_EMAILS,
+            'SUB': [PERM_RECL_EMAIL] + project_summary_emails,
             'ASG': [project_lead_email],
             'OHD': [PERM_RECL_EMAIL, project_lead_email],
             'WDN': [PERM_RECL_EMAIL, project_lead_email],
@@ -1464,22 +1473,23 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         }
 
         if ministry_recipients:
-            EmailService.send_template_email(
-                subject,
-                ministry_recipients,
-                ministry_template,
-                ministry_context,
-                cc=cc,
-                reference_id=self.project_summary_guid,
-                reference_table='project_summary'
-            )
+            send_template_email_task.apply_async(kwargs={
+                "subject": subject,
+                "recipients": ministry_recipients,
+                "template_path": ministry_template,
+                "context": ministry_context,
+                "cc": cc,
+                "distribution_list_guid": distribution_list_guid,
+                "reference_id": str(self.project_summary_guid),
+                "reference_table": 'project_summary'
+            })
         if send_ms_email and minespace_recipients:
-            EmailService.send_template_email(
-                subject,
-                minespace_recipients,
-                minespace_template,
-                minespace_context,
-                cc=cc,
-                reference_id=self.project_summary_guid,
-                reference_table='project_summary'
-            )
+            send_template_email_task.apply_async(kwargs={
+                "subject": subject,
+                "recipients": minespace_recipients,
+                "template_path": minespace_template,
+                "context": minespace_context,
+                "cc": cc,
+                "reference_id": str(self.project_summary_guid),
+                "reference_table": 'project_summary'
+            })
