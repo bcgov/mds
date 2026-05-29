@@ -251,6 +251,54 @@ class EmailService():
             tracking_records.append(tracking_record)
         return tracking_records
 
+    @classmethod
+    def _send_via_mailpit(cls, subject, sender, recipients, cc, bcc, body, body_type, tracking_records, attachments=None):
+        import smtplib
+        from email.message import EmailMessage
+        import uuid
+        import base64
+        
+        msg = EmailMessage()
+        msg['Subject'] = subject
+        msg['From'] = sender
+        msg['To'] = ', '.join(recipients) if isinstance(recipients, list) else recipients
+        if cc:
+            msg['Cc'] = ', '.join(cc) if isinstance(cc, list) else cc
+        
+        if body_type == EmailBodyType.HTML.value:
+            msg.set_content(body, subtype='html')
+        else:
+            msg.set_content(body)
+            
+        if attachments:
+            for attachment in attachments:
+                file_content = attachment.get('content', '')
+                file_name = attachment.get('filename', 'attachment')
+                try:
+                    decoded_content = base64.b64decode(file_content)
+                    msg.add_attachment(decoded_content, maintype='application', subtype='octet-stream', filename=file_name)
+                except Exception as e:
+                    current_app.logger.error(f'Error attaching file in mailpit: {e}')
+
+        all_recipients = (recipients if isinstance(recipients, list) else [recipients])
+        all_recipients += (cc if isinstance(cc, list) else [cc] if cc else [])
+        all_recipients += (bcc if isinstance(bcc, list) else [bcc] if bcc else [])
+
+        try:
+            with smtplib.SMTP(Config.MAILPIT_HOST, Config.MAILPIT_PORT) as s:
+                s.send_message(msg, from_addr=sender, to_addrs=all_recipients)
+            
+            transaction_id = str(uuid.uuid4())
+            message_id = str(uuid.uuid4())
+            resp_data = {'txId': transaction_id, 'messages': [{'msgId': message_id}]}
+            cls._handle_successful_email_response(resp_data, tracking_records)
+            current_app.logger.info(f'Mailpit email request successful. Subject: {subject}')
+        except Exception as e:
+            current_app.logger.error(f'Mailpit email request failed: {e}')
+            for tracking_record in tracking_records:
+                tracking_record.mark_as_failed(error_message=str(e))
+
+
     # NOTE: See here for details: https://ches.nrs.gov.bc.ca/api/v1/docs#tag/Email
     @classmethod
     def send_email(cls,
@@ -283,13 +331,14 @@ class EmailService():
 
         # NOTE: Be careful when enabling emails in local/dev/test. You could possibly be sending spam emails!
         is_not_prod = Config.ENVIRONMENT_NAME != 'prod'
-        if not Config.EMAIL_ENABLED:
-            current_app.logger.info('Not sending email: Emails are disabled.')
-            return
-        elif is_not_prod and not Config.EMAIL_RECIPIENT_OVERRIDE:
-            current_app.logger.info(
-                'Not sending email: Recipient override must be set when not in prod environment!')
-            return
+        if not Config.USE_LOCAL_MAILPIT:
+            if not Config.EMAIL_ENABLED:
+                current_app.logger.info('Not sending email: Emails are disabled.')
+                return
+            elif is_not_prod and not Config.EMAIL_RECIPIENT_OVERRIDE:
+                current_app.logger.info(
+                    'Not sending email: Recipient override must be set when not in prod environment!')
+                return
 
         # Filter out None or empty string recipients
         recipients = [r for r in (recipients or []) if r]
@@ -302,7 +351,7 @@ class EmailService():
 
         original_recipients = recipients
 
-        if Config.EMAIL_RECIPIENT_OVERRIDE:
+        if Config.EMAIL_RECIPIENT_OVERRIDE and not Config.USE_LOCAL_MAILPIT:
             recipients = [Config.EMAIL_RECIPIENT_OVERRIDE]
 
         # Create email tracking records before sending
@@ -324,6 +373,18 @@ class EmailService():
         tracking_records.extend(cls._create_tracking_records_for_recipients(
             bcc, RecipientType.bcc, tracking_record_kwargs))
 
+        if Config.USE_LOCAL_MAILPIT:
+            return cls._send_via_mailpit(
+                subject=f'{subject} [recipients: {original_recipients}]' if is_not_prod else subject,
+                sender=sender,
+                recipients=recipients,
+                cc=cc,
+                bcc=bcc,
+                body=body,
+                body_type=body_type,
+                tracking_records=tracking_records,
+                attachments=attachments
+            )
 
         EmailService.perform_health_check()
 
@@ -415,13 +476,14 @@ class EmailService():
 
         # NOTE: Be careful when enabling emails in local/dev/test. You could possibly be sending spam emails!
         is_not_prod = Config.ENVIRONMENT_NAME != 'prod'
-        if not Config.EMAIL_ENABLED:
-            current_app.logger.info('Not sending email: Emails are disabled.')
-            return
-        elif is_not_prod and not Config.EMAIL_RECIPIENT_OVERRIDE:
-            current_app.logger.info(
-                'Not sending email: Recipient override must be set when not in prod environment!')
-            return
+        if not Config.USE_LOCAL_MAILPIT:
+            if not Config.EMAIL_ENABLED:
+                current_app.logger.info('Not sending email: Emails are disabled.')
+                return
+            elif is_not_prod and not Config.EMAIL_RECIPIENT_OVERRIDE:
+                current_app.logger.info(
+                    'Not sending email: Recipient override must be set when not in prod environment!')
+                return
 
         # Filter out None or empty string recipients
         recipients = [r for r in (recipients or []) if r]
@@ -434,7 +496,7 @@ class EmailService():
 
         original_recipients = recipients
 
-        if Config.EMAIL_RECIPIENT_OVERRIDE:
+        if Config.EMAIL_RECIPIENT_OVERRIDE and not Config.USE_LOCAL_MAILPIT:
             recipients = [Config.EMAIL_RECIPIENT_OVERRIDE]
 
         try:
@@ -473,6 +535,19 @@ class EmailService():
             cc, RecipientType.cc, tracking_record_kwargs))
         tracking_records.extend(cls._create_tracking_records_for_recipients(
             bcc, RecipientType.bcc, tracking_record_kwargs))
+
+        if Config.USE_LOCAL_MAILPIT:
+            return cls._send_via_mailpit(
+                subject=f'{subject} [recipients: {original_recipients}]' if is_not_prod else subject,
+                sender=sender,
+                recipients=recipients,
+                cc=cc,
+                bcc=bcc,
+                body=rendered_body,
+                body_type=body_type,
+                tracking_records=tracking_records,
+                attachments=attachments
+            )
 
         EmailService.perform_health_check()
 
