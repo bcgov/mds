@@ -15,7 +15,7 @@ def test_distribution_list_user_create(db_session):
     db_session.add(dlu)
     db_session.commit()
 
-    found_dlu = DistributionListUser.query.filter_by(distribution_list_guid=dl.distribution_list_guid, contact_guid=contact.contact_guid).first()
+    found_dlu = DistributionListUser.query.filter_by(distribution_list_guid=dl.distribution_list_guid, emli_contact_guid=contact.contact_guid).first()
     assert found_dlu is not None
 
 def test_distribution_list_user_find_by_contact_guid(db_session):
@@ -32,4 +32,4 @@ def test_distribution_list_user_find_by_contact_guid(db_session):
 
     results = DistributionListUser.find_by_contact_guid(contact.contact_guid)
     assert len(results) > 0
-    assert results[0].contact_guid == contact.contact_guid
+    assert results[0].emli_contact_guid == contact.contact_guid

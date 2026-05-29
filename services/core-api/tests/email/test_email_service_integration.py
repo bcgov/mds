@@ -12,6 +12,7 @@ from app.api.services.email_service import EmailService
 @patch('app.config.Config.EMAIL_ENABLED', True)
 @patch('app.config.Config.ENVIRONMENT_NAME', 'test')
 @patch('app.config.Config.EMAIL_RECIPIENT_OVERRIDE', 'test@example.com')
+@patch('app.config.Config.USE_LOCAL_MAILPIT', False)
 def test_send_template_email_renders_jinja2_templates_correctly(mock_health_check, mock_get_auth_token, mock_post, test_client, db_session):
     # Mock the HTTP response
     mock_response = MagicMock()
@@ -66,6 +67,7 @@ def test_send_template_email_renders_jinja2_templates_correctly(mock_health_chec
 @patch('app.config.Config.EMAIL_ENABLED', True)
 @patch('app.config.Config.ENVIRONMENT_NAME', 'test')
 @patch('app.config.Config.EMAIL_RECIPIENT_OVERRIDE', 'test@example.com')
+@patch('app.config.Config.USE_LOCAL_MAILPIT', False)
 def test_minespace_template_renders_with_correct_branding(mock_health_check, mock_get_auth_token, mock_post, test_client, db_session):
     # Mock the HTTP response
     mock_response = MagicMock()
@@ -115,6 +117,7 @@ def test_minespace_template_renders_with_correct_branding(mock_health_check, moc
 @patch('app.config.Config.EMAIL_ENABLED', True)
 @patch('app.config.Config.ENVIRONMENT_NAME', 'test')
 @patch('app.config.Config.EMAIL_RECIPIENT_OVERRIDE', 'test@example.com')
+@patch('app.config.Config.USE_LOCAL_MAILPIT', False)
 def test_logos_and_brand_colors_injected_automatically(mock_health_check, mock_get_auth_token, mock_post, test_client, db_session):
     # Mock the HTTP response
     mock_response = MagicMock()

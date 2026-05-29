@@ -106,6 +106,7 @@ describe("minespaceSlice", () => {
                 minespaceUsersByMine: {},
                 minespaceUserMines: [],
                 MinistryContacts: [],
+                DistributionLists: [],
                 MinistryContactsByRegion: [],
                 currentUserAccessRequest: undefined,
             });
