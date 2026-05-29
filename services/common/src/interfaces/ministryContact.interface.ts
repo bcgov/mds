@@ -13,4 +13,5 @@ export interface IMinistryContact {
   mailing_address_line_2: string;
   mine_region_code: string;
   phone_number: string;
+  distribution_list_guids?: string[];
 }

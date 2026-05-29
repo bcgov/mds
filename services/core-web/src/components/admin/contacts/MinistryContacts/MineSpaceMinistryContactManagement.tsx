@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from "react";
-import { Divider, Alert } from "antd";
+import { Divider, Alert, Tabs } from "antd";
 import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
 import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
@@ -101,43 +101,82 @@ export const MineSpaceMinistryContactManagement: FC = () => {
         </div>
       </div>
       <div className="tab__content">
-        <Alert
-          message="MCM contacts and offices are displayed in multiple places within Core and MineSpace."
-          closable
-          description={
-            <>
-              The Contacts are displayed in MineSpace to proponents.
-              <br />
-              The Offices are displayed in MineSpace, shown on the footer on permits, and NoW
-              documents, and are the default email address for variances, code required reports, and
-              mine information notifications.
-            </>
-          }
-          type="info"
-          showIcon
-        />
-        <h2>Offices</h2>
-        <Divider />
-        <MinistryContactsTable
-          isLoaded={isLoaded}
-          contacts={offices}
-          isOffice
-          mineRegionHash={mineRegionHash}
-          openEditModal={openContactModal}
-          handleDeleteContact={handleDeleteContact}
-          MinistryContactTypesHash={ministryContactTypesHash}
-        />
-        <br />
-        <h2>Contacts</h2>
-        <Divider />
-        <MinistryContactsTable
-          isLoaded={isLoaded}
-          contacts={contacts}
-          mineRegionHash={mineRegionHash}
-          openEditModal={openContactModal}
-          handleDeleteContact={handleDeleteContact}
-          MinistryContactTypesHash={ministryContactTypesHash}
-        />
+        <Tabs defaultActiveKey="1" type="card">
+          <Tabs.TabPane tab="MCM Contacts" key="1">
+            <Alert
+              message="MCM contacts and offices are displayed in multiple places within Core and MineSpace."
+              closable
+              description={
+                <>
+                  The Contacts are displayed in MineSpace to proponents.
+                  <br />
+                  The Offices are displayed in MineSpace, shown on the footer on permits, and NoW
+                  documents, and are the default email address for variances, code required reports, and
+                  mine information notifications.
+                </>
+              }
+              type="info"
+              showIcon
+            />
+            <h2>Offices</h2>
+            <Divider />
+            <MinistryContactsTable
+              isLoaded={isLoaded}
+              contacts={offices}
+              isOffice
+              mineRegionHash={mineRegionHash}
+              openEditModal={openContactModal}
+              handleDeleteContact={handleDeleteContact}
+              MinistryContactTypesHash={ministryContactTypesHash}
+            />
+            <br />
+            <h2>Contacts</h2>
+            <Divider />
+            <MinistryContactsTable
+              isLoaded={isLoaded}
+              contacts={contacts}
+              mineRegionHash={mineRegionHash}
+              openEditModal={openContactModal}
+              handleDeleteContact={handleDeleteContact}
+              MinistryContactTypesHash={ministryContactTypesHash}
+            />
+          </Tabs.TabPane>
+
+          <Tabs.TabPane tab="Distribution Lists" key="2">
+            <Alert
+              message="Distribution Lists"
+              closable
+              description={
+                <>
+                  MCM Contacts assigned to these distribution lists will receive automated email notifications from the system based on the event matching the list name.
+                </>
+              }
+              type="info"
+              showIcon
+            />
+            <br />
+            {distributionLists.map((dl) => {
+              const dlContacts = ministryContacts.filter((c) =>
+                c.distribution_list_guids?.includes(dl.distribution_list_guid)
+              );
+              return (
+                <div key={dl.distribution_list_guid} style={{ marginBottom: "40px" }}>
+                  <h2>{dl.distribution_list_name}</h2>
+                  <Divider />
+                  <MinistryContactsTable
+                    isLoaded={isLoaded}
+                    contacts={dlContacts}
+                    mineRegionHash={mineRegionHash}
+                    openEditModal={openContactModal}
+                    handleDeleteContact={handleDeleteContact}
+                    MinistryContactTypesHash={ministryContactTypesHash}
+                    hideDelete={true}
+                  />
+                </div>
+              );
+            })}
+          </Tabs.TabPane>
+        </Tabs>
       </div>
     </div>
   );
