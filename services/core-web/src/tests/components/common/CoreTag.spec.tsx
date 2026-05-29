@@ -8,4 +8,11 @@ describe("CoreTag", () => {
     const { container } = render(<CoreTag icon={<CompanyIcon />} text="test" />);
     expect(container.firstChild).toMatchSnapshot();
   });
+
+  it("renders a suffix when provided", () => {
+    const { getByText } = render(
+      <CoreTag icon={<CompanyIcon />} text="test" suffix={<span>extra content</span>} />
+    );
+    expect(getByText("extra content")).toBeInTheDocument();
+  });
 });

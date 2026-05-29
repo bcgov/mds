@@ -1,6 +1,6 @@
 import React, { FC, ReactNode, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Col, Row, Tabs, TabsProps, Typography } from "antd";
+import { Col, Popover, Row, Tabs, TabsProps, Typography } from "antd";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import CoreTag from "./CoreTag";
@@ -26,6 +26,7 @@ interface CommonPageHeaderProps {
   tabProps?: TabsProps;
   pageContent?: ReactNode;
   extraElement?: ReactNode;
+  additionalMines?: { mine_guid: string; mine_name: string }[];
 }
 
 const { Title, Text } = Typography;
@@ -39,6 +40,7 @@ const CommonPageHeader: FC<CommonPageHeaderProps> = ({
   tabProps,
   pageContent,
   extraElement,
+  additionalMines,
 }) => {
   const mine = useSelector(getMineById(mineGuid));
   const dispatch = useDispatch();
@@ -84,6 +86,58 @@ const CommonPageHeader: FC<CommonPageHeaderProps> = ({
                   icon={<FontAwesomeIcon icon={faLocationDot} />}
                   text={mine?.mine_name}
                   link={GLOBAL_ROUTES?.MINE_DASHBOARD.dynamicRoute(mineGuid)}
+                  suffix={
+                    additionalMines?.length > 0 ? (
+                      <Popover
+                        title="Associated Mines"
+                        overlayStyle={{ maxWidth: 360 }}
+                        overlayInnerStyle={{
+                          border: "1px solid #d9d9d9",
+                          borderRadius: 8,
+                          boxShadow: "0 6px 16px rgba(0,0,0,0.15)",
+                        }}
+                        content={
+                          <div>
+                            <Typography.Text
+                              type="secondary"
+                              style={{ fontSize: "0.85em", display: "block", marginBottom: 12, fontStyle: "italic" }}
+                            >
+                              This permit applies to multiple mine sites due to historical amendments or operational grouping.
+                            </Typography.Text>
+                            <div style={{ display: "flex", flexDirection: "column", gap: 8, alignItems: "flex-start" }}>
+                              {additionalMines.map((m) => (
+                                <div key={m.mine_guid} style={{ display: "inline-block" }}>
+                                  <CoreTag
+                                    icon={<FontAwesomeIcon icon={faLocationDot} />}
+                                    text={m.mine_name}
+                                    link={GLOBAL_ROUTES?.MINE_DASHBOARD.dynamicRoute(m.mine_guid)}
+                                  />
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        }
+                      >
+                        <button
+                          type="button"
+                          aria-label={`Show ${additionalMines.length} more associated mines`}
+                          style={{
+                            background: "none",
+                            border: "none",
+                            padding: 0,
+                            cursor: "pointer",
+                            color: "inherit",
+                            font: "inherit",
+                            fontSize: "0.85em",
+                            whiteSpace: "nowrap",
+                            textDecoration: "underline",
+                          }}
+                        >
+                          + {additionalMines.length} More
+                        </button>
+                      </Popover>
+                    ) : undefined
+                  }
                 />
               </Col>
               {current_permittee && (
