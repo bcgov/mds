@@ -14,9 +14,13 @@ from azure.search.documents.indexes.models import VectorSearch
 from haystack import AsyncPipeline
 from haystack.components.builders import ChatPromptBuilder
 from haystack.components.embedders import AzureOpenAITextEmbedder
-from haystack.components.extractors.llm_metadata_extractor import AzureOpenAIChatGenerator
+from haystack.components.extractors.llm_metadata_extractor import (
+    AzureOpenAIChatGenerator,
+)
 from haystack.dataclasses import ChatMessage
-from haystack_integrations.components.retrievers.azure_ai_search import AzureAISearchHybridRetriever
+from haystack_integrations.components.retrievers.azure_ai_search import (
+    AzureAISearchHybridRetriever,
+)
 
 logger = logging.getLogger(__name__)
 

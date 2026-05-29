@@ -1,4 +1,5 @@
 import os
+from dataclasses import dataclass
 
 from app.pipelines.permit_condition_search.config import (
     AzureOpenAIConfig,
@@ -7,7 +8,6 @@ from app.pipelines.permit_condition_search.config import (
     DocumentIntelligenceConfig,
     ElasticsearchConfig,
 )
-from dataclasses import dataclass
 from haystack.utils import Secret
 
 
@@ -24,16 +24,24 @@ class DocumentSearchConfig:
     search: AzureSearchConfig
     storage: AzureStorageConfig
     document_intelligence: DocumentIntelligenceConfig
+    multimodal_enrichment_enabled: bool
+    multimodal_summary_max_chars: int
 
     @classmethod
     def from_env(cls) -> "DocumentSearchConfig":
+        openai_resource_url = None
+        if os.environ.get("AZURE_OPENAI_RESOURCE_URL"):
+            openai_resource_url = Secret.from_env_var("AZURE_OPENAI_RESOURCE_URL", strict=False)
+
         openai = AzureOpenAIConfig(
             api_key=Secret.from_env_var("AZURE_API_KEY", strict=True),
             endpoint=Secret.from_env_var("AZURE_BASE_URL", strict=True),
             deployment_name=os.environ["AZURE_DEPLOYMENT_NAME"],
             api_version=os.environ.get("AZURE_API_VERSION", "2024-02-01"),
-            embedding_model="text-embedding-3-large",
-            openai_resource_url=Secret.from_env_var("AZURE_OPENAI_ENDPOINT", strict=False) if os.environ.get("AZURE_OPENAI_ENDPOINT") else None,
+            embedding_model=os.environ.get(
+                "AZURE_EMBEDDING_DEPLOYMENT_NAME", "text-embedding-3-large"
+            ),
+            openai_resource_url=openai_resource_url,
         )
 
         # These env vars are dedicated to the document search index so it stays
@@ -60,11 +68,23 @@ class DocumentSearchConfig:
             api_version=os.environ.get("DOCUMENTINTELLIGENCE_API_VERSION", "2024-11-30"),
         )
 
+        multimodal_enrichment_enabled = (
+            os.environ.get("DOCUMENT_SEARCH_ENABLE_MULTIMODAL_ENRICHMENT", "true")
+            .strip()
+            .lower()
+            in {"1", "true", "yes", "on"}
+        )
+        multimodal_summary_max_chars = int(
+            os.environ.get("DOCUMENT_SEARCH_MULTIMODAL_SUMMARY_MAX_CHARS", "320")
+        )
+
         return cls(
             openai=openai,
             search=search,
             storage=storage,
             document_intelligence=document_intelligence,
+            multimodal_enrichment_enabled=multimodal_enrichment_enabled,
+            multimodal_summary_max_chars=multimodal_summary_max_chars,
         )
 
 

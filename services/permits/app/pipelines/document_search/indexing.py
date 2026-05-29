@@ -6,17 +6,19 @@ them without circular dependencies. All heavy objects (Document Intelligence,
 chunker, OpenAI client) are initialised once at module load time.
 """
 import hashlib
+import json
 import logging
 import os
 import re
+import time
+from base64 import b64encode
 from pathlib import Path
-from typing import List, Optional
+from typing import Any, List, Optional
 
 import fitz
-
 from app.pipelines.document_search.components.document_chunker import (
-    DocumentChunkMetadata,
     DocumentChunker,
+    DocumentChunkMetadata,
 )
 from app.pipelines.document_search.config import config
 from app.pipelines.permit_condition_extraction.components.azure_document_intelligence_converter import (
@@ -181,7 +183,9 @@ def extract_and_chunk_file(
 
     chunk_result = chunker.run(documents=paragraph_documents, metadata=chunk_metadata)
     artifacts = _extract_table_artifacts(analyze_result, doc_meta, tmp_path)
-    artifacts.extend(_extract_figure_artifacts(analyze_result, doc_meta, tmp_path))
+    figure_artifacts = _extract_figure_artifacts(analyze_result, doc_meta, tmp_path)
+    _enrich_figure_artifacts(figure_artifacts)
+    artifacts.extend(figure_artifacts)
     artifact_chunks = _build_artifact_search_chunks(artifacts, chunk_metadata)
     chunks = chunk_result["chunks"] + artifact_chunks
     return chunks, artifacts
@@ -217,12 +221,15 @@ def _build_artifact_search_chunks(artifacts: List[dict], chunk_metadata: Documen
                     text_parts.append(row_text)
         else:
             caption = content.get('caption')
+            summary = content.get('summary')
             description = content.get('description')
             footnotes = content.get('footnotes') or []
+            if summary:
+                text_parts.append(f"{artifact_label} summary: {summary}")
+            if caption:
+                text_parts.append(f"{artifact_label} caption: {caption}")
             if description:
                 text_parts.append(f"{artifact_label} description: {description}")
-            elif caption:
-                text_parts.append(f"{artifact_label} caption: {caption}")
             if page_number:
                 text_parts.append(f"Page: {page_number}")
             for footnote in footnotes:
@@ -252,6 +259,10 @@ def _build_artifact_search_chunks(artifacts: List[dict], chunk_metadata: Documen
             'artifact_id': artifact.get('artifact_id'),
             'artifact_page_number': page_number,
             'artifact_table_markdown': table_markdown,
+            'artifact_caption': content.get('caption'),
+            'artifact_summary': content.get('summary'),
+            'caption_source': content.get('caption_source'),
+            'summary_source': content.get('summary_source'),
         })
 
     return chunks
@@ -389,6 +400,181 @@ def _extract_figure_artifacts(analyze_result, doc_meta: dict, source_pdf_path: O
                 figure_artifacts[-1]['_artifact_upload'] = upload_payload
 
     return figure_artifacts
+
+
+def _enrich_figure_artifacts(figure_artifacts: List[dict]) -> None:
+    if not figure_artifacts:
+        return
+
+    if not config.multimodal_enrichment_enabled:
+        for artifact in figure_artifacts:
+            content = artifact.get('content') or {}
+            caption = content.get('caption')
+            if caption:
+                content['caption_source'] = 'di'
+            artifact['content'] = content
+        return
+
+    totals = {
+        'processed': 0,
+        'di_caption_missing': 0,
+        'generated_caption': 0,
+        'generated_summary': 0,
+        'failed': 0,
+    }
+    total_latency_s = 0.0
+
+    for artifact in figure_artifacts:
+        content = artifact.get('content') or {}
+        caption = _clean_text(content.get('caption'))
+        description = _clean_text(content.get('description'))
+        footnotes = content.get('footnotes') or []
+
+        totals['processed'] += 1
+        if not caption:
+            totals['di_caption_missing'] += 1
+
+        start = time.perf_counter()
+        try:
+            generated = _generate_figure_caption_and_summary(
+                image_payload=artifact.get('_artifact_upload'),
+                page_number=artifact.get('page_number'),
+                description=description,
+                footnotes=footnotes,
+            )
+            total_latency_s += (time.perf_counter() - start)
+
+            generated_caption = _clean_text(generated.get('caption'))
+            generated_summary = _clean_text(generated.get('summary'))
+
+            if caption:
+                content['caption'] = caption
+                content['caption_source'] = 'di'
+            elif generated_caption:
+                content['caption'] = generated_caption
+                content['caption_source'] = 'generated'
+                totals['generated_caption'] += 1
+
+            if generated_summary:
+                content['summary'] = _truncate_summary(generated_summary)
+                content['summary_source'] = 'generated'
+                totals['generated_summary'] += 1
+        except Exception as exc:  # noqa: BLE001 - enrichment must be non-blocking
+            totals['failed'] += 1
+            logger.warning(
+                'Figure enrichment failed for artifact_id=%s: %s',
+                artifact.get('artifact_id'),
+                exc,
+            )
+            if caption:
+                content['caption'] = caption
+                content['caption_source'] = 'di'
+
+        artifact['content'] = content
+
+    avg_latency_ms = int((total_latency_s / totals['processed']) * 1000) if totals['processed'] else 0
+    logger.info(
+        'Figure enrichment stats: processed=%d di_caption_missing=%d generated_caption=%d generated_summary=%d failed=%d avg_latency_ms=%d',
+        totals['processed'],
+        totals['di_caption_missing'],
+        totals['generated_caption'],
+        totals['generated_summary'],
+        totals['failed'],
+        avg_latency_ms,
+    )
+
+
+def _generate_figure_caption_and_summary(
+    image_payload: Optional[dict],
+    page_number: Optional[int],
+    description: Optional[str],
+    footnotes: List[str],
+) -> dict:
+    summary_limit = max(80, config.multimodal_summary_max_chars)
+    user_context_parts = []
+    if page_number:
+        user_context_parts.append(f'Page number: {page_number}')
+    if description:
+        user_context_parts.append(f'Document text near figure: {description}')
+    if footnotes:
+        user_context_parts.append(f"Figure footnotes: {' | '.join(str(note) for note in footnotes if note)}")
+
+    context_text = "\n".join(user_context_parts) if user_context_parts else "No additional context available."
+
+    prompt_text = (
+        'Generate JSON only with keys caption and summary. '
+        'caption: max 20 words, concrete, no speculation. '
+        f'summary: max {summary_limit} characters, 1-3 concise sentences, search-friendly. '
+        'Do not include markdown. Use empty string when uncertain.\n\n'
+        f'{context_text}'
+    )
+
+    user_content: List[dict[str, Any]] = [{"type": "text", "text": prompt_text}]
+    if image_payload and image_payload.get('content_bytes'):
+        image_b64 = b64encode(image_payload['content_bytes']).decode('ascii')
+        user_content.append(
+            {
+                'type': 'image_url',
+                'image_url': {'url': f'data:image/png;base64,{image_b64}'},
+            }
+        )
+
+    messages: List[dict[str, Any]] = [
+        {
+            'role': 'system',
+            'content': 'Return strict JSON with keys caption and summary only.',
+        },
+        {'role': 'user', 'content': user_content},
+    ]
+
+    response = openai_client.chat.completions.create(
+        model=config.openai.deployment_name,
+        temperature=0,
+        response_format={'type': 'json_object'},
+        messages=messages,  # type: ignore[arg-type]
+    )
+
+    content_text = ((response.choices or [])[0].message.content or '').strip()
+    payload = _parse_json_object(content_text)
+    if not isinstance(payload, dict):
+        return {'caption': '', 'summary': ''}
+
+    return {
+        'caption': _clean_text(payload.get('caption')) or '',
+        'summary': _clean_text(payload.get('summary')) or '',
+    }
+
+
+def _parse_json_object(text: str) -> dict:
+    if not text:
+        return {}
+
+    stripped = text.strip()
+    try:
+        return json.loads(stripped)
+    except json.JSONDecodeError:
+        match = re.search(r'\{.*\}', stripped, flags=re.DOTALL)
+        if not match:
+            return {}
+        try:
+            return json.loads(match.group(0))
+        except json.JSONDecodeError:
+            return {}
+
+
+def _clean_text(value: Any) -> Optional[str]:
+    if value is None:
+        return None
+    cleaned = re.sub(r'\s+', ' ', str(value)).strip()
+    return cleaned or None
+
+
+def _truncate_summary(text: str) -> str:
+    limit = max(80, config.multimodal_summary_max_chars)
+    if len(text) <= limit:
+        return text
+    trimmed = text[:limit].rstrip(' .')
+    return f'{trimmed}...'
 
 
 def _build_table_markdown(headers: List[str], row_payload: List[dict]) -> Optional[str]:
