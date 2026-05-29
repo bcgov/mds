@@ -123,6 +123,7 @@ def send_email_task(self, subject, recipients, body, sender=None, cc=None, bcc=N
             sender=sender,
             cc=cc,
             bcc=bcc,
+            distribution_list_guid=distribution_list_guid,
             **kwargs
         )
         return {"status": "success"}
@@ -148,6 +149,7 @@ def send_template_email_task(self, subject, recipients, template_path, context, 
             sender=sender,
             cc=cc,
             bcc=bcc,
+            distribution_list_guid=distribution_list_guid,
             **kwargs
         )
         return {"status": "success"}
