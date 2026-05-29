@@ -2,37 +2,72 @@ import React from "react";
 import { render } from "@testing-library/react";
 import { MineSpaceMinistryContactManagement } from "@/components/admin/contacts/MinistryContacts/MineSpaceMinistryContactManagement";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
-import { STATIC_CONTENT } from "@mds/common/constants/reducerTypes";
+import { STATIC_CONTENT, AUTHENTICATION } from "@mds/common/constants/reducerTypes";
 import { minespaceReducerType } from "@mds/common/redux/slices/minespaceSlice";
+import * as Permission from "@/constants/permissions";
+import * as minespaceSlice from "@mds/common/redux/slices/minespaceSlice";
 
 jest.mock("@mds/common/redux/slices/minespaceSlice", () => {
   const original = jest.requireActual("@mds/common/redux/slices/minespaceSlice");
   return {
     __esModule: true,
     ...original,
-    fetchMinistryContacts: () => () => Promise.resolve(),
-    fetchDistributionLists: () => () => Promise.resolve(),
+    fetchMinistryContacts: jest.fn(() => () => Promise.resolve()),
+    fetchDistributionLists: jest.fn(() => () => Promise.resolve()),
+    deleteMinistryContact: jest.fn(() => () => Promise.resolve()),
+    createMinistryContact: jest.fn(() => () => Promise.resolve()),
+    updateMinistryContact: jest.fn(() => () => Promise.resolve()),
+  };
+});
+
+jest.mock("@mds/common/redux/actions/modalActions", () => ({
+  openModal: jest.fn((payload) => ({ type: 'OPEN_MODAL', payload: payload || { props: {} } })),
+  closeModal: jest.fn(() => ({ type: 'CLOSE_MODAL' })),
+}));
+
+jest.mock("@/components/admin/contacts/MinistryContacts/MinistryContactsTable", () => {
+  return function MockMinistryContactsTable(props: any) {
+    return (
+      <div data-testid="mock-table">
+        <button onClick={() => props.openEditModal(true, { contact_guid: "123" })}>Mock Edit</button>
+        <button onClick={() => props.handleDeleteContact("123")}>Mock Delete</button>
+      </div>
+    );
   };
 });
 
 const initialState = {
   [minespaceReducerType]: {
-    MinistryContacts: [],
-    DistributionLists: [],
+    MinistryContacts: [
+      { contact_guid: "1", emli_contact_type_code: "ROE", first_name: "John", last_name: "Doe" },
+      { contact_guid: "2", emli_contact_type_code: "XXX", first_name: "Jane", last_name: "Doe", distribution_list_guids: ["dl-1"] },
+    ],
+    DistributionLists: [
+      { distribution_list_guid: "dl-1", distribution_list_name: "Test List" }
+    ],
   },
   [STATIC_CONTENT]: {
     mineRegionOptions: [],
     ministryContactTypes: [],
   },
+  [AUTHENTICATION]: {
+    userAccessData: [Permission.ADMIN],
+  },
 };
 
 describe("MineSpaceMinistryContactManagement", () => {
-  it("renders properly", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it("renders properly and fetches data on mount", async () => {
     const { container } = render(
       <ReduxWrapper initialState={initialState}>
         <MineSpaceMinistryContactManagement />
       </ReduxWrapper>
     );
+    expect(minespaceSlice.fetchMinistryContacts).toHaveBeenCalled();
+    expect(minespaceSlice.fetchDistributionLists).toHaveBeenCalled();
     expect(container).toMatchSnapshot();
   });
 });

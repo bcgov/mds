@@ -21,6 +21,7 @@ import {
     getMinistryContacts,
     getMinistryContactsByRegion,
     getMinespaceUserEmailHash,
+    fetchDistributionLists,
 } from "./minespaceSlice";
 import CustomAxios from "@mds/common/redux/customAxios";
 import { configureStore } from "@reduxjs/toolkit";
@@ -769,6 +770,38 @@ describe("minespaceSlice", () => {
             }));
 
             await store.dispatch(submitNewUserAccessRequest(mockFormData));
+
+            expect(showLoadingMock).toHaveBeenCalledTimes(1);
+            expect(hideLoadingMock).toHaveBeenCalledTimes(1);
+        });
+    });
+
+    describe("fetchDistributionLists", () => {
+        const mockResponse = {
+            data: { records: [{ distribution_list_guid: "123", distribution_list_name: "Test List" }] },
+        };
+
+        it("should successfully fetch distribution lists and update state", async () => {
+            (CustomAxios as jest.Mock).mockImplementation(() => ({
+                get: jest.fn().mockResolvedValue(mockResponse),
+            }));
+
+            await store.dispatch(fetchDistributionLists());
+
+            expect(showLoadingMock).toHaveBeenCalledTimes(1);
+            expect(hideLoadingMock).toHaveBeenCalledTimes(1);
+
+            const state = store.getState();
+            expect(state.minespace.DistributionLists).toEqual(mockResponse.data.records);
+        });
+
+        it("should handle API error when fetching distribution lists", async () => {
+            const error = new Error("API Error");
+            (CustomAxios as jest.Mock).mockImplementation(() => ({
+                get: jest.fn().mockRejectedValue(error),
+            }));
+
+            await store.dispatch(fetchDistributionLists());
 
             expect(showLoadingMock).toHaveBeenCalledTimes(1);
             expect(hideLoadingMock).toHaveBeenCalledTimes(1);
