@@ -241,7 +241,7 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
       saveRecentSearch(searchTerm);
     }
     handleClose();
-    
+
     // Map filter keys to search results page tab keys
     const filterToTabMap: Record<string, string> = {
       mine: "mine",
@@ -253,10 +253,10 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
       nod: "notice_of_departure",
       document: "document",
     };
-    
+
     // Get tab from first active filter if any
     const tab = activeFilters.length > 0 ? filterToTabMap[activeFilters[0]] : null;
-    
+
     history.push(router.SEARCH_RESULTS.dynamicRoute({ q: searchTerm || "*", t: tab }));
   };
 
