@@ -98,15 +98,12 @@ const CommonPageHeader: FC<CommonPageHeaderProps> = ({
                         }}
                         content={
                           <div>
-                            <Typography.Text
-                              type="secondary"
-                              style={{ fontSize: "0.85em", display: "block", marginBottom: 12, fontStyle: "italic" }}
-                            >
+                            <Typography.Text type="secondary" className="tag-more-popover__description">
                               This permit applies to multiple mine sites due to historical amendments or operational grouping.
                             </Typography.Text>
-                            <div style={{ display: "flex", flexDirection: "column", gap: 8, alignItems: "flex-start" }}>
+                            <div className="tag-more-popover__mines">
                               {additionalMines.map((m) => (
-                                <div key={m.mine_guid} style={{ display: "inline-block" }}>
+                                <div key={m.mine_guid} className="tag-more-popover__mine">
                                   <CoreTag
                                     icon={<FontAwesomeIcon icon={faLocationDot} />}
                                     text={m.mine_name}
@@ -121,17 +118,7 @@ const CommonPageHeader: FC<CommonPageHeaderProps> = ({
                         <button
                           type="button"
                           aria-label={`Show ${additionalMines.length} more associated mines`}
-                          style={{
-                            background: "none",
-                            border: "none",
-                            padding: 0,
-                            cursor: "pointer",
-                            color: "inherit",
-                            font: "inherit",
-                            fontSize: "0.85em",
-                            whiteSpace: "nowrap",
-                            textDecoration: "underline",
-                          }}
+                          className="tag-more-btn"
                         >
                           + {additionalMines.length} More
                         </button>

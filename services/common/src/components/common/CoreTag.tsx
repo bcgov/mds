@@ -24,7 +24,7 @@ const CoreTag: FC<TagProps> = ({ text, icon, link, suffix }) => {
     <Row justify="space-between" align="middle" className="tag">
       {icon}
       <Typography.Text className="margin-medium--left">{getText()}</Typography.Text>
-      {suffix && <span style={{ marginLeft: 8 }}>{suffix}</span>}
+      {suffix && <span className="margin-small--left">{suffix}</span>}
     </Row>
   );
 };
