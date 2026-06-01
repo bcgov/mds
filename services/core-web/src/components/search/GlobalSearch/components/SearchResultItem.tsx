@@ -69,12 +69,16 @@ export const SearchResultItem: React.FC<SearchResultItemProps> = ({
               <Popover
                 content={
                   <>
-                    {item.result.mines.map((mine) => (
-                      <Link
-                        key={"mine-link-" + mine.mine_guid}
-                        to={router.MINE_GENERAL.dynamicRoute(mine.mine_guid)}>
-                        {mine.mine_name}
-                      </Link>
+                    {item.result.mines.map((mine, index) => (
+                      <React.Fragment key={"mine-link-" + mine.mine_guid}>
+                        {index > 0 && ", "}
+                        <Link
+                          to={router.MINE_GENERAL.dynamicRoute(mine.mine_guid)}
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          {mine.mine_name}
+                        </Link>
+                      </React.Fragment>
                     ))}
                   </>
                 }
@@ -82,9 +86,9 @@ export const SearchResultItem: React.FC<SearchResultItemProps> = ({
                 <button
                   type="button"
                   onClick={(e) => e.stopPropagation()}
-                  style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', color: 'inherit', font: 'inherit' }} // Strip all styling, keep as inline text
+                  style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', color: '#1890ff', font: 'inherit', textDecoration: 'underline' }} // Strip all styling, keep as inline text
                 >
-                  Associated with {item.result.mines.length} Mines
+                  • Associated with {item.result.mines.length} Mines
                 </button>
               </Popover>
             )}

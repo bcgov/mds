@@ -364,6 +364,7 @@ PERMIT_MODEL = api.model(
         'exemption_fee_status_note': fields.String,
         'site_properties': fields.List(fields.Nested(MINE_TYPE_MODEL)),
         'permit_prefix': fields.String,
+        'mine': fields.List(fields.Nested(BASIC_MINE_LIST), attribute='_all_mines'),
         'status_changed_timestamp': fields.DateTime,
         'update_user': fields.String,
         'update_timestamp': fields.String,

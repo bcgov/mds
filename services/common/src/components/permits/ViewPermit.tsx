@@ -303,6 +303,9 @@ const ViewPermit: FC = () => {
     <ActionMenuButton actions={headerActions} />
   ) : null;
 
+  // filter out the mine already shown in the primary CoreTag (the one from the URL context)
+  const additionalMines = permit?.mine?.filter((m) => m.mine_guid !== id) ?? [];
+
   return (
     <div className="fixed-tabs-container permit-tabs-container">
       <CommonPageHeader
@@ -312,6 +315,7 @@ const ViewPermit: FC = () => {
         current_permittee={permit?.current_permittee ?? ""}
         breadCrumbs={[{ route: GLOBAL_ROUTES.MINE_PERMITS.dynamicRoute(id), text: "All Permits" }]}
         extraElement={headerActionComponent}
+        additionalMines={additionalMines}
         tabProps={{
           items: tabItems,
           defaultActiveKey: activeTab,
