@@ -86,7 +86,16 @@ export const SearchResultItem: React.FC<SearchResultItemProps> = ({
                 <button
                   type="button"
                   onClick={(e) => e.stopPropagation()}
-                  style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', color: '#1890ff', font: 'inherit', textDecoration: 'underline' }} // Strip all styling, keep as inline text
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    padding: 0,
+                    cursor: 'pointer',
+                    color: '#1890ff',
+                    font: 'inherit',
+                    textDecoration: 'underline',
+                    marginLeft: 8
+                  }} // Strip all styling, keep as inline text
                 >
                   • Associated with {item.result.mines.length} Mines
                 </button>
