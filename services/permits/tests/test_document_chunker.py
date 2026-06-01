@@ -1,7 +1,12 @@
 import json
+
 import pytest
+from app.pipelines.document_search.components.document_chunker import (
+    DocumentChunker,
+    DocumentChunkMetadata,
+)
 from haystack import Document
-from app.pipelines.document_search.components.document_chunker import DocumentChunker, DocumentChunkMetadata
+
 
 def test_document_chunker_run():
     chunker = DocumentChunker()
@@ -15,7 +20,13 @@ def test_document_chunker_run():
     )
     
     documents = [
-        Document(content=json.dumps({"text": "This is a long enough paragraph to be indexed. It has more than 50 characters."}), meta={"page": 3}),
+        Document(
+            content=json.dumps({"text": "This is a long enough paragraph to be indexed. It has more than 50 characters."}),
+            meta={
+                "page": 3,
+                "bounding_box": {"left": 1.25, "top": 2.5, "right": 4.25, "bottom": 3.5},
+            },
+        ),
         Document(content=json.dumps({"text": "Short"})),
         Document(content="This is another long enough paragraph that is not JSON encoded. It should also be handled.")
     ]
@@ -34,12 +45,20 @@ def test_document_chunker_run():
     assert chunk1["artifact_type"] == "text"
     assert chunk1["artifact_id"] is None
     assert chunk1["artifact_page_number"] == 3
+    assert chunk1["artifact_bounding_box_left"] == 1.25
+    assert chunk1["artifact_bounding_box_top"] == 2.5
+    assert chunk1["artifact_bounding_box_right"] == 4.25
+    assert chunk1["artifact_bounding_box_bottom"] == 3.5
     
     chunk2 = result["chunks"][1]
     assert chunk2["content"] == "This is another long enough paragraph that is not JSON encoded. It should also be handled."
     assert chunk2["document_manager_guid"] == "doc_guid"
     assert chunk2["artifact_type"] == "text"
     assert chunk2["artifact_page_number"] is None
+    assert chunk2["artifact_bounding_box_left"] is None
+    assert chunk2["artifact_bounding_box_top"] is None
+    assert chunk2["artifact_bounding_box_right"] is None
+    assert chunk2["artifact_bounding_box_bottom"] is None
 
 def test_document_chunker_make_id():
     chunker = DocumentChunker()

@@ -28,6 +28,15 @@ const propTypes = {
   handleDelete: PropTypes.func,
   // difference on MS: this is called deletePayload
   deleteFilePayload: PropTypes.objectOf(PropTypes.string),
+  documentViewerLocation: PropTypes.shape({
+    pageNumber: PropTypes.number,
+    boundingBox: PropTypes.shape({
+      left: PropTypes.number,
+      top: PropTypes.number,
+      right: PropTypes.number,
+      bottom: PropTypes.number,
+    }),
+  }),
 };
 
 const defaultProps = {
@@ -36,6 +45,7 @@ const defaultProps = {
   truncateDocumentName: true,
   deletePermission: null,
   deleteFilePayload: {},
+  documentViewerLocation: null,
   handleDelete: () => { },
 };
 
@@ -64,7 +74,11 @@ export const DocumentLink = (props) => {
 
   const openInDocumentViewerOnClick = () =>
     props.documentManagerGuid
-      ? props.openDocument(props.documentManagerGuid, props.documentName)
+      ? props.openDocument(
+        props.documentManagerGuid,
+        props.documentName,
+        props.documentViewerLocation
+      )
       : null;
 
   const linkOnClick = openInDocumentViewerOnClick || downloadOnClick;

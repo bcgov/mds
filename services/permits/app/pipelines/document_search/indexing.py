@@ -6,12 +6,14 @@ them without circular dependencies. All heavy objects (Document Intelligence,
 chunker, OpenAI client) are initialised once at module load time.
 """
 import hashlib
+import io
 import json
 import logging
 import os
 import re
 import time
 from base64 import b64encode
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 from typing import Any, List, Optional
 
@@ -26,6 +28,7 @@ from app.pipelines.permit_condition_extraction.components.azure_document_intelli
 )
 from azure.search.documents import SearchClient
 from openai import AzureOpenAI
+from PIL import Image
 
 logger = logging.getLogger(__name__)
 
@@ -39,6 +42,17 @@ EMBED_BATCH_SIZE = 100
 # Kept at 100 (vs the 1000 max) so the push phase emits frequent enough progress
 # updates for the status endpoint to reflect meaningful movement.
 PUSH_BATCH_SIZE = 100
+MULTIMODAL_PROMPT_MAX_WORKERS = 4
+MULTIMODAL_CATEGORY_VALUES = {
+    'map',
+    'site_photo',
+    'cross_section',
+    'plan_view',
+    'diagram',
+    'chart_graph',
+    'technical_drawing',
+    'other',
+}
 
 # ---------------------------------------------------------------------------
 # Shared singleton components
@@ -182,8 +196,9 @@ def extract_and_chunk_file(
     ]
 
     chunk_result = chunker.run(documents=paragraph_documents, metadata=chunk_metadata)
-    artifacts = _extract_table_artifacts(analyze_result, doc_meta, tmp_path)
-    figure_artifacts = _extract_figure_artifacts(analyze_result, doc_meta, tmp_path)
+    page_rotation_hints = _extract_page_rotation_hints(analyze_result)
+    artifacts = _extract_table_artifacts(analyze_result, doc_meta, tmp_path, page_rotation_hints)
+    figure_artifacts = _extract_figure_artifacts(analyze_result, doc_meta, tmp_path, page_rotation_hints)
     _enrich_figure_artifacts(figure_artifacts)
     artifacts.extend(figure_artifacts)
     artifact_chunks = _build_artifact_search_chunks(artifacts, chunk_metadata)
@@ -198,6 +213,7 @@ def _build_artifact_search_chunks(artifacts: List[dict], chunk_metadata: Documen
         artifact_label = (artifact_type or 'artifact').title()
         content = artifact.get('content') or {}
         page_number = artifact.get('page_number')
+        bounding_box = artifact.get('bounding_box') or {}
 
         text_parts = []
 
@@ -207,10 +223,13 @@ def _build_artifact_search_chunks(artifacts: List[dict], chunk_metadata: Documen
             headers = content.get('headers') or []
             rows = content.get('rows') or []
             caption = content.get('caption')
+            category = content.get('category')
             table_markdown = content.get('markdown') or _build_table_markdown(headers, rows)
 
             if caption:
                 text_parts.append(f"Table caption: {caption}")
+            if category:
+                text_parts.append(f"Table category: {category}")
             if page_number:
                 text_parts.append(f"Page: {page_number}")
             if headers:
@@ -223,11 +242,14 @@ def _build_artifact_search_chunks(artifacts: List[dict], chunk_metadata: Documen
             caption = content.get('caption')
             summary = content.get('summary')
             description = content.get('description')
+            category = content.get('category')
             footnotes = content.get('footnotes') or []
             if summary:
                 text_parts.append(f"{artifact_label} summary: {summary}")
             if caption:
                 text_parts.append(f"{artifact_label} caption: {caption}")
+            if category:
+                text_parts.append(f"{artifact_label} category: {category}")
             if description:
                 text_parts.append(f"{artifact_label} description: {description}")
             if page_number:
@@ -258,7 +280,12 @@ def _build_artifact_search_chunks(artifacts: List[dict], chunk_metadata: Documen
             'artifact_type': artifact_type,
             'artifact_id': artifact.get('artifact_id'),
             'artifact_page_number': page_number,
+            'artifact_bounding_box_left': _coerce_float(bounding_box.get('left')),
+            'artifact_bounding_box_top': _coerce_float(bounding_box.get('top')),
+            'artifact_bounding_box_right': _coerce_float(bounding_box.get('right')),
+            'artifact_bounding_box_bottom': _coerce_float(bounding_box.get('bottom')),
             'artifact_table_markdown': table_markdown,
+            'artifact_category': content.get('category'),
             'artifact_caption': content.get('caption'),
             'artifact_summary': content.get('summary'),
             'caption_source': content.get('caption_source'),
@@ -278,7 +305,12 @@ def _make_artifact_chunk_id(
     return hashlib.sha256(key.encode()).hexdigest()[:16]
 
 
-def _extract_table_artifacts(analyze_result, doc_meta: dict, source_pdf_path: Optional[str] = None) -> List[dict]:
+def _extract_table_artifacts(
+    analyze_result,
+    doc_meta: dict,
+    source_pdf_path: Optional[str] = None,
+    page_rotation_hints: Optional[dict[int, int]] = None,
+) -> List[dict]:
     table_artifacts = []
     document_manager_guid = doc_meta.get('document_manager_guid', '')
 
@@ -317,6 +349,7 @@ def _extract_table_artifacts(analyze_result, doc_meta: dict, source_pdf_path: Op
                 artifact_id=artifact_id,
                 page_number=page_number,
                 bounding_box=bounding_box,
+                page_rotation_hints=page_rotation_hints,
             )
             if not upload_payload:
                 logger.warning(
@@ -334,6 +367,7 @@ def _extract_table_artifacts(analyze_result, doc_meta: dict, source_pdf_path: Op
                 'headers': headers,
                 'rows': row_payload,
                 'markdown': table_markdown,
+                'category': 'table',
                 'caption': _extract_caption(table),
                 'footnotes': _extract_footnotes(table),
             },
@@ -356,7 +390,12 @@ def _extract_table_artifacts(analyze_result, doc_meta: dict, source_pdf_path: Op
     return table_artifacts
 
 
-def _extract_figure_artifacts(analyze_result, doc_meta: dict, source_pdf_path: Optional[str] = None) -> List[dict]:
+def _extract_figure_artifacts(
+    analyze_result,
+    doc_meta: dict,
+    source_pdf_path: Optional[str] = None,
+    page_rotation_hints: Optional[dict[int, int]] = None,
+) -> List[dict]:
     figure_artifacts = []
     document_manager_guid = doc_meta.get('document_manager_guid', '')
     paragraphs = getattr(analyze_result, 'paragraphs', None) or []
@@ -379,6 +418,13 @@ def _extract_figure_artifacts(analyze_result, doc_meta: dict, source_pdf_path: O
                 'caption': caption,
                 'description': description,
                 'footnotes': _extract_footnotes(figure),
+                'category': _categorize_artifact(
+                    artifact_type='figure',
+                    caption=caption,
+                    description=description,
+                    summary=None,
+                    footnotes=_extract_footnotes(figure),
+                ),
             },
             'metadata': {
                 'element_count': len(getattr(figure, 'elements', None) or []),
@@ -395,6 +441,7 @@ def _extract_figure_artifacts(analyze_result, doc_meta: dict, source_pdf_path: O
                 artifact_id=artifact_id,
                 page_number=page_number,
                 bounding_box=bounding_box,
+                page_rotation_hints=page_rotation_hints,
             )
             if upload_payload:
                 figure_artifacts[-1]['_artifact_upload'] = upload_payload
@@ -412,6 +459,13 @@ def _enrich_figure_artifacts(figure_artifacts: List[dict]) -> None:
             caption = content.get('caption')
             if caption:
                 content['caption_source'] = 'di'
+            content['category'] = _categorize_artifact(
+                artifact_type='figure',
+                caption=_clean_text(content.get('caption')),
+                description=_clean_text(content.get('description')),
+                summary=_clean_text(content.get('summary')),
+                footnotes=content.get('footnotes') or [],
+            )
             artifact['content'] = content
         return
 
@@ -424,6 +478,7 @@ def _enrich_figure_artifacts(figure_artifacts: List[dict]) -> None:
     }
     total_latency_s = 0.0
 
+    enrichment_requests = []
     for artifact in figure_artifacts:
         content = artifact.get('content') or {}
         caption = _clean_text(content.get('caption'))
@@ -434,43 +489,83 @@ def _enrich_figure_artifacts(figure_artifacts: List[dict]) -> None:
         if not caption:
             totals['di_caption_missing'] += 1
 
-        start = time.perf_counter()
-        try:
-            generated = _generate_figure_caption_and_summary(
-                image_payload=artifact.get('_artifact_upload'),
-                page_number=artifact.get('page_number'),
-                description=description,
-                footnotes=footnotes,
+        enrichment_requests.append(
+            {
+                'artifact': artifact,
+                'content': content,
+                'caption': caption,
+                'description': description,
+                'footnotes': footnotes,
+            }
+        )
+
+    max_workers = min(MULTIMODAL_PROMPT_MAX_WORKERS, len(enrichment_requests))
+    if max_workers <= 0:
+        return
+
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        future_to_request = {}
+        for request in enrichment_requests:
+            request['start_time'] = time.perf_counter()
+            future = executor.submit(
+                _generate_figure_caption_and_summary,
+                image_payload=request['artifact'].get('_artifact_upload'),
+                page_number=request['artifact'].get('page_number'),
+                description=request['description'],
+                footnotes=request['footnotes'],
             )
-            total_latency_s += (time.perf_counter() - start)
+            future_to_request[future] = request
 
-            generated_caption = _clean_text(generated.get('caption'))
-            generated_summary = _clean_text(generated.get('summary'))
+        for future in as_completed(future_to_request):
+            request = future_to_request[future]
+            artifact = request['artifact']
+            content = request['content']
+            caption = request['caption']
 
-            if caption:
-                content['caption'] = caption
-                content['caption_source'] = 'di'
-            elif generated_caption:
-                content['caption'] = generated_caption
-                content['caption_source'] = 'generated'
-                totals['generated_caption'] += 1
+            try:
+                generated = future.result()
+                total_latency_s += (time.perf_counter() - request['start_time'])
 
-            if generated_summary:
-                content['summary'] = _truncate_summary(generated_summary)
-                content['summary_source'] = 'generated'
-                totals['generated_summary'] += 1
-        except Exception as exc:  # noqa: BLE001 - enrichment must be non-blocking
-            totals['failed'] += 1
-            logger.warning(
-                'Figure enrichment failed for artifact_id=%s: %s',
-                artifact.get('artifact_id'),
-                exc,
-            )
-            if caption:
-                content['caption'] = caption
-                content['caption_source'] = 'di'
+                generated_caption = _clean_text(generated.get('caption'))
+                generated_summary = _clean_text(generated.get('summary'))
+                generated_category = _normalize_generated_category(generated.get('category'))
 
-        artifact['content'] = content
+                if caption:
+                    content['caption'] = caption
+                    content['caption_source'] = 'di'
+                elif generated_caption:
+                    content['caption'] = generated_caption
+                    content['caption_source'] = 'generated'
+                    totals['generated_caption'] += 1
+
+                if generated_summary:
+                    content['summary'] = _truncate_summary(generated_summary)
+                    content['summary_source'] = 'generated'
+                    totals['generated_summary'] += 1
+
+                if generated_category:
+                    content['category'] = generated_category
+            except Exception as exc:  # noqa: BLE001 - enrichment must be non-blocking
+                totals['failed'] += 1
+                logger.warning(
+                    'Figure enrichment failed for artifact_id=%s: %s',
+                    artifact.get('artifact_id'),
+                    exc,
+                )
+                if caption:
+                    content['caption'] = caption
+                    content['caption_source'] = 'di'
+
+            if not content.get('category'):
+                content['category'] = _categorize_artifact(
+                    artifact_type='figure',
+                    caption=_clean_text(content.get('caption')),
+                    description=_clean_text(content.get('description')),
+                    summary=_clean_text(content.get('summary')),
+                    footnotes=content.get('footnotes') or [],
+                )
+
+            artifact['content'] = content
 
     avg_latency_ms = int((total_latency_s / totals['processed']) * 1000) if totals['processed'] else 0
     logger.info(
@@ -502,10 +597,29 @@ def _generate_figure_caption_and_summary(
     context_text = "\n".join(user_context_parts) if user_context_parts else "No additional context available."
 
     prompt_text = (
-        'Generate JSON only with keys caption and summary. '
-        'caption: max 20 words, concrete, no speculation. '
-        f'summary: max {summary_limit} characters, 1-3 concise sentences, search-friendly. '
-        'Do not include markdown. Use empty string when uncertain.\n\n'
+        'Generate JSON only with keys caption, summary, and category. '
+        'Do not add any other keys. Do not include markdown.\n\n'
+        'General rules:\n'
+        '- Ground all statements in visible evidence and provided context.\n'
+        '- No speculation, legal conclusions, or inferred intent.\n'
+        '- If uncertain, omit uncertain details and use empty string when needed.\n\n'
+        'Caption rules:\n'
+        '- Exactly one sentence, max 20 words, concrete and visual.\n'
+        '- Prefer nouns over adjectives; avoid generic filler.\n'
+        '- Include image type only when visible (map, photo, diagram, chart, table image, technical drawing).\n\n'
+        '- If the figure contains a readable embedded title/type label, include the most specific one in the caption.\n\n'
+        'Caption rules by image type:\n'
+        '- Map: name map subject and 1-2 visible elements (for example pit boundary, haul roads, watercourse, labels, legend, north arrow, scale bar). Include readable map-type text (for example site map, location map, orthophoto) when present. Use place names or coordinates only if readable.\n'
+        '- Scenery photo: name scene type and dominant visible features (for example terrain, vegetation, roads, equipment, facilities, disturbed ground). Mention viewpoint only if obvious.\n'
+        '- Other: for diagram/chart/table image/technical drawing, state figure type and primary visible components, variables, or labeled elements. Include readable figure-type labels (for example cross-section, plan view, workflow) when present.\n\n'
+        'Summary rules for search:\n'
+        f'- Max {summary_limit} characters, 1-3 concise sentences, search-friendly.\n'
+        '- Include high-value searchable terms visible in the image and context (site features, mining infrastructure, activity type, environmental features, labels, units).\n'
+        '- Keep concise; no narrative.\n\n'
+        'Category rules:\n'
+        '- Choose exactly one category from this list: map, site_photo, cross_section, plan_view, diagram, chart_graph, technical_drawing, other.\n'
+        '- Prefer map/site_photo when clearly visible; use other only when none fit.\n\n'
+        'Suggested process: classify image as map, scenery photo, or other; then apply the corresponding caption rule.\n\n'
         f'{context_text}'
     )
 
@@ -522,7 +636,7 @@ def _generate_figure_caption_and_summary(
     messages: List[dict[str, Any]] = [
         {
             'role': 'system',
-            'content': 'Return strict JSON with keys caption and summary only.',
+            'content': 'Return strict JSON with keys caption, summary, and category only. Output must be valid JSON.',
         },
         {'role': 'user', 'content': user_content},
     ]
@@ -537,12 +651,24 @@ def _generate_figure_caption_and_summary(
     content_text = ((response.choices or [])[0].message.content or '').strip()
     payload = _parse_json_object(content_text)
     if not isinstance(payload, dict):
-        return {'caption': '', 'summary': ''}
+        return {'caption': '', 'summary': '', 'category': ''}
 
     return {
         'caption': _clean_text(payload.get('caption')) or '',
         'summary': _clean_text(payload.get('summary')) or '',
+        'category': _normalize_generated_category(payload.get('category')) or '',
     }
+
+
+def _normalize_generated_category(value: Any) -> Optional[str]:
+    cleaned = _clean_text(value)
+    if not cleaned:
+        return None
+
+    normalized = cleaned.strip().lower().replace('-', '_').replace(' ', '_')
+    if normalized in MULTIMODAL_CATEGORY_VALUES:
+        return normalized
+    return None
 
 
 def _parse_json_object(text: str) -> dict:
@@ -635,12 +761,14 @@ def _build_table_upload_payload(
     artifact_id: str,
     page_number: Optional[int],
     bounding_box: Optional[dict],
+    page_rotation_hints: Optional[dict[int, int]] = None,
 ) -> Optional[dict]:
     return _build_region_upload_payload(
         source_pdf_path=source_pdf_path,
         artifact_id=artifact_id,
         page_number=page_number,
         bounding_box=bounding_box,
+        page_rotation_hints=page_rotation_hints,
     )
 
 
@@ -649,12 +777,14 @@ def _build_figure_upload_payload(
     artifact_id: str,
     page_number: Optional[int],
     bounding_box: Optional[dict],
+    page_rotation_hints: Optional[dict[int, int]] = None,
 ) -> Optional[dict]:
     return _build_region_upload_payload(
         source_pdf_path=source_pdf_path,
         artifact_id=artifact_id,
         page_number=page_number,
         bounding_box=bounding_box,
+        page_rotation_hints=page_rotation_hints,
     )
 
 
@@ -663,6 +793,7 @@ def _build_region_upload_payload(
     artifact_id: str,
     page_number: Optional[int],
     bounding_box: Optional[dict],
+    page_rotation_hints: Optional[dict[int, int]] = None,
 ) -> Optional[dict]:
     if not source_pdf_path or not page_number or not bounding_box:
         logger.warning(
@@ -710,7 +841,28 @@ def _build_region_upload_payload(
                 return None
 
             pixmap = page.get_pixmap(matrix=fitz.Matrix(2, 2), clip=clip, alpha=False)
-            png_bytes = pixmap.tobytes("png")
+            rotation_degrees, rotation_source = _determine_rotation_degrees(
+                page=page,
+                clip_rect=clip,
+                page_number=page_number,
+                page_rotation_hints=page_rotation_hints,
+            )
+            if rotation_degrees:
+                image = Image.frombytes("RGB", [pixmap.width, pixmap.height], pixmap.samples)
+                image = image.rotate(rotation_degrees, expand=True)
+                png_buffer = io.BytesIO()
+                image.save(png_buffer, format="PNG")
+                png_bytes = png_buffer.getvalue()
+            else:
+                png_bytes = pixmap.tobytes("png")
+
+            logger.debug(
+                'Artifact upload rotation decision artifact_id=%s page_number=%s source=%s degrees=%s',
+                artifact_id,
+                page_number,
+                rotation_source,
+                rotation_degrees,
+            )
             if not png_bytes:
                 return None
 
@@ -729,6 +881,91 @@ def _coerce_float(value) -> Optional[float]:
         return float(value)
     except (TypeError, ValueError):
         return None
+
+
+def _extract_page_rotation_hints(analyze_result) -> dict[int, int]:
+    hints: dict[int, int] = {}
+    for page in getattr(analyze_result, 'pages', None) or []:
+        page_number = getattr(page, 'page_number', None)
+        if not page_number:
+            continue
+
+        normalized = _normalize_di_angle_to_quadrant(getattr(page, 'angle', None))
+        if normalized is None:
+            continue
+        hints[int(page_number)] = normalized
+
+    return hints
+
+
+def _normalize_di_angle_to_quadrant(angle, deadband_degrees: float = 10.0) -> Optional[int]:
+    try:
+        raw_angle = float(angle)
+    except (TypeError, ValueError):
+        return None
+
+    normalized_angle = ((raw_angle + 180.0) % 360.0) - 180.0
+    if abs(normalized_angle) <= deadband_degrees:
+        return 0
+
+    snapped = int(round(normalized_angle / 90.0) * 90)
+    return snapped % 360
+
+
+def _determine_rotation_degrees(
+    page,
+    clip_rect,
+    page_number: Optional[int],
+    page_rotation_hints: Optional[dict[int, int]],
+) -> tuple[int, str]:
+    if page_number and page_rotation_hints and page_number in page_rotation_hints:
+        return int(page_rotation_hints[page_number]), 'di_page_angle'
+
+    fallback_rotation, reason = _choose_rotation_degrees_from_text(page, clip_rect)
+    if fallback_rotation:
+        return fallback_rotation, reason
+
+    return 0, 'none'
+
+
+def _choose_rotation_degrees_from_text(page: fitz.Page, clip_rect: fitz.Rect) -> tuple[int, str]:
+    text_dict = page.get_text("dict", clip=clip_rect)
+    vector_x = 0.0
+    vector_y = 0.0
+    weighted_line_count = 0
+
+    for block in text_dict.get("blocks", []):
+        if int(block.get("type", 1)) != 0:
+            continue
+
+        for line in block.get("lines", []):
+            direction = line.get("dir", (1.0, 0.0))
+            if not isinstance(direction, (list, tuple)) or len(direction) != 2:
+                continue
+
+            dx = float(direction[0])
+            dy = float(direction[1])
+            text_length = sum(
+                len(str(span.get("text", "")).strip())
+                for span in line.get("spans", [])
+            )
+            if text_length <= 0:
+                continue
+
+            vector_x += dx * text_length
+            vector_y += dy * text_length
+            weighted_line_count += text_length
+
+    if weighted_line_count > 0:
+        if abs(vector_y) > abs(vector_x):
+            if vector_y > 0:
+                return 90, "text_direction_vertical_down"
+            return 270, "text_direction_vertical_up"
+        return 0, "text_direction_left_to_right"
+
+    if clip_rect.height > clip_rect.width:
+        return 90, "aspect_ratio_fallback"
+    return 0, "no_rotation_needed"
 
 
 def _is_figure_binary_upload_enabled() -> bool:
@@ -783,3 +1020,44 @@ def _extract_figure_description(figure, paragraphs) -> Optional[str]:
         return "\n".join(part for part in description_parts if part)
 
     return None
+
+
+def _categorize_artifact(
+    artifact_type: Optional[str],
+    caption: Optional[str],
+    description: Optional[str],
+    summary: Optional[str],
+    footnotes: Optional[List[str]] = None,
+) -> str:
+    if artifact_type == 'table':
+        return 'table'
+
+    text_parts = [caption, description, summary]
+    if footnotes:
+        text_parts.extend(str(note) for note in footnotes if note)
+    normalized_text = " ".join(part for part in text_parts if part).lower()
+    if not normalized_text:
+        return 'other'
+
+    if re.search(
+        r'\b(map|site map|location map|orthophoto|aerial map|topographic|north arrow|scale bar|legend)\b',
+        normalized_text,
+    ):
+        return 'map'
+    if re.search(
+        r'\b(photo|photograph|site photo|ground-level|ground level|landscape|scenery|drone)\b',
+        normalized_text,
+    ):
+        return 'site_photo'
+    if re.search(r'\b(cross-section|cross section|profile)\b', normalized_text):
+        return 'cross_section'
+    if re.search(r'\b(plan view|site plan|layout plan|general arrangement)\b', normalized_text):
+        return 'plan_view'
+    if re.search(r'\b(flowchart|workflow|process flow|schematic|diagram)\b', normalized_text):
+        return 'diagram'
+    if re.search(r'\b(chart|graph|plot|histogram|trend)\b', normalized_text):
+        return 'chart_graph'
+    if re.search(r'\b(drawing|elevation|detail drawing|technical drawing)\b', normalized_text):
+        return 'technical_drawing'
+
+    return 'other'

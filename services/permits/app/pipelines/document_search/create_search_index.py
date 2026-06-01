@@ -68,6 +68,7 @@ semantic_config = SemanticConfiguration(
         keywords_fields=[
             SemanticField(field_name="document_name"),
             SemanticField(field_name="document_type"),
+            SemanticField(field_name="artifact_category"),
             SemanticField(field_name="artifact_caption"),
             SemanticField(field_name="artifact_summary"),
         ],

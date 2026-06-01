@@ -1,22 +1,23 @@
 import json
-from unittest.mock import MagicMock, patch, AsyncMock
-import pytest
 import uuid
+from unittest.mock import AsyncMock, MagicMock, patch
 
-from fastapi import HTTPException, UploadFile
+import pytest
 from app.pipelines.document_search.resources.document_search_resource import (
-    index_now_application_documents,
-    cancel_indexing,
-    search_now_application_documents,
-    get_indexing_status,
-    _stream_search_results,
+    _merge_filters,
     _process_documents,
     _process_llm_output,
-    _merge_filters
+    _stream_search_results,
+    cancel_indexing,
+    get_indexing_status,
+    index_now_application_documents,
+    search_now_application_documents,
 )
 from app.pipelines.permit_condition_search.models.search_models import SearchParams
+from fastapi import HTTPException, UploadFile
 from haystack.dataclasses import ChatMessage
 from openai import BadRequestError
+
 
 @pytest.fixture
 def mock_redis():
@@ -231,7 +232,9 @@ class TestDocumentSearchResource:
         assert res["error_message"] == "indexing failed"
 
     def test_is_task_running(self, mock_redis):
-        from app.pipelines.document_search.resources.document_search_resource import _is_task_running
+        from app.pipelines.document_search.resources.document_search_resource import (
+            _is_task_running,
+        )
         from app.tasks.tasks import run_now_document_indexing
         
         with patch("app.tasks.tasks.run_now_document_indexing.app.AsyncResult") as mock_async_result:
@@ -285,6 +288,10 @@ class TestDocumentSearchResource:
         doc.meta = {
             "artifact_type": "figure",
             "artifact_document_manager_guid": "artifact-guid-123",
+            "artifact_bounding_box_left": 1.1,
+            "artifact_bounding_box_top": 2.2,
+            "artifact_bounding_box_right": 3.3,
+            "artifact_bounding_box_bottom": 4.4,
         }
         doc.score = 0.9
 
@@ -298,6 +305,10 @@ class TestDocumentSearchResource:
             payload["documents"][0]["meta"]["artifact_document_manager_guid"]
             == "artifact-guid-123"
         )
+        assert payload["documents"][0]["meta"]["artifact_bounding_box_left"] == 1.1
+        assert payload["documents"][0]["meta"]["artifact_bounding_box_top"] == 2.2
+        assert payload["documents"][0]["meta"]["artifact_bounding_box_right"] == 3.3
+        assert payload["documents"][0]["meta"]["artifact_bounding_box_bottom"] == 4.4
         assert "artifact_presigned_url" not in payload["documents"][0]["meta"]
 
     @pytest.mark.asyncio

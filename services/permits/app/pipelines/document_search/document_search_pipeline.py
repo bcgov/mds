@@ -38,6 +38,7 @@ NOW_DOCUMENT_SEARCH_FACETS = [
     "document_type",
     "submitted_date",
     "artifact_type",
+    "artifact_category",
     "artifact_page_number",
 ]
 
