@@ -55,10 +55,19 @@ export interface NowDocumentMeta {
     document_name: string;
     document_type: string;
     artifact_type?: string;
+    artifact_category?: string;
     artifact_id?: string;
     artifact_page_number?: number;
+    artifact_bounding_box_left?: number;
+    artifact_bounding_box_top?: number;
+    artifact_bounding_box_right?: number;
+    artifact_bounding_box_bottom?: number;
     artifact_table_markdown?: string;
     artifact_presigned_url?: string;
+    artifact_caption?: string;
+    artifact_summary?: string;
+    caption_source?: "di" | "generated";
+    summary_source?: "generated";
     submitted_date: string | null;
     highlights?: {
         content?: string[];

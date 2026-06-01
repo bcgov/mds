@@ -156,6 +156,7 @@ describe('NowApplicationDocumentSearch', () => {
             query: 'table data',
             filters: [
                 { category: 'artifact_type', value: 'table' },
+                { category: 'artifact_category', value: 'map' },
                 { category: 'artifact_page_number', value: '4' },
             ],
         });
@@ -168,6 +169,7 @@ describe('NowApplicationDocumentSearch', () => {
 
         expect(screen.getByText('Showing results for:')).toBeInTheDocument();
         expect(screen.getByText('Artifact: table')).toBeInTheDocument();
+        expect(screen.getByText('Category: map')).toBeInTheDocument();
         expect(screen.getByText('Page: 4')).toBeInTheDocument();
     });
 

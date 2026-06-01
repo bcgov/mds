@@ -238,7 +238,9 @@ const NowApplicationDocumentSearch: React.FC<NowApplicationDocumentSearchProps> 
     () =>
       selectedFilters.filter(
         ({ category }) =>
-          category === "artifact_type" || category === "artifact_page_number"
+          category === "artifact_type" ||
+          category === "artifact_category" ||
+          category === "artifact_page_number"
       ),
     [selectedFilters]
   );
@@ -252,7 +254,10 @@ const NowApplicationDocumentSearch: React.FC<NowApplicationDocumentSearchProps> 
 
   const clearAllArtifactFilters = () => {
     const updatedFilters = selectedFilters.filter(
-      ({ category }) => category !== "artifact_type" && category !== "artifact_page_number"
+      ({ category }) =>
+        category !== "artifact_type" &&
+        category !== "artifact_category" &&
+        category !== "artifact_page_number"
     );
     debouncedSearch(query, updatedFilters);
   };
@@ -261,12 +266,15 @@ const NowApplicationDocumentSearch: React.FC<NowApplicationDocumentSearchProps> 
     if (category === "artifact_type") {
       return `Artifact: ${value}`;
     }
+    if (category === "artifact_category") {
+      return `Category: ${value}`;
+    }
     if (category === "artifact_page_number") {
       return `Page: ${value}`;
     }
     return value;
   };
-
+  console.log(results)
   return (
     <Layout className="permit-search__layout">
       <Layout.Content className="permit-search__content">

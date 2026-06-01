@@ -4,7 +4,8 @@ import NowDocumentResultItem from "@/components/noticeOfWork/applications/search
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 import { NowDocumentSearchResult } from "@mds/common/interfaces/search/facet-search.interface";
 
-jest.mock("@mds/common/components/documents/DocumentLink", () => () => <div />);
+const mockDocumentLink = jest.fn(() => <div />);
+jest.mock("@mds/common/components/documents/DocumentLink", () => (props) => mockDocumentLink(props));
 jest.mock("@/components/mine/Permit/Search/components/MarkdownViewer", () => () => <div />);
 
 const LARGE_TABLE_MARKDOWN = [
@@ -40,6 +41,10 @@ const mockResult: NowDocumentSearchResult = {
 };
 
 describe("NowDocumentResultItem", () => {
+  beforeEach(() => {
+    mockDocumentLink.mockClear();
+  });
+
   it("renders properly with highlights", () => {
     const { container } = render(
       <ReduxWrapper>
@@ -192,5 +197,64 @@ describe("NowDocumentResultItem", () => {
 
     fireEvent.click(screen.getByRole("link", { name: "Show more" }));
     expect(screen.getByText("Formatted table")).toBeInTheDocument();
+  });
+
+  it("renders artifact summary and caption when present", () => {
+    const artifactResult = {
+      ...mockResult,
+      meta: {
+        ...mockResult.meta,
+        highlights: null,
+        artifact_type: "figure",
+        artifact_summary: "Generated summary for this figure.",
+        artifact_caption: "Generated caption",
+        summary_source: "generated" as const,
+        caption_source: "generated" as const,
+      },
+    };
+
+    render(
+      <ReduxWrapper>
+        <NowDocumentResultItem result={artifactResult} />
+      </ReduxWrapper>
+    );
+
+    expect(screen.getByText("Generated summary for this figure."))
+      .toBeInTheDocument();
+    expect(screen.getByText(/Caption:/i)).toBeInTheDocument();
+    expect(screen.getByText(/Generated caption/)).toBeInTheDocument();
+  });
+
+  it("forwards document viewer location with page and bounding box", () => {
+    const artifactResult = {
+      ...mockResult,
+      meta: {
+        ...mockResult.meta,
+        artifact_type: "figure",
+        artifact_page_number: 9,
+        artifact_bounding_box_left: 1.2,
+        artifact_bounding_box_top: 2.3,
+        artifact_bounding_box_right: 4.5,
+        artifact_bounding_box_bottom: 6.7,
+      },
+    };
+
+    render(
+      <ReduxWrapper>
+        <NowDocumentResultItem result={artifactResult} />
+      </ReduxWrapper>
+    );
+
+    expect(mockDocumentLink).toHaveBeenCalled();
+    const lastCallProps = mockDocumentLink.mock.calls[mockDocumentLink.mock.calls.length - 1][0];
+    expect(lastCallProps.documentViewerLocation).toEqual({
+      pageNumber: 9,
+      boundingBox: {
+        left: 1.2,
+        top: 2.3,
+        right: 4.5,
+        bottom: 6.7,
+      },
+    });
   });
 });

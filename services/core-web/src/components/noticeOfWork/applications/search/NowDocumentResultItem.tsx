@@ -26,6 +26,13 @@ const formatArtifactType = (artifactType: string) =>
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1).toLowerCase())
     .join(" ");
 
+const formatArtifactCategory = (artifactCategory: string) =>
+  artifactCategory
+    .split(/[_\s-]+/)
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1).toLowerCase())
+    .join(" ");
+
 function highlightTerms(text: string, query: string): React.ReactNode {
   const terms = query.trim().split(/\s+/).filter(Boolean);
   if (!terms.length) return text;
@@ -60,9 +67,18 @@ const NowDocumentResultItem: React.FC<NowDocumentResultItemProps> = ({
     submitted_date,
     highlights,
     artifact_type,
+    artifact_category,
     artifact_page_number,
+    artifact_bounding_box_left,
+    artifact_bounding_box_top,
+    artifact_bounding_box_right,
+    artifact_bounding_box_bottom,
     artifact_table_markdown,
     artifact_presigned_url,
+    artifact_caption,
+    artifact_summary,
+    caption_source,
+    summary_source,
   } = meta;
   const query = useAppSelector(selectNowSearchQuery);
 
@@ -77,8 +93,30 @@ const NowDocumentResultItem: React.FC<NowDocumentResultItemProps> = ({
   const hasArtifactImage = Boolean(artifact_presigned_url);
   const hasFormattedTable = artifact_type === "table" && Boolean(artifact_table_markdown);
   const hasArtifactContent = hasArtifactImage || hasFormattedTable;
+  const hasArtifactSummary = Boolean(artifact_summary);
+  const hasArtifactCaption = Boolean(artifact_caption);
 
   const formattedDate = submitted_date ? dayjs(submitted_date).format("MMM D, YYYY") : null;
+  const hasBoundingBox =
+    typeof artifact_bounding_box_left === "number" &&
+    typeof artifact_bounding_box_top === "number" &&
+    typeof artifact_bounding_box_right === "number" &&
+    typeof artifact_bounding_box_bottom === "number";
+  const documentViewerLocation =
+    typeof artifact_page_number === "number" || hasBoundingBox
+      ? {
+        pageNumber:
+          typeof artifact_page_number === "number" ? artifact_page_number : undefined,
+        boundingBox: hasBoundingBox
+          ? {
+            left: artifact_bounding_box_left,
+            top: artifact_bounding_box_top,
+            right: artifact_bounding_box_right,
+            bottom: artifact_bounding_box_bottom,
+          }
+          : undefined,
+      }
+      : null;
 
   const matchPercent = useMemo(() => normalizeScore(score), [score]);
   const [isTableExpanded, setIsTableExpanded] = useState(false);
@@ -138,8 +176,31 @@ const NowDocumentResultItem: React.FC<NowDocumentResultItemProps> = ({
         </Col>
       )}
 
+      {(hasArtifactSummary || hasArtifactCaption) && (
+        <Col span={24} className="now-search__artifact-insights">
+          {hasArtifactSummary && (
+            <Typography.Paragraph className="now-search__artifact-summary" ellipsis={{ rows: 4 }}>
+              {artifact_summary}
+              {summary_source && (
+                <Typography.Text type="secondary" className="now-search__artifact-source">
+                  {` (${summary_source})`}
+                </Typography.Text>
+              )}
+            </Typography.Paragraph>
+          )}
+          {hasArtifactCaption && (
+            <Typography.Text type="secondary" className="now-search__artifact-caption">
+              <strong>Caption:</strong> {artifact_caption}
+              {caption_source && (
+                <span className="now-search__artifact-source"> {`(${caption_source})`}</span>
+              )}
+            </Typography.Text>
+          )}
+        </Col>
+      )}
+
       {/* Only show OCR/highlight text when there is no artifact content. */}
-      {!hasArtifactContent && (
+      {!hasArtifactContent && !hasArtifactSummary && (
         <Col span={24} className="now-search__highlight-excerpt">
           {highlightSnippet ? (
             <MarkdownViewer markdown={highlightSnippet} />
@@ -178,6 +239,16 @@ const NowDocumentResultItem: React.FC<NowDocumentResultItemProps> = ({
                   {formatArtifactType(artifact_type)}
                 </Tag>
               )}
+              {artifact_category && (
+                <Tag
+                  color="purple"
+                  className="permit-search__artifact-tag"
+                  style={{ cursor: onFilterClick ? "pointer" : "default" }}
+                  onClick={() => onFilterClick?.("artifact_category", artifact_category)}
+                >
+                  {formatArtifactCategory(artifact_category)}
+                </Tag>
+              )}
               {typeof artifact_page_number === "number" && (
                 <Tag
                   color="cyan"
@@ -202,6 +273,7 @@ const NowDocumentResultItem: React.FC<NowDocumentResultItemProps> = ({
                 documentManagerGuid={document_manager_guid}
                 documentName={document_name}
                 truncateDocumentName={false}
+                documentViewerLocation={documentViewerLocation}
               />
               {formattedDate && (
                 <Typography.Text type="secondary" className="permit-search__document-info">

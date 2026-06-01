@@ -7,9 +7,9 @@ from typing import AsyncIterator, List
 
 import anyio
 import redis as redis_lib
-
-from app.common.utils.logging import sanitize_log
 from app.celery import CACHE_REDIS_URL
+from app.common.utils.logging import sanitize_log
+from app.pipelines.document_search.config import config
 from app.pipelines.document_search.document_search_pipeline import (
     now_document_search_retrieval_pipeline,
     now_document_search_search_client,
@@ -19,7 +19,6 @@ from app.pipelines.permit_condition_search.models.search_models import (
     IndexStats,
     SearchParams,
 )
-from app.pipelines.document_search.config import config
 from azure.search.documents import SearchClient
 from fastapi import APIRouter, File, Form, HTTPException, UploadFile
 from haystack.dataclasses import ChatMessage
@@ -34,16 +33,18 @@ FILE_UPLOAD_PATH = os.environ.get("FILE_UPLOAD_PATH", "/file-uploads")
 
 # ---------------------------------------------------------------------------
 # Redis key scheme:
-#   now_doc_index:{now_guid}:{doc_guid}  — task_id for a single document
-#   now_doc_index_tasks:{now_guid}       — Redis set of all task_ids for an application
+#   now_doc_index_parent:{now_guid}      — parent orchestration task_id for an application
+#   now_doc_index:{now_guid}:{doc_guid}  — child task_id for a single document
+#   now_doc_index_tasks:{now_guid}       — Redis set of child task_ids for an application
 #
-# One Celery task is enqueued per document so files are processed one at a time
-# and never accumulate in memory simultaneously. The set allows the status and
-# cancel endpoints to aggregate across all tasks for an application.
+# The index endpoint enqueues one parent task per application batch; the parent
+# fans out child tasks per document with bounded concurrency. The status/cancel
+# endpoints use parent + child keys for aggregation and control.
 # ---------------------------------------------------------------------------
 _redis = redis_lib.Redis.from_url(CACHE_REDIS_URL, decode_responses=True)
 _TASK_KEY_PREFIX = "now_doc_index:"
 _TASK_SET_PREFIX = "now_doc_index_tasks:"
+_PARENT_TASK_KEY_PREFIX = "now_doc_index_parent:"
 _TASK_KEY_TTL = 60 * 60 * 24 * 7  # 7 days
 
 _RUNNING_STATES = {"PENDING", "STARTED", "PROGRESS", "RETRY"}
@@ -55,6 +56,10 @@ def _task_key(now_application_guid: str, document_manager_guid: str) -> str:
 
 def _task_set_key(now_application_guid: str) -> str:
     return f"{_TASK_SET_PREFIX}{now_application_guid}"
+
+
+def _parent_task_key(now_application_guid: str) -> str:
+    return f"{_PARENT_TASK_KEY_PREFIX}{now_application_guid}"
 
 
 # ---------------------------------------------------------------------------
@@ -69,8 +74,9 @@ def _validate_guid(value: str, label: str) -> None:
 
 
 def _is_task_running(task_id: str) -> bool:
-    from app.tasks.tasks import run_now_document_indexing
-    return run_now_document_indexing.app.AsyncResult(task_id).state in _RUNNING_STATES
+    from app.tasks.tasks import run_now_document_indexing_parent
+
+    return run_now_document_indexing_parent.app.AsyncResult(task_id).state in _RUNNING_STATES
 
 
 # ---------------------------------------------------------------------------
@@ -84,20 +90,17 @@ async def index_now_application_documents(
     metadata: str = Form(...),
 ) -> IndexingResponse:
     """
-    Enqueue an async indexing task for a single document belonging to a NoW application.
+    Enqueue an async parent indexing task for a NoW application batch.
 
-    The caller (core-api) sends documents one at a time so that only one file's bytes
-    are held in memory on either side at once. Each call enqueues one Celery task;
-    the status endpoint aggregates across all tasks for the application.
+    The parent task fans out one child task per document and aggregates progress.
+    This endpoint supports single-document requests as a subset of batch behavior.
 
-    Accepts a single file alongside a one-element JSON metadata array containing:
+    Accepts a files array and matching JSON metadata array containing:
         document_manager_guid, document_name, document_type,
         mine_guid, submitted_date (optional)
 
-    Returns immediately with status="running". De-duplication is per document — a
-    second call for the same document_manager_guid is rejected with 409 if that
-    document's task is still running, but other documents for the same application
-    are accepted concurrently.
+    Returns immediately with status="running". If the application already has an
+    active parent indexing task, this endpoint returns 409.
 
     Because chunk IDs are deterministic (sha256 of guid + document_manager_guid + index),
     re-indexing the same document always overwrites the same records, avoiding duplicates.
@@ -117,9 +120,15 @@ async def index_now_application_documents(
             f"files count ({len(files)}) must match metadata count ({len(doc_metadata_list)})",
         )
 
-    # Reject duplicate concurrent runs for the same document.
-    doc_guid = doc_metadata_list[0].get("document_manager_guid", "") if doc_metadata_list else ""
-    if doc_guid:
+    # Reject concurrent parent runs for the same application.
+    existing_parent_task_id = _redis.get(_parent_task_key(now_application_guid))
+    if existing_parent_task_id and _is_task_running(existing_parent_task_id):
+        raise HTTPException(409, f"Indexing already in progress for NoW application {now_application_guid}.")
+
+    doc_guids = [meta.get("document_manager_guid", "") for meta in doc_metadata_list]
+    for doc_guid in doc_guids:
+        if not doc_guid:
+            continue
         existing_task_id = _redis.get(_task_key(now_application_guid, doc_guid))
         if existing_task_id and _is_task_running(existing_task_id):
             raise HTTPException(409, f"Indexing already in progress for document {doc_guid}.")
@@ -146,25 +155,19 @@ async def index_now_application_documents(
         logger.error("Failed to write upload files for NoW application %s: %s", sanitize_log(now_application_guid), e)
         raise HTTPException(500, f"Failed to store uploaded files: {e}")
 
-    # Enqueue the Celery task; register its ID per-document and in the application set.
-    from app.tasks.tasks import run_now_document_indexing
-    task = run_now_document_indexing.delay(now_application_guid, tmp_paths, doc_metadata_list)
+    # Enqueue the parent Celery task; child task IDs are added to Redis by the parent.
+    from app.tasks.tasks import run_now_document_indexing_parent
+
+    task = run_now_document_indexing_parent.delay(now_application_guid, tmp_paths, doc_metadata_list)
 
     task_set_key = _task_set_key(now_application_guid)
-
-    if doc_guid:
-        _redis.setex(_task_key(now_application_guid, doc_guid), _TASK_KEY_TTL, task.id)
-    else:
-        # If we are indexing the whole application (not just a single doc), clear stale state
-        _redis.delete(task_set_key)
-
-    _redis.sadd(task_set_key, task.id)
-    _redis.expire(task_set_key, _TASK_KEY_TTL)
+    _redis.delete(task_set_key)
+    _redis.setex(_parent_task_key(now_application_guid), _TASK_KEY_TTL, task.id)
 
     logger.info(
-        "Enqueued indexing task %s for document %s in NoW application %s",
+        "Enqueued parent indexing task %s for %d documents in NoW application %s",
         task.id,
-        sanitize_log(doc_guid),
+        len(files),
         sanitize_log(now_application_guid),
     )
 
@@ -186,12 +189,17 @@ async def cancel_indexing(now_application_guid: str):
     """
     _validate_guid(now_application_guid, "now_application_guid")
 
-    task_ids = _redis.smembers(_task_set_key(now_application_guid))
+    parent_task_id = _redis.get(_parent_task_key(now_application_guid))
+    task_ids = set(_redis.smembers(_task_set_key(now_application_guid)))
+    if parent_task_id:
+        task_ids.add(parent_task_id)
+
     if not task_ids:
         raise HTTPException(404, "No active indexing tasks found for this application")
 
-    from app.tasks.tasks import run_now_document_indexing
-    celery_app = run_now_document_indexing.app
+    from app.tasks.tasks import run_now_document_indexing_parent
+
+    celery_app = run_now_document_indexing_parent.app
 
     # Identify document GUIDs associated with these tasks to clean up their chunks
     doc_keys = _redis.keys(f"{_TASK_KEY_PREFIX}{now_application_guid}:*")
@@ -229,6 +237,7 @@ async def cancel_indexing(now_application_guid: str):
             logger.warning("Could not update backend state to REVOKED for task %s: %s", task_id, e)
 
     _redis.delete(_task_set_key(now_application_guid))
+    _redis.delete(_parent_task_key(now_application_guid))
 
     logger.info("Revoked %d indexing tasks for NoW application %s", len(task_ids), sanitize_log(now_application_guid))
     return {"status": "cancelled"}
@@ -370,11 +379,53 @@ async def get_indexing_status(now_application_guid: str):
     if now_document_search_search_client is None:
         raise HTTPException(503, "Search client is not available in this environment")
 
+    parent_task_id = _redis.get(_parent_task_key(now_application_guid))
+    if parent_task_id:
+        from app.tasks.tasks import run_now_document_indexing_parent
+
+        celery_app = run_now_document_indexing_parent.app
+        parent_result = celery_app.AsyncResult(parent_task_id)
+
+        if parent_result.state in _RUNNING_STATES:
+            meta = parent_result.info or {}
+            return {
+                "status": "running",
+                "items_processed": int(meta.get("files_completed", 0) or 0),
+                "error_count": int(meta.get("failed_files", 0) or 0),
+                "last_run_start": None,
+                "last_run_end": None,
+                "error_message": None,
+                "stage": meta.get("stage", "indexing"),
+                "percent": int(meta.get("percent", 0) or 0),
+            }
+
+        if parent_result.state == "FAILURE":
+            return {
+                "status": "failed",
+                "items_processed": 0,
+                "error_count": 1,
+                "last_run_start": None,
+                "last_run_end": None,
+                "error_message": str(parent_result.result),
+            }
+
+        if parent_result.state == "SUCCESS":
+            result = parent_result.result or {}
+            return {
+                "status": "success",
+                "items_processed": int(result.get("succeeded", 0) or 0),
+                "error_count": int(result.get("failed_count", 0) or 0),
+                "last_run_start": None,
+                "last_run_end": None,
+                "error_message": None,
+            }
+
     task_ids = _redis.smembers(_task_set_key(now_application_guid))
 
     if task_ids:
-        from app.tasks.tasks import run_now_document_indexing
-        celery_app = run_now_document_indexing.app
+        from app.tasks.tasks import run_now_document_indexing_parent
+
+        celery_app = run_now_document_indexing_parent.app
         task_results = [celery_app.AsyncResult(tid) for tid in task_ids]
         states = [r.state for r in task_results]
         total = len(states)

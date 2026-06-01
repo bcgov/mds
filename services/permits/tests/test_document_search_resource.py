@@ -45,7 +45,7 @@ class TestDocumentSearchResource:
     @patch("app.pipelines.document_search.resources.document_search_resource.now_document_search_search_client")
     @patch("app.pipelines.document_search.resources.document_search_resource._is_task_running")
     @patch("app.pipelines.document_search.resources.document_search_resource.anyio.open_file", new_callable=AsyncMock)
-    @patch("app.tasks.tasks.run_now_document_indexing.delay")
+    @patch("app.tasks.tasks.run_now_document_indexing_parent.delay")
     async def test_index_now_application_documents_success(
         self, mock_delay, mock_anyio_open, mock_is_running, mock_search_client, mock_redis, valid_guid
     ):
@@ -96,7 +96,7 @@ class TestDocumentSearchResource:
     @pytest.mark.asyncio
     @patch("app.pipelines.document_search.resources.document_search_resource.now_document_search_search_client")
     @patch("app.pipelines.document_search.indexing.delete_document_chunks")
-    @patch("app.tasks.tasks.run_now_document_indexing")
+    @patch("app.tasks.tasks.run_now_document_indexing_parent")
     async def test_cancel_indexing_success(self, mock_task, mock_delete_chunks, mock_search_client, mock_redis, valid_guid):
         mock_redis.smembers.return_value = {"task-123"}
         mock_redis.keys.return_value = [f"now_doc_index:{valid_guid}:doc-123"]
@@ -114,13 +114,14 @@ class TestDocumentSearchResource:
     @pytest.mark.asyncio
     async def test_cancel_indexing_not_found(self, mock_redis, valid_guid):
         mock_redis.smembers.return_value = set()
+        mock_redis.get.return_value = None
         with pytest.raises(HTTPException) as exc:
             await cancel_indexing(valid_guid)
         assert exc.value.status_code == 404
 
     @pytest.mark.asyncio
     @patch("app.pipelines.document_search.resources.document_search_resource.now_document_search_search_client")
-    @patch("app.tasks.tasks.run_now_document_indexing")
+    @patch("app.tasks.tasks.run_now_document_indexing_parent")
     async def test_get_indexing_status_success(self, mock_task, mock_search_client, mock_redis, valid_guid):
         mock_redis.smembers.return_value = {"task-123"}
         mock_result = MagicMock()
@@ -134,7 +135,7 @@ class TestDocumentSearchResource:
 
     @pytest.mark.asyncio
     @patch("app.pipelines.document_search.resources.document_search_resource.now_document_search_search_client")
-    @patch("app.tasks.tasks.run_now_document_indexing")
+    @patch("app.tasks.tasks.run_now_document_indexing_parent")
     async def test_get_indexing_status_running(self, mock_task, mock_search_client, mock_redis, valid_guid):
         mock_redis.smembers.return_value = {"task-123"}
         mock_result = MagicMock()
@@ -151,6 +152,7 @@ class TestDocumentSearchResource:
     @patch("app.pipelines.document_search.resources.document_search_resource.now_document_search_search_client")
     async def test_get_indexing_status_never_run(self, mock_search_client, mock_redis, valid_guid):
         mock_redis.smembers.return_value = set()
+        mock_redis.get.return_value = None
         mock_search_results = MagicMock()
         mock_search_results.get_count.return_value = 0
         mock_search_client.search.return_value = mock_search_results
@@ -219,7 +221,7 @@ class TestDocumentSearchResource:
 
     @pytest.mark.asyncio
     @patch("app.pipelines.document_search.resources.document_search_resource.now_document_search_search_client")
-    @patch("app.tasks.tasks.run_now_document_indexing")
+    @patch("app.tasks.tasks.run_now_document_indexing_parent")
     async def test_get_indexing_status_failed(self, mock_task, mock_search_client, mock_redis, valid_guid):
         mock_redis.smembers.return_value = {"task-123"}
         mock_result = MagicMock()
@@ -235,9 +237,9 @@ class TestDocumentSearchResource:
         from app.pipelines.document_search.resources.document_search_resource import (
             _is_task_running,
         )
-        from app.tasks.tasks import run_now_document_indexing
+        from app.tasks.tasks import run_now_document_indexing_parent
         
-        with patch("app.tasks.tasks.run_now_document_indexing.app.AsyncResult") as mock_async_result:
+        with patch("app.tasks.tasks.run_now_document_indexing_parent.app.AsyncResult") as mock_async_result:
             mock_res = MagicMock()
             mock_res.state = "PROGRESS"
             mock_async_result.return_value = mock_res
@@ -335,7 +337,7 @@ class TestDocumentSearchResource:
     @pytest.mark.asyncio
     @patch("app.pipelines.document_search.resources.document_search_resource.now_document_search_search_client")
     @patch("app.pipelines.document_search.indexing.delete_document_chunks")
-    @patch("app.tasks.tasks.run_now_document_indexing")
+    @patch("app.tasks.tasks.run_now_document_indexing_parent")
     async def test_cancel_indexing_backend_error(self, mock_task, mock_delete_chunks, mock_search_client, mock_redis, valid_guid):
         mock_redis.smembers.return_value = {"task-123"}
         mock_redis.keys.return_value = [f"now_doc_index:{valid_guid}:doc-123"]
