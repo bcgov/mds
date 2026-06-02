@@ -1,3 +1,6 @@
+from unittest.mock import patch, MagicMock
+import uuid
+
 from tests.factories import MineFactory, MineTailingsStorageFacilityFactory, MinePartyAppointmentFactory
 from app.api.mines.tailings.models.tailings import MineTailingsStorageFacility
 
@@ -43,3 +46,32 @@ def test_mine_tailings_submit(db_session):
     assert tsf.is_draft == False
     assert eor.is_draft == False
     assert qp.is_draft == False
+
+
+@patch('app.api.email_tracking.email_status_tasks.send_email_task.apply_async')
+@patch('app.api.ministry_contacts.models.distribution_list.DistributionList.find_by_name')
+def test_send_email_tsf_update_with_distribution_list(mock_find_by_name, mock_apply_async, db_session):
+    dl_mock = MagicMock()
+    dl_mock.get_emails.return_value = ['tsf@example.com']
+    dl_mock.distribution_list_guid = uuid.uuid4()
+    mock_find_by_name.return_value = dl_mock
+
+    tsf = MineTailingsStorageFacilityFactory()
+    tsf.send_email_tsf_update()
+
+    mock_apply_async.assert_called_once()
+    call_kwargs = mock_apply_async.call_args[1]['kwargs']
+    assert call_kwargs['distribution_list_guid'] == str(dl_mock.distribution_list_guid)
+    assert call_kwargs['reference_table'] == 'mine_tailings_storage_facility'
+
+
+@patch('app.api.email_tracking.email_status_tasks.send_email_task.apply_async')
+@patch('app.api.ministry_contacts.models.distribution_list.DistributionList.find_by_name', return_value=None)
+def test_send_email_tsf_update_no_distribution_list(mock_find_by_name, mock_apply_async, db_session):
+    tsf = MineTailingsStorageFacilityFactory()
+    tsf.send_email_tsf_update()
+
+    mock_apply_async.assert_called_once()
+    call_kwargs = mock_apply_async.call_args[1]['kwargs']
+    assert call_kwargs['recipients'] == []
+    assert call_kwargs['distribution_list_guid'] is None

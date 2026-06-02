@@ -299,6 +299,40 @@ class EmailService():
                 tracking_record.mark_as_failed(error_message=str(e))
 
 
+    @classmethod
+    def _validate_and_prepare_send(cls, body_type, encoding, priority, recipients, cc, bcc):
+        '''Validates enum params, checks send guards, filters recipients. Returns (is_not_prod, original_recipients, recipients, cc, bcc) or None to abort.'''
+        if body_type not in EmailBodyType._value2member_map_:
+            raise Exception('Email body type is invalid')
+        if encoding not in EmailEncoding._value2member_map_:
+            raise Exception('Email encoding is invalid')
+        if priority not in EmailPriority._value2member_map_:
+            raise Exception('Email priority is invalid')
+
+        is_not_prod = Config.ENVIRONMENT_NAME != 'prod'
+        if not Config.USE_LOCAL_MAILPIT:
+            if not Config.EMAIL_ENABLED:
+                current_app.logger.info('Not sending email: Emails are disabled.')
+                return None
+            elif is_not_prod and not Config.EMAIL_RECIPIENT_OVERRIDE:
+                current_app.logger.info(
+                    'Not sending email: Recipient override must be set when not in prod environment!')
+                return None
+
+        recipients = [r for r in (recipients or []) if r]
+        cc = [c for c in (cc or []) if c]
+        bcc = [b for b in (bcc or []) if b]
+
+        if not recipients and not cc and not bcc:
+            current_app.logger.info('Not sending email: No valid recipients found.')
+            return None
+
+        original_recipients = recipients
+        if Config.EMAIL_RECIPIENT_OVERRIDE and not Config.USE_LOCAL_MAILPIT:
+            recipients = [Config.EMAIL_RECIPIENT_OVERRIDE]
+
+        return is_not_prod, original_recipients, recipients, cc, bcc
+
     # NOTE: See here for details: https://ches.nrs.gov.bc.ca/api/v1/docs#tag/Email
     @classmethod
     def send_email(cls,
@@ -322,38 +356,10 @@ class EmailService():
                    distribution_list_guid=None):
         '''Sends an email.'''
 
-        # Validate enum parameters.
-        if not body_type in EmailBodyType._value2member_map_:
-            raise Exception('Email body type is invalid')
-        if not encoding in EmailEncoding._value2member_map_:
-            raise Exception('Email encoding is invalid')
-        if not priority in EmailPriority._value2member_map_:
-            raise Exception('Email priority is invalid')
-
-        # NOTE: Be careful when enabling emails in local/dev/test. You could possibly be sending spam emails!
-        is_not_prod = Config.ENVIRONMENT_NAME != 'prod'
-        if not Config.USE_LOCAL_MAILPIT:
-            if not Config.EMAIL_ENABLED:
-                current_app.logger.info('Not sending email: Emails are disabled.')
-                return
-            elif is_not_prod and not Config.EMAIL_RECIPIENT_OVERRIDE:
-                current_app.logger.info(
-                    'Not sending email: Recipient override must be set when not in prod environment!')
-                return
-
-        # Filter out None or empty string recipients
-        recipients = [r for r in (recipients or []) if r]
-        cc = [c for c in (cc or []) if c]
-        bcc = [b for b in (bcc or []) if b]
-
-        if not recipients and not cc and not bcc:
-            current_app.logger.info('Not sending email: No valid recipients found.')
+        prepared = cls._validate_and_prepare_send(body_type, encoding, priority, recipients, cc, bcc)
+        if prepared is None:
             return
-
-        original_recipients = recipients
-
-        if Config.EMAIL_RECIPIENT_OVERRIDE and not Config.USE_LOCAL_MAILPIT:
-            recipients = [Config.EMAIL_RECIPIENT_OVERRIDE]
+        is_not_prod, original_recipients, recipients, cc, bcc = prepared
 
         # Create email tracking records before sending
         tracking_records = []
@@ -469,38 +475,10 @@ class EmailService():
             context: Dictionary of variables to pass to the template
         '''
 
-        # Validate enum parameters.
-        if not body_type in EmailBodyType._value2member_map_:
-            raise Exception('Email body type is invalid')
-        if not encoding in EmailEncoding._value2member_map_:
-            raise Exception('Email encoding is invalid')
-        if not priority in EmailPriority._value2member_map_:
-            raise Exception('Email priority is invalid')
-
-        # NOTE: Be careful when enabling emails in local/dev/test. You could possibly be sending spam emails!
-        is_not_prod = Config.ENVIRONMENT_NAME != 'prod'
-        if not Config.USE_LOCAL_MAILPIT:
-            if not Config.EMAIL_ENABLED:
-                current_app.logger.info('Not sending email: Emails are disabled.')
-                return
-            elif is_not_prod and not Config.EMAIL_RECIPIENT_OVERRIDE:
-                current_app.logger.info(
-                    'Not sending email: Recipient override must be set when not in prod environment!')
-                return
-
-        # Filter out None or empty string recipients
-        recipients = [r for r in (recipients or []) if r]
-        cc = [c for c in (cc or []) if c]
-        bcc = [b for b in (bcc or []) if b]
-
-        if not recipients and not cc and not bcc:
-            current_app.logger.info('Not sending email: No valid recipients found.')
+        prepared = cls._validate_and_prepare_send(body_type, encoding, priority, recipients, cc, bcc)
+        if prepared is None:
             return
-
-        original_recipients = recipients
-
-        if Config.EMAIL_RECIPIENT_OVERRIDE and not Config.USE_LOCAL_MAILPIT:
-            recipients = [Config.EMAIL_RECIPIENT_OVERRIDE]
+        is_not_prod, original_recipients, recipients, cc, bcc = prepared
 
         try:
             # Render template with Jinja2

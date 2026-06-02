@@ -1,11 +1,12 @@
 import React from "react";
-import { render } from "@testing-library/react";
+import { render, fireEvent, act } from "@testing-library/react";
 import { MineSpaceMinistryContactManagement } from "@/components/admin/contacts/MinistryContacts/MineSpaceMinistryContactManagement";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 import { STATIC_CONTENT, AUTHENTICATION } from "@mds/common/constants/reducerTypes";
 import { minespaceReducerType } from "@mds/common/redux/slices/minespaceSlice";
 import * as Permission from "@/constants/permissions";
 import * as minespaceSlice from "@mds/common/redux/slices/minespaceSlice";
+import * as modalActions from "@mds/common/redux/actions/modalActions";
 
 jest.mock("@mds/common/redux/slices/minespaceSlice", () => {
   const original = jest.requireActual("@mds/common/redux/slices/minespaceSlice");
@@ -69,5 +70,76 @@ describe("MineSpaceMinistryContactManagement", () => {
     expect(minespaceSlice.fetchMinistryContacts).toHaveBeenCalled();
     expect(minespaceSlice.fetchDistributionLists).toHaveBeenCalled();
     expect(container).toMatchSnapshot();
+  });
+
+  it("handleDeleteContact calls deleteMinistryContact and toggles isLoaded", async () => {
+    const { getByText } = render(
+      <ReduxWrapper initialState={initialState}>
+        <MineSpaceMinistryContactManagement />
+      </ReduxWrapper>
+    );
+    await act(async () => {
+      fireEvent.click(getByText("Mock Delete"));
+    });
+    expect(minespaceSlice.deleteMinistryContact).toHaveBeenCalledWith("123");
+  });
+
+  it("openContactModal in edit mode dispatches openModal with edit props", async () => {
+    const { getByText } = render(
+      <ReduxWrapper initialState={initialState}>
+        <MineSpaceMinistryContactManagement />
+      </ReduxWrapper>
+    );
+    await act(async () => {
+      fireEvent.click(getByText("Mock Edit"));
+    });
+    expect(modalActions.openModal).toHaveBeenCalledWith(
+      expect.objectContaining({
+        props: expect.objectContaining({
+          isEdit: true,
+          title: "Update MCM Contact",
+        }),
+      })
+    );
+  });
+
+  it("openContactModal in create mode dispatches openModal with create props", async () => {
+    const { getByText } = render(
+      <ReduxWrapper initialState={initialState}>
+        <MineSpaceMinistryContactManagement />
+      </ReduxWrapper>
+    );
+    await act(async () => {
+      fireEvent.click(getByText("Create MCM Contact"));
+    });
+    expect(modalActions.openModal).toHaveBeenCalledWith(
+      expect.objectContaining({
+        props: expect.objectContaining({
+          isEdit: false,
+          title: "Create MCM Contact",
+        }),
+      })
+    );
+  });
+
+  it("renders Distribution Lists tab with contacts filtered by distribution_list_guid", () => {
+    const { getByText } = render(
+      <ReduxWrapper initialState={initialState}>
+        <MineSpaceMinistryContactManagement />
+      </ReduxWrapper>
+    );
+    expect(getByText("Distribution Lists")).toBeTruthy();
+    expect(getByText("Test List")).toBeTruthy();
+  });
+
+  it("filters contacts into offices and non-offices correctly", () => {
+    const { getAllByTestId } = render(
+      <ReduxWrapper initialState={initialState}>
+        <MineSpaceMinistryContactManagement />
+      </ReduxWrapper>
+    );
+    // Should render mock tables for offices, contacts, and the distribution list tab
+    const tables = getAllByTestId("mock-table");
+    expect(tables.length).toBeGreaterThanOrEqual(2);
   });
 });

@@ -4,6 +4,7 @@ from datetime import datetime
 from flask_restx import marshal
 from tests.factories import MinistryContactFactory
 from app.api.ministry_contacts.response_models import MINISTRY_CONTACT_MODEL
+from app.api.ministry_contacts.models.distribution_list import DistributionList
 
 
 #GET
@@ -16,6 +17,48 @@ def test_get_ministry_contact_not_found(test_client, db_session, auth_headers):
 
     assert get_resp.status_code == 404
     assert 'not found' in get_data['message']
+
+
+def test_put_ministry_contact_with_distribution_list_guids(test_client, db_session, auth_headers):
+    dl = DistributionList.create('Test DL For Contact')
+    db_session.add(dl)
+    db_session.flush()
+
+    contact = MinistryContactFactory()
+    data = marshal(contact, MINISTRY_CONTACT_MODEL)
+    data['first_name'] = 'Updated'
+    data['phone_number'] = '222-333-4444'
+    data['email'] = 'updated@example.com'
+    data['distribution_list_guids'] = [str(dl.distribution_list_guid)]
+
+    put_resp = test_client.put(
+        f'/ministry-contacts/{contact.contact_guid}',
+        json=data,
+        headers=auth_headers['full_auth_header'])
+
+    put_data = json.loads(put_resp.data.decode())
+    assert put_resp.status_code == 200
+    assert put_data['first_name'] == 'Updated'
+    assert str(dl.distribution_list_guid) in put_data.get('distribution_list_guids', [])
+
+
+def test_put_ministry_contact_remove_distribution_list(test_client, db_session, auth_headers):
+    dl = DistributionList.create('Test DL For Removal')
+    db_session.add(dl)
+    db_session.flush()
+
+    contact = MinistryContactFactory()
+    data = marshal(contact, MINISTRY_CONTACT_MODEL)
+    data['phone_number'] = '222-333-4444'
+    data['email'] = contact.email or 'test@example.com'
+    data['distribution_list_guids'] = []
+
+    put_resp = test_client.put(
+        f'/ministry-contacts/{contact.contact_guid}',
+        json=data,
+        headers=auth_headers['full_auth_header'])
+
+    assert put_resp.status_code == 200
 
 
 def test_get_ministry_contact_by_guid(test_client, db_session, auth_headers):
