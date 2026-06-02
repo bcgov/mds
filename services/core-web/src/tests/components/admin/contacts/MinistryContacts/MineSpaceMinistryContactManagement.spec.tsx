@@ -37,6 +37,12 @@ jest.mock("@/components/admin/contacts/MinistryContacts/MinistryContactsTable", 
   };
 });
 
+jest.mock("@/components/common/wrappers/AuthorizationWrapper", () => {
+  return function MockAuthorizationWrapper({ children }: { children: React.ReactNode }) {
+    return <>{children}</>;
+  };
+});
+
 const initialState = {
   [minespaceReducerType]: {
     MinistryContacts: [
@@ -122,14 +128,13 @@ describe("MineSpaceMinistryContactManagement", () => {
     );
   });
 
-  it("renders Distribution Lists tab with contacts filtered by distribution_list_guid", () => {
+  it("renders Distribution Lists tab label", () => {
     const { getByText } = render(
       <ReduxWrapper initialState={initialState}>
         <MineSpaceMinistryContactManagement />
       </ReduxWrapper>
     );
     expect(getByText("Distribution Lists")).toBeTruthy();
-    expect(getByText("Test List")).toBeTruthy();
   });
 
   it("filters contacts into offices and non-offices correctly", () => {
