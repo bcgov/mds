@@ -330,7 +330,7 @@ def test_handle_successful_email_response_empty_messages(test_client, db_session
 # _send_via_mailpit
 
 @patch('app.api.services.email_service.EmailService._handle_successful_email_response')
-@patch('app.api.services.email_service.smtplib.SMTP')
+@patch('smtplib.SMTP')
 @patch('app.config.Config.MAILPIT_HOST', 'localhost')
 @patch('app.config.Config.MAILPIT_PORT', 1025)
 def test_send_via_mailpit_success(mock_smtp, mock_handle, test_client, db_session):
@@ -347,7 +347,7 @@ def test_send_via_mailpit_success(mock_smtp, mock_handle, test_client, db_sessio
     mock_handle.assert_called_once()
 
 
-@patch('app.api.services.email_service.smtplib.SMTP', side_effect=Exception('connection refused'))
+@patch('smtplib.SMTP', side_effect=Exception('connection refused'))
 @patch('app.config.Config.MAILPIT_HOST', 'localhost')
 @patch('app.config.Config.MAILPIT_PORT', 1025)
 def test_send_via_mailpit_failure_marks_tracking_failed(mock_smtp, test_client, db_session):

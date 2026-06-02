@@ -147,9 +147,10 @@ def test_poll_ches_status_failed(mock_find, mock_get_status, test_client, db_ses
     tracking.mark_as_failed.assert_called_once()
 
 
+@patch('app.api.email_tracking.email_status_tasks.poll_ches_email_status.retry')
 @patch('app.api.email_tracking.email_status_tasks.EmailService.get_ches_email_status')
 @patch('app.api.email_tracking.email_status_tasks.EmailTracking.find_by_ches_message_id')
-def test_poll_ches_status_accepted(mock_find, mock_get_status, test_client, db_session):
+def test_poll_ches_status_accepted(mock_find, mock_get_status, mock_retry, test_client, db_session):
     tracking = MagicMock()
     tracking.email_status = EmailStatus.sent
     mock_find.return_value = tracking
@@ -163,9 +164,11 @@ def test_poll_ches_status_accepted(mock_find, mock_get_status, test_client, db_s
     }
 
     from app.api.email_tracking.email_status_tasks import poll_ches_email_status
-    # accepted → schedules retry; calling with retries=0 so it will attempt retry
-    with pytest.raises(Exception):
-        poll_ches_email_status.apply(args=[str(uuid.uuid4())]).get()
+    poll_ches_email_status.apply(args=[str(uuid.uuid4())]).get()
+
+    # Status updated to accepted, and a retry was scheduled
+    tracking.update_status.assert_called_once()
+    mock_retry.assert_called_once()
 
 
 @patch('app.api.email_tracking.email_status_tasks.EmailService.get_ches_email_status')

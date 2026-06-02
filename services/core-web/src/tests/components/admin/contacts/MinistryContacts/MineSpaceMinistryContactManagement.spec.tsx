@@ -73,25 +73,25 @@ describe("MineSpaceMinistryContactManagement", () => {
   });
 
   it("handleDeleteContact calls deleteMinistryContact and toggles isLoaded", async () => {
-    const { getByText } = render(
+    const { getAllByText } = render(
       <ReduxWrapper initialState={initialState}>
         <MineSpaceMinistryContactManagement />
       </ReduxWrapper>
     );
     await act(async () => {
-      fireEvent.click(getByText("Mock Delete"));
+      fireEvent.click(getAllByText("Mock Delete")[0]);
     });
     expect(minespaceSlice.deleteMinistryContact).toHaveBeenCalledWith("123");
   });
 
   it("openContactModal in edit mode dispatches openModal with edit props", async () => {
-    const { getByText } = render(
+    const { getAllByText } = render(
       <ReduxWrapper initialState={initialState}>
         <MineSpaceMinistryContactManagement />
       </ReduxWrapper>
     );
     await act(async () => {
-      fireEvent.click(getByText("Mock Edit"));
+      fireEvent.click(getAllByText("Mock Edit")[0]);
     });
     expect(modalActions.openModal).toHaveBeenCalledWith(
       expect.objectContaining({
