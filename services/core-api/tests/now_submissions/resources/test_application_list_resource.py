@@ -735,6 +735,11 @@ class TestGetApplicationListResource:
         mine = MineFactory()
         test_data = copy.deepcopy(NOW_APPLICATION_DATA)
         test_data["minenumber"] = mine.mine_no
+        # Derive unique IDs from the fresh mine GUID to avoid PK conflicts with stale test DB data
+        unique_base = mine.mine_guid.int % 2_000_000_000
+        test_data["messageid"] = unique_base
+        test_data["applicant"]["clientid"] = unique_base + 1
+        test_data["submitter"]["clientid"] = unique_base + 2
 
         post_resp = test_client.post(
             "/now-submissions/applications",
