@@ -7,6 +7,7 @@ from app.config import TestConfig
 from app.extensions import db, jwt as _jwt
 from app.api.utils.include.user_info import User
 from app.api.utils.setup_marshmallow import setup_marshmallow
+from sqlalchemy import event
 from sqlalchemy.orm import scoped_session, sessionmaker
 
 from .constants import *
@@ -117,6 +118,12 @@ def db_session(test_client):
 
     sess = scoped_session(sessionmaker(bind=conn))
     db.session = sess
+    sess.begin_nested()
+
+    @event.listens_for(sess, "after_transaction_end")
+    def restart_savepoint(session, transaction):
+        if transaction.nested and not transaction._parent.nested:
+            session.begin_nested()
 
     for factory in FACTORY_LIST:
         factory._meta.sqlalchemy_session = sess
