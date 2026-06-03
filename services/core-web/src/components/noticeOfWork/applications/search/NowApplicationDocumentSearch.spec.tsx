@@ -22,9 +22,13 @@ jest.mock('@/components/mine/Permit/Search/components/SearchBox', () => () => <d
 jest.mock('@/components/mine/Permit/Search/components/SearchResults', () => () => <div data-testid="mock-search-results">SearchResults</div>);
 jest.mock('@/components/mine/Permit/Search/components/MarkdownViewer', () => () => <div data-testid="mock-markdown-viewer">MarkdownViewer</div>);
 jest.mock('./NowApplicationDocumentSearchSplashScreen', () => () => <div data-testid="mock-splash-screen">SplashScreen</div>);
-jest.mock('lodash', () => ({
-    debounce: (fn: (...args: unknown[]) => unknown) => fn,
-}));
+jest.mock('lodash', () => {
+    const actual = jest.requireActual('lodash');
+    return {
+        ...actual,
+        debounce: (fn: (...args: unknown[]) => unknown) => fn,
+    };
+});
 
 const createMockStore = (preloadedState = {}) => {
     return configureStore({

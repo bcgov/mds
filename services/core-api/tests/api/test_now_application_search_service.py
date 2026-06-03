@@ -1,9 +1,13 @@
 import io
 import json
 from unittest.mock import MagicMock, patch
+
 import pytest
 import requests
-from app.api.search.search.now_application_search_service import NowApplicationSearchService
+from app.api.search.search.now_application_search_service import (
+    NowApplicationSearchService,
+)
+
 
 @pytest.fixture
 def mock_oauth_session():
@@ -90,7 +94,7 @@ def test_search_now_documents_without_artifact_guid(mock_oauth_session, app):
         mock_token.assert_not_called()
 
 
-def test_search_now_documents_non_table_artifact_not_enriched(mock_oauth_session, app):
+def test_search_now_documents_non_table_artifact_is_enriched(mock_oauth_session, mock_oidc_configuration, app):
     with app.app_context():
         now_guid = "test-now-guid"
         search_params = {"query": "test query", "filters": None}
@@ -104,16 +108,29 @@ def test_search_now_documents_non_table_artifact_not_enriched(mock_oauth_session
         ]
         mock_oauth_session.post.return_value = mock_response
 
+        docman_response = MagicMock()
+        docman_response.raise_for_status.return_value = None
+        docman_response.content = b'{"url": "https://s3.example.com/presigned"}'
+        docman_response.json.return_value = {'url': 'https://s3.example.com/presigned'}
+        mock_oidc_configuration.side_effect = [
+            MagicMock(json=MagicMock(return_value={'token_endpoint': 'https://example.com/token'})),
+            docman_response,
+        ]
+
         with patch(
-            'app.api.search.search.now_application_search_service.DocumentManagerService.create_download_token'
+            'app.api.search.search.now_application_search_service.Config.DOCUMENT_MANAGER_URL',
+            'https://docman.example.com',
+        ), patch(
+            'app.api.search.search.now_application_search_service.DocumentManagerService.create_download_token',
+            return_value='token-123',
         ) as mock_token:
             service = NowApplicationSearchService()
             chunks = list(service.search(now_guid, search_params))
 
         payload_line = chunks[0].decode('utf-8').split('\n')[1]
         payload = json.loads(payload_line.replace('data: ', '', 1))
-        assert 'artifact_presigned_url' not in payload['documents'][0]['meta']
-        mock_token.assert_not_called()
+        assert payload['documents'][0]['meta']['artifact_presigned_url'] == 'https://s3.example.com/presigned'
+        mock_token.assert_called_once_with('artifact-guid')
 
 
 def test_search_now_documents_uses_token_url_fallback_when_presigned_lookup_fails(mock_oauth_session, mock_oidc_configuration, app):

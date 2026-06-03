@@ -144,7 +144,7 @@ describe("NowDocumentResultItem", () => {
     );
 
     const image = screen.getByAltText("Artifact preview for Test_Document.pdf");
-    const showMoreButton = screen.getByRole("link", { name: "Show more" });
+    const showMoreButton = screen.getByRole("link", { name: /show more/i });
     expect(image.compareDocumentPosition(showMoreButton) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     expect(screen.queryByText(/This is a test snippet of document content/i)).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Show raw text" })).not.toBeInTheDocument();
@@ -171,8 +171,8 @@ describe("NowDocumentResultItem", () => {
 
     expect(screen.queryByText("Formatted table")).not.toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole("link", { name: "Show more" }));
-    expect(screen.getByRole("link", { name: "Show less" })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("link", { name: /show more/i }));
+    expect(screen.getByRole("link", { name: /show less/i })).toBeInTheDocument();
     expect(screen.getByText("Formatted table")).toBeInTheDocument();
   });
 
@@ -192,10 +192,10 @@ describe("NowDocumentResultItem", () => {
       </ReduxWrapper>
     );
 
-    expect(screen.getByRole("link", { name: "Show more" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /show more/i })).toBeInTheDocument();
     expect(screen.queryByText("Formatted table")).not.toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole("link", { name: "Show more" }));
+    fireEvent.click(screen.getByRole("link", { name: /show more/i }));
     expect(screen.getByText("Formatted table")).toBeInTheDocument();
   });
 

@@ -156,8 +156,12 @@ const NowDocumentResultItem: React.FC<NowDocumentResultItemProps> = ({
         <Col span={24} className="now-search__artifact-table">
           <div className="now-search__artifact-table-controls now-search__artifact-table-controls--top">
             <Typography.Link
+              href="#"
               className="margin-none"
-              onClick={() => setIsTableExpanded((expanded) => !expanded)}
+              onClick={(event) => {
+                event.preventDefault();
+                setIsTableExpanded((expanded) => !expanded);
+              }}
             >
               <span>{isTableExpanded ? "Show less " : "Show more "}</span>
               {isTableExpanded ? <UpOutlined /> : <DownOutlined />}
