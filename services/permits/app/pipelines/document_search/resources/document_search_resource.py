@@ -423,9 +423,22 @@ async def get_indexing_status(now_application_guid: str):
     task_ids = _redis.smembers(_task_set_key(now_application_guid))
 
     if task_ids:
-        from app.tasks.tasks import run_now_document_indexing_parent
+        # Filter out stale/superseded task IDs (e.g. from previous runs) to avoid status poisoning.
+        doc_keys = _redis.keys(f"{_TASK_KEY_PREFIX}{now_application_guid}:*")
+        latest_task_ids = set()
+        for key in doc_keys:
+            tid = _redis.get(key)
+            if tid:
+                latest_task_ids.add(tid)
 
-        celery_app = run_now_document_indexing_parent.app
+        stale_task_ids = task_ids - latest_task_ids
+        if stale_task_ids:
+            _redis.srem(_task_set_key(now_application_guid), *stale_task_ids)
+            task_ids = task_ids - stale_task_ids
+
+    if task_ids:
+        from app.tasks.tasks import run_now_document_indexing
+        celery_app = run_now_document_indexing.app
         task_results = [celery_app.AsyncResult(tid) for tid in task_ids]
         states = [r.state for r in task_results]
         total = len(states)

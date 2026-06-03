@@ -1,6 +1,6 @@
 import React, { FC, ReactNode, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Col, Row, Tabs, TabsProps, Typography } from "antd";
+import { Col, Popover, Row, Tabs, TabsProps, Typography } from "antd";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import CoreTag from "./CoreTag";
@@ -26,6 +26,7 @@ interface CommonPageHeaderProps {
   tabProps?: TabsProps;
   pageContent?: ReactNode;
   extraElement?: ReactNode;
+  additionalMines?: { mine_guid: string; mine_name: string }[];
 }
 
 const { Title, Text } = Typography;
@@ -39,6 +40,7 @@ const CommonPageHeader: FC<CommonPageHeaderProps> = ({
   tabProps,
   pageContent,
   extraElement,
+  additionalMines,
 }) => {
   const mine = useSelector(getMineById(mineGuid));
   const dispatch = useDispatch();
@@ -84,6 +86,45 @@ const CommonPageHeader: FC<CommonPageHeaderProps> = ({
                   icon={<FontAwesomeIcon icon={faLocationDot} />}
                   text={mine?.mine_name}
                   link={GLOBAL_ROUTES?.MINE_DASHBOARD.dynamicRoute(mineGuid)}
+                  suffix={
+                    additionalMines?.length > 0 ? (
+                      <Popover
+                        title="Associated Mines"
+                        overlayStyle={{ maxWidth: 360 }}
+                        overlayInnerStyle={{
+                          border: "1px solid #d9d9d9",
+                          borderRadius: 8,
+                          boxShadow: "0 6px 16px rgba(0,0,0,0.15)",
+                        }}
+                        content={
+                          <div>
+                            <Typography.Text type="secondary" className="tag-more-popover__description">
+                              This permit applies to multiple mine sites due to historical amendments or operational grouping.
+                            </Typography.Text>
+                            <div className="tag-more-popover__mines">
+                              {additionalMines.map((m) => (
+                                <div key={m.mine_guid} className="tag-more-popover__mine">
+                                  <CoreTag
+                                    icon={<FontAwesomeIcon icon={faLocationDot} />}
+                                    text={m.mine_name}
+                                    link={GLOBAL_ROUTES?.MINE_DASHBOARD.dynamicRoute(m.mine_guid)}
+                                  />
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        }
+                      >
+                        <button
+                          type="button"
+                          aria-label={`Show ${additionalMines.length} more associated mines`}
+                          className="tag-more-btn"
+                        >
+                          + {additionalMines.length} More
+                        </button>
+                      </Popover>
+                    ) : undefined
+                  }
                 />
               </Col>
               {current_permittee && (

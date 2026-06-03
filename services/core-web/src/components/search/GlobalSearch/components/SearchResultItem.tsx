@@ -1,8 +1,10 @@
 import React, { useState } from "react";
-import { List, Avatar, Typography } from "antd";
+import { Link } from "react-router-dom";
+import { List, Avatar, Typography, Popover } from "antd";
 import { EnterOutlined } from "@ant-design/icons";
 import classNames from "classnames";
 import { ISearchResult, ISimpleSearchResult } from "@mds/common/interfaces";
+import * as router from "@/constants/routes";
 import { SEARCH_TYPE_CONFIG, RESULT_TYPE_MAP } from "../utils/searchConfig";
 import { highlightMatch } from "../utils/searchHelpers";
 
@@ -52,16 +54,54 @@ export const SearchResultItem: React.FC<SearchResultItemProps> = ({
         }
         title={<Text strong={isSelected} className="search-result-item__title">{highlightMatch(item.result.value, searchTerm)}</Text>}
         description={
-          <Text type="secondary" ellipsis>
-            {config.label}
-            {item.result.description && <span style={{ marginLeft: 8 }}>• {item.result.description}</span>}
-            {item.result.highlight && (
-              <span
-                className="search-result-item__highlight"
-                dangerouslySetInnerHTML={{ __html: `• ${item.result.highlight}` }}
-              />
+          <>
+            <Text type="secondary" ellipsis>
+              {config.label}
+              {item.result.description && <span style={{ marginLeft: 8 }}>• {item.result.description}</span>}
+              {item.result.highlight && (
+                <span
+                  className="search-result-item__highlight"
+                  dangerouslySetInnerHTML={{ __html: `• ${item.result.highlight}` }}
+                />
+              )}
+            </Text>
+            {item.result.mines && item.result.mines.length > 1 && (
+              <Popover
+                content={
+                  <>
+                    {item.result.mines.map((mine, index) => (
+                      <React.Fragment key={"mine-link-" + mine.mine_guid}>
+                        {index > 0 && ", "}
+                        <Link
+                          to={router.MINE_GENERAL.dynamicRoute(mine.mine_guid)}
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          {mine.mine_name}
+                        </Link>
+                      </React.Fragment>
+                    ))}
+                  </>
+                }
+              >
+                <button
+                  type="button"
+                  onClick={(e) => e.stopPropagation()}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    padding: 0,
+                    cursor: 'pointer',
+                    color: '#1890ff',
+                    font: 'inherit',
+                    textDecoration: 'underline',
+                    marginLeft: 8
+                  }} // Strip all styling, keep as inline text
+                >
+                  • Associated with {item.result.mines.length} Mines
+                </button>
+              </Popover>
             )}
-          </Text>
+          </>
         }
       />
       <EnterOutlined className="search-result-item__enter-icon" style={{ visibility: isSelected ? 'visible' : 'hidden' }} />

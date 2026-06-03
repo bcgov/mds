@@ -16,19 +16,21 @@ SEARCH_RESULT_MODEL = api.model('SearchResult', {
     'type': fields.String,
 })
 
+MINE_MODEL = api.model('Mine_simple ', {
+    'mine_name': fields.String,
+    'mine_guid': fields.String,
+    'mine_no': fields.String,
+})
+
 SIMPLE_SEARCH_MODEL = api.model('SimpleSearchResult', {
     'id': fields.String,
     'value': fields.String,
     'description': fields.String,
     'highlight': fields.String,
     'mine_guid': fields.String,
+    'mines': fields.List(fields.Nested(MINE_MODEL))
 })
 
-MINE_MODEL = api.model('Mine_simple ', {
-    'mine_name': fields.String,
-    'mine_guid': fields.String,
-    'mine_no': fields.String,
-})
 PERMIT_SEARCH_MODEL = api.model(
     'Permit', {
         'permit_guid': fields.String,
