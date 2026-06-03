@@ -19,13 +19,19 @@
 .tag-more-btn {
   background: none;
   border: none;
-  padding: 0;
+  padding: 2px 4px;
   cursor: pointer;
   color: inherit;
   font: inherit;
   font-size: 0.85em;
   white-space: nowrap;
   text-decoration: underline;
+
+  &:focus-visible {
+    outline: 2px solid $primary-btn-color;
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
 }
 
 .tag-more-popover {
