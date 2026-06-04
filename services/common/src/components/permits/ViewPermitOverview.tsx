@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { Col, Divider, Row, Skeleton, Table, Typography } from "antd";
+import { Alert, Col, Divider, Row, Skeleton, Table, Typography } from "antd";
 import {
   IExemptionFeeStatusOption,
   IMine,
@@ -64,6 +64,14 @@ const ViewPermitOverview: FC<ViewPermitOverviewProps> = ({ latestAmendment }) =>
 
   return (
     <div className="view-permits-content">
+      {permit?.mine?.length > 1 && (
+        <Alert
+          className="margin-large--bottom"
+          message="This permit is associated with multiple mines, please review the associated mine list for more details"
+          type="warning"
+          showIcon
+        />
+      )}
       <Row justify="space-between" align="middle">
         <Col>
           <Title className="margin-none padding-lg--top padding-lg--bottom" level={2}>

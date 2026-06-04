@@ -67,6 +67,7 @@ export const SearchResultItem: React.FC<SearchResultItemProps> = ({
             </Text>
             {item.result.mines && item.result.mines.length > 1 && (
               <Popover
+                trigger={["hover", "click"]}
                 content={
                   <>
                     {item.result.mines.map((mine, index) => (

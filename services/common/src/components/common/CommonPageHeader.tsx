@@ -90,6 +90,7 @@ const CommonPageHeader: FC<CommonPageHeaderProps> = ({
                     additionalMines?.length > 0 ? (
                       <Popover
                         title="Associated Mines"
+                        trigger={["hover", "click"]}
                         overlayStyle={{ maxWidth: 360 }}
                         overlayInnerStyle={{
                           border: "1px solid #d9d9d9",
