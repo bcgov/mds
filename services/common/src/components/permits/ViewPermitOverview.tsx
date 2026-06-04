@@ -64,14 +64,6 @@ const ViewPermitOverview: FC<ViewPermitOverviewProps> = ({ latestAmendment }) =>
 
   return (
     <div className="view-permits-content">
-      {permit?.mine?.length > 1 && (
-        <Alert
-          className="margin-large--bottom"
-          message="This permit is associated with multiple mines, please review the associated mine list for more details"
-          type="warning"
-          showIcon
-        />
-      )}
       <Row justify="space-between" align="middle">
         <Col>
           <Title className="margin-none padding-lg--top padding-lg--bottom" level={2}>
@@ -85,6 +77,14 @@ const ViewPermitOverview: FC<ViewPermitOverviewProps> = ({ latestAmendment }) =>
       {permit && mine ? (
         <Row>
           <Col span={12} className="view-permits-detail-section">
+            {permit.mine?.length > 1 && (
+              <Alert
+                className="margin-medium--bottom permit-multi-mine-alert"
+                message="This permit is associated with multiple mines, please review the associated mine list for more details"
+                type="warning"
+                showIcon
+              />
+            )}
             <Title level={4}>Permit Details</Title>
             <Row>
               <Col span={12}>
