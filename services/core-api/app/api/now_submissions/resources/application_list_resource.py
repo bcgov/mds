@@ -121,7 +121,6 @@ class ApplicationListResource(Resource, UserMixin):
         current_app.logger.info("*****VFCBC Request Payload*****")
         current_app.logger.info(request.json)
         try:
-            # import pdb; pdb.set_trace()
             application = Application._schema().load(request.json)
         except MarshmallowError as e:
             raise BadRequest(e)

@@ -342,7 +342,6 @@ def register_routes(app):
 
     # Recursively add handler to every SQLAlchemy Error
     def sqlalchemy_error_handler(error):
-        # import pdb; pdb.set_trace()
         app.logger.error(str(error))
         app.logger.error(type(error))
         app.logger.error(traceback.format_exc())
