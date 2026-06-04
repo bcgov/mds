@@ -165,6 +165,7 @@ env:
 stop:
 	@echo "+\n++ Stopping all containers...\n+"
 	@docker compose $(DC_FILE) down
+	@docker compose -f docker-compose.mailpit.yaml down
 
 clean: stop |
 	@echo "+\n++ Cleaning ...\n+"
