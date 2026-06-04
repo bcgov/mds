@@ -111,6 +111,19 @@ export const permitReducer = (state: PermitState = initialState, action) => {
         ...state,
         standardPermitConditions: action.payload.records,
       };
+    case actionTypes.STORE_PERMIT_AMENDMENT_CONDITIONS: {
+      const { permit_guid, permit_amendment_guid, ...patch } = action.payload;
+      const patchAmendment = (a) =>
+        a.permit_amendment_guid === permit_amendment_guid ? { ...a, ...patch } : a;
+      return {
+        ...state,
+        permits: state.permits.map((p) =>
+          p.permit_guid !== permit_guid
+            ? p
+            : { ...p, permit_amendments: p.permit_amendments.map(patchAmendment) }
+        ),
+      };
+    }
     case actionTypes.STORE_EDITING_CONDITION_FLAG:
       return {
         ...state,

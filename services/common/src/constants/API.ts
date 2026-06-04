@@ -65,6 +65,8 @@ export const PERMIT_AMENDMENTS = (mineGuid, permitGuid) =>
   `/mines/${mineGuid}/permits/${permitGuid}/amendments`;
 export const PERMIT_AMENDMENT = (mineGuid, permitGuid, permitAmendmentGuid) =>
   `/mines/${mineGuid}/permits/${permitGuid}/amendments/${permitAmendmentGuid}`;
+export const PERMIT_CONDITIONS_DATA = (mineGuid, permitGuid, permitAmendmentGuid) =>
+  `/mines/${mineGuid}/permits/${permitGuid}/amendments/${permitAmendmentGuid}/conditions-data`;
 
 export const PERMIT_AMENDMENT_VC = (mineGuid, permitGuid, permitAmendmentGuid) =>
   `/mines/${mineGuid}/permits/${permitGuid}/amendments/${permitAmendmentGuid}/verifiable-credential`;

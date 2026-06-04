@@ -87,6 +87,9 @@ from app.api.mines.permits.permit_amendment.resources.permit_amendment import (
     PermitAmendmentListResource,
     PermitAmendmentResource,
 )
+from app.api.mines.permits.permit_amendment.resources.permit_conditions_data import (
+    PermitConditionsDataResource,
+)
 from app.api.mines.permits.permit_amendment.resources.permit_amendment_diff import (
     PermitAmendmentDiffResource,
 )
@@ -320,6 +323,9 @@ api.add_resource(PermitAmendmentListResource,
 api.add_resource(
     PermitAmendmentResource,
     '/<string:mine_guid>/permits/<string:permit_guid>/amendments/<string:permit_amendment_guid>')
+api.add_resource(
+    PermitConditionsDataResource,
+    '/<string:mine_guid>/permits/<string:permit_guid>/amendments/<string:permit_amendment_guid>/conditions-data')
 
 api.add_resource(
     PermitAmendmentConditionCategoryListResource,

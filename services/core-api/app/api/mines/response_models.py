@@ -341,6 +341,21 @@ PERMIT_AMENDMENT_MODEL = api.model(
         'conditions_review_completed': fields.Boolean,
     })
 
+PERMIT_CONDITIONS_DATA_MODEL = api.model(
+    'PermitConditionsData', {
+        'permit_amendment_guid': fields.String,
+        'permit_amendment_id': fields.Integer,
+        'permit_amendment_status_code': fields.String,
+        'has_permit_conditions': fields.Boolean,
+        'conditions_review_completed': fields.Boolean,
+        'preamble_text': fields.String,
+        'permit_conditions_last_updated_date': fields.DateTime,
+        'permit_conditions_last_updated_by': fields.String,
+        'conditions': fields.List(PermitCondition),
+        'mine_report_permit_requirements': fields.List(fields.Nested(MINE_REPORT_PERMIT_REQUIREMENT)),
+        'condition_categories': fields.List(fields.Nested(PERMIT_CONDITION_CATEGORY_MODEL)),
+    })
+
 BOND_MODEL = api.model('Bond_guid', {'bond_guid': fields.String})
 
 PERMIT_MODEL = api.model(

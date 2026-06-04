@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import { Field, getFormValues } from "@mds/common/components/forms/form";
 import { Row, Col } from "antd";
 import { faCheck, faXmark } from "@fortawesome/pro-regular-svg-icons";
@@ -40,11 +40,22 @@ const SubConditionForm: FC<SubConditionFormProps> = ({
   onSubmit,
 }) => {
   const dispatch = useAppDispatch();
-  const { loading, setLoading, standardConditionType, isStandardConditionEditor } = usePermitConditions();
+  const { setLoading,
+    addSubmittingCondition,
+    removeSubmittingCondition,
+    standardConditionType,
+    isStandardConditionEditor
+  } = usePermitConditions();
   const formValues = useAppSelector(getFormValues(FORM.EDIT_PERMIT_CONDITION)) as IPermitCondition;
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (values) => {
+    const parentId = parentCondition?.permit_condition_id;
     setLoading(true);
+    setIsSubmitting(true);
+    if (parentId) {
+      addSubmittingCondition(parentId);
+    }
     let resp;
     if (permitAmendmentGuid && !isStandardConditionEditor) {
       resp = await dispatch(createPermitCondition(permitAmendmentGuid, values));
@@ -55,8 +66,16 @@ const SubConditionForm: FC<SubConditionFormProps> = ({
     // @ts-ignore
     if (resp?.type !== ERROR) {
       await onSubmit();
+      if (parentId) {
+        removeSubmittingCondition(parentId);
+      }
+    } else {
+      if (parentId) {
+        removeSubmittingCondition(parentId);
+      }
     }
     setLoading(false);
+    setIsSubmitting(false);
   };
 
   const getConditionTypeCode = () => {
@@ -124,7 +143,7 @@ const SubConditionForm: FC<SubConditionFormProps> = ({
                 data={categoryOptions}
                 allowClear={false}
                 className="horizontal-form-item"
-                disabled={loading}
+                disabled={isSubmitting}
               />
             </Col>
           </Row>
@@ -136,7 +155,7 @@ const SubConditionForm: FC<SubConditionFormProps> = ({
               name="condition"
               component={RenderAutoSizeField}
               autoFocus
-              disabled={loading}
+              disabled={isSubmitting}
               required
               validate={[required]}
             />
@@ -145,7 +164,7 @@ const SubConditionForm: FC<SubConditionFormProps> = ({
         <Row gutter={8} className="condition-edit-buttons">
           <Col>
             <RenderCancelButton
-              disabled={loading}
+              disabled={isSubmitting}
               cancelFunction={handleCancel}
               buttonProps={{
                 type: "primary",
@@ -156,7 +175,7 @@ const SubConditionForm: FC<SubConditionFormProps> = ({
           </Col>
           <Col>
             <RenderSubmitButton
-              disabled={loading}
+              disabled={isSubmitting}
               buttonProps={{
                 icon: <FontAwesomeIcon icon={faCheck} />,
               }}

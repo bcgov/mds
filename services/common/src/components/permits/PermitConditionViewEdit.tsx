@@ -42,8 +42,8 @@ interface PermitConditionViewEditProps {
   collapseCategories?: boolean;
   isExpanded?: boolean;
   setSelectedCondition?: (condition: IPermitCondition) => void;
-  editingFormName: string;
-  setEditingFormName: (formName: string) => void;
+  editingFormName: string | null;
+  setEditingFormName: React.Dispatch<React.SetStateAction<string | null>>;
   addingToCategoryCode: string;
   setAddingToCategoryCode: (categoryCode: string) => void;
 }
@@ -135,9 +135,10 @@ const PermitConditionViewEdit: FC<PermitConditionViewEditProps> = ({
       userReviewCategoryCodes.includes(category.condition_category_code));
 
   const refreshConditionData = async (closeForm = true) => {
+    const formToClose = editingFormName;
     await refreshData();
     if (closeForm) {
-      setEditingFormName(null);
+      setEditingFormName(prev => prev === formToClose ? null : prev);
     }
   };
 
@@ -291,6 +292,7 @@ const PermitConditionViewEdit: FC<PermitConditionViewEditProps> = ({
               refreshData={refreshConditionData}
               conditionSelected={setSelectedCondition}
               categoryOptions={dropdownCategories}
+              siblingIds={category.conditions.map(c => c.permit_condition_id)}
             />
           </Col>
         ))}

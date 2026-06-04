@@ -120,6 +120,13 @@ export const findCondition = (permit_condition: string | number, conditions: IPe
   return null;
 }
 
+export const containsConditionId = (conditions: IPermitCondition[], targetId: number | null): boolean => {
+  if (!targetId || !conditions?.length) return false;
+  return conditions.some(
+    (c) => c.permit_condition_id === targetId || containsConditionId(c.sub_conditions ?? [], targetId)
+  );
+};
+
 /** IMineReportPermitRequirement transformer */
 /** Logic from ReportPermitRequirementForm TODO use this transformer too? */
 

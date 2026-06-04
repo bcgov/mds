@@ -13,6 +13,12 @@ interface PermitConditionsContextType {
   loading: boolean;
   setLoading: (loading: boolean) => void;
   refreshData: () => Promise<any>;
+  activeConditionId: number | null;
+  setActiveConditionId: (id: number | null) => void;
+  clearActiveConditionId: (id: number) => void;
+  submittingConditionIds: number[];
+  addSubmittingCondition: (id: number) => void;
+  removeSubmittingCondition: (id: number) => void;
 }
 
 const PermitConditionsContext = React.createContext<PermitConditionsContextType | undefined>(
@@ -35,6 +41,12 @@ export const PermitConditionsProvider: FC<{
   const defaultValue = {
     isNowEditor: false,
     isStandardConditionEditor: false,
+    activeConditionId: null,
+    setActiveConditionId: () => { },
+    clearActiveConditionId: () => { },
+    submittingConditionIds: [],
+    addSubmittingCondition: () => { },
+    removeSubmittingCondition: () => { },
   };
 
   const contextValue = useMemo(() => {

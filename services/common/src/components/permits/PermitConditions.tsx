@@ -1,4 +1,4 @@
-import React, { FC, useMemo, useEffect, useState, ReactNode } from "react";
+import React, { FC, useMemo, useEffect, useState, useRef, ReactNode } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { Col, Row, Space, Typography } from "antd";
 import FileOutlined from "@ant-design/icons/FileOutlined";
@@ -33,7 +33,7 @@ import PermitConditionCategoryEditModal from "@mds/common/components/permits/Per
 import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
 import {
   createPermitAmendmentConditionCategory,
-  fetchPermits,
+  fetchPermitConditionsData,
 } from "@mds/common/redux/actionCreators/permitActionCreator";
 import {
   fetchReviewAssignments,
@@ -143,7 +143,34 @@ const PermitConditions: FC<PermitConditionProps> = ({
   const [selectedCondition, setSelectedCondition] = useState<IPermitCondition | null>(null);
   const [editingFormName, setEditingFormName] = useState<string>();
   const [addingToCategoryCode, setAddingToCategoryCode] = useState<string>();
-  const [loading, setLoading] = useState(false);
+  const [loadingCount, setLoadingCount] = useState(0);
+  const loading = loadingCount > 0;
+  // This keeps track of the number of in-flight loading states. We need this because multiple conditions can be in-flight at once.
+  const setLoading = (value: boolean) => {
+    setLoadingCount(prev => value ? prev + 1 : Math.max(0, prev - 1));
+  };
+
+  // This keeps track of condition ids that are currently being submitted.
+  const [submittingConditionIds, setSubmittingConditionIds] = useState<number[]>([]);
+  const addSubmittingCondition = (id: number) => {
+    setSubmittingConditionIds(prev => [...prev, id]);
+  };
+  const removeSubmittingCondition = (id: number) => {
+    setSubmittingConditionIds(prev => prev.filter(existing => existing !== id));
+  };
+
+  // This keeps track of the current active condition the user is making changes to.
+  const [activeConditionId, setActiveConditionIdState] = useState<number | null>(null);
+  const activeConditionIdRef = useRef<number | null>(null);
+  const setActiveConditionId = (id: number | null) => {
+    activeConditionIdRef.current = id;
+    setActiveConditionIdState(id);
+  };
+  const clearActiveConditionId = (id: number) => {
+    if (activeConditionIdRef.current === id) {
+      setActiveConditionId(null);
+    }
+  };
 
   const reviewAssignments = useAppSelector(
     getReviewAssignmentsByAmendment(currentAmendment.permit_amendment_id)
@@ -439,9 +466,15 @@ const PermitConditions: FC<PermitConditionProps> = ({
           latestAmendment,
           previousAmendment,
           currentAmendment,
-          loading: showLoading,
+          loading: loading,
           setLoading,
-          refreshData: () => dispatch(fetchPermits(mineGuid))
+          refreshData: () => dispatch(fetchPermitConditionsData(mineGuid, permitGuid, currentAmendment.permit_amendment_guid)),
+          activeConditionId,
+          setActiveConditionId,
+          clearActiveConditionId,
+          submittingConditionIds,
+          addSubmittingCondition,
+          removeSubmittingCondition,
         }}
       >
         <Row>

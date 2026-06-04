@@ -14,13 +14,15 @@ const label = {
 interface DeleteConditionModalProps {
     condition: IPermitCondition;
     onSubmit: () => void | Promise<void>;
+    onCancel: () => void;
     title: string;
 }
 
-export const DeleteConditionModal: FC<DeleteConditionModalProps> = ({ condition, onSubmit, title }) => {
+export const DeleteConditionModal: FC<DeleteConditionModalProps> = ({ condition, onSubmit, onCancel, title }) => {
 
     const dispatch = useAppDispatch();
-    const onCancel = () => {
+    const handleCancel = () => {
+        onCancel();
         dispatch(closeModal());
     }
     const handleSubmit = () => {
@@ -43,7 +45,7 @@ export const DeleteConditionModal: FC<DeleteConditionModalProps> = ({ condition,
             <Row justify="end" className="form-button-container-row">
                 <Button
                     className="form-btn"
-                    onClick={onCancel}
+                    onClick={handleCancel}
                 >
                     Cancel
                 </Button>
