@@ -9,6 +9,8 @@ from sqlalchemy.sql.functions import func
 from app.api.services.email_service import EmailService
 from app.api.constants import MAJOR_MINES_NOD_NOTFICATION_EMAILS, MDS_EMAIL
 from enum import Enum
+from app.api.ministry_contacts.models.distribution_list import DistributionList, DistributionListNames
+from app.api.email_tracking.email_status_tasks import send_email_task
 from app.api.notice_of_departure.models.notice_of_departure_contact import NoticeOfDepartureContact
 from app.api.utils.include.user_info import User
 from app.extensions import db
@@ -231,10 +233,7 @@ class NoticeOfDeparture(SoftDeleteMixin, AuditMixin, Base):
         super(NoticeOfDeparture, self).delete()
 
     def nod_submission_email(self):
-        from app.api.ministry_contacts.models.distribution_list import DistributionList
-        from app.api.email_tracking.email_status_tasks import send_email_task
-
-        dl = DistributionList.find_by_name('Notice of Departure')
+        dl = DistributionList.find_by_name(DistributionListNames.NOTICE_OF_DEPARTURE)
         recipients = dl.get_emails() if dl else []
         distribution_list_guid = str(dl.distribution_list_guid) if dl else None
 

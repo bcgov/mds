@@ -7,6 +7,7 @@ from app.api.utils.access_decorators import requires_role_edit_ministry_contacts
 from app.api.utils.resources_mixins import UserMixin
 from app.api.ministry_contacts.models.ministry_contact import MinistryContact
 from app.api.ministry_contacts.models.ministry_contact_type import MinistryContactType
+from app.api.ministry_contacts.models.distribution_list_user import DistributionListUser
 from app.api.ministry_contacts.response_models import MINISTRY_CONTACT_MODEL
 
 
@@ -114,8 +115,6 @@ class MinistryContactListResource(Resource, UserMixin):
         contact.save(commit=False)
         db.session.flush()
 
-        from app.api.ministry_contacts.models.distribution_list_user import DistributionListUser
-        
         distribution_list_guids = data.get('distribution_list_guids', [])
         for guid in distribution_list_guids:
             DistributionListUser.create(guid, contact.contact_guid, add_to_session=True)

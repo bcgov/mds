@@ -8,6 +8,7 @@ from app.api.utils.access_decorators import requires_role_edit_ministry_contacts
 from app.api.ministry_contacts.response_models import MINISTRY_CONTACT_MODEL
 from app.api.ministry_contacts.models.ministry_contact import MinistryContact
 from app.api.ministry_contacts.models.ministry_contact_type import MinistryContactType
+from app.api.ministry_contacts.models.distribution_list_user import DistributionListUser
 
 
 class MinistryContactResource(Resource, UserMixin):
@@ -49,8 +50,6 @@ class MinistryContactResource(Resource, UserMixin):
         for key, value in data.items():
             setattr(contact, key, value)
 
-        from app.api.ministry_contacts.models.distribution_list_user import DistributionListUser
-        
         # Soft delete existing records
         existing_dlu = DistributionListUser.find_by_contact_guid(contact.contact_guid)
         for dlu in existing_dlu:
