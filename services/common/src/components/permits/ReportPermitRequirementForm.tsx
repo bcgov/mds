@@ -134,7 +134,9 @@ export const ReportPermitRequirementForm: FC<ReportPermitRequirementProps> = ({
     const updateData = async () => {
       await refreshData(false);
       setIsEditMode(false);
-      clearActiveConditionId(conditionId);
+      if (conditionId !== undefined) {
+        clearActiveConditionId(conditionId);
+      }
     };
 
     const deleteFunction = async () => {
@@ -176,7 +178,9 @@ export const ReportPermitRequirementForm: FC<ReportPermitRequirementProps> = ({
     }
     if (resp.payload) {
       await refreshData();
-      clearActiveConditionId(conditionId);
+      if (conditionId !== undefined) {
+        clearActiveConditionId(conditionId);
+      }
       // this is for an edge case where an existing report is edited and so it has a form on the page
       // and it was not getting updated so not showing the correct conditions there.
       if (condition && values.mine_report_permit_requirement_id) {

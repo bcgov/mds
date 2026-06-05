@@ -16,7 +16,7 @@ interface PermitConditionsContextType {
   activeConditionId: number | null;
   setActiveConditionId: (id: number | null) => void;
   clearActiveConditionId: (id: number) => void;
-  submittingConditionIds: number[];
+  submittingConditionIds: Record<number, number>;
   addSubmittingCondition: (id: number) => void;
   removeSubmittingCondition: (id: number) => void;
 }
@@ -44,7 +44,7 @@ export const PermitConditionsProvider: FC<{
     activeConditionId: null,
     setActiveConditionId: () => { },
     clearActiveConditionId: () => { },
-    submittingConditionIds: [],
+    submittingConditionIds: {},
     addSubmittingCondition: () => { },
     removeSubmittingCondition: () => { },
   };

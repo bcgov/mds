@@ -52,7 +52,7 @@ export const PermitConditionStatus: FC<PermitConditionStatusProps> = ({
     (condition.permit_condition_id === activeConditionId ||
       containsConditionId(condition.sub_conditions ?? [], activeConditionId));
 
-  const isSubmittingConditionFamily = submittingConditionIds.some(
+  const isSubmittingConditionFamily = Object.keys(submittingConditionIds).map(Number).some(
     (id) => id === condition.permit_condition_id ||
       containsConditionId(condition.sub_conditions ?? [], id)
   );
@@ -100,7 +100,7 @@ export const PermitConditionStatus: FC<PermitConditionStatusProps> = ({
             activeConditionId,
             setActiveConditionId: () => { },
             clearActiveConditionId: () => { },
-            submittingConditionIds: [],
+            submittingConditionIds: {},
             addSubmittingCondition: () => { },
             removeSubmittingCondition: () => { },
           };

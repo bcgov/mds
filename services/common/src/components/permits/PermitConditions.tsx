@@ -141,8 +141,8 @@ const PermitConditions: FC<PermitConditionProps> = ({
   const [isExpanded, setIsExpanded] = useState(false);
   const [viewPdf, setViewPdf] = useState(false);
   const [selectedCondition, setSelectedCondition] = useState<IPermitCondition | null>(null);
-  const [editingFormName, setEditingFormName] = useState<string>();
-  const [addingToCategoryCode, setAddingToCategoryCode] = useState<string>();
+  const [editingFormName, setEditingFormName] = useState<string | null>(null);
+  const [addingToCategoryCode, setAddingToCategoryCode] = useState<string | null>(null);
   const [loadingCount, setLoadingCount] = useState(0);
   const loading = loadingCount > 0;
   // This keeps track of the number of in-flight loading states. We need this because multiple conditions can be in-flight at once.
@@ -150,13 +150,21 @@ const PermitConditions: FC<PermitConditionProps> = ({
     setLoadingCount(prev => value ? prev + 1 : Math.max(0, prev - 1));
   };
 
-  // This keeps track of condition ids that are currently being submitted.
-  const [submittingConditionIds, setSubmittingConditionIds] = useState<number[]>([]);
+  // This keeps track of condition ids that are currently being submitted. 
+  const [submittingConditionIds, setSubmittingConditionIds] = useState<Record<number, number>>({});
   const addSubmittingCondition = (id: number) => {
-    setSubmittingConditionIds(prev => [...prev, id]);
+    setSubmittingConditionIds(prev => ({ ...prev, [id]: (prev[id] ?? 0) + 1 }));
   };
   const removeSubmittingCondition = (id: number) => {
-    setSubmittingConditionIds(prev => prev.filter(existing => existing !== id));
+    setSubmittingConditionIds(prev => {
+      const count = prev[id] ?? 0;
+      if (count <= 1) {
+        const { [id]: _, ...rest } = prev;
+        return rest;
+      }
+
+      return { ...prev, [id]: count - 1 };
+    });
   };
 
   // This keeps track of the current active condition the user is making changes to.

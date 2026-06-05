@@ -48,8 +48,8 @@ interface PermitConditionFormProps {
     condition: IPermitCondition | IStandardPermitCondition;
     canEditPermitConditions: boolean;
     onEdit: () => void;
-    setEditingFormName: (formName: string) => void;
-    editingFormName: string;
+    setEditingFormName: (formName: string | null) => void;
+    editingFormName: string | null;
     moveUp?: (condition: IPermitCondition | IStandardPermitCondition) => Promise<void>;
     moveDown?: (condition: IPermitCondition | IStandardPermitCondition) => Promise<void>;
     refreshData: (closeForm?: boolean) => Promise<void>;
@@ -91,7 +91,7 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
     const editingAllowed = isStandardConditionEditor || isExtracted || isNowEditor;
     // the form fails to re-initialize when the category is changed, so concatenating it forces it to make a new one
     const formName = `${FORM.EDIT_PERMIT_CONDITION}_${condition.permit_condition_id}_${condition.condition_category_code}`;
-    const editingFormDirty = useAppSelector(isDirty(editingFormName));
+    const editingFormDirty = useAppSelector(isDirty(editingFormName ?? ''));
     const listItemFormDirty = useAppSelector(isDirty(FORM.EDIT_PERMIT_CONDITION));
     const conditionTags: IPermitConditionTag[] = useAppSelector(getPermitConditionTags);
     const stepEditDisabled = isStandardConditionEditor || isNowEditor;
@@ -105,16 +105,13 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
     }, [editingFormName]);
 
     const startEdit = () => {
-        const handleEdit = () => {
-            onEdit();
-            setEditingFormName(formName);
-            setIsEditMode(true);
-            setActiveConditionId(condition.permit_condition_id);
-        }
         if (editingFormName) {
             dispatch(reset(editingFormName));
         }
-        handleEdit();
+        onEdit();
+        setEditingFormName(formName);
+        setIsEditMode(true);
+        setActiveConditionId(condition.permit_condition_id);
     };
 
     const cancelEdit = () => {
@@ -163,6 +160,7 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
         // @ts-ignore
         if (resp?.type !== ERROR) {
             const submittedId = condition.permit_condition_id;
+            dispatch(reset(formName));
             await refreshData(false);
             // Used unstable_batchedUpdates to prevent multiple re-renders from the multiple state updates here
             unstable_batchedUpdates(() => {

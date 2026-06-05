@@ -45,8 +45,8 @@ interface PermitConditionViewEditProps {
   setSelectedCondition?: (condition: IPermitCondition) => void;
   editingFormName: string | null;
   setEditingFormName: React.Dispatch<React.SetStateAction<string | null>>;
-  addingToCategoryCode: string;
-  setAddingToCategoryCode: (categoryCode: string) => void;
+  addingToCategoryCode: string | null;
+  setAddingToCategoryCode: (categoryCode: string | null) => void;
 }
 
 const PermitConditionViewEdit: FC<PermitConditionViewEditProps> = ({

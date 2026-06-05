@@ -38,8 +38,8 @@ interface PermitConditionLayerProps {
   setParentExpand?: () => void;
   canEditPermitConditions?: boolean;
   isEditing: boolean;
-  setEditingFormName: (formName: string) => void;
-  editingFormName: string;
+  setEditingFormName: (formName: string | null) => void;
+  editingFormName: string | null;
   handleMoveCondition: (condition: IPermitCondition | IStandardPermitCondition, isMoveUp: boolean) => Promise<void>;
   currentPosition: number;
   conditionCount: number;
@@ -103,7 +103,7 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
   const isActiveCondition = !!(activeConditionId && condition.permit_condition_id === activeConditionId);
   const isAncestorOfActive = !!(activeConditionId && !isActiveCondition && !isInsideActiveCondition &&
     containsConditionId(condition.sub_conditions ?? [], activeConditionId));
-  const isConditionSubmitting = submittingConditionIds.includes(condition.permit_condition_id);
+  const isConditionSubmitting = (submittingConditionIds[condition.permit_condition_id] ?? 0) > 0;
   const loadClassName = loading && (isConditionSubmitting || isInsideSubmittingCondition)
     ? " condition-layer--loading" : "";
   const className = `condition-layer condition-layer--${level}${loadClassName} condition-${condition.condition_type_code} fade-in`;
@@ -236,7 +236,7 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
                 conditionFamilyLoading={
                   loading && (
                     isAncestorOfActive ||
-                    submittingConditionIds.some((id) =>
+                    Object.keys(submittingConditionIds).map(Number).some((id) =>
                       id === condition.permit_condition_id ||
                       containsConditionId(condition.sub_conditions ?? [], id)
                     )
@@ -265,6 +265,7 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
 export default React.memo(PermitConditionLayer, (prev, next) =>
   prev.condition === next.condition &&
   prev.isEditing === next.isEditing &&
+  prev.editingFormName === next.editingFormName &&
   prev.refreshData === next.refreshData &&
   prev.handleMoveCondition === next.handleMoveCondition &&
   prev.isExpanded === next.isExpanded &&

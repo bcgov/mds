@@ -46,3 +46,16 @@ def test_get_permit_conditions_data_mine_mismatch(test_client, db_session, auth_
         headers=auth_headers['full_auth_header'])
 
     assert get_resp.status_code == 400
+
+
+def test_get_permit_conditions_data_permit_mismatch(test_client, db_session, auth_headers):
+    """Should return 400 when the amendment belongs to a different permit."""
+    mine, permit = create_mine_and_permit()
+    _, other_permit = create_mine_and_permit()
+    permit_amendment = permit.permit_amendments[0]
+
+    get_resp = test_client.get(
+        f'/mines/{mine.mine_guid}/permits/{other_permit.permit_guid}/amendments/{permit_amendment.permit_amendment_guid}/conditions-data',
+        headers=auth_headers['full_auth_header'])
+
+    assert get_resp.status_code == 400
