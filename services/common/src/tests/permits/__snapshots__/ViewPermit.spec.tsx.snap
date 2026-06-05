@@ -359,7 +359,7 @@ exports[`ViewPermit renders properly 1`] = `
                   class="ant-col"
                 >
                   <h2
-                    class="ant-typography margin-none padding-lg--top padding-lg--bottom"
+                    class="ant-typography margin-none padding-md--top padding-md--bottom"
                   >
                     Permit Overview
                   </h2>
