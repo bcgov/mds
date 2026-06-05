@@ -364,4 +364,31 @@ describe("STORE_PERMIT_AMENDMENT_CONDITIONS reducer case", () => {
     const unchanged = nextState.permits.find((p) => p.permit_guid === otherPermit.permit_guid);
     expect(unchanged).toEqual(otherPermit);
   });
+
+  it("removes a deleted condition when the incoming array is shorter than the existing one", () => {
+    const conditionA = { permit_condition_id: 1, condition: "Condition A", sub_conditions: [] };
+    const conditionB = { permit_condition_id: 2, condition: "Condition B", sub_conditions: [] };
+
+    const stateWithTwoConditions = permitReducer(
+      { permits: MOCK.PERMITS } as any,
+      storePermitAmendmentConditions(
+        { permit_amendment_guid, conditions: [conditionA, conditionB], condition_categories: [] },
+        permit_guid
+      )
+    );
+
+    // Delete conditionB — incoming only has conditionA
+    const actionAfterDelete = storePermitAmendmentConditions(
+      { permit_amendment_guid, conditions: [conditionA], condition_categories: [] },
+      permit_guid
+    );
+    const nextState = permitReducer(stateWithTwoConditions, actionAfterDelete);
+
+    const updatedAmendment = nextState.permits
+      .find((p) => p.permit_guid === permit_guid)
+      .permit_amendments.find((a) => a.permit_amendment_guid === permit_amendment_guid);
+
+    expect(updatedAmendment.conditions).toHaveLength(1);
+    expect(updatedAmendment.conditions[0].permit_condition_id).toBe(1);
+  });
 });

@@ -30,6 +30,26 @@ const initialState = {
   permitAmendments: {},
 };
 
+const shallowEqual = (a: Record<string, any>, b: Record<string, any>): boolean =>
+  Object.keys(a).length === Object.keys(b).length &&
+  Object.keys(a).every((k) => a[k] === b[k]);
+
+const updateChangedConditions = (incoming: IPermitCondition[], existing: IPermitCondition[]): IPermitCondition[] => {
+  const existingById = Object.fromEntries(existing.map((condition) => [condition.permit_condition_id, condition]));
+  const updatedConditions = incoming.map((incomingCondition) => {
+    const existingCondition = existingById[incomingCondition.permit_condition_id];
+    if (!existingCondition) {
+      return incomingCondition;
+    }
+
+    const sub_conditions = updateChangedConditions(incomingCondition.sub_conditions ?? [], existingCondition.sub_conditions ?? []);
+    const candidate = { ...incomingCondition, sub_conditions };
+    return shallowEqual(candidate, existingCondition) ? existingCondition : candidate;
+  });
+
+  return updatedConditions.length === existing.length && updatedConditions.every((condition, index) => condition === existing[index]) ? existing : updatedConditions;
+};
+
 export const permitReducer = (state: PermitState = initialState, action) => {
   switch (action.type) {
     case actionTypes.STORE_PERMITS:
@@ -112,15 +132,25 @@ export const permitReducer = (state: PermitState = initialState, action) => {
         standardPermitConditions: action.payload.records,
       };
     case actionTypes.STORE_PERMIT_AMENDMENT_CONDITIONS: {
-      const { permit_guid, permit_amendment_guid, ...patch } = action.payload;
-      const patchAmendment = (a) =>
-        a.permit_amendment_guid === permit_amendment_guid ? { ...a, ...patch } : a;
+      const { permit_guid, permit_amendment_guid, ...amendmentFields } = action.payload;
+      const updateMatchingAmendment = (permitAmendment) => {
+        if (permitAmendment.permit_amendment_guid !== permit_amendment_guid) {
+          return permitAmendment;
+        }
+
+        return {
+          ...permitAmendment,
+          ...amendmentFields,
+          conditions: updateChangedConditions(amendmentFields.conditions ?? [],
+            permitAmendment.conditions ?? [])
+        };
+      };
       return {
         ...state,
-        permits: state.permits.map((p) =>
-          p.permit_guid !== permit_guid
-            ? p
-            : { ...p, permit_amendments: p.permit_amendments.map(patchAmendment) }
+        permits: state.permits.map((permit) =>
+          permit.permit_guid !== permit_guid
+            ? permit
+            : { ...permit, permit_amendments: permit.permit_amendments.map(updateMatchingAmendment) }
         ),
       };
     }

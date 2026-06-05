@@ -1,4 +1,4 @@
-import React, { FC, useMemo, useEffect, useState, useRef, ReactNode } from "react";
+import React, { FC, useMemo, useEffect, useState, useRef, useCallback, ReactNode } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { Col, Row, Space, Typography } from "antd";
 import FileOutlined from "@ant-design/icons/FileOutlined";
@@ -450,6 +450,11 @@ const PermitConditions: FC<PermitConditionProps> = ({
     </Row>
   );
 
+  const refreshData = useCallback(
+    () => dispatch(fetchPermitConditionsData(mineGuid, permitGuid, currentAmendment?.permit_amendment_guid)),
+    [mineGuid, permitGuid, currentAmendment?.permit_amendment_guid]
+  );
+
   return (
     <>
       {hasConditions && (
@@ -468,7 +473,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
           currentAmendment,
           loading: loading,
           setLoading,
-          refreshData: () => dispatch(fetchPermitConditionsData(mineGuid, permitGuid, currentAmendment.permit_amendment_guid)),
+          refreshData,
           activeConditionId,
           setActiveConditionId,
           clearActiveConditionId,

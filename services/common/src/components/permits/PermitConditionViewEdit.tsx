@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useMemo, useState } from "react";
+import React, { FC, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Col, Collapse, Row, Spin, Typography } from "antd";
 import LoadingOutlined from "@ant-design/icons/LoadingOutlined";
 import {
@@ -31,6 +31,7 @@ import {
   getPermitConditionTags,
 } from "@mds/common/redux/slices/permitConditionTagSlice";
 import PermitTemplateConditionManager from "@mds/common/components/permits/PermitTemplateConditionManager";
+import { isEditingFamilyFor } from "./PermitConditionLayer";
 
 const { Title } = Typography;
 
@@ -134,13 +135,18 @@ const PermitConditionViewEdit: FC<PermitConditionViewEditProps> = ({
       isNowEditor ||
       userReviewCategoryCodes.includes(category.condition_category_code));
 
-  const refreshConditionData = async (closeForm = true) => {
-    const formToClose = editingFormName;
+  const editingFormNameRef = useRef(editingFormName);
+  useEffect(() => {
+    editingFormNameRef.current = editingFormName;
+  }, [editingFormName]);
+
+  const refreshConditionData = useCallback(async (closeForm = true) => {
+    const formToClose = editingFormNameRef.current;
     await refreshData();
     if (closeForm) {
-      setEditingFormName(prev => prev === formToClose ? null : prev);
+      setEditingFormName((prev) => (prev === formToClose ? null : prev));
     }
-  };
+  }, [refreshData, setEditingFormName]);
 
   const handleAddCondition = async () => {
     setAddingToCategoryCode(null);
@@ -200,7 +206,7 @@ const PermitConditionViewEdit: FC<PermitConditionViewEditProps> = ({
     );
   };
 
-  const handleMoveCondition = async (
+  const handleMoveCondition = useCallback(async (
     condition: IPermitCondition | IStandardPermitCondition,
     isMoveUp: boolean
   ) => {
@@ -224,7 +230,7 @@ const PermitConditionViewEdit: FC<PermitConditionViewEditProps> = ({
       );
     }
     await refreshConditionData();
-  };
+  }, [currentAmendment?.permit_amendment_guid, refreshConditionData]);
 
   const renderCategory = (category, idx) => {
     return (
@@ -289,6 +295,7 @@ const PermitConditionViewEdit: FC<PermitConditionViewEditProps> = ({
               canEditPermitConditions={canEditPermitConditions(category.condition_category)}
               setEditingFormName={setEditingFormName}
               editingFormName={editingFormName ?? addingToCategoryCode}
+              isEditing={isEditingFamilyFor(editingFormName ?? addingToCategoryCode, sc)}
               refreshData={refreshConditionData}
               conditionSelected={setSelectedCondition}
               categoryOptions={dropdownCategories}

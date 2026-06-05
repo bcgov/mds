@@ -1,4 +1,5 @@
 import React, { FC, useEffect, useRef, useState } from "react";
+import { unstable_batchedUpdates } from "react-dom";
 import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 import { change, Field, isDirty, reset } from "@mds/common/components/forms/form";
 import { Row, Col, Button, Typography, Modal, Tag } from "antd";
@@ -163,18 +164,25 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
         if (resp?.type !== ERROR) {
             const submittedId = condition.permit_condition_id;
             await refreshData(false);
-            removeSubmittingCondition(submittedId);
-            clearActiveConditionId(submittedId);
-            setIsEditMode(false);
-            setIsAddingListItem(false);
-            if (editingFormNameRef.current === formName) {
-                setEditingFormName(null);
-            }
+            // Used unstable_batchedUpdates to prevent multiple re-renders from the multiple state updates here
+            unstable_batchedUpdates(() => {
+                removeSubmittingCondition(submittedId);
+                clearActiveConditionId(submittedId);
+                setIsEditMode(false);
+                setIsAddingListItem(false);
+                if (editingFormNameRef.current === formName) {
+                    setEditingFormName(null);
+                }
+                setIsSubmitting(false);
+                setLoading(false);
+            });
         } else {
-            removeSubmittingCondition(condition.permit_condition_id);
+            unstable_batchedUpdates(() => {
+                removeSubmittingCondition(condition.permit_condition_id);
+                setIsSubmitting(false);
+                setLoading(false);
+            });
         }
-        setIsSubmitting(false);
-        setLoading(false);
     };
     const handleCancel = () => {
         cancelEdit();

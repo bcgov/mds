@@ -22,6 +22,7 @@ class PermitConditionsDataResource(Resource, UserMixin):
             .options(
                 noload("vc_credential_exch"),
                 noload("now_application_identity"),
+                noload("related_documents"),
             )
             .filter_by(permit_amendment_guid=permit_amendment_guid, deleted_ind=False)
             .first()

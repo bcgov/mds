@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useMemo, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { IPermitCondition } from "@mds/common/interfaces/permits/permitCondition.interface";
 import SubConditionForm from "@mds/common/components/permits/SubConditionForm";
 import { IGroupedDropdownList } from "@mds/common/interfaces/common/option.interface";
@@ -18,6 +18,18 @@ import { containsConditionId } from "@mds/common/utils/helpers";
 
 const { Title } = Typography;
 
+export const isEditingFamilyFor = (formName: string | null, condition: IPermitCondition): boolean => {
+  if (!formName) {
+    return false;
+  }
+
+  if (formName === `${FORM.EDIT_PERMIT_CONDITION}_${condition.permit_condition_id}_${condition.condition_category_code}`) {
+    return true;
+  }
+
+  return (condition.sub_conditions ?? []).some((sub) => isEditingFamilyFor(formName, sub));
+};
+
 interface PermitConditionLayerProps {
   isExtracted: boolean;
   condition: IPermitCondition;
@@ -25,6 +37,7 @@ interface PermitConditionLayerProps {
   isExpanded?: boolean;
   setParentExpand?: () => void;
   canEditPermitConditions?: boolean;
+  isEditing: boolean;
   setEditingFormName: (formName: string) => void;
   editingFormName: string;
   handleMoveCondition: (condition: IPermitCondition | IStandardPermitCondition, isMoveUp: boolean) => Promise<void>;
@@ -47,6 +60,7 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
   level = 0,
   setParentExpand = () => { },
   canEditPermitConditions = false,
+  isEditing,
   setEditingFormName,
   editingFormName,
   handleMoveCondition,
@@ -80,10 +94,7 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
   const standardRequirements = useAppSelector(getStandardReportByCondition(standardId));
   const requirements = isStandardConditionEditor ? standardRequirements : permitRequirements;
 
-  const editingCondition = useMemo(
-    () => editingFormName === `${FORM.EDIT_PERMIT_CONDITION}_${condition.permit_condition_id}_${condition.condition_category_code}`,
-    [condition.permit_condition_guid, editingFormName]
-  );
+  const editingCondition = isEditing;
   const [isAddingListItem, setIsAddingListItem] = useState<boolean>(false);
   const [expandClass, setExpandClass] = useState(
     isExpanded ? "condition-expanded" : "condition-collapsed"
@@ -183,6 +194,7 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
                 canEditPermitConditions={canEditPermitConditions}
                 setEditingFormName={setEditingFormName}
                 editingFormName={editingFormName}
+                isEditing={isEditingFamilyFor(editingFormName, subCondition)}
                 handleMoveCondition={handleMoveCondition}
                 currentPosition={idx}
                 conditionCount={condition.sub_conditions.length}
@@ -249,4 +261,16 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
   );
 };
 
-export default React.memo(PermitConditionLayer);
+// Only re-render PermitConditionLayer if at least one of these has changed.
+export default React.memo(PermitConditionLayer, (prev, next) =>
+  prev.condition === next.condition &&
+  prev.isEditing === next.isEditing &&
+  prev.refreshData === next.refreshData &&
+  prev.handleMoveCondition === next.handleMoveCondition &&
+  prev.isExpanded === next.isExpanded &&
+  prev.currentPosition === next.currentPosition &&
+  prev.conditionCount === next.conditionCount &&
+  prev.canEditPermitConditions === next.canEditPermitConditions &&
+  prev.isInsideSubmittingCondition === next.isInsideSubmittingCondition &&
+  prev.isInsideActiveCondition === next.isInsideActiveCondition
+);
