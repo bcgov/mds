@@ -192,10 +192,10 @@ class MineTailingsStorageFacility(AuditMixin, HistoryMixin, DraftMixin, Base):
         return mine_tailings_storage_facility_name
 
     def send_email_tsf_update(self):
-        from app.api.ministry_contacts.models.distribution_list import DistributionList
+        from app.api.ministry_contacts.models.distribution_list import DistributionList, DistributionListNames
         from app.api.email_tracking.email_status_tasks import send_email_task
 
-        dl = DistributionList.find_by_name('TSFs')
+        dl = DistributionList.find_by_name(DistributionListNames.TSFS)
         recipients = dl.get_emails() if dl else []
         distribution_list_guid = str(dl.distribution_list_guid) if dl else None
 

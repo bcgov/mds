@@ -174,10 +174,10 @@ class Variance(SoftDeleteMixin, AuditMixin, Base):
         return applicant_guid
 
     def send_variance_application_email(self):
-        from app.api.ministry_contacts.models.distribution_list import DistributionList
+        from app.api.ministry_contacts.models.distribution_list import DistributionList, DistributionListNames
         from app.api.email_tracking.email_status_tasks import send_email_task
 
-        dl = DistributionList.find_by_name('Variances')
+        dl = DistributionList.find_by_name(DistributionListNames.VARIANCES)
         recipients = dl.get_emails() if dl else []
         distribution_list_guid = str(dl.distribution_list_guid) if dl else None
 

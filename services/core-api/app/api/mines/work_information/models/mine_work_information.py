@@ -96,12 +96,12 @@ class MineWorkInformation(SoftDeleteMixin, AuditMixin, Base):
         return work_stop_date
 
     def send_work_status_update_email(self):
-        from app.api.ministry_contacts.models.distribution_list import DistributionList
+        from app.api.ministry_contacts.models.distribution_list import DistributionList, DistributionListNames
         from app.api.email_tracking.email_status_tasks import send_email_task
 
         recipients = [self.mine.region.regional_contact_office.email]
-        
-        dl = DistributionList.find_by_name('Notice to Start/Stop Work')
+
+        dl = DistributionList.find_by_name(DistributionListNames.NOTICE_TO_START_STOP_WORK)
         distribution_list_guid = str(dl.distribution_list_guid) if dl else None
         if dl:
             recipients.extend(dl.get_emails())

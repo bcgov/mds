@@ -1,7 +1,20 @@
+from enum import Enum
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from app.extensions import db
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
+
+
+class DistributionListNames(str, Enum):
+    INCIDENTS = 'Incidents'
+    MAJOR_PROJECTS = 'Major Projects'
+    NOTICE_OF_DEPARTURE = 'Notice of Departure'
+    NOTICE_TO_START_STOP_WORK = 'Notice to Start/Stop Work'
+    TSFS = 'TSFs'
+    VARIANCES = 'Variances'
+    REPORT_SUBMISSION_MAJOR_MINES = 'Report Submission - Major Mines'
+    REPORT_SUBMISSION_REGIONAL_MINES = 'Report Submission - Regional Mines'
+
 
 class DistributionList(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = 'distribution_list'

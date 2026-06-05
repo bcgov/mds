@@ -263,10 +263,10 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
             self.mine_report_guid,
             recipients=ActivityRecipients.core_users)
 
-        from app.api.ministry_contacts.models.distribution_list import DistributionList
+        from app.api.ministry_contacts.models.distribution_list import DistributionList, DistributionListNames
         from app.api.email_tracking.email_status_tasks import send_template_email_task
-        
-        distribution_list_name = 'Report Submission - Major Mines' if self.mine.major_mine_ind else 'Report Submission - Regional Mines'
+
+        distribution_list_name = DistributionListNames.REPORT_SUBMISSION_MAJOR_MINES if self.mine.major_mine_ind else DistributionListNames.REPORT_SUBMISSION_REGIONAL_MINES
         dl = DistributionList.find_by_name(distribution_list_name)
         distribution_list_guid = str(dl.distribution_list_guid) if dl else None
         
@@ -347,10 +347,10 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
         return list(unique_recipients)
 
     def send_crr_report_update_email(self, is_edit):
-        from app.api.ministry_contacts.models.distribution_list import DistributionList
+        from app.api.ministry_contacts.models.distribution_list import DistributionList, DistributionListNames
         from app.api.email_tracking.email_status_tasks import send_email_task
 
-        distribution_list_name = 'Report Submission - Major Mines' if self.mine.major_mine_ind else 'Report Submission - Regional Mines'
+        distribution_list_name = DistributionListNames.REPORT_SUBMISSION_MAJOR_MINES if self.mine.major_mine_ind else DistributionListNames.REPORT_SUBMISSION_REGIONAL_MINES
         dl = DistributionList.find_by_name(distribution_list_name)
         recipients = dl.get_emails() if dl else []
         distribution_list_guid = str(dl.distribution_list_guid) if dl else None

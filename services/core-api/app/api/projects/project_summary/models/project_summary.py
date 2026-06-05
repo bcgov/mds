@@ -1416,10 +1416,10 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
 
         project_lead_email = self.project_lead_email
 
-        from app.api.ministry_contacts.models.distribution_list import DistributionList
+        from app.api.ministry_contacts.models.distribution_list import DistributionList, DistributionListNames
         from app.api.email_tracking.email_status_tasks import send_template_email_task
-        
-        dl = DistributionList.find_by_name('Major Projects')
+
+        dl = DistributionList.find_by_name(DistributionListNames.MAJOR_PROJECTS)
         project_summary_emails = dl.get_emails() if dl else []
         distribution_list_guid = str(dl.distribution_list_guid) if dl else None
 

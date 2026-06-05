@@ -275,10 +275,10 @@ class MineIncident(SoftDeleteMixin, AuditMixin, Base):
         return value
 
     def send_incidents_email(self):
-        from app.api.ministry_contacts.models.distribution_list import DistributionList
+        from app.api.ministry_contacts.models.distribution_list import DistributionList, DistributionListNames
         from app.api.email_tracking.email_status_tasks import send_template_email_task
 
-        dl = DistributionList.find_by_name('Incidents')
+        dl = DistributionList.find_by_name(DistributionListNames.INCIDENTS)
         ministry_recipients = dl.get_emails() if dl else []
         distribution_list_guid = str(dl.distribution_list_guid) if dl else None
         cc = None
