@@ -303,8 +303,9 @@ const ViewPermit: FC = () => {
     <ActionMenuButton actions={headerActions} />
   ) : null;
 
-  // filter out the mine already shown in the primary CoreTag (the one from the URL context)
-  const additionalMines = permit?.mine?.filter((m) => m.mine_guid !== id) ?? [];
+  // Core only: filter out the mine already shown in the primary CoreTag (the one from the URL context)
+  // MineSpace users should not see additional mine associations
+  const additionalMines = isCore ? (permit?.mine?.filter((m) => m.mine_guid !== id) ?? []) : [];
 
   return (
     <div className="fixed-tabs-container permit-tabs-container">
