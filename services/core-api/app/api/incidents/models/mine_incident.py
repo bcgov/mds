@@ -15,6 +15,7 @@ from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 from app.config import Config
 from app.extensions import db
 from app.api.utils.helpers import format_email_datetime_to_string
+from app.api.ministry_contacts.models.distribution_list import DistributionListNames
 
 def getYear():
     return datetime.utcnow().year
@@ -275,12 +276,6 @@ class MineIncident(SoftDeleteMixin, AuditMixin, Base):
         return value
 
     def send_incidents_email(self):
-        from app.api.ministry_contacts.models.distribution_list import DistributionList, DistributionListNames
-        from app.api.email_tracking.email_status_tasks import send_template_email_task
-
-        dl = DistributionList.find_by_name(DistributionListNames.INCIDENTS)
-        ministry_recipients = dl.get_emails() if dl else []
-        distribution_list_guid = str(dl.distribution_list_guid) if dl else None
         cc = None
         minespace_recipients = [self.reported_by_email]
         duration = self.reported_timestamp - self.incident_timestamp
@@ -317,27 +312,27 @@ class MineIncident(SoftDeleteMixin, AuditMixin, Base):
             },
             "minespace_incident_link": f'{Config.MINESPACE_PROD_URL}/mines/{self.mine.mine_guid}/incidents/{self.mine_incident_guid}',
         }
-        send_template_email_task.apply_async(kwargs={
-            "subject": subject,
-            "recipients": ministry_recipients,
-            "template_path": ministry_template,
-            "context": ministry_context,
-            "cc": cc,
-            "distribution_list_guid": distribution_list_guid,
-            "reference_id": str(self.mine_incident_guid),
-            "reference_table": "mine_incident",
-            "reference_email_type": "incident_notification"
-        })
-        send_template_email_task.apply_async(kwargs={
-            "subject": subject,
-            "recipients": minespace_recipients,
-            "template_path": minespace_template,
-            "context": minespace_context,
-            "cc": cc,
-            "reference_id": str(self.mine_incident_guid),
-            "reference_table": "mine_incident",
-            "reference_email_type": "incident_notification_minespace"
-        })
+        EmailService.send_template_email_async(
+            subject=subject,
+            recipients=[],
+            template_path=ministry_template,
+            context=ministry_context,
+            distribution_list=DistributionListNames.INCIDENTS,
+            cc=cc,
+            reference_id=str(self.mine_incident_guid),
+            reference_table="mine_incident",
+            reference_email_type="incident_notification"
+        )
+        EmailService.send_template_email_async(
+            subject=subject,
+            recipients=minespace_recipients,
+            template_path=minespace_template,
+            context=minespace_context,
+            cc=cc,
+            reference_id=str(self.mine_incident_guid),
+            reference_table="mine_incident",
+            reference_email_type="incident_notification_minespace"
+        )
 
     def send_awaiting_final_report_email(self, is_prop):
         OCI_EMAIL = self.reported_to_inspector.email if self.reported_to_inspector is not None else None

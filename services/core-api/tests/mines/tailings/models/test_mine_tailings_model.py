@@ -3,6 +3,7 @@ import uuid
 
 from tests.factories import MineFactory, MineTailingsStorageFacilityFactory, MinePartyAppointmentFactory
 from app.api.mines.tailings.models.tailings import MineTailingsStorageFacility
+from app.api.ministry_contacts.models.distribution_list import DistributionListNames
 
 
 def test_mine_tailings_find_by_tsf_guid(db_session):
@@ -29,12 +30,12 @@ def test_mine_tailings_save_draft(db_session):
 def test_mine_tailings_submit(db_session):
     mine = MineFactory()
     tsf = MineTailingsStorageFacilityFactory(mine=mine)
-    
+
     tsf.save_draft()
 
     eor = MinePartyAppointmentFactory(mine=mine, mine_party_appt_type_code='EOR', mine_tailings_storage_facility=tsf)
     qp = MinePartyAppointmentFactory(mine=mine, mine_party_appt_type_code='TQP', mine_tailings_storage_facility=tsf)
-    
+
     eor.save_draft()
     qp.save_draft()
 
@@ -48,30 +49,14 @@ def test_mine_tailings_submit(db_session):
     assert qp.is_draft == False
 
 
-@patch('app.api.email_tracking.email_status_tasks.send_email_task.apply_async')
-@patch('app.api.ministry_contacts.models.distribution_list.DistributionList.find_by_name')
-def test_send_email_tsf_update_with_distribution_list(mock_find_by_name, mock_apply_async, db_session):
-    dl_mock = MagicMock()
-    dl_mock.get_emails.return_value = ['tsf@example.com']
-    dl_mock.distribution_list_guid = uuid.uuid4()
-    mock_find_by_name.return_value = dl_mock
-
+@patch('app.api.services.email_service.EmailService.send_email_async')
+def test_send_email_tsf_update(mock_send_async, db_session):
     tsf = MineTailingsStorageFacilityFactory()
     tsf.send_email_tsf_update()
 
-    mock_apply_async.assert_called_once()
-    call_kwargs = mock_apply_async.call_args[1]['kwargs']
-    assert call_kwargs['distribution_list_guid'] == str(dl_mock.distribution_list_guid)
-    assert call_kwargs['reference_table'] == 'mine_tailings_storage_facility'
-
-
-@patch('app.api.email_tracking.email_status_tasks.send_email_task.apply_async')
-@patch('app.api.ministry_contacts.models.distribution_list.DistributionList.find_by_name', return_value=None)
-def test_send_email_tsf_update_no_distribution_list(mock_find_by_name, mock_apply_async, db_session):
-    tsf = MineTailingsStorageFacilityFactory()
-    tsf.send_email_tsf_update()
-
-    mock_apply_async.assert_called_once()
-    call_kwargs = mock_apply_async.call_args[1]['kwargs']
-    assert call_kwargs['recipients'] == []
-    assert call_kwargs['distribution_list_guid'] is None
+    mock_send_async.assert_called_once()
+    call = mock_send_async.call_args
+    assert call.kwargs['distribution_list'] == DistributionListNames.TSFS
+    assert call.kwargs['reference_table'] == 'mine_tailings_storage_facility'
+    assert call.kwargs['reference_email_type'] == 'tsf_update'
+    assert call.kwargs['recipients'] == []

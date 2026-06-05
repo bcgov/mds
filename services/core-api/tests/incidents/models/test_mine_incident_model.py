@@ -1,37 +1,23 @@
-import uuid
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 
+from app.api.ministry_contacts.models.distribution_list import DistributionListNames
 from tests.factories import MineIncidentFactory
 
 
-@patch('app.api.email_tracking.email_status_tasks.send_template_email_task.apply_async')
-@patch('app.api.ministry_contacts.models.distribution_list.DistributionList.find_by_name')
-def test_send_incidents_email_with_distribution_list(mock_find_by_name, mock_apply_async, db_session):
-    dl_mock = MagicMock()
-    dl_mock.get_emails.return_value = ['incidents@example.com']
-    dl_mock.distribution_list_guid = uuid.uuid4()
-    mock_find_by_name.return_value = dl_mock
-
+@patch('app.api.services.email_service.EmailService.send_template_email_async')
+def test_send_incidents_email(mock_send_async, db_session):
     incident = MineIncidentFactory()
     incident.send_incidents_email()
 
-    assert mock_apply_async.call_count == 2
-    first_call_kwargs = mock_apply_async.call_args_list[0][1]['kwargs']
-    assert first_call_kwargs['distribution_list_guid'] == str(dl_mock.distribution_list_guid)
-    assert first_call_kwargs['reference_table'] == 'mine_incident'
-    assert first_call_kwargs['reference_email_type'] == 'incident_notification'
+    assert mock_send_async.call_count == 2
+    first_call = mock_send_async.call_args_list[0]
+    assert first_call.kwargs['distribution_list'] == DistributionListNames.INCIDENTS
+    assert first_call.kwargs['reference_table'] == 'mine_incident'
+    assert first_call.kwargs['reference_email_type'] == 'incident_notification'
 
-
-@patch('app.api.email_tracking.email_status_tasks.send_template_email_task.apply_async')
-@patch('app.api.ministry_contacts.models.distribution_list.DistributionList.find_by_name', return_value=None)
-def test_send_incidents_email_no_distribution_list(mock_find_by_name, mock_apply_async, db_session):
-    incident = MineIncidentFactory()
-    incident.send_incidents_email()
-
-    assert mock_apply_async.call_count == 2
-    first_call_kwargs = mock_apply_async.call_args_list[0][1]['kwargs']
-    assert first_call_kwargs['recipients'] == []
-    assert first_call_kwargs['distribution_list_guid'] is None
+    second_call = mock_send_async.call_args_list[1]
+    assert second_call.kwargs['reference_email_type'] == 'incident_notification_minespace'
+    assert 'distribution_list' not in second_call.kwargs or second_call.kwargs.get('distribution_list') is None
 
 
 @patch('app.api.services.email_service.EmailService.send_template_email')

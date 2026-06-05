@@ -4,6 +4,7 @@ from unittest.mock import patch, MagicMock, ANY
 from tests.factories import MineFactory, ProjectSummaryFactory, ProjectFactory
 
 from app.api.projects.project_summary.models.project_summary import ProjectSummary
+from app.api.ministry_contacts.models.distribution_list import DistributionListNames
 
 
 def test_project_summary_find_by_project_summary_guid(db_session):
@@ -25,31 +26,26 @@ def test_project_summary_find_by_project_guid(db_session):
 
 @patch('app.api.projects.project.models.project.Project.has_mines_act_auths', return_value=True)
 @patch('app.api.projects.project.models.project.Project.has_ema_auths', return_value=False)
-@patch('app.api.email_tracking.email_status_tasks.send_template_email_task.apply_async')
-@patch('app.api.ministry_contacts.models.distribution_list.DistributionList.find_by_name')
-def test_send_project_summary_email_with_distribution_list(mock_find_by_name, mock_apply_async, mock_ema, mock_mines_act, db_session):
-    dl_mock = MagicMock()
-    dl_mock.get_emails.return_value = ['projects@example.com']
-    dl_mock.distribution_list_guid = uuid.uuid4()
-    mock_find_by_name.return_value = dl_mock
-
+@patch('app.api.services.email_service.EmailService.send_template_email_async')
+def test_send_project_summary_email_sub_status(mock_send_async, mock_ema, mock_mines_act, db_session):
     project_summary = ProjectSummaryFactory(set_status_code='SUB')
     mine = MineFactory()
     project_summary.send_project_summary_email(mine, 'Test message')
 
-    assert mock_apply_async.call_count >= 1
-    first_kwargs = mock_apply_async.call_args_list[0][1]['kwargs']
-    assert first_kwargs['reference_table'] == 'project_summary'
-    assert first_kwargs['distribution_list_guid'] == str(dl_mock.distribution_list_guid)
+    assert mock_send_async.call_count >= 1
+    first_call = mock_send_async.call_args_list[0]
+    assert first_call.kwargs['reference_table'] == 'project_summary'
+    assert first_call.kwargs['distribution_list'] == DistributionListNames.MAJOR_PROJECTS
 
 
 @patch('app.api.projects.project.models.project.Project.has_mines_act_auths', return_value=True)
 @patch('app.api.projects.project.models.project.Project.has_ema_auths', return_value=False)
-@patch('app.api.email_tracking.email_status_tasks.send_template_email_task.apply_async')
-@patch('app.api.ministry_contacts.models.distribution_list.DistributionList.find_by_name', return_value=None)
-def test_send_project_summary_email_no_distribution_list(mock_find_by_name, mock_apply_async, mock_ema, mock_mines_act, db_session):
-    project_summary = ProjectSummaryFactory(set_status_code='SUB')
+@patch('app.api.services.email_service.EmailService.send_template_email_async')
+def test_send_project_summary_email_non_sub_status(mock_send_async, mock_ema, mock_mines_act, db_session):
+    project_summary = ProjectSummaryFactory(set_status_code='ASG')
     mine = MineFactory()
     project_summary.send_project_summary_email(mine, 'Test message')
 
-    assert mock_apply_async.call_count >= 1
+    assert mock_send_async.call_count >= 1
+    first_call = mock_send_async.call_args_list[0]
+    assert first_call.kwargs.get('distribution_list') is None

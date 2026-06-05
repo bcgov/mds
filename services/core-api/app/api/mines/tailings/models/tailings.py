@@ -9,6 +9,7 @@ from sqlalchemy.schema import FetchedValue
 
 from app.api.constants import MINESPACE_TSF_UPDATE_EMAIL
 from app.api.services.email_service import EmailService
+from app.api.ministry_contacts.models.distribution_list import DistributionListNames
 from app.api.utils.models_mixins import AuditMixin, HistoryMixin, Base, DraftMixin
 from app.api.utils.feature_flag import Feature, is_feature_enabled
 from app.config import Config
@@ -192,24 +193,17 @@ class MineTailingsStorageFacility(AuditMixin, HistoryMixin, DraftMixin, Base):
         return mine_tailings_storage_facility_name
 
     def send_email_tsf_update(self):
-        from app.api.ministry_contacts.models.distribution_list import DistributionList, DistributionListNames
-        from app.api.email_tracking.email_status_tasks import send_email_task
-
-        dl = DistributionList.find_by_name(DistributionListNames.TSFS)
-        recipients = dl.get_emails() if dl else []
-        distribution_list_guid = str(dl.distribution_list_guid) if dl else None
-
         subject = f'TSF Information Update for {self.mine.mine_name}'
         body = f'<p>{self.mine.mine_name} (Mine No.: {self.mine.mine_no}) has requested to update their TSF information.</p>'
         link = f'{Config.CORE_WEB_URL}/mine-dashboard/{self.mine.mine_guid}/permits-and-approvals/tailings'
         body += f'<p>View updates in Core: <a href="{link}" target="_blank">{link}</a></p>'
-        
-        send_email_task.apply_async(kwargs={
-            "subject": subject,
-            "recipients": recipients,
-            "body": body,
-            "distribution_list_guid": distribution_list_guid,
-            "reference_id": str(self.mine_tailings_storage_facility_guid),
-            "reference_table": "mine_tailings_storage_facility",
-            "reference_email_type": "tsf_update"
-        })
+
+        EmailService.send_email_async(
+            subject=subject,
+            recipients=[],
+            body=body,
+            distribution_list=DistributionListNames.TSFS,
+            reference_id=str(self.mine_tailings_storage_facility_guid),
+            reference_table="mine_tailings_storage_facility",
+            reference_email_type="tsf_update"
+        )
