@@ -247,6 +247,7 @@ class SimpleSearchService:
                     break
         
         mine_guid = self._extract_mine_guid(doc_type, source)
+        mines = self._extract_mines(doc_type, source)
         
         return SearchResult(
             score,
@@ -256,7 +257,8 @@ class SimpleSearchService:
                 'value': value,
                 'description': description,
                 'highlight': highlight_text,
-                'mine_guid': mine_guid
+                'mine_guid': mine_guid,
+                'mines': mines
             }
         )
     
@@ -287,6 +289,14 @@ class SimpleSearchService:
             mine_info = source.get('mine')
             return mine_info.get('mine_guid') if isinstance(mine_info, dict) else None
         return None
+    
+    def _extract_mines(self, doc_type, source):
+        """Extract mines (details) from source based on document type."""
+        if doc_type == 'permit':
+            mine_guids = source.get('mine_guids', [])
+            return [{"mine_guid": mine.get("mine_guid"), "mine_name": mine.get("mine_name", "")} for mine in mine_guids] if mine_guids else None
+        else:
+            return None
     
     def _process_mine_result(self, source):
         """Process mine search result."""

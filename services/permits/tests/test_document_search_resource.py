@@ -122,6 +122,8 @@ class TestDocumentSearchResource:
     @patch("app.tasks.tasks.run_now_document_indexing")
     async def test_get_indexing_status_success(self, mock_task, mock_search_client, mock_redis, valid_guid):
         mock_redis.smembers.return_value = {"task-123"}
+        mock_redis.keys.return_value = [f"now_doc_index:{valid_guid}:doc-123"]
+        mock_redis.get.return_value = "task-123"
         mock_result = MagicMock()
         mock_result.state = "SUCCESS"
         mock_result.result = {"succeeded": 10}
@@ -136,6 +138,8 @@ class TestDocumentSearchResource:
     @patch("app.tasks.tasks.run_now_document_indexing")
     async def test_get_indexing_status_running(self, mock_task, mock_search_client, mock_redis, valid_guid):
         mock_redis.smembers.return_value = {"task-123"}
+        mock_redis.keys.return_value = [f"now_doc_index:{valid_guid}:doc-123"]
+        mock_redis.get.return_value = "task-123"
         mock_result = MagicMock()
         mock_result.state = "PROGRESS"
         mock_result.info = {"percent": 50, "stage": "embedding"}
@@ -221,6 +225,8 @@ class TestDocumentSearchResource:
     @patch("app.tasks.tasks.run_now_document_indexing")
     async def test_get_indexing_status_failed(self, mock_task, mock_search_client, mock_redis, valid_guid):
         mock_redis.smembers.return_value = {"task-123"}
+        mock_redis.keys.return_value = [f"now_doc_index:{valid_guid}:doc-123"]
+        mock_redis.get.return_value = "task-123"
         mock_result = MagicMock()
         mock_result.state = "FAILURE"
         mock_result.result = Exception("indexing failed")

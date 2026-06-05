@@ -1,0 +1,64 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SearchResultItem renders properly for a non-permit result 1`] = `
+<ForwardRef(InternalItem)
+  className="search-result-item"
+  onClick={[Function]}
+  onMouseEnter={[Function]}
+  onMouseLeave={[Function]}
+>
+  <Meta
+    avatar={
+      <Avatar
+        icon={<ForwardRef(EnvironmentOutlined) />}
+        style={
+          Object {
+            "backgroundColor": "#2e7d3220",
+            "color": "#2e7d32",
+          }
+        }
+      />
+    }
+    description={
+      <React.Fragment>
+        <ForwardRef(Text)
+          ellipsis={true}
+          type="secondary"
+        >
+          Mine
+          <span
+            style={
+              Object {
+                "marginLeft": 8,
+              }
+            }
+          >
+            • 
+            Mine #: M-001
+          </span>
+        </ForwardRef(Text)>
+      </React.Fragment>
+    }
+    title={
+      <ForwardRef(Text)
+        className="search-result-item__title"
+        strong={false}
+      >
+        
+        <mark>
+          Test
+        </mark>
+         Mine
+      </ForwardRef(Text)>
+    }
+  />
+  <ForwardRef(EnterOutlined)
+    className="search-result-item__enter-icon"
+    style={
+      Object {
+        "visibility": "hidden",
+      }
+    }
+  />
+</ForwardRef(InternalItem)>
+`;

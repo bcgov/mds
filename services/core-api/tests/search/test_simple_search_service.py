@@ -139,6 +139,25 @@ class TestSimpleSearchService:
 
         assert guid == 'def-456'  # First GUID
     
+    def test_extract_mines_from_permit(self, service):
+        """Test extracting mines from permit document."""
+
+        source = {
+            'mine_guids': [
+                {'mine_guid': 'def-456', 'mine_name': 'Test Mine', 'mine_no': 'M-001'},
+                {'mine_guid': 'ghi-789', 'mine_name': 'Other Mine', 'mine_no': 'M-002'},
+            ],
+            'permit_no': 'P-001'
+        }
+
+        mines = service._extract_mines('permit', source)
+        
+        assert len(mines) == 2
+        assert all("mine_no" not in mine for mine in mines)
+        assert mines[0]['mine_guid'] == 'def-456' # First GUID
+        assert mines[0]['mine_name'] == 'Test Mine' # First Mine
+
+    
     def test_extract_mine_guid_from_nod(self, service):
         """Test extracting mine_guid from NOD document."""
         source = {'mine': {'mine_guid': 'jkl-012'}, 'nod_no': 'NOD-001'}

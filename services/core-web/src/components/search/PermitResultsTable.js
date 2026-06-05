@@ -56,13 +56,13 @@ export const PermitResultsTable = (props) => {
         if (!record.mine || record.mine.length === 0) {
           return "-";
         }
-        return record.mine.map((mine) => (
-          <Link
-            to={router.MINE_PERMITS.dynamicRoute(mine.mine_guid)}
-            key={"mine-link-" + mine.mine_guid}
-          >
-            <Highlight search={props.highlightRegex}>{mine.mine_name || mine.mine_guid}</Highlight>
-          </Link>
+        return record.mine.map((mine, index) => (
+          <React.Fragment key={"mine-link-" + mine.mine_guid}>
+            {index > 0 && ", "}
+            <Link to={router.MINE_PERMITS.dynamicRoute(mine.mine_guid)}>
+              <Highlight search={props.highlightRegex}>{mine.mine_name || mine.mine_guid}</Highlight>
+            </Link>
+          </React.Fragment>
         ));
       },
     },

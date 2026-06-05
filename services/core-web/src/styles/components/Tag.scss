@@ -15,3 +15,41 @@
     color: $primary-btn-color;
   }
 }
+
+.tag-more-btn {
+  background: none;
+  border: none;
+  padding: 2px 4px;
+  cursor: pointer;
+  color: inherit;
+  font: inherit;
+  font-size: 0.85em;
+  white-space: nowrap;
+  text-decoration: underline;
+
+  &:focus-visible {
+    outline: 2px solid $primary-btn-color;
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+}
+
+.tag-more-popover {
+  &__description {
+    display: block;
+    font-size: 0.85em;
+    font-style: italic;
+    margin-bottom: 12px;
+  }
+
+  &__mines {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-start;
+  }
+
+  &__mine {
+    display: inline-block;
+  }
+}

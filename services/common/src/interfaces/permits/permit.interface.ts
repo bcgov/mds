@@ -24,6 +24,7 @@ export interface IPermit {
   site_properties: IMineType;
   permit_prefix: string;
   mine_guid?: string;
+  mine?: { mine_guid: string; mine_name: string; mine_no?: string }[];
   status_changed_timestamp?: string;
   update_user: string;
   update_timestamp: string;
