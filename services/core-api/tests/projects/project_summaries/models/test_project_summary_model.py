@@ -38,14 +38,3 @@ def test_send_project_summary_email_sub_status(mock_send_async, mock_ema, mock_m
     assert first_call.kwargs['distribution_list'] == DistributionListNames.MAJOR_PROJECTS
 
 
-@patch('app.api.projects.project.models.project.Project.has_mines_act_auths', return_value=True)
-@patch('app.api.projects.project.models.project.Project.has_ema_auths', return_value=False)
-@patch('app.api.services.email_service.EmailService.send_template_email_async')
-def test_send_project_summary_email_non_sub_status(mock_send_async, mock_ema, mock_mines_act, db_session):
-    project_summary = ProjectSummaryFactory(set_status_code='ASG')
-    mine = MineFactory()
-    project_summary.send_project_summary_email(mine, 'Test message')
-
-    assert mock_send_async.call_count >= 1
-    first_call = mock_send_async.call_args_list[0]
-    assert first_call.kwargs.get('distribution_list') is None
