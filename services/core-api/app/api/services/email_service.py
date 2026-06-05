@@ -578,3 +578,83 @@ class EmailService():
         current_app.logger.info(
             f'Common Services email request successful.\nEmail Subject: {subject}\nResponse: {resp_data}\nRecipients: {original_recipients}'
         )
+
+    @classmethod
+    def send_template_email_async(cls,
+                                  subject,
+                                  recipients,
+                                  template_path,
+                                  context,
+                                  distribution_list=None,
+                                  cc=None,
+                                  bcc=None,
+                                  sender=None,
+                                  reference_id=None,
+                                  reference_table=None,
+                                  reference_email_type=None,
+                                  **kwargs):
+        #import here to avoid circular dependency
+        from app.api.email_tracking.email_status_tasks import send_template_email_task 
+
+        distribution_list_guid = None
+        if distribution_list is not None:
+            #import here to avoid circular dependency
+            from app.api.ministry_contacts.models.distribution_list import DistributionList
+            dl = DistributionList.find_by_name(distribution_list)
+            if dl:
+                recipients = list(set((recipients or []) + dl.get_emails()))
+                distribution_list_guid = str(dl.distribution_list_guid)
+
+        send_template_email_task.apply_async(kwargs={
+            'subject': subject,
+            'recipients': recipients,
+            'template_path': template_path,
+            'context': context,
+            'sender': sender,
+            'cc': cc,
+            'bcc': bcc,
+            'distribution_list_guid': distribution_list_guid,
+            'reference_id': reference_id,
+            'reference_table': reference_table,
+            'reference_email_type': reference_email_type,
+            **kwargs
+        })
+
+    @classmethod
+    def send_email_async(cls,
+                         subject,
+                         recipients,
+                         body,
+                         distribution_list=None,
+                         cc=None,
+                         bcc=None,
+                         sender=None,
+                         reference_id=None,
+                         reference_table=None,
+                         reference_email_type=None,
+                         **kwargs):
+        #import here to avoid circular dependency
+        from app.api.email_tracking.email_status_tasks import send_email_task
+
+        distribution_list_guid = None
+        if distribution_list is not None:
+            #import here to avoid circular dependency
+            from app.api.ministry_contacts.models.distribution_list import DistributionList
+            dl = DistributionList.find_by_name(distribution_list)
+            if dl:
+                recipients = list(set((recipients or []) + dl.get_emails()))
+                distribution_list_guid = str(dl.distribution_list_guid)
+
+        send_email_task.apply_async(kwargs={
+            'subject': subject,
+            'recipients': recipients,
+            'body': body,
+            'sender': sender,
+            'cc': cc,
+            'bcc': bcc,
+            'distribution_list_guid': distribution_list_guid,
+            'reference_id': reference_id,
+            'reference_table': reference_table,
+            'reference_email_type': reference_email_type,
+            **kwargs
+        })
