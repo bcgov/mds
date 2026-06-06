@@ -29,9 +29,9 @@ class PermitConditionsDataResource(Resource, UserMixin):
         )
         if not permit_amendment:
             raise NotFound('Permit Amendment not found.')
-        if not str(permit_amendment.mine_guid) == mine_guid:
+        if str(permit_amendment.mine_guid) != mine_guid:
             raise BadRequest('Permits mine_guid and supplied mine_guid mismatch.')
-        if not str(permit_amendment.permit_guid) == permit_guid:
+        if str(permit_amendment.permit_guid) != permit_guid:
             raise BadRequest('Permit amendment does not belong to the supplied permit_guid.')
 
         permit_amendment.mine_report_permit_requirements = MineReportPermitRequirement.query.filter_by(

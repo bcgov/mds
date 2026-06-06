@@ -55,8 +55,7 @@ export const ReportPermitRequirementForm: FC<ReportPermitRequirementProps> = ({
 }) => {
   const formName = `${FORM.ADD_REPORT_TO_PERMIT_CONDITION}-${condition?.permit_condition_id ?? mineReportPermitRequirement?.mine_report_permit_requirement_id}`;
 
-  const { loading,
-    currentAmendment,
+  const { currentAmendment,
     permitGuid,
     mineGuid,
     isNowEditor,

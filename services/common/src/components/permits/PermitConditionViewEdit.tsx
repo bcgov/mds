@@ -11,7 +11,7 @@ import {
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { Feature } from "@mds/common/utils/featureFlag";
 import SubConditionForm from "./SubConditionForm";
-import PermitConditionLayer from "./PermitConditionLayer";
+import PermitConditionLayer, { isEditingFamilyFor } from "./PermitConditionLayer";
 import PermitConditionReviewAssignment from "./PermitConditionReviewAssignment";
 import CoreButton from "../common/CoreButton";
 import { EditPermitConditionCategoryInline } from "./PermitConditionCategory";
@@ -31,7 +31,6 @@ import {
   getPermitConditionTags,
 } from "@mds/common/redux/slices/permitConditionTagSlice";
 import PermitTemplateConditionManager from "@mds/common/components/permits/PermitTemplateConditionManager";
-import { isEditingFamilyFor } from "./PermitConditionLayer";
 
 const { Title } = Typography;
 

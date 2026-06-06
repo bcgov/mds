@@ -148,10 +148,10 @@ export const permitReducer = (state: PermitState = initialState, action) => {
       return {
         ...state,
         permits: state.permits.map((permit) =>
-          permit.permit_guid !== permit_guid
-            ? permit
-            : { ...permit, permit_amendments: permit.permit_amendments.map(updateMatchingAmendment) }
-        ),
+            permit.permit_guid === permit_guid
+              ? { ...permit, permit_amendments: permit.permit_amendments.map(updateMatchingAmendment) }
+              : permit
+          ),
       };
     }
     case actionTypes.STORE_EDITING_CONDITION_FLAG:

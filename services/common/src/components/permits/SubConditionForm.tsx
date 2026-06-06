@@ -69,10 +69,8 @@ const SubConditionForm: FC<SubConditionFormProps> = ({
       if (parentId) {
         removeSubmittingCondition(parentId);
       }
-    } else {
-      if (parentId) {
-        removeSubmittingCondition(parentId);
-      }
+    } else if (parentId) {
+      removeSubmittingCondition(parentId);
     }
     setLoading(false);
     setIsSubmitting(false);

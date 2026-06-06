@@ -168,15 +168,15 @@ const PermitConditions: FC<PermitConditionProps> = ({
   };
 
   // This keeps track of the current active condition the user is making changes to.
-  const [activeConditionId, setActiveConditionIdState] = useState<number | null>(null);
+  const [activeConditionId, setActiveConditionId] = useState<number | null>(null);
   const activeConditionIdRef = useRef<number | null>(null);
-  const setActiveConditionId = (id: number | null) => {
+  const setActiveConditionIdWithRef = (id: number | null) => {
     activeConditionIdRef.current = id;
-    setActiveConditionIdState(id);
+    setActiveConditionId(id);
   };
   const clearActiveConditionId = (id: number) => {
     if (activeConditionIdRef.current === id) {
-      setActiveConditionId(null);
+      setActiveConditionIdWithRef(null);
     }
   };
 
@@ -211,6 +211,11 @@ const PermitConditions: FC<PermitConditionProps> = ({
       setAddingToCategoryCode(null);
     }
   }, [editingFormName]);
+
+  const refreshData = useCallback(
+    () => dispatch(fetchPermitConditionsData(mineGuid, permitGuid, currentAmendment?.permit_amendment_guid)),
+    [mineGuid, permitGuid, currentAmendment?.permit_amendment_guid]
+  );
 
   const isExtractionInProgress =
     permitExtraction?.task_status === PermitExtractionStatus.in_progress;
@@ -458,11 +463,6 @@ const PermitConditions: FC<PermitConditionProps> = ({
     </Row>
   );
 
-  const refreshData = useCallback(
-    () => dispatch(fetchPermitConditionsData(mineGuid, permitGuid, currentAmendment?.permit_amendment_guid)),
-    [mineGuid, permitGuid, currentAmendment?.permit_amendment_guid]
-  );
-
   return (
     <>
       {hasConditions && (
@@ -483,7 +483,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
           setLoading,
           refreshData,
           activeConditionId,
-          setActiveConditionId,
+          setActiveConditionId: setActiveConditionIdWithRef,
           clearActiveConditionId,
           submittingConditionIds,
           addSubmittingCondition,
