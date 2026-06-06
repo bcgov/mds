@@ -7,7 +7,8 @@ import * as API from "@mds/common/constants/API";
 import * as String from "@mds/common/constants/strings";
 import { notification } from "antd";
 import { createSelector } from "reselect";
-import { IMinistryContact, IMinespaceUser, IMinespaceUserMine } from "@mds/common/interfaces";
+import { IMinistryContact, IMinespaceUser, IMinespaceUserMine, IDistributionList } from "@mds/common/interfaces";
+import { IPageData } from "@mds/common/interfaces/common/pageData.interface";
 
 export const minespaceReducerType = "minespace";
 
@@ -16,7 +17,7 @@ interface MinespaceState {
     minespaceUsersByMine: { [mine_guid: string]: IMinespaceUser[] };
     minespaceUserMines: IMinespaceUserMine[];
     MinistryContacts: IMinistryContact[];
-    DistributionLists: any[];
+    DistributionLists: IPageData<IDistributionList>;
     MinistryContactsByRegion: IMinistryContact[];
     currentUserAccessRequest: IMinespaceUser | null | undefined;
 }
@@ -26,7 +27,7 @@ const initialState: MinespaceState = {
     minespaceUsersByMine: {},
     minespaceUserMines: [],
     MinistryContacts: [],
-    DistributionLists: [],
+    DistributionLists: { records: [], current_page: 1, total: 0, total_pages: 0, items_per_page: 25 },
     MinistryContactsByRegion: [],
     currentUserAccessRequest: undefined,
 };
@@ -219,14 +220,14 @@ const minespaceSlice = createAppSlice({
             }
         ),
         fetchDistributionLists: create.asyncThunk(
-            async (_: undefined, thunkApi) => {
+            async (params: { page?: number; per_page?: number } = {}, thunkApi) => {
                 const headers = createRequestHeader();
                 thunkApi.dispatch(showLoading());
 
                 try {
                     const response = await CustomAxios().get(
                         `${ENVIRONMENT.apiUrl}${API.DISTRIBUTION_LISTS}`,
-                        headers
+                        { ...headers, params }
                     );
                     return response.data;
                 } finally {
@@ -235,7 +236,7 @@ const minespaceSlice = createAppSlice({
             },
             {
                 fulfilled: (state: MinespaceState, action) => {
-                    state.DistributionLists = action.payload.records;
+                    state.DistributionLists = action.payload;
                 },
                 rejected: (state: MinespaceState, action) => {
                     rejectHandler(action);

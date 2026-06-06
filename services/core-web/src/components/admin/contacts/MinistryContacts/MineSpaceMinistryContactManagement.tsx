@@ -22,6 +22,7 @@ import * as Permission from "@/constants/permissions";
 import MinistryContactsTable from "@/components/admin/contacts/MinistryContacts/MinistryContactsTable";
 import AddButton from "@/components/common/buttons/AddButton";
 import { IMinistryContact } from "@mds/common/interfaces";
+import ResponsivePagination from "@mds/common/components/common/ResponsivePagination";
 
 export const MineSpaceMinistryContactManagement: FC = () => {
   const dispatch = useAppDispatch();
@@ -33,12 +34,14 @@ export const MineSpaceMinistryContactManagement: FC = () => {
   const ministryContactTypesHash = useAppSelector(getMinistryContactTypesHash);
 
   useEffect(() => {
-    Promise.all([dispatch(fetchMinistryContacts()), dispatch(fetchDistributionLists())]).then(
-      () => {
-        setIsLoaded(true);
-      }
-    );
+    Promise.all([dispatch(fetchMinistryContacts()), dispatch(fetchDistributionLists())]).then(() => {
+      setIsLoaded(true);
+    });
   }, [dispatch]);
+
+  const handleDlPageChange = (page: number, per_page: number) => {
+    dispatch(fetchDistributionLists({ page, per_page }));
+  };
 
   const handleCreateContact = (values: Partial<IMinistryContact>) => {
     dispatch(createMinistryContact(values)).then(() => {
@@ -62,7 +65,7 @@ export const MineSpaceMinistryContactManagement: FC = () => {
   };
 
   const openContactModal = (isEdit: boolean, record: IMinistryContact | null = null) => {
-    const distributionListOptions = distributionLists.map((dl) => ({
+    const distributionListOptions = distributionLists.records.map((dl) => ({
       value: dl.distribution_list_guid,
       label: dl.distribution_list_name,
     }));
@@ -155,7 +158,7 @@ export const MineSpaceMinistryContactManagement: FC = () => {
               showIcon
             />
             <br />
-            {distributionLists.map((dl) => {
+            {distributionLists.records.map((dl) => {
               const dlContacts = ministryContacts.filter((c) =>
                 c.distribution_list_guids?.includes(dl.distribution_list_guid)
               );
@@ -175,6 +178,12 @@ export const MineSpaceMinistryContactManagement: FC = () => {
                 </div>
               );
             })}
+            <ResponsivePagination
+              onPageChange={handleDlPageChange}
+              currentPage={distributionLists.current_page}
+              pageTotal={distributionLists.total}
+              itemsPerPage={distributionLists.items_per_page}
+            />
           </Tabs.TabPane>
         </Tabs>
       </div>

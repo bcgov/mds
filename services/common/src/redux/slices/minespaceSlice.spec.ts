@@ -107,7 +107,7 @@ describe("minespaceSlice", () => {
                 minespaceUsersByMine: {},
                 minespaceUserMines: [],
                 MinistryContacts: [],
-                DistributionLists: [],
+                DistributionLists: { records: [], current_page: 1, total: 0, total_pages: 0, items_per_page: 25 },
                 MinistryContactsByRegion: [],
                 currentUserAccessRequest: undefined,
             });
@@ -778,7 +778,13 @@ describe("minespaceSlice", () => {
 
     describe("fetchDistributionLists", () => {
         const mockResponse = {
-            data: { records: [{ distribution_list_guid: "123", distribution_list_name: "Test List" }] },
+            data: {
+                records: [{ distribution_list_guid: "123", distribution_list_name: "Test List" }],
+                current_page: 1,
+                total: 1,
+                total_pages: 1,
+                items_per_page: 25,
+            },
         };
 
         it("should successfully fetch distribution lists and update state", async () => {
@@ -792,7 +798,7 @@ describe("minespaceSlice", () => {
             expect(hideLoadingMock).toHaveBeenCalledTimes(1);
 
             const state = store.getState();
-            expect(state.minespace.DistributionLists).toEqual(mockResponse.data.records);
+            expect(state.minespace.DistributionLists).toEqual(mockResponse.data);
         });
 
         it("should handle API error when fetching distribution lists", async () => {

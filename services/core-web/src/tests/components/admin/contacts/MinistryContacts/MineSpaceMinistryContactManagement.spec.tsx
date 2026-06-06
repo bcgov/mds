@@ -49,9 +49,13 @@ const initialState = {
       { contact_guid: "1", emli_contact_type_code: "ROE", first_name: "John", last_name: "Doe" },
       { contact_guid: "2", emli_contact_type_code: "XXX", first_name: "Jane", last_name: "Doe", distribution_list_guids: ["dl-1"] },
     ],
-    DistributionLists: [
-      { distribution_list_guid: "dl-1", distribution_list_name: "Test List" }
-    ],
+    DistributionLists: {
+      records: [{ distribution_list_guid: "dl-1", distribution_list_name: "Test List" }],
+      current_page: 1,
+      total: 1,
+      total_pages: 1,
+      items_per_page: 25,
+    },
   },
   [STATIC_CONTENT]: {
     mineRegionOptions: [],

@@ -27,6 +27,15 @@ DISTRIBUTION_LIST_MODEL = api.model(
         'description': fields.String,
     })
 
+DISTRIBUTION_LIST_MODEL_LIST = api.model(
+    'DistributionListList', {
+        'records': fields.List(fields.Nested(DISTRIBUTION_LIST_MODEL)),
+        'current_page': fields.Integer,
+        'total': fields.Integer,
+        'total_pages': fields.Integer,
+        'items_per_page': fields.Integer,
+    })
+
 MINISTRY_CONTACT_TYPE = api.model('MinistryContactType', {
     'emli_contact_type_code': fields.String,
     'description': fields.String,

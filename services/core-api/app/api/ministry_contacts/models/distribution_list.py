@@ -36,8 +36,15 @@ class DistributionList(SoftDeleteMixin, AuditMixin, Base):
         return new_list
 
     @classmethod
-    def get_all(cls):
-        return cls.query.filter_by(deleted_ind=False).order_by(cls.distribution_list_name).all()
+    def get_all(cls, page=1, per_page=25):
+        result = cls.query.filter_by(deleted_ind=False).order_by(cls.distribution_list_name).paginate(page, per_page, error_out=False)
+        return {
+            'records': result.items,
+            'current_page': result.page,
+            'total': result.total,
+            'total_pages': result.pages,
+            'items_per_page': result.per_page,
+        }
 
     @classmethod
     def find_by_name(cls, name):
