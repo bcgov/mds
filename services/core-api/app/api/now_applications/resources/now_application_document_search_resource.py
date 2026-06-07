@@ -130,6 +130,7 @@ def _collect_indexable_documents(now_application) -> list:
         )
 
         documents.append({
+            'now_application_document_xref_guid': str(xref.now_application_document_xref_guid),
             'document_manager_guid': str(mine_doc.document_manager_guid),
             'document_name': doc_name,
             'document_type': doc_type,

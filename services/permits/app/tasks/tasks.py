@@ -1,5 +1,6 @@
 import logging
 import os
+import tempfile
 import time
 from contextlib import contextmanager
 from dataclasses import dataclass, field
@@ -13,6 +14,9 @@ from app.pipelines.document_search.artifact_registration_client import (
 )
 from app.pipelines.document_search.document_search_pipeline import (
     now_document_search_search_client,
+)
+from app.pipelines.document_search.document_manager_client import (
+    DocumentManagerDownloadClient,
 )
 from app.pipelines.document_search.indexing import (
     delete_document_chunks,
@@ -28,6 +32,7 @@ from celery.canvas import group
 logger = logging.getLogger(__name__)
 
 _redis = redis_lib.Redis.from_url(CACHE_REDIS_URL, decode_responses=True)
+_TASK_KEY_PREFIX = "now_doc_index:"
 _TASK_SET_PREFIX = "now_doc_index_tasks:"
 _TASK_KEY_TTL = 60 * 60 * 24 * 7  # 7 days
 
@@ -75,6 +80,12 @@ def _register_child_task_id(now_application_guid: str, task_id: str) -> None:
     _redis.expire(task_set_key, _TASK_KEY_TTL)
 
 
+def _register_document_task_id(now_application_guid: str, document_manager_guid: str, task_id: str) -> None:
+    if not document_manager_guid:
+        return
+    _redis.setex(f"{_TASK_KEY_PREFIX}{now_application_guid}:{document_manager_guid}", _TASK_KEY_TTL, task_id)
+
+
 def _dispatch_group_batch(
     now_application_guid: str,
     batch_items: list,
@@ -109,6 +120,42 @@ def _dispatch_group_batch(
 
         try:
             _register_child_task_id(now_application_guid, child_result.id)
+            _register_document_task_id(now_application_guid, doc_guid, child_result.id)
+        except Exception as exc:  # noqa: BLE001 - non-blocking redis update
+            logger.warning(
+                "Unable to register child task %s in Redis for NoW application %s: %s",
+                child_result.id,
+                now_application_guid,
+                exc,
+            )
+
+    return len(batch_items)
+
+
+def _dispatch_manifest_group_batch(
+    now_application_guid: str,
+    batch_items: list,
+    running: Dict[str, dict],
+    child_task_ids: List[str],
+) -> int:
+    signatures = [
+        run_now_document_indexing_from_manifest.s(now_application_guid, doc_meta)
+        for doc_meta in batch_items
+    ]
+    group_result = group(signatures).apply_async()
+    child_results = list(getattr(group_result, "results", []) or [])
+
+    for child_result, doc_meta in zip(child_results, batch_items):
+        doc_guid = doc_meta.get("document_manager_guid", "")
+        child_task_ids.append(child_result.id)
+        running[child_result.id] = {
+            "task": child_result,
+            "doc_guid": doc_guid,
+        }
+
+        try:
+            _register_child_task_id(now_application_guid, child_result.id)
+            _register_document_task_id(now_application_guid, doc_guid, child_result.id)
         except Exception as exc:  # noqa: BLE001 - non-blocking redis update
             logger.warning(
                 "Unable to register child task %s in Redis for NoW application %s: %s",
@@ -324,6 +371,17 @@ def _push_chunk_batch(*, task, chunks_with_embeddings: List[dict]) -> int:
     return push_to_index(now_document_search_search_client, chunks_with_embeddings, on_progress=on_push_progress)
 
 
+def _download_manifest_document(doc_meta: dict) -> str:
+    document_manager_guid = doc_meta.get("document_manager_guid")
+    if not document_manager_guid:
+        raise ValueError("document_manager_guid is required for manifest indexing.")
+
+    suffix = os.path.splitext(doc_meta.get("document_name") or "")[1]
+    with tempfile.NamedTemporaryFile(delete=False, suffix=suffix) as tmp:
+        DocumentManagerDownloadClient().download_to_file(document_manager_guid, tmp)
+        return tmp.name
+
+
 @contextmanager
 def task_context(task):
     # Creates a context that is bound to the given task so the task can be accessed
@@ -342,21 +400,13 @@ def task_context(task):
         context.reset(t)
 
 
-@celery_app.task(bind=True)
-def run_now_document_indexing(self, now_application_guid: str, tmp_paths: list, doc_metadata_list: list):
-    """
-    Celery task: extract text, embed, and push all NoW application documents to Azure Search.
-
-    *tmp_paths* is a list of absolute paths on the shared ``fileuploads`` volume.
-    Each path corresponds positionally to an entry in *doc_metadata_list*.
-    Temp files are always deleted in the finally block, whether the task succeeds or fails.
-    """
+def _run_now_document_indexing_task(task, now_application_guid: str, tmp_paths: list, doc_metadata_list: list):
     try:
         total_files = len(tmp_paths)
         logger.info("Indexing task started for NoW application %s (%d files)", now_application_guid, total_files)
 
         all_chunks, artifact_upload_totals = _collect_document_chunks(
-            task=self,
+            task=task,
             now_application_guid=now_application_guid,
             tmp_paths=tmp_paths,
             doc_metadata_list=doc_metadata_list,
@@ -369,14 +419,17 @@ def run_now_document_indexing(self, now_application_guid: str, tmp_paths: list, 
         total_chunks = len(all_chunks)
         logger.info("Embedding %d chunks for NoW application %s", total_chunks, now_application_guid)
 
-        chunks_with_embeddings = _embed_chunk_batch(task=self, all_chunks=all_chunks)
+        chunks_with_embeddings = _embed_chunk_batch(task=task, all_chunks=all_chunks)
 
         logger.info("Pushing %d chunks to index for NoW application %s", total_chunks, now_application_guid)
 
-        succeeded = _push_chunk_batch(task=self, chunks_with_embeddings=chunks_with_embeddings)
+        succeeded = _push_chunk_batch(task=task, chunks_with_embeddings=chunks_with_embeddings)
 
         logger.info(
-            "Indexed %d/%d chunks for NoW application %s (artifact uploads: candidates=%d uploaded=%d skipped=%d failed=%d)",
+            (
+                "Indexed %d/%d chunks for NoW application %s "
+                "(artifact uploads: candidates=%d uploaded=%d skipped=%d failed=%d)"
+            ),
             succeeded,
             total_chunks,
             now_application_guid,
@@ -397,6 +450,62 @@ def run_now_document_indexing(self, now_application_guid: str, tmp_paths: list, 
                 os.unlink(path)
             except OSError:
                 pass
+
+
+def _parent_progress_meta(
+    *,
+    stage: str,
+    percent: int,
+    total_files: int,
+    running_count: int,
+    state: _ParentIndexingState,
+) -> dict:
+    return {
+        "stage": stage,
+        "percent": percent,
+        "total_files": total_files,
+        "files_completed": state.completed_files,
+        "files_running": running_count,
+        "failed_files": len(state.failed_documents),
+        "child_task_ids": state.child_task_ids,
+    }
+
+
+def _parent_result(state: _ParentIndexingState) -> dict:
+    return {
+        "succeeded": state.total_succeeded,
+        "chunk_count": state.total_chunks,
+        "artifact_uploads": state.artifact_upload_totals,
+        "failed_count": len(state.failed_documents),
+        "failed_documents": state.failed_documents,
+        "child_task_ids": state.child_task_ids,
+    }
+
+
+def _cleanup_paths(paths) -> None:
+    for path in paths:
+        try:
+            os.unlink(path)
+        except OSError:
+            pass
+
+
+@celery_app.task(bind=True)
+def run_now_document_indexing(self, now_application_guid: str, tmp_paths: list, doc_metadata_list: list):
+    """
+    Celery task: extract text, embed, and push all NoW application documents to Azure Search.
+
+    *tmp_paths* is a list of absolute paths on the shared ``fileuploads`` volume.
+    Each path corresponds positionally to an entry in *doc_metadata_list*.
+    Temp files are always deleted in the finally block, whether the task succeeds or fails.
+    """
+    return _run_now_document_indexing_task(self, now_application_guid, tmp_paths, doc_metadata_list)
+
+
+@celery_app.task(bind=True)
+def run_now_document_indexing_from_manifest(self, now_application_guid: str, doc_meta: dict):
+    tmp_path = _download_manifest_document(doc_meta)
+    return _run_now_document_indexing_task(self, now_application_guid, [tmp_path], [doc_meta])
 
 
 @celery_app.task(bind=True)
@@ -450,15 +559,13 @@ def run_now_document_indexing_parent(self, now_application_guid: str, tmp_paths:
 
             self.update_state(
                 state="PROGRESS",
-                meta={
-                    "stage": "running_children",
-                    "percent": min(overall_percent, 99) if (next_dispatch_index < total_files or running) else 100,
-                    "total_files": total_files,
-                    "files_completed": state.completed_files,
-                    "files_running": len(running),
-                    "failed_files": len(state.failed_documents),
-                    "child_task_ids": state.child_task_ids,
-                },
+                meta=_parent_progress_meta(
+                    stage="running_children",
+                    percent=min(overall_percent, 99) if (next_dispatch_index < total_files or running) else 100,
+                    total_files=total_files,
+                    running_count=len(running),
+                    state=state,
+                ),
             )
 
             if next_dispatch_index < total_files or running:
@@ -472,20 +579,56 @@ def run_now_document_indexing_parent(self, now_application_guid: str, tmp_paths:
             len(state.failed_documents),
             state.total_chunks,
         )
-        return {
-            "succeeded": state.total_succeeded,
-            "chunk_count": state.total_chunks,
-            "artifact_uploads": state.artifact_upload_totals,
-            "failed_count": len(state.failed_documents),
-            "failed_documents": state.failed_documents,
-            "child_task_ids": state.child_task_ids,
-        }
+        return _parent_result(state)
     finally:
-        for path in undispatched_paths:
-            try:
-                os.unlink(path)
-            except OSError:
-                pass
+        _cleanup_paths(undispatched_paths)
+
+
+@celery_app.task(bind=True)
+def run_now_document_indexing_manifest_parent(self, now_application_guid: str, doc_metadata_list: list):
+    total_files = len(doc_metadata_list)
+    if total_files == 0:
+        return _empty_parent_result()
+
+    max_concurrency = _resolve_parent_max_concurrency()
+    running: Dict[str, dict] = {}
+    next_dispatch_index = 0
+    state = _ParentIndexingState(total_files=total_files)
+
+    logger.info(
+        "Manifest parent indexing task started for NoW application %s (%d files, max_concurrency=%d)",
+        now_application_guid,
+        total_files,
+        max_concurrency,
+    )
+
+    while next_dispatch_index < total_files or running:
+        while next_dispatch_index < total_files and len(running) < max_concurrency:
+            available_slots = max_concurrency - len(running)
+            batch_items = doc_metadata_list[next_dispatch_index: next_dispatch_index + available_slots]
+            next_dispatch_index += _dispatch_manifest_group_batch(
+                now_application_guid=now_application_guid,
+                batch_items=batch_items,
+                running=running,
+                child_task_ids=state.child_task_ids,
+            )
+
+        overall_percent = _reconcile_running_children(running=running, state=state)
+        self.update_state(
+            state="PROGRESS",
+            meta=_parent_progress_meta(
+                stage="running_children",
+                percent=min(overall_percent, 99) if (next_dispatch_index < total_files or running) else 100,
+                total_files=total_files,
+                running_count=len(running),
+                state=state,
+            ),
+        )
+
+        if next_dispatch_index < total_files or running:
+            time.sleep(0.5)
+
+    return _parent_result(state)
 
 
 @celery_app.task(bind=True)

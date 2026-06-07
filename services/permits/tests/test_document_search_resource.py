@@ -10,6 +10,7 @@ from app.pipelines.document_search.resources.document_search_resource import (
     _stream_search_results,
     cancel_indexing,
     get_indexing_status,
+    index_now_application_document_manifest,
     index_now_application_documents,
     search_now_application_documents,
 )
@@ -92,6 +93,34 @@ class TestDocumentSearchResource:
             with pytest.raises(HTTPException) as exc:
                 await index_now_application_documents(valid_guid, [MagicMock(spec=UploadFile)], metadata)
             assert exc.value.status_code == 409
+
+    @pytest.mark.asyncio
+    @patch("app.pipelines.document_search.resources.document_search_resource.now_document_search_search_client")
+    @patch("app.pipelines.document_search.resources.document_search_resource._is_task_running")
+    @patch("app.tasks.tasks.run_now_document_indexing_manifest_parent.delay")
+    async def test_index_now_application_document_manifest_success(
+        self, mock_delay, mock_is_running, mock_search_client, mock_redis, valid_guid
+    ):
+        mock_redis.get.return_value = None
+        mock_is_running.return_value = False
+        mock_task = MagicMock()
+        mock_task.id = "manifest-task-123"
+        mock_delay.return_value = mock_task
+        documents = [{"document_manager_guid": "doc-123", "document_name": "test.pdf"}]
+
+        response = await index_now_application_document_manifest(valid_guid, {"documents": documents})
+
+        assert response.status == "running"
+        assert response.id == valid_guid
+        mock_delay.assert_called_once_with(valid_guid, documents)
+        mock_redis.setex.assert_called_once()
+
+    @pytest.mark.asyncio
+    @patch("app.pipelines.document_search.resources.document_search_resource.now_document_search_search_client")
+    async def test_index_now_application_document_manifest_requires_documents(self, mock_search_client, valid_guid):
+        with pytest.raises(HTTPException) as exc:
+            await index_now_application_document_manifest(valid_guid, {"documents": [{"document_name": "missing.pdf"}]})
+        assert exc.value.status_code == 400
 
     @pytest.mark.asyncio
     @patch("app.pipelines.document_search.resources.document_search_resource.now_document_search_search_client")

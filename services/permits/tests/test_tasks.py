@@ -1,6 +1,6 @@
 import pytest
 from unittest.mock import MagicMock, patch
-from app.tasks.tasks import run_now_document_indexing
+from app.tasks.tasks import run_now_document_indexing, run_now_document_indexing_from_manifest
 
 @pytest.fixture
 def mock_search_client():
@@ -169,6 +169,24 @@ def test_run_now_document_indexing_error_cleanup(mock_search_client, mock_indexi
             with pytest.raises(Exception):
                 run_now_document_indexing.run("now_guid", ["/tmp/f1"], [{"document_manager_guid": "d1"}])
             mock_unlink.assert_called_once_with("/tmp/f1")
+
+
+def test_run_now_document_indexing_from_manifest_downloads_then_indexes(mock_search_client, mock_indexing):
+    mock_del, mock_ext, mock_register, mock_emb, mock_push = mock_indexing
+    mock_ext.return_value = ([{"content": "chunk1"}], [])
+    mock_emb.return_value = [{"content": "chunk1", "embedding": [0.1]}]
+    mock_push.return_value = 1
+
+    with patch("app.tasks.tasks._download_manifest_document", return_value="/tmp/downloaded.pdf") as mock_download, \
+         patch.object(run_now_document_indexing_from_manifest, "update_state"):
+        result = run_now_document_indexing_from_manifest.run(
+            "now_guid",
+            {"document_manager_guid": "doc1", "document_name": "file.pdf"},
+        )
+
+    mock_download.assert_called_once_with({"document_manager_guid": "doc1", "document_name": "file.pdf"})
+    mock_ext.assert_called_once_with("/tmp/downloaded.pdf", "now_guid", {"document_manager_guid": "doc1", "document_name": "file.pdf"})
+    assert result["succeeded"] == 1
 
 def test_run_permit_condition_pipeline_success():
     from app.tasks.tasks import run_permit_condition_pipeline

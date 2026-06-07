@@ -1,4 +1,3 @@
-import io
 import json
 import os
 from typing import Iterator
@@ -8,6 +7,7 @@ from app.api.services.document_manager_service import DocumentManagerService
 from app.config import Config
 from authlib.integrations.requests_client import OAuth2Session
 from flask import current_app
+from sseclient import SSEClient
 from werkzeug.exceptions import BadGateway, InternalServerError
 
 
@@ -90,51 +90,26 @@ class NowApplicationSearchService:
 
     def _iter_enriched_sse(self, upstream_response) -> Iterator[bytes]:
         token_cache = {}
-        event_lines = []
-
         try:
-            for raw_line in upstream_response.iter_lines(decode_unicode=True):
-                if raw_line is None:
-                    continue
-
-                if raw_line == "":
-                    if event_lines:
-                        enriched_lines = self._enrich_documents_event(event_lines, token_cache)
-                        yield ("\n".join(enriched_lines) + "\n\n").encode("utf-8")
-                        event_lines = []
-                    else:
-                        yield b"\n"
-                    continue
-
-                event_lines.append(raw_line)
-
-            if event_lines:
-                enriched_lines = self._enrich_documents_event(event_lines, token_cache)
-                yield ("\n".join(enriched_lines) + "\n\n").encode("utf-8")
+            for event in SSEClient(upstream_response).events():
+                yield self._serialize_sse_event(
+                    self._enrich_documents_event(event, token_cache)
+                )
         finally:
             upstream_response.close()
 
-    def _enrich_documents_event(self, event_lines: list[str], token_cache: dict) -> list[str]:
-        event_type = None
-        data_lines = []
-
-        for line in event_lines:
-            if line.startswith("event:"):
-                event_type = line.split(":", 1)[1].strip()
-            elif line.startswith("data:"):
-                data_lines.append(line.split(":", 1)[1].lstrip())
-
-        if event_type != "documents" or not data_lines:
-            return event_lines
+    def _enrich_documents_event(self, event, token_cache: dict):
+        if event.event != "documents" or not event.data:
+            return event
 
         try:
-            payload = json.loads("\n".join(data_lines))
+            payload = json.loads(event.data)
         except (json.JSONDecodeError, TypeError):
-            return event_lines
+            return event
 
         documents = payload.get("documents")
         if not isinstance(documents, list):
-            return event_lines
+            return event
 
         for document in documents:
             meta = document.get("meta")
@@ -153,21 +128,21 @@ class NowApplicationSearchService:
             if self.docman_base_url:
                 meta["artifact_presigned_url"] = self._resolve_artifact_presigned_url(token)
 
-        enriched_payload = json.dumps(payload)
-        rewritten_lines = []
-        data_written = False
-        for line in event_lines:
-            if line.startswith("data:"):
-                if not data_written:
-                    rewritten_lines.append(f"data: {enriched_payload}")
-                    data_written = True
-                continue
-            rewritten_lines.append(line)
+        event.data = json.dumps(payload)
+        return event
 
-        if not data_written:
-            rewritten_lines.append(f"data: {enriched_payload}")
+    def _serialize_sse_event(self, event) -> bytes:
+        lines = []
+        if getattr(event, "id", None):
+            lines.append(f"id: {event.id}")
+        if getattr(event, "event", None):
+            lines.append(f"event: {event.event}")
+        if getattr(event, "retry", None):
+            lines.append(f"retry: {event.retry}")
+        for data_line in str(getattr(event, "data", "")).splitlines() or [""]:
+            lines.append(f"data: {data_line}")
 
-        return rewritten_lines
+        return ("\n".join(lines) + "\n\n").encode("utf-8")
 
     def _resolve_artifact_presigned_url(self, token: str) -> str:
         fallback_url = f"{self.docman_base_url}/documents?token={token}"
@@ -186,7 +161,10 @@ class NowApplicationSearchService:
         except requests.RequestException as exc:
             current_app.logger.warning("Failed to fetch docman presigned URL, using token URL fallback: %s", exc)
         except ValueError as exc:
-            current_app.logger.warning("Invalid JSON from docman presigned URL endpoint, using token URL fallback: %s", exc)
+            current_app.logger.warning(
+                "Invalid JSON from docman presigned URL endpoint, using token URL fallback: %s",
+                exc,
+            )
         return fallback_url
 
     def cancel_indexing(self, now_application_guid: str) -> dict:
@@ -220,12 +198,13 @@ class NowApplicationSearchService:
 
     def index_documents(self, now_application_guid: str, documents: list) -> dict:
         """
-        Indexes all provided documents for the given NoW application, one at a time.
+        Queues all provided documents for the given NoW application using a
+        lightweight manifest.
 
-        Each document is downloaded from Document Manager into an in-memory buffer,
-        forwarded to the permits service as a single-file multipart upload, then the
-        buffer is released before the next document is downloaded. This keeps peak
-        memory bounded to roughly one document at a time rather than the full set.
+        The permits service downloads each source document from Document Manager in
+        its Celery child tasks. This avoids proxying large PDFs through core-api and
+        avoids the previous one-request-per-document conflict with the permits
+        application-level indexing lock.
 
         ``documents`` is a list of dicts, each containing:
             document_manager_guid, document_name, document_type,
@@ -237,46 +216,33 @@ class NowApplicationSearchService:
             now_application_guid,
         )
 
-        queued = 0
-        for doc in documents:
-            document_manager_guid = doc.get('document_manager_guid')
-            if not document_manager_guid:
-                current_app.logger.warning('Skipping document with no document_manager_guid')
-                continue
-
-            buf = io.BytesIO()
-            file_name, _ = DocumentManagerService().download_document_to_file(
-                document_manager_guid, buf
-            )
-            buf.seek(0)
-
-            result = self.session.post(
-                f'{self.search_base}/{now_application_guid}/index',
-                files=[('files', (file_name or doc.get('document_name', 'document'), buf, 'application/octet-stream'))],
-                data={'metadata': json.dumps([doc])},
-            )
-
-            # buf goes out of scope here; CPython will free the memory immediately.
-
-            if result.status_code == 200:
-                queued += 1
-            elif result.status_code == 409:
-                current_app.logger.warning(
-                    'Document %s already being indexed for NoW application %s, skipping',
-                    document_manager_guid,
-                    now_application_guid,
-                )
-            else:
-                current_app.logger.error(
-                    'Permits service returned %d indexing document %s for NoW application %s: %s',
-                    result.status_code,
-                    document_manager_guid,
-                    now_application_guid,
-                    result.text,
-                )
-                raise InternalServerError('Failed to index NoW application documents')
-
-        if queued == 0:
+        manifest = [
+            doc for doc in documents
+            if doc.get('document_manager_guid')
+        ]
+        if not manifest:
             raise InternalServerError('No documents were successfully queued for indexing')
 
-        return {'status': 'running', 'queued': queued}
+        result = self.session.post(
+            f'{self.search_base}/{now_application_guid}/index/manifest',
+            json={'documents': manifest},
+            timeout=30,
+        )
+
+        if result.status_code == 409:
+            current_app.logger.warning(
+                'Indexing already in progress for NoW application %s',
+                now_application_guid,
+            )
+            raise BadGateway('Indexing already in progress for this NoW application')
+
+        if not result.ok:
+            current_app.logger.error(
+                'Permits service returned %d indexing NoW application %s: %s',
+                result.status_code,
+                now_application_guid,
+                result.text,
+            )
+            raise InternalServerError('Failed to index NoW application documents')
+
+        return {'status': 'running', 'queued': len(manifest)}

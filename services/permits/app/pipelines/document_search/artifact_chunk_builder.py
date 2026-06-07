@@ -22,91 +22,109 @@ MULTIMODAL_CATEGORY_VALUES = {
 def build_artifact_search_chunks(artifacts: List[dict], chunk_metadata: DocumentChunkMetadata) -> List[dict]:
     chunks = []
     for artifact in artifacts:
-        artifact_type = artifact.get('type')
-        artifact_label = (artifact_type or 'artifact').title()
-        content = artifact.get('content') or {}
-        page_number = artifact.get('page_number')
-        bounding_box = artifact.get('bounding_box') or {}
-
-        text_parts = []
-        table_markdown = None
-
-        if artifact_type == 'table':
-            headers = content.get('headers') or []
-            rows = content.get('rows') or []
-            caption = content.get('caption')
-            category = content.get('category')
-            table_markdown = content.get('markdown') or build_table_markdown(headers, rows)
-
-            if caption:
-                text_parts.append(f'Table caption: {caption}')
-            if category:
-                text_parts.append(f'Table category: {category}')
-            if page_number:
-                text_parts.append(f'Page: {page_number}')
-            if headers:
-                text_parts.append(f"Headers: {', '.join(str(header) for header in headers if header)}")
-            for row in rows:
-                row_text = ', '.join(f'{key}: {value}' for key, value in row.items())
-                if row_text:
-                    text_parts.append(row_text)
+        if artifact.get('type') == 'table':
+            chunk = build_table_chunk(artifact, chunk_metadata)
         else:
-            caption = content.get('caption')
-            summary = content.get('summary')
-            description = content.get('description')
-            category = content.get('category')
-            footnotes = content.get('footnotes') or []
-            if summary:
-                text_parts.append(f'{artifact_label} summary: {summary}')
-            if caption:
-                text_parts.append(f'{artifact_label} caption: {caption}')
-            if category:
-                text_parts.append(f'{artifact_label} category: {category}')
-            if description:
-                text_parts.append(f'{artifact_label} description: {description}')
-            if page_number:
-                text_parts.append(f'Page: {page_number}')
-            for footnote in footnotes:
-                if footnote:
-                    text_parts.append(f'Footnote: {footnote}')
-
-        content_text = '\n'.join(text_parts).strip()
-        if not content_text:
+            chunk = build_figure_chunk(artifact, chunk_metadata)
+        if not chunk:
             continue
+        chunks.append(chunk)
 
-        chunk_id = make_artifact_chunk_id(
+    return chunks
+
+
+def build_table_chunk(artifact: dict, chunk_metadata: DocumentChunkMetadata) -> Optional[dict]:
+    content = artifact.get('content') or {}
+    headers = content.get('headers') or []
+    rows = content.get('rows') or []
+    table_markdown = content.get('markdown') or build_table_markdown(headers, rows)
+    content_text = _table_content_text(content, headers, rows, artifact.get('page_number'))
+    if not content_text:
+        return None
+    return _artifact_chunk(artifact, chunk_metadata, content_text, table_markdown)
+
+
+def build_figure_chunk(artifact: dict, chunk_metadata: DocumentChunkMetadata) -> Optional[dict]:
+    content = artifact.get('content') or {}
+    content_text = _figure_content_text(artifact.get('type') or 'artifact', content, artifact.get('page_number'))
+    if not content_text:
+        return None
+    return _artifact_chunk(artifact, chunk_metadata, content_text, None)
+
+
+def _table_content_text(content: dict, headers: List[str], rows: List[dict], page_number) -> str:
+    text_parts = []
+    if content.get('caption'):
+        text_parts.append(f"Table caption: {content.get('caption')}")
+    if content.get('category'):
+        text_parts.append(f"Table category: {content.get('category')}")
+    if page_number:
+        text_parts.append(f'Page: {page_number}')
+    if headers:
+        text_parts.append(f"Headers: {', '.join(str(header) for header in headers if header)}")
+    for row in rows:
+        row_text = ', '.join(f'{key}: {value}' for key, value in row.items())
+        if row_text:
+            text_parts.append(row_text)
+    return '\n'.join(text_parts).strip()
+
+
+def _figure_content_text(artifact_type: str, content: dict, page_number) -> str:
+    artifact_label = artifact_type.title()
+    text_parts = []
+    for field_name, label in (
+        ('summary', 'summary'),
+        ('caption', 'caption'),
+        ('category', 'category'),
+        ('description', 'description'),
+    ):
+        if content.get(field_name):
+            text_parts.append(f'{artifact_label} {label}: {content.get(field_name)}')
+    if page_number:
+        text_parts.append(f'Page: {page_number}')
+    for footnote in content.get('footnotes') or []:
+        if footnote:
+            text_parts.append(f'Footnote: {footnote}')
+    return '\n'.join(text_parts).strip()
+
+
+def _artifact_chunk(
+    artifact: dict,
+    chunk_metadata: DocumentChunkMetadata,
+    content_text: str,
+    table_markdown: Optional[str],
+) -> dict:
+    content = artifact.get('content') or {}
+    bounding_box = artifact.get('bounding_box') or {}
+    artifact_type = artifact.get('type')
+    return {
+        'id': make_artifact_chunk_id(
             chunk_metadata.now_application_guid,
             chunk_metadata.document_manager_guid,
             artifact_type or 'artifact',
             artifact.get('artifact_id', ''),
-        )
-        chunks.append(
-            {
-                'id': chunk_id,
-                'content': content_text,
-                'now_application_guid': chunk_metadata.now_application_guid,
-                'mine_guid': chunk_metadata.mine_guid,
-                'document_manager_guid': chunk_metadata.document_manager_guid,
-                'document_name': chunk_metadata.document_name,
-                'document_type': chunk_metadata.document_type,
-                'submitted_date': chunk_metadata.submitted_date or None,
-                'artifact_type': artifact_type,
-                'artifact_id': artifact.get('artifact_id'),
-                'artifact_page_number': page_number,
-                'artifact_bounding_box_left': coerce_float(bounding_box.get('left')),
-                'artifact_bounding_box_top': coerce_float(bounding_box.get('top')),
-                'artifact_bounding_box_right': coerce_float(bounding_box.get('right')),
-                'artifact_bounding_box_bottom': coerce_float(bounding_box.get('bottom')),
-                'artifact_table_markdown': table_markdown,
-                'artifact_category': content.get('category'),
-                'artifact_caption': content.get('caption'),
-                'artifact_summary': content.get('summary'),
-                'caption_source': content.get('caption_source'),
-                'summary_source': content.get('summary_source'),
-            }
-        )
-
-    return chunks
+        ),
+        'content': content_text,
+        'now_application_guid': chunk_metadata.now_application_guid,
+        'mine_guid': chunk_metadata.mine_guid,
+        'document_manager_guid': chunk_metadata.document_manager_guid,
+        'document_name': chunk_metadata.document_name,
+        'document_type': chunk_metadata.document_type,
+        'submitted_date': chunk_metadata.submitted_date or None,
+        'artifact_type': artifact_type,
+        'artifact_id': artifact.get('artifact_id'),
+        'artifact_page_number': artifact.get('page_number'),
+        'artifact_bounding_box_left': coerce_float(bounding_box.get('left')),
+        'artifact_bounding_box_top': coerce_float(bounding_box.get('top')),
+        'artifact_bounding_box_right': coerce_float(bounding_box.get('right')),
+        'artifact_bounding_box_bottom': coerce_float(bounding_box.get('bottom')),
+        'artifact_table_markdown': table_markdown,
+        'artifact_category': content.get('category'),
+        'artifact_caption': content.get('caption'),
+        'artifact_summary': content.get('summary'),
+        'caption_source': content.get('caption_source'),
+        'summary_source': content.get('summary_source'),
+    }
 
 
 def make_artifact_chunk_id(

@@ -20,7 +20,7 @@ from app.pipelines.permit_condition_search.models.search_models import (
     SearchParams,
 )
 from azure.search.documents import SearchClient
-from fastapi import APIRouter, File, Form, HTTPException, UploadFile
+from fastapi import APIRouter, Body, File, Form, HTTPException, UploadFile
 from haystack.dataclasses import ChatMessage
 from openai import BadRequestError
 from sse_starlette import ServerSentEvent
@@ -79,6 +79,211 @@ def _is_task_running(task_id: str) -> bool:
     return run_now_document_indexing_parent.app.AsyncResult(task_id).state in _RUNNING_STATES
 
 
+def _base_status(status: str, items_processed: int = 0, error_count: int = 0, error_message=None, **extra):
+    payload = {
+        "status": status,
+        "items_processed": items_processed,
+        "error_count": error_count,
+        "last_run_start": None,
+        "last_run_end": None,
+        "error_message": error_message,
+    }
+    payload.update(extra)
+    return payload
+
+
+def _get_parent_status(now_application_guid: str):
+    parent_task_id = _redis.get(_parent_task_key(now_application_guid))
+    if not parent_task_id:
+        return None
+
+    from app.tasks.tasks import run_now_document_indexing_parent
+
+    parent_result = run_now_document_indexing_parent.app.AsyncResult(parent_task_id)
+    if parent_result.state in _RUNNING_STATES:
+        meta = parent_result.info or {}
+        return _base_status(
+            "running",
+            items_processed=int(meta.get("files_completed", 0) or 0),
+            error_count=int(meta.get("failed_files", 0) or 0),
+            stage=meta.get("stage", "indexing"),
+            percent=int(meta.get("percent", 0) or 0),
+        )
+    if parent_result.state == "FAILURE":
+        return _base_status("failed", error_count=1, error_message=str(parent_result.result))
+    if parent_result.state == "SUCCESS":
+        result = parent_result.result or {}
+        return _base_status(
+            "success",
+            items_processed=int(result.get("succeeded", 0) or 0),
+            error_count=int(result.get("failed_count", 0) or 0),
+        )
+    return None
+
+
+def _latest_child_task_ids(now_application_guid: str, task_ids: set[str]) -> set[str]:
+    if not task_ids:
+        return task_ids
+
+    latest_task_ids = set()
+    for key in _redis.keys(f"{_TASK_KEY_PREFIX}{now_application_guid}:*"):
+        tid = _redis.get(key)
+        if tid:
+            latest_task_ids.add(tid)
+
+    stale_task_ids = task_ids - latest_task_ids
+    if stale_task_ids:
+        _redis.srem(_task_set_key(now_application_guid), *stale_task_ids)
+    return task_ids - stale_task_ids
+
+
+def _weighted_child_percent(task_results) -> int:
+    weights_and_progress = []
+    for result in task_results:
+        if result.state == "SUCCESS":
+            chunk_count = max((result.result or {}).get("chunk_count", 1), 1)
+            weights_and_progress.append((chunk_count, 1.0))
+        elif result.state in _RUNNING_STATES:
+            meta = result.info or {}
+            chunk_count = max(meta.get("chunk_count", 1), 1)
+            weights_and_progress.append((chunk_count, meta.get("percent", 0) / 100.0))
+        else:
+            weights_and_progress.append((1, 0.0))
+
+    total_weight = sum(weight for weight, _ in weights_and_progress)
+    if total_weight <= 0:
+        return 0
+    return int(sum(weight * progress for weight, progress in weights_and_progress) / total_weight * 100)
+
+
+def _get_child_status(now_application_guid: str):
+    task_ids = _latest_child_task_ids(
+        now_application_guid,
+        set(_redis.smembers(_task_set_key(now_application_guid))),
+    )
+    if not task_ids:
+        return None
+
+    from app.tasks.tasks import run_now_document_indexing
+
+    task_results = [run_now_document_indexing.app.AsyncResult(tid) for tid in task_ids]
+    states = [result.state for result in task_results]
+
+    if any(state in _RUNNING_STATES for state in states):
+        running_results = [result for result in task_results if result.state in _RUNNING_STATES]
+        stage = "indexing"
+        if running_results:
+            stage = (running_results[0].info or {}).get("stage", "indexing")
+        return _base_status(
+            "running",
+            items_processed=sum(1 for state in states if state == "SUCCESS"),
+            stage=stage,
+            percent=_weighted_child_percent(task_results),
+        )
+
+    if any(state == "FAILURE" for state in states):
+        failed_result = next(result for result in task_results if result.state == "FAILURE")
+        return _base_status(
+            "failed",
+            error_count=sum(1 for state in states if state == "FAILURE"),
+            error_message=str(failed_result.result),
+        )
+
+    if all(state == "SUCCESS" for state in states):
+        return _base_status(
+            "success",
+            items_processed=sum((result.result or {}).get("succeeded", 0) for result in task_results),
+        )
+    return None
+
+
+def _get_index_count_status(now_application_guid: str):
+    try:
+        search_results = now_document_search_search_client.search(
+            search_text="*",
+            filter=f"now_application_guid eq '{now_application_guid}'",
+            select=["id"],
+            include_total_count=True,
+            top=0,
+        )
+        count = search_results.get_count() or 0
+    except Exception as e:
+        logger.error(
+            "Failed to fetch index status for NoW application %s: %s", sanitize_log(now_application_guid), e
+        )
+        raise HTTPException(502, "Could not retrieve status from Azure Search")
+
+    if count == 0:
+        return _base_status("never_run")
+    return _base_status("success", items_processed=count)
+
+
+def _resolve_indexing_status(now_application_guid: str):
+    return (
+        _get_parent_status(now_application_guid)
+        or _get_child_status(now_application_guid)
+        or _get_index_count_status(now_application_guid)
+    )
+
+
+def _require_search_client():
+    if now_document_search_search_client is None:
+        raise HTTPException(503, "Search client is not available in this environment")
+
+
+def _parse_index_metadata(metadata: str) -> list:
+    try:
+        doc_metadata_list = json.loads(metadata)
+    except json.JSONDecodeError:
+        raise HTTPException(400, "metadata must be a valid JSON array")
+    if not isinstance(doc_metadata_list, list):
+        raise HTTPException(400, "metadata must be a valid JSON array")
+    return doc_metadata_list
+
+
+def _reject_concurrent_indexing(now_application_guid: str, doc_metadata_list: list) -> None:
+    existing_parent_task_id = _redis.get(_parent_task_key(now_application_guid))
+    if existing_parent_task_id and _is_task_running(existing_parent_task_id):
+        raise HTTPException(409, f"Indexing already in progress for NoW application {now_application_guid}.")
+
+    for meta in doc_metadata_list:
+        doc_guid = meta.get("document_manager_guid", "") if isinstance(meta, dict) else ""
+        if not doc_guid:
+            continue
+        existing_task_id = _redis.get(_task_key(now_application_guid, doc_guid))
+        if existing_task_id and _is_task_running(existing_task_id):
+            raise HTTPException(409, f"Indexing already in progress for document {doc_guid}.")
+
+
+async def _write_upload_files(now_application_guid: str, files: List[UploadFile]) -> List[str]:
+    tmp_paths: List[str] = []
+    try:
+        for file in files:
+            tmp_path = os.path.join(FILE_UPLOAD_PATH, str(uuid.uuid4()))
+            tmp_paths.append(tmp_path)
+            async with await anyio.open_file(tmp_path, "wb") as f:
+                while chunk := await file.read(1024 * 1024):
+                    await f.write(chunk)
+        return tmp_paths
+    except Exception as e:
+        _cleanup_tmp_paths(tmp_paths)
+        logger.error("Failed to write upload files for NoW application %s: %s", sanitize_log(now_application_guid), e)
+        raise HTTPException(500, f"Failed to store uploaded files: {e}")
+
+
+def _cleanup_tmp_paths(tmp_paths: List[str]) -> None:
+    for path in tmp_paths:
+        try:
+            os.unlink(path)
+        except OSError:
+            pass
+
+
+def _store_parent_task(now_application_guid: str, task_id: str) -> None:
+    _redis.delete(_task_set_key(now_application_guid))
+    _redis.setex(_parent_task_key(now_application_guid), _TASK_KEY_TTL, task_id)
+
+
 # ---------------------------------------------------------------------------
 # Indexing endpoint
 # ---------------------------------------------------------------------------
@@ -106,68 +311,65 @@ async def index_now_application_documents(
     re-indexing the same document always overwrites the same records, avoiding duplicates.
     """
     _validate_guid(now_application_guid, "now_application_guid")
-    if now_document_search_search_client is None:
-        raise HTTPException(503, "Search client is not available in this environment")
+    _require_search_client()
 
-    try:
-        doc_metadata_list = json.loads(metadata)
-    except json.JSONDecodeError:
-        raise HTTPException(400, "metadata must be a valid JSON array")
-
+    doc_metadata_list = _parse_index_metadata(metadata)
     if len(files) != len(doc_metadata_list):
         raise HTTPException(
             400,
             f"files count ({len(files)}) must match metadata count ({len(doc_metadata_list)})",
         )
-
-    # Reject concurrent parent runs for the same application.
-    existing_parent_task_id = _redis.get(_parent_task_key(now_application_guid))
-    if existing_parent_task_id and _is_task_running(existing_parent_task_id):
-        raise HTTPException(409, f"Indexing already in progress for NoW application {now_application_guid}.")
-
-    doc_guids = [meta.get("document_manager_guid", "") for meta in doc_metadata_list]
-    for doc_guid in doc_guids:
-        if not doc_guid:
-            continue
-        existing_task_id = _redis.get(_task_key(now_application_guid, doc_guid))
-        if existing_task_id and _is_task_running(existing_task_id):
-            raise HTTPException(409, f"Indexing already in progress for document {doc_guid}.")
-
-    # Write uploads to the shared fileuploads volume so the Celery worker can read them.
-    tmp_paths: List[str] = []
-    try:
-        for file in files:
-            # Generate a unique path manually to avoid blocking tempfile and open calls.
-            # We use uuid.uuid4() to guarantee uniqueness and avoid path injection
-            # by ignoring user-provided filenames.
-            tmp_path = os.path.join(FILE_UPLOAD_PATH, str(uuid.uuid4()))
-            tmp_paths.append(tmp_path)
-
-            async with await anyio.open_file(tmp_path, "wb") as f:
-                while chunk := await file.read(1024 * 1024):
-                    await f.write(chunk)
-    except Exception as e:
-        for path in tmp_paths:
-            try:
-                os.unlink(path)
-            except OSError:
-                pass
-        logger.error("Failed to write upload files for NoW application %s: %s", sanitize_log(now_application_guid), e)
-        raise HTTPException(500, f"Failed to store uploaded files: {e}")
+    _reject_concurrent_indexing(now_application_guid, doc_metadata_list)
+    tmp_paths = await _write_upload_files(now_application_guid, files)
 
     # Enqueue the parent Celery task; child task IDs are added to Redis by the parent.
     from app.tasks.tasks import run_now_document_indexing_parent
 
     task = run_now_document_indexing_parent.delay(now_application_guid, tmp_paths, doc_metadata_list)
-
-    task_set_key = _task_set_key(now_application_guid)
-    _redis.delete(task_set_key)
-    _redis.setex(_parent_task_key(now_application_guid), _TASK_KEY_TTL, task.id)
+    _store_parent_task(now_application_guid, task.id)
 
     logger.info(
         "Enqueued parent indexing task %s for %d documents in NoW application %s",
         task.id,
         len(files),
+        sanitize_log(now_application_guid),
+    )
+
+    return IndexingResponse(id=now_application_guid, status="running")
+
+
+@router.post("/document_search/{now_application_guid}/index/manifest")
+async def index_now_application_document_manifest(
+    now_application_guid: str,
+    payload: dict = Body(...),
+) -> IndexingResponse:
+    """
+    Enqueue NoW document indexing from a lightweight manifest.
+
+    The permits worker downloads source documents from Document Manager inside each
+    child task so core-api does not have to proxy large PDFs.
+    """
+    _validate_guid(now_application_guid, "now_application_guid")
+    _require_search_client()
+
+    doc_metadata_list = payload.get("documents") if isinstance(payload, dict) else None
+    if not isinstance(doc_metadata_list, list):
+        raise HTTPException(400, "documents must be a JSON array")
+
+    for meta in doc_metadata_list:
+        if not isinstance(meta, dict) or not meta.get("document_manager_guid"):
+            raise HTTPException(400, "Each document must include document_manager_guid")
+    _reject_concurrent_indexing(now_application_guid, doc_metadata_list)
+
+    from app.tasks.tasks import run_now_document_indexing_manifest_parent
+
+    task = run_now_document_indexing_manifest_parent.delay(now_application_guid, doc_metadata_list)
+    _store_parent_task(now_application_guid, task.id)
+
+    logger.info(
+        "Enqueued manifest parent indexing task %s for %d documents in NoW application %s",
+        task.id,
+        len(doc_metadata_list),
         sanitize_log(now_application_guid),
     )
 
@@ -378,174 +580,7 @@ async def get_indexing_status(now_application_guid: str):
     _validate_guid(now_application_guid, "now_application_guid")
     if now_document_search_search_client is None:
         raise HTTPException(503, "Search client is not available in this environment")
-
-    parent_task_id = _redis.get(_parent_task_key(now_application_guid))
-    if parent_task_id:
-        from app.tasks.tasks import run_now_document_indexing_parent
-
-        celery_app = run_now_document_indexing_parent.app
-        parent_result = celery_app.AsyncResult(parent_task_id)
-
-        if parent_result.state in _RUNNING_STATES:
-            meta = parent_result.info or {}
-            return {
-                "status": "running",
-                "items_processed": int(meta.get("files_completed", 0) or 0),
-                "error_count": int(meta.get("failed_files", 0) or 0),
-                "last_run_start": None,
-                "last_run_end": None,
-                "error_message": None,
-                "stage": meta.get("stage", "indexing"),
-                "percent": int(meta.get("percent", 0) or 0),
-            }
-
-        if parent_result.state == "FAILURE":
-            return {
-                "status": "failed",
-                "items_processed": 0,
-                "error_count": 1,
-                "last_run_start": None,
-                "last_run_end": None,
-                "error_message": str(parent_result.result),
-            }
-
-        if parent_result.state == "SUCCESS":
-            result = parent_result.result or {}
-            return {
-                "status": "success",
-                "items_processed": int(result.get("succeeded", 0) or 0),
-                "error_count": int(result.get("failed_count", 0) or 0),
-                "last_run_start": None,
-                "last_run_end": None,
-                "error_message": None,
-            }
-
-    task_ids = _redis.smembers(_task_set_key(now_application_guid))
-
-    if task_ids:
-        # Filter out stale/superseded task IDs (e.g. from previous runs) to avoid status poisoning.
-        doc_keys = _redis.keys(f"{_TASK_KEY_PREFIX}{now_application_guid}:*")
-        latest_task_ids = set()
-        for key in doc_keys:
-            tid = _redis.get(key)
-            if tid:
-                latest_task_ids.add(tid)
-
-        stale_task_ids = task_ids - latest_task_ids
-        if stale_task_ids:
-            _redis.srem(_task_set_key(now_application_guid), *stale_task_ids)
-            task_ids = task_ids - stale_task_ids
-
-    if task_ids:
-        from app.tasks.tasks import run_now_document_indexing
-        celery_app = run_now_document_indexing.app
-        task_results = [celery_app.AsyncResult(tid) for tid in task_ids]
-        states = [r.state for r in task_results]
-        total = len(states)
-
-        if any(s in _RUNNING_STATES for s in states):
-            # Weight each task's progress by its chunk count so that larger documents
-            # contribute proportionally more to the overall percent. chunk_count is
-            # available in task meta once extraction completes; before that we use 1
-            # as a placeholder so the task still registers in the weighted average.
-            weights_and_progress = []
-            for r in task_results:
-                if r.state == "SUCCESS":
-                    chunk_count = max((r.result or {}).get("chunk_count", 1), 1)
-                    weights_and_progress.append((chunk_count, 1.0))
-                elif r.state in _RUNNING_STATES:
-                    meta = r.info or {}
-                    chunk_count = max(meta.get("chunk_count", 1), 1)
-                    weights_and_progress.append((chunk_count, meta.get("percent", 0) / 100.0))
-                else:
-                    weights_and_progress.append((1, 0.0))
-
-            total_weight = sum(w for w, _ in weights_and_progress)
-            overall_percent = (
-                int(sum(w * p for w, p in weights_and_progress) / total_weight * 100)
-                if total_weight > 0 else 0
-            )
-
-            # Use the stage from the first running task if available
-            current_stage = "indexing"
-            running_results = [r for r in task_results if r.state in _RUNNING_STATES]
-            if running_results:
-                meta = running_results[0].info or {}
-                current_stage = meta.get("stage", "indexing")
-
-            return {
-                "status": "running",
-                "items_processed": sum(1 for s in states if s == "SUCCESS"),
-                "error_count": 0,
-                "last_run_start": None,
-                "last_run_end": None,
-                "error_message": None,
-                "stage": current_stage,
-                "percent": overall_percent,
-            }
-
-        # Only return 'failed' if all active tasks are finished and at least one failed.
-        if any(s == "FAILURE" for s in states):
-            failed_result = next(r for r in task_results if r.state == "FAILURE")
-            return {
-                "status": "failed",
-                "items_processed": 0,
-                "error_count": sum(1 for s in states if s == "FAILURE"),
-                "last_run_start": None,
-                "last_run_end": None,
-                "error_message": str(failed_result.result),
-            }
-
-        if all(s == "SUCCESS" for s in states):
-            total_succeeded = sum(
-                (r.result or {}).get("succeeded", 0) for r in task_results
-            )
-            return {
-                "status": "success",
-                "items_processed": total_succeeded,
-                "error_count": 0,
-                "last_run_start": None,
-                "last_run_end": None,
-                "error_message": None,
-            }
-
-        # Mixed terminal states (some REVOKED, etc.) — fall through to Azure Search count.
-
-    # No task set in Redis (or mixed terminal states) — derive status from what's
-    # actually present in the index.
-    try:
-        search_results = now_document_search_search_client.search(
-            search_text="*",
-            filter=f"now_application_guid eq '{now_application_guid}'",
-            select=["id"],
-            include_total_count=True,
-            top=0,
-        )
-        count = search_results.get_count() or 0
-    except Exception as e:
-        logger.error(
-            "Failed to fetch index status for NoW application %s: %s", sanitize_log(now_application_guid), e
-        )
-        raise HTTPException(502, "Could not retrieve status from Azure Search")
-
-    if count == 0:
-        return {
-            "status": "never_run",
-            "items_processed": 0,
-            "error_count": 0,
-            "last_run_start": None,
-            "last_run_end": None,
-            "error_message": None,
-        }
-
-    return {
-        "status": "success",
-        "items_processed": count,
-        "error_count": 0,
-        "last_run_start": None,
-        "last_run_end": None,
-        "error_message": None,
-    }
+    return _resolve_indexing_status(now_application_guid)
 
 
 def _merge_filters(base: dict, extra: dict | None) -> dict:

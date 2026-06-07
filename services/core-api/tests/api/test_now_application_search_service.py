@@ -1,5 +1,5 @@
-import io
 import json
+from types import SimpleNamespace
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -33,11 +33,6 @@ def test_search_now_documents_enriches_table_with_presigned_url(mock_oauth_sessi
         
         mock_response = MagicMock()
         mock_response.ok = True
-        mock_response.iter_lines.return_value = [
-            'event: documents',
-            'data: {"documents": [{"meta": {"artifact_type": "table", "artifact_document_manager_guid": "artifact-guid"}}]}',
-            '',
-        ]
         mock_oauth_session.post.return_value = mock_response
 
         docman_response = MagicMock()
@@ -55,6 +50,16 @@ def test_search_now_documents_enriches_table_with_presigned_url(mock_oauth_sessi
         ), patch(
             'app.api.search.search.now_application_search_service.DocumentManagerService.create_download_token',
             return_value='token-123',
+        ), patch(
+            'app.api.search.search.now_application_search_service.SSEClient',
+            return_value=SimpleNamespace(events=lambda: iter([
+                SimpleNamespace(
+                    event='documents',
+                    data='{"documents": [{"meta": {"artifact_type": "table", "artifact_document_manager_guid": "artifact-guid"}}]}',
+                    id=None,
+                    retry=None,
+                )
+            ])),
         ):
             service = NowApplicationSearchService()
             chunks = list(service.search(now_guid, search_params))
@@ -75,16 +80,21 @@ def test_search_now_documents_without_artifact_guid(mock_oauth_session, app):
 
         mock_response = MagicMock()
         mock_response.ok = True
-        mock_response.iter_lines.return_value = [
-            'event: documents',
-            'data: {"documents": [{"meta": {"artifact_type": "text"}}]}',
-            '',
-        ]
         mock_oauth_session.post.return_value = mock_response
 
         with patch(
             'app.api.search.search.now_application_search_service.DocumentManagerService.create_download_token'
-        ) as mock_token:
+        ) as mock_token, patch(
+            'app.api.search.search.now_application_search_service.SSEClient',
+            return_value=SimpleNamespace(events=lambda: iter([
+                SimpleNamespace(
+                    event='documents',
+                    data='{"documents": [{"meta": {"artifact_type": "text"}}]}',
+                    id=None,
+                    retry=None,
+                )
+            ])),
+        ):
             service = NowApplicationSearchService()
             chunks = list(service.search(now_guid, search_params))
 
@@ -101,11 +111,6 @@ def test_search_now_documents_non_table_artifact_is_enriched(mock_oauth_session,
 
         mock_response = MagicMock()
         mock_response.ok = True
-        mock_response.iter_lines.return_value = [
-            'event: documents',
-            'data: {"documents": [{"meta": {"artifact_type": "figure", "artifact_document_manager_guid": "artifact-guid"}}]}',
-            '',
-        ]
         mock_oauth_session.post.return_value = mock_response
 
         docman_response = MagicMock()
@@ -123,7 +128,17 @@ def test_search_now_documents_non_table_artifact_is_enriched(mock_oauth_session,
         ), patch(
             'app.api.search.search.now_application_search_service.DocumentManagerService.create_download_token',
             return_value='token-123',
-        ) as mock_token:
+        ) as mock_token, patch(
+            'app.api.search.search.now_application_search_service.SSEClient',
+            return_value=SimpleNamespace(events=lambda: iter([
+                SimpleNamespace(
+                    event='documents',
+                    data='{"documents": [{"meta": {"artifact_type": "figure", "artifact_document_manager_guid": "artifact-guid"}}]}',
+                    id=None,
+                    retry=None,
+                )
+            ])),
+        ):
             service = NowApplicationSearchService()
             chunks = list(service.search(now_guid, search_params))
 
@@ -140,11 +155,6 @@ def test_search_now_documents_uses_token_url_fallback_when_presigned_lookup_fail
 
         mock_response = MagicMock()
         mock_response.ok = True
-        mock_response.iter_lines.return_value = [
-            'event: documents',
-            'data: {"documents": [{"meta": {"artifact_type": "table", "artifact_document_manager_guid": "artifact-guid"}}]}',
-            '',
-        ]
         mock_oauth_session.post.return_value = mock_response
 
         failing_docman_response = MagicMock()
@@ -160,6 +170,16 @@ def test_search_now_documents_uses_token_url_fallback_when_presigned_lookup_fail
         ), patch(
             'app.api.search.search.now_application_search_service.DocumentManagerService.create_download_token',
             return_value='token-123',
+        ), patch(
+            'app.api.search.search.now_application_search_service.SSEClient',
+            return_value=SimpleNamespace(events=lambda: iter([
+                SimpleNamespace(
+                    event='documents',
+                    data='{"documents": [{"meta": {"artifact_type": "table", "artifact_document_manager_guid": "artifact-guid"}}]}',
+                    id=None,
+                    retry=None,
+                )
+            ])),
         ):
             service = NowApplicationSearchService()
             chunks = list(service.search(now_guid, search_params))
@@ -177,15 +197,16 @@ def test_index_documents_success(mock_oauth_session, app):
         ]
         
         mock_oauth_session.post.return_value.status_code = 200
-        
-        with patch('app.api.services.document_manager_service.DocumentManagerService.download_document_to_file') as mock_download:
-            mock_download.return_value = ('test.pdf', io.BytesIO(b"content"))
-            
-            service = NowApplicationSearchService()
-            result = service.index_documents(now_guid, documents)
-            
-            assert result == {'status': 'running', 'queued': 2}
-            assert mock_oauth_session.post.call_count == 2
+        mock_oauth_session.post.return_value.ok = True
+
+        service = NowApplicationSearchService()
+        result = service.index_documents(now_guid, documents)
+
+        assert result == {'status': 'running', 'queued': 2}
+        assert mock_oauth_session.post.call_count == 1
+        args, kwargs = mock_oauth_session.post.call_args
+        assert args[0].endswith(f'/document_search/{now_guid}/index/manifest')
+        assert kwargs['json'] == {'documents': documents}
 
 def test_get_index_status(mock_oauth_session, app):
     with app.app_context():
