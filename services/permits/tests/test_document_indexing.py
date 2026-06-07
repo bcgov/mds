@@ -1,7 +1,17 @@
 from unittest.mock import MagicMock, patch
 
+import fitz
 import app.pipelines.document_search.indexing as indexing
 import pytest
+from app.pipelines.document_search.artifact_chunk_builder import build_table_markdown, categorize_artifact
+from app.pipelines.document_search.artifact_extraction import (
+    extract_figure_artifacts,
+    extract_table_artifacts,
+)
+from app.pipelines.document_search.artifact_region_image import (
+    build_region_upload_payload,
+    extract_page_rotation_hints,
+)
 from app.pipelines.document_search.indexing import (
     delete_document_chunks,
     embed_chunks,
@@ -158,7 +168,7 @@ def test_extract_and_chunk_file_includes_table_preview_and_markdown_metadata():
     with patch("app.pipelines.document_search.indexing.document_intelligence") as mock_di, \
          patch("app.pipelines.document_search.indexing.chunker") as mock_chunker, \
          patch(
-             "app.pipelines.document_search.indexing._build_table_upload_payload",
+             "app.pipelines.document_search.indexing.build_region_upload_payload",
              return_value={
                  "file_name": "doc_guid_p2_t1.png",
                  "mime_type": "image/png",
@@ -197,6 +207,18 @@ def test_extract_and_chunk_file_includes_table_preview_and_markdown_metadata():
         assert table_artifact["_artifact_upload"]["mime_type"] == "image/png"
 
 
+def test_build_table_markdown_uses_library_rendering_for_special_characters():
+    markdown = build_table_markdown(
+        headers=["ColA", "Col|B"],
+        row_payload=[{"ColA": "A|1", "Col|B": "Line 1\nLine 2"}],
+    )
+
+    assert markdown is not None
+    assert "| ColA" in markdown
+    assert "A\\|1" in markdown
+    assert "Line 1" in markdown
+
+
 def test_extract_and_chunk_file_table_artifact_skips_upload_when_image_unavailable():
     tmp_path = "/tmp/test.pdf"
     now_guid = "now_guid"
@@ -210,7 +232,7 @@ def test_extract_and_chunk_file_table_artifact_skips_upload_when_image_unavailab
 
     with patch("app.pipelines.document_search.indexing.document_intelligence") as mock_di, \
          patch("app.pipelines.document_search.indexing.chunker") as mock_chunker, \
-         patch("app.pipelines.document_search.indexing._build_table_upload_payload", return_value=None):
+         patch("app.pipelines.document_search.indexing.build_region_upload_payload", return_value=None):
 
         mock_cell_h1 = MagicMock(row_index=0, column_index=0, content="ColA")
         mock_cell_h2 = MagicMock(row_index=0, column_index=1, content="ColB")
@@ -254,7 +276,7 @@ def test_extract_and_chunk_file_table_upload_disabled_by_env(monkeypatch):
 
     with patch("app.pipelines.document_search.indexing.document_intelligence") as mock_di, \
          patch("app.pipelines.document_search.indexing.chunker") as mock_chunker, \
-         patch("app.pipelines.document_search.indexing._build_table_upload_payload") as mock_build_upload:
+         patch("app.pipelines.document_search.indexing.build_region_upload_payload") as mock_build_upload:
 
         mock_cell_h1 = MagicMock(row_index=0, column_index=0, content="ColA")
         mock_cell_h2 = MagicMock(row_index=0, column_index=1, content="ColB")
@@ -335,7 +357,7 @@ def test_extract_and_chunk_file_includes_figure_artifacts_and_chunks():
 
 
 def test_categorize_artifact_identifies_map_terms():
-    category = indexing._categorize_artifact(
+    category = categorize_artifact(
         artifact_type="figure",
         caption="Site map showing open pit and haul roads",
         description="Includes legend and north arrow",
@@ -347,7 +369,7 @@ def test_categorize_artifact_identifies_map_terms():
 
 
 def test_categorize_artifact_identifies_site_photo_terms():
-    category = indexing._categorize_artifact(
+    category = categorize_artifact(
         artifact_type="figure",
         caption="Ground-level site photo of disturbed area",
         description="Landscape with access road",
@@ -372,7 +394,7 @@ def test_extract_and_chunk_file_figure_artifact_includes_upload_payload_when_ava
     with patch("app.pipelines.document_search.indexing.document_intelligence") as mock_di, \
          patch("app.pipelines.document_search.indexing.chunker") as mock_chunker, \
          patch(
-             "app.pipelines.document_search.indexing._build_figure_upload_payload",
+             "app.pipelines.document_search.indexing.build_region_upload_payload",
              return_value={
                  "file_name": "doc_guid_p4_f1.png",
                  "mime_type": "image/png",
@@ -419,7 +441,7 @@ def test_extract_and_chunk_file_figure_upload_disabled_by_env(monkeypatch):
 
     with patch("app.pipelines.document_search.indexing.document_intelligence") as mock_di, \
          patch("app.pipelines.document_search.indexing.chunker") as mock_chunker, \
-         patch("app.pipelines.document_search.indexing._build_figure_upload_payload") as mock_build_upload:
+         patch("app.pipelines.document_search.indexing.build_region_upload_payload") as mock_build_upload:
 
         mock_region = MagicMock(page_number=4, polygon=[2, 2, 8, 2, 8, 6, 2, 6])
         mock_figure = MagicMock(
@@ -464,7 +486,7 @@ def test_extract_and_chunk_file_enriches_figure_caption_and_summary_when_enabled
     with patch("app.pipelines.document_search.indexing.document_intelligence") as mock_di, \
          patch("app.pipelines.document_search.indexing.chunker") as mock_chunker, \
          patch(
-             "app.pipelines.document_search.indexing._generate_figure_caption_and_summary",
+             "app.pipelines.document_search.indexing.generate_figure_caption_and_summary",
              return_value={
                  "caption": "Generated pit overview",
                  "summary": "A concise generated summary for search results.",
@@ -520,7 +542,7 @@ def test_extract_and_chunk_file_keeps_di_caption_when_enrichment_enabled(monkeyp
     with patch("app.pipelines.document_search.indexing.document_intelligence") as mock_di, \
          patch("app.pipelines.document_search.indexing.chunker") as mock_chunker, \
          patch(
-             "app.pipelines.document_search.indexing._generate_figure_caption_and_summary",
+             "app.pipelines.document_search.indexing.generate_figure_caption_and_summary",
              return_value={"caption": "Generated caption", "summary": "Generated summary"},
          ):
 
@@ -567,7 +589,7 @@ def test_extract_and_chunk_file_enrichment_failure_is_non_blocking(monkeypatch):
     with patch("app.pipelines.document_search.indexing.document_intelligence") as mock_di, \
          patch("app.pipelines.document_search.indexing.chunker") as mock_chunker, \
          patch(
-             "app.pipelines.document_search.indexing._generate_figure_caption_and_summary",
+             "app.pipelines.document_search.indexing.generate_figure_caption_and_summary",
              side_effect=Exception("llm failed"),
          ):
 
@@ -605,7 +627,7 @@ def test_extract_page_rotation_hints_from_di_pages():
         MagicMock(page_number=4, angle=None),
     ]
 
-    hints = indexing._extract_page_rotation_hints(analyze_result)
+    hints = extract_page_rotation_hints(analyze_result)
 
     assert hints[1] == 90
     assert hints[2] == 270
@@ -615,7 +637,7 @@ def test_extract_page_rotation_hints_from_di_pages():
 
 def test_build_region_upload_payload_prefers_di_angle_over_fallback():
     fake_page = MagicMock()
-    fake_page.rect = indexing.fitz.Rect(0, 0, 720, 720)
+    fake_page.rect = fitz.Rect(0, 0, 720, 720)
 
     fake_pixmap = MagicMock()
     fake_pixmap.width = 2
@@ -630,14 +652,16 @@ def test_build_region_upload_payload_prefers_di_angle_over_fallback():
     fake_document.__exit__.return_value = None
     fake_document.__getitem__.return_value = fake_page
 
-    with patch("app.pipelines.document_search.indexing.fitz.open", return_value=fake_document), \
-         patch("app.pipelines.document_search.indexing._choose_rotation_degrees_from_text") as mock_fallback:
-        payload = indexing._build_region_upload_payload(
+    mock_fallback = MagicMock()
+    with patch("app.pipelines.document_search.artifact_region_image.fitz.open", return_value=fake_document):
+        payload = build_region_upload_payload(
             source_pdf_path="/tmp/test.pdf",
             artifact_id="doc_guid_p1_t1",
             page_number=1,
             bounding_box={"left": 0.0, "top": 0.0, "right": 1.0, "bottom": 1.0},
             page_rotation_hints={1: 90},
+            logger=MagicMock(),
+            choose_rotation_degrees_from_text_fn=mock_fallback,
         )
 
     assert payload is not None
@@ -648,7 +672,7 @@ def test_build_region_upload_payload_prefers_di_angle_over_fallback():
 
 def test_build_region_upload_payload_uses_fallback_when_di_hint_missing():
     fake_page = MagicMock()
-    fake_page.rect = indexing.fitz.Rect(0, 0, 720, 720)
+    fake_page.rect = fitz.Rect(0, 0, 720, 720)
 
     fake_pixmap = MagicMock()
     fake_pixmap.width = 2
@@ -663,23 +687,22 @@ def test_build_region_upload_payload_uses_fallback_when_di_hint_missing():
     fake_document.__exit__.return_value = None
     fake_document.__getitem__.return_value = fake_page
 
-    with patch("app.pipelines.document_search.indexing.fitz.open", return_value=fake_document), \
-         patch(
-             "app.pipelines.document_search.indexing._choose_rotation_degrees_from_text",
-             return_value=(270, "text_direction_vertical_up"),
-         ) as mock_fallback:
-        payload = indexing._build_region_upload_payload(
+    with patch("app.pipelines.document_search.artifact_region_image.fitz.open", return_value=fake_document):
+        fallback = MagicMock(return_value=(270, "text_direction_vertical_up"))
+        payload = build_region_upload_payload(
             source_pdf_path="/tmp/test.pdf",
             artifact_id="doc_guid_p1_f1",
             page_number=1,
             bounding_box={"left": 0.0, "top": 0.0, "right": 1.0, "bottom": 1.0},
             page_rotation_hints={},
+            logger=MagicMock(),
+            choose_rotation_degrees_from_text_fn=fallback,
         )
 
     assert payload is not None
     assert payload["mime_type"] == "image/png"
     assert payload["content_bytes"]
-    mock_fallback.assert_called_once()
+    fallback.assert_called_once()
 
 
 def test_extract_table_artifacts_passes_page_rotation_hints_to_upload_builder():
@@ -698,16 +721,17 @@ def test_extract_table_artifacts_passes_page_rotation_hints_to_upload_builder():
     )
     analyze_result = MagicMock(tables=[table])
 
-    with patch(
-        "app.pipelines.document_search.indexing._build_table_upload_payload",
-        return_value={"file_name": "x.png", "mime_type": "image/png", "content_bytes": b"x"},
-    ) as mock_upload:
-        artifacts = indexing._extract_table_artifacts(
-            analyze_result,
-            doc_meta,
-            source_pdf_path="/tmp/test.pdf",
-            page_rotation_hints={2: 90},
-        )
+    mock_upload = MagicMock(return_value={"file_name": "x.png", "mime_type": "image/png", "content_bytes": b"x"})
+    artifacts = extract_table_artifacts(
+        analyze_result,
+        doc_meta,
+        source_pdf_path="/tmp/test.pdf",
+        page_rotation_hints={2: 90},
+        build_table_upload_payload_fn=mock_upload,
+        extract_caption_fn=MagicMock(return_value=None),
+        extract_footnotes_fn=MagicMock(return_value=[]),
+        logger=MagicMock(),
+    )
 
     assert len(artifacts) == 1
     assert artifacts[0]["_artifact_upload"]["file_name"] == "x.png"
@@ -725,16 +749,16 @@ def test_extract_figure_artifacts_passes_page_rotation_hints_to_upload_builder()
     )
     analyze_result = MagicMock(figures=[figure], paragraphs=[])
 
-    with patch(
-        "app.pipelines.document_search.indexing._build_figure_upload_payload",
-        return_value={"file_name": "x.png", "mime_type": "image/png", "content_bytes": b"x"},
-    ) as mock_upload:
-        artifacts = indexing._extract_figure_artifacts(
-            analyze_result,
-            doc_meta,
-            source_pdf_path="/tmp/test.pdf",
-            page_rotation_hints={4: 270},
-        )
+    mock_upload = MagicMock(return_value={"file_name": "x.png", "mime_type": "image/png", "content_bytes": b"x"})
+    artifacts = extract_figure_artifacts(
+        analyze_result,
+        doc_meta,
+        source_pdf_path="/tmp/test.pdf",
+        page_rotation_hints={4: 270},
+        build_figure_upload_payload_fn=mock_upload,
+        extract_caption_fn=MagicMock(return_value="Figure 1"),
+        extract_footnotes_fn=MagicMock(return_value=[]),
+    )
 
     assert len(artifacts) == 1
     assert artifacts[0]["_artifact_upload"]["file_name"] == "x.png"

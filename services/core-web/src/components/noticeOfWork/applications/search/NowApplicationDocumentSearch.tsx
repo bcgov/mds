@@ -274,7 +274,7 @@ const NowApplicationDocumentSearch: React.FC<NowApplicationDocumentSearchProps> 
     }
     return value;
   };
-  console.log(results)
+
   return (
     <Layout className="permit-search__layout">
       <Layout.Content className="permit-search__content">

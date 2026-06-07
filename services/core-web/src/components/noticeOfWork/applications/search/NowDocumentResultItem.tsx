@@ -19,15 +19,8 @@ interface NowDocumentResultItemProps {
 const normalizeScore = (score: number) =>
   Math.min(Math.round(((score - 1) / 3) * 100), 100);
 
-const formatArtifactType = (artifactType: string) =>
-  artifactType
-    .split(/[_\s-]+/)
-    .filter(Boolean)
-    .map((part) => part.charAt(0).toUpperCase() + part.slice(1).toLowerCase())
-    .join(" ");
-
-const formatArtifactCategory = (artifactCategory: string) =>
-  artifactCategory
+const displayFormat = (text: string) =>
+  text
     .split(/[_\s-]+/)
     .filter(Boolean)
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1).toLowerCase())
@@ -97,16 +90,12 @@ const NowDocumentResultItem: React.FC<NowDocumentResultItemProps> = ({
   const hasArtifactCaption = Boolean(artifact_caption);
 
   const formattedDate = submitted_date ? dayjs(submitted_date).format("MMM D, YYYY") : null;
-  const hasBoundingBox =
-    typeof artifact_bounding_box_left === "number" &&
-    typeof artifact_bounding_box_top === "number" &&
-    typeof artifact_bounding_box_right === "number" &&
-    typeof artifact_bounding_box_bottom === "number";
+  const hasBoundingBox = artifact_bounding_box_left && artifact_bounding_box_top && artifact_bounding_box_right && artifact_bounding_box_bottom;
+  const pageNumber = artifact_page_number || artifact_page_number === 0 ? artifact_page_number : 0;
   const documentViewerLocation =
-    typeof artifact_page_number === "number" || hasBoundingBox
+    hasBoundingBox
       ? {
-        pageNumber:
-          typeof artifact_page_number === "number" ? artifact_page_number : undefined,
+        pageNumber: pageNumber,
         boundingBox: hasBoundingBox
           ? {
             left: artifact_bounding_box_left,
@@ -240,7 +229,7 @@ const NowDocumentResultItem: React.FC<NowDocumentResultItemProps> = ({
                   style={{ cursor: onFilterClick ? "pointer" : "default" }}
                   onClick={() => onFilterClick?.("artifact_type", artifact_type)}
                 >
-                  {formatArtifactType(artifact_type)}
+                  {displayFormat(artifact_type)}
                 </Tag>
               )}
               {artifact_category && (
@@ -250,7 +239,7 @@ const NowDocumentResultItem: React.FC<NowDocumentResultItemProps> = ({
                   style={{ cursor: onFilterClick ? "pointer" : "default" }}
                   onClick={() => onFilterClick?.("artifact_category", artifact_category)}
                 >
-                  {formatArtifactCategory(artifact_category)}
+                  {displayFormat(artifact_category)}
                 </Tag>
               )}
               {typeof artifact_page_number === "number" && (

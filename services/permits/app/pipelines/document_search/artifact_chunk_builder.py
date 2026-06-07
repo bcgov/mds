@@ -3,6 +3,8 @@ import json
 import re
 from typing import Any, List, Optional
 
+from tabulate import tabulate
+
 from app.pipelines.document_search.components.document_chunker import (
     DocumentChunkMetadata,
 )
@@ -146,25 +148,8 @@ def build_table_markdown(headers: List[str], row_payload: List[dict]) -> Optiona
     if not raw_headers:
         return None
 
-    normalized_headers = [sanitize_markdown_cell(header) for header in raw_headers]
-
-    rows = [
-        '| ' + ' | '.join(normalized_headers) + ' |',
-        '| ' + ' | '.join(['---'] * len(normalized_headers)) + ' |',
-    ]
-
-    for row in row_payload:
-        row_cells = [sanitize_markdown_cell(row.get(field, '')) for field in raw_headers]
-        rows.append('| ' + ' | '.join(row_cells) + ' |')
-
-    return '\n'.join(rows)
-
-
-def sanitize_markdown_cell(value: Any) -> str:
-    text = str(value or '')
-    text = text.replace('|', '\\|')
-    text = ' '.join(text.splitlines())
-    return text
+    rows = [[row.get(field, '') for field in raw_headers] for row in row_payload]
+    return tabulate(rows, headers=raw_headers, tablefmt='github', disable_numparse=True)
 
 
 def coerce_float(value: Any) -> Optional[float]:

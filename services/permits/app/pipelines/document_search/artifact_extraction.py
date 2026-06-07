@@ -3,6 +3,8 @@ import re
 from typing import Callable, List, Optional
 
 from app.pipelines.document_search.artifact_chunk_builder import categorize_artifact
+from app.pipelines.document_search.artifact_chunk_builder import build_table_markdown
+from app.pipelines.document_search.artifact_region_image import extract_primary_region_metadata
 
 
 def extract_table_artifacts(
@@ -11,8 +13,6 @@ def extract_table_artifacts(
     source_pdf_path: Optional[str] = None,
     page_rotation_hints: Optional[dict[int, int]] = None,
     *,
-    extract_primary_region_metadata_fn: Callable,
-    build_table_markdown_fn: Callable,
     build_table_upload_payload_fn: Callable,
     extract_caption_fn: Callable,
     extract_footnotes_fn: Callable,
@@ -25,12 +25,10 @@ def extract_table_artifacts(
         table_model = normalize_table(table)
         headers, row_payload = table_rows_for_artifact(table_model)
 
-        page_number, bounding_box = extract_primary_region_metadata_fn(
-            getattr(table, 'bounding_regions', None) or []
-        )
+        page_number, bounding_box = extract_primary_region_metadata(getattr(table, 'bounding_regions', None) or [])
 
         artifact_id = f'{document_manager_guid}_p{page_number or 0}_t{index + 1}'
-        table_markdown = build_table_markdown_fn(headers, row_payload)
+        table_markdown = build_table_markdown(headers, row_payload)
         upload_payload = None
         if is_table_binary_upload_enabled():
             upload_payload = build_table_upload_payload_fn(
@@ -145,7 +143,6 @@ def extract_figure_artifacts(
     source_pdf_path: Optional[str] = None,
     page_rotation_hints: Optional[dict[int, int]] = None,
     *,
-    extract_primary_region_metadata_fn: Callable,
     build_figure_upload_payload_fn: Callable,
     extract_caption_fn: Callable,
     extract_footnotes_fn: Callable,
@@ -155,9 +152,7 @@ def extract_figure_artifacts(
     paragraphs = getattr(analyze_result, 'paragraphs', None) or []
 
     for index, figure in enumerate(getattr(analyze_result, 'figures', None) or []):
-        page_number, bounding_box = extract_primary_region_metadata_fn(
-            getattr(figure, 'bounding_regions', None) or []
-        )
+        page_number, bounding_box = extract_primary_region_metadata(getattr(figure, 'bounding_regions', None) or [])
         artifact_id = f'{document_manager_guid}_p{page_number or 0}_f{index + 1}'
         caption = extract_caption_fn(figure)
         description = extract_figure_description(figure, paragraphs) or caption

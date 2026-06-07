@@ -33,10 +33,10 @@ class NOWApplicationDocumentSearchResource(Resource, UserMixin):
             raise NotFound('Notice of Work application not found.')
 
         request_data = request.json
-        response_stream = NowApplicationSearchService().search(now_application_guid, request_data)
+        response = NowApplicationSearchService().search(now_application_guid, request_data)
 
         return Response(
-            stream_with_context(response_stream),
+            stream_with_context(response.iter_content(chunk_size=1024)),
             mimetype="text/event-stream",
             headers={
                 "Cache-Control": "no-cache",
@@ -67,6 +67,8 @@ class NOWApplicationDocumentIndexResource(Resource, UserMixin):
         if not now_application:
             raise NotFound('Notice of Work application record not found.')
 
+        # Collect all non-spatial documents attached to this application.
+        # Spatial file types (e.g. .shp, .kml, .gdb) are excluded per the ticket scope.
         documents = _collect_indexable_documents(now_application)
 
         if not documents:
@@ -98,10 +100,18 @@ class NOWApplicationDocumentIndexStatusResource(Resource, UserMixin):
         return NowApplicationSearchService().get_index_status(now_application_guid), 200
 
 
+# ---------------------------------------------------------------------------
+# Helpers
+# ---------------------------------------------------------------------------
+
 SPATIAL_EXTENSIONS = {'.shp', '.shx', '.dbf', '.prj', '.kml', '.kmz', '.gdb', '.gpx', '.geojson'}
 
 
 def _collect_indexable_documents(now_application) -> list:
+    """
+    Returns a list of document metadata dicts for all non-spatial documents
+    attached to the NoW application.
+    """
     documents = []
 
     for xref in (now_application.documents or []):
