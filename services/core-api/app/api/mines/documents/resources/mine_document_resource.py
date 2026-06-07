@@ -1,5 +1,4 @@
 import decimal
-import uuid
 
 from flask import request
 from app.api.projects.major_mine_application.models.major_mine_application import MajorMineApplication
@@ -9,18 +8,15 @@ from app.api.projects.information_requirements_table.models.information_requirem
 
 from flask_restx import Resource, reqparse
 from datetime import datetime
-from werkzeug.exceptions import BadRequest, Conflict, NotFound
+from werkzeug.exceptions import BadRequest, NotFound
 
 from app.extensions import api
 from app.api.utils.access_decorators import EDIT_MAJOR_MINE_APPLICATIONS, MINE_ADMIN, requires_any_of, VIEW_ALL, MINESPACE_PROPONENT, is_minespace_user
 from app.api.utils.resources_mixins import UserMixin
 
 from app.api.mines.documents.models.mine_document import MineDocument
-from app.api.mines.documents.models.mine_document_artifact import MineDocumentArtifact
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.documents.mine_document_search_util import MineDocumentSearchUtil
-from app.api.utils.include.user_info import User
-from app.api.mines.documents.dto import REGISTER_DOCUMENT_ARTIFACTS
 
 from app.api.mines.response_models import ARCHIVE_MINE_DOCUMENT, MINE_DOCUMENT_MODEL, DOCUMENT_MANAGER_ZIP
 
@@ -239,97 +235,3 @@ class DocumentUploadStatusResource(Resource, UserMixin):
         # Allow checking upload status without authentication
         # The document manager will handle authorization based on the document type
         return DocumentManagerService.poll_upload_progress(request, mine_document_guid)
-
-
-class MineDocumentArtifactRegistrationResource(Resource, UserMixin):
-    parser = reqparse.RequestParser()
-    parser.add_argument('request_id', type=str, location='json', required=True)
-    parser.add_argument('source', type=dict, location='json', required=True)
-    parser.add_argument('source_document_manager_guid', type=str, location='json', required=False)
-    parser.add_argument('mine_guid', type=str, location='json', required=True)
-    parser.add_argument('context', type=dict, location='json', required=False)
-    parser.add_argument('artifacts', type=list, location='json', required=False)
-    parser.add_argument('tables', type=list, location='json', required=False)
-
-    @api.doc(
-        description=(
-            'Registers extracted artifacts for a source document manager guid. '
-            'The source guid in the URL must resolve to a MineDocument; this endpoint '
-            'returns the resolved mine_document_guid and validates payload consistency.'
-        )
-    )
-    @api.expect(REGISTER_DOCUMENT_ARTIFACTS, validate=True)
-    @requires_any_of([VIEW_ALL])
-    def post(self, source_document_manager_guid):
-        try:
-            source_guid = uuid.UUID(source_document_manager_guid)
-        except ValueError as exc:
-            raise BadRequest('source_document_manager_guid must be a valid UUID.') from exc
-
-        mine_document = MineDocument.find_by_document_manager_guid(source_guid)
-        if not mine_document:
-            raise NotFound('No MineDocument mapping found for source_document_manager_guid.')
-
-        payload = self.parser.parse_args()
-
-        source_payload = payload.get('source') or {}
-        missing_source_fields = [
-            field_name for field_name in ('pipeline', 'version', 'sent_at') if not source_payload.get(field_name)
-        ]
-        if missing_source_fields:
-            raise BadRequest(
-                f"source is missing required field(s): {', '.join(missing_source_fields)}"
-            )
-
-        body_source_guid = payload.get('source_document_manager_guid')
-        if body_source_guid and body_source_guid != source_document_manager_guid:
-            raise Conflict('Body source_document_manager_guid must match path parameter.')
-
-        if payload.get('mine_guid') and str(mine_document.mine_guid) != payload.get('mine_guid'):
-            raise Conflict('mine_guid does not match the resolved MineDocument mine_guid.')
-
-        context_payload = payload.get('context') or {}
-        registration_context = {
-            'now_application_guid': None,
-            'now_application_document_xref_guid': None,
-        }
-        if context_payload.get('now_application_guid'):
-            try:
-                registration_context['now_application_guid'] = uuid.UUID(
-                    context_payload.get('now_application_guid'))
-            except ValueError as exc:
-                raise BadRequest('context.now_application_guid must be a valid UUID.') from exc
-        if context_payload.get('now_application_document_xref_guid'):
-            try:
-                registration_context['now_application_document_xref_guid'] = uuid.UUID(
-                    context_payload.get('now_application_document_xref_guid'))
-            except ValueError as exc:
-                raise BadRequest('context.now_application_document_xref_guid must be a valid UUID.') from exc
-
-        artifacts = payload.get('artifacts')
-        if artifacts is None:
-            artifacts = payload.get('tables')
-
-        if artifacts is None:
-            raise BadRequest('Either artifacts or tables must be provided.')
-
-        counts, errors = MineDocumentArtifact.register_artifacts(
-            mine_document=mine_document,
-            source_document_manager_guid=source_guid,
-            artifacts=artifacts or [],
-            source_version=source_payload.get('version'),
-            context=registration_context,
-            username=User().get_user_username(),
-        )
-        status = 'ok' if counts.get('rejected', 0) == 0 else 'partial'
-        status_code = 200 if status == 'ok' else 207
-
-        return {
-            'status': status,
-            'request_id': payload.get('request_id'),
-            'source_document_manager_guid': source_document_manager_guid,
-            'mine_document_guid': str(mine_document.mine_document_guid),
-            'counts': counts,
-            'errors': errors,
-        }, status_code
-    

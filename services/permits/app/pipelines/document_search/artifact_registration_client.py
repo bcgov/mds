@@ -1,8 +1,6 @@
 import logging
 import os
 import hashlib
-import uuid
-from datetime import datetime, timezone
 from urllib.parse import quote
 
 import requests
@@ -42,8 +40,6 @@ def _extract_object_store_path(payload):
     if not isinstance(payload, dict):
         return None
 
-    # Document Manager responses are not perfectly uniform across endpoints.
-    # Accept direct and common nested variants.
     for key in ('object_store_path', 'objectStorePath'):
         value = payload.get(key)
         if value:
@@ -252,7 +248,7 @@ def _upload_callback_artifact(
         )
         upload_stats[upload_state] += 1
         return uploaded_artifact if artifact_id and uploaded_artifact else None
-    except Exception as exc:  # noqa: BLE001 - best-effort artifact upload
+    except Exception as exc:
         upload_stats['failed'] += 1
         logger.warning(
             'Artifact file upload failed for source_document_manager_guid=%s artifact_id=%s: %s',
@@ -279,31 +275,6 @@ def _artifact_document_summary(artifact_id, uploaded_artifact):
     }
 
 
-def _build_registration_payload(
-    source_document_manager_guid,
-    mine_guid,
-    now_application_guid,
-    now_application_document_xref_guid,
-    callback_artifacts,
-    request_id,
-):
-    return {
-        'request_id': request_id or str(uuid.uuid4()),
-        'source': {
-            'pipeline': 'now_document_indexing',
-            'version': 'v1',
-            'sent_at': datetime.now(timezone.utc).isoformat().replace('+00:00', 'Z'),
-        },
-        'source_document_manager_guid': source_document_manager_guid,
-        'mine_guid': mine_guid,
-        'context': {
-            'now_application_guid': now_application_guid,
-            'now_application_document_xref_guid': now_application_document_xref_guid,
-        },
-        'artifacts': callback_artifacts,
-    }
-
-
 def register_document_artifacts(
     source_document_manager_guid,
     mine_guid,
@@ -321,38 +292,18 @@ def register_document_artifacts(
     }
     artifact_documents = []
 
-    base_url = _core_api_base_url()
-    if not base_url:
-        logger.info('Skipping artifact registration callback: CORE_API_URL/CORE_API_BASE_URL not configured.')
-        return _skipped_registration(upload_stats, artifact_documents, include_upload_stats)
-
     session = _build_oauth_session()
     if not session:
-        logger.info('Skipping artifact registration callback: OAuth client credentials are not configured.')
+        logger.info('Skipping artifact upload: OAuth client credentials are not configured.')
         return _skipped_registration(upload_stats, artifact_documents, include_upload_stats)
 
-    callback_artifacts, artifact_documents = _prepare_callback_artifacts(
+    _callback_artifacts, artifact_documents = _prepare_callback_artifacts(
         session=session,
         source_document_manager_guid=source_document_manager_guid,
         now_application_guid=now_application_guid,
         artifacts=artifacts,
         upload_stats=upload_stats,
     )
-    payload = _build_registration_payload(
-        source_document_manager_guid,
-        mine_guid,
-        now_application_guid,
-        now_application_document_xref_guid,
-        callback_artifacts,
-        request_id,
-    )
 
-    endpoint = f"{base_url.rstrip('/')}/mines/documents/{source_document_manager_guid}/artifact"
-    try:
-        response = session.post(endpoint, json=payload, timeout=30)
-        response.raise_for_status()
-        return _registration_result(response.json(), upload_stats, artifact_documents, include_upload_stats)
-    except requests.RequestException as exc:
-        logger.warning('Artifact registration callback failed for source_document_manager_guid=%s: %s',
-                       source_document_manager_guid, exc)
-        return _registration_result(None, upload_stats, artifact_documents, include_upload_stats)
+    _ = mine_guid, now_application_document_xref_guid, request_id, _callback_artifacts
+    return _registration_result(None, upload_stats, artifact_documents, include_upload_stats)

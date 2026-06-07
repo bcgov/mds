@@ -8,7 +8,7 @@ from app.config import Config
 from authlib.integrations.requests_client import OAuth2Session
 from flask import current_app
 from sseclient import SSEClient
-from werkzeug.exceptions import BadGateway, InternalServerError
+from werkzeug.exceptions import BadGateway
 
 
 class NowApplicationSearchService:
@@ -70,7 +70,7 @@ class NowApplicationSearchService:
                 'filters': search_params.get('filters'),
             },
             stream=True,
-            timeout=(10, 300),  # (connect timeout, read timeout in seconds)
+            timeout=(10, 300),
         )
         current_app.logger.info(
             'Haystack search response status for guid=%s: %d',
@@ -166,83 +166,3 @@ class NowApplicationSearchService:
                 exc,
             )
         return fallback_url
-
-    def cancel_indexing(self, now_application_guid: str) -> dict:
-        """Revokes the active Celery indexing task for the given NoW application."""
-        response = self.session.delete(
-            f'{self.search_base}/{now_application_guid}/index',
-            timeout=10,
-        )
-        if not response.ok:
-            current_app.logger.error(
-                'Permits service returned %d cancelling indexing for %s: %s',
-                response.status_code, now_application_guid, response.text,
-            )
-            from werkzeug.exceptions import BadGateway
-            raise BadGateway('Could not cancel indexing task in the permits service')
-        return response.json()
-
-    def get_index_status(self, now_application_guid: str) -> dict:
-        """Returns the current Azure Search indexer status for the given NoW application."""
-        response = self.session.get(
-            f'{self.search_base}/{now_application_guid}/index/status',
-        )
-        if not response.ok:
-            current_app.logger.error(
-                'Permits service returned %d fetching index status for %s: %s',
-                response.status_code, now_application_guid, response.text,
-            )
-            from werkzeug.exceptions import BadGateway
-            raise BadGateway('Could not retrieve indexer status from the permits service')
-        return response.json()
-
-    def index_documents(self, now_application_guid: str, documents: list) -> dict:
-        """
-        Queues all provided documents for the given NoW application using a
-        lightweight manifest.
-
-        The permits service downloads each source document from Document Manager in
-        its Celery child tasks. This avoids proxying large PDFs through core-api and
-        avoids the previous one-request-per-document conflict with the permits
-        application-level indexing lock.
-
-        ``documents`` is a list of dicts, each containing:
-            document_manager_guid, document_name, document_type,
-            mine_guid, submitted_date (optional)
-        """
-        current_app.logger.info(
-            'Indexing %d documents for NoW application guid=%s',
-            len(documents),
-            now_application_guid,
-        )
-
-        manifest = [
-            doc for doc in documents
-            if doc.get('document_manager_guid')
-        ]
-        if not manifest:
-            raise InternalServerError('No documents were successfully queued for indexing')
-
-        result = self.session.post(
-            f'{self.search_base}/{now_application_guid}/index/manifest',
-            json={'documents': manifest},
-            timeout=30,
-        )
-
-        if result.status_code == 409:
-            current_app.logger.warning(
-                'Indexing already in progress for NoW application %s',
-                now_application_guid,
-            )
-            raise BadGateway('Indexing already in progress for this NoW application')
-
-        if not result.ok:
-            current_app.logger.error(
-                'Permits service returned %d indexing NoW application %s: %s',
-                result.status_code,
-                now_application_guid,
-                result.text,
-            )
-            raise InternalServerError('Failed to index NoW application documents')
-
-        return {'status': 'running', 'queued': len(manifest)}

@@ -6,7 +6,6 @@ from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.schema import FetchedValue
 
 from app.api.utils.include.user_info import User
-from app.api.mines.documents.models.mine_document_bundle import MineDocumentBundle
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 from app.extensions import db
 
@@ -33,16 +32,6 @@ class MineDocument(SoftDeleteMixin, AuditMixin, Base):
     archived_date = db.Column(db.DateTime, nullable=True)
     archived_by = db.Column(db.String(60))
     versions = db.relationship('MineDocumentVersion', lazy='joined')
-
-    mine_document_bundle_id = db.Column(db.String, db.ForeignKey('mine_document_bundle.bundle_id'))
-    mine_document_bundle = db.relationship('MineDocumentBundle', back_populates='bundle_documents', uselist=False)
-    artifacts = db.relationship(
-        'MineDocumentArtifact',
-        lazy='select',
-        back_populates='mine_document',
-        primaryjoin='and_(MineDocumentArtifact.mine_document_guid == MineDocument.mine_document_guid, MineDocumentArtifact.deleted_ind==False)',
-    )
-    table_artifacts = artifacts
 
     major_mine_application_document_xref = db.relationship(
         'MajorMineApplicationDocumentXref',
@@ -86,11 +75,6 @@ class MineDocument(SoftDeleteMixin, AuditMixin, Base):
             deleted_ind=False).first()
 
     @classmethod
-    def find_by_document_manager_guid(cls, document_manager_guid):
-        return cls.query.filter_by(document_manager_guid=document_manager_guid).filter_by(
-            deleted_ind=False).first()
-
-    @classmethod
     def _mine_document_by_guids_qs(cls, mine_document_guids):
         return cls.query\
             .filter(cls.mine_document_guid.in_(mine_document_guids)) \
@@ -125,5 +109,4 @@ class MineDocument(SoftDeleteMixin, AuditMixin, Base):
             'archived_by': self.archived_by,
             'upload_date': str(self.upload_date),
             'versions': self.versions or [],
-            'mine_document_bundle': self.mine_document_bundle.json() if self.mine_document_bundle else None,
         }
