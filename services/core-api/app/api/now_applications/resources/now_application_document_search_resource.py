@@ -44,3 +44,91 @@ class NOWApplicationDocumentSearchResource(Resource, UserMixin):
                 "Connection": "keep-alive",
             },
         )
+
+
+class NOWApplicationDocumentIndexResource(Resource, UserMixin):
+    @api.doc(
+        description=(
+            "Index all documents attached to a Notice of Work application so they become searchable. "
+            "This downloads each document from Document Manager, processes it with Azure Document "
+            "Intelligence to extract text, and indexes the content in Azure AI Search. "
+            "Spatial file types are excluded. Re-indexing the same application is safe — "
+            "existing records are overwritten by deterministic chunk IDs."
+        )
+    )
+    @requires_role_view_all
+    def post(self, now_application_guid):
+        _require_feature()
+        now_application_identity = NOWApplicationIdentity.find_by_guid(now_application_guid)
+        if not now_application_identity:
+            raise NotFound('Notice of Work application not found.')
+
+        now_application = now_application_identity.now_application
+        if not now_application:
+            raise NotFound('Notice of Work application record not found.')
+
+        documents = _collect_indexable_documents(now_application)
+
+        if not documents:
+            return {'message': 'No indexable documents found for this application.'}, 200
+
+        result = NowApplicationSearchService().index_documents(now_application_guid, documents)
+        return result, 200
+
+    @api.doc(description="Cancel the active indexing task for a Notice of Work application.")
+    @requires_role_view_all
+    def delete(self, now_application_guid):
+        _require_feature()
+        now_application_identity = NOWApplicationIdentity.find_by_guid(now_application_guid)
+        if not now_application_identity:
+            raise NotFound('Notice of Work application not found.')
+
+        return NowApplicationSearchService().cancel_indexing(now_application_guid), 200
+
+
+class NOWApplicationDocumentIndexStatusResource(Resource, UserMixin):
+    @api.doc(description="Returns the current Azure Search indexer status for a NoW application.")
+    @requires_role_view_all
+    def get(self, now_application_guid):
+        _require_feature()
+        now_application_identity = NOWApplicationIdentity.find_by_guid(now_application_guid)
+        if not now_application_identity:
+            raise NotFound('Notice of Work application not found.')
+
+        return NowApplicationSearchService().get_index_status(now_application_guid), 200
+
+
+SPATIAL_EXTENSIONS = {'.shp', '.shx', '.dbf', '.prj', '.kml', '.kmz', '.gdb', '.gpx', '.geojson'}
+
+
+def _collect_indexable_documents(now_application) -> list:
+    documents = []
+
+    for xref in (now_application.documents or []):
+        mine_doc = xref.mine_document
+        if not mine_doc or mine_doc.deleted_ind:
+            continue
+
+        doc_name = mine_doc.document_name or ''
+        if any(doc_name.lower().endswith(ext) for ext in SPATIAL_EXTENSIONS):
+            continue
+
+        doc_type = (
+            xref.now_application_document_type.description
+            if xref.now_application_document_type
+            else ''
+        )
+
+        documents.append({
+            'document_manager_guid': str(mine_doc.document_manager_guid),
+            'document_name': doc_name,
+            'document_type': doc_type,
+            'mine_guid': str(now_application.mine_guid or ''),
+            'submitted_date': (
+                now_application.submitted_date.isoformat()
+                if now_application.submitted_date
+                else None
+            ),
+        })
+
+    return documents

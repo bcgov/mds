@@ -1,3 +1,4 @@
+import io
 import json
 import os
 from typing import Iterator
@@ -8,7 +9,7 @@ from app.config import Config
 from authlib.integrations.requests_client import OAuth2Session
 from flask import current_app
 from sseclient import SSEClient
-from werkzeug.exceptions import BadGateway
+from werkzeug.exceptions import BadGateway, InternalServerError
 
 
 class NowApplicationSearchService:
@@ -166,3 +167,77 @@ class NowApplicationSearchService:
                 exc,
             )
         return fallback_url
+
+    def cancel_indexing(self, now_application_guid: str) -> dict:
+        response = self.session.delete(
+            f'{self.search_base}/{now_application_guid}/index',
+            timeout=10,
+        )
+        if not response.ok:
+            current_app.logger.error(
+                'Permits service returned %d cancelling indexing for %s: %s',
+                response.status_code, now_application_guid, response.text,
+            )
+            raise BadGateway('Could not cancel indexing task in the permits service')
+        return response.json()
+
+    def get_index_status(self, now_application_guid: str) -> dict:
+        response = self.session.get(
+            f'{self.search_base}/{now_application_guid}/index/status',
+        )
+        if not response.ok:
+            current_app.logger.error(
+                'Permits service returned %d fetching index status for %s: %s',
+                response.status_code, now_application_guid, response.text,
+            )
+            raise BadGateway('Could not retrieve indexer status from the permits service')
+        return response.json()
+
+    def index_documents(self, now_application_guid: str, documents: list) -> dict:
+        current_app.logger.info(
+            'Indexing %d documents for NoW application guid=%s',
+            len(documents),
+            now_application_guid,
+        )
+
+        queued = 0
+        for doc in documents:
+            document_manager_guid = doc.get('document_manager_guid')
+            if not document_manager_guid:
+                current_app.logger.warning('Skipping document with no document_manager_guid')
+                continue
+
+            buf = io.BytesIO()
+            file_name, _ = DocumentManagerService().download_document_to_file(
+                document_manager_guid, buf
+            )
+            buf.seek(0)
+
+            result = self.session.post(
+                f'{self.search_base}/{now_application_guid}/index',
+                files=[('files', (file_name or doc.get('document_name', 'document'), buf, 'application/octet-stream'))],
+                data={'metadata': json.dumps([doc])},
+            )
+
+            if result.status_code == 200:
+                queued += 1
+            elif result.status_code == 409:
+                current_app.logger.warning(
+                    'Document %s already being indexed for NoW application %s, skipping',
+                    document_manager_guid,
+                    now_application_guid,
+                )
+            else:
+                current_app.logger.error(
+                    'Permits service returned %d indexing document %s for NoW application %s: %s',
+                    result.status_code,
+                    document_manager_guid,
+                    now_application_guid,
+                    result.text,
+                )
+                raise InternalServerError('Failed to index NoW application documents')
+
+        if queued == 0:
+            raise InternalServerError('No documents were successfully queued for indexing')
+
+        return {'status': 'running', 'queued': queued}

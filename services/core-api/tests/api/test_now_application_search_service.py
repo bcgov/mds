@@ -187,3 +187,55 @@ def test_search_now_documents_uses_token_url_fallback_when_presigned_lookup_fail
         payload_line = chunks[0].decode('utf-8').split('\n')[1]
         payload = json.loads(payload_line.replace('data: ', '', 1))
         assert payload['documents'][0]['meta']['artifact_presigned_url'].endswith('token=token-123')
+
+
+def test_index_documents_success(mock_oauth_session, app):
+    with app.app_context():
+        now_guid = "test-now-guid"
+        documents = [
+            {"document_manager_guid": "doc1", "document_name": "file1.pdf"},
+            {"document_manager_guid": "doc2", "document_name": "file2.pdf"}
+        ]
+
+        mock_oauth_session.post.return_value.status_code = 200
+        mock_oauth_session.post.return_value.ok = True
+
+        with patch(
+            'app.api.search.search.now_application_search_service.DocumentManagerService.download_document_to_file',
+            return_value=('file1.pdf', None),
+        ):
+            service = NowApplicationSearchService()
+            result = service.index_documents(now_guid, documents)
+
+        assert result == {'status': 'running', 'queued': 2}
+        assert mock_oauth_session.post.call_count == 2
+
+
+def test_get_index_status(mock_oauth_session, app):
+    with app.app_context():
+        now_guid = "test-now-guid"
+        expected_status = {"status": "success", "percent": 100}
+
+        mock_oauth_session.get.return_value.ok = True
+        mock_oauth_session.get.return_value.json.return_value = expected_status
+
+        service = NowApplicationSearchService()
+        result = service.get_index_status(now_guid)
+
+        assert result == expected_status
+        mock_oauth_session.get.assert_called_once()
+
+
+def test_cancel_indexing(mock_oauth_session, app):
+    with app.app_context():
+        now_guid = "test-now-guid"
+        expected_response = {"message": "cancelled"}
+
+        mock_oauth_session.delete.return_value.ok = True
+        mock_oauth_session.delete.return_value.json.return_value = expected_response
+
+        service = NowApplicationSearchService()
+        result = service.cancel_indexing(now_guid)
+
+        assert result == expected_response
+        mock_oauth_session.delete.assert_called_once()
