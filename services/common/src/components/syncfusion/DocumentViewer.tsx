@@ -36,6 +36,10 @@ import {
   getDocument,
   downloadFileFromDocumentManager,
 } from "@mds/common/redux/utils/actionlessNetworkCalls";
+import {
+  addAnnotationToPDFViewer,
+  IPdfViewerAnnotationLocation,
+} from "@mds/common/components/syncfusion/pdfViewerAnnotations";
 
 interface DocumentViewerProps {
   closeDocumentViewer: () => void;
@@ -45,19 +49,7 @@ interface DocumentViewerProps {
   location?: DocumentViewerLocation | null;
 }
 
-interface DocumentViewerBoundingBox {
-  left?: number;
-  top?: number;
-  right?: number;
-  bottom?: number;
-}
-
-interface DocumentViewerLocation {
-  pageNumber?: number;
-  boundingBox?: DocumentViewerBoundingBox;
-}
-
-const AUTO_HIGHLIGHT_CLASS = "mds-document-viewer-auto-highlight";
+type DocumentViewerLocation = IPdfViewerAnnotationLocation;
 
 const getAjaxRequestSettingsHeaders = (obj) => {
   const ajaxRequestSettingsHeaders = [];
@@ -73,126 +65,6 @@ function getAjaxRequestSettings() {
     withCredentials: false,
   };
 }
-
-const toFiniteNumber = (value): number | null => {
-  const parsed = Number(value);
-  return Number.isFinite(parsed) ? parsed : null;
-};
-
-const clamp = (value: number, min: number, max: number): number =>
-  Math.min(Math.max(value, min), max);
-
-const clearAutoHighlights = (root: ParentNode = document) => {
-  root
-    .querySelectorAll(`.${AUTO_HIGHLIGHT_CLASS}`)
-    .forEach((element) => element.parentElement?.removeChild(element));
-};
-
-const navigateToRequestedPage = (pdfViewer, pageNumber?: number) => {
-  if (!pageNumber || pageNumber < 1) {
-    return;
-  }
-
-  if (pdfViewer?.navigation?.goToPage) {
-    pdfViewer.navigation.goToPage(pageNumber);
-    return;
-  }
-
-  if (pdfViewer?.viewerBase?.updateScrollTop) {
-    pdfViewer.viewerBase.updateScrollTop(pageNumber - 1, true);
-  }
-};
-
-const renderBoundingBoxHighlight = (pdfViewer, location?: DocumentViewerLocation | null) => {
-  if (!location?.boundingBox) {
-    return;
-  }
-
-  const leftInches = toFiniteNumber(location.boundingBox.left);
-  const topInches = toFiniteNumber(location.boundingBox.top);
-  const rightInches = toFiniteNumber(location.boundingBox.right);
-  const bottomInches = toFiniteNumber(location.boundingBox.bottom);
-
-  if (
-    leftInches === null ||
-    topInches === null ||
-    rightInches === null ||
-    bottomInches === null ||
-    rightInches <= leftInches ||
-    bottomInches <= topInches
-  ) {
-    return;
-  }
-
-  const pageIndexFromLocation =
-    typeof location.pageNumber === "number" && location.pageNumber > 0
-      ? location.pageNumber - 1
-      : null;
-
-  let attempts = 0;
-  const maxAttempts = 20;
-  const tryRender = () => {
-    attempts += 1;
-
-    const fallbackPageIndex =
-      typeof pdfViewer?.currentPageNumber === "number" ? pdfViewer.currentPageNumber - 1 : 0;
-    const pageIndex = pageIndexFromLocation ?? fallbackPageIndex;
-    const pageDiv = document.getElementById(`${pdfViewer?.element?.id}_pageDiv_${pageIndex}`);
-    const pageSize = pdfViewer?.viewerBase?.pageSize?.[pageIndex];
-
-    if (!pageDiv || !pageSize) {
-      if (attempts < maxAttempts) {
-        window.setTimeout(tryRender, 150);
-      }
-      return;
-    }
-
-    const pageWidth = toFiniteNumber(pageSize.width);
-    const pageHeight = toFiniteNumber(pageSize.height);
-    if (!pageWidth || !pageHeight) {
-      return;
-    }
-
-    const leftRatio = clamp((leftInches * 72) / pageWidth, 0, 1);
-    const topRatio = clamp((topInches * 72) / pageHeight, 0, 1);
-    const rightRatio = clamp((rightInches * 72) / pageWidth, 0, 1);
-    const bottomRatio = clamp((bottomInches * 72) / pageHeight, 0, 1);
-    const widthRatio = rightRatio - leftRatio;
-    const heightRatio = bottomRatio - topRatio;
-
-    if (widthRatio <= 0 || heightRatio <= 0) {
-      return;
-    }
-
-    clearAutoHighlights(pageDiv);
-
-    const highlight = document.createElement("div");
-    highlight.className = AUTO_HIGHLIGHT_CLASS;
-    highlight.style.position = "absolute";
-    highlight.style.pointerEvents = "none";
-    highlight.style.left = `${leftRatio * 100}%`;
-    highlight.style.top = `${topRatio * 100}%`;
-    highlight.style.width = `${widthRatio * 100}%`;
-    highlight.style.height = `${heightRatio * 100}%`;
-    highlight.style.border = "2px solid #fa8c16";
-    highlight.style.background = "rgba(255, 241, 184, 0.45)";
-    highlight.style.borderRadius = "2px";
-    highlight.style.zIndex = "12";
-    pageDiv.appendChild(highlight);
-  };
-
-  window.setTimeout(tryRender, 100);
-};
-
-const applyDocumentLocation = (pdfViewer, location?: DocumentViewerLocation | null) => {
-  if (!location) {
-    return;
-  }
-
-  clearAutoHighlights();
-  navigateToRequestedPage(pdfViewer, location.pageNumber);
-  renderBoundingBoxHighlight(pdfViewer, location);
-};
 
 export const OPENABLE_DOCUMENT_TYPES = ["PDF"];
 
@@ -230,18 +102,20 @@ interface ViewPDFProps {
   documentPath: string;
   ajaxRequestSettings: any;
   id?: string;
+  annotationLocation?: IPdfViewerAnnotationLocation | null;
   onInit?: (pdfViewer: any) => void;
 }
 interface PDFViewerProps {
   documentPath: string;
   id?: string;
+  annotationLocation?: IPdfViewerAnnotationLocation | null;
   onInit?: (pdfViewer: any) => void;
 }
 
 export const PdfViewer: React.FC<PDFViewerProps> = (props: PDFViewerProps) => {
   const ajaxSettings = getAjaxRequestSettings();
 
-  return <ViewPdf id={props.id} onInit={props.onInit} pdfViewerServiceUrl={ENVIRONMENT.pdfViewerServiceUrl} documentPath={props.documentPath} ajaxRequestSettings={ajaxSettings} />;
+  return <ViewPdf id={props.id} onInit={props.onInit} annotationLocation={props.annotationLocation} pdfViewerServiceUrl={ENVIRONMENT.pdfViewerServiceUrl} documentPath={props.documentPath} ajaxRequestSettings={ajaxSettings} />;
 };
 
 export const ViewPdf: React.FC<ViewPDFProps> = ({
@@ -249,9 +123,21 @@ export const ViewPdf: React.FC<ViewPDFProps> = ({
   documentPath,
   ajaxRequestSettings,
   id = "pdfviewer-container",
+  annotationLocation = null,
   onInit = null
 }) => {
-  let pdfViewer;
+  const pdfViewerRef = useRef<any>(null);
+
+  useEffect(() => {
+    if (pdfViewerRef.current && annotationLocation) {
+      addAnnotationToPDFViewer(
+        pdfViewerRef.current,
+        annotationLocation.pageNumber,
+        annotationLocation.boundingBox
+      );
+    }
+  }, [annotationLocation, documentPath]);
+
   return (
     <PdfViewerComponent
       id={id}
@@ -263,10 +149,10 @@ export const ViewPdf: React.FC<ViewPDFProps> = ({
       enableFormDesigner={false}
       polygonSettings={{ fillColor: 'yellow', opacity: 0.6, strokeColor: 'orange' }}
       ref={(scope) => {
-        pdfViewer = scope;
+        pdfViewerRef.current = scope;
 
         if (onInit) {
-          onInit(pdfViewer);
+          onInit(scope);
         }
       }}
     >
@@ -327,7 +213,7 @@ export const DocumentViewer: React.FC<DocumentViewerProps> = ({
             pdfViewerServiceUrl={pdfViewerServiceUrl}
             documentPath={documentPath}
             ajaxRequestSettings={ajaxRequestSettings}
-            onInit={(pdfViewer) => applyDocumentLocation(pdfViewer, location)}
+            annotationLocation={location}
           />
         ),
       });
@@ -338,7 +224,6 @@ export const DocumentViewer: React.FC<DocumentViewerProps> = ({
         modalInstance.destroy();
         setModalInstance(null);
       }
-      clearAutoHighlights();
     }
   }, [isDocumentViewerOpen, documentPath, location]);
 
