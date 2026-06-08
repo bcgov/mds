@@ -68,7 +68,7 @@ const ViewPermitOverview: FC<ViewPermitOverviewProps> = ({ latestAmendment }) =>
     <div className="view-permits-content">
       <Row justify="space-between" align="middle">
         <Col>
-          <Title className="margin-none padding-lg--top padding-lg--bottom" level={2}>
+          <Title className="margin-none padding-md--top padding-md--bottom" level={2}>
             Permit Overview
           </Title>
         </Col>
