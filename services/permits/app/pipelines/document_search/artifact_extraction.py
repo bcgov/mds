@@ -1,10 +1,17 @@
+import logging
 import os
 import re
 from typing import Callable, List, Optional
 
-from app.pipelines.document_search.artifact_chunk_builder import categorize_artifact
-from app.pipelines.document_search.artifact_chunk_builder import build_table_markdown
-from app.pipelines.document_search.artifact_region_image import extract_primary_region_metadata
+from app.pipelines.document_search.artifact_chunk_builder import (
+    build_table_markdown,
+    categorize_artifact,
+)
+from app.pipelines.document_search.artifact_region_image import (
+    extract_primary_region_metadata,
+)
+
+logger = logging.getLogger(__name__)
 
 
 def extract_table_artifacts(
@@ -16,7 +23,6 @@ def extract_table_artifacts(
     build_table_upload_payload_fn: Callable,
     extract_caption_fn: Callable,
     extract_footnotes_fn: Callable,
-    logger,
 ) -> List[dict]:
     table_artifacts = []
     document_manager_guid = doc_meta.get('document_manager_guid', '')

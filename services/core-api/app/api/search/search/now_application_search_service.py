@@ -183,7 +183,7 @@ class NowApplicationSearchService:
         return response.json()
 
     def get_index_status(self, now_application_guid: str) -> dict:
-         """Returns the current Azure Search indexer status for the given NoW application."""
+        """Returns the current Azure Search indexer status for the given NoW application."""
         response = self.session.get(
             f'{self.search_base}/{now_application_guid}/index/status',
         )

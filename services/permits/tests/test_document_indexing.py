@@ -1,9 +1,12 @@
 from unittest.mock import MagicMock, patch
 
-import fitz
 import app.pipelines.document_search.indexing as indexing
+import fitz
 import pytest
-from app.pipelines.document_search.artifact_chunk_builder import build_table_markdown, categorize_artifact
+from app.pipelines.document_search.artifact_chunk_builder import (
+    build_table_markdown,
+    categorize_artifact,
+)
 from app.pipelines.document_search.artifact_extraction import (
     extract_figure_artifacts,
     extract_table_artifacts,
@@ -730,7 +733,6 @@ def test_extract_table_artifacts_passes_page_rotation_hints_to_upload_builder():
         build_table_upload_payload_fn=mock_upload,
         extract_caption_fn=MagicMock(return_value=None),
         extract_footnotes_fn=MagicMock(return_value=[]),
-        logger=MagicMock(),
     )
 
     assert len(artifacts) == 1
