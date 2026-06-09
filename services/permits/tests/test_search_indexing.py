@@ -118,14 +118,14 @@ def test_create_data_source_exists_wrong_query():
             create_indexer_mod.create_data_source()
 
 def test_create_skillset_success():
-    with patch.object(create_indexer_mod.indexer_client, 'create_skillset') as mock_create:
+    with patch.object(create_indexer_mod.indexer_client, 'create_or_update_skillset') as mock_create:
         mock_create.return_value = "skillset-obj"
 
         result = create_indexer_mod.create_skillset()
         assert result == "skillset-obj"
 
 def test_create_skillset_exists():
-    with patch.object(create_indexer_mod.indexer_client, 'create_skillset') as mock_create, \
+    with patch.object(create_indexer_mod.indexer_client, 'create_or_update_skillset') as mock_create, \
          patch.object(create_indexer_mod.indexer_client, 'get_skillset') as mock_get:
 
         mock_create.side_effect = HttpResponseError("already exists")
@@ -135,7 +135,7 @@ def test_create_skillset_exists():
         assert result == "existing-skillset"
 
 def test_create_indexer_success():
-    with patch.object(create_indexer_mod.indexer_client, 'create_indexer') as mock_create:
+    with patch.object(create_indexer_mod.indexer_client, 'create_or_update_indexer') as mock_create:
         mock_result = MagicMock()
         mock_result.name = "test-indexer"
         mock_create.return_value = mock_result
@@ -144,7 +144,7 @@ def test_create_indexer_success():
         assert result.name == "test-indexer"
 
 def test_create_indexer_exists():
-    with patch.object(create_indexer_mod.indexer_client, 'create_indexer') as mock_create:
+    with patch.object(create_indexer_mod.indexer_client, 'create_or_update_indexer') as mock_create:
         mock_create.side_effect = HttpResponseError("already exists")
 
         with pytest.raises(RuntimeError, match="already exists"):

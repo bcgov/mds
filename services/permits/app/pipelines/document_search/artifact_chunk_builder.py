@@ -3,11 +3,10 @@ import json
 import re
 from typing import Any, List, Optional
 
-from tabulate import tabulate
-
 from app.pipelines.document_search.components.document_chunker import (
     DocumentChunkMetadata,
 )
+from tabulate import tabulate
 
 MULTIMODAL_CATEGORY_VALUES = {
     'map',
@@ -148,8 +147,18 @@ def build_table_markdown(headers: List[str], row_payload: List[dict]) -> Optiona
     if not raw_headers:
         return None
 
-    rows = [[row.get(field, '') for field in raw_headers] for row in row_payload]
-    return tabulate(rows, headers=raw_headers, tablefmt='github', disable_numparse=True)
+    escaped_headers = [_escape_table_markdown_value(header) for header in raw_headers]
+    rows = [
+        [_escape_table_markdown_value(row.get(field, '')) for field in raw_headers]
+        for row in row_payload
+    ]
+    return tabulate(rows, headers=escaped_headers, tablefmt='github', disable_numparse=True)
+
+
+def _escape_table_markdown_value(value: Any) -> str:
+    if value is None:
+        return ''
+    return str(value).replace('|', '\\|').replace('\n', '<br>')
 
 
 def coerce_float(value: Any) -> Optional[float]:

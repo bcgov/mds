@@ -1,7 +1,7 @@
 from app.pipelines.document_search.config import config
 from app.pipelines.document_search.search_index_fields import fields
 from azure.core.credentials import AzureKeyCredential
-from azure.core.exceptions import HttpResponseError
+from azure.core.exceptions import HttpResponseError, ResourceNotFoundError
 from azure.search.documents.indexes import SearchIndexClient
 from azure.search.documents.indexes.models import (
     AzureOpenAIVectorizer,
@@ -90,8 +90,24 @@ def create_or_update_index():
     try:
         result = index_client.create_or_update_index(index)
         print(f"Created index: {result.name}")
+    except ResourceNotFoundError:
+        try:
+            result = index_client.get_index(index.name)
+        except ResourceNotFoundError:
+            result = index_client.create_index(index)
+            print(f"Created index: {result.name}")
     except HttpResponseError as e:
-        if "ResourceNameAlreadyInUse" in str(e) or "CannotCreateExistingIndex" in str(e):
+        message = str(e)
+        if "CannotChangeExistingField" in message:
+            raise RuntimeError(
+                f"Index '{index.name}' requires an immutable schema change. "
+                "Delete and recreate the index manually before re-running this command."
+            ) from e
+        if (
+            "ResourceNameAlreadyInUse" in message
+            or "CannotCreateExistingIndex" in message
+            or "Not Found" in message
+        ):
             print(f"Index '{index.name}' already exists, skipping.")
             result = index_client.get_index(index.name)
         else:
