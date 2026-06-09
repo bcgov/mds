@@ -1,10 +1,12 @@
 import pytest
 import uuid
+from unittest.mock import patch, MagicMock
 
 from app.api.variances.models.variance import (Variance,
                                                INVALID_MINE_GUID,
                                                MISSING_MINE_GUID,
                                                INVALID_VARIANCE_GUID)
+from app.api.ministry_contacts.models.distribution_list import DistributionListNames
 from tests.factories import VarianceFactory, MineFactory
 from tests.status_code_gen import RandomComplianceArticleId
 
@@ -94,3 +96,16 @@ def test_validate_applicant_guid_invalid(db_session):
             mine_guid=variance.mine_guid,
             applicant_guid='abc123')
     assert 'Invalid applicant_guid' in str(e.value)
+
+
+@patch('app.api.services.email_service.EmailService.send_email_async')
+def test_send_variance_application_email(mock_send_async, db_session):
+    variance = VarianceFactory()
+    variance.send_variance_application_email()
+
+    mock_send_async.assert_called_once()
+    call = mock_send_async.call_args
+    assert call.kwargs['distribution_list'] == DistributionListNames.VARIANCES
+    assert call.kwargs['reference_table'] == 'variance'
+    assert call.kwargs['reference_email_type'] == 'variance_application'
+    assert call.kwargs['recipients'] == []

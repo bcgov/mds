@@ -17,6 +17,23 @@ MINISTRY_CONTACT_MODEL = api.model(
         'mailing_address_line_1': fields.String,
         'mailing_address_line_2': fields.String,
         'deleted_ind': fields.Boolean,
+        'distribution_list_guids': fields.List(fields.String),
+    })
+
+DISTRIBUTION_LIST_MODEL = api.model(
+    'DistributionList', {
+        'distribution_list_guid': fields.String,
+        'distribution_list_name': fields.String,
+        'description': fields.String,
+    })
+
+DISTRIBUTION_LIST_MODEL_LIST = api.model(
+    'DistributionListList', {
+        'records': fields.List(fields.Nested(DISTRIBUTION_LIST_MODEL)),
+        'current_page': fields.Integer,
+        'total': fields.Integer,
+        'total_pages': fields.Integer,
+        'items_per_page': fields.Integer,
     })
 
 MINISTRY_CONTACT_TYPE = api.model('MinistryContactType', {

@@ -1,7 +1,5 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { compose } from "redux";
+import React, { FC } from "react";
+import { useSelector } from "react-redux";
 import { Field, getFormValues } from "@mds/common/components/forms/form";
 import { Col, Row } from "antd";
 import { CoreTooltip } from "@/components/common/CoreTooltip";
@@ -19,38 +17,42 @@ import {
 import { normalizePhone } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
-import CustomPropTypes from "@/customPropTypes";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
 import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
+import { IMinistryContact } from "@mds/common/interfaces";
 
-const propTypes = {
-  onSubmit: PropTypes.func.isRequired,
-  initialValues: PropTypes.any,
-  regionDropdownOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
-  MinistryContactTypes: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
-  formValues: PropTypes.objectOf(PropTypes.any),
-  isEdit: PropTypes.bool.isRequired,
-  title: PropTypes.string.isRequired,
-  contacts: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
-};
+interface IOption {
+  value: string | number;
+  label: string;
+}
 
-const defaultProps = {
-  formValues: {},
-};
+export interface MinistryContactFormProps {
+  onSubmit: (values: any) => void | Promise<void>;
+  initialValues?: any;
+  isEdit: boolean;
+  title: string;
+  contacts: IMinistryContact[];
+  distributionListOptions: IOption[];
+}
 
 const regionalOfficeCode = "ROE";
 const majorMineOfficeCode = "MMO";
 const chiefPermittingCode = "CHP";
 const chiefInspectorCode = "CHI";
 const officeCodes = [regionalOfficeCode, majorMineOfficeCode];
-export const MinistryContactForm = (props) => {
+
+export const MinistryContactForm: FC<MinistryContactFormProps> = (props) => {
+  const formValues: any = useSelector((state) => getFormValues(FORM.MINISTRY_CONTACT_FORM)(state)) || {};
+  const regionDropdownOptions: IOption[] = useSelector(getMineRegionDropdownOptions);
+  const MinistryContactTypes: IOption[] = useSelector(getDropdownMinistryContactTypes);
+
   const filteredContactTypes = () => {
-    const codes = [];
+    const codes: string[] = [];
     const containsAllOffices =
       props.contacts.filter(
         ({ emli_contact_type_code }) => emli_contact_type_code === regionalOfficeCode
-      ).length === props.regionDropdownOptions.length;
+      ).length === regionDropdownOptions.length;
     const containsMMO = props.contacts.some(
       ({ emli_contact_type_code }) => emli_contact_type_code === majorMineOfficeCode
     );
@@ -60,6 +62,7 @@ export const MinistryContactForm = (props) => {
     const containsCheifInspector = props.contacts.some(
       ({ emli_contact_type_code }) => emli_contact_type_code === chiefInspectorCode
     );
+    
     if (!props.isEdit) {
       if (containsAllOffices) {
         codes.push(regionalOfficeCode);
@@ -74,7 +77,7 @@ export const MinistryContactForm = (props) => {
         codes.push(chiefInspectorCode);
       }
     }
-    return props.MinistryContactTypes.filter(({ value }) => !codes.includes(value));
+    return MinistryContactTypes.filter(({ value }) => !codes.includes(value as string));
   };
 
   return (
@@ -101,7 +104,7 @@ export const MinistryContactForm = (props) => {
               disabled={props.isEdit}
             />
           </Col>
-          {props.formValues.is_major_mine && (
+          {formValues.is_major_mine && (
             <Col span={12}>
               <Field
                 id="is_general_contact"
@@ -129,13 +132,13 @@ export const MinistryContactForm = (props) => {
               label={"Mine Region"}
               placeholder="Select a mine Region"
               component={renderConfig.SELECT}
-              required={!props.formValues.is_major_mine}
+              required={!formValues.is_major_mine}
               validate={
-                props.formValues.is_major_mine
+                formValues.is_major_mine
                   ? []
                   : [required]
               }
-              data={props.regionDropdownOptions}
+              data={regionDropdownOptions}
               disabled={props.isEdit}
             />
           </Col>
@@ -153,7 +156,7 @@ export const MinistryContactForm = (props) => {
             />
           </Col>
         </Row>
-        {!officeCodes.includes(props.formValues.emli_contact_type_code) && (
+        {!officeCodes.includes(formValues.emli_contact_type_code) && (
           <Row gutter={16}>
             <Col md={12} xs={24}>
               <Field
@@ -163,7 +166,7 @@ export const MinistryContactForm = (props) => {
                 component={renderConfig.FIELD}
                 required
                 validate={[required]}
-                disabled={!props.formValues.emli_contact_type_code}
+                disabled={!formValues.emli_contact_type_code}
               />
             </Col>
             <Col md={12} xs={24}>
@@ -174,7 +177,7 @@ export const MinistryContactForm = (props) => {
                 component={renderConfig.FIELD}
                 required
                 validate={[required]}
-                disabled={!props.formValues.emli_contact_type_code}
+                disabled={!formValues.emli_contact_type_code}
               />
             </Col>
           </Row>
@@ -189,7 +192,7 @@ export const MinistryContactForm = (props) => {
               component={renderConfig.FIELD}
               required
               validate={[email, required]}
-              disabled={!props.formValues.emli_contact_type_code}
+              disabled={!formValues.emli_contact_type_code}
             />
           </Col>
         </Row>
@@ -204,11 +207,11 @@ export const MinistryContactForm = (props) => {
               required
               validate={[required, phoneNumber, maxLength(12)]}
               normalize={normalizePhone}
-              disabled={!props.formValues.emli_contact_type_code}
+              disabled={!formValues.emli_contact_type_code}
             />
           </Col>
         </Row>
-        {officeCodes.includes(props.formValues.emli_contact_type_code) && (
+        {officeCodes.includes(formValues.emli_contact_type_code) && (
           <>
             <Row gutter={16}>
               <Col span={24}>
@@ -220,7 +223,7 @@ export const MinistryContactForm = (props) => {
                   component={renderConfig.FIELD}
                   validate={[phoneNumber, maxLength(12)]}
                   normalize={normalizePhone}
-                  disabled={!props.formValues.emli_contact_type_code}
+                  disabled={!formValues.emli_contact_type_code}
                 />
               </Col>
             </Row>
@@ -231,13 +234,13 @@ export const MinistryContactForm = (props) => {
                   name="mailing_address_line_1"
                   label={"Mailing Address Line 1"}
                   component={renderConfig.AUTO_SIZE_FIELD}
-                  required={props.formValues.emli_contact_type_code === regionalOfficeCode}
+                  required={formValues.emli_contact_type_code === regionalOfficeCode}
                   validate={
-                    props.formValues.emli_contact_type_code === regionalOfficeCode
+                    formValues.emli_contact_type_code === regionalOfficeCode
                       ? [required]
                       : []
                   }
-                  disabled={!props.formValues.emli_contact_type_code}
+                  disabled={!formValues.emli_contact_type_code}
                 />
               </Col>
             </Row>
@@ -248,18 +251,30 @@ export const MinistryContactForm = (props) => {
                   name="mailing_address_line_2"
                   label={"Mailing Address Line 2"}
                   component={renderConfig.AUTO_SIZE_FIELD}
-                  required={props.formValues.emli_contact_type_code === regionalOfficeCode}
+                  required={formValues.emli_contact_type_code === regionalOfficeCode}
                   validate={
-                    props.formValues.emli_contact_type_code === regionalOfficeCode
+                    formValues.emli_contact_type_code === regionalOfficeCode
                       ? [required]
                       : []
                   }
-                  disabled={!props.formValues.emli_contact_type_code}
+                  disabled={!formValues.emli_contact_type_code}
                 />
               </Col>
             </Row>
           </>
         )}
+        <Row gutter={16}>
+          <Col span={24}>
+            <Field
+              id="distribution_list_guids"
+              name="distribution_list_guids"
+              label="Notification Groups"
+              placeholder="Select Notification Groups"
+              component={renderConfig.MULTI_SELECT}
+              data={props.distributionListOptions}
+            />
+          </Col>
+        </Row>
 
         <div className="right center-mobile">
           <RenderCancelButton />
@@ -270,13 +285,4 @@ export const MinistryContactForm = (props) => {
   );
 };
 
-MinistryContactForm.propTypes = propTypes;
-MinistryContactForm.defaultProps = defaultProps;
-
-export default compose(
-  connect((state) => ({
-    formValues: getFormValues(FORM.MINISTRY_CONTACT_FORM)(state) || {},
-    regionDropdownOptions: getMineRegionDropdownOptions(state),
-    MinistryContactTypes: getDropdownMinistryContactTypes(state),
-  }))
-)(MinistryContactForm);
+export default MinistryContactForm;

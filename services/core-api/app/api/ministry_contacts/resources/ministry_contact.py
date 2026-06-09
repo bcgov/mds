@@ -8,6 +8,7 @@ from app.api.utils.access_decorators import requires_role_edit_ministry_contacts
 from app.api.ministry_contacts.response_models import MINISTRY_CONTACT_MODEL
 from app.api.ministry_contacts.models.ministry_contact import MinistryContact
 from app.api.ministry_contacts.models.ministry_contact_type import MinistryContactType
+from app.api.ministry_contacts.models.distribution_list_user import DistributionListUser
 
 
 class MinistryContactResource(Resource, UserMixin):
@@ -31,6 +32,8 @@ class MinistryContactResource(Resource, UserMixin):
         type=str,
         help='MCM Regional Office mailing address line 2',
         location='json')
+    parser.add_argument(
+        'distribution_list_guids', type=list, location='json', default=[])
 
     @api.doc(description='Update an existing MCM contact.')
     @api.marshal_with(MINISTRY_CONTACT_MODEL)
@@ -42,8 +45,23 @@ class MinistryContactResource(Resource, UserMixin):
 
         data = self.parser.parse_args()
 
+        distribution_list_guids = data.pop('distribution_list_guids', [])
+        
         for key, value in data.items():
             setattr(contact, key, value)
+
+        # Soft delete existing records
+        existing_dlu = DistributionListUser.find_by_contact_guid(contact.contact_guid)
+        for dlu in existing_dlu:
+            if str(dlu.distribution_list_guid) not in distribution_list_guids:
+                dlu.deleted_ind = True
+                dlu.save(commit=False)
+                
+        # Add new records
+        existing_guids = [str(dlu.distribution_list_guid) for dlu in existing_dlu if not dlu.deleted_ind]
+        for guid in distribution_list_guids:
+            if guid not in existing_guids:
+                DistributionListUser.create(guid, contact.contact_guid, add_to_session=True)
 
         contact.save()
 

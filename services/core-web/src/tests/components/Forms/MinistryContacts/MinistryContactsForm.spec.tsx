@@ -14,6 +14,8 @@ const props = {
   initialValues: {},
   formValues: {},
   contacts: [],
+  onSubmit: jest.fn(),
+  distributionListOptions: [],
 };
 
 describe("MinistryContactForm", () => {

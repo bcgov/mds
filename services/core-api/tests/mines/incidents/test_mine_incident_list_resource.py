@@ -1,5 +1,6 @@
 import json
 import uuid
+from unittest.mock import patch
 
 from tests.factories import MineIncidentFactory, MineFactory
 
@@ -35,7 +36,9 @@ class TestGetMineIncidents:
 
 class TestPostMineIncident:
     """POST /mines/{mine_guid}/incidents"""
-    def test_post_mine_incident(self, test_client, db_session, auth_headers):
+    
+    @patch('app.api.incidents.models.mine_incident.MineIncident.send_incidents_email')
+    def test_post_mine_incident(self, mock_send_incidents_email, test_client, db_session, auth_headers):
         """Should return the new mine incident record"""
 
         mine = MineFactory()

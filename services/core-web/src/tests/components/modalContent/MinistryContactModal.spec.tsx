@@ -13,6 +13,7 @@ const props = {
   MinistryContactTypes: [],
   isEdit: true,
   contacts: [],
+  distributionListOptions: [],
 };
 
 describe("MinistryContactModal", () => {

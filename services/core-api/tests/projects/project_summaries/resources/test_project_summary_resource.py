@@ -1,5 +1,6 @@
 import json
 import re
+from unittest.mock import patch
 
 from tests.factories import ProjectFactory, ProjectSummaryFactory, PartyFactory
 from tests.constants import *
@@ -92,7 +93,8 @@ def test_update_project_summary_assign_project_lead(test_client, db_session, aut
     assert put_resp.status_code == 200
     assert put_data['status_code'] == 'ASG'
 
-def test_submit_project_summary_without_ams_auths(test_client, db_session, auth_headers):
+@patch('app.api.projects.project_summary.models.project_summary.ProjectSummary.send_project_summary_email')
+def test_submit_project_summary_without_ams_auths(mock_send, test_client, db_session, auth_headers):
     '''Project summary submitted without AMS authorizations submitted successfully'''
     project = ProjectFactory(project_summary=0)
     project_summary = ProjectSummaryFactory(project=project)
@@ -226,7 +228,8 @@ def test_update_project_summary_bad_request_with_validation_errors(test_client, 
     assert put_data['message'] == re.compile(r"\s+").sub(" ", error_message).strip()
 
 
-def test_update_project_summary_validation_success(test_client, db_session, auth_headers):
+@patch('app.api.projects.project_summary.models.project_summary.ProjectSummary.send_project_summary_email')
+def test_update_project_summary_validation_success(mock_send, test_client, db_session, auth_headers):
     '''A payload with status_code SUB validates successfully'''
     project = ProjectFactory(project_summary=0)
     project_summary = ProjectSummaryFactory(project=project)

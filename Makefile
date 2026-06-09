@@ -91,6 +91,10 @@ extra:
 	@echo "+\n++ Building tertiary services ...\n+"
 	@docker compose $(DC_FILE) up -d docgen-api filesystem_provider
 
+mailpit:
+	@echo "+\n++ Starting local Mailpit for email testing ...\n+"
+	@docker compose -f docker-compose.mailpit.yaml up -d
+
 # Simply for legacy support, this command will be retired shortly
 fe:
 	@echo "+\n++ Removing frontend docker container and building local dev version ...\n+"
@@ -161,6 +165,7 @@ env:
 stop:
 	@echo "+\n++ Stopping all containers...\n+"
 	@docker compose $(DC_FILE) down
+	@docker compose -f docker-compose.mailpit.yaml down
 
 clean: stop |
 	@echo "+\n++ Cleaning ...\n+"
