@@ -1,5 +1,6 @@
 import json
 import uuid
+from unittest.mock import patch
 
 from tests.factories import MineIncidentFactory, MineFactory
 
@@ -34,7 +35,10 @@ class TestGetMineIncident:
 class TestPutMineIncident:
     """PUT /mines/{mine_guid}/incidents/{mine_incident_guid}"""
 
-    def test_put_mine_incident(self, test_client, db_session, auth_headers):
+    @patch('app.api.incidents.models.mine_incident.MineIncident.send_incidents_email')
+    @patch('app.api.incidents.models.mine_incident.MineIncident.send_awaiting_final_report_email')
+    @patch('app.api.incidents.models.mine_incident.MineIncident.send_final_report_received_email')
+    def test_put_mine_incident(self, mock_send_final, mock_send_awaiting, mock_send_incidents, test_client, db_session, auth_headers):
         """Should return the updated mine_incident record"""
 
         mine_incident = MineIncidentFactory()

@@ -251,6 +251,88 @@ class EmailService():
             tracking_records.append(tracking_record)
         return tracking_records
 
+    @classmethod
+    def _send_via_mailpit(cls, subject, sender, recipients, cc, bcc, body, body_type, tracking_records, attachments=None):
+        import smtplib
+        from email.message import EmailMessage
+        import uuid
+        import base64
+        
+        msg = EmailMessage()
+        msg['Subject'] = subject
+        msg['From'] = sender
+        msg['To'] = ', '.join(recipients) if isinstance(recipients, list) else recipients
+        if cc:
+            msg['Cc'] = ', '.join(cc) if isinstance(cc, list) else cc
+        
+        if body_type == EmailBodyType.HTML.value:
+            msg.set_content(body, subtype='html')
+        else:
+            msg.set_content(body)
+            
+        if attachments:
+            for attachment in attachments:
+                file_content = attachment.get('content', '')
+                file_name = attachment.get('filename', 'attachment')
+                try:
+                    decoded_content = base64.b64decode(file_content)
+                    msg.add_attachment(decoded_content, maintype='application', subtype='octet-stream', filename=file_name)
+                except Exception as e:
+                    current_app.logger.error(f'Error attaching file in mailpit: {e}')
+
+        all_recipients = (recipients if isinstance(recipients, list) else [recipients])
+        all_recipients += (cc if isinstance(cc, list) else [cc] if cc else [])
+        all_recipients += (bcc if isinstance(bcc, list) else [bcc] if bcc else [])
+
+        try:
+            with smtplib.SMTP(Config.MAILPIT_HOST, Config.MAILPIT_PORT) as s:
+                s.send_message(msg, from_addr=sender, to_addrs=all_recipients)
+            
+            transaction_id = str(uuid.uuid4())
+            message_id = str(uuid.uuid4())
+            resp_data = {'txId': transaction_id, 'messages': [{'msgId': message_id}]}
+            cls._handle_successful_email_response(resp_data, tracking_records)
+            current_app.logger.info(f'Mailpit email request successful. Subject: {subject}')
+        except Exception as e:
+            current_app.logger.error(f'Mailpit email request failed: {e}')
+            for tracking_record in tracking_records:
+                tracking_record.mark_as_failed(error_message=str(e))
+
+
+    @classmethod
+    def _validate_and_prepare_send(cls, body_type, encoding, priority, recipients, cc, bcc):
+        '''Validates enum params, checks send guards, filters recipients. Returns (is_not_prod, original_recipients, recipients, cc, bcc) or None to abort.'''
+        if body_type not in EmailBodyType._value2member_map_:
+            raise Exception('Email body type is invalid')
+        if encoding not in EmailEncoding._value2member_map_:
+            raise Exception('Email encoding is invalid')
+        if priority not in EmailPriority._value2member_map_:
+            raise Exception('Email priority is invalid')
+
+        is_not_prod = Config.ENVIRONMENT_NAME != 'prod'
+        if not Config.USE_LOCAL_MAILPIT:
+            if not Config.EMAIL_ENABLED:
+                current_app.logger.info('Not sending email: Emails are disabled.')
+                return None
+            elif is_not_prod and not Config.EMAIL_RECIPIENT_OVERRIDE:
+                current_app.logger.info(
+                    'Not sending email: Recipient override must be set when not in prod environment!')
+                return None
+
+        recipients = [r for r in (recipients or []) if r]
+        cc = [c for c in (cc or []) if c]
+        bcc = [b for b in (bcc or []) if b]
+
+        if not recipients and not cc and not bcc:
+            current_app.logger.info('Not sending email: No valid recipients found.')
+            return None
+
+        original_recipients = recipients
+        if Config.EMAIL_RECIPIENT_OVERRIDE and not Config.USE_LOCAL_MAILPIT:
+            recipients = [Config.EMAIL_RECIPIENT_OVERRIDE]
+
+        return is_not_prod, original_recipients, recipients, cc, bcc
+
     # NOTE: See here for details: https://ches.nrs.gov.bc.ca/api/v1/docs#tag/Email
     @classmethod
     def send_email(cls,
@@ -270,40 +352,14 @@ class EmailService():
                    # Email tracking parameters
                    reference_id=None,
                    reference_table=None,
-                   reference_email_type=None):
+                   reference_email_type=None,
+                   distribution_list_guid=None):
         '''Sends an email.'''
 
-        # Validate enum parameters.
-        if not body_type in EmailBodyType._value2member_map_:
-            raise Exception('Email body type is invalid')
-        if not encoding in EmailEncoding._value2member_map_:
-            raise Exception('Email encoding is invalid')
-        if not priority in EmailPriority._value2member_map_:
-            raise Exception('Email priority is invalid')
-
-        # NOTE: Be careful when enabling emails in local/dev/test. You could possibly be sending spam emails!
-        is_not_prod = Config.ENVIRONMENT_NAME != 'prod'
-        if not Config.EMAIL_ENABLED:
-            current_app.logger.info('Not sending email: Emails are disabled.')
+        prepared = cls._validate_and_prepare_send(body_type, encoding, priority, recipients, cc, bcc)
+        if prepared is None:
             return
-        elif is_not_prod and not Config.EMAIL_RECIPIENT_OVERRIDE:
-            current_app.logger.info(
-                'Not sending email: Recipient override must be set when not in prod environment!')
-            return
-
-        # Filter out None or empty string recipients
-        recipients = [r for r in (recipients or []) if r]
-        cc = [c for c in (cc or []) if c]
-        bcc = [b for b in (bcc or []) if b]
-
-        if not recipients and not cc and not bcc:
-            current_app.logger.info('Not sending email: No valid recipients found.')
-            return
-
-        original_recipients = recipients
-
-        if Config.EMAIL_RECIPIENT_OVERRIDE:
-            recipients = [Config.EMAIL_RECIPIENT_OVERRIDE]
+        is_not_prod, original_recipients, recipients, cc, bcc = prepared
 
         # Create email tracking records before sending
         tracking_records = []
@@ -314,6 +370,7 @@ class EmailService():
             'email_template_name': None,
             'reference_email_type': reference_email_type,
             'email_subject': subject,
+            'distribution_list_guid': distribution_list_guid,
         }
 
         # Create tracking records for all recipient types
@@ -324,6 +381,18 @@ class EmailService():
         tracking_records.extend(cls._create_tracking_records_for_recipients(
             bcc, RecipientType.bcc, tracking_record_kwargs))
 
+        if Config.USE_LOCAL_MAILPIT:
+            return cls._send_via_mailpit(
+                subject=f'{subject} [recipients: {original_recipients}]' if is_not_prod else subject,
+                sender=sender,
+                recipients=recipients,
+                cc=cc,
+                bcc=bcc,
+                body=body,
+                body_type=body_type,
+                tracking_records=tracking_records,
+                attachments=attachments
+            )
 
         EmailService.perform_health_check()
 
@@ -397,7 +466,8 @@ class EmailService():
                             # Email tracking parameters
                             reference_id=None,
                             reference_table=None,
-                            reference_email_type=None):
+                            reference_email_type=None,
+                            distribution_list_guid=None):
         '''Sends an email using Jinja2 template rendering.
 
         Args:
@@ -405,37 +475,10 @@ class EmailService():
             context: Dictionary of variables to pass to the template
         '''
 
-        # Validate enum parameters.
-        if not body_type in EmailBodyType._value2member_map_:
-            raise Exception('Email body type is invalid')
-        if not encoding in EmailEncoding._value2member_map_:
-            raise Exception('Email encoding is invalid')
-        if not priority in EmailPriority._value2member_map_:
-            raise Exception('Email priority is invalid')
-
-        # NOTE: Be careful when enabling emails in local/dev/test. You could possibly be sending spam emails!
-        is_not_prod = Config.ENVIRONMENT_NAME != 'prod'
-        if not Config.EMAIL_ENABLED:
-            current_app.logger.info('Not sending email: Emails are disabled.')
+        prepared = cls._validate_and_prepare_send(body_type, encoding, priority, recipients, cc, bcc)
+        if prepared is None:
             return
-        elif is_not_prod and not Config.EMAIL_RECIPIENT_OVERRIDE:
-            current_app.logger.info(
-                'Not sending email: Recipient override must be set when not in prod environment!')
-            return
-
-        # Filter out None or empty string recipients
-        recipients = [r for r in (recipients or []) if r]
-        cc = [c for c in (cc or []) if c]
-        bcc = [b for b in (bcc or []) if b]
-
-        if not recipients and not cc and not bcc:
-            current_app.logger.info('Not sending email: No valid recipients found.')
-            return
-
-        original_recipients = recipients
-
-        if Config.EMAIL_RECIPIENT_OVERRIDE:
-            recipients = [Config.EMAIL_RECIPIENT_OVERRIDE]
+        is_not_prod, original_recipients, recipients, cc, bcc = prepared
 
         try:
             # Render template with Jinja2
@@ -464,6 +507,7 @@ class EmailService():
             'email_template_name': email_template_name,
             'reference_email_type': reference_email_type if reference_email_type else email_template_name,
             'email_subject': subject,
+            'distribution_list_guid': distribution_list_guid,
         }
 
         # Create tracking records for all recipient types
@@ -473,6 +517,19 @@ class EmailService():
             cc, RecipientType.cc, tracking_record_kwargs))
         tracking_records.extend(cls._create_tracking_records_for_recipients(
             bcc, RecipientType.bcc, tracking_record_kwargs))
+
+        if Config.USE_LOCAL_MAILPIT:
+            return cls._send_via_mailpit(
+                subject=f'{subject} [recipients: {original_recipients}]' if is_not_prod else subject,
+                sender=sender,
+                recipients=recipients,
+                cc=cc,
+                bcc=bcc,
+                body=rendered_body,
+                body_type=body_type,
+                tracking_records=tracking_records,
+                attachments=attachments
+            )
 
         EmailService.perform_health_check()
 
@@ -521,3 +578,83 @@ class EmailService():
         current_app.logger.info(
             f'Common Services email request successful.\nEmail Subject: {subject}\nResponse: {resp_data}\nRecipients: {original_recipients}'
         )
+
+    @classmethod
+    def send_template_email_async(cls,
+                                  subject,
+                                  recipients,
+                                  template_path,
+                                  context,
+                                  distribution_list=None,
+                                  cc=None,
+                                  bcc=None,
+                                  sender=None,
+                                  reference_id=None,
+                                  reference_table=None,
+                                  reference_email_type=None,
+                                  **kwargs):
+        #import here to avoid circular dependency
+        from app.api.email_tracking.email_status_tasks import send_template_email_task 
+
+        distribution_list_guid = None
+        if distribution_list is not None:
+            #import here to avoid circular dependency
+            from app.api.ministry_contacts.models.distribution_list import DistributionList
+            dl = DistributionList.find_by_name(distribution_list)
+            if dl:
+                recipients = list(set((recipients or []) + dl.get_emails()))
+                distribution_list_guid = str(dl.distribution_list_guid)
+
+        send_template_email_task.apply_async(kwargs={
+            'subject': subject,
+            'recipients': recipients,
+            'template_path': template_path,
+            'context': context,
+            'sender': sender,
+            'cc': cc,
+            'bcc': bcc,
+            'distribution_list_guid': distribution_list_guid,
+            'reference_id': reference_id,
+            'reference_table': reference_table,
+            'reference_email_type': reference_email_type,
+            **kwargs
+        })
+
+    @classmethod
+    def send_email_async(cls,
+                         subject,
+                         recipients,
+                         body,
+                         distribution_list=None,
+                         cc=None,
+                         bcc=None,
+                         sender=None,
+                         reference_id=None,
+                         reference_table=None,
+                         reference_email_type=None,
+                         **kwargs):
+        #import here to avoid circular dependency
+        from app.api.email_tracking.email_status_tasks import send_email_task
+
+        distribution_list_guid = None
+        if distribution_list is not None:
+            #import here to avoid circular dependency
+            from app.api.ministry_contacts.models.distribution_list import DistributionList
+            dl = DistributionList.find_by_name(distribution_list)
+            if dl:
+                recipients = list(set((recipients or []) + dl.get_emails()))
+                distribution_list_guid = str(dl.distribution_list_guid)
+
+        send_email_task.apply_async(kwargs={
+            'subject': subject,
+            'recipients': recipients,
+            'body': body,
+            'sender': sender,
+            'cc': cc,
+            'bcc': bcc,
+            'distribution_list_guid': distribution_list_guid,
+            'reference_id': reference_id,
+            'reference_table': reference_table,
+            'reference_email_type': reference_email_type,
+            **kwargs
+        })

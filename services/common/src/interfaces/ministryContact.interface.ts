@@ -1,3 +1,9 @@
+export interface IDistributionList {
+  distribution_list_guid: string;
+  distribution_list_name: string;
+  description: string;
+}
+
 export interface IMinistryContact {
   contact_guid: string;
   contact_id: number;
@@ -13,4 +19,5 @@ export interface IMinistryContact {
   mailing_address_line_2: string;
   mine_region_code: string;
   phone_number: string;
+  distribution_list_guids?: string[];
 }

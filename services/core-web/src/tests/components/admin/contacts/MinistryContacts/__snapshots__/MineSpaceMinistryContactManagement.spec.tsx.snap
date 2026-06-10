@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`MineSpaceMinistryContactManagement renders properly 1`] = `
+exports[`MineSpaceMinistryContactManagement renders properly and fetches data on mount 1`] = `
 <div>
   <div>
     <div
@@ -12,319 +12,245 @@ exports[`MineSpaceMinistryContactManagement renders properly 1`] = `
         <h1>
           MineSpace MCM Contact Management
         </h1>
-      </div>
-    </div>
-    <div
-      class="tab__content"
-    >
-      <div
-        class="ant-alert ant-alert-info ant-alert-with-description"
-        data-show="true"
-        role="alert"
-      >
-        <span
-          aria-label="info-circle"
-          class="anticon anticon-info-circle ant-alert-icon"
-          role="img"
-        >
-          <svg
-            aria-hidden="true"
-            data-icon="info-circle"
-            fill="currentColor"
-            focusable="false"
-            height="1em"
-            viewBox="64 64 896 896"
-            width="1em"
-          >
-            <path
-              d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
-            />
-            <path
-              d="M464 336a48 48 0 1096 0 48 48 0 10-96 0zm72 112h-48c-4.4 0-8 3.6-8 8v272c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8V456c0-4.4-3.6-8-8-8z"
-            />
-          </svg>
-        </span>
-        <div
-          class="ant-alert-content"
-        >
-          <div
-            class="ant-alert-message"
-          >
-            MCM contacts and offices are displayed in multiple places within Core and MineSpace.
-          </div>
-          <div
-            class="ant-alert-description"
-          >
-            The Contacts are displayed in MineSpace to proponents.
-            <br />
-            The Offices are displayed in MineSpace, shown on the footer on permits, and NoW documents, and are the default email address for variances, code required reports, and mine information notifications.
-          </div>
-        </div>
         <button
-          class="ant-alert-close-icon"
-          tabindex="0"
+          class="ant-btn ant-btn-primary full-mobile btn--middle"
           type="button"
         >
           <span
-            aria-label="close"
-            class="anticon anticon-close"
+            aria-label="plus"
+            class="anticon anticon-plus"
             role="img"
           >
             <svg
               aria-hidden="true"
-              data-icon="close"
+              class=""
+              data-icon="plus"
               fill="currentColor"
-              fill-rule="evenodd"
               focusable="false"
               height="1em"
               viewBox="64 64 896 896"
               width="1em"
             >
               <path
-                d="M799.86 166.31c.02 0 .04.02.08.06l57.69 57.7c.04.03.05.05.06.08a.12.12 0 010 .06c0 .03-.02.05-.06.09L569.93 512l287.7 287.7c.04.04.05.06.06.09a.12.12 0 010 .07c0 .02-.02.04-.06.08l-57.7 57.69c-.03.04-.05.05-.07.06a.12.12 0 01-.07 0c-.03 0-.05-.02-.09-.06L512 569.93l-287.7 287.7c-.04.04-.06.05-.09.06a.12.12 0 01-.07 0c-.02 0-.04-.02-.08-.06l-57.69-57.7c-.04-.03-.05-.05-.06-.07a.12.12 0 010-.07c0-.03.02-.05.06-.09L454.07 512l-287.7-287.7c-.04-.04-.05-.06-.06-.09a.12.12 0 010-.07c0-.02.02-.04.06-.08l57.7-57.69c.03-.04.05-.05.07-.06a.12.12 0 01.07 0c.03 0 .05.02.09.06L512 454.07l287.7-287.7c.04-.04.06-.05.09-.06a.12.12 0 01.07 0z"
+                d="M482 152h60q8 0 8 8v704q0 8-8 8h-60q-8 0-8-8V160q0-8 8-8z"
+              />
+              <path
+                d="M192 474h672q8 0 8 8v60q0 8-8 8H160q-8 0-8-8v-60q0-8 8-8z"
               />
             </svg>
           </span>
+          <span>
+            Create MCM Contact
+          </span>
         </button>
       </div>
-      <h2>
-        Offices
-      </h2>
+    </div>
+    <div
+      class="tab__content"
+    >
       <div
-        class="ant-divider ant-divider-horizontal"
-        role="separator"
-      />
-      <div
-        class="ant-table-wrapper"
+        class="ant-tabs ant-tabs-top ant-tabs-card"
       >
         <div
-          class="ant-spin-nested-loading"
+          class="ant-tabs-nav"
+          role="tablist"
         >
           <div
-            class="ant-spin-container"
+            class="ant-tabs-nav-wrap"
           >
             <div
-              class="ant-table"
+              class="ant-tabs-nav-list"
+              style="transform: translate(0px, 0px);"
             >
               <div
-                class="ant-table-container"
+                class="ant-tabs-tab ant-tabs-tab-active"
+                data-node-key="1"
               >
                 <div
-                  class="ant-table-content"
+                  aria-controls="rc-tabs-test-panel-1"
+                  aria-selected="true"
+                  class="ant-tabs-tab-btn"
+                  id="rc-tabs-test-tab-1"
+                  role="tab"
+                  tabindex="0"
                 >
-                  <table
-                    style="table-layout: auto;"
-                  >
-                    <colgroup />
-                    <thead
-                      class="ant-table-thead"
-                    >
-                      <tr>
-                        <th
-                          class="ant-table-cell"
-                        >
-                          Region
-                        </th>
-                        <th
-                          class="ant-table-cell"
-                        >
-                          Major or Regional Contact
-                        </th>
-                        <th
-                          class="ant-table-cell"
-                        >
-                          <span>
-                            General Contact
-                            <span
-                              aria-label="info-circle"
-                              class="anticon anticon-info-circle info-tooltip icon-sm"
-                              role="img"
-                              style="color: rgb(94, 70, 161);"
-                            >
-                              <svg
-                                aria-hidden="true"
-                                class=""
-                                data-icon="info-circle"
-                                fill="currentColor"
-                                focusable="false"
-                                height="1em"
-                                viewBox="64 64 896 896"
-                                width="1em"
-                              >
-                                <path
-                                  d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
-                                />
-                                <path
-                                  d="M464 336a48 48 0 1096 0 48 48 0 10-96 0zm72 112h-48c-4.4 0-8 3.6-8 8v272c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8V456c0-4.4-3.6-8-8-8z"
-                                />
-                              </svg>
-                            </span>
-                          </span>
-                        </th>
-                        <th
-                          class="ant-table-cell"
-                        >
-                          Contact Type
-                        </th>
-                        <th
-                          class="ant-table-cell column-hide"
-                        >
-                          Name
-                        </th>
-                        <th
-                          class="ant-table-cell"
-                        >
-                          Email
-                        </th>
-                        <th
-                          class="ant-table-cell"
-                        >
-                          Phone Number
-                        </th>
-                        <th
-                          class="ant-table-cell"
-                        >
-                          Fax Number
-                        </th>
-                        <th
-                          class="ant-table-cell"
-                        >
-                          Address
-                        </th>
-                        <th
-                          class="ant-table-cell"
-                        >
-                          
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody
-                      class="ant-table-tbody"
-                    />
-                  </table>
+                  MCM Contacts
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <br />
-      <h2>
-        Contacts
-      </h2>
-      <div
-        class="ant-divider ant-divider-horizontal"
-        role="separator"
-      />
-      <div
-        class="ant-table-wrapper"
-      >
-        <div
-          class="ant-spin-nested-loading"
-        >
-          <div
-            class="ant-spin-container"
-          >
-            <div
-              class="ant-table"
-            >
               <div
-                class="ant-table-container"
+                class="ant-tabs-tab"
+                data-node-key="2"
               >
                 <div
-                  class="ant-table-content"
+                  aria-controls="rc-tabs-test-panel-2"
+                  aria-selected="false"
+                  class="ant-tabs-tab-btn"
+                  id="rc-tabs-test-tab-2"
+                  role="tab"
+                  tabindex="0"
                 >
-                  <table
-                    style="table-layout: auto;"
-                  >
-                    <colgroup />
-                    <thead
-                      class="ant-table-thead"
-                    >
-                      <tr>
-                        <th
-                          class="ant-table-cell"
-                        >
-                          Region
-                        </th>
-                        <th
-                          class="ant-table-cell"
-                        >
-                          Major or Regional Contact
-                        </th>
-                        <th
-                          class="ant-table-cell"
-                        >
-                          <span>
-                            General Contact
-                            <span
-                              aria-label="info-circle"
-                              class="anticon anticon-info-circle info-tooltip icon-sm"
-                              role="img"
-                              style="color: rgb(94, 70, 161);"
-                            >
-                              <svg
-                                aria-hidden="true"
-                                class=""
-                                data-icon="info-circle"
-                                fill="currentColor"
-                                focusable="false"
-                                height="1em"
-                                viewBox="64 64 896 896"
-                                width="1em"
-                              >
-                                <path
-                                  d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
-                                />
-                                <path
-                                  d="M464 336a48 48 0 1096 0 48 48 0 10-96 0zm72 112h-48c-4.4 0-8 3.6-8 8v272c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8V456c0-4.4-3.6-8-8-8z"
-                                />
-                              </svg>
-                            </span>
-                          </span>
-                        </th>
-                        <th
-                          class="ant-table-cell"
-                        >
-                          Contact Type
-                        </th>
-                        <th
-                          class="ant-table-cell"
-                        >
-                          Name
-                        </th>
-                        <th
-                          class="ant-table-cell"
-                        >
-                          Email
-                        </th>
-                        <th
-                          class="ant-table-cell"
-                        >
-                          Phone Number
-                        </th>
-                        <th
-                          class="ant-table-cell column-hide"
-                        >
-                          Fax Number
-                        </th>
-                        <th
-                          class="ant-table-cell column-hide"
-                        >
-                          Address
-                        </th>
-                        <th
-                          class="ant-table-cell"
-                        >
-                          
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody
-                      class="ant-table-tbody"
-                    />
-                  </table>
+                  Distribution Lists
                 </div>
+              </div>
+              <div
+                class="ant-tabs-ink-bar ant-tabs-ink-bar-animated"
+              />
+            </div>
+          </div>
+          <div
+            class="ant-tabs-nav-operations ant-tabs-nav-operations-hidden"
+          >
+            <button
+              aria-controls="rc-tabs-test-more-popup"
+              aria-expanded="false"
+              aria-haspopup="listbox"
+              aria-hidden="true"
+              class="ant-tabs-nav-more"
+              id="rc-tabs-test-more"
+              style="visibility: hidden; order: 1;"
+              tabindex="-1"
+              type="button"
+            >
+              <span
+                aria-label="ellipsis"
+                class="anticon anticon-ellipsis"
+                role="img"
+              >
+                <svg
+                  aria-hidden="true"
+                  data-icon="ellipsis"
+                  fill="currentColor"
+                  focusable="false"
+                  height="1em"
+                  viewBox="64 64 896 896"
+                  width="1em"
+                >
+                  <path
+                    d="M176 511a56 56 0 10112 0 56 56 0 10-112 0zm280 0a56 56 0 10112 0 56 56 0 10-112 0zm280 0a56 56 0 10112 0 56 56 0 10-112 0z"
+                  />
+                </svg>
+              </span>
+            </button>
+          </div>
+        </div>
+        <div
+          class="ant-tabs-content-holder"
+        >
+          <div
+            class="ant-tabs-content ant-tabs-content-top"
+          >
+            <div
+              aria-hidden="false"
+              aria-labelledby="rc-tabs-test-tab-1"
+              class="ant-tabs-tabpane ant-tabs-tabpane-active"
+              id="rc-tabs-test-panel-1"
+              role="tabpanel"
+              tabindex="0"
+            >
+              <div
+                class="ant-alert ant-alert-info ant-alert-with-description"
+                data-show="true"
+                role="alert"
+              >
+                <span
+                  aria-label="info-circle"
+                  class="anticon anticon-info-circle ant-alert-icon"
+                  role="img"
+                >
+                  <svg
+                    aria-hidden="true"
+                    data-icon="info-circle"
+                    fill="currentColor"
+                    focusable="false"
+                    height="1em"
+                    viewBox="64 64 896 896"
+                    width="1em"
+                  >
+                    <path
+                      d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
+                    />
+                    <path
+                      d="M464 336a48 48 0 1096 0 48 48 0 10-96 0zm72 112h-48c-4.4 0-8 3.6-8 8v272c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8V456c0-4.4-3.6-8-8-8z"
+                    />
+                  </svg>
+                </span>
+                <div
+                  class="ant-alert-content"
+                >
+                  <div
+                    class="ant-alert-message"
+                  >
+                    MCM contacts and offices are displayed in multiple places within Core and MineSpace.
+                  </div>
+                  <div
+                    class="ant-alert-description"
+                  >
+                    The Contacts are displayed in MineSpace to proponents.
+                    <br />
+                    The Offices are displayed in MineSpace, shown on the footer on permits, and NoW documents, and are the default email address for variances, code required reports, and mine information notifications.
+                  </div>
+                </div>
+                <button
+                  class="ant-alert-close-icon"
+                  tabindex="0"
+                  type="button"
+                >
+                  <span
+                    aria-label="close"
+                    class="anticon anticon-close"
+                    role="img"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      data-icon="close"
+                      fill="currentColor"
+                      fill-rule="evenodd"
+                      focusable="false"
+                      height="1em"
+                      viewBox="64 64 896 896"
+                      width="1em"
+                    >
+                      <path
+                        d="M799.86 166.31c.02 0 .04.02.08.06l57.69 57.7c.04.03.05.05.06.08a.12.12 0 010 .06c0 .03-.02.05-.06.09L569.93 512l287.7 287.7c.04.04.05.06.06.09a.12.12 0 010 .07c0 .02-.02.04-.06.08l-57.7 57.69c-.03.04-.05.05-.07.06a.12.12 0 01-.07 0c-.03 0-.05-.02-.09-.06L512 569.93l-287.7 287.7c-.04.04-.06.05-.09.06a.12.12 0 01-.07 0c-.02 0-.04-.02-.08-.06l-57.69-57.7c-.04-.03-.05-.05-.06-.07a.12.12 0 010-.07c0-.03.02-.05.06-.09L454.07 512l-287.7-287.7c-.04-.04-.05-.06-.06-.09a.12.12 0 010-.07c0-.02.02-.04.06-.08l57.7-57.69c.03-.04.05-.05.07-.06a.12.12 0 01.07 0c.03 0 .05.02.09.06L512 454.07l287.7-287.7c.04-.04.06-.05.09-.06a.12.12 0 01.07 0z"
+                      />
+                    </svg>
+                  </span>
+                </button>
+              </div>
+              <h2>
+                Offices
+              </h2>
+              <div
+                class="ant-divider ant-divider-horizontal"
+                role="separator"
+              />
+              <div
+                data-testid="mock-table"
+              >
+                <button>
+                  Mock Edit
+                </button>
+                <button>
+                  Mock Delete
+                </button>
+              </div>
+              <br />
+              <h2>
+                Contacts
+              </h2>
+              <div
+                class="ant-divider ant-divider-horizontal"
+                role="separator"
+              />
+              <div
+                data-testid="mock-table"
+              >
+                <button>
+                  Mock Edit
+                </button>
+                <button>
+                  Mock Delete
+                </button>
               </div>
             </div>
           </div>

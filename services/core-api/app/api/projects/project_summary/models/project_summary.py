@@ -20,6 +20,7 @@ from app.api.projects.project_summary.models.project_summary_document_xref impor
 from app.api.regions.models.regions import Regions
 from app.api.services.ams_api_service import AMSApiService
 from app.api.services.email_service import EmailService
+from app.api.ministry_contacts.models.distribution_list import DistributionListNames
 from app.api.utils.common_validation_schemas import (
     address_int_schema,
     address_na_schema,
@@ -1399,13 +1400,13 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                     "message": message,
                     "core_project_summary_link": f'{Config.CORE_WEB_URL}/pre-applications/{self.project.project_guid}/overview'
                 }
-                EmailService.send_template_email(
-                    subject,
-                    email_recipients,
-                    ministry_template,
-                    ministry_context,
+                EmailService.send_template_email_async(
+                    subject=subject,
+                    recipients=email_recipients,
+                    template_path=ministry_template,
+                    context=ministry_context,
                     cc=cc,
-                    reference_id=self.project_summary_guid,
+                    reference_id=str(self.project_summary_guid),
                     reference_table='project_summary'
                 )
 
@@ -1415,7 +1416,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         project_lead_email = self.project_lead_email
 
         ministry_emails = {
-            'SUB': [PERM_RECL_EMAIL] + PROJECT_SUMMARY_EMAILS,
+            'SUB': [PERM_RECL_EMAIL],
             'ASG': [project_lead_email],
             'OHD': [PERM_RECL_EMAIL, project_lead_email],
             'WDN': [PERM_RECL_EMAIL, project_lead_email],
@@ -1464,22 +1465,23 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         }
 
         if ministry_recipients:
-            EmailService.send_template_email(
-                subject,
-                ministry_recipients,
-                ministry_template,
-                ministry_context,
+            EmailService.send_template_email_async(
+                subject=subject,
+                recipients=ministry_recipients,
+                template_path=ministry_template,
+                context=ministry_context,
+                distribution_list=DistributionListNames.MAJOR_PROJECTS if self.status_code == 'SUB' else None,
                 cc=cc,
-                reference_id=self.project_summary_guid,
+                reference_id=str(self.project_summary_guid),
                 reference_table='project_summary'
             )
         if send_ms_email and minespace_recipients:
-            EmailService.send_template_email(
-                subject,
-                minespace_recipients,
-                minespace_template,
-                minespace_context,
+            EmailService.send_template_email_async(
+                subject=subject,
+                recipients=minespace_recipients,
+                template_path=minespace_template,
+                context=minespace_context,
                 cc=cc,
-                reference_id=self.project_summary_guid,
+                reference_id=str(self.project_summary_guid),
                 reference_table='project_summary'
             )

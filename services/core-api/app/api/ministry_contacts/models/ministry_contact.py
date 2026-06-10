@@ -3,6 +3,7 @@ from sqlalchemy.dialects.postgresql import UUID
 from app.api.utils.models_mixins import Base, AuditMixin
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy import and_
+from sqlalchemy.ext.hybrid import hybrid_property
 from app.api.utils.models_mixins import SoftDeleteMixin
 
 
@@ -29,6 +30,12 @@ class MinistryContact(SoftDeleteMixin, AuditMixin, Base):
         backref='emli_contact',
         order_by='asc(MinistryContactType.display_order)',
         lazy='joined')
+
+    @hybrid_property
+    def distribution_list_guids(self):
+        from app.api.ministry_contacts.models.distribution_list_user import DistributionListUser
+        dlu_records = DistributionListUser.find_by_contact_guid(self.contact_guid)
+        return [str(dlu.distribution_list_guid) for dlu in dlu_records]
 
     @classmethod
     def create(cls,

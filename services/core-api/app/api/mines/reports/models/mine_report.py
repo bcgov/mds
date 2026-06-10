@@ -21,6 +21,7 @@ from app.api.mines.reports.models.mine_report_submission_status_code import (
     MineReportSubmissionStatusCode,
 )
 from app.api.services.email_service import EmailService
+from app.api.ministry_contacts.models.distribution_list import DistributionListNames
 from app.api.utils.helpers import (
     format_email_datetime_to_string,
     get_current_core_or_ms_env_url,
@@ -263,13 +264,30 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
             self.mine_report_guid,
             recipients=ActivityRecipients.core_users)
 
+        distribution_list_name = DistributionListNames.REPORT_SUBMISSION_MAJOR_MINES if self.mine.major_mine_ind else DistributionListNames.REPORT_SUBMISSION_REGIONAL_MINES
+
         core_template = "email/report/core_new_report_submitted_email.html"
-        EmailService.send_template_email(
-            subject, core_recipients, core_template, email_context, cc=None)
+        EmailService.send_template_email_async(
+            subject=subject,
+            recipients=core_recipients,
+            template_path=core_template,
+            context=email_context,
+            distribution_list=distribution_list_name,
+            reference_id=str(self.mine_report_guid),
+            reference_table="mine_report",
+            reference_email_type="report_submitted_core"
+        )
 
         ms_template = "email/report/ms_new_report_submitted_email.html"
-        EmailService.send_template_email(
-            subject, ms_recipients, ms_template, email_context, cc=None)
+        EmailService.send_template_email_async(
+            subject=subject,
+            recipients=ms_recipients,
+            template_path=ms_template,
+            context=email_context,
+            reference_id=str(self.mine_report_guid),
+            reference_table="mine_report",
+            reference_email_type="report_submitted_ms"
+        )
 
     def collectRecipients(self, is_proponent):
         core_recipients = [MDS_EMAIL]
@@ -319,9 +337,11 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
         return list(unique_recipients)
 
     def send_crr_report_update_email(self, is_edit):
-        recipients = [self.mine.region.regional_contact_office.email, MDS_EMAIL]
-        if self.mine.major_mine_ind:
-            recipients = [MAJOR_MINES_OFFICE_EMAIL, MDS_EMAIL]
+        distribution_list_name = DistributionListNames.REPORT_SUBMISSION_MAJOR_MINES if self.mine.major_mine_ind else DistributionListNames.REPORT_SUBMISSION_REGIONAL_MINES
+
+        recipients = []
+        if not self.mine.major_mine_ind and getattr(self.mine, 'region', None) and getattr(self.mine.region, 'regional_contact_office', None):
+            recipients.append(self.mine.region.regional_contact_office.email)
 
         subject_verb = 'Updated' if is_edit else 'Submitted'
         subject = f'Code Required Report {subject_verb} for {self.mine.mine_name}'
@@ -331,7 +351,16 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
 
         link = f'{Config.CORE_WEB_URL}/mine-dashboard/{self.mine.mine_guid}/reports/code-required-reports'
         body += f'<p>View updates in Core: <a href="{link}" target="_blank">{link}</a></p>'
-        EmailService.send_email(subject, recipients, body)
+
+        EmailService.send_email_async(
+            subject=subject,
+            recipients=recipients,
+            body=body,
+            distribution_list=distribution_list_name,
+            reference_id=str(self.mine_report_guid),
+            reference_table="mine_report",
+            reference_email_type="crr_report_update"
+        )
 
     def send_report_requested_email(self, report_name, is_crr):
         if self.mine.mine_manager:

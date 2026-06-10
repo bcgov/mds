@@ -1,5 +1,6 @@
 import json
 import uuid
+from unittest.mock import patch
 
 from app.api.constants import MINE_REPORT_TYPE
 from app.api.mines.reports.models.mine_report import MineReport
@@ -64,7 +65,9 @@ def test_get_latest_report_submission_without_mine_report_guid(test_client, db_s
 
 
 # # POST
-def test_post_initial_crr_mine_report_submission(test_client, db_session, auth_headers):
+@patch('app.api.mines.reports.models.mine_report.MineReport.send_crr_and_prr_add_notification_email')
+@patch('app.api.mines.reports.models.mine_report.MineReport.send_crr_report_update_email')
+def test_post_initial_crr_mine_report_submission(mock_update, mock_add, test_client, db_session, auth_headers):
     mine = MineFactory(minimal=True)
 
     new_document_data = MineDocumentFactory()
@@ -100,7 +103,9 @@ def test_post_initial_crr_mine_report_submission(test_client, db_session, auth_h
     assert latest_submission['mine_report_submission_status_code'] == "INI"
 
 
-def test_post_requested_report(test_client, db_session, auth_headers):
+@patch('app.api.mines.reports.models.mine_report.MineReport.send_crr_and_prr_add_notification_email')
+@patch('app.api.mines.reports.models.mine_report.MineReport.send_crr_report_update_email')
+def test_post_requested_report(mock_update, mock_add, test_client, db_session, auth_headers):
     mine_report = MineReportFactory(mine_report_submissions=0)
 
     new_document_data = MineDocumentFactory()
@@ -133,7 +138,9 @@ def test_post_requested_report(test_client, db_session, auth_headers):
     assert post_data['mine_report_definition_guid'] == str(mine_report_definition.mine_report_definition_guid)
 
 
-def test_post_additional_mine_report_submission(test_client, db_session, auth_headers):
+@patch('app.api.mines.reports.models.mine_report.MineReport.send_crr_and_prr_add_notification_email')
+@patch('app.api.mines.reports.models.mine_report.MineReport.send_crr_report_update_email')
+def test_post_additional_mine_report_submission(mock_update, mock_add, test_client, db_session, auth_headers):
     mine_report = MineReportFactory(mine_report_submissions=1)
     first_submission = mine_report.mine_report_submissions[0]
 

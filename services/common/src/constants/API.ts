@@ -50,6 +50,7 @@ export const PROVINCE_CODES = "/parties/sub-division-codes";
 
 // MCM contacts
 export const MINISTRY_CONTACTS = "/ministry-contacts";
+export const DISTRIBUTION_LISTS = "/ministry-contacts/distribution-lists";
 export const MINISTRY_CONTACTS_BY_REGION = (region, isMajorMine) =>
   `/ministry-contacts/${region}/contacts?is_major_mine=${isMajorMine}`;
 export const MINISTRY_CONTACT = (guid) => `/ministry-contacts/${guid}`;

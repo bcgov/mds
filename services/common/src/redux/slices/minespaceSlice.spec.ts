@@ -21,6 +21,7 @@ import {
     getMinistryContacts,
     getMinistryContactsByRegion,
     getMinespaceUserEmailHash,
+    fetchDistributionLists,
 } from "./minespaceSlice";
 import CustomAxios from "@mds/common/redux/customAxios";
 import { configureStore } from "@reduxjs/toolkit";
@@ -106,6 +107,7 @@ describe("minespaceSlice", () => {
                 minespaceUsersByMine: {},
                 minespaceUserMines: [],
                 MinistryContacts: [],
+                DistributionLists: { records: [], current_page: 1, total: 0, total_pages: 0, items_per_page: 25 },
                 MinistryContactsByRegion: [],
                 currentUserAccessRequest: undefined,
             });
@@ -768,6 +770,44 @@ describe("minespaceSlice", () => {
             }));
 
             await store.dispatch(submitNewUserAccessRequest(mockFormData));
+
+            expect(showLoadingMock).toHaveBeenCalledTimes(1);
+            expect(hideLoadingMock).toHaveBeenCalledTimes(1);
+        });
+    });
+
+    describe("fetchDistributionLists", () => {
+        const mockResponse = {
+            data: {
+                records: [{ distribution_list_guid: "123", distribution_list_name: "Test List" }],
+                current_page: 1,
+                total: 1,
+                total_pages: 1,
+                items_per_page: 25,
+            },
+        };
+
+        it("should successfully fetch distribution lists and update state", async () => {
+            (CustomAxios as jest.Mock).mockImplementation(() => ({
+                get: jest.fn().mockResolvedValue(mockResponse),
+            }));
+
+            await store.dispatch(fetchDistributionLists());
+
+            expect(showLoadingMock).toHaveBeenCalledTimes(1);
+            expect(hideLoadingMock).toHaveBeenCalledTimes(1);
+
+            const state = store.getState();
+            expect(state.minespace.DistributionLists).toEqual(mockResponse.data);
+        });
+
+        it("should handle API error when fetching distribution lists", async () => {
+            const error = new Error("API Error");
+            (CustomAxios as jest.Mock).mockImplementation(() => ({
+                get: jest.fn().mockRejectedValue(error),
+            }));
+
+            await store.dispatch(fetchDistributionLists());
 
             expect(showLoadingMock).toHaveBeenCalledTimes(1);
             expect(hideLoadingMock).toHaveBeenCalledTimes(1);

@@ -255,6 +255,9 @@ class Config(object):
     COMMON_SERVICES_EMAIL_HOST = os.environ.get('COMMON_SERVICES_EMAIL_HOST')
     EMAIL_ENABLED = os.environ.get('EMAIL_ENABLED', False)
     EMAIL_RECIPIENT_OVERRIDE = os.environ.get('EMAIL_RECIPIENT_OVERRIDE')
+    USE_LOCAL_MAILPIT = os.environ.get('USE_LOCAL_MAILPIT', 'false').lower() == 'true'
+    MAILPIT_HOST = os.environ.get('MAILPIT_HOST', 'mailpit')
+    MAILPIT_PORT = int(os.environ.get('MAILPIT_PORT', 1025))
 
     # AMS API Services
     AMS_BEARER_TOKEN = os.environ.get('AMS_BEARER_TOKEN')

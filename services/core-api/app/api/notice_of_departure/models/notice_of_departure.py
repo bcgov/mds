@@ -9,6 +9,7 @@ from sqlalchemy.sql.functions import func
 from app.api.services.email_service import EmailService
 from app.api.constants import MAJOR_MINES_NOD_NOTFICATION_EMAILS, MDS_EMAIL
 from enum import Enum
+from app.api.ministry_contacts.models.distribution_list import DistributionListNames
 from app.api.notice_of_departure.models.notice_of_departure_contact import NoticeOfDepartureContact
 from app.api.utils.include.user_info import User
 from app.extensions import db
@@ -231,11 +232,17 @@ class NoticeOfDeparture(SoftDeleteMixin, AuditMixin, Base):
         super(NoticeOfDeparture, self).delete()
 
     def nod_submission_email(self):
-        recipients = MAJOR_MINES_NOD_NOTFICATION_EMAILS
-        cc = [MDS_EMAIL]
-
         subject = f'Notice of Departure Submitted for {self.mine.mine_name}'
         body = f'<p>{self.mine.mine_name} (Mine no: {self.mine.mine_no}) has submitted a "Notice of Departure from Approval" report.</p>'
         link = f'{Config.CORE_WEB_URL}/mine-dashboard/{self.mine.mine_guid}/permits-and-approvals/notices-of-departure'
         body += f'<p>View updates in Core: <a href="{link}" target="_blank">{link}</a></p>'
-        EmailService.send_email(subject, recipients, body, cc=cc)
+
+        EmailService.send_email_async(
+            subject=subject,
+            recipients=[],
+            body=body,
+            distribution_list=DistributionListNames.NOTICE_OF_DEPARTURE,
+            reference_id=str(self.nod_guid),
+            reference_table="notice_of_departure",
+            reference_email_type="nod_submission"
+        )
