@@ -145,9 +145,12 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
   const handleMove = async (condition: IPermitCondition | IStandardPermitCondition, isMoveUp: boolean) => {
     siblingIdsRef.current.forEach(id => addSubmittingCondition(id));
     setLoading(true);
-    await handleMoveCondition(condition, isMoveUp);
-    siblingIdsRef.current.forEach(id => removeSubmittingCondition(id));
-    setLoading(false);
+    try {
+      await handleMoveCondition(condition, isMoveUp);
+    } finally {
+      siblingIdsRef.current.forEach(id => removeSubmittingCondition(id));
+      setLoading(false);
+    }
   };
 
   let matchingCondition = null;

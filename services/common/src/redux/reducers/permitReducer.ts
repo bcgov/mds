@@ -142,6 +142,10 @@ export const permitReducer = (state: PermitState = initialState, action) => {
             permitAmendment.conditions ?? [])
         };
       };
+      const existingAmendment = state.permitAmendments[permit_amendment_guid];
+      const updatedAmendment = existingAmendment ? updateMatchingAmendment(existingAmendment) : undefined;
+      const isInLatestAmendments = Boolean(state.latestPermitAmendments[permit_amendment_guid]);
+
       return {
         ...state,
         permits: state.permits.map((permit) =>
@@ -149,6 +153,12 @@ export const permitReducer = (state: PermitState = initialState, action) => {
             ? { ...permit, permit_amendments: permit.permit_amendments.map(updateMatchingAmendment) }
             : permit
         ),
+        permitAmendments: updatedAmendment
+          ? { ...state.permitAmendments, [permit_amendment_guid]: updatedAmendment }
+          : state.permitAmendments,
+        latestPermitAmendments: isInLatestAmendments && updatedAmendment
+          ? { ...state.latestPermitAmendments, [permit_amendment_guid]: updatedAmendment }
+          : state.latestPermitAmendments,
       };
     }
     case actionTypes.STORE_EDITING_CONDITION_FLAG:

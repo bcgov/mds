@@ -115,7 +115,6 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
     useEffect(() => {
         editingFormNameRef.current = editingFormName;
     }, [editingFormName]);
-
     const startEdit = () => {
         const handleEdit = () => {
             onEdit();
@@ -174,37 +173,38 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
         setLoading(true);
         setIsSubmitting(true);
         addSubmittingCondition(condition.permit_condition_id);
-        const payload = values.step && !stepEditDisabled
-            ? {
-                ...values,
-                // Backend has the property named as _step to update in the db
-                _step: values.step,
+        try {
+            const payload = values.step && !stepEditDisabled
+                ? {
+                    ...values,
+                    // Backend has the property named as _step to update in the db
+                    _step: values.step,
+                }
+                : values;
+            let resp;
+            if (isStandardConditionEditor) {
+                resp = await dispatch(updateStandardPermitCondition(values.standard_permit_condition_guid, values))
+            } else {
+                resp = await dispatch(
+                    updatePermitCondition(values.permit_condition_guid, permitAmendmentGuid, payload)
+                );
             }
-            : values;
-        let resp;
-        if (isStandardConditionEditor) {
-            resp = await dispatch(updateStandardPermitCondition(values.standard_permit_condition_guid, values))
-        } else {
-            resp = await dispatch(
-                updatePermitCondition(values.permit_condition_guid, permitAmendmentGuid, payload)
-            );
-        }
-        // @ts-ignore
-        if (resp?.type !== ERROR) {
-            const submittedId = condition.permit_condition_id;
-            dispatch(reset(formName));
-            await refreshData(false);
-            removeSubmittingCondition(submittedId);
-            clearActiveConditionId(submittedId);
-            setIsEditMode(false);
-            setIsAddingListItem(false);
-            if (editingFormNameRef.current === formName) {
-                setEditingFormName(null);
+            // @ts-ignore
+            if (resp?.type !== ERROR) {
+                const submittedId = condition.permit_condition_id;
+                await refreshData(false);
+                dispatch(reset(formName));
+                removeSubmittingCondition(submittedId);
+                clearActiveConditionId(submittedId);
+                setIsEditMode(false);
+                setIsAddingListItem(false);
+                if (editingFormNameRef.current === formName) {
+                    setEditingFormName(null);
+                }
+            } else {
+                removeSubmittingCondition(condition.permit_condition_id);
             }
-            setIsSubmitting(false);
-            setLoading(false);
-        } else {
-            removeSubmittingCondition(condition.permit_condition_id);
+        } finally {
             setIsSubmitting(false);
             setLoading(false);
         }
@@ -225,23 +225,24 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
             const deletedId = condition.permit_condition_id;
             setLoading(true);
             addSubmittingCondition(deletedId);
-            let resp;
-            if ('standard_permit_condition_guid' in condition) {
-                resp = await dispatch(deleteStandardPermitCondition(condition.standard_permit_condition_guid));
-            } else {
-                resp = await dispatch(
-                    deletePermitCondition(permitAmendmentGuid, condition.permit_condition_guid)
-                );
-            }
-            // @ts-ignore
-            if (resp?.type !== ERROR) {
-                cancelEdit();
-                await refreshData(false);
+            try {
+                let resp;
+                if ('standard_permit_condition_guid' in condition) {
+                    resp = await dispatch(deleteStandardPermitCondition(condition.standard_permit_condition_guid));
+                } else {
+                    resp = await dispatch(
+                        deletePermitCondition(permitAmendmentGuid, condition.permit_condition_guid)
+                    );
+                }
+                // @ts-ignore
+                if (resp?.type !== ERROR) {
+                    cancelEdit();
+                    await refreshData(false);
+                }
+            } finally {
                 removeSubmittingCondition(deletedId);
-            } else {
-                removeSubmittingCondition(deletedId);
+                setLoading(false);
             }
-            setLoading(false);
         }
 
         dispatch(openModal({
