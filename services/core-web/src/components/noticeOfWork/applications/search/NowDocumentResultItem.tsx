@@ -171,16 +171,6 @@ const NowDocumentResultItem: React.FC<NowDocumentResultItemProps> = ({
 
       {(hasArtifactSummary || hasArtifactCaption) && (
         <Col span={24} className="now-search__artifact-insights">
-          {hasArtifactSummary && (
-            <Typography.Paragraph className="now-search__artifact-summary" ellipsis={{ rows: 4 }}>
-              {artifact_summary}
-              {summary_source && (
-                <Typography.Text type="secondary" className="now-search__artifact-source">
-                  {` (${summary_source})`}
-                </Typography.Text>
-              )}
-            </Typography.Paragraph>
-          )}
           {hasArtifactCaption && (
             <Typography.Text type="secondary" className="now-search__artifact-caption">
               <strong>Caption:</strong> {artifact_caption}

@@ -128,7 +128,7 @@ export const ViewPdf: React.FC<ViewPDFProps> = ({
 }) => {
   const pdfViewerRef = useRef<any>(null);
 
-  useEffect(() => {
+  const handleDocumentLoaded = () => {
     if (pdfViewerRef.current && annotationLocation) {
       addAnnotationToPDFViewer(
         pdfViewerRef.current,
@@ -136,7 +136,7 @@ export const ViewPdf: React.FC<ViewPDFProps> = ({
         annotationLocation.boundingBox
       );
     }
-  }, [annotationLocation, documentPath]);
+  };
 
   return (
     <PdfViewerComponent
@@ -148,6 +148,7 @@ export const ViewPdf: React.FC<ViewPDFProps> = ({
       enableAnnotation={true}
       enableFormDesigner={false}
       polygonSettings={{ fillColor: 'yellow', opacity: 0.6, strokeColor: 'orange' }}
+      documentLoad={handleDocumentLoaded}
       ref={(scope) => {
         pdfViewerRef.current = scope;
 
