@@ -91,7 +91,6 @@ const NationEventsExpandedRow: React.FC<NationEventsExpandedRowProps> = ({
                         <div className="right center-mobile">
                             <AddButton
                                 onClick={(event) => openAddNationEventModal(event, record.nation)}
-                                type="secondary"
                             >
                                 Add event
                             </AddButton>

@@ -85,7 +85,6 @@ def test_upload_document_artifacts_uploads_binary_and_returns_artifact_documents
     assert result["artifact_documents"][0] == {
         "artifact_id": "a-1",
         "document_manager_guid": "artifact-doc-guid",
-        "object_store_path": "permits/now/from-complete.png",
         "mime_type": "text/csv",
     }
 

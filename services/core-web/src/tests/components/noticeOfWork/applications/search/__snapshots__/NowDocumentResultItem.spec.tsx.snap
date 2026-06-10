@@ -81,7 +81,10 @@ exports[`NowDocumentResultItem renders properly with highlights 1`] = `
               class="ant-space-item"
               style="margin-right: 16px;"
             >
-              <div />
+              <div
+                documentmanagerguid="doc-guid-123"
+                documentname="Test_Document.pdf"
+              />
             </div>
             <div
               class="ant-space-item"
@@ -185,7 +188,10 @@ exports[`NowDocumentResultItem renders properly without highlights 1`] = `
               class="ant-space-item"
               style="margin-right: 16px;"
             >
-              <div />
+              <div
+                documentmanagerguid="doc-guid-123"
+                documentname="Test_Document.pdf"
+              />
             </div>
             <div
               class="ant-space-item"
@@ -295,7 +301,10 @@ exports[`NowDocumentResultItem renders with permit package styling 1`] = `
               class="ant-space-item"
               style="margin-right: 16px;"
             >
-              <div />
+              <div
+                documentmanagerguid="doc-guid-123"
+                documentname="Test_Document.pdf"
+              />
             </div>
             <div
               class="ant-space-item"

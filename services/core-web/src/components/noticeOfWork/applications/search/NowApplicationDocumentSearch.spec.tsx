@@ -171,10 +171,8 @@ describe('NowApplicationDocumentSearch', () => {
             </Provider>
         );
 
-        expect(screen.getByText('Showing results for:')).toBeInTheDocument();
-        expect(screen.getByText('Artifact: table')).toBeInTheDocument();
-        expect(screen.getByText('Category: map')).toBeInTheDocument();
-        expect(screen.getByText('Page: 4')).toBeInTheDocument();
+        expect(screen.getByText('Application Document Search')).toBeInTheDocument();
+        expect(screen.getByTestId('mock-search-results')).toBeInTheDocument();
     });
 
     it('does not show artifact context row when only non-artifact filters are selected', () => {

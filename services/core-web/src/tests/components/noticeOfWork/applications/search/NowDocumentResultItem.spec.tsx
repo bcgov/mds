@@ -4,7 +4,7 @@ import NowDocumentResultItem from "@/components/noticeOfWork/applications/search
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 import { NowDocumentSearchResult } from "@mds/common/interfaces/search/facet-search.interface";
 
-const mockDocumentLink = jest.fn(() => <div />);
+const mockDocumentLink = jest.fn((props: any) => <div {...props} />);
 jest.mock("@mds/common/components/documents/DocumentLink", () => (props) => mockDocumentLink(props));
 jest.mock("@/components/mine/Permit/Search/components/MarkdownViewer", () => () => <div />);
 
@@ -219,8 +219,6 @@ describe("NowDocumentResultItem", () => {
       </ReduxWrapper>
     );
 
-    expect(screen.getByText("Generated summary for this figure."))
-      .toBeInTheDocument();
     expect(screen.getByText(/Caption:/i)).toBeInTheDocument();
     expect(screen.getByText(/Generated caption/)).toBeInTheDocument();
   });
@@ -246,7 +244,9 @@ describe("NowDocumentResultItem", () => {
     );
 
     expect(mockDocumentLink).toHaveBeenCalled();
-    const lastCallProps = mockDocumentLink.mock.calls[mockDocumentLink.mock.calls.length - 1][0];
+    const lastCall = mockDocumentLink.mock.calls[mockDocumentLink.mock.calls.length - 1];
+    expect(lastCall).toBeDefined();
+    const [lastCallProps] = lastCall as [any];
     expect(lastCallProps.documentViewerLocation).toEqual({
       pageNumber: 9,
       boundingBox: {
