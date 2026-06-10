@@ -33,7 +33,6 @@ def build_region_upload_payload(
     page_rotation_hints: Optional[dict[int, int]] = None,
     *,
     logger,
-    choose_rotation_degrees_from_text_fn,
 ) -> Optional[dict]:
     if not source_pdf_path or not page_number or not bounding_box:
         logger.warning(
@@ -82,7 +81,6 @@ def build_region_upload_payload(
                 clip_rect=clip,
                 page_number=page_number,
                 page_rotation_hints=page_rotation_hints,
-                choose_rotation_degrees_from_text_fn=choose_rotation_degrees_from_text_fn,
             )
             if rotation_degrees:
                 image = Image.frombytes('RGB', [pixmap.width, pixmap.height], pixmap.samples)
@@ -147,12 +145,11 @@ def determine_rotation_degrees(
     clip_rect,
     page_number: Optional[int],
     page_rotation_hints: Optional[dict[int, int]],
-    choose_rotation_degrees_from_text_fn,
 ) -> tuple[int, str]:
     if page_number and page_rotation_hints and page_number in page_rotation_hints:
         return int(page_rotation_hints[page_number]), 'di_page_angle'
 
-    fallback_rotation, reason = choose_rotation_degrees_from_text_fn(page, clip_rect)
+    fallback_rotation, reason = choose_rotation_degrees_from_text(page, clip_rect)
     if fallback_rotation:
         return fallback_rotation, reason
 

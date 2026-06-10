@@ -1,13 +1,13 @@
 import logging
 import os
 import re
-from typing import Callable, List, Optional
+from typing import List, Optional
 
 from app.pipelines.document_search.artifact_chunk_builder import (
     build_table_markdown,
-    categorize_artifact,
 )
 from app.pipelines.document_search.artifact_region_image import (
+    build_region_upload_payload,
     extract_primary_region_metadata,
 )
 
@@ -19,10 +19,6 @@ def extract_table_artifacts(
     doc_meta: dict,
     source_pdf_path: Optional[str] = None,
     page_rotation_hints: Optional[dict[int, int]] = None,
-    *,
-    build_table_upload_payload_fn: Callable,
-    extract_caption_fn: Callable,
-    extract_footnotes_fn: Callable,
 ) -> List[dict]:
     table_artifacts = []
     document_manager_guid = doc_meta.get('document_manager_guid', '')
@@ -37,12 +33,13 @@ def extract_table_artifacts(
         table_markdown = build_table_markdown(headers, row_payload)
         upload_payload = None
         if is_table_binary_upload_enabled():
-            upload_payload = build_table_upload_payload_fn(
+            upload_payload = build_region_upload_payload(
                 source_pdf_path=source_pdf_path,
                 artifact_id=artifact_id,
                 page_number=page_number,
                 bounding_box=bounding_box,
                 page_rotation_hints=page_rotation_hints,
+                logger=logger,
             )
             if not upload_payload:
                 logger.warning(
@@ -61,8 +58,8 @@ def extract_table_artifacts(
                 'rows': row_payload,
                 'markdown': table_markdown,
                 'category': 'table',
-                'caption': extract_caption_fn(table),
-                'footnotes': extract_footnotes_fn(table),
+                'caption': extract_caption(table),
+                'footnotes': extract_footnotes(table),
                 'cells': table_model['cells'],
             },
             'metadata': {
@@ -148,10 +145,6 @@ def extract_figure_artifacts(
     doc_meta: dict,
     source_pdf_path: Optional[str] = None,
     page_rotation_hints: Optional[dict[int, int]] = None,
-    *,
-    build_figure_upload_payload_fn: Callable,
-    extract_caption_fn: Callable,
-    extract_footnotes_fn: Callable,
 ) -> List[dict]:
     figure_artifacts = []
     document_manager_guid = doc_meta.get('document_manager_guid', '')
@@ -160,9 +153,9 @@ def extract_figure_artifacts(
     for index, figure in enumerate(getattr(analyze_result, 'figures', None) or []):
         page_number, bounding_box = extract_primary_region_metadata(getattr(figure, 'bounding_regions', None) or [])
         artifact_id = f'{document_manager_guid}_p{page_number or 0}_f{index + 1}'
-        caption = extract_caption_fn(figure)
+        caption = extract_caption(figure)
         description = extract_figure_description(figure, paragraphs) or caption
-        footnotes = extract_footnotes_fn(figure)
+        footnotes = extract_footnotes(figure)
 
         figure_artifacts.append(
             {
@@ -175,13 +168,7 @@ def extract_figure_artifacts(
                     'caption': caption,
                     'description': description,
                     'footnotes': footnotes,
-                    'category': categorize_artifact(
-                        artifact_type='figure',
-                        caption=caption,
-                        description=description,
-                        summary=None,
-                        footnotes=footnotes,
-                    ),
+                    'category': None,
                 },
                 'metadata': {
                     'element_count': len(getattr(figure, 'elements', None) or []),
@@ -194,12 +181,13 @@ def extract_figure_artifacts(
         )
 
         if is_figure_binary_upload_enabled():
-            upload_payload = build_figure_upload_payload_fn(
+            upload_payload = build_region_upload_payload(
                 source_pdf_path=source_pdf_path,
                 artifact_id=artifact_id,
                 page_number=page_number,
                 bounding_box=bounding_box,
                 page_rotation_hints=page_rotation_hints,
+                logger=logger,
             )
             if upload_payload:
                 figure_artifacts[-1]['_artifact_upload'] = upload_payload

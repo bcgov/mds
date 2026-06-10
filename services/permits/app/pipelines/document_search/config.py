@@ -26,6 +26,7 @@ class DocumentSearchConfig:
     document_intelligence: DocumentIntelligenceConfig
     multimodal_enrichment_enabled: bool
     multimodal_summary_max_chars: int
+    multimodal_prompt_max_workers: int
 
     @classmethod
     def from_env(cls) -> "DocumentSearchConfig":
@@ -77,6 +78,9 @@ class DocumentSearchConfig:
         multimodal_summary_max_chars = int(
             os.environ.get("DOCUMENT_SEARCH_MULTIMODAL_SUMMARY_MAX_CHARS", "320")
         )
+        multimodal_prompt_max_workers = int(
+            os.environ.get("DOCUMENT_SEARCH_MULTIMODAL_PROMPT_MAX_WORKERS", "4")
+        )
 
         return cls(
             openai=openai,
@@ -85,6 +89,7 @@ class DocumentSearchConfig:
             document_intelligence=document_intelligence,
             multimodal_enrichment_enabled=multimodal_enrichment_enabled,
             multimodal_summary_max_chars=multimodal_summary_max_chars,
+            multimodal_prompt_max_workers=multimodal_prompt_max_workers,
         )
 
 

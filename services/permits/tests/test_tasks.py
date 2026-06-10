@@ -1,6 +1,8 @@
-import pytest
 from unittest.mock import MagicMock, patch
+
+import pytest
 from app.tasks.tasks import run_now_document_indexing
+
 
 @pytest.fixture
 def mock_search_client():
@@ -19,7 +21,7 @@ def test_run_now_document_indexing_success(mock_search_client, mock_indexing):
     mock_del, mock_ext, mock_emb, mock_push = mock_indexing
     
     # Setup mocks
-    mock_ext.return_value = [{"content": "chunk1"}]
+    mock_ext.return_value = ([{"content": "chunk1"}], [])
     mock_emb.return_value = [{"content": "chunk1", "embedding": [0.1]}]
     mock_push.return_value = 1
     
@@ -30,7 +32,16 @@ def test_run_now_document_indexing_success(mock_search_client, mock_indexing):
         
         result = run_now_document_indexing.run("now_guid", tmp_paths, doc_meta_list)
         
-        assert result == {"succeeded": 1, "chunk_count": 1}
+        assert result == {
+            "succeeded": 1,
+            "chunk_count": 1,
+            "artifact_uploads": {
+                "candidates": 0,
+                "uploaded": 0,
+                "skipped": 0,
+                "failed": 0,
+            },
+        }
         mock_del.assert_called_once()
         mock_ext.assert_called_once()
         mock_emb.assert_called_once()
@@ -40,7 +51,7 @@ def test_run_now_document_indexing_success(mock_search_client, mock_indexing):
 def test_run_now_document_indexing_no_chunks(mock_search_client, mock_indexing):
     mock_del, mock_ext, mock_emb, mock_push = mock_indexing
     
-    mock_ext.return_value = []
+    mock_ext.return_value = ([], [])
     
     with patch.object(run_now_document_indexing, "update_state"):
         result = run_now_document_indexing.run("now_guid", ["/tmp/f1"], [{"document_manager_guid": "d1"}])
@@ -50,6 +61,7 @@ def test_run_now_document_indexing_no_chunks(mock_search_client, mock_indexing):
 
 def test_run_now_document_indexing_cleanup(mock_search_client, mock_indexing):
     mock_del, mock_ext, mock_emb, mock_push = mock_indexing
+    mock_ext.return_value = ([], [])
     
     with patch.object(run_now_document_indexing, "update_state"):
         with patch("os.unlink") as mock_unlink:

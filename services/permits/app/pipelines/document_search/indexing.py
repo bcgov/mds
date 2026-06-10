@@ -7,28 +7,8 @@ focused modules so each indexing stage is easier to reason about and evolve.
 """
 
 import logging
-from functools import partial
 from typing import List
 
-from app.pipelines.document_search.artifact_chunk_builder import (
-    build_artifact_search_chunks,
-    categorize_artifact,
-)
-from app.pipelines.document_search.artifact_enrichment import (
-    enrich_figure_artifacts,
-    generate_figure_caption_and_summary,
-)
-from app.pipelines.document_search.artifact_extraction import (
-    extract_caption,
-    extract_figure_artifacts,
-    extract_footnotes,
-    extract_table_artifacts,
-)
-from app.pipelines.document_search.artifact_region_image import (
-    build_region_upload_payload,
-    choose_rotation_degrees_from_text,
-    extract_page_rotation_hints,
-)
 from app.pipelines.document_search.components.document_chunker import (
     DocumentChunker,
     DocumentChunkMetadata,
@@ -55,7 +35,6 @@ EMBED_BATCH_SIZE = 100
 # Kept at 100 (vs the 1000 max) so the push phase emits frequent enough progress
 # updates for the status endpoint to reflect meaningful movement.
 PUSH_BATCH_SIZE = 100
-MULTIMODAL_PROMPT_MAX_WORKERS = 4
 
 # ---------------------------------------------------------------------------
 # Shared singleton components
@@ -184,46 +163,7 @@ def extract_and_chunk_file(
         now_application_guid,
     )
 
-    pipeline = create_document_indexing_pipeline(
-        run_document_intelligence_fn=document_intelligence.run_document_intelligence,
-        add_metadata_to_document_fn=document_intelligence.add_metadata_to_document,
-        chunk_documents_fn=chunker.run,
-        extract_page_rotation_hints_fn=extract_page_rotation_hints,
-        extract_table_artifacts_fn=partial(
-            extract_table_artifacts,
-            build_table_upload_payload_fn=partial(
-                build_region_upload_payload,
-                logger=logger,
-                choose_rotation_degrees_from_text_fn=choose_rotation_degrees_from_text,
-            ),
-            extract_caption_fn=extract_caption,
-            extract_footnotes_fn=extract_footnotes,
-        ),
-        extract_figure_artifacts_fn=partial(
-            extract_figure_artifacts,
-            build_figure_upload_payload_fn=partial(
-                build_region_upload_payload,
-                logger=logger,
-                choose_rotation_degrees_from_text_fn=choose_rotation_degrees_from_text,
-            ),
-            extract_caption_fn=extract_caption,
-            extract_footnotes_fn=extract_footnotes,
-        ),
-        enrich_figure_artifacts_fn=partial(
-            enrich_figure_artifacts,
-            multimodal_enrichment_enabled=config.multimodal_enrichment_enabled,
-            multimodal_summary_max_chars=config.multimodal_summary_max_chars,
-            max_workers=MULTIMODAL_PROMPT_MAX_WORKERS,
-            categorize_artifact_fn=categorize_artifact,
-            generate_figure_caption_and_summary_fn=partial(
-                generate_figure_caption_and_summary,
-                openai_client=openai_client,
-                config=config,
-            ),
-            logger=logger,
-        ),
-        build_artifact_search_chunks_fn=build_artifact_search_chunks,
-    )
+    pipeline = create_document_indexing_pipeline()
 
     result = pipeline.run(
         {
