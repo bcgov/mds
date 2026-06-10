@@ -87,9 +87,13 @@ class NowApplicationSearchService:
             )
             raise BadGateway('Could not search NoW application documents in the permits service')
 
-        return self._iter_enriched_sse(response)
+        return self._enrich_with_artifact_url(response)
 
-    def _iter_enriched_sse(self, upstream_response) -> Iterator[bytes]:
+    def _enrich_with_artifact_url(self, upstream_response) -> Iterator[bytes]:
+        """
+        Iterate through all the search results as they come through, and generate a presigned URL for any artifact hits that include an artifact_document_manager_guid in their metadata.
+        This is done so the frontend can display artifacts in the search results without needing to hit the API again.
+        """
         token_cache = {}
         try:
             for event in SSEClient(upstream_response).events():
@@ -197,13 +201,12 @@ class NowApplicationSearchService:
 
     def index_documents(self, now_application_guid: str, documents: list) -> dict:
         """
-        Queues all provided documents for the given NoW application using a
-        lightweight manifest.
+        Indexes all provided documents for the given NoW application, one at a time.
 
-        The permits service downloads each source document from Document Manager in
-        its Celery child tasks. This avoids proxying large PDFs through core-api and
-        avoids the previous one-request-per-document conflict with the permits
-        application-level indexing lock.
+        Each document is downloaded from Document Manager into an in-memory buffer,
+        forwarded to the permits service as a single-file multipart upload, then the
+        buffer is released before the next document is downloaded. This keeps peak
+        memory bounded to roughly one document at a time rather than the full set.
 
         ``documents`` is a list of dicts, each containing:
             document_manager_guid, document_name, document_type,
