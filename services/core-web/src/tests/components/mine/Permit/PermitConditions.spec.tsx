@@ -185,7 +185,7 @@ describe("PermitConditions", () => {
 
     editCondition.click();
     await waitFor(() => {
-      const addReport = queryByText("Add Report Requirement");
+      const addReport = queryByText("Report Added");
       expect(addReport).toBeInTheDocument();
       // NO: list item, condition editor
       const addListItem = queryByText("List Item");
@@ -303,7 +303,7 @@ describe("PermitConditions", () => {
     )[0];
     editCondition.click();
     await waitFor(() => {
-      const addReport = screen.queryByText("Add Report Requirement");
+      const addReport = screen.queryByText("Report Added");
       expect(addReport).toBeInTheDocument();
       const addListItem = screen.queryByText("Condition");
       expect(addListItem).toBeInTheDocument();
