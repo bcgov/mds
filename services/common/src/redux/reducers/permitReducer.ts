@@ -1,3 +1,4 @@
+import { isEqual } from "lodash";
 import {
   IPermit,
   IPermitAmendment,
@@ -30,10 +31,6 @@ const initialState = {
   permitAmendments: {},
 };
 
-const shallowEqual = (a: Record<string, any>, b: Record<string, any>): boolean =>
-  Object.keys(a).length === Object.keys(b).length &&
-  Object.keys(a).every((k) => a[k] === b[k]);
-
 const updateChangedConditions = (incoming: IPermitCondition[], existing: IPermitCondition[]): IPermitCondition[] => {
   const existingById = Object.fromEntries(existing.map((condition) => [condition.permit_condition_id, condition]));
   const updatedConditions = incoming.map((incomingCondition) => {
@@ -44,7 +41,7 @@ const updateChangedConditions = (incoming: IPermitCondition[], existing: IPermit
 
     const sub_conditions = updateChangedConditions(incomingCondition.sub_conditions ?? [], existingCondition.sub_conditions ?? []);
     const candidate = { ...incomingCondition, sub_conditions };
-    return shallowEqual(candidate, existingCondition) ? existingCondition : candidate;
+    return isEqual(candidate, existingCondition) ? existingCondition : candidate;
   });
 
   return updatedConditions.length === existing.length && updatedConditions.every((condition, index) => condition === existing[index]) ? existing : updatedConditions;
@@ -148,10 +145,10 @@ export const permitReducer = (state: PermitState = initialState, action) => {
       return {
         ...state,
         permits: state.permits.map((permit) =>
-            permit.permit_guid === permit_guid
-              ? { ...permit, permit_amendments: permit.permit_amendments.map(updateMatchingAmendment) }
-              : permit
-          ),
+          permit.permit_guid === permit_guid
+            ? { ...permit, permit_amendments: permit.permit_amendments.map(updateMatchingAmendment) }
+            : permit
+        ),
       };
     }
     case actionTypes.STORE_EDITING_CONDITION_FLAG:

@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { IPermitCondition } from "@mds/common/interfaces/permits/permitCondition.interface";
 import SubConditionForm from "@mds/common/components/permits/SubConditionForm";
 import { IGroupedDropdownList } from "@mds/common/interfaces/common/option.interface";
@@ -109,14 +109,14 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
   const className = `condition-layer condition-layer--${level}${loadClassName} condition-${condition.condition_type_code} fade-in`;
   const { isFeatureEnabled } = useFeatureFlag();
 
-  const handleSetParentExpand = () => {
+  const handleSetParentExpand = useCallback(() => {
     if (level === 0) {
       return;
     } else {
       setExpandClass("condition-expanded");
       setParentExpand();
     }
-  };
+  }, [level, setParentExpand]);
 
   useEffect(() => {
     setExpandClass(isExpanded || editingCondition ? "condition-expanded" : "condition-collapsed");
@@ -139,11 +139,14 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
     clearActiveConditionId(condition.permit_condition_id);
   };
 
+  const siblingIdsRef = useRef(siblingIds);
+  siblingIdsRef.current = siblingIds;
+
   const handleMove = async (condition: IPermitCondition | IStandardPermitCondition, isMoveUp: boolean) => {
-    siblingIds.forEach(id => addSubmittingCondition(id));
+    siblingIdsRef.current.forEach(id => addSubmittingCondition(id));
     setLoading(true);
     await handleMoveCondition(condition, isMoveUp);
-    siblingIds.forEach(id => removeSubmittingCondition(id));
+    siblingIdsRef.current.forEach(id => removeSubmittingCondition(id));
     setLoading(false);
   };
 
@@ -158,6 +161,11 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
       );
     });
   }
+
+  const subConditionSiblingIds = useMemo(
+    () => condition.sub_conditions?.map(sc => sc.permit_condition_id) ?? [],
+    [condition.sub_conditions]
+  );
 
   return (
     <div
@@ -202,7 +210,7 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
                 conditionSelected={conditionSelected}
                 isInsideActiveCondition={isInsideActiveCondition || isActiveCondition}
                 isInsideSubmittingCondition={isInsideSubmittingCondition || isConditionSubmitting}
-                siblingIds={condition.sub_conditions.map(sc => sc.permit_condition_id)}
+                siblingIds={subConditionSiblingIds}
               />
             </div>
           );
@@ -261,17 +269,4 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
   );
 };
 
-// Only re-render PermitConditionLayer if at least one of these has changed.
-export default React.memo(PermitConditionLayer, (prev, next) =>
-  prev.condition === next.condition &&
-  prev.isEditing === next.isEditing &&
-  prev.editingFormName === next.editingFormName &&
-  prev.refreshData === next.refreshData &&
-  prev.handleMoveCondition === next.handleMoveCondition &&
-  prev.isExpanded === next.isExpanded &&
-  prev.currentPosition === next.currentPosition &&
-  prev.conditionCount === next.conditionCount &&
-  prev.canEditPermitConditions === next.canEditPermitConditions &&
-  prev.isInsideSubmittingCondition === next.isInsideSubmittingCondition &&
-  prev.isInsideActiveCondition === next.isInsideActiveCondition
-);
+export default React.memo(PermitConditionLayer);

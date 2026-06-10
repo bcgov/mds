@@ -274,7 +274,7 @@ exports[`Consultation renders properly with feature flag enabled and manage role
                   class="right center-mobile"
                 >
                   <button
-                    class="ant-btn ant-btn-secondary full-mobile btn--middle"
+                    class="ant-btn ant-btn-primary full-mobile btn--middle"
                     type="button"
                   >
                     <span
@@ -384,7 +384,7 @@ exports[`Consultation renders properly with feature flag enabled and manage role
                   class="right center-mobile"
                 >
                   <button
-                    class="ant-btn ant-btn-secondary full-mobile btn--middle"
+                    class="ant-btn ant-btn-primary full-mobile btn--middle"
                     type="button"
                   >
                     <span
@@ -732,7 +732,7 @@ exports[`Consultation renders properly with feature flag enabled without manage 
                   class="right center-mobile"
                 >
                   <button
-                    class="ant-btn ant-btn-secondary full-mobile btn--middle"
+                    class="ant-btn ant-btn-primary full-mobile btn--middle"
                     type="button"
                   >
                     <span

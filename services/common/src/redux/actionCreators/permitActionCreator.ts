@@ -59,21 +59,6 @@ export const fetchPermits =
         .finally(() => dispatch(hideLoading("modal")));
     };
 
-export const fetchPermit =
-  (mineGuid: string, permitGuid: string): AppThunk<Promise<void | IDispatchError>> =>
-    (dispatch) => {
-      dispatch(request(NetworkReducerTypes.GET_PERMITS));
-      dispatch(showLoading("modal"));
-      return CustomAxios({ errorToastMessage: String.ERROR })
-        .get(ENVIRONMENT.apiUrl + API.PERMIT(mineGuid, permitGuid), createRequestHeader())
-        .then((response) => {
-          dispatch(success(NetworkReducerTypes.GET_PERMITS));
-          dispatch(permitActions.updatePermit(response.data));
-        })
-        .catch(() => dispatch(error(NetworkReducerTypes.GET_PERMITS)))
-        .finally(() => dispatch(hideLoading("modal")));
-    };
-
 export const fetchDraftPermitByNOW =
   (mineGuid: string, nowApplicationGuid: string): AppThunk<Promise<AxiosResponse<IPermit[]>>> =>
     (dispatch): Promise<AxiosResponse<IPermit[]>> => {

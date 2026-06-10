@@ -33,6 +33,7 @@ export const PermitConditionStatus: FC<PermitConditionStatusProps> = ({
   refreshData,
 }) => {
 
+  const permitConditions = usePermitConditions();
   const { mineGuid,
     permitGuid,
     latestAmendment,
@@ -44,7 +45,7 @@ export const PermitConditionStatus: FC<PermitConditionStatusProps> = ({
     submittingConditionIds,
     addSubmittingCondition,
     removeSubmittingCondition
-  } = usePermitConditions();
+  } = permitConditions;
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -89,15 +90,7 @@ export const PermitConditionStatus: FC<PermitConditionStatusProps> = ({
         width: 2048,
         content: (props) => {
           const value = {
-            mineGuid,
-            permitGuid,
-            latestAmendment,
-            previousAmendment,
-            currentAmendment,
-            loading,
-            setLoading,
-            refreshData,
-            activeConditionId,
+            ...permitConditions,
             setActiveConditionId: () => { },
             clearActiveConditionId: () => { },
             submittingConditionIds: {},

@@ -33,9 +33,16 @@ export const usePermitConditions = () => {
   return context;
 };
 
+export type PermitConditionsProviderInput =
+  Partial<Omit<PermitConditionsContextType, "loading" | "setLoading" | "refreshData">> & {
+    loading: boolean;
+    setLoading: (loading: boolean) => void;
+    refreshData: () => Promise<any>;
+  };
+
 export const PermitConditionsProvider: FC<{
   children: React.ReactNode;
-  value: PermitConditionsContextType;
+  value: PermitConditionsProviderInput;
 }> = ({ children, value }) => {
   // undefined default value causes problems in permit condition form
   const defaultValue = {

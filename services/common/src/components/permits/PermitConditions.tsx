@@ -146,16 +146,16 @@ const PermitConditions: FC<PermitConditionProps> = ({
   const [loadingCount, setLoadingCount] = useState(0);
   const loading = loadingCount > 0;
   // This keeps track of the number of in-flight loading states. We need this because multiple conditions can be in-flight at once.
-  const setLoading = (value: boolean) => {
+  const setLoading = useCallback((value: boolean) => {
     setLoadingCount(prev => value ? prev + 1 : Math.max(0, prev - 1));
-  };
+  }, []);
 
   // This keeps track of condition ids that are currently being submitted. 
   const [submittingConditionIds, setSubmittingConditionIds] = useState<Record<number, number>>({});
-  const addSubmittingCondition = (id: number) => {
+  const addSubmittingCondition = useCallback((id: number) => {
     setSubmittingConditionIds(prev => ({ ...prev, [id]: (prev[id] ?? 0) + 1 }));
-  };
-  const removeSubmittingCondition = (id: number) => {
+  }, []);
+  const removeSubmittingCondition = useCallback((id: number) => {
     setSubmittingConditionIds(prev => {
       const count = prev[id] ?? 0;
       if (count <= 1) {
@@ -165,20 +165,20 @@ const PermitConditions: FC<PermitConditionProps> = ({
 
       return { ...prev, [id]: count - 1 };
     });
-  };
+  }, []);
 
   // This keeps track of the current active condition the user is making changes to.
   const [activeConditionId, setActiveConditionId] = useState<number | null>(null);
   const activeConditionIdRef = useRef<number | null>(null);
-  const setActiveConditionIdWithRef = (id: number | null) => {
+  const setActiveConditionIdWithRef = useCallback((id: number | null) => {
     activeConditionIdRef.current = id;
     setActiveConditionId(id);
-  };
-  const clearActiveConditionId = (id: number) => {
+  }, []);
+  const clearActiveConditionId = useCallback((id: number) => {
     if (activeConditionIdRef.current === id) {
       setActiveConditionIdWithRef(null);
     }
-  };
+  }, [setActiveConditionIdWithRef]);
 
   const reviewAssignments = useAppSelector(
     getReviewAssignmentsByAmendment(currentAmendment.permit_amendment_id)
@@ -300,7 +300,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
   );
   const formattedPermitConditionCategories: IFormattedConditionCategory[] = useMemo(
     () => getFormattedPermitConditionCategories(permitConditionCategories),
-    [permitGuid, currentAmendment]
+    [permitConditionCategories]
   );
 
   const scrollSideMenuProps = {

@@ -184,7 +184,6 @@ export const Consultation: FC<ConsultationProps> = (props) => {
                     onClick={(event) =>
                       openAddNationModal(event)
                     }
-                    type="secondary"
                   >
                     Add Nation
                   </AddButton>
@@ -218,7 +217,6 @@ export const Consultation: FC<ConsultationProps> = (props) => {
                   categoriesToShow
                 )
               }
-              type="secondary"
             >
               Add Consultation
             </AddButton>

@@ -166,17 +166,36 @@ export const getReportRequirementsByCondition = (permitGuid, permitAmendmentGuid
     }
   );
 
-export const getStepPath = (condition, category, conditionMap, parentPath = "", reportRequirements = []): IPermitCondition => {
-  const formattedStep = formatPermitConditionStep(condition.step);
+type StepPathCacheEntry = {
+  parentPath: string;
+  requirementId: number | undefined;
+  result: IPermitCondition;
+};
 
+const stepPathCache = new WeakMap<IPermitCondition, StepPathCacheEntry>();
+
+const populateConditionMap = (condition: IPermitCondition, conditionMap: Record<string, IPermitCondition>) => {
+  conditionMap[condition.permit_condition_id] = condition;
+  condition.sub_conditions?.forEach((sub) => populateConditionMap(sub, conditionMap));
+};
+
+export const getStepPath = (condition, category, conditionMap, parentPath = "", reportRequirements = []): IPermitCondition => {
+  const mineReportPermitRequirement = reportRequirements.find(
+    (requirement) => requirement.permit_condition_ids.includes(condition.permit_condition_id)
+  );
+  const requirementId = mineReportPermitRequirement?.mine_report_permit_requirement_id;
+
+  const cached = stepPathCache.get(condition);
+  if (cached && cached.parentPath === parentPath && cached.requirementId === requirementId) {
+    populateConditionMap(cached.result, conditionMap);
+    return cached.result;
+  }
+
+  const formattedStep = formatPermitConditionStep(condition.step);
   const currentPath = parentPath
     ? `${parentPath}${formattedStep}`
     : `${category.description} - ${formattedStep}`;
   const stepPath = currentPath.replace(/\.+$/, "");
-
-  const mineReportPermitRequirement = reportRequirements.find(
-    (requirement) => requirement.permit_condition_ids.includes(condition.permit_condition_id)
-  );
 
   const sub_conditions =
     condition.sub_conditions?.map((subCondition) =>
@@ -192,6 +211,7 @@ export const getStepPath = (condition, category, conditionMap, parentPath = "", 
   };
 
   conditionMap[condition.permit_condition_id] = formattedCondition;
+  stepPathCache.set(condition, { parentPath, requirementId, result: formattedCondition });
 
   return formattedCondition;
 };

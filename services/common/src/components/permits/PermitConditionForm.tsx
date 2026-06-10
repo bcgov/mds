@@ -32,6 +32,8 @@ import { formatPermitConditionStep, parsePermitConditionStep } from "@mds/common
 import { FORM } from "@mds/common/constants/forms";
 import RenderGroupedSelect from "@mds/common/components/forms/RenderGroupedSelect";
 import { PermitConditionsProvider, usePermitConditions } from "@mds/common/components/permits/PermitConditionsContext";
+import { getMineReportPermitRequirementsByAmendment } from "@mds/common/redux/selectors/permitSelectors";
+import { getStandardReportRequirements } from "@mds/common/redux/slices/mineReportPermitRequirementSlice";
 import { DeleteConditionModal } from "./DeleteConditionModal";
 import RenderMultiSelect from "../forms/RenderMultiSelect";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
@@ -79,15 +81,26 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const { isFeatureEnabled } = useFeatureFlag();
     const permitConditionsValue = usePermitConditions();
-    const { loading,
+    const {
+        loading,
         setLoading,
         isNowEditor,
         isStandardConditionEditor,
+        permitGuid,
         setActiveConditionId,
         clearActiveConditionId,
         addSubmittingCondition,
-        removeSubmittingCondition
+        removeSubmittingCondition,
+        submittingConditionIds
     } = permitConditionsValue;
+
+    const allPermitReqs = useAppSelector(getMineReportPermitRequirementsByAmendment(permitGuid, permitAmendmentGuid, isNowEditor));
+    const standardReqs = useAppSelector(getStandardReportRequirements);
+    const relevantReqs = isStandardConditionEditor ? standardReqs : allPermitReqs;
+    const existingRequirement = relevantReqs?.find(
+        (r) => r.permit_condition_ids?.includes(condition.permit_condition_id)
+    );
+    const hasReportRequirement = !!existingRequirement;
     const editingAllowed = isStandardConditionEditor || isExtracted || isNowEditor;
     // the form fails to re-initialize when the category is changed, so concatenating it forces it to make a new one
     const formName = `${FORM.EDIT_PERMIT_CONDITION}_${condition.permit_condition_id}_${condition.condition_category_code}`;
@@ -105,13 +118,33 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
     }, [editingFormName]);
 
     const startEdit = () => {
-        if (editingFormName) {
-            dispatch(reset(editingFormName));
+        const handleEdit = () => {
+            onEdit();
+            setEditingFormName(formName);
+            setIsEditMode(true);
+            setActiveConditionId(condition.permit_condition_id);
+        };
+
+        const editingFormSubmitting = editingFormName != null &&
+            Object.keys(submittingConditionIds).some(id => editingFormName.includes(`_${id}_`));
+
+        if (editingFormName && !editingFormSubmitting && (editingFormDirty || listItemFormDirty)) {
+            Modal.confirm({
+                title: "Discard changes?",
+                content: "Another condition is currently being edited. Do you want to continue editing or discard the changes?",
+                onOk: () => {
+                    dispatch(reset(editingFormName));
+                    handleEdit();
+                },
+                cancelText: "Continue editing",
+                okText: "Discard",
+            });
+        } else {
+            if (editingFormName) {
+                dispatch(reset(editingFormName));
+            }
+            handleEdit();
         }
-        onEdit();
-        setEditingFormName(formName);
-        setIsEditMode(true);
-        setActiveConditionId(condition.permit_condition_id);
     };
 
     const cancelEdit = () => {
@@ -162,24 +195,19 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
             const submittedId = condition.permit_condition_id;
             dispatch(reset(formName));
             await refreshData(false);
-            // Used unstable_batchedUpdates to prevent multiple re-renders from the multiple state updates here
-            unstable_batchedUpdates(() => {
-                removeSubmittingCondition(submittedId);
-                clearActiveConditionId(submittedId);
-                setIsEditMode(false);
-                setIsAddingListItem(false);
-                if (editingFormNameRef.current === formName) {
-                    setEditingFormName(null);
-                }
-                setIsSubmitting(false);
-                setLoading(false);
-            });
+            removeSubmittingCondition(submittedId);
+            clearActiveConditionId(submittedId);
+            setIsEditMode(false);
+            setIsAddingListItem(false);
+            if (editingFormNameRef.current === formName) {
+                setEditingFormName(null);
+            }
+            setIsSubmitting(false);
+            setLoading(false);
         } else {
-            unstable_batchedUpdates(() => {
-                removeSubmittingCondition(condition.permit_condition_id);
-                setIsSubmitting(false);
-                setLoading(false);
-            });
+            removeSubmittingCondition(condition.permit_condition_id);
+            setIsSubmitting(false);
+            setLoading(false);
         }
     };
     const handleCancel = () => {
@@ -236,6 +264,7 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
                 props: {
                     title: `Add Permit Required Report to Condition "${condition.stepPath}"`,
                     condition: reportCondition,
+                    mineReportPermitRequirement: existingRequirement,
                     canEditPermitConditions: canEditPermitConditions,
                     refreshData: refreshData
                 },
@@ -395,9 +424,9 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
                                             type="default"
                                             icon={<FontAwesomeIcon icon={faClipboard} />}
                                             onClick={(e) => handleOpenAddReportModal(e, condition)}
-                                            disabled={isSubmitting || isSubmittingConditionFamily || condition?.mineReportPermitRequirement !== undefined}
+                                            disabled={isSubmitting || isSubmittingConditionFamily || hasReportRequirement}
                                         >
-                                            {condition?.mineReportPermitRequirement
+                                            {hasReportRequirement
                                                 ? "Report Added"
                                                 : "Add Report Requirement"}
                                         </Button>
