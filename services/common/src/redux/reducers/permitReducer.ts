@@ -142,9 +142,9 @@ export const permitReducer = (state: PermitState = initialState, action) => {
             permitAmendment.conditions ?? [])
         };
       };
-      const existingAmendment = state.permitAmendments[permit_amendment_guid];
+      const existingAmendment = state.permitAmendments?.[permit_amendment_guid];
       const updatedAmendment = existingAmendment ? updateMatchingAmendment(existingAmendment) : undefined;
-      const isInLatestAmendments = Boolean(state.latestPermitAmendments[permit_amendment_guid]);
+      const isInLatestAmendments = Boolean(state.latestPermitAmendments?.[permit_amendment_guid]);
 
       return {
         ...state,
