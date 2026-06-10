@@ -34,11 +34,7 @@ export const PermitConditionStatus: FC<PermitConditionStatusProps> = ({
 }) => {
 
   const permitConditions = usePermitConditions();
-  const { mineGuid,
-    permitGuid,
-    latestAmendment,
-    previousAmendment,
-    currentAmendment,
+  const {
     loading,
     setLoading,
     activeConditionId,

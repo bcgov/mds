@@ -1,5 +1,4 @@
 import React, { FC, useEffect, useRef, useState } from "react";
-import { unstable_batchedUpdates } from "react-dom";
 import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 import { change, Field, isDirty, reset } from "@mds/common/components/forms/form";
 import { Row, Col, Button, Typography, Modal, Tag } from "antd";
