@@ -39,7 +39,6 @@ def extract_table_artifacts(
                 page_number=page_number,
                 bounding_box=bounding_box,
                 page_rotation_hints=page_rotation_hints,
-                logger=logger,
             )
             if not upload_payload:
                 logger.warning(
@@ -187,7 +186,6 @@ def extract_figure_artifacts(
                 page_number=page_number,
                 bounding_box=bounding_box,
                 page_rotation_hints=page_rotation_hints,
-                logger=logger,
             )
             if upload_payload:
                 figure_artifacts[-1]['_artifact_upload'] = upload_payload

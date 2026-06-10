@@ -1,6 +1,6 @@
+import hashlib
 import logging
 import os
-import hashlib
 from urllib.parse import quote
 
 import requests
@@ -8,10 +8,6 @@ from oauthlib.oauth2 import BackendApplicationClient
 from requests_oauthlib import OAuth2Session
 
 logger = logging.getLogger(__name__)
-
-
-def _core_api_base_url():
-    return os.getenv('CORE_API_URL') or os.getenv('CORE_API_BASE_URL')
 
 
 def _document_manager_base_url():
@@ -36,24 +32,6 @@ def _build_oauth_session():
     return oauth_session
 
 
-def _extract_object_store_path(payload):
-    if not isinstance(payload, dict):
-        return None
-
-    for key in ('object_store_path', 'objectStorePath'):
-        value = payload.get(key)
-        if value:
-            return value
-
-    nested_document = payload.get('document')
-    if isinstance(nested_document, dict):
-        for key in ('object_store_path', 'objectStorePath'):
-            value = nested_document.get(key)
-            if value:
-                return value
-
-    return None
-
 
 class DocumentManagerArtifactUploader:
     def __init__(self, session, base_url=None):
@@ -61,6 +39,11 @@ class DocumentManagerArtifactUploader:
         self.base_url = (base_url or _document_manager_base_url() or '').rstrip('/')
 
     def upload(self, source_document_manager_guid, now_application_guid, artifact_id, upload_data):
+        """
+        Upload artifact binary to Document Manager using multipart upload, and return artifact document metadata.
+        """
+
+
         if not self.base_url:
             return None, 'skipped'
 
@@ -84,10 +67,12 @@ class DocumentManagerArtifactUploader:
         artifact_document_manager_guid, upload_id, upload_parts = self._parse_upload_info(upload_info)
         completed_parts = self._upload_parts(file_bytes, upload_parts)
         complete_info = self._complete_upload(token, artifact_document_manager_guid, upload_id, completed_parts)
-        object_store_path = (
-            _extract_object_store_path(upload_info)
-            or _extract_object_store_path(complete_info)
-            or self._lookup_object_store_path(token, artifact_document_manager_guid)
+        logger.warning(
+            'Artifact complete-upload raw response artifact_id=%s document_manager_guid=%s completed_parts=%s complete_info=%s',
+            artifact_id,
+            artifact_document_manager_guid,
+            completed_parts,
+            complete_info,
         )
 
         return {
@@ -95,7 +80,6 @@ class DocumentManagerArtifactUploader:
             'document_name': file_name,
             'mime_type': mime_type,
             'sha256': hashlib.sha256(file_bytes).hexdigest(),
-            'object_store_path': object_store_path,
         }, 'uploaded'
 
     def _resolve_folder(self, upload_data, now_application_guid, source_document_manager_guid):
@@ -167,23 +151,64 @@ class DocumentManagerArtifactUploader:
         except ValueError:
             return {}
 
-    def _lookup_object_store_path(self, token, artifact_document_manager_guid):
-        response = requests.get(
-            f"{self.base_url}/documents/{artifact_document_manager_guid}",
-            headers={'Authorization': f'Bearer {token}'},
-            timeout=30,
+def _upload_artifact_file_with_stats(
+    uploader,
+    source_document_manager_guid,
+    now_application_guid,
+    artifact_id,
+    upload_data,
+    upload_stats,
+):
+    """Upload one artifact binary and apply upload-state counters."""
+    try:
+        uploaded_artifact, upload_state = uploader.upload(
+            source_document_manager_guid,
+            now_application_guid,
+            artifact_id,
+            upload_data,
         )
-        response.raise_for_status()
-        return _extract_object_store_path(response.json() or {})
+        upload_stats[upload_state] += 1
+        return uploaded_artifact
+    except Exception as exc:
+        upload_stats['failed'] += 1
+        logger.warning(
+            'Artifact file upload failed for source_document_manager_guid=%s artifact_id=%s: %s',
+            source_document_manager_guid,
+            artifact_id,
+            exc,
+        )
+        return None
 
 
-def _upload_artifact_file(session, source_document_manager_guid, now_application_guid, artifact_id, upload_data):
-    return DocumentManagerArtifactUploader(session).upload(
-        source_document_manager_guid,
-        now_application_guid,
-        artifact_id,
-        upload_data,
+def _upload_callback_artifact(
+    session,
+    source_document_manager_guid,
+    now_application_guid,
+    callback_artifact,
+    upload_stats,
+):
+    """Upload one callback artifact if binary payload is present.
+
+    Returns uploaded artifact metadata to attach to callback payload, or None.
+    """
+    artifact_id = callback_artifact.get('artifact_id')
+    upload_data = callback_artifact.pop('_artifact_upload', None)
+    if not upload_data:
+        return None
+
+    uploader = DocumentManagerArtifactUploader(session)
+    uploaded_artifact = _upload_artifact_file_with_stats(
+        uploader=uploader,
+        source_document_manager_guid=source_document_manager_guid,
+        now_application_guid=now_application_guid,
+        artifact_id=artifact_id or 'artifact',
+        upload_data=upload_data,
+        upload_stats=upload_stats,
     )
+    # Only return attachable metadata when artifact_id is known.
+    if not artifact_id or not uploaded_artifact:
+        return None
+    return uploaded_artifact
 
 
 def _registration_result(callback, upload_stats, artifact_documents, include_upload_stats):
@@ -227,38 +252,6 @@ def _prepare_callback_artifacts(
     return callback_artifacts, artifact_documents
 
 
-def _upload_callback_artifact(
-    session,
-    source_document_manager_guid,
-    now_application_guid,
-    callback_artifact,
-    upload_stats,
-):
-    artifact_id = callback_artifact.get('artifact_id')
-    upload_data = callback_artifact.pop('_artifact_upload', None)
-    if not upload_data:
-        return None
-    try:
-        uploaded_artifact, upload_state = _upload_artifact_file(
-            session=session,
-            source_document_manager_guid=source_document_manager_guid,
-            now_application_guid=now_application_guid,
-            artifact_id=artifact_id or 'artifact',
-            upload_data=upload_data,
-        )
-        upload_stats[upload_state] += 1
-        return uploaded_artifact if artifact_id and uploaded_artifact else None
-    except Exception as exc:
-        upload_stats['failed'] += 1
-        logger.warning(
-            'Artifact file upload failed for source_document_manager_guid=%s artifact_id=%s: %s',
-            source_document_manager_guid,
-            artifact_id,
-            exc,
-        )
-        return None
-
-
 def _attach_uploaded_artifact(callback_artifact, uploaded_artifact):
     callback_artifact['artifact'] = {
         **(callback_artifact.get('artifact') or {}),
@@ -275,7 +268,7 @@ def _artifact_document_summary(artifact_id, uploaded_artifact):
     }
 
 
-def register_document_artifacts(
+def upload_document_artifacts(
     source_document_manager_guid,
     mine_guid,
     now_application_guid,
@@ -284,6 +277,12 @@ def register_document_artifacts(
     request_id=None,
     include_upload_stats=False,
 ):
+    """Upload extracted artifact binaries to Document Manager and return upload metadata.
+
+    This function uploads each artifact's `_artifact_upload` payload to the
+    Document Manager folder:
+    `<DOCUMENT_ARTIFACT_UPLOAD_FOLDER_PREFIX>/<now_application_guid>/artifacts/<source_document_manager_guid>`.
+    """
     upload_stats = {
         'candidates': sum(1 for artifact in (artifacts or []) if (artifact or {}).get('_artifact_upload')),
         'uploaded': 0,
@@ -291,6 +290,15 @@ def register_document_artifacts(
         'failed': 0,
     }
     artifact_documents = []
+
+    logger.info(
+        'Artifact upload plan: candidates=%s document_manager_url=%s folder_prefix=%s source_document_manager_guid=%s now_application_guid=%s',
+        upload_stats['candidates'],
+        _document_manager_base_url(),
+        _artifact_folder_prefix(),
+        source_document_manager_guid,
+        now_application_guid,
+    )
 
     session = _build_oauth_session()
     if not session:

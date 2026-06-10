@@ -1,7 +1,9 @@
 import hashlib
 from unittest.mock import MagicMock, patch
 
-from app.pipelines.document_search.artifact_registration_client import register_document_artifacts
+from app.pipelines.document_search.artifact_registration_client import (
+    upload_document_artifacts,
+)
 
 
 class _MockResponse:
@@ -16,7 +18,7 @@ class _MockResponse:
         return self._payload
 
 
-def test_register_document_artifacts_uploads_binary_and_returns_artifact_documents(monkeypatch):
+def test_upload_document_artifacts_uploads_binary_and_returns_artifact_documents(monkeypatch):
     monkeypatch.setenv("DOCUMENT_MANAGER_URL", "http://document-manager:5001")
 
     mock_session = MagicMock()
@@ -33,7 +35,6 @@ def test_register_document_artifacts_uploads_binary_and_returns_artifact_documen
         return_value=_MockResponse(
             payload={
                 "document_manager_guid": "artifact-doc-guid",
-                "object_store_path": "permits/now/from-init.png",
                 "upload": {
                     "uploadId": "upload-1",
                     "parts": [
@@ -51,9 +52,9 @@ def test_register_document_artifacts_uploads_binary_and_returns_artifact_documen
         ],
     ), patch(
         "app.pipelines.document_search.artifact_registration_client.requests.patch",
-        return_value=_MockResponse(payload={"status": "completed"}),
+        return_value=_MockResponse(payload={"status": "completed", "object_store_path": "permits/now/from-complete.png"}),
     ) as mock_docman_patch:
-        result = register_document_artifacts(
+        result = upload_document_artifacts(
             source_document_manager_guid="src-guid",
             mine_guid="mine-guid",
             now_application_guid="now-guid",
@@ -84,7 +85,7 @@ def test_register_document_artifacts_uploads_binary_and_returns_artifact_documen
     assert result["artifact_documents"][0] == {
         "artifact_id": "a-1",
         "document_manager_guid": "artifact-doc-guid",
-        "object_store_path": "permits/now/from-init.png",
+        "object_store_path": "permits/now/from-complete.png",
         "mime_type": "text/csv",
     }
 
@@ -95,14 +96,14 @@ def test_register_document_artifacts_uploads_binary_and_returns_artifact_documen
     assert upload_sha == hashlib.sha256(upload_bytes).hexdigest()
 
 
-def test_register_document_artifacts_returns_skipped_stats_when_oauth_is_unavailable(monkeypatch):
+def test_upload_document_artifacts_returns_skipped_stats_when_oauth_is_unavailable(monkeypatch):
     monkeypatch.setenv("DOCUMENT_MANAGER_URL", "http://document-manager:5001")
 
     with patch(
         "app.pipelines.document_search.artifact_registration_client._build_oauth_session",
         return_value=None,
     ):
-        result = register_document_artifacts(
+        result = upload_document_artifacts(
             source_document_manager_guid="src-guid",
             mine_guid="mine-guid",
             now_application_guid="now-guid",

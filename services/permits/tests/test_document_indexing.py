@@ -640,7 +640,6 @@ def test_build_region_upload_payload_prefers_di_angle_over_fallback():
             page_number=1,
             bounding_box={"left": 0.0, "top": 0.0, "right": 1.0, "bottom": 1.0},
             page_rotation_hints={1: 90},
-            logger=MagicMock(),
         )
 
     assert payload is not None
@@ -677,7 +676,6 @@ def test_build_region_upload_payload_uses_fallback_when_di_hint_missing():
             page_number=1,
             bounding_box={"left": 0.0, "top": 0.0, "right": 1.0, "bottom": 1.0},
             page_rotation_hints={},
-            logger=MagicMock(),
         )
 
     assert payload is not None

@@ -7,7 +7,7 @@ from typing import Dict, List
 from app.celery import celery_app
 from app.common.types.context import context
 from app.pipelines.document_search.artifact_registration_client import (
-    register_document_artifacts,
+    upload_document_artifacts,
 )
 from app.pipelines.document_search.document_search_pipeline import (
     now_document_search_search_client,
@@ -78,7 +78,7 @@ def _register_artifacts_for_document(
     if not artifacts:
         return
 
-    registration_result = register_document_artifacts(
+    registration_result = upload_document_artifacts(
         source_document_manager_guid=doc_meta.get('document_manager_guid'),
         mine_guid=doc_meta.get('mine_guid'),
         now_application_guid=now_application_guid,
