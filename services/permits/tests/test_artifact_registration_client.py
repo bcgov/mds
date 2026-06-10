@@ -86,6 +86,7 @@ def test_upload_document_artifacts_uploads_binary_and_returns_artifact_documents
         "artifact_id": "a-1",
         "document_manager_guid": "artifact-doc-guid",
         "mime_type": "text/csv",
+        "object_store_path": None
     }
 
     assert mock_docman_patch.call_count == 1

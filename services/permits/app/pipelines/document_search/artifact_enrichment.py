@@ -235,7 +235,10 @@ def generate_figure_caption_and_summary(
         messages=messages,  # type: ignore[arg-type]
     )
 
-    content_text = ((response.choices or [])[0].message.content or '').strip()
+    choices = response.choices or []
+    if not len(choices):
+        return {'caption': '', 'summary': '', 'category': ''}
+    content_text = (response.choices[0].message.content or '').strip()
     payload = parse_json_object(content_text)
     if not isinstance(payload, dict):
         return {'caption': '', 'summary': '', 'category': ''}
