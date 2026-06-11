@@ -51,5 +51,12 @@ GRANT SELECT ON ALL TABLES IN SCHEMA docman TO metabase;
 /**
 Allow mds_data_analytics user to READ anything on the nris schema
 **/
-GRANT USAGE ON SCHEMA nris TO mds_data_analytics;
-GRANT SELECT ON ALL TABLES IN SCHEMA nris TO mds_data_analytics;
+DO
+$$
+BEGIN
+    IF EXISTS (SELECT FROM pg_catalog.pg_roles WHERE rolname = 'mds_data_analytics') THEN
+        GRANT USAGE ON SCHEMA nris TO mds_data_analytics;
+        GRANT SELECT ON ALL TABLES IN SCHEMA nris TO mds_data_analytics;
+    END IF;
+END
+$$;
