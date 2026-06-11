@@ -9,12 +9,16 @@ interface PermitConditionReportRequirementsProps {
     requirements: IMineReportPermitRequirement[];
     refreshData?: () => Promise<void>;
     canEditPermitConditions?: boolean;
+    conditionId?: number;
+    conditionFamilyLoading?: boolean;
 }
 
 const PermitConditionReportRequirements: FC<PermitConditionReportRequirementsProps> = ({
     requirements,
     refreshData,
-    canEditPermitConditions = false
+    canEditPermitConditions = false,
+    conditionId,
+    conditionFamilyLoading = false,
 }) => {
 
     refreshData = refreshData || (() => Promise.resolve());
@@ -39,6 +43,8 @@ const PermitConditionReportRequirements: FC<PermitConditionReportRequirementsPro
                             mineReportPermitRequirement={req}
                             canEditPermitConditions={canEditPermitConditions}
                             refreshData={refreshData}
+                            conditionId={conditionId}
+                            conditionFamilyLoading={conditionFamilyLoading}
                         />
                     </Collapse.Panel>
                 )

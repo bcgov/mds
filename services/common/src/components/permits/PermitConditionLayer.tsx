@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useMemo, useState } from "react";
+import React, { FC, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { IPermitCondition } from "@mds/common/interfaces/permits/permitCondition.interface";
 import SubConditionForm from "@mds/common/components/permits/SubConditionForm";
 import { IGroupedDropdownList } from "@mds/common/interfaces/common/option.interface";
@@ -14,8 +14,21 @@ import { useAppSelector } from "@mds/common/redux/rootState";
 import { FORM } from "@mds/common/constants/forms";
 import { IStandardPermitCondition } from "@mds/common/interfaces";
 import { getStandardReportByCondition } from "@mds/common/redux/slices/mineReportPermitRequirementSlice";
+import { containsConditionId } from "@mds/common/utils/helpers";
 
 const { Title } = Typography;
+
+export const isEditingFamilyFor = (formName: string | null, condition: IPermitCondition): boolean => {
+  if (!formName) {
+    return false;
+  }
+
+  if (formName === `${FORM.EDIT_PERMIT_CONDITION}_${condition.permit_condition_id}_${condition.condition_category_code}`) {
+    return true;
+  }
+
+  return (condition.sub_conditions ?? []).some((sub) => isEditingFamilyFor(formName, sub));
+};
 
 interface PermitConditionLayerProps {
   isExtracted: boolean;
@@ -24,8 +37,9 @@ interface PermitConditionLayerProps {
   isExpanded?: boolean;
   setParentExpand?: () => void;
   canEditPermitConditions?: boolean;
-  setEditingFormName: (formName: string) => void;
-  editingFormName: string;
+  isEditing: boolean;
+  setEditingFormName: (formName: string | null) => void;
+  editingFormName: string | null;
   handleMoveCondition: (condition: IPermitCondition | IStandardPermitCondition, isMoveUp: boolean) => Promise<void>;
   currentPosition: number;
   conditionCount: number;
@@ -33,6 +47,9 @@ interface PermitConditionLayerProps {
   refreshData: (closeForm?: boolean) => Promise<void>;
   conditionSelected?: (condition: IPermitCondition) => void;
   categoryOptions?: IGroupedDropdownList[];
+  isInsideActiveCondition?: boolean;
+  isInsideSubmittingCondition?: boolean;
+  siblingIds?: number[];
 }
 
 const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
@@ -43,6 +60,7 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
   level = 0,
   setParentExpand = () => { },
   canEditPermitConditions = false,
+  isEditing,
   setEditingFormName,
   editingFormName,
   handleMoveCondition,
@@ -51,8 +69,24 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
   permitAmendmentGuid,
   refreshData,
   categoryOptions,
+  isInsideActiveCondition = false,
+  isInsideSubmittingCondition = false,
+  siblingIds = [],
 }) => {
-  const { loading, previousAmendment, permitGuid, standardConditionType, isNowEditor, isStandardConditionEditor } = usePermitConditions();
+  const { loading,
+    previousAmendment,
+    permitGuid,
+    standardConditionType,
+    isNowEditor,
+    isStandardConditionEditor,
+    activeConditionId,
+    setActiveConditionId,
+    clearActiveConditionId,
+    submittingConditionIds,
+    setLoading,
+    addSubmittingCondition,
+    removeSubmittingCondition,
+  } = usePermitConditions();
   const permitRequirements = useAppSelector(
     getReportRequirementsByCondition(permitGuid, permitAmendmentGuid, condition.permit_condition_id, isNowEditor)
   );
@@ -60,26 +94,29 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
   const standardRequirements = useAppSelector(getStandardReportByCondition(standardId));
   const requirements = isStandardConditionEditor ? standardRequirements : permitRequirements;
 
-  const editingCondition = useMemo(
-    () => editingFormName === `${FORM.EDIT_PERMIT_CONDITION}_${condition.permit_condition_id}_${condition.condition_category_code}`,
-    [condition.permit_condition_guid, editingFormName]
-  );
+  const editingCondition = isEditing;
   const [isAddingListItem, setIsAddingListItem] = useState<boolean>(false);
   const [expandClass, setExpandClass] = useState(
     isExpanded ? "condition-expanded" : "condition-collapsed"
   );
-  const loadClassName = level === 0 && loading ? " condition-layer--loading" : "";
+
+  const isActiveCondition = !!(activeConditionId && condition.permit_condition_id === activeConditionId);
+  const isAncestorOfActive = !!(activeConditionId && !isActiveCondition && !isInsideActiveCondition &&
+    containsConditionId(condition.sub_conditions ?? [], activeConditionId));
+  const isConditionSubmitting = (submittingConditionIds[condition.permit_condition_id] ?? 0) > 0;
+  const loadClassName = loading && (isConditionSubmitting || isInsideSubmittingCondition)
+    ? " condition-layer--loading" : "";
   const className = `condition-layer condition-layer--${level}${loadClassName} condition-${condition.condition_type_code} fade-in`;
   const { isFeatureEnabled } = useFeatureFlag();
 
-  const handleSetParentExpand = () => {
+  const handleSetParentExpand = useCallback(() => {
     if (level === 0) {
       return;
     } else {
       setExpandClass("condition-expanded");
       setParentExpand();
     }
-  };
+  }, [level, setParentExpand]);
 
   useEffect(() => {
     setExpandClass(isExpanded || editingCondition ? "condition-expanded" : "condition-collapsed");
@@ -99,14 +136,21 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
   const handleSaveListItem = async () => {
     await refreshData();
     setIsAddingListItem(false);
+    clearActiveConditionId(condition.permit_condition_id);
   };
 
-  const moveUp = async (condition: IPermitCondition | IStandardPermitCondition) => {
-    await handleMoveCondition(condition, true);
-  };
+  const siblingIdsRef = useRef(siblingIds);
+  siblingIdsRef.current = siblingIds;
 
-  const moveDown = async (condition: IPermitCondition | IStandardPermitCondition) => {
-    await handleMoveCondition(condition, false);
+  const handleMove = async (condition: IPermitCondition | IStandardPermitCondition, isMoveUp: boolean) => {
+    siblingIdsRef.current.forEach(id => addSubmittingCondition(id));
+    setLoading(true);
+    try {
+      await handleMoveCondition(condition, isMoveUp);
+    } finally {
+      siblingIdsRef.current.forEach(id => removeSubmittingCondition(id));
+      setLoading(false);
+    }
   };
 
   let matchingCondition = null;
@@ -120,6 +164,11 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
       );
     });
   }
+
+  const subConditionSiblingIds = useMemo(
+    () => condition.sub_conditions?.map(sc => sc.permit_condition_id) ?? [],
+    [condition.sub_conditions]
+  );
 
   return (
     <div
@@ -135,13 +184,14 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
           canEditPermitConditions={canEditPermitConditions}
           setEditingFormName={setEditingFormName}
           editingFormName={editingFormName}
-          moveUp={currentPosition > 0 ? moveUp : undefined}
-          moveDown={currentPosition < conditionCount - 1 ? moveDown : undefined}
+          moveUp={currentPosition > 0 ? (c) => handleMove(c, true) : undefined}
+          moveDown={currentPosition < conditionCount - 1 ? (c) => handleMove(c, false) : undefined}
           permitAmendmentGuid={permitAmendmentGuid}
           refreshData={refreshData}
           setIsAddingListItem={setIsAddingListItem}
           isAddingListItem={isAddingListItem}
           categoryOptions={categoryOptions}
+          isSubmittingConditionFamily={isConditionSubmitting || isInsideSubmittingCondition}
         />
         {condition?.sub_conditions?.map((subCondition, idx) => {
           return (
@@ -155,11 +205,15 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
                 canEditPermitConditions={canEditPermitConditions}
                 setEditingFormName={setEditingFormName}
                 editingFormName={editingFormName}
+                isEditing={isEditingFamilyFor(editingFormName, subCondition)}
                 handleMoveCondition={handleMoveCondition}
                 currentPosition={idx}
                 conditionCount={condition.sub_conditions.length}
                 refreshData={refreshData}
                 conditionSelected={conditionSelected}
+                isInsideActiveCondition={isInsideActiveCondition || isActiveCondition}
+                isInsideSubmittingCondition={isInsideSubmittingCondition || isConditionSubmitting}
+                siblingIds={subConditionSiblingIds}
               />
             </div>
           );
@@ -169,7 +223,10 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
         <SubConditionForm
           level={level + 1}
           parentCondition={condition}
-          handleCancel={() => setIsAddingListItem(false)}
+          handleCancel={() => {
+            setIsAddingListItem(false);
+            setActiveConditionId(null);
+          }}
           onSubmit={handleSaveListItem}
           permitAmendmentGuid={permitAmendmentGuid}
         />
@@ -186,6 +243,16 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
                 requirements={requirements}
                 refreshData={refreshData}
                 canEditPermitConditions={canEditPermitConditions}
+                conditionId={condition.permit_condition_id}
+                conditionFamilyLoading={
+                  loading && (
+                    isAncestorOfActive ||
+                    Object.keys(submittingConditionIds).map(Number).some((id) =>
+                      id === condition.permit_condition_id ||
+                      containsConditionId(condition.sub_conditions ?? [], id)
+                    )
+                  )
+                }
               />
             </div>
           )}
@@ -193,7 +260,7 @@ const PermitConditionLayer: FC<PermitConditionLayerProps> = ({
             condition={condition}
             previousCondition={matchingCondition}
             canEditPermitConditions={canEditPermitConditions}
-            isDisabled={isAddingListItem}
+            isDisabled={isAddingListItem || isConditionSubmitting}
             permitAmendmentGuid={permitAmendmentGuid}
             requirements={requirements}
             refreshData={refreshData}

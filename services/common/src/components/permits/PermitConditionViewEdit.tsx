@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useMemo, useState } from "react";
+import React, { FC, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Col, Collapse, Row, Spin, Typography } from "antd";
 import LoadingOutlined from "@ant-design/icons/LoadingOutlined";
 import {
@@ -11,7 +11,7 @@ import {
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { Feature } from "@mds/common/utils/featureFlag";
 import SubConditionForm from "./SubConditionForm";
-import PermitConditionLayer from "./PermitConditionLayer";
+import PermitConditionLayer, { isEditingFamilyFor } from "./PermitConditionLayer";
 import PermitConditionReviewAssignment from "./PermitConditionReviewAssignment";
 import CoreButton from "../common/CoreButton";
 import { EditPermitConditionCategoryInline } from "./PermitConditionCategory";
@@ -42,10 +42,10 @@ interface PermitConditionViewEditProps {
   collapseCategories?: boolean;
   isExpanded?: boolean;
   setSelectedCondition?: (condition: IPermitCondition) => void;
-  editingFormName: string;
-  setEditingFormName: (formName: string) => void;
-  addingToCategoryCode: string;
-  setAddingToCategoryCode: (categoryCode: string) => void;
+  editingFormName: string | null;
+  setEditingFormName: React.Dispatch<React.SetStateAction<string | null>>;
+  addingToCategoryCode: string | null;
+  setAddingToCategoryCode: (categoryCode: string | null) => void;
 }
 
 const PermitConditionViewEdit: FC<PermitConditionViewEditProps> = ({
@@ -134,12 +134,18 @@ const PermitConditionViewEdit: FC<PermitConditionViewEditProps> = ({
       isNowEditor ||
       userReviewCategoryCodes.includes(category.condition_category_code));
 
-  const refreshConditionData = async (closeForm = true) => {
+  const editingFormNameRef = useRef(editingFormName);
+  useEffect(() => {
+    editingFormNameRef.current = editingFormName;
+  }, [editingFormName]);
+
+  const refreshConditionData = useCallback(async (closeForm = true) => {
+    const formToClose = editingFormNameRef.current;
     await refreshData();
     if (closeForm) {
-      setEditingFormName(null);
+      setEditingFormName((prev) => (prev === formToClose ? null : prev));
     }
-  };
+  }, [refreshData, setEditingFormName]);
 
   const handleAddCondition = async () => {
     setAddingToCategoryCode(null);
@@ -199,7 +205,7 @@ const PermitConditionViewEdit: FC<PermitConditionViewEditProps> = ({
     );
   };
 
-  const handleMoveCondition = async (
+  const handleMoveCondition = useCallback(async (
     condition: IPermitCondition | IStandardPermitCondition,
     isMoveUp: boolean
   ) => {
@@ -223,7 +229,7 @@ const PermitConditionViewEdit: FC<PermitConditionViewEditProps> = ({
       );
     }
     await refreshConditionData();
-  };
+  }, [currentAmendment?.permit_amendment_guid, refreshConditionData]);
 
   const renderCategory = (category, idx) => {
     return (
@@ -288,9 +294,11 @@ const PermitConditionViewEdit: FC<PermitConditionViewEditProps> = ({
               canEditPermitConditions={canEditPermitConditions(category.condition_category)}
               setEditingFormName={setEditingFormName}
               editingFormName={editingFormName ?? addingToCategoryCode}
+              isEditing={isEditingFamilyFor(editingFormName ?? addingToCategoryCode, sc)}
               refreshData={refreshConditionData}
               conditionSelected={setSelectedCondition}
               categoryOptions={dropdownCategories}
+              siblingIds={category.conditions.map(c => c.permit_condition_id)}
             />
           </Col>
         ))}

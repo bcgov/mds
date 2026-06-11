@@ -11,6 +11,7 @@ import { updatePermitCondition } from "@mds/common/redux/actionCreators/permitAc
 import { openModal } from "@mds/common/redux/actions/modalActions";
 import ComparePermitConditionHistoryModal from "@mds/common/components/permits/ComparePermitConditionHistoryModal";
 import { PermitConditionsProvider, usePermitConditions } from "@mds/common/components/permits/PermitConditionsContext";
+import { containsConditionId } from "@mds/common/utils/helpers";
 
 interface PermitConditionStatusProps {
   condition: IPermitCondition;
@@ -32,12 +33,33 @@ export const PermitConditionStatus: FC<PermitConditionStatusProps> = ({
   refreshData,
 }) => {
 
-  const { mineGuid, permitGuid, latestAmendment, previousAmendment, currentAmendment, loading, setLoading } = usePermitConditions();
+  const permitConditions = usePermitConditions();
+  const {
+    loading,
+    setLoading,
+    activeConditionId,
+    submittingConditionIds,
+    addSubmittingCondition,
+    removeSubmittingCondition
+  } = permitConditions;
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const isActiveConditionFamily = activeConditionId !== null &&
+    (condition.permit_condition_id === activeConditionId ||
+      containsConditionId(condition.sub_conditions ?? [], activeConditionId));
+
+  const isSubmittingConditionFamily = Object.keys(submittingConditionIds).map(Number).some(
+    (id) => id === condition.permit_condition_id ||
+      containsConditionId(condition.sub_conditions ?? [], id)
+  );
+  const isConditionFamilyBusy = isActiveConditionFamily || isSubmittingConditionFamily;
+
   const handleCompleteReview = async (values) => {
+    const conditionId = condition.permit_condition_id;
     setIsSubmitting(true);
+    setLoading(true);
+    addSubmittingCondition(conditionId);
     const payload = values.step
       ? {
         ...values,
@@ -45,8 +67,10 @@ export const PermitConditionStatus: FC<PermitConditionStatusProps> = ({
         permit_condition_status_code: PERMIT_CONDITION_STATUS_CODE.COM
       } : values;
     await dispatch(updatePermitCondition(values.permit_condition_guid, permitAmendmentGuid, payload));
-    await refreshData();
-
+    await refreshData(false);
+    removeSubmittingCondition(conditionId);
+    setLoading(false);
+    setIsSubmitting(false);
   };
 
   const openConditionHistoryModal = (e) => {
@@ -61,7 +85,14 @@ export const PermitConditionStatus: FC<PermitConditionStatusProps> = ({
         },
         width: 2048,
         content: (props) => {
-          const value = { mineGuid, permitGuid, latestAmendment, previousAmendment, currentAmendment, loading, setLoading, refreshData };
+          const value = {
+            ...permitConditions,
+            setActiveConditionId: () => { },
+            clearActiveConditionId: () => { },
+            submittingConditionIds: {},
+            addSubmittingCondition: () => { },
+            removeSubmittingCondition: () => { },
+          };
           return <PermitConditionsProvider value={value} > <ComparePermitConditionHistoryModal {...props} /></PermitConditionsProvider>;
         }
       })
@@ -89,9 +120,9 @@ export const PermitConditionStatus: FC<PermitConditionStatusProps> = ({
         {
           canEditPermitConditions && condition.permit_condition_status_code !== PERMIT_CONDITION_STATUS_CODE.COM &&
           <CoreButton
-            loading={loading}
+            loading={isSubmitting || (loading && isConditionFamilyBusy)}
             type="primary"
-            disabled={isDisabled || isSubmitting}
+            disabled={isDisabled || isSubmitting || isConditionFamilyBusy}
             onClick={() => handleCompleteReview(condition)}
           >
             <CheckOutlined /> Complete Review

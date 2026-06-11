@@ -8,6 +8,7 @@ import {
   getPermitByGuid,
   getReportRequirementsByCondition,
 } from "@mds/common/redux/selectors/permitSelectors";
+import { storePermitAmendmentConditions } from "@mds/common/redux/actions/permitActions";
 import { permitReducer } from "@mds/common/redux/reducers/permitReducer";
 import {
   storeEditingConditionFlag,
@@ -287,5 +288,107 @@ describe("getReportRequirementsByCondition", () => {
     const selector = getReportRequirementsByCondition(permit_guid, amendment_guid, 9999);
     const result = selector(mockState as any);
     expect(result).toEqual([]);
+  });
+});
+
+describe("STORE_PERMIT_AMENDMENT_CONDITIONS reducer case", () => {
+  const permit_guid = MOCK.PERMITS[0].permit_guid;
+  const amendment = MOCK.PERMITS[0].permit_amendments[0];
+  const permit_amendment_guid = amendment.permit_amendment_guid;
+
+  it("patches conditions-related fields onto the matching amendment in state.permits", () => {
+    const initialState = permitReducer(
+      { permits: MOCK.PERMITS } as any,
+      { type: "some type" } as any
+    );
+
+    const patch = {
+      conditions: [{ permit_condition_id: 999, condition: "New condition" }],
+      condition_categories: [{ condition_category_code: "NEW", description: "New Cat" }],
+      has_permit_conditions: true,
+      conditions_review_completed: true,
+      preamble_text: "Updated preamble",
+    };
+
+    const action = storePermitAmendmentConditions(
+      { ...patch, permit_amendment_guid },
+      permit_guid
+    );
+    const nextState = permitReducer(initialState, action);
+
+    const updatedPermit = nextState.permits.find((p) => p.permit_guid === permit_guid);
+    const updatedAmendment = updatedPermit.permit_amendments.find(
+      (a) => a.permit_amendment_guid === permit_amendment_guid
+    );
+
+    expect(updatedAmendment.conditions).toEqual(patch.conditions);
+    expect(updatedAmendment.condition_categories).toEqual(patch.condition_categories);
+    expect(updatedAmendment.has_permit_conditions).toBe(true);
+    expect(updatedAmendment.conditions_review_completed).toBe(true);
+    expect(updatedAmendment.preamble_text).toBe("Updated preamble");
+  });
+
+  it("leaves other amendments in the same permit unchanged", () => {
+    const initialState = permitReducer(
+      { permits: MOCK.PERMITS } as any,
+      { type: "some type" } as any
+    );
+    const otherAmendment = MOCK.PERMITS[0].permit_amendments[1];
+
+    const action = storePermitAmendmentConditions(
+      { permit_amendment_guid, conditions: [], condition_categories: [] },
+      permit_guid
+    );
+    const nextState = permitReducer(initialState, action);
+
+    const updatedPermit = nextState.permits.find((p) => p.permit_guid === permit_guid);
+    const unchanged = updatedPermit.permit_amendments.find(
+      (a) => a.permit_amendment_guid === otherAmendment.permit_amendment_guid
+    );
+    expect(unchanged).toEqual(otherAmendment);
+  });
+
+  it("leaves permits with a different permit_guid unchanged", () => {
+    const initialState = permitReducer(
+      { permits: MOCK.PERMITS } as any,
+      { type: "some type" } as any
+    );
+    const otherPermit = MOCK.PERMITS[1];
+
+    const action = storePermitAmendmentConditions(
+      { permit_amendment_guid, conditions: [] },
+      permit_guid
+    );
+    const nextState = permitReducer(initialState, action);
+
+    const unchanged = nextState.permits.find((p) => p.permit_guid === otherPermit.permit_guid);
+    expect(unchanged).toEqual(otherPermit);
+  });
+
+  it("removes a deleted condition when the incoming array is shorter than the existing one", () => {
+    const conditionA = { permit_condition_id: 1, condition: "Condition A", sub_conditions: [] };
+    const conditionB = { permit_condition_id: 2, condition: "Condition B", sub_conditions: [] };
+
+    const stateWithTwoConditions = permitReducer(
+      { permits: MOCK.PERMITS } as any,
+      storePermitAmendmentConditions(
+        { permit_amendment_guid, conditions: [conditionA, conditionB], condition_categories: [] },
+        permit_guid
+      )
+    );
+
+    // Delete conditionB — incoming only has conditionA
+    const actionAfterDelete = storePermitAmendmentConditions(
+      { permit_amendment_guid, conditions: [conditionA], condition_categories: [] },
+      permit_guid
+    );
+    const nextState = permitReducer(stateWithTwoConditions, actionAfterDelete);
+
+    const updatedAmendment = nextState.permits
+      .find((p) => p.permit_guid === permit_guid)
+      .permit_amendments.find((a) => a.permit_amendment_guid === permit_amendment_guid);
+
+    expect(updatedAmendment.conditions).toHaveLength(1);
+    expect(updatedAmendment.conditions[0].permit_condition_id).toBe(1);
   });
 });

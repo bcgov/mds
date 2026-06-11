@@ -5922,6 +5922,18 @@ export const PERMITS: IPermit[] = [
             preamble_date: "2019-04-02",
           },
         ],
+        mine_report_permit_requirements: [
+          {
+            report_name: "Test Report",
+            mine_report_permit_requirement_id: 1,
+            cim_or_cpo: "cpo",
+            ministry_recipient: ["MMO"],
+            permit_condition_ids: [1639, 12510, 12511],
+            due_date_period_months: 12,
+            initial_due_date: "2024-01-01",
+            permit_amendment_id: 2,
+          },
+        ],
         conditions_review_completed: false,
       },
       {

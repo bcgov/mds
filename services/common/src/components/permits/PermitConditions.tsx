@@ -1,4 +1,4 @@
-import React, { FC, useMemo, useEffect, useState, ReactNode } from "react";
+import React, { FC, useMemo, useEffect, useState, useRef, useCallback, ReactNode } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { Col, Row, Space, Typography } from "antd";
 import FileOutlined from "@ant-design/icons/FileOutlined";
@@ -33,7 +33,7 @@ import PermitConditionCategoryEditModal from "@mds/common/components/permits/Per
 import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
 import {
   createPermitAmendmentConditionCategory,
-  fetchPermits,
+  fetchPermitConditionsData,
 } from "@mds/common/redux/actionCreators/permitActionCreator";
 import {
   fetchReviewAssignments,
@@ -141,9 +141,44 @@ const PermitConditions: FC<PermitConditionProps> = ({
   const [isExpanded, setIsExpanded] = useState(false);
   const [viewPdf, setViewPdf] = useState(false);
   const [selectedCondition, setSelectedCondition] = useState<IPermitCondition | null>(null);
-  const [editingFormName, setEditingFormName] = useState<string>();
-  const [addingToCategoryCode, setAddingToCategoryCode] = useState<string>();
-  const [loading, setLoading] = useState(false);
+  const [editingFormName, setEditingFormName] = useState<string | null>(null);
+  const [addingToCategoryCode, setAddingToCategoryCode] = useState<string | null>(null);
+  const [loadingCount, setLoadingCount] = useState(0);
+  const loading = loadingCount > 0;
+  // This keeps track of the number of in-flight loading states. We need this because multiple conditions can be in-flight at once.
+  const setLoading = useCallback((value: boolean) => {
+    setLoadingCount(prev => value ? prev + 1 : Math.max(0, prev - 1));
+  }, []);
+
+  // This keeps track of condition ids that are currently being submitted. 
+  const [submittingConditionIds, setSubmittingConditionIds] = useState<Record<number, number>>({});
+  const addSubmittingCondition = useCallback((id: number) => {
+    setSubmittingConditionIds(prev => ({ ...prev, [id]: (prev[id] ?? 0) + 1 }));
+  }, []);
+  const removeSubmittingCondition = useCallback((id: number) => {
+    setSubmittingConditionIds(prev => {
+      const count = prev[id] ?? 0;
+      if (count <= 1) {
+        const { [id]: _, ...rest } = prev;
+        return rest;
+      }
+
+      return { ...prev, [id]: count - 1 };
+    });
+  }, []);
+
+  // This keeps track of the current active condition the user is making changes to.
+  const [activeConditionId, setActiveConditionId] = useState<number | null>(null);
+  const activeConditionIdRef = useRef<number | null>(null);
+  const setActiveConditionIdWithRef = useCallback((id: number | null) => {
+    activeConditionIdRef.current = id;
+    setActiveConditionId(id);
+  }, []);
+  const clearActiveConditionId = useCallback((id: number) => {
+    if (activeConditionIdRef.current === id) {
+      setActiveConditionIdWithRef(null);
+    }
+  }, [setActiveConditionIdWithRef]);
 
   const reviewAssignments = useAppSelector(
     getReviewAssignmentsByAmendment(currentAmendment.permit_amendment_id)
@@ -176,6 +211,11 @@ const PermitConditions: FC<PermitConditionProps> = ({
       setAddingToCategoryCode(null);
     }
   }, [editingFormName]);
+
+  const refreshData = useCallback(
+    () => dispatch(fetchPermitConditionsData(mineGuid, permitGuid, currentAmendment?.permit_amendment_guid)),
+    [mineGuid, permitGuid, currentAmendment?.permit_amendment_guid]
+  );
 
   const isExtractionInProgress =
     permitExtraction?.task_status === PermitExtractionStatus.in_progress;
@@ -260,7 +300,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
   );
   const formattedPermitConditionCategories: IFormattedConditionCategory[] = useMemo(
     () => getFormattedPermitConditionCategories(permitConditionCategories),
-    [permitGuid, currentAmendment]
+    [permitConditionCategories]
   );
 
   const scrollSideMenuProps = {
@@ -439,9 +479,15 @@ const PermitConditions: FC<PermitConditionProps> = ({
           latestAmendment,
           previousAmendment,
           currentAmendment,
-          loading: showLoading,
+          loading: loading,
           setLoading,
-          refreshData: () => dispatch(fetchPermits(mineGuid))
+          refreshData,
+          activeConditionId,
+          setActiveConditionId: setActiveConditionIdWithRef,
+          clearActiveConditionId,
+          submittingConditionIds,
+          addSubmittingCondition,
+          removeSubmittingCondition,
         }}
       >
         <Row>

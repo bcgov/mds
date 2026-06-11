@@ -1,3 +1,4 @@
+import { isEqual } from "lodash";
 import {
   IPermit,
   IPermitAmendment,
@@ -28,6 +29,22 @@ const initialState = {
   standardPermitConditions: [],
   latestPermitAmendments: {},
   permitAmendments: {},
+};
+
+const updateChangedConditions = (incoming: IPermitCondition[], existing: IPermitCondition[]): IPermitCondition[] => {
+  const existingById = Object.fromEntries(existing.map((condition) => [condition.permit_condition_id, condition]));
+  const updatedConditions = incoming.map((incomingCondition) => {
+    const existingCondition = existingById[incomingCondition.permit_condition_id];
+    if (!existingCondition) {
+      return incomingCondition;
+    }
+
+    const sub_conditions = updateChangedConditions(incomingCondition.sub_conditions ?? [], existingCondition.sub_conditions ?? []);
+    const candidate = { ...incomingCondition, sub_conditions };
+    return isEqual(candidate, existingCondition) ? existingCondition : candidate;
+  });
+
+  return updatedConditions.length === existing.length && updatedConditions.every((condition, index) => condition === existing[index]) ? existing : updatedConditions;
 };
 
 export const permitReducer = (state: PermitState = initialState, action) => {
@@ -111,6 +128,39 @@ export const permitReducer = (state: PermitState = initialState, action) => {
         ...state,
         standardPermitConditions: action.payload.records,
       };
+    case actionTypes.STORE_PERMIT_AMENDMENT_CONDITIONS: {
+      const { permit_guid, permit_amendment_guid, ...amendmentFields } = action.payload;
+      const updateMatchingAmendment = (permitAmendment) => {
+        if (permitAmendment.permit_amendment_guid !== permit_amendment_guid) {
+          return permitAmendment;
+        }
+
+        return {
+          ...permitAmendment,
+          ...amendmentFields,
+          conditions: updateChangedConditions(amendmentFields.conditions ?? [],
+            permitAmendment.conditions ?? [])
+        };
+      };
+      const existingAmendment = state.permitAmendments?.[permit_amendment_guid];
+      const updatedAmendment = existingAmendment ? updateMatchingAmendment(existingAmendment) : undefined;
+      const isInLatestAmendments = Boolean(state.latestPermitAmendments?.[permit_amendment_guid]);
+
+      return {
+        ...state,
+        permits: state.permits.map((permit) =>
+          permit.permit_guid === permit_guid
+            ? { ...permit, permit_amendments: permit.permit_amendments.map(updateMatchingAmendment) }
+            : permit
+        ),
+        permitAmendments: updatedAmendment
+          ? { ...state.permitAmendments, [permit_amendment_guid]: updatedAmendment }
+          : state.permitAmendments,
+        latestPermitAmendments: isInLatestAmendments && updatedAmendment
+          ? { ...state.latestPermitAmendments, [permit_amendment_guid]: updatedAmendment }
+          : state.latestPermitAmendments,
+      };
+    }
     case actionTypes.STORE_EDITING_CONDITION_FLAG:
       return {
         ...state,
