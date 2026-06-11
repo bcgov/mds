@@ -5,7 +5,7 @@ exports[`PreviewPermitAmendmentDocument fetches and displays document when docum
   <div
     class="e-control e-pdfviewer e-lib"
     id="preview-permit-amendment-pdf"
-    style="min-height: 500px;"
+    style="min-height: 500px; height: 80vh;"
   >
     <div
       class="e-pv-main-container"
