@@ -5,6 +5,7 @@ from flask_restx import marshal
 from tests.factories import MinistryContactFactory
 from app.api.ministry_contacts.response_models import MINISTRY_CONTACT_MODEL
 from app.api.ministry_contacts.models.distribution_list import DistributionList
+from app.api.ministry_contacts.models.distribution_list_user import DistributionListUser
 
 
 #GET
@@ -114,6 +115,25 @@ def test_put_ministry_contact_success(test_client, db_session, auth_headers):
 
 
 #DELETE
+def test_delete_ministry_contact_cascades_to_distribution_list_users(test_client, db_session, auth_headers):
+    dl = DistributionList.create('DL Cascade Delete Test')
+    db_session.add(dl)
+
+    contact = MinistryContactFactory()
+    db_session.flush()
+
+    dlu = DistributionListUser.create(dl.distribution_list_guid, contact.contact_guid)
+    db_session.add(dlu)
+    db_session.commit()
+
+    delete_resp = test_client.delete(
+        f'/ministry-contacts/{contact.contact_guid}', headers=auth_headers['full_auth_header'])
+    assert delete_resp.status_code == 204
+
+    db_session.expire(dlu)
+    assert dlu.deleted_ind is True
+
+
 def test_soft_delete_ministry_contact_by_guid(test_client, db_session, auth_headers):
     contact = MinistryContactFactory()
 
