@@ -34,7 +34,7 @@ export const MineSpaceMinistryContactManagement: FC = () => {
   const ministryContactTypesHash = useAppSelector(getMinistryContactTypesHash);
 
   useEffect(() => {
-    Promise.all([dispatch(fetchMinistryContacts()), dispatch(fetchDistributionLists())]).then(() => {
+    Promise.all([dispatch(fetchMinistryContacts()), dispatch(fetchDistributionLists({}))]).then(() => {
       setIsLoaded(true);
     });
   }, [dispatch]);
