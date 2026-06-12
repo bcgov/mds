@@ -55,4 +55,4 @@ class DistributionList(SoftDeleteMixin, AuditMixin, Base):
         return cls.query.filter_by(distribution_list_guid=guid, deleted_ind=False).first()
 
     def get_emails(self):
-        return [user.ministry_contact.email for user in self.users if user.ministry_contact and user.ministry_contact.email]
+        return [user.ministry_contact.email for user in self.users if not user.deleted_ind and user.ministry_contact and user.ministry_contact.email]

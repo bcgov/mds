@@ -78,6 +78,9 @@ class MinistryContactResource(Resource, UserMixin):
         contact.deleted_ind = True
         current_app.logger.info(f'Deleting {contact}')
 
+        for dlu in DistributionListUser.find_by_contact_guid(contact_guid):
+            dlu.deleted_ind = True
+
         contact.save()
 
         return None, 204
