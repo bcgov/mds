@@ -95,7 +95,8 @@ class MinistryContact(SoftDeleteMixin, AuditMixin, Base):
         if is_major_mine == True:
             return cls.query.filter_by(
                 mine_region_code=mine_region_code,
-                is_major_mine=is_major_mine).filter_by(deleted_ind=False).union(mmo_contact).all()
+                is_major_mine=is_major_mine,
+                is_general_contact=True).filter_by(deleted_ind=False).union(mmo_contact).all()
         elif is_major_mine == False:
             return cls.query.filter_by(
                 mine_region_code=mine_region_code, is_major_mine=is_major_mine).filter_by(
