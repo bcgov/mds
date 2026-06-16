@@ -30,6 +30,30 @@ def test_find_ministry_contacts_by_mine_region(db_session):
             c.mine_region == contact.mine_region for c in ministry_contact)
 
 
+def test_find_ministry_contacts_by_mine_region_excludes_non_general_major_mine_contact(db_session):
+    contact = MinistryContactFactory(is_major_mine=True, is_general_contact=False)
+    results = MinistryContact.find_ministry_contacts_by_mine_region(contact.mine_region_code, True)
+    assert contact.contact_guid not in [c.contact_guid for c in results]
+
+
+def test_find_ministry_contacts_by_mine_region_includes_general_major_mine_contact(db_session):
+    contact = MinistryContactFactory(is_major_mine=True, is_general_contact=True)
+    results = MinistryContact.find_ministry_contacts_by_mine_region(contact.mine_region_code, True)
+    assert contact.contact_guid in [c.contact_guid for c in results]
+
+
+def test_find_ministry_contacts_by_mine_region_includes_non_general_regional_contact(db_session):
+    contact = MinistryContactFactory(is_major_mine=False, is_general_contact=False)
+    results = MinistryContact.find_ministry_contacts_by_mine_region(contact.mine_region_code, False)
+    assert contact.contact_guid in [c.contact_guid for c in results]
+
+
+def test_find_ministry_contacts_by_mine_region_regional_mine_includes_general_contact_via_union(db_session):
+    contact = MinistryContactFactory(is_major_mine=True, is_general_contact=True)
+    results = MinistryContact.find_ministry_contacts_by_mine_region(contact.mine_region_code, False)
+    assert contact.contact_guid in [c.contact_guid for c in results]
+
+
 # def test_find_all(db_session):
 #     batch_size = 3
 #     contacts = MinistryContactFactory.create_batch(size=batch_size)
