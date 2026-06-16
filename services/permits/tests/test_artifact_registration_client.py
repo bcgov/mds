@@ -28,7 +28,7 @@ def test_upload_document_artifacts_uploads_binary_and_returns_artifact_documents
     upload_sha = hashlib.sha256(upload_bytes).hexdigest()
 
     with patch(
-        "app.pipelines.document_search.artifact_registration_client._build_oauth_session",
+        "app.pipelines.document_search.artifact_registration_client.build_permits_oauth_session",
         return_value=mock_session,
     ), patch(
         "app.pipelines.document_search.artifact_registration_client.requests.post",
@@ -100,7 +100,7 @@ def test_upload_document_artifacts_returns_skipped_stats_when_oauth_is_unavailab
     monkeypatch.setenv("DOCUMENT_MANAGER_URL", "http://document-manager:5001")
 
     with patch(
-        "app.pipelines.document_search.artifact_registration_client._build_oauth_session",
+        "app.pipelines.document_search.artifact_registration_client.build_permits_oauth_session",
         return_value=None,
     ):
         result = upload_document_artifacts(

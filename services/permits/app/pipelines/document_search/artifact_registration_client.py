@@ -4,8 +4,7 @@ import os
 from urllib.parse import quote
 
 import requests
-from oauthlib.oauth2 import BackendApplicationClient
-from requests_oauthlib import OAuth2Session
+from app.pipelines.document_search.permits_oauth_session_helper import build_permits_oauth_session
 
 logger = logging.getLogger(__name__)
 
@@ -16,20 +15,6 @@ def _document_manager_base_url():
 
 def _artifact_folder_prefix():
     return os.getenv('DOCUMENT_ARTIFACT_UPLOAD_FOLDER_PREFIX', 'permits/now')
-
-
-def _build_oauth_session():
-    client_id = os.getenv('PERMITS_CLIENT_ID')
-    client_secret = os.getenv('PERMITS_CLIENT_SECRET')
-    token_url = os.getenv('TOKEN_URL')
-
-    if not client_id or not client_secret or not token_url:
-        return None
-
-    oauth_client = BackendApplicationClient(client_id=client_id)
-    oauth_session = OAuth2Session(client=oauth_client)
-    oauth_session.fetch_token(token_url=token_url, client_secret=client_secret)
-    return oauth_session
 
 
 
@@ -67,7 +52,7 @@ class DocumentManagerArtifactUploader:
         artifact_document_manager_guid, upload_id, upload_parts = self._parse_upload_info(upload_info)
         completed_parts = self._upload_parts(file_bytes, upload_parts)
         complete_info = self._complete_upload(token, artifact_document_manager_guid, upload_id, completed_parts)
-        logger.warning(
+        logger.info(
             'Artifact complete-upload raw response artifact_id=%s document_manager_guid=%s completed_parts=%s complete_info=%s',
             artifact_id,
             artifact_document_manager_guid,
@@ -300,7 +285,7 @@ def upload_document_artifacts(
         now_application_guid,
     )
 
-    session = _build_oauth_session()
+    session = build_permits_oauth_session()
     if not session:
         logger.info('Skipping artifact upload: OAuth client credentials are not configured.')
         return _skipped_registration(upload_stats, artifact_documents, include_upload_stats)

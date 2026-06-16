@@ -3,7 +3,7 @@ import os
 from typing import Optional
 
 import requests
-from app.pipelines.document_search.artifact_registration_client import _build_oauth_session
+from app.pipelines.document_search.permits_oauth_session_helper import build_permits_oauth_session
 
 logger = logging.getLogger(__name__)
 
@@ -40,7 +40,7 @@ class DocumentManagerDownloadClient:
         if not self.document_manager_base_url:
             raise ValueError("DOCUMENT_MANAGER_URL is required to download documents.")
 
-        session = _build_oauth_session()
+        session = build_permits_oauth_session()
         if not session:
             raise ValueError("OAuth client credentials are required to create document download tokens.")
 

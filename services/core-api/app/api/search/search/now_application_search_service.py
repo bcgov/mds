@@ -155,7 +155,7 @@ class NowApplicationSearchService:
             response = requests.get(
                 f"{self.docman_base_url}/documents",
                 params={"token": token, "presigned_url": "true"},
-                timeout=10,
+                timeout=2,
             )
             response.raise_for_status()
             payload = response.json() if response.content else {}

@@ -1,21 +1,19 @@
+import hashlib
 import io
 import math
 import os
 import sys
 import threading
+import time
+import zipfile
 from datetime import datetime, timedelta
 from stat import S_IFREG
 
 import boto3
-import hashlib
-import zipfile
-import time
-
-from botocore.exceptions import ClientError
-from flask import send_file, Response, current_app
-from stream_zip import stream_zip, ZIP_32
-
 from app.config import Config
+from botocore.exceptions import ClientError
+from flask import Response, current_app, send_file
+from stream_zip import ZIP_32, stream_zip
 
 
 class ProgressPercentage(object):
@@ -101,7 +99,7 @@ class ObjectStoreStorageService():
         except ClientError as e:
             raise Exception(f'Failed to download the file: {e}')
 
-    def generate_download_presigned_url(self, path, display_name, as_attachment, version_id=None, expires_in=300):
+    def generate_download_presigned_url(self, path, display_name, as_attachment, version_id=None, expires_in=900):
         try:
             disposition_prefix = 'attachment; ' if as_attachment else ''
             params = {
