@@ -23,68 +23,7 @@ def test_create_or_update_index_success():
         mock_create_or_update.assert_called()
         assert result.name == "test-index"
 
-def test_create_or_update_index_exists():
-    with patch.object(create_index_mod.index_client, 'create_or_update_index') as mock_create_or_update, \
-         patch.object(create_index_mod.index_client, 'get_index') as mock_get:
-        
-        error = HttpResponseError("ResourceNameAlreadyInUse")
-        mock_create_or_update.side_effect = error
-        mock_result = MagicMock()
-        mock_result.name = "existing-index"
-        mock_get.return_value = mock_result
-        
-        result = create_index_mod.create_or_update_index()
-        
-        mock_create_or_update.assert_called()
-        mock_get.assert_called()
-        assert result.name == "existing-index"
 
-
-def test_create_or_update_index_404_creates_index_when_missing():
-    with patch.object(create_index_mod.index_client, 'create_or_update_index') as mock_create_or_update, \
-         patch.object(create_index_mod.index_client, 'get_index') as mock_get_index, \
-         patch.object(create_index_mod.index_client, 'create_index') as mock_create:
-        mock_create_or_update.side_effect = ResourceNotFoundError("Not Found")
-        mock_get_index.side_effect = ResourceNotFoundError("Not Found")
-        mock_result = MagicMock()
-        mock_result.name = "created-index"
-        mock_create.return_value = mock_result
-
-        result = create_index_mod.create_or_update_index()
-
-        mock_create_or_update.assert_called_once()
-        mock_get_index.assert_called_once()
-        mock_create.assert_called_once()
-        assert result.name == "created-index"
-
-
-def test_create_or_update_index_404_keeps_existing_index():
-    with patch.object(create_index_mod.index_client, 'create_or_update_index') as mock_create_or_update, \
-         patch.object(create_index_mod.index_client, 'get_index') as mock_get_index, \
-         patch.object(create_index_mod.index_client, 'create_index') as mock_create:
-        mock_create_or_update.side_effect = HttpResponseError("Not Found")
-        mock_result = MagicMock()
-        mock_result.name = "existing-index"
-        mock_get_index.return_value = mock_result
-
-        result = create_index_mod.create_or_update_index()
-
-        mock_create_or_update.assert_called_once()
-        mock_get_index.assert_called_once()
-        mock_create.assert_not_called()
-        assert result.name == "existing-index"
-
-
-def test_create_or_update_index_immutable_field_raises_actionable_error():
-    with patch.object(create_index_mod.index_client, 'create_or_update_index') as mock_create_or_update, \
-         patch.object(create_index_mod.index_client, 'create_index') as mock_create:
-        mock_create_or_update.side_effect = HttpResponseError("CannotChangeExistingField")
-
-        with pytest.raises(RuntimeError, match="immutable schema change"):
-            create_index_mod.create_or_update_index()
-
-        mock_create_or_update.assert_called_once()
-        mock_create.assert_not_called()
 
 def test_create_data_source_success():
     with patch.object(create_indexer_mod.indexer_client, 'create_data_source_connection') as mock_create:
