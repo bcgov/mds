@@ -323,4 +323,3 @@ describe('async actions', () => {
         expect(selectNowSearchLoading(store.getState())).toBe(false);
     });
 });
-});
