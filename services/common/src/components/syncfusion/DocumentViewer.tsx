@@ -29,19 +29,27 @@ import {
   getDocumentName,
   getIsDocumentViewerOpen,
   getProps,
+  getLocation,
 } from "@mds/common/redux/selectors/documentViewerSelectors";
 
 import {
   getDocument,
   downloadFileFromDocumentManager,
 } from "@mds/common/redux/utils/actionlessNetworkCalls";
+import {
+  addAnnotationToPDFViewer,
+  IPdfViewerAnnotationLocation,
+} from "@mds/common/components/syncfusion/pdfViewerAnnotations";
 
 interface DocumentViewerProps {
   closeDocumentViewer: () => void;
   isDocumentViewerOpen: boolean;
   documentPath: string;
   props: any;
+  location?: DocumentViewerLocation | null;
 }
+
+type DocumentViewerLocation = IPdfViewerAnnotationLocation;
 
 const getAjaxRequestSettingsHeaders = (obj) => {
   const ajaxRequestSettingsHeaders = [];
@@ -63,7 +71,7 @@ export const OPENABLE_DOCUMENT_TYPES = ["PDF"];
 export const isDocumentOpenable = (documentName) =>
   OPENABLE_DOCUMENT_TYPES.some((type) => documentName.toUpperCase().includes(`.${type}`));
 
-export const openDocument = (documentManagerGuid, documentName) => async (dispatch) => {
+export const openDocument = (documentManagerGuid, documentName, location = null) => async (dispatch) => {
   const document = {
     document_manager_guid: documentManagerGuid,
     document_name: documentName,
@@ -84,6 +92,7 @@ export const openDocument = (documentManagerGuid, documentName) => async (dispat
       documentPath,
       documentName,
       props: { title: documentName },
+      location,
     })
   );
 };
@@ -93,18 +102,20 @@ interface ViewPDFProps {
   documentPath: string;
   ajaxRequestSettings: any;
   id?: string;
+  annotationLocation?: IPdfViewerAnnotationLocation | null;
   onInit?: (pdfViewer: any) => void;
 }
 interface PDFViewerProps {
   documentPath: string;
   id?: string;
+  annotationLocation?: IPdfViewerAnnotationLocation | null;
   onInit?: (pdfViewer: any) => void;
 }
 
 export const PdfViewer: React.FC<PDFViewerProps> = (props: PDFViewerProps) => {
   const ajaxSettings = getAjaxRequestSettings();
 
-  return <ViewPdf id={props.id} onInit={props.onInit} pdfViewerServiceUrl={ENVIRONMENT.pdfViewerServiceUrl} documentPath={props.documentPath} ajaxRequestSettings={ajaxSettings} />;
+  return <ViewPdf id={props.id} onInit={props.onInit} annotationLocation={props.annotationLocation} pdfViewerServiceUrl={ENVIRONMENT.pdfViewerServiceUrl} documentPath={props.documentPath} ajaxRequestSettings={ajaxSettings} />;
 };
 
 export const ViewPdf: React.FC<ViewPDFProps> = ({
@@ -112,9 +123,21 @@ export const ViewPdf: React.FC<ViewPDFProps> = ({
   documentPath,
   ajaxRequestSettings,
   id = "pdfviewer-container",
+  annotationLocation = null,
   onInit = null
 }) => {
-  let pdfViewer;
+  const pdfViewerRef = useRef<any>(null);
+
+  const handleDocumentLoaded = () => {
+    if (pdfViewerRef.current && annotationLocation) {
+      addAnnotationToPDFViewer(
+        pdfViewerRef.current,
+        annotationLocation.pageNumber,
+        annotationLocation.boundingBox
+      );
+    }
+  };
+
   return (
     <PdfViewerComponent
       id={id}
@@ -125,11 +148,12 @@ export const ViewPdf: React.FC<ViewPDFProps> = ({
       enableAnnotation={true}
       enableFormDesigner={false}
       polygonSettings={{ fillColor: 'yellow', opacity: 0.6, strokeColor: 'orange' }}
+      documentLoad={handleDocumentLoaded}
       ref={(scope) => {
-        pdfViewer = scope;
+        pdfViewerRef.current = scope;
 
         if (onInit) {
-          onInit(pdfViewer);
+          onInit(scope);
         }
       }}
     >
@@ -158,6 +182,7 @@ export const DocumentViewer: React.FC<DocumentViewerProps> = ({
   isDocumentViewerOpen,
   documentPath,
   props,
+  location,
 }) => {
   const containerRef = useRef(null);
   const [modal, contextHolder] = Modal.useModal();
@@ -189,6 +214,7 @@ export const DocumentViewer: React.FC<DocumentViewerProps> = ({
             pdfViewerServiceUrl={pdfViewerServiceUrl}
             documentPath={documentPath}
             ajaxRequestSettings={ajaxRequestSettings}
+            annotationLocation={location}
           />
         ),
       });
@@ -200,7 +226,7 @@ export const DocumentViewer: React.FC<DocumentViewerProps> = ({
         setModalInstance(null);
       }
     }
-  }, [isDocumentViewerOpen]);
+  }, [isDocumentViewerOpen, documentPath, location]);
 
   return (
     <>
@@ -216,6 +242,7 @@ const mapStateToProps = (state) => ({
   documentName: getDocumentName(state),
   isDocumentViewerOpen: getIsDocumentViewerOpen(state),
   props: getProps(state),
+  location: getLocation(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

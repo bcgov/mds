@@ -5,4 +5,5 @@ export const {
   getDocumentName,
   getIsDocumentViewerOpen,
   getProps,
+  getLocation,
 } = documentViewerReducer;

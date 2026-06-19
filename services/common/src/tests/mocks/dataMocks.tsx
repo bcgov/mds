@@ -7071,6 +7071,7 @@ export const MOCK_PERMIT_SEARCH_RESULT: HaystackDocumentSearchResult = {
     },
     tenure: ["Coal", "Placer"],
     verification_status: "Verified",
+    artifact_presigned_url: "",
   },
 };
 

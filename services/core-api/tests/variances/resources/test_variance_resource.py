@@ -1,10 +1,11 @@
 import json
 from datetime import datetime, timedelta
 
-from tests.status_code_gen import *
-from tests.factories import VarianceFactory, MineFactory
-from tests.status_code_gen import RandomVarianceApplicationStatusCode
 from app.api.variances.resources.variance_resource import PAGE_DEFAULT, PER_PAGE_DEFAULT
+from tests.factories import MineFactory, VarianceFactory
+from tests.status_code_gen import *
+from tests.status_code_gen import RandomVarianceApplicationStatusCode
+
 
 class TestGetVariances:
     """GET /variances"""

@@ -1,19 +1,22 @@
 """
 Shared indexing components and helpers for NoW application document indexing.
 
-Extracted here so that both the FastAPI resource and the Celery task can import
-them without circular dependencies. All heavy objects (Document Intelligence,
-chunker, OpenAI client) are initialised once at module load time.
+This module acts as a stable facade for the indexing pipeline and keeps the
+existing imports/patch points used by tasks and tests. Heavy logic is split into
+focused modules so each indexing stage is easier to reason about and evolve.
 """
+
 import logging
-from pathlib import Path
 from typing import List
 
 from app.pipelines.document_search.components.document_chunker import (
-    DocumentChunkMetadata,
     DocumentChunker,
+    DocumentChunkMetadata,
 )
 from app.pipelines.document_search.config import config
+from app.pipelines.document_search.indexing_haystack_pipeline import (
+    create_document_indexing_pipeline,
+)
 from app.pipelines.permit_condition_extraction.components.azure_document_intelligence_converter import (
     AzureDocumentIntelligenceConverter,
 )
@@ -55,20 +58,21 @@ openai_client = AzureOpenAI(
 
 # Re-export for convenience so callers only need to import from this module.
 __all__ = [
-    "DocumentChunkMetadata",
-    "document_intelligence",
-    "chunker",
-    "openai_client",
-    "delete_document_chunks",
-    "embed_chunks",
-    "push_to_index",
-    "EMBED_BATCH_SIZE",
-    "PUSH_BATCH_SIZE",
+    'DocumentChunkMetadata',
+    'document_intelligence',
+    'chunker',
+    'openai_client',
+    'delete_document_chunks',
+    'embed_chunks',
+    'push_to_index',
+    'extract_and_chunk_file',
+    'EMBED_BATCH_SIZE',
+    'PUSH_BATCH_SIZE',
 ]
 
 
 # ---------------------------------------------------------------------------
-# Helper functions
+# Pipeline stages (Haystack-style: extract -> transform -> enrich -> index)
 # ---------------------------------------------------------------------------
 
 def delete_document_chunks(search_client: SearchClient, document_manager_guid: str) -> int:
@@ -84,19 +88,19 @@ def delete_document_chunks(search_client: SearchClient, document_manager_guid: s
     deleted = 0
     while True:
         results = search_client.search(
-            search_text="*",
+            search_text='*',
             filter=f"document_manager_guid eq '{document_manager_guid}'",
-            select=["id"],
+            select=['id'],
             top=500,
         )
-        ids = [{"id": r["id"]} for r in results]
+        ids = [{'id': r['id']} for r in results]
         if not ids:
             break
         delete_results = search_client.delete_documents(documents=ids)
         deleted += sum(1 for r in delete_results if r.succeeded)
 
     if deleted:
-        logger.info("Deleted %d stale chunks for document %s", deleted, document_manager_guid)
+        logger.info('Deleted %d stale chunks for document %s', deleted, document_manager_guid)
     return deleted
 
 
@@ -108,11 +112,11 @@ def embed_chunks(chunks: List[dict], on_progress=None) -> List[dict]:
 
     *on_progress(done, total)* is called after each batch if provided.
     """
-    texts = [chunk["content"] for chunk in chunks]
+    texts = [chunk['content'] for chunk in chunks]
 
     embeddings: List[List[float]] = []
     for i in range(0, len(texts), EMBED_BATCH_SIZE):
-        batch = texts[i: i + EMBED_BATCH_SIZE]
+        batch = texts[i : i + EMBED_BATCH_SIZE]
         response = openai_client.embeddings.create(
             input=batch,
             model=config.openai.embedding_model,
@@ -122,7 +126,7 @@ def embed_chunks(chunks: List[dict], on_progress=None) -> List[dict]:
             on_progress(min(i + EMBED_BATCH_SIZE, len(texts)), len(texts))
 
     for chunk, embedding in zip(chunks, embeddings):
-        chunk["embedding"] = embedding
+        chunk['embedding'] = embedding
 
     return chunks
 
@@ -136,7 +140,7 @@ def push_to_index(search_client: SearchClient, chunks: List[dict], on_progress=N
     """
     succeeded = 0
     for i in range(0, len(chunks), PUSH_BATCH_SIZE):
-        batch = chunks[i: i + PUSH_BATCH_SIZE]
+        batch = chunks[i : i + PUSH_BATCH_SIZE]
         results = search_client.upload_documents(documents=batch)
         succeeded += sum(1 for r in results if r.succeeded)
         if on_progress:
@@ -148,26 +152,33 @@ def extract_and_chunk_file(
     tmp_path: str,
     now_application_guid: str,
     doc_meta: dict,
-) -> List[dict]:
+) -> tuple[List[dict], List[dict]]:
     """
-    Runs Document Intelligence on *tmp_path*, then chunks the result.
-    Returns a list of chunk dicts ready for embedding.
+    Runs Document Intelligence on *tmp_path*, then builds text and artifact chunks.
+    Returns chunk dicts ready for embedding and extracted artifact payloads.
     """
-    chunk_metadata = DocumentChunkMetadata(
-        now_application_guid=now_application_guid,
-        mine_guid=doc_meta.get("mine_guid", ""),
-        document_manager_guid=doc_meta.get("document_manager_guid", ""),
-        document_name=doc_meta.get("document_name", ""),
-        document_type=doc_meta.get("document_type", ""),
-        submitted_date=doc_meta.get("submitted_date"),
-    )
-
     logger.info(
         "Processing document '%s' for NoW application %s",
-        chunk_metadata.document_name,
+        doc_meta.get('document_name', ''),
         now_application_guid,
     )
 
-    di_result = document_intelligence.run(file_path=Path(tmp_path))
-    chunk_result = chunker.run(documents=di_result["documents"], metadata=chunk_metadata)
-    return chunk_result["chunks"]
+    pipeline = create_document_indexing_pipeline()
+
+    result = pipeline.run(
+        {
+            'metadata_builder': {
+                'now_application_guid': now_application_guid,
+                'doc_meta': doc_meta,
+            },
+            'analyzer': {
+                'tmp_path': tmp_path,
+            },
+            'artifact_extractor': {
+                'doc_meta': doc_meta,
+                'tmp_path': tmp_path,
+            },
+        }
+    )
+
+    return result['chunk_merger']['chunks'], result['chunk_merger']['artifacts']

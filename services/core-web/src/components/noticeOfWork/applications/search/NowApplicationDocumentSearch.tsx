@@ -17,7 +17,6 @@ import {
   CheckCircleOutlined,
   ClockCircleOutlined,
   CloseCircleOutlined,
-  StopOutlined,
   SyncOutlined,
 } from "@ant-design/icons";
 import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
@@ -240,6 +239,7 @@ const NowApplicationDocumentSearch: React.FC<NowApplicationDocumentSearchProps> 
     [nowApplicationGuid]
   );
 
+
   return (
     <Layout className="permit-search__layout">
       <Layout.Content className="permit-search__content">
@@ -270,7 +270,7 @@ const NowApplicationDocumentSearch: React.FC<NowApplicationDocumentSearchProps> 
             </Col>
             <Col span={24}>
               <Row className="permit-search__results-container" gutter={[16, 0]}>
-                <Col span={isAIResponseExpanded ? 8 : 16}>
+                <Col xs={24} lg={isAIResponseExpanded ? 8 : 16}>
                   <SearchResults
                     onFilterChange={(filters) => debouncedSearch(query, filters)}
                     renderItem={(result, onFilterClick, index) => (
@@ -289,7 +289,7 @@ const NowApplicationDocumentSearch: React.FC<NowApplicationDocumentSearchProps> 
                     }}
                   />
                 </Col>
-                <Col span={isAIResponseExpanded ? 16 : 8}>
+                <Col xs={24} lg={isAIResponseExpanded ? 16 : 8}>
                   <Card
                     title="AI-Generated Response"
                     loading={false}

@@ -10,6 +10,7 @@ from app.api.now_applications.models.now_application_document_xref import (
 )
 from app.cli_commands.export_permit_conditions import get_final_issued_permit_document
 from app.extensions import db
+
 from tests.factories import (
     MineDocumentFactory,
     NOWApplicationIdentityFactory,
@@ -22,17 +23,17 @@ from tests.factories import (
 def create_now_document(now_application, mine, doc_type_code, created_at=None, document_manager_guid=None):
     if not document_manager_guid:
         document_manager_guid = uuid.uuid4()
-        
+
     mine_doc = MineDocumentFactory(
         mine=mine,
         document_manager_guid=document_manager_guid,
         document_name=f"test_doc_{doc_type_code}.pdf"
     )
-    
+
     # Manually set create_timestamp if provided (AuditMixin usually handles this)
     if created_at:
         mine_doc.create_timestamp = created_at
-        mine_doc.save()
+    db.session.flush()
 
     xref = NOWApplicationDocumentXref(
         now_application_id=now_application.now_application_id,
@@ -40,7 +41,7 @@ def create_now_document(now_application, mine, doc_type_code, created_at=None, d
         now_application_document_type_code=doc_type_code
     )
     now_application.documents.append(xref)
-    now_application.save()
+    db.session.flush()
     return xref
 
 def test_get_final_issued_permit_document_no_now(db_session):

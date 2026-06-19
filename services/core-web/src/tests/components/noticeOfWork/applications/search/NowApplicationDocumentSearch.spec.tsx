@@ -1,5 +1,5 @@
 import React from "react";
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import NowApplicationDocumentSearch from "@/components/noticeOfWork/applications/search/NowApplicationDocumentSearch";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
@@ -62,8 +62,8 @@ describe("NowApplicationDocumentSearch", () => {
         ...initialState.nowApplicationSearch,
         indexing: true,
         indexerStatus: {
-            status: "running",
-            percent: 45
+          status: "running",
+          percent: 45
         }
       }
     };
@@ -73,5 +73,26 @@ describe("NowApplicationDocumentSearch", () => {
       </ReduxWrapper>
     );
     expect(container).toMatchSnapshot();
+  });
+
+  it("renders active artifact context row when artifact filters are selected", () => {
+    const stateWithArtifactFilters = {
+      nowApplicationSearch: {
+        ...initialState.nowApplicationSearch,
+        query: "table",
+        filters: [
+          { category: "artifact_type", value: "table" },
+          { category: "artifact_page_number", value: "4" },
+        ],
+      },
+    };
+
+    render(
+      <ReduxWrapper initialState={stateWithArtifactFilters}>
+        <NowApplicationDocumentSearch nowApplicationGuid={""} />
+      </ReduxWrapper>
+    );
+
+    expect(screen.getByText("Application Document Search")).toBeInTheDocument();
   });
 });

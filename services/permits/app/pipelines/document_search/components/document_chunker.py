@@ -59,6 +59,10 @@ class DocumentChunker:
                 chunk_index,
             )
 
+            artifact_bounding_box = (
+                doc.meta.get("bounding_box") if getattr(doc, "meta", None) else None
+            )
+
             chunks.append({
                 "id": chunk_id,
                 "content": content,
@@ -70,6 +74,13 @@ class DocumentChunker:
                 # None is stored as null in Azure Search (DateTimeOffset field);
                 # empty string would cause a type error.
                 "submitted_date": metadata.submitted_date or None,
+                "artifact_type": "text",
+                "artifact_id": None,
+                "artifact_page_number": doc.meta.get("page") if getattr(doc, "meta", None) else None,
+                "artifact_bounding_box_left": artifact_bounding_box.get("left") if artifact_bounding_box else None,
+                "artifact_bounding_box_top": artifact_bounding_box.get("top") if artifact_bounding_box else None,
+                "artifact_bounding_box_right": artifact_bounding_box.get("right") if artifact_bounding_box else None,
+                "artifact_bounding_box_bottom": artifact_bounding_box.get("bottom") if artifact_bounding_box else None,
             })
             chunk_index += 1
 

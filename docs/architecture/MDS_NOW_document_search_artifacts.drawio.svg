@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="560" viewBox="0 0 1500 560" role="img" aria-labelledby="title desc" content="&lt;mxfile host=&quot;app.diagrams.net&quot;&gt;&lt;diagram name=&quot;NoW document artifact extraction&quot;&gt;&lt;mxGraphModel grid=&quot;1&quot; gridSize=&quot;10&quot;&gt;&lt;root&gt;&lt;mxCell id=&quot;0&quot;/&gt;&lt;mxCell id=&quot;1&quot; parent=&quot;0&quot;/&gt;&lt;/root&gt;&lt;/mxGraphModel&gt;&lt;/diagram&gt;&lt;/mxfile&gt;">
+  <title id="title">NoW Document Artifact Extraction</title>
+  <desc id="desc">Light theme diagram showing how table and figure artifacts are extracted during NoW document indexing.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#334155"/>
+    </marker>
+    <style>
+      .page { fill: #ffffff; }
+      .zone { fill: #f8fafc; stroke: #94a3b8; stroke-width: 1.6; rx: 8; }
+      .azure { fill: #f0f7ff; stroke: #60a5fa; stroke-width: 1.6; rx: 8; }
+      .title { font: 700 24px Arial, Helvetica, sans-serif; fill: #0f172a; }
+      .zone-title { font: 700 14px Arial, Helvetica, sans-serif; fill: #334155; }
+      .label { font: 700 15px Arial, Helvetica, sans-serif; fill: #0f172a; }
+      .small { font: 400 12px Arial, Helvetica, sans-serif; fill: #334155; }
+      .step { fill: #dbeafe; stroke: #2563eb; stroke-width: 1.6; rx: 8; }
+      .service { fill: #ffffff; stroke: #334155; stroke-width: 1.8; rx: 8; }
+      .store { fill: #ecfdf5; stroke: #15803d; stroke-width: 1.8; rx: 8; }
+      .ai { fill: #f5f3ff; stroke: #7c3aed; stroke-width: 1.8; rx: 8; }
+      .wrap { fill: #ffffff; stroke: #64748b; stroke-width: 1.5; stroke-dasharray: 7 5; rx: 20; }
+      .arrow { stroke: #334155; stroke-width: 2.1; fill: none; marker-end: url(#arrow); }
+      .dash { stroke: #64748b; stroke-width: 1.8; fill: none; stroke-dasharray: 6 5; marker-end: url(#arrow); }
+      .doc-page { fill: #ffffff; stroke: #334155; stroke-width: 2; }
+      .doc-fold { fill: #e2e8f0; stroke: #334155; stroke-width: 1.4; }
+      .doc-line { stroke: #2563eb; stroke-width: 3; }
+      .doc-accent { fill: #16a34a; }
+      .icon-label { font: 700 13px Arial, Helvetica, sans-serif; fill: #0f172a; }
+    </style>
+  </defs>
+  <rect class="page" width="1500" height="560"/>
+  <text x="50" y="50" class="title">Artifact extraction during indexing</text>
+
+  <rect x="50" y="85" width="920" height="360" class="zone"/>
+  <text x="70" y="112" class="zone-title">BCGov OpenShift Silver Cluster</text>
+  <rect x="1030" y="85" width="360" height="360" class="azure"/>
+  <text x="1050" y="112" class="zone-title">Azure Tenant</text>
+
+  <g transform="translate(85 195)">
+    <path class="doc-page" d="M0 0 h54 l28 28 v92 h-82 z"/>
+    <path class="doc-fold" d="M54 0 v28 h28 z"/>
+    <line class="doc-line" x1="15" y1="33" x2="52" y2="33"/>
+    <path class="doc-accent" d="M15 96 l21-25 l15 15 l12-18 l19 28 z"/>
+    <text x="41" y="148" text-anchor="middle" class="icon-label">Source PDF</text>
+  </g>
+
+  <rect x="235" y="145" width="650" height="225" class="wrap"/>
+  <text x="560" y="398" text-anchor="middle" class="zone-title">Document artifact extraction pipeline</text>
+
+  <rect x="275" y="205" width="120" height="62" class="step"/>
+  <text x="335" y="230" text-anchor="middle" class="label">Analyze</text>
+  <text x="335" y="250" text-anchor="middle" class="small">PDF layout</text>
+
+  <rect x="435" y="205" width="120" height="62" class="step"/>
+  <text x="495" y="230" text-anchor="middle" class="label">Find</text>
+  <text x="495" y="250" text-anchor="middle" class="small">tables + figures</text>
+
+  <rect x="595" y="205" width="120" height="62" class="step"/>
+  <text x="655" y="230" text-anchor="middle" class="label">Crop</text>
+  <text x="655" y="250" text-anchor="middle" class="small">PDF regions</text>
+
+  <rect x="755" y="205" width="120" height="62" class="step"/>
+  <text x="815" y="230" text-anchor="middle" class="label">Normalize</text>
+  <text x="815" y="250" text-anchor="middle" class="small">metadata</text>
+
+  <rect x="390" y="300" width="140" height="55" class="service"/>
+  <text x="460" y="323" text-anchor="middle" class="label">Tables</text>
+  <text x="460" y="342" text-anchor="middle" class="small">rows + Markdown</text>
+
+  <rect x="620" y="300" width="140" height="55" class="service"/>
+  <text x="690" y="323" text-anchor="middle" class="label">Figures</text>
+  <text x="690" y="342" text-anchor="middle" class="small">caption + box</text>
+
+  <rect x="330" y="110" width="160" height="55" class="ai"/>
+  <text x="410" y="133" text-anchor="middle" class="label">Azure DI</text>
+  <text x="410" y="152" text-anchor="middle" class="small">layout model</text>
+
+  <rect x="1065" y="145" width="150" height="70" class="ai"/>
+  <text x="1140" y="173" text-anchor="middle" class="label">Azure OpenAI</text>
+  <text x="1140" y="194" text-anchor="middle" class="small">optional enrich</text>
+
+  <rect x="1065" y="300" width="150" height="70" class="store"/>
+  <text x="1140" y="328" text-anchor="middle" class="label">Document</text>
+  <text x="1140" y="349" text-anchor="middle" class="label">Manager</text>
+
+  <rect x="1255" y="300" width="115" height="70" class="service"/>
+  <text x="1312" y="328" text-anchor="middle" class="label">Core API</text>
+  <text x="1312" y="349" text-anchor="middle" class="small">register</text>
+
+  <rect x="1255" y="165" width="115" height="70" class="store"/>
+  <text x="1312" y="193" text-anchor="middle" class="label">Search</text>
+  <text x="1312" y="214" text-anchor="middle" class="label">Chunks</text>
+
+  <path class="arrow" d="M167 236 L275 236"/>
+  <text x="178" y="221" class="small">1. PDF</text>
+  <path class="dash" d="M335 205 L410 165"/>
+  <text x="292" y="184" class="small">2. Layout model</text>
+  <path class="arrow" d="M395 236 L435 236"/>
+  <path class="arrow" d="M555 236 L595 236"/>
+  <path class="arrow" d="M715 236 L755 236"/>
+  <path class="arrow" d="M815 267 L690 300"/>
+  <path class="arrow" d="M655 267 L460 300"/>
+  <path class="arrow" d="M760 327 L1065 180"/>
+  <text x="840" y="235" class="small">3. Enrich figures</text>
+  <path class="dash" d="M1065 197 L760 316"/>
+  <path class="arrow" d="M760 342 L1065 335"/>
+  <text x="835" y="329" class="small">4. Upload previews</text>
+  <path class="arrow" d="M1215 335 L1255 335"/>
+  <text x="1217" y="321" class="small">5. Register</text>
+  <path class="dash" d="M1312 300 L1312 235"/>
+  <text x="1322" y="270" class="small">6. Artifact GUIDs</text>
+  <path class="arrow" d="M875 236 L1255 200"/>
+  <text x="970" y="207" class="small">7. Build table/figure chunks</text>
+</svg>

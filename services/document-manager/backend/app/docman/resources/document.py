@@ -95,7 +95,8 @@ class DocumentListResource(Resource):
             document_guid=document_guid,
             file_path=file_path,
             folder=folder,
-            file_size=file_size)
+            file_size=file_size,
+            filename=filename)
 
         # Create document record
         document = Document(
@@ -115,6 +116,7 @@ class DocumentListResource(Resource):
     def get(self):
         token_guid = request.args.get('token', '')
         as_attachment = request.args.get('as_attachment', None)
+        presigned_url = request.args.get('presigned_url', 'false').strip().lower() in {'1', 'true', 'yes', 'on'}
         document_guid = cache.get(DOWNLOAD_TOKEN(token_guid))
         document_manager_version_guid = request.args.get(
             'document_manager_version_guid', None)
@@ -137,12 +139,23 @@ class DocumentListResource(Resource):
 
         display_name = document_version.file_display_name if document_version else document.file_display_name
         if document.object_store_path:
+            if presigned_url:
+                signed_url = ObjectStoreStorageService().generate_download_presigned_url(
+                    path=document.object_store_path,
+                    display_name=quote(display_name),
+                    as_attachment=as_attachment,
+                    version_id=version_id,
+                )
+                return {'url': signed_url}
+
             return ObjectStoreStorageService().download_file(
                 path=document.object_store_path,
                 display_name=quote(display_name),
                 as_attachment=as_attachment,
                 version_id=version_id
             )
+        if presigned_url:
+            raise BadRequest('Pre-signed URL is only available for object-store-backed documents')
         else:
             return send_file(
                 path_or_file=document.full_storage_path,
