@@ -84,6 +84,7 @@ describe("NowApplicationDocumentSearch", () => {
           { category: "artifact_type", value: "table" },
           { category: "artifact_page_number", value: "4" },
         ],
+        nowApplicationGuid: "",
       },
     };
 
