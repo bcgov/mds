@@ -41,7 +41,7 @@ const createMockStore = (preloadedState = {}) => {
                 query: '',
                 filters: [],
                 allFacets: {},
-                nowApplicationGuid: null,
+                nowApplicationGuid: "test-guid",
                 ...preloadedState,
             },
         },
@@ -104,7 +104,7 @@ describe('NowApplicationDocumentSearch', () => {
 
         const indexBtn = await screen.findByText('Index Documents');
         expect(indexBtn).toBeInTheDocument();
-        
+
         fireEvent.click(indexBtn);
     });
 
@@ -144,7 +144,7 @@ describe('NowApplicationDocumentSearch', () => {
 
         const expandBtn = screen.getByTitle('Expand');
         fireEvent.click(expandBtn);
-        
+
         expect(screen.getByTitle('Compress')).toBeInTheDocument();
     });
 });
