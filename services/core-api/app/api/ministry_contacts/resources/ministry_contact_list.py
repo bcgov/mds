@@ -68,8 +68,6 @@ class MinistryContactListResource(Resource, UserMixin):
         data = self.parser.parse_args()
 
         contact_type = data.get('emli_contact_type_code', None)
-        is_major_mine = data.get('is_major_mine', None)
-        is_general_contact = data.get('is_general_contact', None)
         contact_desc = MinistryContactType.find_contact_type(contact_type)
 
         mmo_contact = MinistryContact.find_ministry_contact('MMO')
