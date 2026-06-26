@@ -104,7 +104,7 @@ class MinistryContact(SoftDeleteMixin, AuditMixin, Base):
 
     @classmethod
     def find_ministry_general_contacts(cls):
-        return cls.query.filter_by(is_general_contact=True).filter_by(deleted_ind=False)
+        return cls.query.filter_by(is_general_contact=True, mine_region_code=None).filter_by(deleted_ind=False)
 
     @classmethod
     def find_major_mine_office(cls):

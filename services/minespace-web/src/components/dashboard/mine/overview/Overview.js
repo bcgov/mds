@@ -147,7 +147,8 @@ export const Overview = (props) => {
               <Col span={24} key="regional">
                 <Card title="Regional Ministry Contacts">
                   {props.MinistryContactInfo.filter(
-                    ({ is_general_contact }) => !is_general_contact
+                    ({ is_major_mine, is_general_contact, mine_region_code }) =>
+                      !is_major_mine && is_general_contact && mine_region_code === mine.mine_region
                   ).map((contact) => (
                     <MinistryContactItem contact={contact} key={contact.id} />
                   ))}
@@ -156,7 +157,10 @@ export const Overview = (props) => {
               <Col span={24} key="general">
                 <Card title="General Ministry Contacts">
                   {props.MinistryContactInfo.filter(
-                    ({ is_general_contact }) => is_general_contact
+                    ({ is_major_mine, is_general_contact, mine_region_code }) =>
+                      is_major_mine &&
+                      is_general_contact &&
+                      (!mine_region_code || mine_region_code === mine.mine_region)
                   ).map((contact) => (
                     <MinistryContactItem contact={contact} key={contact.id} />
                   ))}

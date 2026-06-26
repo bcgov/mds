@@ -68,8 +68,6 @@ class MinistryContactListResource(Resource, UserMixin):
         data = self.parser.parse_args()
 
         contact_type = data.get('emli_contact_type_code', None)
-        is_major_mine = data.get('is_major_mine', None)
-        is_general_contact = data.get('is_general_contact', None)
         contact_desc = MinistryContactType.find_contact_type(contact_type)
 
         mmo_contact = MinistryContact.find_ministry_contact('MMO')
@@ -90,9 +88,6 @@ class MinistryContactListResource(Resource, UserMixin):
 
         elif unique_global and contact_type in unique_global:
             raise BadRequest(f'Error: Restricted to one {contact_desc[0].description} contact.')
-
-        elif is_major_mine == False and is_general_contact == True:
-            raise BadRequest(f'Error: General contacts must be a major mine contact.')
 
         contact = MinistryContact.create(
             emli_contact_type_code=contact_type,

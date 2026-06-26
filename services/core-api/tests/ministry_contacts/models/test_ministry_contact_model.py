@@ -49,20 +49,20 @@ def test_find_ministry_contacts_by_mine_region_includes_non_general_regional_con
 
 
 def test_find_ministry_contacts_by_mine_region_regional_mine_includes_general_contact_via_union(db_session):
-    contact = MinistryContactFactory(is_major_mine=True, is_general_contact=True)
+    contact = MinistryContactFactory(is_major_mine=True, is_general_contact=True, mine_region_code=None)
     results = MinistryContact.find_ministry_contacts_by_mine_region(contact.mine_region_code, False)
     assert contact.contact_guid in [c.contact_guid for c in results]
 
 
 def test_find_ministry_contacts_by_mine_region_excludes_non_general_no_region_major_mine_contact(db_session):
     contact = MinistryContactFactory(is_major_mine=True, is_general_contact=False, mine_region_code=None)
-    results = MinistryContact.find_ministry_contacts_by_mine_region('NE', True)
+    results = MinistryContact.find_ministry_contacts_by_mine_region(contact.mine_region_code, True)
     assert contact.contact_guid not in [c.contact_guid for c in results]
 
 
 def test_find_ministry_contacts_by_mine_region_includes_general_no_region_major_mine_contact(db_session):
     contact = MinistryContactFactory(is_major_mine=True, is_general_contact=True, mine_region_code=None)
-    results = MinistryContact.find_ministry_contacts_by_mine_region('NE', True)
+    results = MinistryContact.find_ministry_contacts_by_mine_region(contact.mine_region_code, True)
     assert contact.contact_guid in [c.contact_guid for c in results]
 
 

@@ -104,7 +104,7 @@ export const MinistryContactForm: FC<MinistryContactFormProps> = (props) => {
               disabled={props.isEdit}
             />
           </Col>
-          {formValues.is_major_mine && (
+          {formValues.is_major_mine !== undefined && (
             <Col span={12}>
               <Field
                 id="is_general_contact"
