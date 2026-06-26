@@ -91,9 +91,6 @@ class MinistryContactListResource(Resource, UserMixin):
         elif unique_global and contact_type in unique_global:
             raise BadRequest(f'Error: Restricted to one {contact_desc[0].description} contact.')
 
-        elif is_major_mine == False and is_general_contact == True:
-            raise BadRequest(f'Error: General contacts must be a major mine contact.')
-
         contact = MinistryContact.create(
             emli_contact_type_code=contact_type,
             mine_region_code=data.get('mine_region_code'),

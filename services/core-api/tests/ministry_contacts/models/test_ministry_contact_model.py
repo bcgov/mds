@@ -49,8 +49,8 @@ def test_find_ministry_contacts_by_mine_region_includes_non_general_regional_con
 
 
 def test_find_ministry_contacts_by_mine_region_regional_mine_includes_general_contact_via_union(db_session):
-    contact = MinistryContactFactory(is_major_mine=True, is_general_contact=True)
-    results = MinistryContact.find_ministry_contacts_by_mine_region(contact.mine_region_code, False)
+    contact = MinistryContactFactory(is_major_mine=True, is_general_contact=True, mine_region_code=None)
+    results = MinistryContact.find_ministry_contacts_by_mine_region('NE', False)
     assert contact.contact_guid in [c.contact_guid for c in results]
 
 
