@@ -91,7 +91,7 @@ def permit_condition_pipeline():
     llm = CachedAzureOpenAIChatGenerator(
         azure_endpoint=config.openai.endpoint.resolve_value(),
         api_version=config.openai.api_version,
-        azure_deployment=config.openai.deployment_name,
+        azure_deployment=os.environ["AZURE_PERMITS_DEPLOYMENT_NAME"],
         api_key=config.openai.api_key,
         timeout=600,
         generation_kwargs={"temperature": temperature, "max_tokens": max_tokens},
