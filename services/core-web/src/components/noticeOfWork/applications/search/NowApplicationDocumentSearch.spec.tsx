@@ -22,6 +22,13 @@ jest.mock('@/components/mine/Permit/Search/components/SearchBox', () => () => <d
 jest.mock('@/components/mine/Permit/Search/components/SearchResults', () => () => <div data-testid="mock-search-results">SearchResults</div>);
 jest.mock('@/components/mine/Permit/Search/components/MarkdownViewer', () => () => <div data-testid="mock-markdown-viewer">MarkdownViewer</div>);
 jest.mock('./NowApplicationDocumentSearchSplashScreen', () => () => <div data-testid="mock-splash-screen">SplashScreen</div>);
+jest.mock('lodash', () => {
+    const actual = jest.requireActual('lodash');
+    return {
+        ...actual,
+        debounce: (fn: (...args: unknown[]) => unknown) => fn,
+    };
+});
 
 const createMockStore = (preloadedState = {}) => {
     return configureStore({
@@ -41,7 +48,7 @@ const createMockStore = (preloadedState = {}) => {
                 query: '',
                 filters: [],
                 allFacets: {},
-                nowApplicationGuid: null,
+                nowApplicationGuid: "test-guid",
                 ...preloadedState,
             },
         },
@@ -104,7 +111,7 @@ describe('NowApplicationDocumentSearch', () => {
 
         const indexBtn = await screen.findByText('Index Documents');
         expect(indexBtn).toBeInTheDocument();
-        
+
         fireEvent.click(indexBtn);
     });
 
@@ -144,7 +151,42 @@ describe('NowApplicationDocumentSearch', () => {
 
         const expandBtn = screen.getByTitle('Expand');
         fireEvent.click(expandBtn);
-        
+
         expect(screen.getByTitle('Compress')).toBeInTheDocument();
+    });
+
+    it('shows active artifact context row when artifact filters are selected', () => {
+        const store = createMockStore({
+            query: 'table data',
+            filters: [
+                { category: 'artifact_type', value: 'table' },
+                { category: 'artifact_category', value: 'map' },
+                { category: 'artifact_page_number', value: '4' },
+            ],
+        });
+
+        render(
+            <Provider store={store}>
+                <NowApplicationDocumentSearch nowApplicationGuid="test-guid" />
+            </Provider>
+        );
+
+        expect(screen.getByText('Application Document Search')).toBeInTheDocument();
+        expect(screen.getByTestId('mock-search-results')).toBeInTheDocument();
+    });
+
+    it('does not show artifact context row when only non-artifact filters are selected', () => {
+        const store = createMockStore({
+            query: 'technical report',
+            filters: [{ category: 'document_type', value: 'Technical Report' }],
+        });
+
+        render(
+            <Provider store={store}>
+                <NowApplicationDocumentSearch nowApplicationGuid="test-guid" />
+            </Provider>
+        );
+
+        expect(screen.queryByText('Showing results for:')).not.toBeInTheDocument();
     });
 });

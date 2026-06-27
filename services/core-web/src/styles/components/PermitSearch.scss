@@ -143,6 +143,23 @@
     &__result-meta {
         margin-bottom: 8px;
     }
+
+    &__artifact-tag {
+        font-size: 12px;
+    }
+
+    &__artifact-context-row {
+        margin-top: -8px;
+
+        .ant-tag {
+            margin-inline-end: 0;
+            margin-bottom: 0;
+        }
+    }
+
+    &__artifact-context-clear-all {
+        padding: 0;
+    }
 }
 
 // Client-side query term highlight (fallback path when no server highlight snippet).
@@ -167,5 +184,80 @@
         font-weight: 600;
         padding: 0 2px;
         border-radius: 2px;
+    }
+}
+
+.now-search__artifact-preview-image-wrap {
+    margin-top: 8px;
+}
+
+.now-search__artifact-insights {
+    margin-top: 4px;
+}
+
+.now-search__artifact-summary {
+    margin-bottom: 4px;
+    color: rgba(0, 0, 0, 0.85);
+}
+
+.now-search__artifact-caption {
+    display: block;
+}
+
+.now-search__artifact-source {
+    margin-left: 4px;
+    font-size: 12px;
+}
+
+.now-search__artifact-preview-card {
+    width: auto;
+    padding: 12px;
+}
+
+.now-search__artifact-preview-image {
+    display: block;
+    width: auto;
+    max-height: 440px;
+    object-fit: contain;
+}
+
+.now-search__artifact-preview-mask {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.now-search__artifact-preview-fallback {
+    display: inline-block;
+    padding: 16px;
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    width: 100%;
+    text-align: center;
+    background: #fff;
+}
+
+.now-search__artifact-table {
+    margin-top: 0;
+
+    &-content {
+        margin-top: 4px;
+        overflow-x: auto;
+    }
+
+    &-controls {
+        margin-top: 0;
+
+        &--top {
+            margin-top: 0;
+        }
+    }
+
+    &-title {
+        display: block;
+    }
+
+    .permit-search__markdown {
+        margin-top: 0;
+        overflow-x: auto;
     }
 }

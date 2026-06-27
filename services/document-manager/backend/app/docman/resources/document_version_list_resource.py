@@ -53,7 +53,8 @@ class DocumentVersionListResource(Resource):
             file_path=document.full_storage_path,
             folder=None,
             file_size=file_size,
-            version_guid=version_guid)
+            version_guid=version_guid,
+            filename=filename)
 
         # Create document record
         new_version = DocumentVersion(

@@ -68,6 +68,9 @@ semantic_config = SemanticConfiguration(
         keywords_fields=[
             SemanticField(field_name="document_name"),
             SemanticField(field_name="document_type"),
+            SemanticField(field_name="artifact_category"),
+            SemanticField(field_name="artifact_caption"),
+            SemanticField(field_name="artifact_summary"),
         ],
         content_fields=[SemanticField(field_name="content")],
     ),
@@ -84,13 +87,6 @@ index = SearchIndex(
 
 
 def create_or_update_index():
-    try:
-        result = index_client.create_index(index)
-        print(f"Created index: {result.name}")
-    except HttpResponseError as e:
-        if "ResourceNameAlreadyInUse" in str(e) or "CannotCreateExistingIndex" in str(e):
-            print(f"Index '{index.name}' already exists, skipping.")
-            result = index_client.get_index(index.name)
-        else:
-            raise
+    result = index_client.create_or_update_index(index)
+    print(f"Created or updated index: {result.name}")
     return result

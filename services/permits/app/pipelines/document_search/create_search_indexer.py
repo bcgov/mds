@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 from app.pipelines.document_search.config import config
 from azure.core.credentials import AzureKeyCredential
 from azure.core.exceptions import HttpResponseError, ResourceNotFoundError
@@ -16,7 +18,6 @@ from azure.search.documents.indexes.models import (
     SearchIndexerDataSourceConnection,
     SearchIndexerSkillset,
 )
-from datetime import timedelta
 
 search_api_key = config.search.api_key.resolve_value()
 assert search_api_key, "Search API key is required"
@@ -82,7 +83,7 @@ def create_skillset():
         ],
     )
     try:
-        return indexer_client.create_skillset(skillset)
+        return indexer_client.create_or_update_skillset(skillset)
     except HttpResponseError as e:
         if _already_exists(e):
             print(f"Skillset '{skillset.name}' already exists, skipping.")
@@ -120,11 +121,22 @@ def create_indexer():
             FieldMapping(source_field_name="/document/document_name", target_field_name="document_name"),
             FieldMapping(source_field_name="/document/document_type", target_field_name="document_type"),
             FieldMapping(source_field_name="/document/submitted_date", target_field_name="submitted_date"),
+            FieldMapping(source_field_name="/document/artifact_type", target_field_name="artifact_type"),
+            FieldMapping(source_field_name="/document/artifact_id", target_field_name="artifact_id"),
+            FieldMapping(source_field_name="/document/artifact_page_number", target_field_name="artifact_page_number"),
+            FieldMapping(source_field_name="/document/artifact_bounding_box_left", target_field_name="artifact_bounding_box_left"),
+            FieldMapping(source_field_name="/document/artifact_bounding_box_top", target_field_name="artifact_bounding_box_top"),
+            FieldMapping(source_field_name="/document/artifact_bounding_box_right", target_field_name="artifact_bounding_box_right"),
+            FieldMapping(source_field_name="/document/artifact_bounding_box_bottom", target_field_name="artifact_bounding_box_bottom"),
+            FieldMapping(source_field_name="/document/artifact_caption", target_field_name="artifact_caption"),
+            FieldMapping(source_field_name="/document/artifact_summary", target_field_name="artifact_summary"),
+            FieldMapping(source_field_name="/document/caption_source", target_field_name="caption_source"),
+            FieldMapping(source_field_name="/document/summary_source", target_field_name="summary_source"),
             FieldMapping(source_field_name="/document/embedding", target_field_name="embedding"),
         ],
     )
     try:
-        return indexer_client.create_indexer(indexer)
+        return indexer_client.create_or_update_indexer(indexer)
     except HttpResponseError as e:
         if not _already_exists(e):
             raise

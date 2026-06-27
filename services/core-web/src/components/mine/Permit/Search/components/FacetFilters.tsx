@@ -27,13 +27,23 @@ const FacetFilters: React.FC<FacetFiltersProps> = ({
     const [expanded, setExpanded] = useState<{ [key: string]: boolean }>({});
     const [searchTerms, setSearchTerms] = useState<{ [key: string]: string }>({});
 
-    const formatFacetValue = (category: string, value: string | null) => {
-        if (!value) return '';
+    const normalizeFacetValue = (value: unknown) => {
+        if (value === null || value === undefined) return '';
+        if (Array.isArray(value)) return value.join(', ');
+        if (typeof value === 'object') return JSON.stringify(value);
+        return String(value);
+    };
 
-        if (category.toLowerCase().includes('date') && dayjs(value).isValid()) {
-            return dayjs(value).format('YYYY-MM-DD');
+    const formatFacetValue = (category: string, value: unknown) => {
+        const normalizedValue = normalizeFacetValue(value);
+
+        if (!normalizedValue) return '';
+
+        if (category.toLowerCase().includes('date') && dayjs(normalizedValue).isValid()) {
+            return dayjs(normalizedValue).format('YYYY-MM-DD');
         }
-        return value;
+
+        return normalizedValue;
     };
 
     const filterAndSortItems = (category: string, items: Facet[]) => {
@@ -80,26 +90,30 @@ const FacetFilters: React.FC<FacetFiltersProps> = ({
                                 </Col>
                             )}
 
-                            {displayedItems.map(item => (
-                                <Col span={24} key={item.value}>
-                                    <Checkbox
-                                        checked={pendingFilters.some(f =>
-                                            f.category === category && f.value === item.value
-                                        )}
-                                        onChange={(e) => onFilterChange(category, item.value, e.target.checked)}
-                                        data-testid={`filter-checkbox-${category}-${item.value}`}
-                                    >
-                                        <Row>
-                                            <Col flex="auto">{formatFacetValue(category, item.value)}</Col>
-                                            <Col>
-                                                <Typography.Text type="secondary" style={{ whiteSpace: 'nowrap', marginLeft: 8 }}>
-                                                    ({item.count})
-                                                </Typography.Text>
-                                            </Col>
-                                        </Row>
-                                    </Checkbox>
-                                </Col>
-                            ))}
+                            {displayedItems.map(item => {
+                                const facetValue = normalizeFacetValue(item.value);
+
+                                return (
+                                    <Col span={24} key={`${category}-${facetValue}`}>
+                                        <Checkbox
+                                            checked={pendingFilters.some(f =>
+                                                f.category === category && f.value === facetValue
+                                            )}
+                                            onChange={(e) => onFilterChange(category, facetValue, e.target.checked)}
+                                            data-testid={`filter-checkbox-${category}-${facetValue}`}
+                                        >
+                                            <Row>
+                                                <Col flex="auto">{formatFacetValue(category, item.value)}</Col>
+                                                <Col>
+                                                    <Typography.Text type="secondary" style={{ whiteSpace: 'nowrap', marginLeft: 8 }}>
+                                                        ({item.count})
+                                                    </Typography.Text>
+                                                </Col>
+                                            </Row>
+                                        </Checkbox>
+                                    </Col>
+                                );
+                            })}
 
                             {hasMoreItems && !searchTerms[category] && (
                                 <Col span={24}>

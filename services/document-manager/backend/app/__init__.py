@@ -4,7 +4,7 @@ from logging.config import dictConfig
 from app.commands import register_commands
 from app.docman.models import *
 from app.docman.resources import *
-from app.extensions import api, cache, db, jwt, jwt_cypress, jwt_main, migrate
+from app.extensions import api, cache, db, jwt, jwt_core_internal, jwt_cypress, jwt_main, migrate
 from app.routes import register_routes
 from app.utils.celery_health_check import HealthCheckProbe
 from celery import Celery
@@ -90,6 +90,7 @@ def register_extensions(app, test_config=None):
 
     if test_config is None:
         jwt_main.init_app(app)
+        jwt_core_internal.init_app(app)
     else:
         jwt.init_app(app)
 

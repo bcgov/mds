@@ -1,5 +1,6 @@
 import unittest
-from unittest.mock import MagicMock
+from datetime import datetime, timedelta
+from unittest.mock import ANY, MagicMock
 from app.services.object_store_storage_service import ObjectStoreStorageService
 
 class TestObjectStoreStorageService(unittest.TestCase):
@@ -20,7 +21,7 @@ class TestObjectStoreStorageService(unittest.TestCase):
         storage_service = ObjectStoreStorageService()
 
         # Call the create_multipart_upload method
-        result = storage_service.create_multipart_upload('test_key', 100)
+        result = storage_service.create_multipart_upload('test_key', 100, content_type='image/png')
 
         # Assert that the uploadId is returned correctly
         self.assertEqual(result['uploadId'], 'test_upload_id')
@@ -29,8 +30,8 @@ class TestObjectStoreStorageService(unittest.TestCase):
         self.mock_client.create_multipart_upload.assert_called_once_with(
             Bucket='test_bucket',
             Key='test_key',
-            Expires=datetime.now() + timedelta(days=1),
-            ContentType='application/pdf'
+            Expires=ANY,
+            ContentType='image/png'
         )
 
     def test_create_multipart_upload_urls(self):

@@ -53,7 +53,12 @@ def handle_status_and_update_doc(status, doc_guid):
 class DocumentUploadHelper:
 
     @classmethod
-    def initiate_document_upload(cls, document_guid, file_path, folder, file_size, version_guid=None):
+    def _resolve_content_type(cls, filename):
+        inferred_content_type, _ = mimetypes.guess_type(filename or "")
+        return inferred_content_type or 'application/octet-stream'
+
+    @classmethod
+    def initiate_document_upload(cls, document_guid, file_path, folder, file_size, version_guid=None, filename=None):
         folder = secure_filename(folder) if folder else None
         file_path = secure_filename(file_path)
 
@@ -87,7 +92,12 @@ class DocumentUploadHelper:
             if is_s3_multipart:
                 object_store_path = Config.S3_PREFIX + 'multipart/' + doc_guid
                 multipart_upload_path = object_store_path
-                s3_upload = ObjectStoreStorageService().create_multipart_upload(object_store_path, file_size)
+                content_type = cls._resolve_content_type(filename)
+                s3_upload = ObjectStoreStorageService().create_multipart_upload(
+                    object_store_path,
+                    file_size,
+                    content_type=content_type,
+                )
             else:
                 object_store_path = cls._initialize_tusd_upload(document_guid, headers)
         # Else, create an empty file at this path in the file system

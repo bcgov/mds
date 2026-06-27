@@ -1,5 +1,4 @@
 import decimal
-import uuid
 
 from flask import request
 from app.api.projects.major_mine_application.models.major_mine_application import MajorMineApplication
@@ -236,4 +235,3 @@ class DocumentUploadStatusResource(Resource, UserMixin):
         # Allow checking upload status without authentication
         # The document manager will handle authorization based on the document type
         return DocumentManagerService.poll_upload_progress(request, mine_document_guid)
-    

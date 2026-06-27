@@ -1,6 +1,10 @@
 from app.api.mines.response_models import NOW_DOCUMENT_SEARCH_MODEL
-from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
-from app.api.search.search.now_application_search_service import NowApplicationSearchService
+from app.api.now_applications.models.now_application_identity import (
+    NOWApplicationIdentity,
+)
+from app.api.search.search.now_application_search_service import (
+    NowApplicationSearchService,
+)
 from app.api.utils.access_decorators import requires_role_view_all
 from app.api.utils.feature_flag import Feature, is_feature_enabled
 from app.api.utils.resources_mixins import UserMixin
@@ -36,7 +40,7 @@ class NOWApplicationDocumentSearchResource(Resource, UserMixin):
         response = NowApplicationSearchService().search(now_application_guid, request_data)
 
         return Response(
-            stream_with_context(response.iter_content(chunk_size=1024)),
+            stream_with_context(response),
             mimetype="text/event-stream",
             headers={
                 "Cache-Control": "no-cache",

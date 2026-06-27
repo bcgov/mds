@@ -45,6 +45,39 @@ def test_download_file_invalid_token(test_client, db_session):
     assert get_data['status'] == 400
     assert get_data['message'] is not ''
 
+
+def test_download_file_presigned_url_happy_path(test_client, db_session):
+    document = DocumentFactory(file_display_name='table.png', object_store_path='bucket/path/to/object.png')
+    token_guid = uuid.uuid4()
+
+    with mock.patch.object(cache, 'get') as mock_cache_get, \
+         mock.patch('app.docman.resources.document.ObjectStoreStorageService') as mock_storage_service:
+        mock_cache_get.return_value = document.document_guid
+        mock_storage_service.return_value.generate_download_presigned_url.return_value = 'https://example.s3/presigned-url'
+
+        get_resp = test_client.get(f'/documents?token={token_guid}&presigned_url=true')
+
+        assert get_resp.status_code == 200
+        get_data = json.loads(get_resp.data.decode())
+        assert get_data['url'] == 'https://example.s3/presigned-url'
+        mock_cache_get.assert_called_with(DOWNLOAD_TOKEN(token_guid))
+        mock_storage_service.return_value.generate_download_presigned_url.assert_called_once()
+
+
+def test_download_file_presigned_url_requires_object_store_document(test_client, db_session, tmp_path):
+    document = DocumentFactory(path_root=tmp_path, file_display_name='testfile.pdf', object_store_path=None)
+    token_guid = uuid.uuid4()
+
+    with mock.patch.object(cache, 'get') as mock_cache_get:
+        mock_cache_get.return_value = document.document_guid
+
+        get_resp = test_client.get(f'/documents?token={token_guid}&presigned_url=true')
+
+        assert get_resp.status_code == 400
+        get_data = json.loads(get_resp.data.decode())
+        assert get_data['status'] == 400
+        assert 'Pre-signed URL is only available for object-store-backed documents' in get_data['message']
+
 def test_get_upload_status_no_document(test_client, auth_headers):
     """Should return 404 for a non-existing document"""
 

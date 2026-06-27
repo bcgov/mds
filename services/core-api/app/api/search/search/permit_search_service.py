@@ -56,7 +56,7 @@ class PermitSearchService:
         Performs a streaming search against the permit service by the `search_term`.
         Returns a generator that yields SSE formatted responses.
         """
-        print(f'Searching for permit conditions with term: {search_term}')
+        current_app.logger.info('Searching permit conditions with query=%r', search_term.get('query'))
         response = self.session.post(
             self.search_endpoint,
             data=json.dumps({'query': search_term['query'], 'filters': search_term.get('filters')}),
@@ -70,7 +70,7 @@ class PermitSearchService:
         """
         Sends a file to the permit conditions service to be uploaded for indexing.
         """
-        print(f'Uploading file {filename}')
+        current_app.logger.info('Uploading permit condition index file %s', filename)
         result = self.session.post(
             self.search_endpoint+"/upload",
             files={"file": (filename, file, 'text/csv')},

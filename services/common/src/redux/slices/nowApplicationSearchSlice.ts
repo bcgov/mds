@@ -107,6 +107,16 @@ const nowApplicationSearchSlice = createAppSlice({
     setNowDocumentLoading: create.reducer((state, action: { payload: boolean }) => {
       state.documentLoading = action.payload;
     }),
+    clearNowSearch: create.reducer((state, action: { payload: string }) => {
+      if (state.nowApplicationGuid === action.payload) {
+        return;
+      }
+      state.results = null;
+      state.query = "";
+      state.filters = [];
+      state.allFacets = {};
+      state.nowApplicationGuid = action.payload;
+    }),
 
     /**
      * Triggers document indexing for a NoW application via the core-api proxy.
@@ -360,6 +370,7 @@ export const {
   updateNowPromptResults,
   setNowAiLoading,
   setNowDocumentLoading,
+  clearNowSearch,
 } = nowApplicationSearchSlice.actions;
 
 export const {
