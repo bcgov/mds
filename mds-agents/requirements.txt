@@ -1,0 +1,9 @@
+agent-framework-devui==1.0.0b260528
+agent-framework-core==1.9.0
+agent-framework==1.9.0
+azure-search-documents>=11.4.0
+python-dotenv>=1.0.0
+requests>=2.31.0
+pytest>=7.0.0
+pytest-mock>=3.10.0
+openpyxl==3.1.5
