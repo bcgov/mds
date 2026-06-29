@@ -20,10 +20,10 @@ ROOT_DIR = os.path.abspath(os.curdir)
 logger = logging.getLogger(__name__)
 
 DEBUG_MODE = os.environ.get("DEBUG_MODE", "False").lower() == "true"
-AZURE_DEPLOYMENT_NAME = os.environ.get("AZURE_DEPLOYMENT_NAME")
+AZURE_PERMITS_DEPLOYMENT_NAME = os.environ.get("AZURE_PERMITS_DEPLOYMENT_NAME")
 
-if not AZURE_DEPLOYMENT_NAME:
-    raise ValueError("AZURE_DEPLOYMENT_NAME environment variable is not set.")
+if not AZURE_PERMITS_DEPLOYMENT_NAME:
+    raise ValueError("AZURE_PERMITS_DEPLOYMENT_NAME environment variable is not set.")
 
 ca_cert = os.environ.get("ELASTICSEARCH_CA_CERT", None)
 host = os.environ.get("ELASTICSEARCH_HOST", None) or "https://elasticsearch:9200"
@@ -44,7 +44,7 @@ def hash_messages(messages):
         str: The SHA256 hash digest of the messages.
     """
 
-    to_hash = messages + [ChatMessage.from_user(AZURE_DEPLOYMENT_NAME or "")]
+    to_hash = messages + [ChatMessage.from_user(AZURE_PERMITS_DEPLOYMENT_NAME or "")]
 
     hsh = hashlib.sha256()
     for message in to_hash:

@@ -5,6 +5,7 @@ dummy_env = {
     "AZURE_API_KEY": "dummy-key",
     "AZURE_BASE_URL": "https://dummy-base.openai.azure.com/",
     "AZURE_DEPLOYMENT_NAME": "dummy-deployment",
+    "AZURE_PERMITS_DEPLOYMENT_NAME": "dummy-deployment",
     "AZURE_SEARCH_SERVICE_ENDPOINT": "https://dummy-search.search.windows.net",
     "AZURE_SEARCH_API_KEY": "dummy-search-key",
     "AZURE_SEARCH_INDEX_NAME": "permit-conditions",
