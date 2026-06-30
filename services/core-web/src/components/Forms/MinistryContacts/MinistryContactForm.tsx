@@ -163,6 +163,7 @@ export const MinistryContactForm: FC<MinistryContactFormProps> = (props) => {
                   : [required]
               }
               data={regionDropdownOptions}
+              disabled={props.isEdit}
             />
           </Col>
           <Col md={12} xs={24}>
