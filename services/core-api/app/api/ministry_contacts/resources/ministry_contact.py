@@ -15,7 +15,7 @@ class MinistryContactResource(Resource, UserMixin):
     parser = reqparse.RequestParser()
     parser.add_argument('first_name', type=str, trim=True, help='MCM First name', location='json')
     parser.add_argument('last_name', type=str, trim=True, help='MCM Last name.', location='json')
-    parser.add_argument('email', type=str, help='MCM email.', required=False, location='json')
+    parser.add_argument('email', type=str, help='MCM email.', required=True, location='json')
     parser.add_argument(
         'is_general_contact', type=bool, help='is is_general_contact? true/false', location='json')
     parser.add_argument(
@@ -47,8 +47,8 @@ class MinistryContactResource(Resource, UserMixin):
 
         data = self.parser.parse_args()
 
-        if not data.get('email') and not data.get('phone_number'):
-            raise BadRequest('Either email or phone number is required.')
+        if contact.emli_contact_type_code != 'RDC' and not data.get('phone_number'):
+            raise BadRequest('Phone number is required.')
 
         distribution_list_guids = data.pop('distribution_list_guids', [])
         
@@ -60,6 +60,8 @@ class MinistryContactResource(Resource, UserMixin):
                     raise BadRequest('Error: Restricted to one Regional Office contact by mine region.')
 
         for key, value in data.items():
+            if key == 'mine_region_code' and 'mine_region_code' not in (request.json or {}):
+                continue
             setattr(contact, key, value)
 
         # Soft delete existing records

@@ -85,9 +85,10 @@ def test_post_no_body(test_client, db_session, auth_headers):
     assert post_resp.status_code == 400
 
 
-def test_post_ministry_contacts_only_email(test_client, db_session, auth_headers):
+def test_post_rdc_contact_only_email(test_client, db_session, auth_headers):
+    # RDC only requires email, phone is optional
     data = {
-        'emli_contact_type_code': 'SHI',
+        'emli_contact_type_code': 'RDC',
         'mine_region_code': 'SW',
         'email': 'onlyemail@email.com',
         'phone_number': None,
@@ -99,9 +100,10 @@ def test_post_ministry_contacts_only_email(test_client, db_session, auth_headers
     assert post_resp.status_code == 200
 
 
-def test_post_ministry_contacts_only_phone(test_client, db_session, auth_headers):
+def test_post_rdc_contact_missing_email(test_client, db_session, auth_headers):
+    # RDC requires email
     data = {
-        'emli_contact_type_code': 'SHI',
+        'emli_contact_type_code': 'RDC',
         'mine_region_code': 'SW',
         'email': None,
         'phone_number': '250-111-8888',
@@ -110,14 +112,15 @@ def test_post_ministry_contacts_only_phone(test_client, db_session, auth_headers
     post_resp = test_client.post(
         f'/ministry-contacts', json=data, headers=auth_headers['full_auth_header'])
 
-    assert post_resp.status_code == 200
+    assert post_resp.status_code == 400
 
 
-def test_post_ministry_contacts_missing_both(test_client, db_session, auth_headers):
+def test_post_non_rdc_contact_missing_phone(test_client, db_session, auth_headers):
+    # Non-RDC requires phone number
     data = {
         'emli_contact_type_code': 'SHI',
         'mine_region_code': 'SW',
-        'email': None,
+        'email': 'test@email.com',
         'phone_number': None,
         'major_mine': True
     }
@@ -126,4 +129,4 @@ def test_post_ministry_contacts_missing_both(test_client, db_session, auth_heade
 
     assert post_resp.status_code == 400
     post_data = json.loads(post_resp.data.decode())
-    assert 'Either email or phone number is required' in post_data['message']
+    assert 'Phone number is required.' in post_data['message']

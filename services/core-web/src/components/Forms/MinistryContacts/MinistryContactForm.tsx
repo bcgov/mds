@@ -21,6 +21,7 @@ import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
 import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
 import { IMinistryContact } from "@mds/common/interfaces";
+import { MinistryContactTypeCodes } from "@mds/common/constants/enums";
 
 interface IOption {
   value: string | number;
@@ -36,11 +37,11 @@ export interface MinistryContactFormProps {
   distributionListOptions: IOption[];
 }
 
-const regionalOfficeCode = "ROE";
-const majorMineOfficeCode = "MMO";
-const chiefPermittingCode = "CHP";
-const chiefInspectorCode = "CHI";
-const reportDesignatedContactCode = "RDC";
+const regionalOfficeCode = MinistryContactTypeCodes.ROE;
+const majorMineOfficeCode = MinistryContactTypeCodes.MMO;
+const chiefPermittingCode = MinistryContactTypeCodes.CHP;
+const chiefInspectorCode = MinistryContactTypeCodes.CHI;
+const reportDesignatedContactCode = MinistryContactTypeCodes.RDC;
 const officeCodes = [regionalOfficeCode, majorMineOfficeCode];
 
 export const MinistryContactForm: FC<MinistryContactFormProps> = (props) => {
@@ -95,7 +96,9 @@ export const MinistryContactForm: FC<MinistryContactFormProps> = (props) => {
           enableReinitialize: true,
           validate: (values) => {
             const errors: any = {};
-            const isMajorOrGeneral = values.is_major_mine || values.is_general_contact;
+            const isMajorOrGeneral =
+              (values.is_major_mine || values.is_general_contact) &&
+              !officeCodes.includes(values.emli_contact_type_code);
 
             if (isMajorOrGeneral) {
               if (!values.first_name) {
@@ -106,9 +109,11 @@ export const MinistryContactForm: FC<MinistryContactFormProps> = (props) => {
               }
             }
 
-            if (!values.email && !values.phone_number) {
-              errors.email = "Either Email or Phone Number is required";
-              errors.phone_number = "Either Email or Phone Number is required";
+            if (!values.email) {
+              errors.email = "This is a required field";
+            }
+            if (values.emli_contact_type_code !== reportDesignatedContactCode && !values.phone_number) {
+              errors.phone_number = "This is a required field";
             }
 
             return errors;
@@ -212,7 +217,7 @@ export const MinistryContactForm: FC<MinistryContactFormProps> = (props) => {
               name="email"
               label="Email"
               component={renderConfig.FIELD}
-              required={!formValues.phone_number}
+              required
               validate={[email]}
               disabled={!formValues.emli_contact_type_code}
             />
@@ -226,7 +231,7 @@ export const MinistryContactForm: FC<MinistryContactFormProps> = (props) => {
               label="Phone Number"
               placeholder="e.g. xxx-xxx-xxxx"
               component={renderConfig.FIELD}
-              required={!formValues.email}
+              required={formValues.emli_contact_type_code !== reportDesignatedContactCode}
               validate={[phoneNumber, maxLength(12)]}
               normalize={normalizePhone}
               disabled={!formValues.emli_contact_type_code}

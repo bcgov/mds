@@ -335,3 +335,11 @@ export enum NOW_APPLICATION_NATION_EVENT_PARTY_OPTIONS {
   permitting_inspector = "Permitting Inspector",
   proponent = "Proponent",
 }
+
+export enum MinistryContactTypeCodes {
+  ROE = "ROE",
+  MMO = "MMO",
+  CHP = "CHP",
+  CHI = "CHI",
+  RDC = "RDC",
+}
