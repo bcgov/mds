@@ -23,9 +23,9 @@ class MinistryContactListResource(Resource, UserMixin):
         'mine_region_code', type=str, trim=True, help='MCM mine region code', location='json')
     parser.add_argument('first_name', type=str, trim=True, help='MCM First name', location='json')
     parser.add_argument('last_name', type=str, trim=True, help='MCM Last name.', location='json')
-    parser.add_argument('email', type=str, help='MCM email.', required=True, location='json')
+    parser.add_argument('email', type=str, help='MCM email.', required=False, location='json')
     parser.add_argument(
-        'phone_number', type=str, help='MCM phone number', required=True, location='json')
+        'phone_number', type=str, help='MCM phone number', required=False, location='json')
     parser.add_argument(
         'fax_number', type=str, help='MCM Regional Office fax number', location='json')
     parser.add_argument(
@@ -66,6 +66,9 @@ class MinistryContactListResource(Resource, UserMixin):
     @requires_role_edit_ministry_contacts
     def post(self):
         data = self.parser.parse_args()
+
+        if not data.get('email') and not data.get('phone_number'):
+            raise BadRequest('Either email or phone number is required.')
 
         contact_type = data.get('emli_contact_type_code', None)
         contact_desc = MinistryContactType.find_contact_type(contact_type)

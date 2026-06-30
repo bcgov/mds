@@ -40,12 +40,13 @@ const regionalOfficeCode = "ROE";
 const majorMineOfficeCode = "MMO";
 const chiefPermittingCode = "CHP";
 const chiefInspectorCode = "CHI";
+const reportDesignatedContactCode = "RDC";
 const officeCodes = [regionalOfficeCode, majorMineOfficeCode];
 
 export const MinistryContactForm: FC<MinistryContactFormProps> = (props) => {
   const formValues: any = useSelector((state) => getFormValues(FORM.MINISTRY_CONTACT_FORM)(state)) || {};
   const regionDropdownOptions: IOption[] = useSelector(getMineRegionDropdownOptions);
-  const MinistryContactTypes: IOption[] = useSelector(getDropdownMinistryContactTypes);
+  const MinistryContactTypes: IOption[] = useSelector((state) => getDropdownMinistryContactTypes(state, false));
 
   const filteredContactTypes = () => {
     const codes: string[] = [];
@@ -77,7 +78,10 @@ export const MinistryContactForm: FC<MinistryContactFormProps> = (props) => {
         codes.push(chiefInspectorCode);
       }
     }
-    return MinistryContactTypes.filter(({ value }) => !codes.includes(value as string));
+    return MinistryContactTypes.filter(({ value, isActive }) => {
+      const isCurrentValue = value === props.initialValues?.emli_contact_type_code;
+      return (isActive || isCurrentValue) && !codes.includes(value as string);
+    });
   };
 
   return (
@@ -89,6 +93,26 @@ export const MinistryContactForm: FC<MinistryContactFormProps> = (props) => {
         reduxFormConfig={{
           touchOnBlur: false,
           enableReinitialize: true,
+          validate: (values) => {
+            const errors: any = {};
+            const isMajorOrGeneral = values.is_major_mine || values.is_general_contact;
+
+            if (isMajorOrGeneral) {
+              if (!values.first_name) {
+                errors.first_name = "This is a required field";
+              }
+              if (!values.last_name) {
+                errors.last_name = "This is a required field";
+              }
+            }
+
+            if (!values.email && !values.phone_number) {
+              errors.email = "Either Email or Phone Number is required";
+              errors.phone_number = "Either Email or Phone Number is required";
+            }
+
+            return errors;
+          }
         }}
       >
         <Row gutter={16}>
@@ -132,14 +156,13 @@ export const MinistryContactForm: FC<MinistryContactFormProps> = (props) => {
               label={"Mine Region"}
               placeholder="Select a mine Region"
               component={renderConfig.SELECT}
-              required={!formValues.is_major_mine}
+              required={!formValues.is_major_mine && formValues.emli_contact_type_code !== reportDesignatedContactCode}
               validate={
-                formValues.is_major_mine
+                formValues.is_major_mine || formValues.emli_contact_type_code === reportDesignatedContactCode
                   ? []
                   : [required]
               }
               data={regionDropdownOptions}
-              disabled={props.isEdit}
             />
           </Col>
           <Col md={12} xs={24}>
@@ -164,8 +187,7 @@ export const MinistryContactForm: FC<MinistryContactFormProps> = (props) => {
                 name="first_name"
                 label="First Name"
                 component={renderConfig.FIELD}
-                required
-                validate={[required]}
+                required={formValues.is_major_mine || formValues.is_general_contact}
                 disabled={!formValues.emli_contact_type_code}
               />
             </Col>
@@ -175,8 +197,7 @@ export const MinistryContactForm: FC<MinistryContactFormProps> = (props) => {
                 name="last_name"
                 label="Surname"
                 component={renderConfig.FIELD}
-                required
-                validate={[required]}
+                required={formValues.is_major_mine || formValues.is_general_contact}
                 disabled={!formValues.emli_contact_type_code}
               />
             </Col>
@@ -190,8 +211,8 @@ export const MinistryContactForm: FC<MinistryContactFormProps> = (props) => {
               name="email"
               label="Email"
               component={renderConfig.FIELD}
-              required
-              validate={[email, required]}
+              required={!formValues.phone_number}
+              validate={[email]}
               disabled={!formValues.emli_contact_type_code}
             />
           </Col>
@@ -204,8 +225,8 @@ export const MinistryContactForm: FC<MinistryContactFormProps> = (props) => {
               label="Phone Number"
               placeholder="e.g. xxx-xxx-xxxx"
               component={renderConfig.FIELD}
-              required
-              validate={[required, phoneNumber, maxLength(12)]}
+              required={!formValues.email}
+              validate={[phoneNumber, maxLength(12)]}
               normalize={normalizePhone}
               disabled={!formValues.emli_contact_type_code}
             />

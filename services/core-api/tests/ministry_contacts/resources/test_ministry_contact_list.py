@@ -83,3 +83,47 @@ def test_post_no_body(test_client, db_session, auth_headers):
     post_resp = test_client.post(
         f'/ministry-contacts', headers=auth_headers['full_auth_header'], json=data)
     assert post_resp.status_code == 400
+
+
+def test_post_ministry_contacts_only_email(test_client, db_session, auth_headers):
+    data = {
+        'emli_contact_type_code': 'SHI',
+        'mine_region_code': 'SW',
+        'email': 'onlyemail@email.com',
+        'phone_number': None,
+        'major_mine': True
+    }
+    post_resp = test_client.post(
+        f'/ministry-contacts', json=data, headers=auth_headers['full_auth_header'])
+
+    assert post_resp.status_code == 200
+
+
+def test_post_ministry_contacts_only_phone(test_client, db_session, auth_headers):
+    data = {
+        'emli_contact_type_code': 'SHI',
+        'mine_region_code': 'SW',
+        'email': None,
+        'phone_number': '250-111-8888',
+        'major_mine': True
+    }
+    post_resp = test_client.post(
+        f'/ministry-contacts', json=data, headers=auth_headers['full_auth_header'])
+
+    assert post_resp.status_code == 200
+
+
+def test_post_ministry_contacts_missing_both(test_client, db_session, auth_headers):
+    data = {
+        'emli_contact_type_code': 'SHI',
+        'mine_region_code': 'SW',
+        'email': None,
+        'phone_number': None,
+        'major_mine': True
+    }
+    post_resp = test_client.post(
+        f'/ministry-contacts', json=data, headers=auth_headers['full_auth_header'])
+
+    assert post_resp.status_code == 400
+    post_data = json.loads(post_resp.data.decode())
+    assert 'Either email or phone number is required' in post_data['message']

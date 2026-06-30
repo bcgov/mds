@@ -1268,7 +1268,7 @@ exports[`MinistryContactForm renders properly for editing contact 1`] = `
                   >
                     <div
                       aria-required="true"
-                      class="ant-select ant-select-in-form-item ant-select-single ant-select-allow-clear ant-select-show-arrow ant-select-disabled ant-select-show-search"
+                      class="ant-select ant-select-in-form-item ant-select-single ant-select-allow-clear ant-select-show-arrow ant-select-show-search"
                       data-cy="mine_region_code"
                     >
                       <div
@@ -1281,13 +1281,11 @@ exports[`MinistryContactForm renders properly for editing contact 1`] = `
                             aria-activedescendant="mine_region_code_list_0"
                             aria-autocomplete="list"
                             aria-controls="mine_region_code_list"
-                            aria-expanded="false"
                             aria-haspopup="listbox"
                             aria-owns="mine_region_code_list"
                             aria-required="true"
                             autocomplete="off"
                             class="ant-select-selection-search-input"
-                            disabled=""
                             id="mine_region_code"
                             role="combobox"
                             type="search"
