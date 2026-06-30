@@ -26,6 +26,7 @@ import { MinistryContactTypeCodes } from "@mds/common/constants/enums";
 interface IOption {
   value: string | number;
   label: string;
+  isActive?: boolean;
 }
 
 export interface MinistryContactFormProps {
@@ -94,18 +95,21 @@ export const MinistryContactForm: FC<MinistryContactFormProps> = (props) => {
         reduxFormConfig={{
           touchOnBlur: false,
           enableReinitialize: true,
-          validate: (values) => {
+          validate: (values: IMinistryContact) => {
             const errors: any = {};
-            const isMajorOrGeneral =
-              (values.is_major_mine || values.is_general_contact) &&
-              !officeCodes.includes(values.emli_contact_type_code);
+            const isRDC = values.emli_contact_type_code === reportDesignatedContactCode;
+            const isOffice = officeCodes.includes(
+              values.emli_contact_type_code as MinistryContactTypeCodes
+            );
 
-            if (isMajorOrGeneral) {
-              if (!values.first_name) {
-                errors.first_name = "This is a required field";
-              }
-              if (!values.last_name) {
-                errors.last_name = "This is a required field";
+            if (!isOffice) {
+              if (!isRDC) {
+                if (!values.first_name) {
+                  errors.first_name = "This is a required field";
+                }
+                if (!values.last_name) {
+                  errors.last_name = "This is a required field";
+                }
               }
             }
 
@@ -193,7 +197,7 @@ export const MinistryContactForm: FC<MinistryContactFormProps> = (props) => {
                 name="first_name"
                 label="First Name"
                 component={renderConfig.FIELD}
-                required={formValues.is_major_mine || formValues.is_general_contact}
+                required={formValues.emli_contact_type_code && formValues.emli_contact_type_code !== reportDesignatedContactCode}
                 disabled={!formValues.emli_contact_type_code}
               />
             </Col>
@@ -203,7 +207,7 @@ export const MinistryContactForm: FC<MinistryContactFormProps> = (props) => {
                 name="last_name"
                 label="Surname"
                 component={renderConfig.FIELD}
-                required={formValues.is_major_mine || formValues.is_general_contact}
+                required={formValues.emli_contact_type_code && formValues.emli_contact_type_code !== reportDesignatedContactCode}
                 disabled={!formValues.emli_contact_type_code}
               />
             </Col>

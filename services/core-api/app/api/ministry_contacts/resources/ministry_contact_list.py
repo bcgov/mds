@@ -68,8 +68,13 @@ class MinistryContactListResource(Resource, UserMixin):
         data = self.parser.parse_args()
 
         contact_type = data.get('emli_contact_type_code', None)
-        if contact_type != 'RDC' and not data.get('phone_number'):
-            raise BadRequest('Phone number is required.')
+
+        if contact_type == 'RDC':
+            if not data.get('email'):
+                raise BadRequest('Email is required.')
+        else:
+            if not data.get('email') or not data.get('phone_number'):
+                raise BadRequest('Both email and phone number are required.')
 
         contact_desc = MinistryContactType.find_contact_type(contact_type)
 
