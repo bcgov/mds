@@ -29,43 +29,40 @@ exports[`NowApplicationDocumentSearchSplashScreen renders in loading state 1`] =
             Search across all documents submitted with this Notice of Work application and get AI-powered answers. Try searching for specific plans, assessments, or operational details.
           </div>
           <div
-            class="ant-typography"
+            class="ant-alert ant-alert-warning ant-alert-with-description"
+            data-show="true"
+            role="alert"
+            style="margin-bottom: 16px;"
           >
-            <div
-              class="ant-alert ant-alert-warning ant-alert-with-description"
-              data-show="true"
-              role="alert"
+            <span
+              aria-label="exclamation-circle"
+              class="anticon anticon-exclamation-circle ant-alert-icon"
+              role="img"
             >
-              <span
-                aria-label="exclamation-circle"
-                class="anticon anticon-exclamation-circle ant-alert-icon"
-                role="img"
+              <svg
+                aria-hidden="true"
+                data-icon="exclamation-circle"
+                fill="currentColor"
+                focusable="false"
+                height="1em"
+                viewBox="64 64 896 896"
+                width="1em"
               >
-                <svg
-                  aria-hidden="true"
-                  data-icon="exclamation-circle"
-                  fill="currentColor"
-                  focusable="false"
-                  height="1em"
-                  viewBox="64 64 896 896"
-                  width="1em"
-                >
-                  <path
-                    d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
-                  />
-                  <path
-                    d="M464 688a48 48 0 1096 0 48 48 0 10-96 0zm24-112h48c4.4 0 8-3.6 8-8V296c0-4.4-3.6-8-8-8h-48c-4.4 0-8 3.6-8 8v272c0 4.4 3.6 8 8 8z"
-                  />
-                </svg>
-              </span>
+                <path
+                  d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
+                />
+                <path
+                  d="M464 688a48 48 0 1096 0 48 48 0 10-96 0zm24-112h48c4.4 0 8-3.6 8-8V296c0-4.4-3.6-8-8-8h-48c-4.4 0-8 3.6-8 8v272c0 4.4 3.6 8 8 8z"
+                />
+              </svg>
+            </span>
+            <div
+              class="ant-alert-content"
+            >
               <div
-                class="ant-alert-content"
+                class="ant-alert-description"
               >
-                <div
-                  class="ant-alert-description"
-                >
-                  Note: Spatial files (e.g. shapefiles) are not indexed and will not appear in search results.
-                </div>
+                Note: Spatial files (e.g. shapefiles) are not indexed and will not appear in search results.
               </div>
             </div>
           </div>
@@ -247,7 +244,7 @@ exports[`NowApplicationDocumentSearchSplashScreen renders in loading state 1`] =
                         class="ant-typography"
                       >
                         <strong>
-                          Activies & Scope
+                          Activities & Scope
                         </strong>
                       </span>
                     </div>
@@ -268,7 +265,7 @@ exports[`NowApplicationDocumentSearchSplashScreen renders in loading state 1`] =
                       <a
                         class="ant-typography permit-search__example-link"
                       >
-                        What is the timeline of the proposed activies?
+                        What is the timeline of the proposed activities?
                       </a>
                     </div>
                     <div
@@ -278,7 +275,7 @@ exports[`NowApplicationDocumentSearchSplashScreen renders in loading state 1`] =
                       <a
                         class="ant-typography permit-search__example-link"
                       >
-                        What activites are planned (e.g. drilling, trenching)?
+                        What activities are planned (e.g. drilling, trenching)?
                       </a>
                     </div>
                     <div
@@ -360,7 +357,7 @@ exports[`NowApplicationDocumentSearchSplashScreen renders in loading state 1`] =
                         class="ant-typography"
                       >
                         <strong>
-                          Environment & Reclaimation
+                          Environment & Reclamation
                         </strong>
                       </span>
                     </div>
@@ -391,7 +388,7 @@ exports[`NowApplicationDocumentSearchSplashScreen renders in loading state 1`] =
                       <a
                         class="ant-typography permit-search__example-link"
                       >
-                        What reclaimation activities are planned?
+                        What reclamation activities are planned?
                       </a>
                     </div>
                     <div
@@ -597,7 +594,7 @@ exports[`NowApplicationDocumentSearchSplashScreen renders in loading state 1`] =
                       <a
                         class="ant-typography permit-search__example-link"
                       >
-                        Are there any high-risk activies (e.g. blasting) proposed?
+                        Are there any high-risk activities (e.g. blasting) proposed?
                       </a>
                     </div>
                   </div>
@@ -641,43 +638,40 @@ exports[`NowApplicationDocumentSearchSplashScreen renders properly 1`] = `
             Search across all documents submitted with this Notice of Work application and get AI-powered answers. Try searching for specific plans, assessments, or operational details.
           </div>
           <div
-            class="ant-typography"
+            class="ant-alert ant-alert-warning ant-alert-with-description"
+            data-show="true"
+            role="alert"
+            style="margin-bottom: 16px;"
           >
-            <div
-              class="ant-alert ant-alert-warning ant-alert-with-description"
-              data-show="true"
-              role="alert"
+            <span
+              aria-label="exclamation-circle"
+              class="anticon anticon-exclamation-circle ant-alert-icon"
+              role="img"
             >
-              <span
-                aria-label="exclamation-circle"
-                class="anticon anticon-exclamation-circle ant-alert-icon"
-                role="img"
+              <svg
+                aria-hidden="true"
+                data-icon="exclamation-circle"
+                fill="currentColor"
+                focusable="false"
+                height="1em"
+                viewBox="64 64 896 896"
+                width="1em"
               >
-                <svg
-                  aria-hidden="true"
-                  data-icon="exclamation-circle"
-                  fill="currentColor"
-                  focusable="false"
-                  height="1em"
-                  viewBox="64 64 896 896"
-                  width="1em"
-                >
-                  <path
-                    d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
-                  />
-                  <path
-                    d="M464 688a48 48 0 1096 0 48 48 0 10-96 0zm24-112h48c4.4 0 8-3.6 8-8V296c0-4.4-3.6-8-8-8h-48c-4.4 0-8 3.6-8 8v272c0 4.4 3.6 8 8 8z"
-                  />
-                </svg>
-              </span>
+                <path
+                  d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
+                />
+                <path
+                  d="M464 688a48 48 0 1096 0 48 48 0 10-96 0zm24-112h48c4.4 0 8-3.6 8-8V296c0-4.4-3.6-8-8-8h-48c-4.4 0-8 3.6-8 8v272c0 4.4 3.6 8 8 8z"
+                />
+              </svg>
+            </span>
+            <div
+              class="ant-alert-content"
+            >
               <div
-                class="ant-alert-content"
+                class="ant-alert-description"
               >
-                <div
-                  class="ant-alert-description"
-                >
-                  Note: Spatial files (e.g. shapefiles) are not indexed and will not appear in search results.
-                </div>
+                Note: Spatial files (e.g. shapefiles) are not indexed and will not appear in search results.
               </div>
             </div>
           </div>
@@ -855,7 +849,7 @@ exports[`NowApplicationDocumentSearchSplashScreen renders properly 1`] = `
                         class="ant-typography"
                       >
                         <strong>
-                          Activies & Scope
+                          Activities & Scope
                         </strong>
                       </span>
                     </div>
@@ -876,7 +870,7 @@ exports[`NowApplicationDocumentSearchSplashScreen renders properly 1`] = `
                       <a
                         class="ant-typography permit-search__example-link"
                       >
-                        What is the timeline of the proposed activies?
+                        What is the timeline of the proposed activities?
                       </a>
                     </div>
                     <div
@@ -886,7 +880,7 @@ exports[`NowApplicationDocumentSearchSplashScreen renders properly 1`] = `
                       <a
                         class="ant-typography permit-search__example-link"
                       >
-                        What activites are planned (e.g. drilling, trenching)?
+                        What activities are planned (e.g. drilling, trenching)?
                       </a>
                     </div>
                     <div
@@ -968,7 +962,7 @@ exports[`NowApplicationDocumentSearchSplashScreen renders properly 1`] = `
                         class="ant-typography"
                       >
                         <strong>
-                          Environment & Reclaimation
+                          Environment & Reclamation
                         </strong>
                       </span>
                     </div>
@@ -999,7 +993,7 @@ exports[`NowApplicationDocumentSearchSplashScreen renders properly 1`] = `
                       <a
                         class="ant-typography permit-search__example-link"
                       >
-                        What reclaimation activities are planned?
+                        What reclamation activities are planned?
                       </a>
                     </div>
                     <div
@@ -1205,7 +1199,7 @@ exports[`NowApplicationDocumentSearchSplashScreen renders properly 1`] = `
                       <a
                         class="ant-typography permit-search__example-link"
                       >
-                        Are there any high-risk activies (e.g. blasting) proposed?
+                        Are there any high-risk activities (e.g. blasting) proposed?
                       </a>
                     </div>
                   </div>

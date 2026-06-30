@@ -6,27 +6,27 @@ import SearchBox from '@/components/mine/Permit/Search/components/SearchBox';
 const { Title } = Typography;
 
 const exampleQueries = {
-    environmental: {
+    activities: {
         icon: <AimOutlined style={{ fontSize: '24px' }} />,
-        title: 'Activies & Scope',
+        title: 'Activities & Scope',
         queries: [
-            "What is the timeline of the proposed activies?",
-            "What activites are planned (e.g. drilling, trenching)?",
+            "What is the timeline of the proposed activities?",
+            "What activities are planned (e.g. drilling, trenching)?",
             "How much land disturbance is proposed?",
             "What approvals, permits or authorizations are identified or may be required?"
         ],
     },
-    operations: {
+    environmental: {
         icon: <EnvironmentOutlined style={{ fontSize: '24px' }} />,
-        title: 'Environment & Reclaimation',
+        title: 'Environment & Reclamation',
         queries: [
             "What environmental considerations are identified?",
-            "What reclaimation activities are planned?",
+            "What reclamation activities are planned?",
             "How will water runoff be managed?",
             "Are any environmental management or monitoring plans included?"
         ],
     },
-    compliance: {
+    engagement: {
         icon: <AuditOutlined style={{ fontSize: '24px' }} />,
         title: 'Engagement',
         queries: [
@@ -34,12 +34,12 @@ const exampleQueries = {
             "Are there any identified cultural or heritage considerations?",
         ],
     },
-    documents: {
+    operations: {
         icon: <FileSearchOutlined style={{ fontSize: '24px' }} />,
         title: 'Operations',
         queries: [
             "What equipment and machinery are proposed for the work?",
-            "Are there any high-risk activies (e.g. blasting) proposed?",
+            "Are there any high-risk activities (e.g. blasting) proposed?",
         ],
     },
 };
@@ -64,14 +64,12 @@ const NowApplicationDocumentSearchSplashScreen: React.FC<NowApplicationDocumentS
                             and get AI-powered answers. Try searching for specific plans, assessments,
                             or operational details.
                         </Typography.Paragraph>
-                        <Typography.Paragraph>
-                            <Alert
-                                // message="SPATIAL FILES MSG"
-                                showIcon
-                                type="warning"
-                                description="Note: Spatial files (e.g. shapefiles) are not indexed and will not appear in search results."
-                            />
-                        </Typography.Paragraph>
+                        <Alert
+                            showIcon
+                            type="warning"
+                            style={{ marginBottom: 16 }}
+                            description="Note: Spatial files (e.g. shapefiles) are not indexed and will not appear in search results."
+                        />
                         <SearchBox onSearch={onSearch} loading={loading} size="large" placeholder="Search application documents..." />
                     </Col>
 
