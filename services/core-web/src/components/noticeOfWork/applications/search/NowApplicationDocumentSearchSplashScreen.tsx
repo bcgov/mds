@@ -1,45 +1,45 @@
 import React from 'react';
-import { Typography, Row, Col, Card } from 'antd';
-import { FileSearchOutlined, EnvironmentOutlined, AuditOutlined, BuildOutlined } from '@ant-design/icons';
+import { Alert, Typography, Row, Col, Card } from 'antd';
+import { AimOutlined, FileSearchOutlined, EnvironmentOutlined, AuditOutlined } from '@ant-design/icons';
 import SearchBox from '@/components/mine/Permit/Search/components/SearchBox';
 
 const { Title } = Typography;
 
 const exampleQueries = {
+    activities: {
+        icon: <AimOutlined style={{ fontSize: '24px' }} />,
+        title: 'Activities & Scope',
+        queries: [
+            "What is the timeline of the proposed activities?",
+            "What activities are planned (e.g. drilling, trenching)?",
+            "How much land disturbance is proposed?",
+            "What approvals, permits or authorizations are identified or may be required?"
+        ],
+    },
     environmental: {
         icon: <EnvironmentOutlined style={{ fontSize: '24px' }} />,
-        title: 'Environmental & Reclamation',
+        title: 'Environment & Reclamation',
         queries: [
-            "What environmental impacts are identified in the application?",
-            "What reclamation plan is proposed for the mine site?",
-            "What water management measures are described?",
+            "What environmental considerations are identified?",
+            "What reclamation activities are planned?",
+            "How will water runoff be managed?",
+            "Are any environmental management or monitoring plans included?"
+        ],
+    },
+    engagement: {
+        icon: <AuditOutlined style={{ fontSize: '24px' }} />,
+        title: 'Engagement',
+        queries: [
+            "What indigenous engagement has been completed or documented?",
+            "Are there any identified cultural or heritage considerations?",
         ],
     },
     operations: {
-        icon: <BuildOutlined style={{ fontSize: '24px' }} />,
-        title: 'Operations & Equipment',
-        queries: [
-            "What equipment and machinery is listed for the operation?",
-            "What access roads or infrastructure are proposed?",
-            "What is the proposed production rate or extraction volume?",
-        ],
-    },
-    compliance: {
-        icon: <AuditOutlined style={{ fontSize: '24px' }} />,
-        title: 'Compliance & Monitoring',
-        queries: [
-            "What monitoring programs are proposed?",
-            "What are the proposed hours of operation?",
-            "What bonding or security arrangements are described?",
-        ],
-    },
-    documents: {
         icon: <FileSearchOutlined style={{ fontSize: '24px' }} />,
-        title: 'Supporting Documents',
+        title: 'Operations',
         queries: [
-            "What geotechnical assessments have been submitted?",
-            "Are there any archaeological or heritage studies included?",
-            "What First Nations consultation is documented?",
+            "What equipment and machinery are proposed for the work?",
+            "Are there any high-risk activities (e.g. blasting) proposed?",
         ],
     },
 };
@@ -64,6 +64,12 @@ const NowApplicationDocumentSearchSplashScreen: React.FC<NowApplicationDocumentS
                             and get AI-powered answers. Try searching for specific plans, assessments,
                             or operational details.
                         </Typography.Paragraph>
+                        <Alert
+                            showIcon
+                            type="warning"
+                            style={{ marginBottom: 16 }}
+                            description="Note: Spatial files (e.g. shapefiles) are not indexed and will not appear in search results."
+                        />
                         <SearchBox onSearch={onSearch} loading={loading} size="large" placeholder="Search application documents..." />
                     </Col>
 
