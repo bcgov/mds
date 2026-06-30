@@ -47,12 +47,12 @@ class MinistryContactResource(Resource, UserMixin):
 
         data = self.parser.parse_args()
 
-        if contact.emli_contact_type_code == 'RDC':
-            if not data.get('email'):
-                raise BadRequest('Email is required.')
-        else:
-            if not data.get('email') or not data.get('phone_number'):
-                raise BadRequest('Both email and phone number are required.')
+        if not data.get('email'):
+            raise BadRequest('Email is required.')
+
+        if contact.emli_contact_type_code != 'RDC' and not data.get('is_general_contact'):
+            if not data.get('phone_number'):
+                raise BadRequest('Phone number is required.')
 
         distribution_list_guids = data.pop('distribution_list_guids', [])
         

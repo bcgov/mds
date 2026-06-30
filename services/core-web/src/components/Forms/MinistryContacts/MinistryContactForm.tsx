@@ -116,7 +116,11 @@ export const MinistryContactForm: FC<MinistryContactFormProps> = (props) => {
             if (!values.email) {
               errors.email = "This is a required field";
             }
-            if (values.emli_contact_type_code !== reportDesignatedContactCode && !values.phone_number) {
+            const isPhoneRequired =
+              values.emli_contact_type_code !== reportDesignatedContactCode &&
+              !values.is_general_contact;
+
+            if (isPhoneRequired && !values.phone_number) {
               errors.phone_number = "This is a required field";
             }
 
@@ -235,7 +239,7 @@ export const MinistryContactForm: FC<MinistryContactFormProps> = (props) => {
               label="Phone Number"
               placeholder="e.g. xxx-xxx-xxxx"
               component={renderConfig.FIELD}
-              required={formValues.emli_contact_type_code !== reportDesignatedContactCode}
+              required={formValues.emli_contact_type_code !== reportDesignatedContactCode && !formValues.is_general_contact}
               validate={[phoneNumber, maxLength(12)]}
               normalize={normalizePhone}
               disabled={!formValues.emli_contact_type_code}

@@ -201,7 +201,7 @@ def test_put_rdc_contact_missing_both(test_client, db_session, auth_headers):
 
 
 def test_put_non_rdc_contact_missing_phone(test_client, db_session, auth_headers):
-    # Non-RDC requires both
+    # Non-RDC requires phone number
     contact = MinistryContactFactory(emli_contact_type_code='ROE')
     data = marshal(contact, MINISTRY_CONTACT_MODEL)
     data['phone_number'] = None
@@ -214,11 +214,11 @@ def test_put_non_rdc_contact_missing_phone(test_client, db_session, auth_headers
 
     assert put_resp.status_code == 400
     put_data = json.loads(put_resp.data.decode())
-    assert 'Both email and phone number are required.' in put_data['message']
+    assert 'Phone number is required.' in put_data['message']
 
 
 def test_put_non_rdc_contact_missing_email(test_client, db_session, auth_headers):
-    # Non-RDC requires both
+    # Non-RDC requires email
     contact = MinistryContactFactory(emli_contact_type_code='ROE')
     data = marshal(contact, MINISTRY_CONTACT_MODEL)
     data['phone_number'] = '250-111-2222'
@@ -231,4 +231,19 @@ def test_put_non_rdc_contact_missing_email(test_client, db_session, auth_headers
 
     assert put_resp.status_code == 400
     put_data = json.loads(put_resp.data.decode())
-    assert 'Both email and phone number are required.' in put_data['message']
+    assert 'Email is required.' in put_data['message']
+
+
+def test_put_general_contact_missing_phone(test_client, db_session, auth_headers):
+    # General contact (non-RDC) does not require phone number
+    contact = MinistryContactFactory(emli_contact_type_code='ROE', is_general_contact=True)
+    data = marshal(contact, MINISTRY_CONTACT_MODEL)
+    data['phone_number'] = None
+    data['email'] = 'test@example.com'
+
+    put_resp = test_client.put(
+        f'/ministry-contacts/{contact.contact_guid}',
+        json=data,
+        headers=auth_headers['full_auth_header'])
+
+    assert put_resp.status_code == 200

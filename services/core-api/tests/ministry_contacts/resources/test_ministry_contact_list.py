@@ -135,7 +135,7 @@ def test_post_rdc_contact_missing_both(test_client, db_session, auth_headers):
 
 
 def test_post_non_rdc_contact_missing_phone(test_client, db_session, auth_headers):
-    # Non-RDC requires both
+    # Non-RDC requires phone number
     data = {
         'emli_contact_type_code': 'SHI',
         'mine_region_code': 'SW',
@@ -148,11 +148,11 @@ def test_post_non_rdc_contact_missing_phone(test_client, db_session, auth_header
 
     assert post_resp.status_code == 400
     post_data = json.loads(post_resp.data.decode())
-    assert 'Both email and phone number are required.' in post_data['message']
+    assert 'Phone number is required.' in post_data['message']
 
 
 def test_post_non_rdc_contact_missing_email(test_client, db_session, auth_headers):
-    # Non-RDC requires both
+    # Non-RDC requires email
     data = {
         'emli_contact_type_code': 'SHI',
         'mine_region_code': 'SW',
@@ -165,4 +165,20 @@ def test_post_non_rdc_contact_missing_email(test_client, db_session, auth_header
 
     assert post_resp.status_code == 400
     post_data = json.loads(post_resp.data.decode())
-    assert 'Both email and phone number are required.' in post_data['message']
+    assert 'Email is required.' in post_data['message']
+
+
+def test_post_general_contact_missing_phone(test_client, db_session, auth_headers):
+    # General contact (non-RDC) does not require phone number
+    data = {
+        'emli_contact_type_code': 'SHI',
+        'mine_region_code': 'SW',
+        'email': 'test@email.com',
+        'phone_number': None,
+        'is_general_contact': True,
+        'major_mine': True
+    }
+    post_resp = test_client.post(
+        f'/ministry-contacts', json=data, headers=auth_headers['full_auth_header'])
+
+    assert post_resp.status_code == 200
