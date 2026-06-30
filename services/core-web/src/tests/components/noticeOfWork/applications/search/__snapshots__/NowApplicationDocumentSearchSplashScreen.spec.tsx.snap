@@ -29,6 +29,47 @@ exports[`NowApplicationDocumentSearchSplashScreen renders in loading state 1`] =
             Search across all documents submitted with this Notice of Work application and get AI-powered answers. Try searching for specific plans, assessments, or operational details.
           </div>
           <div
+            class="ant-typography"
+          >
+            <div
+              class="ant-alert ant-alert-warning ant-alert-with-description"
+              data-show="true"
+              role="alert"
+            >
+              <span
+                aria-label="exclamation-circle"
+                class="anticon anticon-exclamation-circle ant-alert-icon"
+                role="img"
+              >
+                <svg
+                  aria-hidden="true"
+                  data-icon="exclamation-circle"
+                  fill="currentColor"
+                  focusable="false"
+                  height="1em"
+                  viewBox="64 64 896 896"
+                  width="1em"
+                >
+                  <path
+                    d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
+                  />
+                  <path
+                    d="M464 688a48 48 0 1096 0 48 48 0 10-96 0zm24-112h48c4.4 0 8-3.6 8-8V296c0-4.4-3.6-8-8-8h-48c-4.4 0-8 3.6-8 8v272c0 4.4 3.6 8 8 8z"
+                  />
+                </svg>
+              </span>
+              <div
+                class="ant-alert-content"
+              >
+                <div
+                  class="ant-alert-description"
+                >
+                  Note: Spatial files (e.g. shapefiles) are not indexed and will not appear in search results.
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
             class="ant-form-item"
           >
             <div
@@ -172,23 +213,29 @@ exports[`NowApplicationDocumentSearchSplashScreen renders in loading state 1`] =
                     style="margin-left: -4px; margin-right: -4px;"
                   >
                     <span
-                      aria-label="environment"
-                      class="anticon anticon-environment"
+                      aria-label="aim"
+                      class="anticon anticon-aim"
                       role="img"
                       style="font-size: 24px;"
                     >
                       <svg
                         aria-hidden="true"
                         class=""
-                        data-icon="environment"
+                        data-icon="aim"
                         fill="currentColor"
                         focusable="false"
                         height="1em"
                         viewBox="64 64 896 896"
                         width="1em"
                       >
+                        <defs>
+                          <style />
+                        </defs>
                         <path
-                          d="M854.6 289.1a362.49 362.49 0 00-79.9-115.7 370.83 370.83 0 00-118.2-77.8C610.7 76.6 562.1 67 512 67c-50.1 0-98.7 9.6-144.5 28.5-44.3 18.3-84 44.5-118.2 77.8A363.6 363.6 0 00169.4 289c-19.5 45-29.4 92.8-29.4 142 0 70.6 16.9 140.9 50.1 208.7 26.7 54.5 64 107.6 111 158.1 80.3 86.2 164.5 138.9 188.4 153a43.9 43.9 0 0022.4 6.1c7.8 0 15.5-2 22.4-6.1 23.9-14.1 108.1-66.8 188.4-153 47-50.4 84.3-103.6 111-158.1C867.1 572 884 501.8 884 431.1c0-49.2-9.9-97-29.4-142zM512 880.2c-65.9-41.9-300-207.8-300-449.1 0-77.9 31.1-151.1 87.6-206.3C356.3 169.5 431.7 139 512 139s155.7 30.5 212.4 85.9C780.9 280 812 353.2 812 431.1c0 241.3-234.1 407.2-300 449.1zm0-617.2c-97.2 0-176 78.8-176 176s78.8 176 176 176 176-78.8 176-176-78.8-176-176-176zm79.2 255.2A111.6 111.6 0 01512 551c-29.9 0-58-11.7-79.2-32.8A111.6 111.6 0 01400 439c0-29.9 11.7-58 32.8-79.2C454 338.6 482.1 327 512 327c29.9 0 58 11.6 79.2 32.8C612.4 381 624 409.1 624 439c0 29.9-11.6 58-32.8 79.2z"
+                          d="M952 474H829.8C812.5 327.6 696.4 211.5 550 194.2V72c0-4.4-3.6-8-8-8h-60c-4.4 0-8 3.6-8 8v122.2C327.6 211.5 211.5 327.6 194.2 474H72c-4.4 0-8 3.6-8 8v60c0 4.4 3.6 8 8 8h122.2C211.5 696.4 327.6 812.5 474 829.8V952c0 4.4 3.6 8 8 8h60c4.4 0 8-3.6 8-8V829.8C696.4 812.5 812.5 696.4 829.8 550H952c4.4 0 8-3.6 8-8v-60c0-4.4-3.6-8-8-8zM512 756c-134.8 0-244-109.2-244-244s109.2-244 244-244 244 109.2 244 244-109.2 244-244 244z"
+                        />
+                        <path
+                          d="M512 392c-32.1 0-62.1 12.4-84.8 35.2-22.7 22.7-35.2 52.7-35.2 84.8s12.5 62.1 35.2 84.8C449.9 619.4 480 632 512 632s62.1-12.5 84.8-35.2C619.4 574.1 632 544 632 512s-12.5-62.1-35.2-84.8A118.57 118.57 0 00512 392z"
                         />
                       </svg>
                     </span>
@@ -200,7 +247,7 @@ exports[`NowApplicationDocumentSearchSplashScreen renders in loading state 1`] =
                         class="ant-typography"
                       >
                         <strong>
-                          Environmental & Reclamation
+                          Activies & Scope
                         </strong>
                       </span>
                     </div>
@@ -221,7 +268,7 @@ exports[`NowApplicationDocumentSearchSplashScreen renders in loading state 1`] =
                       <a
                         class="ant-typography permit-search__example-link"
                       >
-                        What environmental impacts are identified in the application?
+                        What is the timeline of the proposed activies?
                       </a>
                     </div>
                     <div
@@ -231,7 +278,7 @@ exports[`NowApplicationDocumentSearchSplashScreen renders in loading state 1`] =
                       <a
                         class="ant-typography permit-search__example-link"
                       >
-                        What reclamation plan is proposed for the mine site?
+                        What activites are planned (e.g. drilling, trenching)?
                       </a>
                     </div>
                     <div
@@ -241,7 +288,17 @@ exports[`NowApplicationDocumentSearchSplashScreen renders in loading state 1`] =
                       <a
                         class="ant-typography permit-search__example-link"
                       >
-                        What water management measures are described?
+                        How much land disturbance is proposed?
+                      </a>
+                    </div>
+                    <div
+                      class="ant-col ant-col-xs-24"
+                      style="padding-top: 4px; padding-bottom: 4px;"
+                    >
+                      <a
+                        class="ant-typography permit-search__example-link"
+                      >
+                        What approvals, permits or authorizations are identified or may be required?
                       </a>
                     </div>
                   </div>
@@ -275,15 +332,15 @@ exports[`NowApplicationDocumentSearchSplashScreen renders in loading state 1`] =
                     style="margin-left: -4px; margin-right: -4px;"
                   >
                     <span
-                      aria-label="build"
-                      class="anticon anticon-build"
+                      aria-label="environment"
+                      class="anticon anticon-environment"
                       role="img"
                       style="font-size: 24px;"
                     >
                       <svg
                         aria-hidden="true"
                         class=""
-                        data-icon="build"
+                        data-icon="environment"
                         fill="currentColor"
                         focusable="false"
                         height="1em"
@@ -291,7 +348,7 @@ exports[`NowApplicationDocumentSearchSplashScreen renders in loading state 1`] =
                         width="1em"
                       >
                         <path
-                          d="M916 210H376c-17.7 0-32 14.3-32 32v236H108c-17.7 0-32 14.3-32 32v272c0 17.7 14.3 32 32 32h540c17.7 0 32-14.3 32-32V546h236c17.7 0 32-14.3 32-32V242c0-17.7-14.3-32-32-32zm-504 68h200v200H412V278zm-68 468H144V546h200v200zm268 0H412V546h200v200zm268-268H680V278h200v200z"
+                          d="M854.6 289.1a362.49 362.49 0 00-79.9-115.7 370.83 370.83 0 00-118.2-77.8C610.7 76.6 562.1 67 512 67c-50.1 0-98.7 9.6-144.5 28.5-44.3 18.3-84 44.5-118.2 77.8A363.6 363.6 0 00169.4 289c-19.5 45-29.4 92.8-29.4 142 0 70.6 16.9 140.9 50.1 208.7 26.7 54.5 64 107.6 111 158.1 80.3 86.2 164.5 138.9 188.4 153a43.9 43.9 0 0022.4 6.1c7.8 0 15.5-2 22.4-6.1 23.9-14.1 108.1-66.8 188.4-153 47-50.4 84.3-103.6 111-158.1C867.1 572 884 501.8 884 431.1c0-49.2-9.9-97-29.4-142zM512 880.2c-65.9-41.9-300-207.8-300-449.1 0-77.9 31.1-151.1 87.6-206.3C356.3 169.5 431.7 139 512 139s155.7 30.5 212.4 85.9C780.9 280 812 353.2 812 431.1c0 241.3-234.1 407.2-300 449.1zm0-617.2c-97.2 0-176 78.8-176 176s78.8 176 176 176 176-78.8 176-176-78.8-176-176-176zm79.2 255.2A111.6 111.6 0 01512 551c-29.9 0-58-11.7-79.2-32.8A111.6 111.6 0 01400 439c0-29.9 11.7-58 32.8-79.2C454 338.6 482.1 327 512 327c29.9 0 58 11.6 79.2 32.8C612.4 381 624 409.1 624 439c0 29.9-11.6 58-32.8 79.2z"
                         />
                       </svg>
                     </span>
@@ -303,7 +360,7 @@ exports[`NowApplicationDocumentSearchSplashScreen renders in loading state 1`] =
                         class="ant-typography"
                       >
                         <strong>
-                          Operations & Equipment
+                          Environment & Reclaimation
                         </strong>
                       </span>
                     </div>
@@ -324,7 +381,7 @@ exports[`NowApplicationDocumentSearchSplashScreen renders in loading state 1`] =
                       <a
                         class="ant-typography permit-search__example-link"
                       >
-                        What equipment and machinery is listed for the operation?
+                        What environmental considerations are identified?
                       </a>
                     </div>
                     <div
@@ -334,7 +391,7 @@ exports[`NowApplicationDocumentSearchSplashScreen renders in loading state 1`] =
                       <a
                         class="ant-typography permit-search__example-link"
                       >
-                        What access roads or infrastructure are proposed?
+                        What reclaimation activities are planned?
                       </a>
                     </div>
                     <div
@@ -344,7 +401,17 @@ exports[`NowApplicationDocumentSearchSplashScreen renders in loading state 1`] =
                       <a
                         class="ant-typography permit-search__example-link"
                       >
-                        What is the proposed production rate or extraction volume?
+                        How will water runoff be managed?
+                      </a>
+                    </div>
+                    <div
+                      class="ant-col ant-col-xs-24"
+                      style="padding-top: 4px; padding-bottom: 4px;"
+                    >
+                      <a
+                        class="ant-typography permit-search__example-link"
+                      >
+                        Are any environmental management or monitoring plans included?
                       </a>
                     </div>
                   </div>
@@ -406,7 +473,7 @@ exports[`NowApplicationDocumentSearchSplashScreen renders in loading state 1`] =
                         class="ant-typography"
                       >
                         <strong>
-                          Compliance & Monitoring
+                          Engagement
                         </strong>
                       </span>
                     </div>
@@ -427,7 +494,7 @@ exports[`NowApplicationDocumentSearchSplashScreen renders in loading state 1`] =
                       <a
                         class="ant-typography permit-search__example-link"
                       >
-                        What monitoring programs are proposed?
+                        What indigenous engagement has been completed or documented?
                       </a>
                     </div>
                     <div
@@ -437,17 +504,7 @@ exports[`NowApplicationDocumentSearchSplashScreen renders in loading state 1`] =
                       <a
                         class="ant-typography permit-search__example-link"
                       >
-                        What are the proposed hours of operation?
-                      </a>
-                    </div>
-                    <div
-                      class="ant-col ant-col-xs-24"
-                      style="padding-top: 4px; padding-bottom: 4px;"
-                    >
-                      <a
-                        class="ant-typography permit-search__example-link"
-                      >
-                        What bonding or security arrangements are described?
+                        Are there any identified cultural or heritage considerations?
                       </a>
                     </div>
                   </div>
@@ -509,7 +566,7 @@ exports[`NowApplicationDocumentSearchSplashScreen renders in loading state 1`] =
                         class="ant-typography"
                       >
                         <strong>
-                          Supporting Documents
+                          Operations
                         </strong>
                       </span>
                     </div>
@@ -530,7 +587,7 @@ exports[`NowApplicationDocumentSearchSplashScreen renders in loading state 1`] =
                       <a
                         class="ant-typography permit-search__example-link"
                       >
-                        What geotechnical assessments have been submitted?
+                        What equipment and machinery are proposed for the work?
                       </a>
                     </div>
                     <div
@@ -540,17 +597,7 @@ exports[`NowApplicationDocumentSearchSplashScreen renders in loading state 1`] =
                       <a
                         class="ant-typography permit-search__example-link"
                       >
-                        Are there any archaeological or heritage studies included?
-                      </a>
-                    </div>
-                    <div
-                      class="ant-col ant-col-xs-24"
-                      style="padding-top: 4px; padding-bottom: 4px;"
-                    >
-                      <a
-                        class="ant-typography permit-search__example-link"
-                      >
-                        What First Nations consultation is documented?
+                        Are there any high-risk activies (e.g. blasting) proposed?
                       </a>
                     </div>
                   </div>
@@ -592,6 +639,47 @@ exports[`NowApplicationDocumentSearchSplashScreen renders properly 1`] = `
             style="font-size: 16px;"
           >
             Search across all documents submitted with this Notice of Work application and get AI-powered answers. Try searching for specific plans, assessments, or operational details.
+          </div>
+          <div
+            class="ant-typography"
+          >
+            <div
+              class="ant-alert ant-alert-warning ant-alert-with-description"
+              data-show="true"
+              role="alert"
+            >
+              <span
+                aria-label="exclamation-circle"
+                class="anticon anticon-exclamation-circle ant-alert-icon"
+                role="img"
+              >
+                <svg
+                  aria-hidden="true"
+                  data-icon="exclamation-circle"
+                  fill="currentColor"
+                  focusable="false"
+                  height="1em"
+                  viewBox="64 64 896 896"
+                  width="1em"
+                >
+                  <path
+                    d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
+                  />
+                  <path
+                    d="M464 688a48 48 0 1096 0 48 48 0 10-96 0zm24-112h48c4.4 0 8-3.6 8-8V296c0-4.4-3.6-8-8-8h-48c-4.4 0-8 3.6-8 8v272c0 4.4 3.6 8 8 8z"
+                  />
+                </svg>
+              </span>
+              <div
+                class="ant-alert-content"
+              >
+                <div
+                  class="ant-alert-description"
+                >
+                  Note: Spatial files (e.g. shapefiles) are not indexed and will not appear in search results.
+                </div>
+              </div>
+            </div>
           </div>
           <div
             class="ant-form-item"
@@ -733,23 +821,29 @@ exports[`NowApplicationDocumentSearchSplashScreen renders properly 1`] = `
                     style="margin-left: -4px; margin-right: -4px;"
                   >
                     <span
-                      aria-label="environment"
-                      class="anticon anticon-environment"
+                      aria-label="aim"
+                      class="anticon anticon-aim"
                       role="img"
                       style="font-size: 24px;"
                     >
                       <svg
                         aria-hidden="true"
                         class=""
-                        data-icon="environment"
+                        data-icon="aim"
                         fill="currentColor"
                         focusable="false"
                         height="1em"
                         viewBox="64 64 896 896"
                         width="1em"
                       >
+                        <defs>
+                          <style />
+                        </defs>
                         <path
-                          d="M854.6 289.1a362.49 362.49 0 00-79.9-115.7 370.83 370.83 0 00-118.2-77.8C610.7 76.6 562.1 67 512 67c-50.1 0-98.7 9.6-144.5 28.5-44.3 18.3-84 44.5-118.2 77.8A363.6 363.6 0 00169.4 289c-19.5 45-29.4 92.8-29.4 142 0 70.6 16.9 140.9 50.1 208.7 26.7 54.5 64 107.6 111 158.1 80.3 86.2 164.5 138.9 188.4 153a43.9 43.9 0 0022.4 6.1c7.8 0 15.5-2 22.4-6.1 23.9-14.1 108.1-66.8 188.4-153 47-50.4 84.3-103.6 111-158.1C867.1 572 884 501.8 884 431.1c0-49.2-9.9-97-29.4-142zM512 880.2c-65.9-41.9-300-207.8-300-449.1 0-77.9 31.1-151.1 87.6-206.3C356.3 169.5 431.7 139 512 139s155.7 30.5 212.4 85.9C780.9 280 812 353.2 812 431.1c0 241.3-234.1 407.2-300 449.1zm0-617.2c-97.2 0-176 78.8-176 176s78.8 176 176 176 176-78.8 176-176-78.8-176-176-176zm79.2 255.2A111.6 111.6 0 01512 551c-29.9 0-58-11.7-79.2-32.8A111.6 111.6 0 01400 439c0-29.9 11.7-58 32.8-79.2C454 338.6 482.1 327 512 327c29.9 0 58 11.6 79.2 32.8C612.4 381 624 409.1 624 439c0 29.9-11.6 58-32.8 79.2z"
+                          d="M952 474H829.8C812.5 327.6 696.4 211.5 550 194.2V72c0-4.4-3.6-8-8-8h-60c-4.4 0-8 3.6-8 8v122.2C327.6 211.5 211.5 327.6 194.2 474H72c-4.4 0-8 3.6-8 8v60c0 4.4 3.6 8 8 8h122.2C211.5 696.4 327.6 812.5 474 829.8V952c0 4.4 3.6 8 8 8h60c4.4 0 8-3.6 8-8V829.8C696.4 812.5 812.5 696.4 829.8 550H952c4.4 0 8-3.6 8-8v-60c0-4.4-3.6-8-8-8zM512 756c-134.8 0-244-109.2-244-244s109.2-244 244-244 244 109.2 244 244-109.2 244-244 244z"
+                        />
+                        <path
+                          d="M512 392c-32.1 0-62.1 12.4-84.8 35.2-22.7 22.7-35.2 52.7-35.2 84.8s12.5 62.1 35.2 84.8C449.9 619.4 480 632 512 632s62.1-12.5 84.8-35.2C619.4 574.1 632 544 632 512s-12.5-62.1-35.2-84.8A118.57 118.57 0 00512 392z"
                         />
                       </svg>
                     </span>
@@ -761,7 +855,7 @@ exports[`NowApplicationDocumentSearchSplashScreen renders properly 1`] = `
                         class="ant-typography"
                       >
                         <strong>
-                          Environmental & Reclamation
+                          Activies & Scope
                         </strong>
                       </span>
                     </div>
@@ -782,7 +876,7 @@ exports[`NowApplicationDocumentSearchSplashScreen renders properly 1`] = `
                       <a
                         class="ant-typography permit-search__example-link"
                       >
-                        What environmental impacts are identified in the application?
+                        What is the timeline of the proposed activies?
                       </a>
                     </div>
                     <div
@@ -792,7 +886,7 @@ exports[`NowApplicationDocumentSearchSplashScreen renders properly 1`] = `
                       <a
                         class="ant-typography permit-search__example-link"
                       >
-                        What reclamation plan is proposed for the mine site?
+                        What activites are planned (e.g. drilling, trenching)?
                       </a>
                     </div>
                     <div
@@ -802,7 +896,17 @@ exports[`NowApplicationDocumentSearchSplashScreen renders properly 1`] = `
                       <a
                         class="ant-typography permit-search__example-link"
                       >
-                        What water management measures are described?
+                        How much land disturbance is proposed?
+                      </a>
+                    </div>
+                    <div
+                      class="ant-col ant-col-xs-24"
+                      style="padding-top: 4px; padding-bottom: 4px;"
+                    >
+                      <a
+                        class="ant-typography permit-search__example-link"
+                      >
+                        What approvals, permits or authorizations are identified or may be required?
                       </a>
                     </div>
                   </div>
@@ -836,15 +940,15 @@ exports[`NowApplicationDocumentSearchSplashScreen renders properly 1`] = `
                     style="margin-left: -4px; margin-right: -4px;"
                   >
                     <span
-                      aria-label="build"
-                      class="anticon anticon-build"
+                      aria-label="environment"
+                      class="anticon anticon-environment"
                       role="img"
                       style="font-size: 24px;"
                     >
                       <svg
                         aria-hidden="true"
                         class=""
-                        data-icon="build"
+                        data-icon="environment"
                         fill="currentColor"
                         focusable="false"
                         height="1em"
@@ -852,7 +956,7 @@ exports[`NowApplicationDocumentSearchSplashScreen renders properly 1`] = `
                         width="1em"
                       >
                         <path
-                          d="M916 210H376c-17.7 0-32 14.3-32 32v236H108c-17.7 0-32 14.3-32 32v272c0 17.7 14.3 32 32 32h540c17.7 0 32-14.3 32-32V546h236c17.7 0 32-14.3 32-32V242c0-17.7-14.3-32-32-32zm-504 68h200v200H412V278zm-68 468H144V546h200v200zm268 0H412V546h200v200zm268-268H680V278h200v200z"
+                          d="M854.6 289.1a362.49 362.49 0 00-79.9-115.7 370.83 370.83 0 00-118.2-77.8C610.7 76.6 562.1 67 512 67c-50.1 0-98.7 9.6-144.5 28.5-44.3 18.3-84 44.5-118.2 77.8A363.6 363.6 0 00169.4 289c-19.5 45-29.4 92.8-29.4 142 0 70.6 16.9 140.9 50.1 208.7 26.7 54.5 64 107.6 111 158.1 80.3 86.2 164.5 138.9 188.4 153a43.9 43.9 0 0022.4 6.1c7.8 0 15.5-2 22.4-6.1 23.9-14.1 108.1-66.8 188.4-153 47-50.4 84.3-103.6 111-158.1C867.1 572 884 501.8 884 431.1c0-49.2-9.9-97-29.4-142zM512 880.2c-65.9-41.9-300-207.8-300-449.1 0-77.9 31.1-151.1 87.6-206.3C356.3 169.5 431.7 139 512 139s155.7 30.5 212.4 85.9C780.9 280 812 353.2 812 431.1c0 241.3-234.1 407.2-300 449.1zm0-617.2c-97.2 0-176 78.8-176 176s78.8 176 176 176 176-78.8 176-176-78.8-176-176-176zm79.2 255.2A111.6 111.6 0 01512 551c-29.9 0-58-11.7-79.2-32.8A111.6 111.6 0 01400 439c0-29.9 11.7-58 32.8-79.2C454 338.6 482.1 327 512 327c29.9 0 58 11.6 79.2 32.8C612.4 381 624 409.1 624 439c0 29.9-11.6 58-32.8 79.2z"
                         />
                       </svg>
                     </span>
@@ -864,7 +968,7 @@ exports[`NowApplicationDocumentSearchSplashScreen renders properly 1`] = `
                         class="ant-typography"
                       >
                         <strong>
-                          Operations & Equipment
+                          Environment & Reclaimation
                         </strong>
                       </span>
                     </div>
@@ -885,7 +989,7 @@ exports[`NowApplicationDocumentSearchSplashScreen renders properly 1`] = `
                       <a
                         class="ant-typography permit-search__example-link"
                       >
-                        What equipment and machinery is listed for the operation?
+                        What environmental considerations are identified?
                       </a>
                     </div>
                     <div
@@ -895,7 +999,7 @@ exports[`NowApplicationDocumentSearchSplashScreen renders properly 1`] = `
                       <a
                         class="ant-typography permit-search__example-link"
                       >
-                        What access roads or infrastructure are proposed?
+                        What reclaimation activities are planned?
                       </a>
                     </div>
                     <div
@@ -905,7 +1009,17 @@ exports[`NowApplicationDocumentSearchSplashScreen renders properly 1`] = `
                       <a
                         class="ant-typography permit-search__example-link"
                       >
-                        What is the proposed production rate or extraction volume?
+                        How will water runoff be managed?
+                      </a>
+                    </div>
+                    <div
+                      class="ant-col ant-col-xs-24"
+                      style="padding-top: 4px; padding-bottom: 4px;"
+                    >
+                      <a
+                        class="ant-typography permit-search__example-link"
+                      >
+                        Are any environmental management or monitoring plans included?
                       </a>
                     </div>
                   </div>
@@ -967,7 +1081,7 @@ exports[`NowApplicationDocumentSearchSplashScreen renders properly 1`] = `
                         class="ant-typography"
                       >
                         <strong>
-                          Compliance & Monitoring
+                          Engagement
                         </strong>
                       </span>
                     </div>
@@ -988,7 +1102,7 @@ exports[`NowApplicationDocumentSearchSplashScreen renders properly 1`] = `
                       <a
                         class="ant-typography permit-search__example-link"
                       >
-                        What monitoring programs are proposed?
+                        What indigenous engagement has been completed or documented?
                       </a>
                     </div>
                     <div
@@ -998,17 +1112,7 @@ exports[`NowApplicationDocumentSearchSplashScreen renders properly 1`] = `
                       <a
                         class="ant-typography permit-search__example-link"
                       >
-                        What are the proposed hours of operation?
-                      </a>
-                    </div>
-                    <div
-                      class="ant-col ant-col-xs-24"
-                      style="padding-top: 4px; padding-bottom: 4px;"
-                    >
-                      <a
-                        class="ant-typography permit-search__example-link"
-                      >
-                        What bonding or security arrangements are described?
+                        Are there any identified cultural or heritage considerations?
                       </a>
                     </div>
                   </div>
@@ -1070,7 +1174,7 @@ exports[`NowApplicationDocumentSearchSplashScreen renders properly 1`] = `
                         class="ant-typography"
                       >
                         <strong>
-                          Supporting Documents
+                          Operations
                         </strong>
                       </span>
                     </div>
@@ -1091,7 +1195,7 @@ exports[`NowApplicationDocumentSearchSplashScreen renders properly 1`] = `
                       <a
                         class="ant-typography permit-search__example-link"
                       >
-                        What geotechnical assessments have been submitted?
+                        What equipment and machinery are proposed for the work?
                       </a>
                     </div>
                     <div
@@ -1101,17 +1205,7 @@ exports[`NowApplicationDocumentSearchSplashScreen renders properly 1`] = `
                       <a
                         class="ant-typography permit-search__example-link"
                       >
-                        Are there any archaeological or heritage studies included?
-                      </a>
-                    </div>
-                    <div
-                      class="ant-col ant-col-xs-24"
-                      style="padding-top: 4px; padding-bottom: 4px;"
-                    >
-                      <a
-                        class="ant-typography permit-search__example-link"
-                      >
-                        What First Nations consultation is documented?
+                        Are there any high-risk activies (e.g. blasting) proposed?
                       </a>
                     </div>
                   </div>

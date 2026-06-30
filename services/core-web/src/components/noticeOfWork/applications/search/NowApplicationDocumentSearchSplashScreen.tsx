@@ -1,45 +1,45 @@
 import React from 'react';
-import { Typography, Row, Col, Card } from 'antd';
-import { FileSearchOutlined, EnvironmentOutlined, AuditOutlined, BuildOutlined } from '@ant-design/icons';
+import { Alert, Typography, Row, Col, Card } from 'antd';
+import { AimOutlined, FileSearchOutlined, EnvironmentOutlined, AuditOutlined } from '@ant-design/icons';
 import SearchBox from '@/components/mine/Permit/Search/components/SearchBox';
 
 const { Title } = Typography;
 
 const exampleQueries = {
     environmental: {
-        icon: <EnvironmentOutlined style={{ fontSize: '24px' }} />,
-        title: 'Environmental & Reclamation',
+        icon: <AimOutlined style={{ fontSize: '24px' }} />,
+        title: 'Activies & Scope',
         queries: [
-            "What environmental impacts are identified in the application?",
-            "What reclamation plan is proposed for the mine site?",
-            "What water management measures are described?",
+            "What is the timeline of the proposed activies?",
+            "What activites are planned (e.g. drilling, trenching)?",
+            "How much land disturbance is proposed?",
+            "What approvals, permits or authorizations are identified or may be required?"
         ],
     },
     operations: {
-        icon: <BuildOutlined style={{ fontSize: '24px' }} />,
-        title: 'Operations & Equipment',
+        icon: <EnvironmentOutlined style={{ fontSize: '24px' }} />,
+        title: 'Environment & Reclaimation',
         queries: [
-            "What equipment and machinery is listed for the operation?",
-            "What access roads or infrastructure are proposed?",
-            "What is the proposed production rate or extraction volume?",
+            "What environmental considerations are identified?",
+            "What reclaimation activities are planned?",
+            "How will water runoff be managed?",
+            "Are any environmental management or monitoring plans included?"
         ],
     },
     compliance: {
         icon: <AuditOutlined style={{ fontSize: '24px' }} />,
-        title: 'Compliance & Monitoring',
+        title: 'Engagement',
         queries: [
-            "What monitoring programs are proposed?",
-            "What are the proposed hours of operation?",
-            "What bonding or security arrangements are described?",
+            "What indigenous engagement has been completed or documented?",
+            "Are there any identified cultural or heritage considerations?",
         ],
     },
     documents: {
         icon: <FileSearchOutlined style={{ fontSize: '24px' }} />,
-        title: 'Supporting Documents',
+        title: 'Operations',
         queries: [
-            "What geotechnical assessments have been submitted?",
-            "Are there any archaeological or heritage studies included?",
-            "What First Nations consultation is documented?",
+            "What equipment and machinery are proposed for the work?",
+            "Are there any high-risk activies (e.g. blasting) proposed?",
         ],
     },
 };
@@ -63,6 +63,14 @@ const NowApplicationDocumentSearchSplashScreen: React.FC<NowApplicationDocumentS
                             Search across all documents submitted with this Notice of Work application
                             and get AI-powered answers. Try searching for specific plans, assessments,
                             or operational details.
+                        </Typography.Paragraph>
+                        <Typography.Paragraph>
+                            <Alert
+                                // message="SPATIAL FILES MSG"
+                                showIcon
+                                type="warning"
+                                description="Note: Spatial files (e.g. shapefiles) are not indexed and will not appear in search results."
+                            />
                         </Typography.Paragraph>
                         <SearchBox onSearch={onSearch} loading={loading} size="large" placeholder="Search application documents..." />
                     </Col>
