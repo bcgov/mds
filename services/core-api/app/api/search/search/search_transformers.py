@@ -1,5 +1,7 @@
 """Transformers for converting ES hits to API response format using Flask-RESTX marshalling."""
 
+import logging
+
 from flask_restx import marshal
 from app.api.search.response_models import (
     MINE_SEARCH_RESULT_MODEL,
@@ -11,6 +13,8 @@ from app.api.search.response_models import (
     NOD_SEARCH_RESULT_MODEL,
 )
 from .search_constants import INDEX_TO_TYPE
+
+logger = logging.getLogger(__name__)
 
 
 def prepare_mine_source(source):
@@ -174,19 +178,28 @@ def transform_es_results(hits):
         if doc_type not in results:
             results[doc_type] = []
 
-        # Prepare the source data for the specific type
-        prepare_fn = PREPARE_FUNCTIONS.get(doc_type)
-        prepared_source = prepare_fn(hit['_source']) if prepare_fn else hit['_source']
+        try:
+            # Prepare the source data for the specific type
+            prepare_fn = PREPARE_FUNCTIONS.get(doc_type)
+            prepared_source = prepare_fn(hit['_source']) if prepare_fn else hit['_source']
 
-        # Create the search result dict with score, type, and result
-        search_result = {
-            'score': hit['_score'],
-            'type': doc_type,
-            'result': prepared_source
-        }
+            # Create the search result dict with score, type, and result
+            search_result = {
+                'score': hit['_score'],
+                'type': doc_type,
+                'result': prepared_source
+            }
 
-        # Marshal using the appropriate search result model
-        marshalled_result = marshal(search_result, SEARCH_RESULT_MODELS[doc_type])
-        results[doc_type].append(marshalled_result)
+            # Marshal using the appropriate search result model
+            marshalled_result = marshal(search_result, SEARCH_RESULT_MODELS[doc_type])
+            results[doc_type].append(marshalled_result)
+        except Exception:
+            # A single malformed document (e.g. an Elasticsearch index whose
+            # mapping has drifted from what this code expects) should not
+            # take down results for every other type in the response.
+            logger.exception(
+                "Failed to transform search hit of type '%s' (id=%s); skipping.",
+                doc_type, hit.get('_id'),
+            )
 
     return results

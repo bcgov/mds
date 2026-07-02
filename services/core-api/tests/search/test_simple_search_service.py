@@ -371,6 +371,50 @@ class TestSimpleSearchService:
             assert result['search_results'][0].result['value'] == 'Test Mine'
     
     @patch('app.api.search.search.simple_search_service.ElasticSearchService.search')
+    def test_execute_search_skips_malformed_hit_preserves_others(self, mock_es_search, app, service):
+        """Regression test for a production incident: a single malformed
+        permit hit (mine_guids as flat GUID strings instead of objects,
+        caused by an Elasticsearch index mapping drifted out of sync with
+        the current PGSync schema) should be skipped without dropping other
+        hits in the same batch. The malformed hit is deliberately placed
+        FIRST so this doesn't depend on score-ordering luck.
+        """
+        with app.app_context():
+            mock_es_search.return_value = {
+                'hits': {
+                    'hits': [
+                        {
+                            '_index': 'mine_permits',
+                            '_score': 9.0,
+                            '_source': {
+                                'permit_guid': 'bad-permit',
+                                'permit_no': 'BAD-001',
+                                'mine_guids': ['just-a-guid-string'],  # old, broken shape
+                            },
+                            'highlight': {}
+                        },
+                        {
+                            '_index': 'mines',
+                            '_score': 5.0,
+                            '_source': {
+                                'mine_guid': 'mine-123',
+                                'mine_name': 'Good Mine',
+                                'mine_no': 'M-001',
+                                'mine_types': []
+                            },
+                            'highlight': {}
+                        }
+                    ]
+                },
+                'aggregations': {'by_index': {'buckets': []}}
+            }
+
+            result = service.execute_search('test', None, None)
+
+            values = [r.result['value'] for r in result['search_results']]
+            assert 'Good Mine' in values
+
+    @patch('app.api.search.search.simple_search_service.ElasticSearchService.search')
     def test_execute_search_with_mine_guid_filter(self, mock_es_search, app, service):
         """Test search execution with mine_guid filter."""
         with app.app_context():
