@@ -25,7 +25,7 @@ class MinistryContactListResource(Resource, UserMixin):
     parser.add_argument('last_name', type=str, trim=True, help='MCM Last name.', location='json')
     parser.add_argument('email', type=str, help='MCM email.', required=True, location='json')
     parser.add_argument(
-        'phone_number', type=str, help='MCM phone number', required=True, location='json')
+        'phone_number', type=str, help='MCM phone number', required=False, location='json')
     parser.add_argument(
         'fax_number', type=str, help='MCM Regional Office fax number', location='json')
     parser.add_argument(
@@ -68,6 +68,14 @@ class MinistryContactListResource(Resource, UserMixin):
         data = self.parser.parse_args()
 
         contact_type = data.get('emli_contact_type_code', None)
+
+        if not data.get('email'):
+            raise BadRequest('Email is required.')
+
+        if contact_type != 'RDC' and not data.get('is_general_contact'):
+            if not data.get('phone_number'):
+                raise BadRequest('Phone number is required.')
+
         contact_desc = MinistryContactType.find_contact_type(contact_type)
 
         mmo_contact = MinistryContact.find_ministry_contact('MMO')

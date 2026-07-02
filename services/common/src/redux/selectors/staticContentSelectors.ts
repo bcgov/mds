@@ -920,7 +920,7 @@ export const getDropdownMinistryContactTypes = createSelectorWrapper(
 );
 
 export const getMinistryContactTypesHash = createSelector(
-  [getDropdownMinistryContactTypes],
+  [(state) => getDropdownMinistryContactTypes(state, false)],
   createLabelHash
 );
 

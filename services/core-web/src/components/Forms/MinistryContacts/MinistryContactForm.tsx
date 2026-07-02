@@ -21,10 +21,12 @@ import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
 import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
 import { IMinistryContact } from "@mds/common/interfaces";
+import { MinistryContactTypeCodes, officeContactTypeCodes } from "@mds/common/constants/enums";
 
 interface IOption {
   value: string | number;
   label: string;
+  isActive?: boolean;
 }
 
 export interface MinistryContactFormProps {
@@ -36,16 +38,17 @@ export interface MinistryContactFormProps {
   distributionListOptions: IOption[];
 }
 
-const regionalOfficeCode = "ROE";
-const majorMineOfficeCode = "MMO";
-const chiefPermittingCode = "CHP";
-const chiefInspectorCode = "CHI";
-const officeCodes = [regionalOfficeCode, majorMineOfficeCode];
+const regionalOfficeCode = MinistryContactTypeCodes.ROE;
+const majorMineOfficeCode = MinistryContactTypeCodes.MMO;
+const chiefPermittingCode = MinistryContactTypeCodes.CHP;
+const chiefInspectorCode = MinistryContactTypeCodes.CHI;
+const reportDesignatedContactCode = MinistryContactTypeCodes.RDC;
+const officeCodes = officeContactTypeCodes;
 
 export const MinistryContactForm: FC<MinistryContactFormProps> = (props) => {
   const formValues: any = useSelector((state) => getFormValues(FORM.MINISTRY_CONTACT_FORM)(state)) || {};
   const regionDropdownOptions: IOption[] = useSelector(getMineRegionDropdownOptions);
-  const MinistryContactTypes: IOption[] = useSelector(getDropdownMinistryContactTypes);
+  const MinistryContactTypes: IOption[] = useSelector((state) => getDropdownMinistryContactTypes(state, false));
 
   const filteredContactTypes = () => {
     const codes: string[] = [];
@@ -77,7 +80,10 @@ export const MinistryContactForm: FC<MinistryContactFormProps> = (props) => {
         codes.push(chiefInspectorCode);
       }
     }
-    return MinistryContactTypes.filter(({ value }) => !codes.includes(value as string));
+    return MinistryContactTypes.filter(({ value, isActive }) => {
+      const isCurrentValue = value === props.initialValues?.emli_contact_type_code;
+      return (isActive || isCurrentValue) && !codes.includes(value as string);
+    });
   };
 
   return (
@@ -89,6 +95,37 @@ export const MinistryContactForm: FC<MinistryContactFormProps> = (props) => {
         reduxFormConfig={{
           touchOnBlur: false,
           enableReinitialize: true,
+          validate: (values: IMinistryContact) => {
+            const errors: any = {};
+            const isRDC = values.emli_contact_type_code === reportDesignatedContactCode;
+            const isOffice = officeCodes.includes(
+              values.emli_contact_type_code as MinistryContactTypeCodes
+            );
+
+            if (!isOffice) {
+              if (!isRDC) {
+                if (!values.first_name) {
+                  errors.first_name = "This is a required field";
+                }
+                if (!values.last_name) {
+                  errors.last_name = "This is a required field";
+                }
+              }
+            }
+
+            if (!values.email) {
+              errors.email = "This is a required field";
+            }
+            const isPhoneRequired =
+              values.emli_contact_type_code !== reportDesignatedContactCode &&
+              !values.is_general_contact;
+
+            if (isPhoneRequired && !values.phone_number) {
+              errors.phone_number = "This is a required field";
+            }
+
+            return errors;
+          }
         }}
       >
         <Row gutter={16}>
@@ -132,9 +169,9 @@ export const MinistryContactForm: FC<MinistryContactFormProps> = (props) => {
               label={"Mine Region"}
               placeholder="Select a mine Region"
               component={renderConfig.SELECT}
-              required={!formValues.is_major_mine}
+              required={!formValues.is_major_mine && formValues.emli_contact_type_code !== reportDesignatedContactCode}
               validate={
-                formValues.is_major_mine
+                formValues.is_major_mine || formValues.emli_contact_type_code === reportDesignatedContactCode
                   ? []
                   : [required]
               }
@@ -164,8 +201,7 @@ export const MinistryContactForm: FC<MinistryContactFormProps> = (props) => {
                 name="first_name"
                 label="First Name"
                 component={renderConfig.FIELD}
-                required
-                validate={[required]}
+                required={formValues.emli_contact_type_code && formValues.emli_contact_type_code !== reportDesignatedContactCode}
                 disabled={!formValues.emli_contact_type_code}
               />
             </Col>
@@ -175,8 +211,7 @@ export const MinistryContactForm: FC<MinistryContactFormProps> = (props) => {
                 name="last_name"
                 label="Surname"
                 component={renderConfig.FIELD}
-                required
-                validate={[required]}
+                required={formValues.emli_contact_type_code && formValues.emli_contact_type_code !== reportDesignatedContactCode}
                 disabled={!formValues.emli_contact_type_code}
               />
             </Col>
@@ -191,7 +226,7 @@ export const MinistryContactForm: FC<MinistryContactFormProps> = (props) => {
               label="Email"
               component={renderConfig.FIELD}
               required
-              validate={[email, required]}
+              validate={[email]}
               disabled={!formValues.emli_contact_type_code}
             />
           </Col>
@@ -204,8 +239,8 @@ export const MinistryContactForm: FC<MinistryContactFormProps> = (props) => {
               label="Phone Number"
               placeholder="e.g. xxx-xxx-xxxx"
               component={renderConfig.FIELD}
-              required
-              validate={[required, phoneNumber, maxLength(12)]}
+              required={formValues.emli_contact_type_code !== reportDesignatedContactCode && !formValues.is_general_contact}
+              validate={[phoneNumber, maxLength(12)]}
               normalize={normalizePhone}
               disabled={!formValues.emli_contact_type_code}
             />

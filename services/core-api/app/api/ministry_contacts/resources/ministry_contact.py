@@ -19,7 +19,7 @@ class MinistryContactResource(Resource, UserMixin):
     parser.add_argument(
         'is_general_contact', type=bool, help='is is_general_contact? true/false', location='json')
     parser.add_argument(
-        'phone_number', type=str, help='MCM phone number', required=True, location='json')
+        'phone_number', type=str, help='MCM phone number', required=False, location='json')
     parser.add_argument(
         'fax_number', type=str, help='MCM Regional Office fax number', location='json')
     parser.add_argument(
@@ -33,6 +33,8 @@ class MinistryContactResource(Resource, UserMixin):
         help='MCM Regional Office mailing address line 2',
         location='json')
     parser.add_argument(
+        'mine_region_code', type=str, trim=True, help='Mine region code', location='json')
+    parser.add_argument(
         'distribution_list_guids', type=list, location='json', default=[])
 
     @api.doc(description='Update an existing MCM contact.')
@@ -45,9 +47,25 @@ class MinistryContactResource(Resource, UserMixin):
 
         data = self.parser.parse_args()
 
+        if not data.get('email'):
+            raise BadRequest('Email is required.')
+
+        if contact.emli_contact_type_code != 'RDC' and not data.get('is_general_contact'):
+            if not data.get('phone_number'):
+                raise BadRequest('Phone number is required.')
+
         distribution_list_guids = data.pop('distribution_list_guids', [])
         
+        new_region_code = data.get('mine_region_code')
+        if new_region_code and new_region_code != contact.mine_region_code:
+            if contact.emli_contact_type_code == 'ROE':
+                existing_roe = MinistryContact.find_ministry_contact('ROE', new_region_code)
+                if existing_roe and existing_roe.contact_guid != contact.contact_guid:
+                    raise BadRequest('Error: Restricted to one Regional Office contact by mine region.')
+
         for key, value in data.items():
+            if key == 'mine_region_code' and 'mine_region_code' not in (request.json or {}):
+                continue
             setattr(contact, key, value)
 
         # Soft delete existing records

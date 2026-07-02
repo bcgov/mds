@@ -23,6 +23,7 @@ import MinistryContactsTable from "@/components/admin/contacts/MinistryContacts/
 import AddButton from "@/components/common/buttons/AddButton";
 import { IMinistryContact } from "@mds/common/interfaces";
 import ResponsivePagination from "@mds/common/components/common/ResponsivePagination";
+import { MinistryContactTypeCodes, officeContactTypeCodes } from "@mds/common/constants/enums";
 
 export const MineSpaceMinistryContactManagement: FC = () => {
   const dispatch = useAppDispatch();
@@ -85,12 +86,13 @@ export const MineSpaceMinistryContactManagement: FC = () => {
     );
   };
 
-  const officeCodes = ["ROE", "MMO"];
+  const officeCodes = officeContactTypeCodes;
   const offices = ministryContacts.filter(({ emli_contact_type_code }) =>
-    officeCodes.includes(emli_contact_type_code)
+    officeCodes.includes(emli_contact_type_code as MinistryContactTypeCodes)
   );
   const contacts = ministryContacts.filter(
-    ({ emli_contact_type_code }) => !officeCodes.includes(emli_contact_type_code)
+    ({ emli_contact_type_code }) =>
+      !officeCodes.includes(emli_contact_type_code as MinistryContactTypeCodes)
   );
 
   return (
