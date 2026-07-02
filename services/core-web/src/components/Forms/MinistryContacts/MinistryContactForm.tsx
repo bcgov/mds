@@ -21,7 +21,7 @@ import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import RenderCancelButton from "@mds/common/components/forms/RenderCancelButton";
 import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
 import { IMinistryContact } from "@mds/common/interfaces";
-import { MinistryContactTypeCodes } from "@mds/common/constants/enums";
+import { MinistryContactTypeCodes, officeContactTypeCodes } from "@mds/common/constants/enums";
 
 interface IOption {
   value: string | number;
@@ -43,7 +43,7 @@ const majorMineOfficeCode = MinistryContactTypeCodes.MMO;
 const chiefPermittingCode = MinistryContactTypeCodes.CHP;
 const chiefInspectorCode = MinistryContactTypeCodes.CHI;
 const reportDesignatedContactCode = MinistryContactTypeCodes.RDC;
-const officeCodes = [regionalOfficeCode, majorMineOfficeCode];
+const officeCodes = officeContactTypeCodes;
 
 export const MinistryContactForm: FC<MinistryContactFormProps> = (props) => {
   const formValues: any = useSelector((state) => getFormValues(FORM.MINISTRY_CONTACT_FORM)(state)) || {};

@@ -342,4 +342,7 @@ export enum MinistryContactTypeCodes {
   CHP = "CHP",
   CHI = "CHI",
   RDC = "RDC",
+  GEN = "GEN",
 }
+
+export const officeContactTypeCodes = [MinistryContactTypeCodes.ROE, MinistryContactTypeCodes.MMO];
