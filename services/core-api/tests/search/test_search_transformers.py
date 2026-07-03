@@ -342,6 +342,56 @@ class TestTransformESResults:
         
         assert results == {}
 
+    def test_transform_es_results_skips_malformed_permit_and_preserves_others(self):
+        """Regression test for a production incident: a malformed permit
+        document (mine_guids as flat GUID strings instead of
+        {mine_guid, mine_name, mine_no} objects, caused by an Elasticsearch
+        index mapping that drifted out of sync with the current PGSync
+        schema) should be skipped without breaking results for other
+        documents or types in the same batch.
+        """
+        hits = [
+            {
+                '_index': 'mines',
+                '_score': 10.0,
+                '_source': {'mine_guid': 'mine-1', 'mine_name': 'Good Mine'}
+            },
+            {
+                '_index': 'mine_permits',
+                '_score': 9.0,
+                '_id': 'bad-permit-guid',
+                '_source': {
+                    'permit_guid': 'bad-permit-guid',
+                    'permit_no': 'BAD-001',
+                    # Reproduces the real incident shape: mine_guids as flat
+                    # GUID strings instead of objects.
+                    'mine_guids': ['41d9de2c-8afd-4fe8-8076-06d28014f484'],
+                }
+            },
+            {
+                '_index': 'mine_permits',
+                '_score': 8.0,
+                '_source': {
+                    'permit_guid': 'good-permit-guid',
+                    'permit_no': 'GOOD-001',
+                    'mine_guids': [
+                        {'mine_guid': 'mine-guid-1', 'mine_name': 'Test Mine', 'mine_no': 'M-001'}
+                    ]
+                }
+            }
+        ]
+
+        results = transform_es_results(hits)
+
+        # The mine result is untouched by the unrelated permit failure.
+        assert len(results['mine']) == 1
+        assert results['mine'][0]['result']['mine_name'] == 'Good Mine'
+
+        # Only the well-formed permit made it through; the malformed one
+        # was skipped rather than raising and losing the whole batch.
+        assert len(results['permit']) == 1
+        assert results['permit'][0]['result']['permit_no'] == 'GOOD-001'
+
     def test_transform_es_results_groups_by_type(self):
         hits = [
             {

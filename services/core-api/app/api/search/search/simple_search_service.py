@@ -178,10 +178,20 @@ class SimpleSearchService:
 
             # Process each hit
             for hit in hits:
-                result = self._process_hit(hit, allowed_types)
-                if result:
-                    search_results.append(result)
-                    
+                try:
+                    result = self._process_hit(hit, allowed_types)
+                    if result:
+                        search_results.append(result)
+                except Exception as e:
+                    # A single malformed document (e.g. an Elasticsearch index
+                    # whose mapping has drifted from what this code expects)
+                    # should not take down the rest of the batch.
+                    current_app.logger.error(
+                        f"Failed to process search hit (index={hit.get('_index')}, "
+                        f"id={hit.get('_id')}): {e}"
+                    )
+                    current_app.logger.error(f"[DEBUG] full traceback:\n{traceback.format_exc()}")
+
         except Exception as e:
             current_app.logger.error(f"Elasticsearch error: {e}")
             current_app.logger.error(f"[DEBUG] full traceback:\n{traceback.format_exc()}")

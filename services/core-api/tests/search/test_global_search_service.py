@@ -241,6 +241,47 @@ class TestGlobalSearchService:
         assert result['results']['mine'] == []
 
     @patch('app.api.search.search.global_search_service.ElasticSearchService')
+    def test_search_malformed_permit_does_not_blank_other_types(self, mock_es_service):
+        """Regression test for a production incident: a single malformed
+        permit document (Elasticsearch index mapping drifted out of sync
+        with the current PGSync schema, so mine_guids came back as flat
+        GUID strings instead of objects) caused the ENTIRE search response
+        to fall back to empty results for every type, not just permits.
+
+        Before the fix, transform_es_results() raised on the malformed
+        permit, GlobalSearchService.search()'s single broad try/except
+        caught it, and get_empty_results() wiped out the unrelated mine
+        result too. After the fix, only the malformed permit is dropped.
+        """
+        mock_es_service.search.return_value = {
+            'hits': {
+                'hits': [
+                    {
+                        '_index': 'mines',
+                        '_score': 10.0,
+                        '_source': {'mine_guid': 'mine-123', 'mine_name': 'Test Mine'}
+                    },
+                    {
+                        '_index': 'mine_permits',
+                        '_score': 9.0,
+                        '_source': {
+                            'permit_guid': 'bad-permit',
+                            'permit_no': 'BAD-001',
+                            'mine_guids': ['just-a-guid-string'],  # old, broken shape
+                        }
+                    }
+                ]
+            },
+            'aggregations': {}
+        }
+
+        result = GlobalSearchService.search('test', ['mine', 'permit'], {})
+
+        assert len(result['results']['mine']) == 1
+        assert result['results']['mine'][0]['result']['mine_name'] == 'Test Mine'
+        assert result['results']['permit'] == []
+
+    @patch('app.api.search.search.global_search_service.ElasticSearchService')
     def test_search_with_custom_size(self, mock_es_service):
         mock_es_service.search.return_value = {
             'hits': {'hits': []},
