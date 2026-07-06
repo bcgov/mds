@@ -1,0 +1,21 @@
+{
+	auto_https off
+}
+
+:8080 {
+
+	root /var/www/html
+
+	# Openly exposed health check endpoint for OpenShift
+	respond /health-check 200
+
+	log {
+        output stdout
+    }
+
+	# Enable serving static files
+    file_server
+
+    # Enable gzip, zstd compression
+    encode zstd gzip
+}
