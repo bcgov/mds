@@ -27,7 +27,6 @@ const VariableConditionMenu: FC<VariableConditionMenuProps> = ({
   const reclamationSummary = useSelector(getNOWReclamationSummary);
   const activityTypeOptions = useSelector(getDropdownNoticeOfWorkActivityTypeOptions);
   const [open, setOpen] = useState(false);
-  const closeTimeout = React.useRef<NodeJS.Timeout | null>(null);
 
   const handleClick: MenuProps['onClick'] = async (event) => {
     if (inputRef.current) {
@@ -130,25 +129,18 @@ const VariableConditionMenu: FC<VariableConditionMenuProps> = ({
     ]
 
     return (
-        <Row className="condition-editor-toolbar"
-          onMouseEnter={() => {
-            if (closeTimeout.current) clearTimeout(closeTimeout.current);
-            setOpen(true);
-          }}
-          onMouseLeave={() => {
-            if (closeTimeout.current) clearTimeout(closeTimeout.current);
-            closeTimeout.current = setTimeout(() => setOpen(false), 400);
-          }}
-        >
+        <Row className="condition-editor-toolbar">
           <Dropdown
             menu={{ items, onClick: handleClick}}
+            trigger={["click"]}
             open={open}
-            onOpenChange={() => {}}
+            onOpenChange={(nextOpen) => setOpen(nextOpen)}
+            placement="topLeft"
             getPopupContainer={triggerNode => triggerNode.parentNode as HTMLElement}
           >
             <Button>
               Condition Data Variables
-              <Tooltip title={"Hover your mouse over the menus until you find the variable data you'd like to enter. Put it into your edited Permit Condition by clicking on it. This will populate the edited condition with a variable in the Draft permit screen. The Data from the Application tab will show up correctly in the PDF Draft permit in place of the variable. Please ensure all variable data fields you select have the correct information in the Application tab before adding these fields to your draft permit."}
+              <Tooltip title={"Click to open the menu, then hover over the categories until you find the variable data you'd like to enter. Put it into your edited Permit Condition by clicking on it. This will populate the edited condition with a variable in the Draft permit screen. The Data from the Application tab will show up correctly in the PDF Draft permit in place of the variable. Please ensure all variable data fields you select have the correct information in the Application tab before adding these fields to your draft permit."}
                 placement="right" mouseEnterDelay={0.3} overlayClassName="core-tooltip" >
                 <QuestionCircleOutlined className="icon-sm" style={{ marginLeft: 8 }} />
               </Tooltip>
