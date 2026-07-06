@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.Security.Claims;
@@ -21,6 +21,7 @@ using System.Collections.Specialized;
 using Microsoft.AspNetCore.Http;
 using System.Web;
 using Syncfusion.Licensing;
+using Microsoft.Extensions.Caching.Distributed;
 
 namespace EJ2FileManagerService
 {
@@ -39,7 +40,23 @@ namespace EJ2FileManagerService
 
 
 
-            services.AddMemoryCache();
+            string redisHost = System.Environment.GetEnvironmentVariable("CACHE_REDIS_HOST");
+            string redisPass = System.Environment.GetEnvironmentVariable("CACHE_REDIS_PASS");
+
+            if (!string.IsNullOrEmpty(redisHost))
+            {
+                services.AddStackExchangeRedisCache(options =>
+                {
+                    options.Configuration = string.IsNullOrEmpty(redisPass)
+                        ? $"{redisHost}:6379"
+                        : $"{redisHost}:6379,password={redisPass}";
+                    options.InstanceName = "FilesystemProvider:";
+                });
+            }
+            else
+            {
+                services.AddDistributedMemoryCache();
+            }
             services.AddMvc(options => options.EnableEndpointRouting = false).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             services.AddCors(options =>
             {
