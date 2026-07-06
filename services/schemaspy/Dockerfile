@@ -11,13 +11,13 @@ RUN apk update && \
 # -------------------------------------------------------------------------------------------------------------------------------------------------------------------
 RUN apk update && \
     apk --no-cache add \
-        tini \
-        git \
-        openssh-client && \
+    tini \
+    git \
+    openssh-client && \
     apk --no-cache add --virtual \
-        devs \
-        tar \
-        curl
+    devs \
+    tar \
+    curl
 
 # Define the default Caddy version for the image
 ENV CADDY_VERSION=2.11.4
@@ -80,20 +80,20 @@ WORKDIR /app/
 #
 RUN apk update && \
     apk add --no-cache \
-        wget \
-        ca-certificates \
-        librsvg \
-        graphviz \
-        ttf-freefont && \
+    wget \
+    ca-certificates \
+    librsvg \
+    graphviz \
+    ttf-freefont && \
     mkdir lib && \
-    wget -nv -O lib/schemaspy-$SCHEMA_SPY_VERSION.jar https://github.com/schemaspy/schemaspy/releases/download/v$SCHEMA_SPY_VERSION/schemaspy-.jar && \
+    wget -nv -O lib/schemaspy-$SCHEMA_SPY_VERSION.jar https://github.com/schemaspy/schemaspy/releases/download/v$SCHEMA_SPY_VERSION/schemaspy-app.jar && \
     cp lib/schemaspy-$SCHEMA_SPY_VERSION.jar lib/schemaspy.jar && \
     wget -nv -O lib/pgsql-jdbc.jar https://repo1.maven.org/maven2/org/postgresql/postgresql/$POSTGRESQL_VERSION/postgresql-$POSTGRESQL_VERSION.jar && \
     wget -nv -O lib/mysql-jdbc.jar https://repo1.maven.org/maven2/mysql/mysql-connector-java/$MYSQL_VERSION/mysql-connector-java-$MYSQL_VERSION.jar && \
     wget -nv -O lib/sqlite-jdbc.jar https://repo1.maven.org/maven2/org/xerial/sqlite-jdbc/$SQL_LITE_VERSION/sqlite-jdbc-$SQL_LITE_VERSION.jar && \
     apk del \
-        wget \
-        ca-certificates
+    wget \
+    ca-certificates
 
 # Copy script(s) and configuration into the image.
 COPY start.sh ./
