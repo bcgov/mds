@@ -479,6 +479,7 @@ const PermitConditions: FC<PermitConditionProps> = ({
           latestAmendment,
           previousAmendment,
           currentAmendment,
+          isCore,
           loading: loading,
           setLoading,
           refreshData,
