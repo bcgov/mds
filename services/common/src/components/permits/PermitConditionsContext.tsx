@@ -10,6 +10,7 @@ interface PermitConditionsContextType {
   standardConditionType?: string;
   isStandardConditionEditor?: boolean;
   isNowEditor?: boolean;
+  isCore?: boolean;
   loading: boolean;
   setLoading: (loading: boolean) => void;
   refreshData: () => Promise<any>;
@@ -48,6 +49,7 @@ export const PermitConditionsProvider: FC<{
   const defaultValue = {
     isNowEditor: false,
     isStandardConditionEditor: false,
+    isCore: false,
     activeConditionId: null,
     setActiveConditionId: () => { },
     clearActiveConditionId: () => { },

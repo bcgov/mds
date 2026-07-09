@@ -65,6 +65,25 @@ const noPermissionState = {
   },
 };
 
+// viewing from MineSpace, but the account carries Core roles (e.g. a shared/composite account).
+// MineSpace only shows the Conditions tab once the review is complete, so mark it complete here.
+const minespaceState = {
+  ...initialState,
+  [PERMITS]: {
+    ...initialState[PERMITS],
+    latestPermitAmendments: {
+      [MOCK.PERMITS[0].permit_guid]: {
+        ...MOCK.PERMITS[0].permit_amendments[0],
+        conditions_review_completed: true,
+      },
+    },
+  },
+  [AUTHENTICATION]: {
+    systemFlag: SystemFlagEnum.ms,
+    userAccessData: [USER_ROLES.role_admin, USER_ROLES.role_edit_permits, USER_ROLES.role_edit_template_conditions],
+  },
+};
+
 function mockFunction() {
   const original = jest.requireActual("react-router-dom");
   return {
@@ -207,6 +226,19 @@ describe("PermitConditions", () => {
     expect(editCategory).not.toBeInTheDocument();
     const templateBtn = queryByText("Insert Template Conditions");
     expect(templateBtn).not.toBeInTheDocument();
+  });
+
+  it("never shows the assigned reviewer field in MineSpace, even for an account with Core edit roles", async () => {
+    const { container } = render(
+      <ReduxWrapper initialState={minespaceState}>
+        <BrowserRouter>
+          <ViewPermit />
+        </BrowserRouter>
+      </ReduxWrapper>
+    );
+
+    const assignReviewer = container.querySelectorAll('[data-cy="assigned_review_user"]');
+    expect(Array.from(assignReviewer)).toEqual([]);
   });
 
   it("does not allow editing without being assigned to the category", async () => {

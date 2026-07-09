@@ -69,6 +69,7 @@ const PermitConditionViewEdit: FC<PermitConditionViewEditProps> = ({
     setLoading,
     isStandardConditionEditor,
     isNowEditor,
+    isCore,
     refreshData,
   } = usePermitConditions();
 
@@ -277,7 +278,7 @@ const PermitConditionViewEdit: FC<PermitConditionViewEditProps> = ({
               </Row>
             )}
           </Row>
-          {featureModifyConditions && userCanEdit && !isStandardConditions && !isNowEditor && (
+          {isCore && featureModifyConditions && userCanEdit && !isStandardConditions && !isNowEditor && (
             <PermitConditionReviewAssignment category={category?.condition_category} />
           )}
         </Col>

@@ -63,6 +63,7 @@ const providerValue = {
     refreshData: jest.fn().mockResolvedValue(undefined),
     isStandardConditionEditor: false,
     isNowEditor: false,
+    isCore: true,
 };
 
 describe("PermitConditionViewEdit", () => {
@@ -160,5 +161,52 @@ describe("PermitConditionViewEdit", () => {
         await waitFor(() => {
             expect(screen.getByLabelText('Cancel')).toBeInTheDocument();
         });
+    });
+
+    it("shows the assigned reviewer field in Core (isCore: true)", () => {
+        render(
+            <ReduxWrapper initialState={initialState}>
+                <PermitConditionsProvider value={{ ...providerValue, isCore: true }}>
+                    <PermitConditionViewEdit
+                        userCanEdit
+                        formattedCategories={formattedCategories as any}
+                        isExtracted
+                        userReviewCategoryCodes={[baseCategory.condition_category_code]}
+                        editingFormName={""}
+                        setEditingFormName={jest.fn()}
+                        addingToCategoryCode={null}
+                        setAddingToCategoryCode={jest.fn()}
+                    />
+                </PermitConditionsProvider>
+            </ReduxWrapper>
+        );
+
+        // "Assigned Reviewer:" renders whether the field is the interactive dropdown
+        // (core_edit_template_conditions) or the read-only view (without it) - either way
+        // it must be visible here, since isCore: true means we're in Core Web.
+        expect(screen.getByText("Assigned Reviewer:")).toBeInTheDocument();
+    });
+
+    it("never shows the assigned reviewer field outside Core, even when userCanEdit is true (isCore: false)", () => {
+        render(
+            <ReduxWrapper initialState={initialState}>
+                <PermitConditionsProvider value={{ ...providerValue, isCore: false }}>
+                    <PermitConditionViewEdit
+                        userCanEdit
+                        formattedCategories={formattedCategories as any}
+                        isExtracted
+                        userReviewCategoryCodes={[baseCategory.condition_category_code]}
+                        editingFormName={""}
+                        setEditingFormName={jest.fn()}
+                        addingToCategoryCode={null}
+                        setAddingToCategoryCode={jest.fn()}
+                    />
+                </PermitConditionsProvider>
+            </ReduxWrapper>
+        );
+
+        // Neither the dropdown nor the read-only variant should ever appear outside Core.
+        expect(screen.queryByText("Assigned Reviewer:")).not.toBeInTheDocument();
+        expect(document.querySelectorAll('[data-cy="assigned_review_user"]').length).toBe(0);
     });
 });
