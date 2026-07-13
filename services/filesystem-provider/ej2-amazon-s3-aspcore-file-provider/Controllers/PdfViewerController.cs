@@ -191,22 +191,24 @@ namespace EJ2AmazonS3ASPCoreFileProvider.Controllers
         [HttpPost]
         [Route("ImportAnnotations")]
         [Authorize("View")]
-        // NOTE: This is not implemented properly as it will need to get the document from the S3 bucket.
         public IActionResult ImportAnnotations([FromBody] Dictionary<string, string> jsonObject)
         {
             PdfRenderer pdfviewer = new PdfRenderer(_cache);
-            string jsonResult = string.Empty;
-            object JsonResult;
+
             if (jsonObject != null && jsonObject.ContainsKey("fileName"))
             {
-                string documentPath = GetDocumentPath(jsonObject["fileName"]);
-                if (!string.IsNullOrEmpty(documentPath))
+                string path = Path.GetDirectoryName(jsonObject["fileName"]) + "/";
+                string filename = Path.GetFileName(jsonObject["fileName"]);
+                FileStreamResult fsr = this.operation.Download(path, new string[] { filename });
+
+                if (fsr == null)
                 {
-                    jsonResult = System.IO.File.ReadAllText(documentPath);
+                    return NotFound(jsonObject["fileName"] + " is not found");
                 }
-                else
+
+                using (StreamReader reader = new StreamReader(fsr.FileStream))
                 {
-                    return this.Content(jsonObject["document"] + " is not found");
+                    return Content(reader.ReadToEnd());
                 }
             }
             else
@@ -214,27 +216,30 @@ namespace EJ2AmazonS3ASPCoreFileProvider.Controllers
                 string extension = Path.GetExtension(jsonObject["importedData"]);
                 if (extension != ".xfdf")
                 {
-                    JsonResult = pdfviewer.ImportAnnotation(jsonObject);
+                    object JsonResult = pdfviewer.ImportAnnotation(jsonObject);
                     return Content(JsonConvert.SerializeObject(JsonResult));
                 }
                 else
                 {
-                    string documentPath = GetDocumentPath(jsonObject["importedData"]);
-                    if (!string.IsNullOrEmpty(documentPath))
+                    string path = Path.GetDirectoryName(jsonObject["importedData"]) + "/";
+                    string filename = Path.GetFileName(jsonObject["importedData"]);
+                    FileStreamResult fsr = this.operation.Download(path, new string[] { filename });
+
+                    if (fsr == null)
                     {
-                        byte[] bytes = System.IO.File.ReadAllBytes(documentPath);
+                        return NotFound(jsonObject["importedData"] + " is not found");
+                    }
+
+                    using (MemoryStream ms = new MemoryStream())
+                    {
+                        fsr.FileStream.CopyTo(ms);
+                        byte[] bytes = ms.ToArray();
                         jsonObject["importedData"] = Convert.ToBase64String(bytes);
-                        JsonResult = pdfviewer.ImportAnnotation(jsonObject);
+                        object JsonResult = pdfviewer.ImportAnnotation(jsonObject);
                         return Content(JsonConvert.SerializeObject(JsonResult));
                     }
-                    else
-                    {
-                        return this.Content(jsonObject["document"] + " is not found");
-                    }
                 }
-
             }
-            return Content(jsonResult);
         }
 
         [AcceptVerbs("Post")]
@@ -256,22 +261,6 @@ namespace EJ2AmazonS3ASPCoreFileProvider.Controllers
             PdfRenderer pdfviewer = new PdfRenderer(_cache);
             object jsonResult = pdfviewer.ImportFormFields(jsonObject);
             return Content(JsonConvert.SerializeObject(jsonResult));
-        }
-
-        private string GetDocumentPath(string document)
-        {
-            string documentPath = string.Empty;
-            if (!System.IO.File.Exists(document))
-            {
-                var path = _hostingEnvironment.ContentRootPath;
-                if (System.IO.File.Exists(path + "\\Data\\" + document))
-                    documentPath = path + "\\Data\\" + document;
-            }
-            else
-            {
-                documentPath = document;
-            }
-            return documentPath;
         }
     }
 

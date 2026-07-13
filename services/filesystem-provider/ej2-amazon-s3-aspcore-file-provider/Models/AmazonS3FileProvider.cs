@@ -748,13 +748,21 @@ namespace Syncfusion.EJ2.FileManager.AmazonS3FileProvider
                     fileStreamResult = new FileStreamResult(stream, "APPLICATION/octet-stream");
                     fileStreamResult.FileDownloadName = Names[0].Contains("/") ? Names[0].Split("/").Last() : Names[0];
                 }
-                catch (AmazonS3Exception amazonS3Exception) { throw amazonS3Exception; }
+                catch (AmazonS3Exception amazonS3Exception)
+                {
+                    if (amazonS3Exception.StatusCode == System.Net.HttpStatusCode.NotFound || amazonS3Exception.ErrorCode == "NoSuchKey")
+                    {
+                        return null;
+                    }
+                    throw amazonS3Exception;
+                }
             }
             else
             {
                 try
                 {
-                    string tempFolder = Path.Combine(Path.GetTempPath(), "tempFolder");
+                    string uniqueId = Guid.NewGuid().ToString();
+                    string tempFolder = Path.Combine(Path.GetTempPath(), "tempFolder_" + uniqueId);
                     if (System.IO.File.Exists(tempFolder)) System.IO.File.Delete(tempFolder); else if (Directory.Exists(tempFolder)) Directory.Delete(tempFolder, true);
                     Directory.CreateDirectory(tempFolder);
                     foreach (string folderName in Names)
@@ -781,12 +789,12 @@ namespace Syncfusion.EJ2.FileManager.AmazonS3FileProvider
                                 fileTransferUtility.DownloadDirectory(bucketName, RootName.Replace("/", "") + path + folderName, fileName);
                         }
                     }
-                    string tempPath = Path.Combine(Path.GetTempPath(), "tempFolder.zip");
+                    string tempPath = Path.Combine(Path.GetTempPath(), "tempFolder_" + uniqueId + ".zip");
                     ZipFile.CreateFromDirectory(tempFolder, tempPath);
                     FileStream fileStreamInput = new FileStream(tempPath, FileMode.Open, FileAccess.Read, FileShare.Delete);
                     fileStreamResult = new FileStreamResult(fileStreamInput, "APPLICATION/octet-stream");
                     fileStreamResult.FileDownloadName = "Files.zip";
-                    if (System.IO.File.Exists(Path.Combine(Path.GetTempPath(), "tempFolder.zip"))) System.IO.File.Delete(Path.Combine(Path.GetTempPath(), "tempFolder.zip"));
+                    if (System.IO.File.Exists(tempPath)) System.IO.File.Delete(tempPath);
                     if (System.IO.File.Exists(tempFolder)) System.IO.File.Delete(tempFolder); else if (Directory.Exists(tempFolder)) Directory.Delete(tempFolder, true);
                 }
                 catch (AmazonS3Exception amazonS3Exception) { throw amazonS3Exception; }
