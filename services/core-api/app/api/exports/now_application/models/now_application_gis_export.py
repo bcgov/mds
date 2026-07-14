@@ -27,6 +27,13 @@ class NowApplicationGisExport(Base):
     mine_purpose = db.Column(db.String)
     latest_response_date = db.Column(db.String)
     regional_contact = db.Column(db.String)
+    applicant_first_name = db.Column(db.String)
+    applicant_last_name = db.Column(db.String)
+    applicant_phone_no = db.Column(db.String)
+    applicant_email = db.Column(db.String)
+    applicant_org_name = db.Column(db.String)
+    correspondence_name = db.Column(db.String)
+    correspondence_email = db.Column(db.String)
 
     # Notice of Work Details
     is_applicant_individual_or_company = db.Column(db.String)
