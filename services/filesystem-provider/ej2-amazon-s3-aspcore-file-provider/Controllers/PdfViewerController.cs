@@ -70,7 +70,10 @@ namespace EJ2AmazonS3ASPCoreFileProvider.Controllers
                         {
                             return NotFound(jsonObject["document"] + " is not found");
                         }
-                        fsr.FileStream.CopyTo(stream);
+                        using (fsr.FileStream)
+                        {
+                            fsr.FileStream.CopyTo(stream);
+                        }
                     }
                     else if (jsonObject.TryGetValue("document", out var base64))
                     {
@@ -230,6 +233,7 @@ namespace EJ2AmazonS3ASPCoreFileProvider.Controllers
                         return NotFound(jsonObject["importedData"] + " is not found");
                     }
 
+                    using (fsr.FileStream)
                     using (MemoryStream ms = new MemoryStream())
                     {
                         fsr.FileStream.CopyTo(ms);

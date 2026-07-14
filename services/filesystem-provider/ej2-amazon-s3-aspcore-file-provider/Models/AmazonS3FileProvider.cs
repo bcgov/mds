@@ -710,7 +710,7 @@ namespace Syncfusion.EJ2.FileManager.AmazonS3FileProvider
                     Key = RootName.Replace("/", "") + path
                 };
                 var streamResponse = fileTransferUtility.OpenStreamWithResponseAsync(streamRequest).GetAwaiter().GetResult();
-                Stream stream = streamResponse.ResponseStream;
+                Stream stream = new DisposableStream(streamResponse.ResponseStream, streamResponse);
                 return new FileStreamResult(stream, "APPLICATION/octet-stream");
             }
             catch (Exception ex) { throw ex; }
@@ -744,7 +744,7 @@ namespace Syncfusion.EJ2.FileManager.AmazonS3FileProvider
                         Key = RootName.Replace("/", "") + path + Names[0]
                     };
                     var streamResponse = await fileTransferUtility.OpenStreamWithResponseAsync(streamRequest);
-                    Stream stream = streamResponse.ResponseStream;
+                    Stream stream = new DisposableStream(streamResponse.ResponseStream, streamResponse);
                     fileStreamResult = new FileStreamResult(stream, "APPLICATION/octet-stream");
                     fileStreamResult.FileDownloadName = Names[0].Contains("/") ? Names[0].Split("/").Last() : Names[0];
                 }
@@ -915,6 +915,66 @@ namespace Syncfusion.EJ2.FileManager.AmazonS3FileProvider
         public string ToCamelCase(FileManagerResponse userData)
         {
             return JsonConvert.SerializeObject(userData, new JsonSerializerSettings { ContractResolver = new DefaultContractResolver { NamingStrategy = new CamelCaseNamingStrategy() } });
+        }
+    }
+
+    internal class DisposableStream : Stream, IAsyncDisposable
+    {
+        private readonly Stream _stream;
+        private readonly IDisposable _disposable;
+
+        public DisposableStream(Stream stream, IDisposable disposable)
+        {
+            _stream = stream ?? throw new ArgumentNullException(nameof(stream));
+            _disposable = disposable ?? throw new ArgumentNullException(nameof(disposable));
+        }
+
+        public override bool CanRead => _stream.CanRead;
+        public override bool CanSeek => _stream.CanSeek;
+        public override bool CanWrite => _stream.CanWrite;
+        public override long Length => _stream.Length;
+        public override long Position
+        {
+            get => _stream.Position;
+            set => _stream.Position = value;
+        }
+
+        public override void Flush() => _stream.Flush();
+        public override Task FlushAsync(System.Threading.CancellationToken cancellationToken) => _stream.FlushAsync(cancellationToken);
+        
+        public override int Read(byte[] buffer, int offset, int count) => _stream.Read(buffer, offset, count);
+        public override Task<int> ReadAsync(byte[] buffer, int offset, int count, System.Threading.CancellationToken cancellationToken) => _stream.ReadAsync(buffer, offset, count, cancellationToken);
+        
+        public override long Seek(long offset, SeekOrigin origin) => _stream.Seek(offset, origin);
+        public override void SetLength(long value) => _stream.SetLength(value);
+        
+        public override void Write(byte[] buffer, int offset, int count) => _stream.Write(buffer, offset, count);
+        public override Task WriteAsync(byte[] buffer, int offset, int count, System.Threading.CancellationToken cancellationToken) => _stream.WriteAsync(buffer, offset, count, cancellationToken);
+
+        public override Task CopyToAsync(Stream destination, int bufferSize, System.Threading.CancellationToken cancellationToken) => _stream.CopyToAsync(destination, bufferSize, cancellationToken);
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _stream.Dispose();
+                _disposable.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        public override async ValueTask DisposeAsync()
+        {
+            await _stream.DisposeAsync().ConfigureAwait(false);
+            if (_disposable is IAsyncDisposable asyncDisposable)
+            {
+                await asyncDisposable.DisposeAsync().ConfigureAwait(false);
+            }
+            else
+            {
+                _disposable.Dispose();
+            }
+            GC.SuppressFinalize(this);
         }
     }
 }
