@@ -12,7 +12,6 @@ class SearchResource(Resource):
     @api.doc(
         description='Search OrgBook.',
         params={'search': 'The search term to use when searching OrgBook.'})
-    @api.marshal_with(ORGBOOK_SEARCH_RESULT, code=200, as_list=True)
     def get(self):
         search = request.args.get('search')
         results = OrgBookService().search(search)
