@@ -72,8 +72,10 @@ services:
       timeout: 5s
       retries: 5
   pgsync:
-    image: toluaina1/pgsync
+    build:
+      context: services/pgsync
     container_name: mds_pgsync
+    platform: linux/amd64
     environment:
       - PG_HOST=postgres
       - PG_PORT=5432
@@ -93,8 +95,7 @@ services:
       - REDIS_CHECKPOINT=true
       - CONSOLE_LOGGING_HANDLER_MIN_LEVEL=DEBUG
     volumes:
-      - ./services/pgsync/schema.json:/app/schema.json
-    command: ["-c", "schema.json", "--daemon"]
+      - ./services/pgsync:/config
     depends_on:
       postgres:
         condition: service_healthy

@@ -34,12 +34,9 @@ class PartyOrgBookEntityListResource(Resource, UserMixin):
         data = PartyOrgBookEntityListResource.parser.parse_args()
         credential_id = data.get('credential_id')
 
-        resp = OrgBookService.get_credential(credential_id)
-        if resp.status_code != requests.codes.ok:
-            raise BadGateway(f'OrgBook API responded with {resp.status_code}: {resp.reason}')
+        credential = OrgBookService().get_credential(credential_id)
 
         try:
-            credential = json.loads(resp.text)
             registration_id = credential['topic']['source_id']
             registration_status = not (credential['inactive'])
             registration_date = credential['effective_date']
