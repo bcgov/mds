@@ -1,4 +1,4 @@
-from flask import request
+from flask import request, current_app
 from flask_restx import Resource
 
 from app.extensions import api
@@ -12,16 +12,18 @@ class SearchResource(Resource):
     @api.doc(
         description='Search OrgBook.',
         params={'search': 'The search term to use when searching OrgBook.'})
+    @api.marshal_with(ORGBOOK_SEARCH_RESULT, code=200)
     def get(self):
         search = request.args.get('search')
         results = OrgBookService().search(search)
         reg_results = None
         try:
             reg_results = BCRegistriesService().search(search)
+            current_app.logger.debug(f"New BC Registries API results: {reg_results}")
         except Exception as e:
-            print(f"BCREG_API ERROR: {str(e)}")
+            current_app.logger.warning(f"BCREG_API ERROR: {str(e)}")
 
-        return {"reg_results": reg_results, "results": results}, 200
+        return results
 
 
 class CredentialResource(Resource):
