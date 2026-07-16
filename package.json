@@ -1,6 +1,6 @@
 {
   "name": "mds",
-  "packageManager": "yarn@3.8.7",
+  "packageManager": "yarn@3.2.4",
   "private": true,
   "description": "Mines Digital Services Packages",
   "engines": {
