@@ -20,14 +20,14 @@ class BCRegistriesService():
 
         data = {
             "query": {
-                "value": "",
+                "value": search,
                 "name": "",
                 "identifier": "",
                 "bn": ""
             },
             "categories": {
-                "legalType": ["[\"BC\", \"BEN\", \"CP\"]"],
-                "status": ["[\"ACTIVE\"]"]
+                "legalType": ["BC", "BEN", "CP"],
+                "status": ["ACTIVE"]
             },
             "rows": 1,
             "start": 1
