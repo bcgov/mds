@@ -1,8 +1,10 @@
 from flask import request, current_app
 from flask_restx import Resource
 
+from app.config import Config
 from app.extensions import api
 from app.api.utils.access_decorators import requires_role_view_all
+from app.api.utils.feature_flag import Feature, is_feature_enabled
 from app.api.services.orgbook_service import OrgBookService, BCRegistriesService
 from app.api.orgbook.response_models import ORGBOOK_SEARCH_RESULT, ORGBOOK_CREDENTIAL, ORGBOOK_VERIFICATION_RESPONSE
 
@@ -17,12 +19,14 @@ class SearchResource(Resource):
     def get(self):
         search = request.args.get('search')
         results = OrgBookService().search(search)
-        reg_results = None
-        try:
-            reg_results = BCRegistriesService().search(search)
-            current_app.logger.debug(f"New BC Registries API results: {reg_results}")
-        except Exception as e:
-            current_app.logger.warning(f"BCREG_API ERROR: {str(e)}")
+
+        if is_feature_enabled(Feature.BC_REGISTRIES_SEARCH):
+            reg_results = None
+            try:
+                reg_results = BCRegistriesService().search(search)
+                current_app.logger.debug(f"New BC Registries API results: {reg_results}")
+            except Exception as e:
+                current_app.logger.warning(f"BCREG_API ERROR: {str(e)}")
 
         return results
 
