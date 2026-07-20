@@ -12,13 +12,13 @@ export S3_PREFIX=$S3_PREFIX
 read -r stdin_data
 
 # Extract the Upload object from the JSON-encoded object
-upload=$(echo "$stdin_data" | jq -r '.Upload')
+upload=$(echo "$stdin_data" | jq -r '.Event.Upload')
 
 # check if the upload object has version_guid in MetaData
 version_guid=$(echo "$upload" | jq -r '.MetaData."version_guid"')
 
 # Extract all the HTTP headers from the JSON-encoded object
-headers=$(echo "$stdin_data" | jq -r '.HTTPRequest.Header | to_entries | map("\(.key): \(.value | join(","))") | join("\n")')
+headers=$(echo "$stdin_data" | jq -r '.Event.HTTPRequest.Header | to_entries | map("\(.key): \(.value | join(","))") | join("\n")')
 
 # Extract the ID and Size properties from the Upload object
 id=$(echo "$upload" | jq -r '.ID')
