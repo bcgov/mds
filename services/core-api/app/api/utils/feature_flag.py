@@ -25,6 +25,7 @@ class Feature(Enum):
     GLOBAL_SEARCH_V2 = 'global_search_v2'
     NOW_APPLICATION_DOCUMENT_SEARCH = 'now_application_document_search'
     NOTICE_OF_WORK_NATIONS = 'notice_of_work_nations'
+    BC_REGISTRIES_SEARCH = 'bc_registries_search'
 
     def __str__(self):
         return self.value

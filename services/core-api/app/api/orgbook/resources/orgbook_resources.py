@@ -1,54 +1,51 @@
-import json
-import requests
-from flask import request
+from flask import request, current_app
 from flask_restx import Resource
 
+from app.config import Config
 from app.extensions import api
 from app.api.utils.access_decorators import requires_role_view_all
-from app.api.services.orgbook_service import OrgBookService
-from werkzeug.exceptions import BadRequest, InternalServerError, NotFound, BadGateway
+from app.api.utils.feature_flag import Feature, is_feature_enabled
+from app.api.services.orgbook_service import OrgBookService, BCRegistriesService
+from app.api.orgbook.response_models import ORGBOOK_SEARCH_RESULT, ORGBOOK_CREDENTIAL, ORGBOOK_VERIFICATION_RESPONSE
 
 
 class SearchResource(Resource):
+
     @api.doc(
         description='Search OrgBook.',
         params={'search': 'The search term to use when searching OrgBook.'})
+    @api.marshal_with(ORGBOOK_SEARCH_RESULT, code=200, as_list=True)
     @requires_role_view_all
     def get(self):
         search = request.args.get('search')
-        resp = OrgBookService.search(search)
+        results = OrgBookService().search(search)
 
-        if resp.status_code != requests.codes.ok:
-            raise BadGateway(f'OrgBook API responded with {resp.status_code}: {resp.reason}')
-
-        try:
-            results = json.loads(resp.text)['results']
-        except:
-            raise BadGateway('OrgBook API responded with unexpected data.')
+        if is_feature_enabled(Feature.BC_REGISTRIES_SEARCH):
+            reg_results = None
+            try:
+                reg_results = BCRegistriesService().search(search)
+                current_app.logger.debug(f"New BC Registries API results: {reg_results}")
+            except Exception as e:
+                current_app.logger.warning(f"BCREG_API ERROR: {str(e)}")
 
         return results
 
 
 class CredentialResource(Resource):
+
     @api.doc(description='Get information on an OrgBook credential.')
+    @api.marshal_with(ORGBOOK_CREDENTIAL, code=200)
     @requires_role_view_all
     def get(self, credential_id):
-        resp = OrgBookService.get_credential(credential_id)
-
-        if resp.status_code != requests.codes.ok:
-            raise BadGateway(f'OrgBook API responded with {resp.status_code}: {resp.reason}')
-
-        credential = json.loads(resp.text)
+        credential = OrgBookService().get_credential(credential_id)
         return credential
 
+
 class VerifyResource(Resource):
-    @requires_role_view_all
+
     @api.doc(description='Verify an OrgBook credential.')
+    @api.marshal_with(ORGBOOK_VERIFICATION_RESPONSE, code=200)
+    @requires_role_view_all
     def get(self, credential_id):
-        resp = OrgBookService.verify_credential(credential_id)
-
-        if resp.status_code != requests.codes.ok:
-            raise BadGateway(f'OrgBook API responded with {resp.status_code}: {resp.reason}')
-
-        verification = json.loads(resp.text)
+        verification = OrgBookService().verify_credential(credential_id)
         return verification

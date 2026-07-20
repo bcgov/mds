@@ -229,6 +229,11 @@ class Config(object):
     # OrgBook
     ORGBOOK_API_URL = os.environ.get('ORGBOOK_API_URL', 'https://orgbook.gov.bc.ca/api/v2/')
 
+    # BC Registries
+    BC_REGISTRIES_API_URL = os.environ.get('BC_REGISTRIES_API_URL',
+                                            'https://sandbox.api.connect.gov.bc.ca/registry-search')
+    BC_REGISTRIES_SECRET_TOKEN = os.environ.get('BC_REGISTRIES_SECRET_TOKEN', None)
+
     # NRPTI
     NRPTI_API_URL = os.environ.get(
         'NRPTI_API_URL', 'https://nrpti-api-f00029-prod.apps.silver.devops.gov.bc.ca/api/public/')
