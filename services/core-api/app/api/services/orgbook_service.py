@@ -65,8 +65,8 @@ class OrgBookService():
 
         try:
             results: List[OrgBookSearchResult] = json.loads(resp.text)['results']
-        except:
-            raise BadGateway('OrgBook API responded with unexpected data.')
+        except Exception as e:
+            raise BadGateway(f'OrgBook API responded with unexpected exception type={type(e)}.')
 
         return results
 
@@ -79,8 +79,8 @@ class OrgBookService():
 
         try:
             credential: OrgBookCredential = json.loads(resp.text)
-        except:
-            raise BadGateway('OrgBook API responded with unexpected data.')
+        except Exception as e:
+            raise BadGateway(f'OrgBook API responded with unexpected exception type={type(e)}.')
 
         return credential
 
@@ -93,7 +93,7 @@ class OrgBookService():
 
         try:
             verification: OrgBookVerificationResponse = json.loads(resp.text)
-        except:
-            raise BadGateway('OrgBook API responded with unexpected data.')
+        except Exception as e:
+            raise BadGateway(f'OrgBook API responded with unexpected exception type={type(e)}.')
 
         return verification
