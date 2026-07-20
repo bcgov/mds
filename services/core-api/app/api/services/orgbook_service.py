@@ -34,10 +34,22 @@ class BCRegistriesService():
         }
 
         url = f'{BC_REGISTRIES_API_URL}/api/v2/search/businesses'
-        resp = requests.post(url=url, json=data, headers={"X-Apikey": BC_REGISTRIES_SECRET_TOKEN})
-        print(resp.content)
-        response: BulkBusinessSearchResponse = json.loads(resp.text)
-        return response['results']
+        resp = requests.post(
+            url=url,
+            json=data,
+            headers={"X-Apikey": BC_REGISTRIES_SECRET_TOKEN},
+            timeout=10,
+        )
+
+        if resp.status_code != requests.codes.ok:
+            raise BadGateway(f'BC Registries API responded with {resp.status_code}: {resp.reason}')
+
+        try:
+            response: BulkBusinessSearchResponse = resp.json()
+        except (ValueError, TypeError) as e:
+            raise BadGateway('BC Registries API responded with unexpected data.') from e
+
+        return response.get('results', [])
 
 
 class OrgBookService():
