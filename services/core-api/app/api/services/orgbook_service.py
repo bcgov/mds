@@ -15,8 +15,8 @@ from app.api.services.orgbook_types import (
 class BCRegistriesService():
 
     def search(self, search: str) -> List[BusinessSearchResult]:
-        BC_REGISTRIES_API_URL = "https://sandbox.api.connect.gov.bc.ca/registry-search"
-        BC_REGISTRIES_SECRET_TOKEN = "YOUR_SECRET_TOKEN"
+        BC_REGISTRIES_API_URL = Config.BC_REGISTRIES_API_URL
+        BC_REGISTRIES_SECRET_TOKEN = Config.BC_REGISTRIES_SECRET_TOKEN
 
         data = {
             "query": {
