@@ -1,4 +1,3 @@
-version: "3"
 include:
   - ./services/permits/docker-compose.yaml
 services:
@@ -22,7 +21,7 @@ services:
   ####################### Open Telemetry #######################
   otelcollector:
     image: otel/opentelemetry-collector
-    command: [--config=/etc/otel-collector-config.yaml]
+    command: [ --config=/etc/otel-collector-config.yaml ]
     volumes:
       - ./otel-collector-config.yaml:/etc/otel-collector-config.yaml
     ports:
@@ -67,7 +66,7 @@ services:
       - postgres_data:/var/lib/postgresql/data
     command: postgres -c 'config_file=/config/postgresql.conf' -c 'hba_file=/config/pg_hba.conf'
     healthcheck:
-      test: ["CMD", "pg_isready"]
+      test: [ "CMD", "pg_isready" ]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -173,7 +172,7 @@ services:
       - core_api_celery
       - pgsync
     healthcheck:
-      test: ["CMD", "curl", "localhost:5000/health"]
+      test: [ "CMD", "curl", "localhost:5000/health" ]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -201,7 +200,7 @@ services:
     ports:
       - "6379:6379"
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
+      test: [ "CMD", "redis-cli", "ping" ]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -213,18 +212,19 @@ services:
     container_name: mds_frontend
     build:
       context: .
-      dockerfile: services/core-web/Dockerfile.ci
+      dockerfile: services/core-web/Dockerfile.dev
       args:
         ARTIFACTORY_TOKEN: $ARTIFACTORY_TOKEN
 
     volumes:
-      - ./services/core-web/src:/app/src
+      - ./services/core-web/src:/app/services/core-web/src
+      - ./services/core-web/public:/app/services/core-web/public
+      - ./services/common/src:/app/services/common/src
     ports:
       - 3000:3000
     env_file: ./services/core-web/.env
-    network_mode: "host"
     healthcheck:
-      test: ["CMD", "curl", "localhost:3000/health"]
+      test: [ "CMD", "wget", "-qO-", "localhost:3000" ]
       interval: 15s
       timeout: 5s
       retries: 5
@@ -248,7 +248,7 @@ services:
       - 3020:3020
     env_file: ./services/minespace-web/.env
     healthcheck:
-      test: ["CMD", "curl", "localhost:3020/health"]
+      test: [ "CMD", "wget", "-qO-", "localhost:3020/health" ]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -270,7 +270,7 @@ services:
       - nris_migrate
     env_file: ./services/nris-api/backend/.env
     healthcheck:
-      test: ["CMD", "curl", "localhost:5500/health"]
+      test: [ "CMD", "curl", "localhost:5500/health" ]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -376,7 +376,7 @@ services:
     restart: always
     container_name: docgen_api
     image: bcgovimages/common-document-generation-service:2.5.0
-    command: ["npm", "run", "start"]
+    command: [ "npm", "run", "start" ]
     environment:
       - SERVER_PORT=3030
       - APP_PORT=3030
