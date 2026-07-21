@@ -44,4 +44,4 @@ else
   json_data=$(echo "{\"Upload\": $upload}" | tr -d '\r\n' | tr -d '\0')
 fi
 
-curl -X POST -H "Content-Type: application/json" -H "$headers" -H "Hook-Name: post-finish" -d "$json_data" $DOCUMENT_MANAGER_URL/tusd-hooks
+curl --retry 5 --retry-delay 2 --retry-all-errors -X POST -H "Content-Type: application/json" -H "$headers" -H "Hook-Name: post-finish" -d "$json_data" $DOCUMENT_MANAGER_URL/tusd-hooks
