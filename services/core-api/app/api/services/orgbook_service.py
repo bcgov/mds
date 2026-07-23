@@ -53,57 +53,46 @@ class BCRegistriesService():
 
 class OrgBookService():
 
-    def search(self, search: str) -> List[OrgBookSearchResultItem]:
-        url1 = f'{Config.ORGBOOK_API_URL}/v4/search/autocomplete'
-
-        params = {'q': search, 'inactive': 'false', 'revoked': 'false'}
-
-        resp = requests.get(url=url1, params=params)
-
-        # url2 = f'{Config.ORGBOOK_API_URL}/v2/search/autocomplete'
-        # resp2 = requests.get(url=url2, params=params)
-        # resp2_data = json.loads(resp2.text)
-        # print(pprint.pprint(resp2_data))
-
+    def _make_get(self, *args) -> dict:
+        resp = requests.get(*args)
         if resp.status_code != requests.codes.ok:
             raise BadGateway(f'OrgBook API responded with {resp.status_code}: {resp.reason}')
-
         try:
-            resp_data = json.loads(resp.text)
-            results: List[OrgBookSearchResultItem] = [{
-                "registration_id": x["topic_source_id"],
-                "text": x["value"]
-            } for x in resp_data['results'] if x["sub_type"] == "entity_name"]
-
+            return json.loads(resp.text)
         except Exception as e:
             raise BadGateway(f'OrgBook API responded with unexpected exception type={type(e)}.')
+
+    def search(self, search: str) -> List[OrgBookSearchResultItem]:
+        url = f'{Config.ORGBOOK_API_URL}/v4/search/autocomplete'
+        params = {'q': search, 'inactive': 'false', 'revoked': 'false'}
+
+        resp_data = self._make_get(url, params)
+        results: List[OrgBookSearchResultItem] = [{
+            "registration_id": x["topic_source_id"],
+            "text": x["value"]
+        } for x in resp_data['results'] if x["sub_type"] == "entity_name"]
 
         return results
 
+    def get_business_details(self, registration_id) -> dict:
+        search_url = f'{Config.ORGBOOK_API_URL}/v4/search/autocomplete'
+
+        params = {'q': registration_id, 'inactive': 'false', 'revoked': 'false'}
+
+        search_result = self._make_get(
+            search_url, params)["results"][0]    # get first result, SHOULD be perfect match.
+
+        detail_url = f'{Config.ORGBOOK_API_URL}/v4/credential/' + search_result["credential_id"]
+        return self._make_get(detail_url, params)
+
     def get_credential(self, credential_id):
         url = f'{Config.ORGBOOK_API_URL}/v2/credential/{credential_id}/formatted'
-        resp = requests.get(url=url)
-
-        if resp.status_code != requests.codes.ok:
-            raise BadGateway(f'OrgBook API responded with {resp.status_code}: {resp.reason}')
-
-        try:
-            credential = json.loads(resp.text)
-        except Exception as e:
-            raise BadGateway(f'OrgBook API responded with unexpected exception type={type(e)}.')
+        credential = self._make_get(url)
 
         return credential
 
     def verify_credential(self, credential_id):
         url = f'{Config.ORGBOOK_API_URL}/v2/credential/{credential_id}/verify'
-        resp = requests.get(url=url)
-
-        if resp.status_code != requests.codes.ok:
-            raise BadGateway(f'OrgBook API responded with {resp.status_code}: {resp.reason}')
-
-        try:
-            verification = json.loads(resp.text)
-        except Exception as e:
-            raise BadGateway(f'OrgBook API responded with unexpected exception type={type(e)}.')
+        verification = self._make_get(url)
 
         return verification

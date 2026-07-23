@@ -30,6 +30,14 @@ class SearchResource(Resource):
         return results
 
 
+class RegistrationResource(Resource):
+
+    @api.doc(description='Resolve regstration number')
+    def get(self, registration_id: str):
+        results = OrgBookService().get_business_details(registration_id)
+        return results
+
+
 class CredentialResource(Resource):
 
     @api.doc(description='Get information on an OrgBook credential.')
