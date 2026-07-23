@@ -79,9 +79,10 @@ class OrgBookService():
 
         params = {'q': registration_id, 'inactive': 'false', 'revoked': 'false'}
 
-        search_result = self._make_get(
-            search_url, params)["results"][0]    # get first result, SHOULD be perfect match.
-
+        search_results = self._make_get(search_url, params).get("results", [])
+        if not search_results:
+            raise BadGateway(f"OrgBook API returned no results for registration_id={registration_id}")
+        search_result = search_results[0]  # best match
         detail_url = f'{Config.ORGBOOK_API_URL}/v4/credential/' + search_result["credential_id"]
         return self._make_get(detail_url, params)
 
