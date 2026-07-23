@@ -41,8 +41,8 @@ class RegistrationResource(Resource):
 class CredentialResource(Resource):
 
     @api.doc(description='Get information on an OrgBook credential.')
-    @api.marshal_with(ORGBOOK_CREDENTIAL, code=200)
-    @requires_role_view_all
+    # @api.marshal_with(ORGBOOK_CREDENTIAL, code=200)
+    # @requires_role_view_all
     def get(self, credential_id):
         credential = OrgBookService().get_credential(credential_id)
         return credential
@@ -51,7 +51,7 @@ class CredentialResource(Resource):
 class VerifyResource(Resource):
 
     @api.doc(description='Verify an OrgBook credential.')
-    @api.marshal_with(ORGBOOK_VERIFICATION_RESPONSE, code=200)
+    # @api.marshal_with(ORGBOOK_VERIFICATION_RESPONSE, code=200)
     @requires_role_view_all
     def get(self, credential_id):
         verification = OrgBookService().verify_credential(credential_id)

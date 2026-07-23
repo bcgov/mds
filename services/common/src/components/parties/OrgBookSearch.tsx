@@ -1,33 +1,26 @@
 import React, { FC, useEffect, useRef, useState } from "react";
 import { Form, Select, Spin } from "antd";
-import { debounce, DebouncedFunc } from "lodash";
+import { debounce, DebouncedFunc, values } from "lodash";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getOrgBookCredential,
-  getSearchOrgBookResults,
-} from "@mds/common/redux/selectors/orgbookSelectors";
-import {
-  fetchOrgBookCredential,
-  searchOrgBook,
-} from "@mds/common/redux/actionCreators/orgbookActionCreator";
+import { getSearchOrgBookResults } from "@mds/common/redux/selectors/orgbookSelectors";
+import { searchOrgBook } from "@mds/common/redux/actionCreators/orgbookActionCreator";
 import { LoadingOutlined } from "@ant-design/icons";
-import { IOrgbookCredential } from "@mds/common/interfaces";
+import { IOrgBookSearchResult } from "@mds/common/interfaces";
 
 interface OrgBookSearchProps {
   isDisabled?: boolean;
-  setCredential: (credential: IOrgbookCredential) => void;
+  setRegistrationId: (registration_id: string) => void;
   current_party: string;
 }
 
 const OrgBookSearch: FC<OrgBookSearchProps> = ({
   isDisabled = false,
-  setCredential,
+  setRegistrationId,
   current_party,
 }) => {
   const dispatch = useDispatch();
 
-  const searchOrgBookResults = useSelector(getSearchOrgBookResults);
-  const orgBookCredential = useSelector(getOrgBookCredential);
+  const searchOrgBookResults: IOrgBookSearchResult[] = useSelector(getSearchOrgBookResults);
 
   const lastFetchId = useRef(0);
 
@@ -49,7 +42,7 @@ const OrgBookSearch: FC<OrgBookSearchProps> = ({
     const fetchId = lastFetchId;
     setOptions([]);
     setIsSearching(true);
-    setCredential(null);
+    setRegistrationId(null);
 
     await dispatch(searchOrgBook(search));
 
@@ -68,27 +61,20 @@ const OrgBookSearch: FC<OrgBookSearchProps> = ({
 
   useEffect(() => {
     if (searchOrgBookResults) {
-      const selectOptions = searchOrgBookResults
-        .filter((result) => result.names && result.names.length > 0)
-        .map((result) => ({
-          text: result.names[0].text,
-          value: result.names[0].credential_id,
-        }));
+      const selectOptions = searchOrgBookResults.map((result) => ({
+        text: result.text,
+        value: result.registration_id,
+      }));
       setOptions(selectOptions);
     }
   }, [searchOrgBookResults]);
 
   const handleSelect = async (value) => {
-    const credentialId = value.key;
-    await dispatch(fetchOrgBookCredential(credentialId));
+    // The primary identifier for a search result is now `id` (no prefix), rather than
+    // the OrgBook-only `credential_id`.
     setSelectedParty(value.label);
+    setRegistrationId(value.key);
   };
-
-  useEffect(() => {
-    if (orgBookCredential) {
-      setCredential(orgBookCredential);
-    }
-  }, [orgBookCredential]);
 
   const debouncedSearch: DebouncedFunc<typeof handleSearch> = debounce(handleSearch, 1000);
   const handleSearchDebounced = useRef(debouncedSearch).current;
@@ -112,7 +98,9 @@ const OrgBookSearch: FC<OrgBookSearchProps> = ({
         value={selectedParty}
       >
         {options.map((option) => (
-          <Select.Option key={option.value}>{option.text}</Select.Option>
+          <Select.Option key={option.value} value={option.value}>
+            {option.text}
+          </Select.Option>
         ))}
       </Select>
     </Form.Item>

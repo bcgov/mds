@@ -1,7 +1,6 @@
 import React, { FC, useState } from "react";
 import { Button, Col, Row } from "antd";
 import { BookOutlined, CheckCircleOutlined } from "@ant-design/icons";
-import { isEmpty } from "lodash";
 import { useDispatch } from "react-redux";
 import {
   createPartyOrgBookEntity,
@@ -22,7 +21,7 @@ interface PartyOrgBookFormProps {
 export const PartyOrgBookForm: FC<PartyOrgBookFormProps> = ({ party }) => {
   const [isAssociating, setIsAssociating] = useState(false);
   const dispatch = useDispatch();
-  const [credential, setCredential] = useState<IOrgbookCredential>(null);
+  const [registrationId, setRegistrationId] = useState(null);
   const [currentParty, setCurrentParty] = useState(party.party_orgbook_entity.name_text);
   const [isAssociated, setIsAssociated] = useState(!!party.party_orgbook_entity.name_text);
 
@@ -34,7 +33,7 @@ export const PartyOrgBookForm: FC<PartyOrgBookFormProps> = ({ party }) => {
       createPartyOrgBookEntity({
         partyGuid: party.party_guid,
         data: {
-          credential_id: credential.id.toString(),
+          registration_id: registrationId
         },
       })
     );
@@ -54,24 +53,23 @@ export const PartyOrgBookForm: FC<PartyOrgBookFormProps> = ({ party }) => {
     setIsAssociated(false);
   };
 
-  const hasOrgBookCredential = !isEmpty(credential);
 
   return (
     <Row>
       <Col span={24}>
         <OrgBookSearch
           isDisabled={isAssociated}
-          setCredential={setCredential}
+          setRegistrationId={setRegistrationId}
           current_party={currentParty}
         />
       </Col>
       <Col span={24}>
         <Button
           className="full-mobile"
-          href={hasOrgBookCredential ? ORGBOOK_ENTITY_URL(credential.topic.source_id) : null}
+          href={ORGBOOK_ENTITY_URL(registrationId)}
           target="_blank"
-          disabled={!hasOrgBookCredential}
         >
+          {ORGBOOK_ENTITY_URL(registrationId)}
           <span>
             <BookOutlined className="padding-sm--right" />
             View on OrgBook
@@ -81,7 +79,7 @@ export const PartyOrgBookForm: FC<PartyOrgBookFormProps> = ({ party }) => {
           <Button
             type="primary"
             className="full-mobile"
-            disabled={!isAssociated ? !hasOrgBookCredential : false} //Admin is allowed to disassociate
+            disabled={!isAssociated} //Admin is allowed to disassociate
             onClick={!isAssociated ? handleAssociateButtonClick : handleDisassociateButtonClick}
             loading={isAssociating}
             danger={isAssociated}
@@ -93,7 +91,7 @@ export const PartyOrgBookForm: FC<PartyOrgBookFormProps> = ({ party }) => {
           </Button>
         )}
       </Col>
-    </Row>
+    </Row >
   );
 };
 

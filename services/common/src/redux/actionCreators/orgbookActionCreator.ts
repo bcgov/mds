@@ -1,4 +1,5 @@
 import { showLoading, hideLoading } from "react-redux-loading-bar";
+import { AxiosResponse } from "axios";
 import { ENVIRONMENT } from "@mds/common/constants/environment";
 import { request, success, error } from "../actions/genericActions";
 import { NetworkReducerTypes } from "@mds/common/constants/networkReducerTypes";
@@ -6,13 +7,15 @@ import * as orgbookActions from "../actions/orgbookActions";
 import * as API from "@mds/common/constants/API";
 import { createRequestHeader } from "../utils/RequestHeaders";
 import CustomAxios from "../customAxios";
+import { AppThunk } from "@mds/common/interfaces/appThunk.type";
+import { IOrgBookSearchResult } from "@mds/common/interfaces";
 
-export const searchOrgBook = (search) => (dispatch) => {
+export const searchOrgBook = (search: string): AppThunk => (dispatch) => {
   dispatch(request(NetworkReducerTypes.ORGBOOK_SEARCH));
   dispatch(showLoading());
   return CustomAxios()
     .get(ENVIRONMENT.apiUrl + API.ORGBOOK_SEARCH(search), createRequestHeader())
-    .then((response) => {
+    .then((response: AxiosResponse<IOrgBookSearchResult[]>) => {
       dispatch(success(NetworkReducerTypes.ORGBOOK_SEARCH));
       dispatch(orgbookActions.storeSearchOrgBookResults(response.data));
     })

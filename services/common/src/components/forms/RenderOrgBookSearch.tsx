@@ -11,13 +11,13 @@ import {
   searchOrgBook,
 } from "@mds/common/redux/actionCreators/orgbookActionCreator";
 import { LoadingOutlined } from "@ant-design/icons";
-import { IOrgbookCredential } from "@mds/common/interfaces";
+import { IOrgbookCredential, IOrgBookSearchResult } from "@mds/common/interfaces";
 import { BaseInputProps, getFormItemLabel } from "./BaseInput";
 import { FormContext } from "./FormWrapper";
 
 interface OrgBookSearchProps extends BaseInputProps {
   data?: any;
-  setCredential: (credential: IOrgbookCredential) => void;
+  // setCredential: (credential: IOrgbookCredential) => void;
 }
 
 const RenderOrgBookSearch: FC<OrgBookSearchProps> = ({
@@ -30,11 +30,11 @@ const RenderOrgBookSearch: FC<OrgBookSearchProps> = ({
   meta,
   required,
   disabled = false,
-  setCredential,
+  // setCredential,
 }) => {
   const dispatch = useDispatch();
   const { isEditMode } = useContext(FormContext);
-  const searchOrgBookResults = useSelector(getSearchOrgBookResults);
+  const searchOrgBookResults: IOrgBookSearchResult[] = useSelector(getSearchOrgBookResults);
   const orgBookCredential = useSelector(getOrgBookCredential);
 
   const lastFetchId = useRef(0);
@@ -61,7 +61,7 @@ const RenderOrgBookSearch: FC<OrgBookSearchProps> = ({
     const fetchId = lastFetchId;
     setOptions([]);
     setIsSearching(true);
-    setCredential(null);
+    // setCredential(null);
 
     await dispatch(searchOrgBook(search));
 
@@ -74,12 +74,10 @@ const RenderOrgBookSearch: FC<OrgBookSearchProps> = ({
 
   useEffect(() => {
     if (searchOrgBookResults) {
-      const selectOptions = searchOrgBookResults
-        .filter((result) => result.names && result.names.length > 0)
-        .map((result) => ({
-          text: result.names[0].text,
-          value: result.names[0].credential_id,
-        }));
+      const selectOptions = searchOrgBookResults.map((result) => ({
+        text: result.text,
+        value: result.registration_id,
+      }));
       setOptions(selectOptions);
     }
   }, [searchOrgBookResults]);
@@ -97,7 +95,7 @@ const RenderOrgBookSearch: FC<OrgBookSearchProps> = ({
 
   useEffect(() => {
     if (orgBookCredential) {
-      setCredential(orgBookCredential);
+      // setCredential(orgBookCredential);
     }
   }, [orgBookCredential]);
 
@@ -138,7 +136,9 @@ const RenderOrgBookSearch: FC<OrgBookSearchProps> = ({
           value={options.length === 1 ? { key: options[0].text } : undefined}
         >
           {options.map((option) => (
-            <Select.Option key={option.value}>{option.text}</Select.Option>
+            <Select.Option key={option.value} value={option.value}>
+              {option.text}
+            </Select.Option>
           ))}
         </Select>
         {help && <div className={`form-item-help ${input?.name}-form-help`}>{help}</div>}

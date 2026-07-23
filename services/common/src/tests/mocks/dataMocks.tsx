@@ -47,6 +47,7 @@ import {
   IMinespaceUser,
   IMinePartyAppt,
   IPartyAppt,
+  IOrgBookSearchResult,
 } from "@mds/common/interfaces";
 import { IAmsFinalApplication } from "@mds/common/interfaces/projects/amsFinalApplication.interface";
 import { HaystackDocumentSearchResult } from "@mds/common/interfaces/search/facet-search.interface";
@@ -11305,19 +11306,11 @@ export const MINE_ALERTS = {
   ],
 };
 
-export const ORGBOOK_SEARCH_RESULTS = [
+export const ORGBOOK_SEARCH_RESULTS: IOrgBookSearchResult[] = [
   {
-    id: 777855,
-    names: [
-      {
-        id: 712594,
-        text: "ZINEX MINING CORP.",
-        language: null,
-        credential_id: 777855,
-        type: "entity_name",
-      },
-    ],
-    inactive: false,
+    registration_id: "BC777855",
+    text: "ZINEX MINING CORP.",
+    credential_id: 777855,
   },
 ];
 
