@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useRef, useState } from "react";
 import { Form, Select, Spin } from "antd";
-import { debounce, DebouncedFunc, values } from "lodash";
+import { debounce, DebouncedFunc } from "lodash";
 import { useDispatch, useSelector } from "react-redux";
 import { getSearchOrgBookResults } from "@mds/common/redux/selectors/orgbookSelectors";
 import { searchOrgBook } from "@mds/common/redux/actionCreators/orgbookActionCreator";
