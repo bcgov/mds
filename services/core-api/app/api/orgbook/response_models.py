@@ -5,6 +5,7 @@ from app.extensions import api
 ORGBOOK_SEARCH_RESULT_ITEM = api.model('OrgBookSearchResultItem', {
     'registration_id': fields.String,
     'text': fields.String,
+    'credential_id': fields.Integer,
 })
 
 # ---------------------------------------------------------------------------
