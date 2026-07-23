@@ -4,19 +4,15 @@ from app.api.constants import MDS_EMAIL, PERM_RECL_EMAIL, PROJECT_SUMMARY_EMAILS
 from app.api.mines.documents.models.mine_document import MineDocument
 from app.api.mines.documents.models.mine_document_bundle import MineDocumentBundle
 from app.api.mines.mine.models.mine import Mine
-from app.api.parties.party import PartyOrgBookEntity
 from app.api.parties.party.models.address import Address
 from app.api.parties.party.models.party import Party
 from app.api.projects.project.models.project import Project
 from app.api.projects.project_summary.models.project_summary_authorization import (
-    ProjectSummaryAuthorization,
-)
+    ProjectSummaryAuthorization, )
 from app.api.projects.project_summary.models.project_summary_authorization_document_xref import (
-    ProjectSummaryAuthorizationDocumentXref,
-)
+    ProjectSummaryAuthorizationDocumentXref, )
 from app.api.projects.project_summary.models.project_summary_document_xref import (
-    ProjectSummaryDocumentXref,
-)
+    ProjectSummaryDocumentXref, )
 from app.api.regions.models.regions import Regions
 from app.api.services.ams_api_service import AMSApiService
 from app.api.services.email_service import EmailService
@@ -57,9 +53,11 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
     expected_permit_application_date = db.Column(db.Date, nullable=True)
     expected_permit_receipt_date = db.Column(db.Date, nullable=True)
     expected_project_start_date = db.Column(db.Date, nullable=True)
-    agent_party_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'), nullable=True)
+    agent_party_guid = db.Column(
+        UUID(as_uuid=True), db.ForeignKey('party.party_guid'), nullable=True)
     is_agent = db.Column(db.Boolean, nullable=True)
-    facility_operator_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'), nullable=True)
+    facility_operator_guid = db.Column(
+        UUID(as_uuid=True), db.ForeignKey('party.party_guid'), nullable=True)
     is_legal_land_owner = db.Column(db.Boolean, nullable=True)
     is_crown_land_federal_or_provincial = db.Column(db.Boolean, nullable=True)
     is_landowner_aware_of_discharge_application = db.Column(db.Boolean, nullable=True)
@@ -78,8 +76,10 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
     facility_lease_no = db.Column(db.String, nullable=True)
     zoning = db.Column(db.Boolean, nullable=True)
     zoning_reason = db.Column(db.String, nullable=True)
-    nearest_municipality_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('municipality.municipality_guid'))
-    regional_district_id = db.Column(db.Integer(), db.ForeignKey('regions.regional_district_id'), nullable=True)
+    nearest_municipality_guid = db.Column(
+        UUID(as_uuid=True), db.ForeignKey('municipality.municipality_guid'))
+    regional_district_id = db.Column(
+        db.Integer(), db.ForeignKey('regions.regional_district_id'), nullable=True)
     company_alias = db.Column(db.String(200), nullable=True)
     incorporation_number = db.Column(db.String(25), nullable=True)
 
@@ -87,8 +87,10 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
     is_billing_address_same_as_mailing_address = db.Column(db.Boolean, nullable=True)
     is_billing_address_same_as_legal_address = db.Column(db.Boolean, nullable=True)
 
-    applicant_party_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'), nullable=True)
-    payment_contact_party_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'), nullable=True)
+    applicant_party_guid = db.Column(
+        UUID(as_uuid=True), db.ForeignKey('party.party_guid'), nullable=True)
+    payment_contact_party_guid = db.Column(
+        UUID(as_uuid=True), db.ForeignKey('party.party_guid'), nullable=True)
     is_historic = db.Column(db.Boolean, nullable=False)
 
     project_guid = db.Column(
@@ -101,23 +103,19 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
     project = db.relationship("Project", back_populates="project_summary")
     contacts = db.relationship(
         'ProjectContact',
-        primaryjoin="and_(ProjectSummary.project_guid==foreign(ProjectContact.project_guid), ProjectContact.deleted_ind == False)",
-        overlaps="contacts"
-    )
-    agent = db.relationship(
-        'Party', lazy='joined', foreign_keys=agent_party_guid
-    )
-    facility_operator = db.relationship(
-        'Party', lazy='joined', foreign_keys=facility_operator_guid
-    )
+        primaryjoin=
+        "and_(ProjectSummary.project_guid==foreign(ProjectContact.project_guid), ProjectContact.deleted_ind == False)",
+        overlaps="contacts")
+    agent = db.relationship('Party', lazy='joined', foreign_keys=agent_party_guid)
+    facility_operator = db.relationship('Party', lazy='joined', foreign_keys=facility_operator_guid)
 
     nearest_municipality = db.relationship(
-        'Municipality', lazy='joined', foreign_keys=nearest_municipality_guid
-    )
+        'Municipality', lazy='joined', foreign_keys=nearest_municipality_guid)
 
     authorizations = db.relationship(
         'ProjectSummaryAuthorization',
-        primaryjoin='and_(ProjectSummaryAuthorization.project_summary_guid == ProjectSummary.project_summary_guid, ProjectSummaryAuthorization.deleted_ind == False)',
+        primaryjoin=
+        'and_(ProjectSummaryAuthorization.project_summary_guid == ProjectSummary.project_summary_guid, ProjectSummaryAuthorization.deleted_ind == False)',
         lazy='selectin',
         overlaps="project_summary,project_summary_authorizations")
 
@@ -125,33 +123,30 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
     documents = db.relationship(
         'ProjectSummaryDocumentXref',
         lazy='select',
-        primaryjoin='and_(ProjectSummaryDocumentXref.project_summary_id == ProjectSummary.project_summary_id, ProjectSummaryDocumentXref.mine_document_guid == MineDocument.mine_document_guid, MineDocument.is_archived == False)'
+        primaryjoin=
+        'and_(ProjectSummaryDocumentXref.project_summary_id == ProjectSummary.project_summary_id, ProjectSummaryDocumentXref.mine_document_guid == MineDocument.mine_document_guid, MineDocument.is_archived == False)'
     )
 
     mine_documents = db.relationship(
         'MineDocument',
         lazy='select',
         secondary='project_summary_document_xref',
-        secondaryjoin='and_(and_(foreign(ProjectSummaryDocumentXref.mine_document_guid) == remote(MineDocument.mine_document_guid), MineDocument.deleted_ind == False), MineDocument.is_archived == False)',
-        overlaps="mine_document,project_summary_document_xref,documents"
-    )
+        secondaryjoin=
+        'and_(and_(foreign(ProjectSummaryDocumentXref.mine_document_guid) == remote(MineDocument.mine_document_guid), MineDocument.deleted_ind == False), MineDocument.is_archived == False)',
+        overlaps="mine_document,project_summary_document_xref,documents")
 
-    applicant = db.relationship(
-        'Party', lazy='joined', foreign_keys=applicant_party_guid
-    )
+    applicant = db.relationship('Party', lazy='joined', foreign_keys=applicant_party_guid)
 
     municipality = db.relationship(
-        'Municipality', lazy='joined', foreign_keys=nearest_municipality_guid,
-        overlaps="nearest_municipality"
-    )
+        'Municipality',
+        lazy='joined',
+        foreign_keys=nearest_municipality_guid,
+        overlaps="nearest_municipality")
 
     payment_contact = db.relationship(
-        'Party', lazy='joined', foreign_keys=payment_contact_party_guid
-    )
+        'Party', lazy='joined', foreign_keys=payment_contact_party_guid)
 
-    regions = db.relationship(
-        'Regions', lazy='joined', foreign_keys=regional_district_id
-    )
+    regions = db.relationship('Regions', lazy='joined', foreign_keys=regional_district_id)
 
     @classmethod
     def __get_address_type_code(cls, address_data):
@@ -174,7 +169,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         if self.project.project_lead_party_guid:
             return self.project.project_lead_party_guid
         return None
-    
+
     @hybrid_property
     def project_lead_email(self) -> str | None:
         project_lead = Party.find_by_party_guid(self.project_summary_lead_party_guid)
@@ -188,10 +183,8 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
 
     @mine_guid.expression
     def mine_guid(cls):
-        return case(
-            [(cls.project.has(Project.mine_guid.isnot(None)), Project.mine_guid)],
-            else_=None
-        )
+        return case([(cls.project.has(Project.mine_guid.isnot(None)), Project.mine_guid)],
+                    else_=None)
 
     @hybrid_property
     def mine_name(self):
@@ -217,7 +210,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         if len(self.authorizations) > 0:
             return list(set(x.project_summary_authorization_type for x in self.authorizations))
         return []
-        
+
     @classmethod
     def find_by_project_summary_guid(cls, project_summary_guid):
         return cls.query.filter_by(
@@ -245,12 +238,12 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
 
         except ValueError:
             return None
-        
+
     @staticmethod
     def has_new_documents(documents, ams_authorizations) -> bool:
         new_documents = list(filter(lambda doc: doc.get("mine_document_guid") is None, documents))
         has_new_docs = len(new_documents) > 0
-        
+
         amendments = ams_authorizations.get('amendments', [])
         new = ams_authorizations.get('new', [])
         all_ams_auths = amendments + new
@@ -267,7 +260,6 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             break
 
         return has_new_docs or has_new_ams_docs
-
 
     # will update the existing party and address data if it exists, else create a new one
     @classmethod
@@ -302,8 +294,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                 job_title_code=job_title_code,
                 address_type_code=cls.__get_address_type_code(address_data),
                 middle_name=party_data.get('middle_name'),
-                credential_id=party_data.get('credential_id')
-            )
+                credential_id=party_data.get('credential_id'))
 
             if isinstance(address_data, list):
                 for addr in address_data:
@@ -342,7 +333,8 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             updated_authorization.amendment_severity = authorization.get('amendment_severity')
             updated_authorization.is_contaminated = authorization.get('is_contaminated')
             updated_authorization.new_type = authorization.get('new_type')
-            updated_authorization.authorization_description = authorization.get('authorization_description')
+            updated_authorization.authorization_description = authorization.get(
+                'authorization_description')
             updated_authorization.exemption_reason = authorization.get('exemption_reason')
             updated_authorization.exemption_requested = authorization.get('exemption_requested')
             updated_authorization.ams_tracking_number = authorization.get('ams_tracking_number')
@@ -358,10 +350,13 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                             document_manager_guid=doc.get('document_manager_guid'))
                         project_summary_authorization_doc = ProjectSummaryAuthorizationDocumentXref(
                             mine_document_guid=mine_doc.mine_document_guid,
-                            project_summary_authorization_guid=updated_authorization.project_summary_authorization_guid,
-                            project_summary_document_type_code=doc.get('project_summary_document_type_code'))
+                            project_summary_authorization_guid=updated_authorization.
+                            project_summary_authorization_guid,
+                            project_summary_document_type_code=doc.get(
+                                'project_summary_document_type_code'))
                         project_summary_authorization_doc.mine_document = mine_doc
-                        updated_authorization.amendment_documents.append(project_summary_authorization_doc)
+                        updated_authorization.amendment_documents.append(
+                            project_summary_authorization_doc)
         else:
             new_authorization = ProjectSummaryAuthorization(
                 project_summary_guid=self.project_summary_guid,
@@ -378,8 +373,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                 exemption_reason=authorization.get('exemption_reason'),
                 exemption_requested=authorization.get('exemption_requested'),
                 ams_tracking_number=authorization.get('ams_tracking_number'),
-                ams_outcome=authorization.get('ams_outcome')
-            )
+                ams_outcome=authorization.get('ams_outcome'))
             # Check only for new files
             if authorization.get('amendment_documents') is not None:
                 for doc in authorization.get('amendment_documents'):
@@ -390,10 +384,13 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                             document_manager_guid=doc.get('document_manager_guid'))
                         project_summary_authorization_doc = ProjectSummaryAuthorizationDocumentXref(
                             mine_document_guid=mine_doc.mine_document_guid,
-                            project_summary_authorization_guid=new_authorization.project_summary_authorization_guid,
-                            project_summary_document_type_code=doc.get('project_summary_document_type_code'))
+                            project_summary_authorization_guid=new_authorization.
+                            project_summary_authorization_guid,
+                            project_summary_document_type_code=doc.get(
+                                'project_summary_document_type_code'))
                         project_summary_authorization_doc.mine_document = mine_doc
-                        new_authorization.amendment_documents.append(project_summary_authorization_doc)
+                        new_authorization.amendment_documents.append(
+                            project_summary_authorization_doc)
 
             self.authorizations.append(new_authorization)
 
@@ -455,10 +452,10 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
 
         party_type_code = party.get('party_type_code', None)
         address_data = party.get('address')
-        base_schema = person_schema if (party_type_code == None or party_type_code == 'PER') else org_schema
-        address_type_code = address_data[0].get('address_type_code') if isinstance(address_data,
-                                                                                   list) else address_data.get(
-            'address_type_code')
+        base_schema = person_schema if (party_type_code == None
+                                        or party_type_code == 'PER') else org_schema
+        address_type_code = address_data[0].get('address_type_code') if isinstance(
+            address_data, list) else address_data.get('address_type_code')
 
         if address_type_code == 'INT':
             base_schema |= party_int_phone_schema
@@ -491,7 +488,8 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
 
         base_schema |= {
             'address': {
-                'required': True,
+                'required':
+                True,
                 'anyof': [
                     {
                         'type': 'list',
@@ -625,9 +623,12 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                 'type': 'number',
             },
             'facility_coords_source': {
-                'nullable': True,
-                'type': 'string',
-                'allowed': ['GPS', 'Survey', 'Google Earth, Google Maps, or other Satellite Imagery', 'Other'],
+                'nullable':
+                True,
+                'type':
+                'string',
+                'allowed':
+                ['GPS', 'Survey', 'Google Earth, Google Maps, or other Satellite Imagery', 'Other'],
             },
             'nearest_municipality': {
                 'nullable': True,
@@ -675,9 +676,12 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                 'type': 'number',
             },
             'facility_coords_source': {
-                'required': True,
-                'type': 'string',
-                'allowed': ['GPS', 'Survey', 'Google Earth, Google Maps, or other Satellite Imagery', 'Other'],
+                'required':
+                True,
+                'type':
+                'string',
+                'allowed':
+                ['GPS', 'Survey', 'Google Earth, Google Maps, or other Satellite Imagery', 'Other'],
             },
             'nearest_municipality': {
                 'nullable': True,
@@ -711,8 +715,10 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
 
         location_access_data_to_validate = data
         if facility_latitude != None and facility_longitude != None:
-            location_access_data_to_validate = {**data, 'facility_latitude': float(facility_latitude),
-                                                'facility_longitude': float(facility_longitude)}
+            location_access_data_to_validate = {
+                **data, 'facility_latitude': float(facility_latitude),
+                'facility_longitude': float(facility_longitude)
+            }
 
         location_access_schema = draft_location_access_schema
         if do_full_validation:
@@ -859,14 +865,13 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             do_full_validation = True if (status_code == 'SUB' and is_historic != True) else False
 
             # Validate Authorizations Involved
-            if (do_full_validation
-                    and len(ams_authorizations.get('amendments', [])) == 0
-                    and len(ams_authorizations.get('new', [])) == 0
-                    and len(authorizations) == 0):
+            if (do_full_validation and len(ams_authorizations.get('amendments', [])) == 0
+                    and len(ams_authorizations.get('new', [])) == 0 and len(authorizations) == 0):
                 errors_found['authorizations'].append('Authorizations Involved not provided')
 
             for authorization in authorizations:
-                authorization_validation = ProjectSummaryAuthorization.validate_authorization(authorization, False)
+                authorization_validation = ProjectSummaryAuthorization.validate_authorization(
+                    authorization, False)
                 if authorization_validation != True:
                     errors_found['authorizations'].append(authorization_validation)
 
@@ -875,11 +880,12 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                     ams_authorization_amendments_validation = ProjectSummaryAuthorization.validate_authorization(
                         authorization, True)
                     if ams_authorization_amendments_validation != True:
-                        errors_found['authorizations'].append(ams_authorization_amendments_validation)
+                        errors_found['authorizations'].append(
+                            ams_authorization_amendments_validation)
 
                 for authorization in ams_authorizations.get('new', []):
-                    ams_authorization_new_validation = ProjectSummaryAuthorization.validate_authorization(authorization,
-                                                                                                          True)
+                    ams_authorization_new_validation = ProjectSummaryAuthorization.validate_authorization(
+                        authorization, True)
                     if ams_authorization_new_validation != True:
                         errors_found['authorizations'].append(ams_authorization_new_validation)
 
@@ -893,9 +899,11 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                     errors_found['applicant_info'].append(applicant_validation)
 
                 if payment_contact['address'] == None:
-                    errors_found['applicant_info'].append('Payment contact address info not provided')
+                    errors_found['applicant_info'].append(
+                        'Payment contact address info not provided')
                 else:
-                    payment_contact_validation = ProjectSummary.validate_project_party(payment_contact, 'applicant')
+                    payment_contact_validation = ProjectSummary.validate_project_party(
+                        payment_contact, 'applicant')
                     if payment_contact_validation != True:
                         errors_found['applicant_info'].append(payment_contact_validation)
 
@@ -909,26 +917,30 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
 
             # Validate Mine Components and Offsite Infrastructure
             if do_full_validation and facility_operator == None:
-                errors_found['mine_component_and_offsite'].append('Facility address info not provided')
+                errors_found['mine_component_and_offsite'].append(
+                    'Facility address info not provided')
             elif facility_operator != None:
-                mine_offsite_party_validation = ProjectSummary.validate_project_party(facility_operator,
-                                                                                      'mine_component_and_offsite')
+                mine_offsite_party_validation = ProjectSummary.validate_project_party(
+                    facility_operator, 'mine_component_and_offsite')
                 if mine_offsite_party_validation != True:
                     errors_found['mine_component_and_offsite'].append(mine_offsite_party_validation)
 
-            mine_offsite_validation = ProjectSummary.validate_mine_component_offsite_infrastructure(data, do_full_validation)
+            mine_offsite_validation = ProjectSummary.validate_mine_component_offsite_infrastructure(
+                data, do_full_validation)
             if mine_offsite_validation != True:
                 errors_found['mine_component_and_offsite'].append(mine_offsite_validation)
 
             # Validate Location, Access and Land Use
             if do_full_validation and is_legal_land_owner == None:
-                errors_found['location_access_land_use'].append('Is the Applicant the Legal Land Owner not provided')
+                errors_found['location_access_land_use'].append(
+                    'Is the Applicant the Legal Land Owner not provided')
             elif is_legal_land_owner == False:
                 legal_land_validation = ProjectSummary.validate_legal_land(data)
                 if legal_land_validation != True:
                     errors_found['location_access_land_use'].append(legal_land_validation)
 
-            location_access_validation = ProjectSummary.validate_location_access(data, do_full_validation)
+            location_access_validation = ProjectSummary.validate_location_access(
+                data, do_full_validation)
             if location_access_validation != True:
                 errors_found['location_access_land_use'].append(location_access_validation)
 
@@ -943,7 +955,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
     def send_status_notification(self, prev_status, mine):
         if prev_status == self.status_code:
             return
-        
+
         message = ''
         activity_recipients = ActivityRecipients.all_users
         extra_data = {'project': {'project_guid': str(self.project.project_guid)}}
@@ -977,19 +989,22 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         # use same message for EMA-only "update" notifications
         elif not has_mines_act_auths and has_ema_auths:
             message = f'Updates to {noun} for ({self.project.project_title}) has been submitted for ({self.project.mine_name})'
-        
+
         self.send_project_summary_email(mine, message)
-        trigger_notification(message, ActivityType.major_mine_desc_submitted, self.project.mine, 'ProjectSummary',
-                                self.project_summary_guid, extra_data, None, activity_recipients)
+        trigger_notification(message, ActivityType.major_mine_desc_submitted, self.project.mine,
+                             'ProjectSummary', self.project_summary_guid, extra_data, None,
+                             activity_recipients)
 
     def get_ams_tracking_details(self, ams_tracking_results, project_summary_authorization_guid):
         if not ams_tracking_results:
             return None
 
-        ams_tracking_result = next((item for item in ams_tracking_results if item.get(
-            'project_summary_authorization_guid') == project_summary_authorization_guid), None)
+        ams_tracking_result = next(
+            (item for item in ams_tracking_results
+             if item.get('project_summary_authorization_guid') == project_summary_authorization_guid
+             ), None)
         return ams_tracking_result
-    
+
     def set_ams_tracking_details(self, authorization, ams_tracking_details):
         ams_error_details = ams_tracking_details.get('detail', None)
         if ams_error_details and isinstance(ams_error_details, list):
@@ -1002,7 +1017,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             authorization['ams_status_code'] = '200'
             authorization['ams_outcome'] = [ams_tracking_details.get('outcome')]
             authorization['ams_tracking_number'] = ams_tracking_details.get('trackingnumber', '0')
-        
+
         return authorization
 
     @classmethod
@@ -1116,8 +1131,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                payment_contact=None,
                incorporation_number=None,
                is_historic=False,
-               add_to_session=True
-               ):
+               add_to_session=True):
 
         # Update simple properties.
         # If we assign a project lead update status to Assigned and vice versa Submitted.
@@ -1146,7 +1160,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         self.is_billing_address_same_as_legal_address = is_billing_address_same_as_legal_address
         self.company_alias = company_alias
         self.is_historic = is_historic
-        self.incorporation_number=incorporation_number
+        self.incorporation_number = incorporation_number
 
         # TODO - Turn this on when document removal is activated on the front end.
         # Get the GUIDs of the updated documents.
@@ -1164,18 +1178,20 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             self.applicant_party_guid = applicant_party.party_guid
 
         if payment_contact is not None:
-            if self.payment_contact != None and len(payment_contact['address']) == 1 and len(self.payment_contact.address) == 0:
-                    temp_address = Address.create(
-                        suite_no=None,
-                        address_line_1=None,
-                        city=None,
-                        sub_division_code=None,
-                        post_code=None,
-                        address_type_code=None,
-                    )
+            if self.payment_contact != None and len(payment_contact['address']) == 1 and len(
+                    self.payment_contact.address) == 0:
+                temp_address = Address.create(
+                    suite_no=None,
+                    address_line_1=None,
+                    city=None,
+                    sub_division_code=None,
+                    post_code=None,
+                    address_type_code=None,
+                )
 
-                    (self.payment_contact.address).append(temp_address)
-            payment_contact_party = self.create_or_update_party(payment_contact, 'PAY', self.payment_contact)
+                (self.payment_contact.address).append(temp_address)
+            payment_contact_party = self.create_or_update_party(payment_contact, 'PAY',
+                                                                self.payment_contact)
             payment_contact_party.save()
             self.payment_contact_party_guid = payment_contact_party.party_guid
 
@@ -1205,14 +1221,18 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         if facility_operator and facility_type:
             if not facility_operator['party_type_code']:
                 facility_operator["party_type_code"] = "PER"
-            fop_party = self.create_or_update_party(facility_operator, 'FOP', self.facility_operator)
+            fop_party = self.create_or_update_party(facility_operator, 'FOP',
+                                                    self.facility_operator)
             fop_party.save()
             self.facility_operator_guid = fop_party.party_guid
 
         self.nearest_municipality_guid = nearest_municipality
 
-        spatial_docs = [doc for doc in documents if doc['project_summary_document_type_code'] == 'SPT']
-        updated_spatial_docs = MineDocumentBundle.update_spatial_mine_document_with_bundle_id(spatial_docs)
+        spatial_docs = [
+            doc for doc in documents if doc['project_summary_document_type_code'] == 'SPT'
+        ]
+        updated_spatial_docs = MineDocumentBundle.update_spatial_mine_document_with_bundle_id(
+            spatial_docs)
 
         # update the original documents array with the updated spatial documents
         documents = [doc for doc in documents if doc['project_summary_document_type_code'] != 'SPT']
@@ -1221,7 +1241,8 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         # Create or update existing documents.
         for doc in documents:
             mine_document_guid = doc.get('mine_document_guid')
-            project_summary_document_type_code = doc.get('project_summary_document_type_code', 'GEN')
+            project_summary_document_type_code = doc.get('project_summary_document_type_code',
+                                                         'GEN')
             if mine_document_guid:
                 project_summary_doc = ProjectSummaryDocumentXref.find_by_mine_document_guid(
                     mine_document_guid)
@@ -1231,8 +1252,8 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                     mine_guid=self.mine_guid,
                     document_name=doc.get('document_name'),
                     document_manager_guid=doc.get('document_manager_guid'),
-                    mine_document_bundle_id=doc['mine_document_bundle_id'] if doc.get('mine_document_bundle_id') else None
-                )
+                    mine_document_bundle_id=doc['mine_document_bundle_id']
+                    if doc.get('mine_document_bundle_id') else None)
                 project_summary_doc = ProjectSummaryDocumentXref(
                     mine_document_guid=mine_doc.mine_document_guid,
                     project_summary_id=self.project_summary_id,
@@ -1274,72 +1295,33 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             amendment_ams_results = []
             if self.status_code == 'SUB':
                 new_ams_results = AMSApiService.create_new_ams_authorization(
-                    ams_authorizations,
-                    applicant,
-                    nearest_municipality,
-                    agent,
-                    contacts,
-                    facility_type,
-                    facility_desc,
-                    facility_latitude,
-                    facility_longitude,
-                    facility_coords_source,
-                    facility_coords_source_desc,
-                    legal_land_desc,
-                    facility_operator,
-                    legal_land_owner_name,
-                    legal_land_owner_contact_number,
-                    legal_land_owner_email_address,
-                    is_legal_land_owner,
+                    ams_authorizations, applicant, nearest_municipality, agent, contacts,
+                    facility_type, facility_desc, facility_latitude, facility_longitude,
+                    facility_coords_source, facility_coords_source_desc, legal_land_desc,
+                    facility_operator, legal_land_owner_name, legal_land_owner_contact_number,
+                    legal_land_owner_email_address, is_legal_land_owner,
                     is_crown_land_federal_or_provincial,
                     is_landowner_aware_of_discharge_application,
-                    has_landowner_received_copy_of_application,
-                    facility_pid_pin_crown_file_no,
-                    company_alias,
-                    zoning,
-                    zoning_reason,
-                    regional_district_name,
-                    project.project_guid,
-                    payment_contact,
-                    incorporation_number)
+                    has_landowner_received_copy_of_application, facility_pid_pin_crown_file_no,
+                    company_alias, zoning, zoning_reason, regional_district_name,
+                    project.project_guid, payment_contact, incorporation_number)
 
                 amendment_ams_results = AMSApiService.create_amendment_ams_authorization(
-                    ams_authorizations,
-                    applicant,
-                    nearest_municipality,
-                    agent,
-                    contacts,
-                    facility_type,
-                    facility_desc,
-                    facility_latitude,
-                    facility_longitude,
-                    facility_coords_source,
-                    facility_coords_source_desc,
-                    legal_land_desc,
-                    facility_operator,
-                    legal_land_owner_name,
-                    legal_land_owner_contact_number,
-                    legal_land_owner_email_address,
-                    is_landowner_aware_of_discharge_application,
-                    has_landowner_received_copy_of_application,
-                    facility_pid_pin_crown_file_no,
-                    company_alias,
-                    zoning,
-                    zoning_reason,
-                    regional_district_name,
-                    is_legal_land_owner,
-                    is_crown_land_federal_or_provincial,
-                    project.project_guid,
-                    payment_contact,
-                    incorporation_number
-                )
+                    ams_authorizations, applicant, nearest_municipality, agent, contacts,
+                    facility_type, facility_desc, facility_latitude, facility_longitude,
+                    facility_coords_source, facility_coords_source_desc, legal_land_desc,
+                    facility_operator, legal_land_owner_name, legal_land_owner_contact_number,
+                    legal_land_owner_email_address, is_landowner_aware_of_discharge_application,
+                    has_landowner_received_copy_of_application, facility_pid_pin_crown_file_no,
+                    company_alias, zoning, zoning_reason, regional_district_name,
+                    is_legal_land_owner, is_crown_land_federal_or_provincial, project.project_guid,
+                    payment_contact, incorporation_number)
 
             for authorization in ams_authorizations.get('amendments', []):
                 amend_auth = authorization
                 if amendment_ams_results:
-                    ams_tracking_details = self.get_ams_tracking_details(amendment_ams_results,
-                                                                         amend_auth.get(
-                                                                             'project_summary_authorization_guid'))
+                    ams_tracking_details = self.get_ams_tracking_details(
+                        amendment_ams_results, amend_auth.get('project_summary_authorization_guid'))
                     if ams_tracking_details:
                         amend_auth = self.set_ams_tracking_details(amend_auth, ams_tracking_details)
                 self.create_or_update_authorization(amend_auth)
@@ -1347,9 +1329,8 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             for authorization in ams_authorizations.get('new', []):
                 new_auth = authorization
                 if new_ams_results:
-                    ams_tracking_details = self.get_ams_tracking_details(new_ams_results,
-                                                                         new_auth.get(
-                                                                             'project_summary_authorization_guid'))
+                    ams_tracking_details = self.get_ams_tracking_details(
+                        new_ams_results, new_auth.get('project_summary_authorization_guid'))
                     if ams_tracking_details:
                         new_auth = self.set_ams_tracking_details(new_auth, ams_tracking_details)
                 self.create_or_update_authorization(new_auth)
@@ -1367,7 +1348,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
     def send_project_summary_document_email(self, mine) -> None:
         if is_feature_enabled(Feature.MINE_APPLICATION_FILE_UDPATE_ALERTS):
             has_ema_auths = self.project.has_ema_auths()
-            has_mines_act_auths = self.project.has_mines_act_auths()            
+            has_mines_act_auths = self.project.has_mines_act_auths()
 
             message = f'File(s) in project {self.project.project_title} has been updated for mine {mine.mine_name}'
             project_lead_email = self.project_lead_email
@@ -1375,7 +1356,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
             emails = {
                 'SUB': [PERM_RECL_EMAIL],
                 'ASG': [PERM_RECL_EMAIL, project_lead_email],
-                'CHR': [PERM_RECL_EMAIL, project_lead_email] 
+                'CHR': [PERM_RECL_EMAIL, project_lead_email]
             }
             email_recipients = emails.get(self.status_code)
 
@@ -1397,8 +1378,10 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                         "mine_name": mine.mine_name,
                         "mine_no": mine.mine_no,
                     },
-                    "message": message,
-                    "core_project_summary_link": f'{Config.CORE_WEB_URL}/pre-applications/{self.project.project_guid}/overview'
+                    "message":
+                    message,
+                    "core_project_summary_link":
+                    f'{Config.CORE_WEB_URL}/pre-applications/{self.project.project_guid}/overview'
                 }
                 EmailService.send_template_email_async(
                     subject=subject,
@@ -1407,9 +1390,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                     context=ministry_context,
                     cc=cc,
                     reference_id=str(self.project_summary_guid),
-                    reference_table='project_summary'
-                )
-
+                    reference_table='project_summary')
 
     def send_project_summary_email(self, mine, message) -> None:
 
@@ -1424,7 +1405,7 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
         }
 
         send_ms_email = self.status_code != "DFT" and self.status_code != "ASG"
-        
+
         ministry_recipients = ministry_emails.get(self.status_code) or []
 
         if not self.project.has_mines_act_auths():
@@ -1450,8 +1431,10 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                 "mine_name": mine.mine_name,
                 "mine_no": mine.mine_no,
             },
-            "message": message,
-            "core_project_summary_link": f'{Config.CORE_WEB_URL}/pre-applications/{self.project.project_guid}/overview'
+            "message":
+            message,
+            "core_project_summary_link":
+            f'{Config.CORE_WEB_URL}/pre-applications/{self.project.project_guid}/overview'
         }
 
         minespace_context = {
@@ -1460,7 +1443,8 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                 "mine_no": mine.mine_no,
             },
             "message": message,
-            "minespace_project_summary_link": f'{Config.MINESPACE_PROD_URL}/projects/{self.project.project_guid}/overview',
+            "minespace_project_summary_link":
+            f'{Config.MINESPACE_PROD_URL}/projects/{self.project.project_guid}/overview',
             "ema_auth_link": f'{Config.EMA_AUTH_LINK}',
         }
 
@@ -1470,11 +1454,11 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                 recipients=ministry_recipients,
                 template_path=ministry_template,
                 context=ministry_context,
-                distribution_list=DistributionListNames.MAJOR_PROJECTS if self.status_code == 'SUB' else None,
+                distribution_list=DistributionListNames.MAJOR_PROJECTS
+                if self.status_code == 'SUB' else None,
                 cc=cc,
                 reference_id=str(self.project_summary_guid),
-                reference_table='project_summary'
-            )
+                reference_table='project_summary')
         if send_ms_email and minespace_recipients:
             EmailService.send_template_email_async(
                 subject=subject,
@@ -1483,5 +1467,4 @@ class ProjectSummary(SoftDeleteMixin, AuditMixin, Base):
                 context=minespace_context,
                 cc=cc,
                 reference_id=str(self.project_summary_guid),
-                reference_table='project_summary'
-            )
+                reference_table='project_summary')

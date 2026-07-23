@@ -2,21 +2,10 @@ from flask_restx import fields
 
 from app.extensions import api
 
-ORGBOOK_ENTITY_NAME = api.model(
-    'OrgBookEntityName', {
-        'id': fields.Integer,
-        'text': fields.String,
-        'language': fields.String,
-        'credential_id': fields.Integer,
-        'type': fields.String,
-    })
-
-ORGBOOK_SEARCH_RESULT = api.model(
-    'OrgBookSearchResult', {
-        'id': fields.Integer,
-        'names': fields.List(fields.Nested(ORGBOOK_ENTITY_NAME)),
-        'inactive': fields.Boolean,
-    })
+ORGBOOK_SEARCH_RESULT_ITEM = api.model('OrgBookSearchResultItem', {
+    'registration_id': fields.String,
+    'text': fields.String,
+})
 
 # ---------------------------------------------------------------------------
 # OrgBook credential
@@ -77,73 +66,60 @@ ORGBOOK_ATTRIBUTE = api.model(
         'credential_id': fields.Integer,
     })
 
-ORGBOOK_TOPIC = api.model(
-    'OrgBookTopic', {
-        'id': fields.Integer,
-        'create_timestamp': fields.String,
-        'update_timestamp': fields.String,
-        'source_id': fields.String,
-        'type': fields.String,
-        'names': fields.List(fields.Nested(ORGBOOK_ENTITY_NAME)),
-        'local_name': fields.Nested(ORGBOOK_ENTITY_NAME, allow_null=True, skip_none=True),
-        'remote_name': fields.Nested(ORGBOOK_ENTITY_NAME, allow_null=True, skip_none=True),
-        'addresses': fields.List(fields.Raw),
-        'attributes': fields.List(fields.Nested(ORGBOOK_ATTRIBUTE)),
-    })
+# ORGBOOK_CREDENTIAL_SET_ENTRY = api.model(
+#     'OrgBookCredentialSetEntry', {
+#         'id': fields.Integer,
+#         'create_timestamp': fields.String,
+#         'effective_date': fields.String,
+#         'inactive': fields.Boolean,
+#         'latest': fields.Boolean,
+#         'revoked': fields.Boolean,
+#         'revoked_date': fields.String,
+#         'credential_id': fields.String,
+#         'credential_type': fields.Nested(ORGBOOK_CREDENTIAL_TYPE),
+#         'addresses': fields.List(fields.Raw),
+#         'attributes': fields.List(fields.Nested(ORGBOOK_ATTRIBUTE)),
+#         'names': fields.List(fields.Nested(ORGBOOK_ENTITY_NAME)),
+#         'local_name': fields.Nested(ORGBOOK_ENTITY_NAME, allow_null=True, skip_none=True),
+#         'remote_name': fields.Nested(ORGBOOK_ENTITY_NAME, allow_null=True, skip_none=True),
+#         'topic': fields.Nested(ORGBOOK_TOPIC),
+#         'related_topics': fields.List(fields.Raw),
+#         'raw_data': fields.Raw,
+#     })
 
-ORGBOOK_CREDENTIAL_SET_ENTRY = api.model(
-    'OrgBookCredentialSetEntry', {
-        'id': fields.Integer,
-        'create_timestamp': fields.String,
-        'effective_date': fields.String,
-        'inactive': fields.Boolean,
-        'latest': fields.Boolean,
-        'revoked': fields.Boolean,
-        'revoked_date': fields.String,
-        'credential_id': fields.String,
-        'credential_type': fields.Nested(ORGBOOK_CREDENTIAL_TYPE),
-        'addresses': fields.List(fields.Raw),
-        'attributes': fields.List(fields.Nested(ORGBOOK_ATTRIBUTE)),
-        'names': fields.List(fields.Nested(ORGBOOK_ENTITY_NAME)),
-        'local_name': fields.Nested(ORGBOOK_ENTITY_NAME, allow_null=True, skip_none=True),
-        'remote_name': fields.Nested(ORGBOOK_ENTITY_NAME, allow_null=True, skip_none=True),
-        'topic': fields.Nested(ORGBOOK_TOPIC),
-        'related_topics': fields.List(fields.Raw),
-        'raw_data': fields.Raw,
-    })
-
-ORGBOOK_CREDENTIAL_SET = api.model(
-    'OrgBookCredentialSet', {
-        'id': fields.Integer,
-        'create_timestamp': fields.String,
-        'update_timestamp': fields.String,
-        'latest_credential_id': fields.Integer,
-        'topic_id': fields.Integer,
-        'first_effective_date': fields.String,
-        'last_effective_date': fields.String,
-        'credentials': fields.List(fields.Nested(ORGBOOK_CREDENTIAL_SET_ENTRY)),
-    })
+# ORGBOOK_CREDENTIAL_SET = api.model(
+#     'OrgBookCredentialSet', {
+#         'id': fields.Integer,
+#         'create_timestamp': fields.String,
+#         'update_timestamp': fields.String,
+#         'latest_credential_id': fields.Integer,
+#         'topic_id': fields.Integer,
+#         'first_effective_date': fields.String,
+#         'last_effective_date': fields.String,
+#         'credentials': fields.List(fields.Nested(ORGBOOK_CREDENTIAL_SET_ENTRY)),
+#     })
 
 ORGBOOK_CREDENTIAL = api.model(
-    'OrgBookCredential', {
+    'OrgBookCredential',
+    {
         'id': fields.Integer,
-        'create_timestamp': fields.String,
-        'effective_date': fields.String,
-        'inactive': fields.Boolean,
-        'latest': fields.Boolean,
-        'revoked': fields.Boolean,
-        'revoked_date': fields.String,
-        'credential_id': fields.String,
-        'credential_type': fields.Nested(ORGBOOK_CREDENTIAL_TYPE),
-        'addresses': fields.List(fields.Raw),
-        'attributes': fields.List(fields.Nested(ORGBOOK_ATTRIBUTE)),
-        'names': fields.List(fields.Nested(ORGBOOK_ENTITY_NAME)),
-        'local_name': fields.Nested(ORGBOOK_ENTITY_NAME, allow_null=True, skip_none=True),
-        'remote_name': fields.Nested(ORGBOOK_ENTITY_NAME, allow_null=True, skip_none=True),
-        'topic': fields.Nested(ORGBOOK_TOPIC),
-        'related_topics': fields.List(fields.Raw),
-        'raw_data': fields.Raw,
-        'credential_set': fields.Nested(ORGBOOK_CREDENTIAL_SET),
+                                                                         #'create_timestamp': fields.String,
+                                                                         #'effective_date': fields.String,
+                                                                         #'inactive': fields.Boolean,
+                                                                         #'latest': fields.Boolean,
+                                                                         #'revoked': fields.Boolean,
+                                                                         #'revoked_date': fields.String,
+                                                                         #'credential_id': fields.String,
+                                                                         #'credential_type': fields.Nested(ORGBOOK_CREDENTIAL_TYPE),
+                                                                         #'addresses': fields.List(fields.Raw),
+                                                                         #'attributes': fields.List(fields.Nested(ORGBOOK_ATTRIBUTE)),
+        'names': fields.List(fields.Nested(ORGBOOK_SEARCH_RESULT_ITEM)),
+                                                                         #'local_name': fields.Nested(ORGBOOK_ENTITY_NAME, allow_null=True, skip_none=True),
+                                                                         #'remote_name': fields.Nested(ORGBOOK_ENTITY_NAME, allow_null=True, skip_none=True),
+                                                                         #'topic': fields.Nested(ORGBOOK_TOPIC),
+                                                                         #'related_topics': fields.List(fields.Raw),
+                                                                         #'raw_data': fields.Raw,
+                                                                         #'credential_set': fields.Nested(ORGBOOK_CREDENTIAL_SET),
     })
 
 # ---------------------------------------------------------------------------

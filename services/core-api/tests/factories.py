@@ -24,11 +24,9 @@ from app.api.mines.explosives_permit.models.explosives_permit import (
     ExplosivesPermitMagazine,
 )
 from app.api.mines.explosives_permit_amendment.models.explosives_permit_amendment import (
-    ExplosivesPermitAmendment,
-)
+    ExplosivesPermitAmendment, )
 from app.api.mines.incidents.models.mine_incident_document_xref import (
-    MineIncidentDocumentXref,
-)
+    MineIncidentDocumentXref, )
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.mine.models.mine_type import MineType
 from app.api.mines.mine.models.mine_type_detail import MineTypeDetail
@@ -36,25 +34,19 @@ from app.api.mines.mine.models.mine_verified_status import MineVerifiedStatus
 from app.api.mines.permits.permit.models.mine_permit_xref import MinePermitXref
 from app.api.mines.permits.permit.models.permit import Permit
 from app.api.mines.permits.permit_amendment.models.permit_amendment import (
-    PermitAmendment,
-)
+    PermitAmendment, )
 from app.api.mines.permits.permit_amendment.models.permit_amendment_document import (
-    PermitAmendmentDocument,
-)
+    PermitAmendmentDocument, )
 from app.api.mines.permits.permit_conditions.models.permit_conditions import (
-    PermitConditions,
-)
+    PermitConditions, )
 from app.api.mines.permits.permit_conditions.models.standard_permit_conditions import (
-    StandardPermitConditions,
-)
+    StandardPermitConditions, )
 from app.api.mines.permits.permit_extraction.models.permit_extraction_task import (
-    PermitExtractionTask,
-)
+    PermitExtractionTask, )
 from app.api.mines.reports.models.mine_report import MineReport
 from app.api.mines.reports.models.mine_report_comment import MineReportComment
 from app.api.mines.reports.models.mine_report_definition_compliance_article_xref import (
-    MineReportDefinitionComplianceArticleXref,
-)
+    MineReportDefinitionComplianceArticleXref, )
 from app.api.compliance.models.compliance_article import ComplianceArticle
 from app.api.mines.reports.models.mine_report_permit_requirement import (
     CimOrCpo,
@@ -84,45 +76,34 @@ from app.api.notice_of_departure.models.notice_of_departure import (
 )
 from app.api.parties.party.models.address import Address
 from app.api.parties.party.models.party import Party
-from app.api.parties.party.models.party_orgbook_entity import PartyOrgBookEntity
+from app.api.parties.party.models.party_bc_registration import PartyBCRegistration
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from app.api.parties.party_appt.models.party_business_role_appt import (
-    PartyBusinessRoleAppointment,
-)
+    PartyBusinessRoleAppointment, )
 from app.api.projects.information_requirements_table.models.information_requirements_table import (
-    InformationRequirementsTable,
-)
+    InformationRequirementsTable, )
 from app.api.projects.information_requirements_table.models.information_requirements_table_document_xref import (
-    InformationRequirementsTableDocumentXref,
-)
+    InformationRequirementsTableDocumentXref, )
 from app.api.projects.major_mine_application.models.major_mine_application import (
-    MajorMineApplication,
-)
+    MajorMineApplication, )
 from app.api.projects.project.models.project import Project
 from app.api.projects.project_contact.models.project_contact import ProjectContact
 from app.api.projects.project_decision_package.models.project_decision_package import (
-    ProjectDecisionPackage,
-)
+    ProjectDecisionPackage, )
 from app.api.projects.project_decision_package.models.project_decision_package_document_xref import (
-    ProjectDecisionPackageDocumentXref,
-)
+    ProjectDecisionPackageDocumentXref, )
 from app.api.projects.project_link.models.project_link import ProjectLink
 from app.api.projects.project_summary.models.project_summary import ProjectSummary
 from app.api.projects.project_summary.models.project_summary_authorization import (
-    ProjectSummaryAuthorization,
-)
+    ProjectSummaryAuthorization, )
 from app.api.projects.project_summary.models.project_summary_authorization_document_xref import (
-    ProjectSummaryAuthorizationDocumentXref,
-)
+    ProjectSummaryAuthorizationDocumentXref, )
 from app.api.projects.project_summary.models.project_summary_contact import (
-    ProjectSummaryContact,
-)
+    ProjectSummaryContact, )
 from app.api.projects.project_summary.models.project_summary_document_xref import (
-    ProjectSummaryDocumentXref,
-)
+    ProjectSummaryDocumentXref, )
 from app.api.projects.project_summary.models.project_summary_ministry_comment import (
-    ProjectSummaryMinistryComment,
-)
+    ProjectSummaryMinistryComment, )
 from app.api.securities.models.bond import Bond
 from app.api.securities.models.reclamation_invoice import ReclamationInvoice
 from app.api.users.core.models.core_user import CoreUser, IdirUserDetail
@@ -448,6 +429,7 @@ class ProjectSummaryDocumentFactory(BaseFactory):
     project_summary_id = factory.SelfAttribute('project_summary.project_summary_id')
     project_summary_document_type_code = factory.LazyFunction(RandomProjectSummaryDocumentTypeCode)
 
+
 class ProjectSummaryAuthorizationDocumentFactory(BaseFactory):
 
     class Meta:
@@ -455,13 +437,17 @@ class ProjectSummaryAuthorizationDocumentFactory(BaseFactory):
 
     class Params:
         project_summary = factory.SubFactory('tests.factories.ProjectSummaryFactory')
-        project_summary_authorization = factory.SubFactory('tests.factories.ProjectSummaryAuthorizationFactory')
-        mine_document = factory.SubFactory(MineDocumentFactory,mine_guid=factory.SelfAttribute('..project_summary.mine_guid'))
+        project_summary_authorization = factory.SubFactory(
+            'tests.factories.ProjectSummaryAuthorizationFactory')
+        mine_document = factory.SubFactory(
+            MineDocumentFactory, mine_guid=factory.SelfAttribute('..project_summary.mine_guid'))
 
     project_summary_authorization_document_xref_guid = GUID
-    project_summary_authorization_guid = factory.SelfAttribute('project_summary_authorization.project_summary_authorization_guid')
+    project_summary_authorization_guid = factory.SelfAttribute(
+        'project_summary_authorization.project_summary_authorization_guid')
     mine_document_guid = factory.SelfAttribute('mine_document.mine_document_guid')
     project_summary_document_type_code = factory.LazyFunction(RandomProjectSummaryDocumentTypeCode)
+
 
 class InformationRequirementsTableDocumentFactory(BaseFactory):
 
@@ -838,10 +824,10 @@ class MinePartyAppointmentFactory(BaseFactory):
         if o.mine_party_appt_type_code in TSF_ALLOWED_CONTACT_TYPES else None)
 
 
-class PartyOrgBookEntityFactory(BaseFactory):
+class PartyBCRegistrationFactory(BaseFactory):
 
     class Meta:
-        model = PartyOrgBookEntity
+        model = PartyBCRegistration
 
     party = factory.SubFactory(PartyFactory, company=True)
     registration_id = factory.Faker('pyint')
@@ -865,7 +851,9 @@ class CoreUserFactory(BaseFactory):
     last_logon = TODAY
     idir_user_detail = factory.RelatedFactory('tests.factories.IdirUserDetailFactory', 'core_user')
 
+
 class UserFactory(BaseFactory):
+
     class Meta:
         model = User
 
@@ -1141,25 +1129,32 @@ class MinePermitXrefFactory(BaseFactory):
     permit_id = factory.SelfAttribute('permit.permit_id')
     mine_guid = factory.SelfAttribute('mine.mine_guid')
 
+
 class PermitConditionTagFactory(BaseFactory):
+
     class Meta:
         model = PermitConditionTag
-    
+
     permit_condition_tag_guid = GUID
     description = factory.Faker('text', max_nb_chars=20)
     deleted_ind = False
 
+
 class StandardPermitConditionTagXrefFactory(BaseFactory):
+
     class Meta:
         model = StandardPermitConditionTagXref
 
     class Params:
         permit_condition_tag = factory.SubFactory(PermitConditionTagFactory)
         standard_permit_condition = factory.SubFactory(StandardPermitConditions)
-    
+
     standard_permit_condition_tag_xref_guid = GUID
-    permit_condition_tag_guid = factory.SelfAttribute('permit_condition_tag.permit_condition_tag_guid')
-    standard_permit_condition_id = factory.SelfAttribute('standard_permit_condition.standard_permit_condition_id')
+    permit_condition_tag_guid = factory.SelfAttribute(
+        'permit_condition_tag.permit_condition_tag_guid')
+    standard_permit_condition_id = factory.SelfAttribute(
+        'standard_permit_condition.standard_permit_condition_id')
+
 
 class PermitAmendmentFactory(BaseFactory):
 
@@ -1205,9 +1200,8 @@ class PermitAmendmentDocumentFactory(BaseFactory):
 
     class Meta:
         model = PermitAmendmentDocument
-    
-    permit_amendment = factory.SubFactory(PermitAmendmentFactory)
 
+    permit_amendment = factory.SubFactory(PermitAmendmentFactory)
 
     permit_amendment_document_guid = GUID
     permit_amendment_id = factory.SelfAttribute('permit_amendment.permit_amendment_id')
@@ -1530,27 +1524,31 @@ class ProjectSummaryAuthorizationFactory(BaseFactory):
     existing_permits_authorizations = []
     deleted_ind = False
 
+
 class ProjectSummaryAmsAuthorizationFactory(ProjectSummaryAuthorizationFactory):
+
     class Params:
         authorization_description = factory.Faker('sentence', nb_words=10)
         exemption_requested = False
         is_contaminated = False
-        exemption_reason = factory.Faker('sentence', nb_words=5) 
+        exemption_reason = factory.Faker('sentence', nb_words=5)
         submit_success = factory.Trait(
             ams_status_code='200',
             ams_tracking_number=factory.LazyFunction(lambda: str(random.randint(1000, 99999))),
             ams_outcome='{Successfully create new Authorization Amendment}',
-            ams_submission_timestamp=TODAY
-        )       
+            ams_submission_timestamp=TODAY)
 
     project_summary_authorization_type = factory.LazyFunction(RandomAmsAuthType)
-    project_summary_permit_type = factory.LazyFunction(lambda: [random.choice(["NEW", "AMENDMENT"])])    
-    existing_permits_authorizations = factory.LazyFunction(lambda: [str(random.randint(100, 999999))])
-        
+    project_summary_permit_type = factory.LazyFunction(
+        lambda: [random.choice(["NEW", "AMENDMENT"])])
+    existing_permits_authorizations = factory.LazyFunction(
+        lambda: [str(random.randint(100, 999999))])
+
     amendment_severity = factory.LazyFunction(lambda: random.choice(["SIG", "MIN"]))
-    amendment_changes = factory.LazyFunction(lambda: [random.choice(["ILT", "IGT", "DDL", "NAM", "TRA", "MMR", "RCH", "OTH"])])
-    new_type = factory.LazyFunction(lambda: random.choice(["PER", "APP"]))     
-    change_ownership_name_documents = []    
+    amendment_changes = factory.LazyFunction(
+        lambda: [random.choice(["ILT", "IGT", "DDL", "NAM", "TRA", "MMR", "RCH", "OTH"])])
+    new_type = factory.LazyFunction(lambda: random.choice(["PER", "APP"]))
+    change_ownership_name_documents = []
     consent_documents = []
     location_documents = []
     exemption_documents = []
@@ -1565,9 +1563,7 @@ class ProjectSummaryAmsAuthorizationFactory(ProjectSummaryAuthorizationFactory):
         # Always required for AMS
         obj.location_documents.extend([
             ProjectSummaryAuthorizationDocumentFactory(
-                project_summary_authorization=obj,
-                project_summary_document_type_code="MAP"
-            )
+                project_summary_authorization=obj, project_summary_document_type_code="MAP")
         ])
 
     @factory.post_generation
@@ -1584,9 +1580,7 @@ class ProjectSummaryAmsAuthorizationFactory(ProjectSummaryAuthorizationFactory):
         if required:
             obj.discharge_documents.extend([
                 ProjectSummaryAuthorizationDocumentFactory(
-                    project_summary_authorization=obj,
-                    project_summary_document_type_code="DFA"
-                )
+                    project_summary_authorization=obj, project_summary_document_type_code="DFA")
             ])
 
     @factory.post_generation
@@ -1601,9 +1595,7 @@ class ProjectSummaryAmsAuthorizationFactory(ProjectSummaryAuthorizationFactory):
         if required:
             obj.consent_documents.extend([
                 ProjectSummaryAuthorizationDocumentFactory(
-                    project_summary_authorization=obj,
-                    project_summary_document_type_code="CSL"
-                )
+                    project_summary_authorization=obj, project_summary_document_type_code="CSL")
             ])
 
     @factory.post_generation
@@ -1618,9 +1610,7 @@ class ProjectSummaryAmsAuthorizationFactory(ProjectSummaryAuthorizationFactory):
         if required:
             obj.change_ownership_name_documents.extend([
                 ProjectSummaryAuthorizationDocumentFactory(
-                    project_summary_authorization=obj,
-                    project_summary_document_type_code="CON"
-                )
+                    project_summary_authorization=obj, project_summary_document_type_code="CON")
             ])
 
     @factory.post_generation
@@ -1635,9 +1625,7 @@ class ProjectSummaryAmsAuthorizationFactory(ProjectSummaryAuthorizationFactory):
         if required:
             obj.clause_amendment_documents.extend([
                 ProjectSummaryAuthorizationDocumentFactory(
-                    project_summary_authorization=obj,
-                    project_summary_document_type_code="CAF"
-                )
+                    project_summary_authorization=obj, project_summary_document_type_code="CAF")
             ])
 
     @factory.post_generation
@@ -1647,9 +1635,7 @@ class ProjectSummaryAmsAuthorizationFactory(ProjectSummaryAuthorizationFactory):
         if obj.exemption_requested:
             obj.exemption_documents.extend([
                 ProjectSummaryAuthorizationDocumentFactory(
-                    project_summary_authorization=obj,
-                    project_summary_document_type_code="EXL"
-                )
+                    project_summary_authorization=obj, project_summary_document_type_code="EXL")
             ])
 
     @factory.post_generation
@@ -1659,9 +1645,7 @@ class ProjectSummaryAmsAuthorizationFactory(ProjectSummaryAuthorizationFactory):
         if obj.exemption_requested:
             obj.support_documents.extend([
                 ProjectSummaryAuthorizationDocumentFactory(
-                    project_summary_authorization=obj,
-                    project_summary_document_type_code="SPR"
-                )
+                    project_summary_authorization=obj, project_summary_document_type_code="SPR")
             ])
 
 
@@ -1889,6 +1873,7 @@ class MineReportDefinitionComplianceArticleXrefFactory(BaseFactory):
     mine_report_definition_id = factory.LazyFunction(RandomMineReportDefinition)
     compliance_article_id = factory.LazyFunction(RandomComplianceArticleId)
 
+
 class ComplianceArticleFactory(BaseFactory):
 
     class Meta:
@@ -1902,17 +1887,16 @@ class ComplianceArticleFactory(BaseFactory):
     description = factory.Faker("sentence")
     long_description = factory.Faker("paragraph")
     effective_date = factory.LazyFunction(datetime.utcnow)
-    expiry_date = None  # None = not expired
+    expiry_date = None       # None = not expired
 
     # For when testing expiry_date is expired
     class Params:
         expired = factory.Trait(
-            expiry_date=factory.LazyFunction(
-                lambda: datetime.utcnow() - timedelta(days=1)
-            )
-        )
+            expiry_date=factory.LazyFunction(lambda: datetime.utcnow() - timedelta(days=1)))
+
 
 class MineReportPermitRequirementFactory(BaseFactory):
+
     class Meta:
         model = MineReportPermitRequirement
 
@@ -1924,12 +1908,12 @@ class MineReportPermitRequirementFactory(BaseFactory):
     active_ind = factory.LazyFunction(lambda: random.choice([True, False]))
     deleted_ind = False
     cim_or_cpo = factory.LazyFunction(lambda: random.choice(list(CimOrCpo)))
-    ministry_recipient = factory.LazyFunction(
-        lambda: [random.choice(list(OfficeDestination))]
-    )
+    ministry_recipient = factory.LazyFunction(lambda: [random.choice(list(OfficeDestination))])
     permit_amendment_id = factory.SelfAttribute('permit_amendment.permit_amendment_id')
 
+
 class StandardReportPermitRequirementFactory(BaseFactory):
+
     class Meta:
         model = StandardReportPermitRequirement
 
@@ -1937,12 +1921,12 @@ class StandardReportPermitRequirementFactory(BaseFactory):
     active_ind = factory.LazyFunction(lambda: random.choice([True, False]))
     deleted_ind = False
     cim_or_cpo = factory.LazyFunction(lambda: random.choice(list(CimOrCpo)))
-    ministry_recipient = factory.LazyFunction(
-        lambda: [random.choice(list(OfficeDestination))]
-    )
+    ministry_recipient = factory.LazyFunction(lambda: [random.choice(list(OfficeDestination))])
     report_name = factory.Faker('name')
 
+
 class MineReportReqPermitConditionXrefFactory(BaseFactory):
+
     class Meta:
         model = MineReportReqPermitConditionXref
 
@@ -1951,9 +1935,12 @@ class MineReportReqPermitConditionXrefFactory(BaseFactory):
         mine_report_permit_requirement = factory.SubFactory(MineReportPermitRequirementFactory)
 
     permit_condition_id = factory.SelfAttribute('permit_condition.permit_condition_id')
-    mine_report_permit_requirement_id = factory.SelfAttribute('mine_report_permit_requirement.mine_report_permit_requirement_id')
+    mine_report_permit_requirement_id = factory.SelfAttribute(
+        'mine_report_permit_requirement.mine_report_permit_requirement_id')
+
 
 class StandardReportReqConditionXrefFactory(BaseFactory):
+
     class Meta:
         model = StandardReportReqPermitConditionXref
 
@@ -1963,9 +1950,12 @@ class StandardReportReqConditionXrefFactory(BaseFactory):
 
     standard_permit_condition_id = factory.SelfAttribute('permit_condition.permit_condition_id')
     permit_condition_id = factory.SelfAttribute('permit_condition.permit_condition_id')
-    mine_report_permit_requirement_id = factory.SelfAttribute('mine_report_permit_requirement.mine_report_permit_requirement_id')
+    mine_report_permit_requirement_id = factory.SelfAttribute(
+        'mine_report_permit_requirement.mine_report_permit_requirement_id')
+
 
 class PermitExtractionTaskFactory(BaseFactory):
+
     class Meta:
         model = PermitExtractionTask
 
@@ -1980,25 +1970,25 @@ class PermitExtractionTaskFactory(BaseFactory):
     task_status = 'COMPLETE'
     task_meta = factory.LazyFunction(lambda: {})
     task_result = {
-        "conditions": [
-            {
-                "section": "A",
-                "paragraph": None,
-                "subparagraph": None,
-                "clause": None,
-                "subclause": None,
-                "subsubclause": None,
-                "condition_title": None,
-                "condition_text": "General",
-            }
-        ]
+        "conditions": [{
+            "section": "A",
+            "paragraph": None,
+            "subparagraph": None,
+            "clause": None,
+            "subclause": None,
+            "subsubclause": None,
+            "condition_title": None,
+            "condition_text": "General",
+        }]
     }
     core_status_task_id = factory.Faker('uuid4')
     permit_amendment_guid = factory.SelfAttribute('permit_amendment.permit_amendment_guid')
-    permit_amendment_document_guid = factory.SelfAttribute('permit_amendment_document.permit_amendment_document_guid')
+    permit_amendment_document_guid = factory.SelfAttribute(
+        'permit_amendment_document.permit_amendment_document_guid')
 
 
 class AmsFinalApplicationDocumentXrefFactory(BaseFactory):
+
     class Meta:
         model = AmsFinalApplicationDocumentXref
 
@@ -2007,26 +1997,28 @@ class AmsFinalApplicationDocumentXrefFactory(BaseFactory):
         ams_final_application = factory.SubFactory('tests.factories.AmsFinalApplicationFactory')
 
     ams_final_application_document_xref_guid = GUID
-    ams_final_application_guid = factory.SelfAttribute('ams_final_application.ams_final_application_guid')
-    ams_final_application_document_type_code = factory.LazyFunction(RandomAmsFinalApplicationDocumentTypeCode)
-    mine_document = factory.SubFactory(MineDocumentFactory, mine_guid=factory.SelfAttribute('..mine_guid'))
+    ams_final_application_guid = factory.SelfAttribute(
+        'ams_final_application.ams_final_application_guid')
+    ams_final_application_document_type_code = factory.LazyFunction(
+        RandomAmsFinalApplicationDocumentTypeCode)
+    mine_document = factory.SubFactory(
+        MineDocumentFactory, mine_guid=factory.SelfAttribute('..mine_guid'))
     mine_document_guid = factory.SelfAttribute('mine_document.mine_document_guid')
     deleted_ind = False
 
 
 class AmsFinalApplicationFactory(BaseFactory):
+
     class Meta:
         model = AmsFinalApplication
 
     class Params:
         project_summary_authorization = factory.SubFactory(ProjectSummaryAmsAuthorizationFactory)
-        is_submitted = factory.Trait(
-            submitted_timestamp=TODAY,
-            is_draft=False
-        )
+        is_submitted = factory.Trait(submitted_timestamp=TODAY, is_draft=False)
 
     ams_final_application_guid = GUID
-    project_summary_authorization_guid = factory.SelfAttribute('project_summary_authorization.project_summary_authorization_guid')
+    project_summary_authorization_guid = factory.SelfAttribute(
+        'project_summary_authorization.project_summary_authorization_guid')
     submitter_name = factory.Faker('name')
     is_agent = factory.Faker('boolean', chance_of_getting_true=30)
     pre_submitted_files = []
@@ -2043,6 +2035,7 @@ class AmsFinalApplicationFactory(BaseFactory):
         AmsFinalApplicationDocumentXrefFactory.create_batch(
             size=extracted, ams_final_application=obj, mine_document__mine=None, **kwargs)
 
+
 class EmailTrackingFactory(BaseFactory):
 
     class Meta:
@@ -2053,35 +2046,22 @@ class EmailTrackingFactory(BaseFactory):
         project_summary = factory.SubFactory('tests.factories.ProjectSummaryFactory')
 
         # Email status traits
-        sent = factory.Trait(
-            email_status=EmailStatus.sent,
-            sent_timestamp=TODAY
-        )
+        sent = factory.Trait(email_status=EmailStatus.sent, sent_timestamp=TODAY)
         delivered = factory.Trait(
-            email_status=EmailStatus.completed,
-            sent_timestamp=TODAY,
-            delivered_timestamp=TODAY
-        )
+            email_status=EmailStatus.completed, sent_timestamp=TODAY, delivered_timestamp=TODAY)
         failed = factory.Trait(
             email_status=EmailStatus.failed,
             failed_timestamp=TODAY,
             error_message='Email delivery failed',
-            error_code='500'
-        )
+            error_code='500')
 
     email_tracking_guid = GUID
     reference_id = factory.SelfAttribute('major_mine_application.major_mine_application_guid')
     reference_table = 'major_mine_application'
-    reference_email_type = factory.LazyFunction(lambda: random.choice([
-        'mma_submit_email',
-        'ministry_project_section_email',
-        'minespace_project_section_email'
-    ]))
-    email_template_name = factory.LazyFunction(lambda: random.choice([
-        'ministry_project_section_email',
-        'minespace_project_section_email',
-        'mma_submit_email'
-    ]))
+    reference_email_type = factory.LazyFunction(lambda: random.choice(
+        ['mma_submit_email', 'ministry_project_section_email', 'minespace_project_section_email']))
+    email_template_name = factory.LazyFunction(lambda: random.choice(
+        ['ministry_project_section_email', 'minespace_project_section_email', 'mma_submit_email']))
     email_subject = factory.Faker('sentence', nb_words=6)
     recipient_email = factory.Faker('email')
     recipient_name = factory.Faker('name')

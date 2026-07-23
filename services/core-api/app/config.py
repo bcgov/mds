@@ -76,7 +76,8 @@ class Config(object):
     ELASTICSEARCH_URL = os.environ.get('ELASTICSEARCH_URL', 'https://elasticsearch:9200')
     ELASTICSEARCH_USERNAME = os.environ.get('ELASTICSEARCH_USERNAME', 'elastic')
     ELASTICSEARCH_PASSWORD = os.environ.get('ELASTICSEARCH_PASSWORD', 'changeme')
-    ELASTICSEARCH_CA_CERTS = os.environ.get('ELASTICSEARCH_CA_CERTS', '/usr/share/elasticsearch/config/certs/ca/ca.crt')
+    ELASTICSEARCH_CA_CERTS = os.environ.get('ELASTICSEARCH_CA_CERTS',
+                                            '/usr/share/elasticsearch/config/certs/ca/ca.crt')
 
     LOGGING_DICT_CONFIG = {
         'version': 1,
@@ -206,7 +207,7 @@ class Config(object):
 
     # Enable flag caching and evalutation. If set to True, FLAGSMITH_KEY must be set to a server side FLAGSMITH_KEY
     FLAGSMITH_ENABLE_LOCAL_EVALUATION = os.environ.get('FLAGSMITH_ENABLE_LOCAL_EVALUATION',
-                                                      'false') == 'true'
+                                                       'false') == 'true'
 
     # Kibana
     KIBANA_BASE_URL = os.environ.get(
@@ -227,11 +228,11 @@ class Config(object):
     NRIS_REMOTE_TOKEN_URL = os.environ.get('NRIS_REMOTE_TOKEN_URL', None)
 
     # OrgBook
-    ORGBOOK_API_URL = os.environ.get('ORGBOOK_API_URL', 'https://orgbook.gov.bc.ca/api/v2/')
+    ORGBOOK_API_URL = os.environ.get('ORGBOOK_API_URL', 'https://orgbook.gov.bc.ca/api')
 
     # BC Registries
     BC_REGISTRIES_API_URL = os.environ.get('BC_REGISTRIES_API_URL',
-                                            'https://sandbox.api.connect.gov.bc.ca/registry-search')
+                                           'https://sandbox.api.connect.gov.bc.ca/registry-search')
     BC_REGISTRIES_SECRET_TOKEN = os.environ.get('BC_REGISTRIES_SECRET_TOKEN', None)
 
     # NRPTI
@@ -297,11 +298,11 @@ class Config(object):
         },
         'create_new_recurring_report_requests': {
             'task': 'app.api.mines.reports.tasks.create_new_recurring_report_requests',
-            'schedule': crontab(hour="10", minute="0"),  # Run daily at 2am (10am UTC)
+            'schedule': crontab(hour="10", minute="0"),                                              # Run daily at 2am (10am UTC)
         },
         'create_new_recurring_crr_report_requests': {
             'task': 'app.api.mines.reports.tasks.create_new_recurring_crr_report_requests',
-            'schedule': crontab(hour="11", minute="0"),  # Run daily at 3am (11am UTC)
+            'schedule': crontab(hour="11", minute="0"),                                              # Run daily at 3am (11am UTC)
         },
         'push_untp_map_data_to_publisher': {
             'task': 'app.api.verifiable_credentials.manager.push_untp_map_data_to_publisher',

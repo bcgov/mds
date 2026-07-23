@@ -6,17 +6,24 @@ from app.api.utils.models_mixins import AuditMixin, Base
 from app.api.utils.include.user_info import User
 
 
-class PartyOrgBookEntity(AuditMixin, Base):
-    __tablename__ = 'party_orgbook_entity'
+class PartyBCRegistration(AuditMixin, Base):
+    __tablename__ = 'party_orgbook_entity'       #used to be orgbook specific
+
+    #TODO REDESIGN THIS MODEL FOR BC REGISTRIES.....
+    # Credential ID is the primary id, but not in new system.
 
     party_orgbook_entity_id = db.Column(db.Integer, primary_key=True)
-    registration_id = db.Column(db.String, nullable=False)
-    registration_status = db.Column(db.Boolean, nullable=False)
-    registration_date = db.Column(db.DateTime, nullable=False)
-    name_id = db.Column(db.Integer, nullable=False)
-    name_text = db.Column(db.String, nullable=False)
-    credential_id = db.Column(db.Integer, nullable=False)
+    data_source = db.Column(db.String, nullable=False, default="ORGBOOK")
+
+    registration_id = db.Column(db.String, nullable=False) # Business number
+    name_text = db.Column(db.String, nullable=False)       # Business name
+
+    # Orgbook sourced data not availble in registries API
+    name_id = db.Column(db.Integer, nullable=True)
+    credential_id = db.Column(db.Integer, nullable=True)
     company_alias = db.Column(db.String(200), nullable=True)
+    registration_date = db.Column(db.DateTime, nullable=True)
+    registration_status = db.Column(db.Boolean, nullable=True)
 
     party_guid = db.Column(
         UUID(as_uuid=True), db.ForeignKey('party.party_guid'), nullable=False, unique=True)
@@ -35,8 +42,15 @@ class PartyOrgBookEntity(AuditMixin, Base):
         return cls.query.filter_by(credential_id=credential_id).first()
 
     @classmethod
-    def create(cls, registration_id, registration_status, registration_date, name_id, name_text,
-               credential_id, party_guid, company_alias=None):
+    def create(cls,
+               party_guid,
+               registration_id,
+               name_text,
+               registration_status=None,
+               registration_date=None,
+               name_id=None,
+               credential_id=None,
+               company_alias=None):
         party_orgbook_entity = cls(
             registration_id=registration_id,
             registration_status=registration_status,
@@ -50,4 +64,4 @@ class PartyOrgBookEntity(AuditMixin, Base):
         return party_orgbook_entity
 
     def delete(self, commit=True):
-        super(PartyOrgBookEntity, self).delete(commit)
+        super(PartyBCRegistration, self).delete(commit)

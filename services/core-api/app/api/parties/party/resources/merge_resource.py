@@ -79,7 +79,7 @@ class MergeResource(Resource, UserMixin):
                 raise BadRequest('Cannot merge parties that have signatures.')
 
             # Cannot merge parties that are associated with an OrgBook entity.
-            if party.party_orgbook_entity:
+            if party.party_bc_registration:
                 raise BadRequest('Cannot merge parties that are associated with an OrgBook entity.')
 
         # Create the new party record using the merged party data.
@@ -100,7 +100,8 @@ class MergeResource(Resource, UserMixin):
         sub_division_code = address_data.get('sub_division_code')
         post_code = address_data.get('post_code')
         address_type_code = address_data.get('address_type_code')
-        if (suite_no or address_line_1 or address_line_2 or city or sub_division_code or post_code or address_type_code):
+        if (suite_no or address_line_1 or address_line_2 or city or sub_division_code or post_code
+                or address_type_code):
             merged_address = Address.create(suite_no, address_line_1, address_line_2, city,
                                             sub_division_code, post_code, address_type_code)
             merged_party.address.append(merged_address)

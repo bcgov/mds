@@ -12,18 +12,9 @@ from typing import Any, Dict, List, Optional, TypedDict
 # ---------------------------------------------------------------------------
 
 
-class OrgBookEntityName(TypedDict):
-    id: int
+class OrgBookSearchResultItem(TypedDict):
+    registration_id: int
     text: str
-    language: Optional[str]
-    credential_id: int
-    type: str
-
-
-class OrgBookSearchResult(TypedDict):
-    id: int
-    names: List[OrgBookEntityName]
-    inactive: bool
 
 
 # ---------------------------------------------------------------------------
@@ -113,58 +104,6 @@ class OrgBookAttribute(TypedDict):
     format: str
     value: str
     credential_id: int
-
-
-class OrgBookTopic(TypedDict):
-    id: int
-    create_timestamp: str
-    update_timestamp: str
-    source_id: str
-    type: str
-    names: List[OrgBookEntityName]
-    local_name: Optional[OrgBookEntityName]
-    remote_name: Optional[OrgBookEntityName]
-    addresses: List[dict]
-    attributes: List[OrgBookAttribute]
-
-
-class _OrgBookCredentialBase(TypedDict):
-    id: int
-    create_timestamp: str
-    effective_date: str
-    inactive: bool
-    latest: bool
-    revoked: bool
-    revoked_date: Optional[str]
-    credential_id: str
-    credential_type: OrgBookCredentialType
-    addresses: List[dict]
-    attributes: List[OrgBookAttribute]
-    names: List[OrgBookEntityName]
-    local_name: Optional[OrgBookEntityName]
-    remote_name: Optional[OrgBookEntityName]
-    topic: OrgBookTopic
-    related_topics: List[dict]
-    raw_data: Optional[str]
-
-
-class OrgBookCredentialSetEntry(_OrgBookCredentialBase):
-    pass
-
-
-class OrgBookCredentialSet(TypedDict):
-    id: int
-    create_timestamp: str
-    update_timestamp: str
-    latest_credential_id: int
-    topic_id: int
-    first_effective_date: str
-    last_effective_date: Optional[str]
-    credentials: List[OrgBookCredentialSetEntry]
-
-
-class OrgBookCredential(_OrgBookCredentialBase):
-    credential_set: OrgBookCredentialSet
 
 
 # ---------------------------------------------------------------------------

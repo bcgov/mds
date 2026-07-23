@@ -6,7 +6,7 @@ from app.extensions import api
 from app.api.utils.access_decorators import requires_role_view_all
 from app.api.utils.feature_flag import Feature, is_feature_enabled
 from app.api.services.orgbook_service import OrgBookService, BCRegistriesService
-from app.api.orgbook.response_models import ORGBOOK_SEARCH_RESULT, ORGBOOK_CREDENTIAL, ORGBOOK_VERIFICATION_RESPONSE
+from app.api.orgbook.response_models import ORGBOOK_SEARCH_RESULT_ITEM, ORGBOOK_CREDENTIAL, ORGBOOK_VERIFICATION_RESPONSE
 
 
 class SearchResource(Resource):
@@ -14,8 +14,7 @@ class SearchResource(Resource):
     @api.doc(
         description='Search OrgBook.',
         params={'search': 'The search term to use when searching OrgBook.'})
-    @api.marshal_with(ORGBOOK_SEARCH_RESULT, code=200, as_list=True)
-    @requires_role_view_all
+    @api.marshal_with(ORGBOOK_SEARCH_RESULT_ITEM, code=200, as_list=True)
     def get(self):
         search = request.args.get('search')
         results = OrgBookService().search(search)

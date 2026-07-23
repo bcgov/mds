@@ -35,9 +35,11 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
     email = db.Column(db.String)
     email_sec = db.Column(db.String)
     party_type_code = db.Column(db.String, db.ForeignKey('party_type_code.party_type_code'))
-    address = db.relationship('Address', lazy='joined', back_populates='party', order_by='Address.address_id.asc()')
+    address = db.relationship(
+        'Address', lazy='joined', back_populates='party', order_by='Address.address_id.asc()')
     job_title = db.Column(db.String)
-    job_title_code = db.Column(db.String, db.ForeignKey('mine_party_appt_type_code.mine_party_appt_type_code'))
+    job_title_code = db.Column(db.String,
+                               db.ForeignKey('mine_party_appt_type_code.mine_party_appt_type_code'))
     postnominal_letters = db.Column(db.String)
     idir_username = db.Column(db.String)
     signature = db.Column(db.String)
@@ -50,27 +52,24 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
         lazy='joined',
         primaryjoin=
         'and_(MinePartyAppointment.party_guid == Party.party_guid, MinePartyAppointment.deleted_ind==False)',
-        back_populates='party'
-    )
+        back_populates='party')
 
     now_party_appt = db.relationship(
         'NOWPartyAppointment',
         lazy='selectin',
         primaryjoin=
         'and_(NOWPartyAppointment.party_guid == Party.party_guid, NOWPartyAppointment.deleted_ind==False)',
-        back_populates='party'
-    )
+        back_populates='party')
 
     business_role_appts = db.relationship(
         'PartyBusinessRoleAppointment',
         lazy='selectin',
         primaryjoin=
         'and_(PartyBusinessRoleAppointment.party_guid == Party.party_guid, PartyBusinessRoleAppointment.deleted_ind==False)',
-        back_populates='party'
-    )
+        back_populates='party')
 
-    party_orgbook_entity = db.relationship(
-        'PartyOrgBookEntity', backref='party', uselist=False, lazy='select')
+    party_bc_registration = db.relationship(
+        'PartyBCRegistration', backref='party', uselist=False, lazy='select')
 
     organization = db.relationship(
         'Party',
@@ -134,12 +133,14 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
 
     @hybrid_property
     def digital_wallet_connection_status(self):
-        dwi = list(set([i.connection_state for i in self.digital_wallet_invitations if i.connection_state]))
-        dwi.sort() 
+        dwi = list(
+            set([i.connection_state for i in self.digital_wallet_invitations
+                 if i.connection_state]))
+        dwi.sort()
         if dwi:
             if "completed" in dwi or "active" in dwi:
                 return "active"
-            else:       
+            else:
                 return dwi[0]
         else:
             return None
@@ -150,25 +151,44 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
     # TODO: Remove this once mine_party_appt has been refactored
     def json(self, show_mgr=True, relationships=[]):
         context = {
-            'party_guid': str(self.party_guid),
-            'party_type_code': self.party_type_code,
-            'party_orgbook_registration_id': self.party_orgbook_entity.registration_id if self.party_orgbook_entity else None,
-            'phone_no': self.phone_no,
-            'phone_ext': self.phone_ext,
-            'phone_no_sec': self.phone_no_sec,
-            'phone_sec_ext': self.phone_sec_ext,
-            'phone_no_ter': self.phone_no_ter,
-            'phone_ter_ext': self.phone_ter_ext,
-            'email': self.email,
-            'email_sec': self.email_sec,
-            'party_name': self.party_name,
-            'name': self.name,
-            'address': self.address[0].json() if len(self.address) > 0 else [{}],
-            'job_title': self.job_title,
-            'job_title_code': self.job_title_code,
-            'postnominal_letters': self.postnominal_letters,
-            'idir_username': self.idir_username,
-            'organization_guid': str(self.organization_guid) if self.organization_guid else None,
+            'party_guid':
+            str(self.party_guid),
+            'party_type_code':
+            self.party_type_code,
+            'party_orgbook_registration_id':
+            self.party_bc_registration.registration_id if self.party_bc_registration else None,
+            'phone_no':
+            self.phone_no,
+            'phone_ext':
+            self.phone_ext,
+            'phone_no_sec':
+            self.phone_no_sec,
+            'phone_sec_ext':
+            self.phone_sec_ext,
+            'phone_no_ter':
+            self.phone_no_ter,
+            'phone_ter_ext':
+            self.phone_ter_ext,
+            'email':
+            self.email,
+            'email_sec':
+            self.email_sec,
+            'party_name':
+            self.party_name,
+            'name':
+            self.name,
+            'address':
+            self.address[0].json() if len(self.address) > 0 else [{}],
+            'job_title':
+            self.job_title,
+            'job_title_code':
+            self.job_title_code,
+            'postnominal_letters':
+            self.postnominal_letters,
+            'idir_username':
+            self.idir_username,
+            'organization_guid':
+            str(self.organization_guid) if self.organization_guid else None,
         }
 
         if self.party_type_code == 'PER':
@@ -182,12 +202,9 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
             })
 
         if self.organization is not None:
-            context.update({
-                'organization': self.organization.json()
-            })
+            context.update({'organization': self.organization.json()})
 
         return context
-        
 
     @name.expression
     def name(cls):
@@ -265,7 +282,6 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
             party.save(commit=False)
         return party
 
-
     @validates('party_type_code')
     def validate_party_type_code(self, key, party_type_code):
         if not party_type_code:
@@ -292,7 +308,6 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
             raise AssertionError(f'Party name must not exceed {MAX_NAME_LENGTH} characters.')
         return party_name
 
-
     @validates('organization_guid')
     def validate_organization_guid(self, key, organization_guid):
         if not organization_guid:
@@ -305,7 +320,7 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
 
         if not organization:
             raise AssertionError('Organization not found')
-        
+
         if organization.party_type_code == 'PER':
             raise AssertionError('Cannot associate Person as Organization')
 
