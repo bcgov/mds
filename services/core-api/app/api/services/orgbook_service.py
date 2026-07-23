@@ -33,7 +33,7 @@ class BCRegistriesService():
         }
 
         url = f'{BC_REGISTRIES_API_URL}/api/v2/search/businesses'
-        resp = requests.post(
+        resp = requests.get(
             url=url,
             json=data,
             headers={"X-Apikey": BC_REGISTRIES_SECRET_TOKEN},
@@ -82,8 +82,9 @@ class OrgBookService():
 
         search_results = self._make_get(search_url, params).get("results", [])
         if not search_results:
-            raise BadGateway(f"OrgBook API returned no results for registration_id={registration_id}")
-        search_result = search_results[0]  # best match
+            raise BadGateway(
+                f"OrgBook API returned no results for registration_id={registration_id}")
+        search_result = search_results[0]        # best match
         detail_url = f'{Config.ORGBOOK_API_URL}/v4/credential/' + search_result["credential_id"]
         return self._make_get(detail_url, params)
 
