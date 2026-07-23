@@ -69,7 +69,6 @@ export const PartyOrgBookForm: FC<PartyOrgBookFormProps> = ({ party }) => {
           href={ORGBOOK_ENTITY_URL(registrationId)}
           target="_blank"
         >
-          {ORGBOOK_ENTITY_URL(registrationId)}
           <span>
             <BookOutlined className="padding-sm--right" />
             View on OrgBook
@@ -79,7 +78,7 @@ export const PartyOrgBookForm: FC<PartyOrgBookFormProps> = ({ party }) => {
           <Button
             type="primary"
             className="full-mobile"
-            disabled={!isAssociated} //Admin is allowed to disassociate
+            disabled={isAssociated} //Admin is allowed to disassociate
             onClick={!isAssociated ? handleAssociateButtonClick : handleDisassociateButtonClick}
             loading={isAssociating}
             danger={isAssociated}

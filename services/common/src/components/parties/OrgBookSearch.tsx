@@ -70,8 +70,6 @@ const OrgBookSearch: FC<OrgBookSearchProps> = ({
   }, [searchOrgBookResults]);
 
   const handleSelect = async (value) => {
-    // The primary identifier for a search result is now `id` (no prefix), rather than
-    // the OrgBook-only `credential_id`.
     setSelectedParty(value.label);
     setRegistrationId(value.key);
   };
