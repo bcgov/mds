@@ -21,9 +21,10 @@ interface PartyOrgBookFormProps {
 export const PartyOrgBookForm: FC<PartyOrgBookFormProps> = ({ party }) => {
   const [isAssociating, setIsAssociating] = useState(false);
   const dispatch = useDispatch();
-  const [registrationId, setRegistrationId] = useState(null);
-  const [currentParty, setCurrentParty] = useState(party.party_orgbook_entity.name_text);
-  const [isAssociated, setIsAssociated] = useState(!!party.party_orgbook_entity.name_text);
+  const [registrationId, setRegistrationId] = useState(party.party_bc_registration.registration_id);
+  const [businesssName, setBusinessName] = useState(null);
+  const [currentParty, setCurrentParty] = useState(party.party_bc_registration.name_text);
+  const [isAssociated, setIsAssociated] = useState(!!party.party_bc_registration.name_text);
 
   const canManageOrgbook = useAppSelector(userHasRole(USER_ROLES.role_manage_orgbook));
 
@@ -33,7 +34,8 @@ export const PartyOrgBookForm: FC<PartyOrgBookFormProps> = ({ party }) => {
       createPartyOrgBookEntity({
         partyGuid: party.party_guid,
         data: {
-          registration_id: registrationId
+          registration_id: registrationId,
+          business_name: businesssName
         },
       })
     );
@@ -60,6 +62,7 @@ export const PartyOrgBookForm: FC<PartyOrgBookFormProps> = ({ party }) => {
         <OrgBookSearch
           isDisabled={isAssociated}
           setRegistrationId={setRegistrationId}
+          setBusinessName={setBusinessName}
           current_party={currentParty}
         />
       </Col>
@@ -78,7 +81,7 @@ export const PartyOrgBookForm: FC<PartyOrgBookFormProps> = ({ party }) => {
           <Button
             type="primary"
             className="full-mobile"
-            disabled={isAssociated} //Admin is allowed to disassociate
+            // disabled={!isAssociated} //Admin is allowed to disassociate
             onClick={!isAssociated ? handleAssociateButtonClick : handleDisassociateButtonClick}
             loading={isAssociating}
             danger={isAssociated}

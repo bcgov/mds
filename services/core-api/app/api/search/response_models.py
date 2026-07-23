@@ -6,7 +6,7 @@ from app.api.mines.response_models import (
 )
 from app.api.parties.response_models import (
     PARTY_BUSINESS_ROLE_APPT,
-    PARTY_ORGBOOK_ENTITY,
+    PARTY_BC_REGISTRATION,
 )
 from app.extensions import api
 from flask_restx import fields
@@ -22,30 +22,43 @@ MINE_MODEL = api.model('Mine_simple ', {
     'mine_no': fields.String,
 })
 
-SIMPLE_SEARCH_MODEL = api.model('SimpleSearchResult', {
-    'id': fields.String,
-    'value': fields.String,
-    'description': fields.String,
-    'highlight': fields.String,
-    'mine_guid': fields.String,
-    'mines': fields.List(fields.Nested(MINE_MODEL))
-})
+SIMPLE_SEARCH_MODEL = api.model(
+    'SimpleSearchResult', {
+        'id': fields.String,
+        'value': fields.String,
+        'description': fields.String,
+        'highlight': fields.String,
+        'mine_guid': fields.String,
+        'mines': fields.List(fields.Nested(MINE_MODEL))
+    })
 
 PERMIT_SEARCH_MODEL = api.model(
     'Permit', {
-        'permit_guid': fields.String,
-        'mine': fields.List(fields.Nested(MINE_MODEL), attribute=lambda x: x.get('mine', []) if isinstance(x, dict) else x._all_mines),
-        'permit_no': fields.String,
-        'current_permittee': fields.String,
+        'permit_guid':
+        fields.String,
+        'mine':
+        fields.List(
+            fields.Nested(MINE_MODEL),
+            attribute=lambda x: x.get('mine', []) if isinstance(x, dict) else x._all_mines),
+        'permit_no':
+        fields.String,
+        'current_permittee':
+        fields.String,
     })
 
 MINE_PARTY_APPT_MODEL = api.model(
     'MinePartyAppointment', {
-        'mine_party_appt_type_code': fields.String,
-        'start_date': fields.Date,
-        'end_date': fields.Date,
-        'mine': fields.Nested(MINE_MODEL),
-        'permit_no': fields.String(attribute=lambda x: x.get('permit_no') if isinstance(x, dict) else (x.permit.permit_no if hasattr(x, 'permit') and x.permit else None)),
+        'mine_party_appt_type_code':
+        fields.String,
+        'start_date':
+        fields.Date,
+        'end_date':
+        fields.Date,
+        'mine':
+        fields.Nested(MINE_MODEL),
+        'permit_no':
+        fields.String(attribute=lambda x: x.get('permit_no') if isinstance(x, dict) else
+                      (x.permit.permit_no if hasattr(x, 'permit') and x.permit else None)),
     })
 
 MINE_STATUS_MODEL = api.model('MineStatus', {
@@ -88,7 +101,7 @@ PARTY_SEARCH_MODEL = api.model(
         'party_type_code': fields.String,
         'email': fields.String,
         'phone_no': fields.String,
-        'party_orgbook_entity': fields.Nested(PARTY_ORGBOOK_ENTITY, skip_none=True),
+        'party_bc_registration': fields.Nested(PARTY_BC_REGISTRATION, skip_none=True),
         'business_role_appts': fields.List(fields.Nested(PARTY_BUSINESS_ROLE_APPT, skip_none=True)),
         'mine_party_appt': fields.List(fields.Nested(MINE_PARTY_APPT_MODEL)),
         'address': fields.List(fields.Nested(PARTY_ADDRESS)),
@@ -171,13 +184,15 @@ NOD_SEARCH_MODEL = api.model(
         'nod_status': fields.String,
     })
 
-EXPLOSIVES_PERMIT_SEARCH_RESULT_MODEL = api.inherit('ExplosivesPermitSearchResult', SEARCH_RESULT_MODEL, {
-    'result': fields.Nested(EXPLOSIVES_PERMIT_SEARCH_MODEL),
-})
+EXPLOSIVES_PERMIT_SEARCH_RESULT_MODEL = api.inherit(
+    'ExplosivesPermitSearchResult', SEARCH_RESULT_MODEL, {
+        'result': fields.Nested(EXPLOSIVES_PERMIT_SEARCH_MODEL),
+    })
 
-NOW_APPLICATION_SEARCH_RESULT_MODEL = api.inherit('NowApplicationSearchResult', SEARCH_RESULT_MODEL, {
-    'result': fields.Nested(NOW_APPLICATION_SEARCH_MODEL),
-})
+NOW_APPLICATION_SEARCH_RESULT_MODEL = api.inherit(
+    'NowApplicationSearchResult', SEARCH_RESULT_MODEL, {
+        'result': fields.Nested(NOW_APPLICATION_SEARCH_MODEL),
+    })
 
 NOD_SEARCH_RESULT_MODEL = api.inherit('NodSearchResult', SEARCH_RESULT_MODEL, {
     'result': fields.Nested(NOD_SEARCH_MODEL),
@@ -195,15 +210,15 @@ SEARCH_RESULTS_LIST_MODEL = api.model(
         'notice_of_departure': fields.List(fields.Nested(NOD_SEARCH_RESULT_MODEL)),
     })
 
-SEARCH_FACET_BUCKET_MODEL = api.model(
-    'SearchFacetBucket', {
-        'key': fields.String,
-        'count': fields.Integer,
-    })
+SEARCH_FACET_BUCKET_MODEL = api.model('SearchFacetBucket', {
+    'key': fields.String,
+    'count': fields.Integer,
+})
 
 SEARCH_FACETS_MODEL = api.model(
-    'SearchFacets', {
-        # Mine facets
+    'SearchFacets',
+    {
+                                                                                           # Mine facets
         'mine_region': fields.List(fields.Nested(SEARCH_FACET_BUCKET_MODEL)),
         'mine_classification': fields.List(fields.Nested(SEARCH_FACET_BUCKET_MODEL)),
         'mine_operation_status': fields.List(fields.Nested(SEARCH_FACET_BUCKET_MODEL)),
@@ -211,21 +226,21 @@ SEARCH_FACETS_MODEL = api.model(
         'mine_commodity': fields.List(fields.Nested(SEARCH_FACET_BUCKET_MODEL)),
         'has_tsf': fields.List(fields.Nested(SEARCH_FACET_BUCKET_MODEL)),
         'verified_status': fields.List(fields.Nested(SEARCH_FACET_BUCKET_MODEL)),
-        # Permit facets
+                                                                                           # Permit facets
         'permit_status': fields.List(fields.Nested(SEARCH_FACET_BUCKET_MODEL)),
         'is_exploration': fields.List(fields.Nested(SEARCH_FACET_BUCKET_MODEL)),
-        # Party facets
+                                                                                           # Party facets
         'party_type': fields.List(fields.Nested(SEARCH_FACET_BUCKET_MODEL)),
-        # Explosives permit facets
+                                                                                           # Explosives permit facets
         'explosives_permit_status': fields.List(fields.Nested(SEARCH_FACET_BUCKET_MODEL)),
         'explosives_permit_closed': fields.List(fields.Nested(SEARCH_FACET_BUCKET_MODEL)),
-        # NOD facets
+                                                                                           # NOD facets
         'nod_type': fields.List(fields.Nested(SEARCH_FACET_BUCKET_MODEL)),
         'nod_status': fields.List(fields.Nested(SEARCH_FACET_BUCKET_MODEL)),
-        # NoW facets
+                                                                                           # NoW facets
         'now_application_status': fields.List(fields.Nested(SEARCH_FACET_BUCKET_MODEL)),
         'now_type': fields.List(fields.Nested(SEARCH_FACET_BUCKET_MODEL)),
-        # Type facet
+                                                                                           # Type facet
         'type': fields.List(fields.Nested(SEARCH_FACET_BUCKET_MODEL)),
     })
 

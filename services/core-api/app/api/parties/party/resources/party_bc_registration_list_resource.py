@@ -10,14 +10,14 @@ from app.extensions import api
 from app.api.utils.access_decorators import requires_role_manage_orgbook
 from app.api.utils.resources_mixins import UserMixin
 from app.api.parties.party.models.party_bc_registration import PartyBCRegistration
-from app.api.parties.response_models import PARTY_ORGBOOK_ENTITY
+from app.api.parties.response_models import PARTY_BC_REGISTRATION
 from app.api.services.orgbook_service import OrgBookService, BCRegistriesService
 from app.api.parties.party.models.party import Party
 
 
 class PartyBCRegistrationRequest(BaseModel):
     credential_id: Optional[int] = None
-    registration_id: Optional[int] = None
+    registration_id: Optional[str] = None
     business_name: Optional[str] = None
 
 
@@ -28,7 +28,7 @@ PARTY_BC_REGISTRATION_REQUEST_MODEL = api.model(
             description='The latest credential ID of the OrgBook entity to associate the party with.'
         ),
         'registration_id':
-        fields.Integer(description='The Business Registration Id of the party record within CORE.'),
+        fields.String(description='The Business Registration Id of the party record within CORE.'),
         'business_name':
         fields.String(
             description=
@@ -42,7 +42,7 @@ class PartyBCRegistrationListResource(Resource, UserMixin):
              "'registration_id' is required.")
     @api.expect(PARTY_BC_REGISTRATION_REQUEST_MODEL)
     @requires_role_manage_orgbook
-    @api.marshal_with(PARTY_ORGBOOK_ENTITY, code=201)
+    @api.marshal_with(PARTY_BC_REGISTRATION, code=201)
     def post(self, party_guid):
 
         party = Party.find_by_party_guid(party_guid)
@@ -79,8 +79,9 @@ class PartyBCRegistrationListResource(Resource, UserMixin):
             if not party_orgbook_entity:
                 raise InternalServerError('Failed to create the Party OrgBook Entity.')
 
-        else:                #registration_id
-            PartyBCRegistration.create(party_guid, registration_id, business_name)
+        else:                                                                              #registration_id
+            party_orgbook_entity = PartyBCRegistration.create(party_guid, registration_id,
+                                                              business_name)
 
         party_orgbook_entity.save()
         party.save()
@@ -89,7 +90,6 @@ class PartyBCRegistrationListResource(Resource, UserMixin):
 
     @api.doc(description='Delete a Party OrgBook Entity.')
     @requires_role_manage_orgbook
-    @api.marshal_with(PARTY_ORGBOOK_ENTITY, code=204)
     def delete(self, party_guid):
         party_orgbook_entity = PartyBCRegistration.find_by_party_guid(party_guid)
         if party_orgbook_entity is None:

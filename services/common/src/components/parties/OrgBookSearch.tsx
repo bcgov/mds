@@ -10,12 +10,14 @@ import { IOrgBookSearchResult } from "@mds/common/interfaces";
 interface OrgBookSearchProps {
   isDisabled?: boolean;
   setRegistrationId: (registration_id: string) => void;
+  setBusinessName: (business_name: string) => void;
   current_party: string;
 }
 
 const OrgBookSearch: FC<OrgBookSearchProps> = ({
   isDisabled = false,
   setRegistrationId,
+  setBusinessName,
   current_party,
 }) => {
   const dispatch = useDispatch();
@@ -71,6 +73,7 @@ const OrgBookSearch: FC<OrgBookSearchProps> = ({
 
   const handleSelect = async (value) => {
     setSelectedParty(value.label);
+    setBusinessName(value.label);
     setRegistrationId(value.key);
   };
 
