@@ -77,10 +77,10 @@ class PartyBCRegistrationListResource(Resource, UserMixin):
             if not party_orgbook_entity:
                 raise InternalServerError('Failed to create the Party OrgBook Entity.')
 
-        else:                                                                              #registration_id
+        else:  # registration_id
             party_orgbook_entity = PartyBCRegistration.create(party_guid, registration_id,
                                                               business_name)
-
+            party_orgbook_entity.data_source = "BC_REGISTRIES"
         party_orgbook_entity.save()
         party.save()
 
