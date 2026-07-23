@@ -54,12 +54,12 @@ class BCRegistriesService():
 class OrgBookService():
 
     def _make_get(self, *args) -> dict:
-        resp = requests.get(*args)
+        resp = requests.get(*args, timeout=10)
         if resp.status_code != requests.codes.ok:
             raise BadGateway(f'OrgBook API responded with {resp.status_code}: {resp.reason}')
         try:
-            return json.loads(resp.text)
-        except Exception as e:
+            return resp.json()
+        except requests.exceptions.JSONDecodeError as e:
             raise BadGateway(f'OrgBook API responded with unexpected exception type={type(e)}.')
 
     def search(self, search: str) -> List[OrgBookSearchResultItem]:
@@ -69,6 +69,7 @@ class OrgBookService():
         resp_data = self._make_get(url, params)
         results: List[OrgBookSearchResultItem] = [{
             "registration_id": x["topic_source_id"],
+            "credential_id": x["credential_id"],
             "text": x["value"]
         } for x in resp_data['results'] if x["sub_type"] == "entity_name"]
 

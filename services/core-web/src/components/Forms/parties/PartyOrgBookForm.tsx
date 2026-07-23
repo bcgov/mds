@@ -8,7 +8,7 @@ import {
   fetchPartyById,
 } from "@mds/common/redux/slices/partiesSlice";
 import { ORGBOOK_ENTITY_URL } from "@/constants/routes";
-import { IOrgbookCredential, IParty } from "@mds/common/interfaces";
+import { IParty } from "@mds/common/interfaces";
 import OrgBookSearch from "@mds/common/components/parties/OrgBookSearch";
 import { useAppSelector } from "@mds/common/redux/rootState";
 import { userHasRole } from "@mds/common/redux/selectors/authenticationSelectors";
@@ -21,7 +21,7 @@ interface PartyOrgBookFormProps {
 export const PartyOrgBookForm: FC<PartyOrgBookFormProps> = ({ party }) => {
   const [isAssociating, setIsAssociating] = useState(false);
   const dispatch = useDispatch();
-  const [registrationId, setRegistrationId] = useState(party.party_bc_registration.registration_id);
+  const [registrationId, setRegistrationId] = useState<string | null>(party.party_bc_registration.registration_id);
   const [businesssName, setBusinessName] = useState(null);
   const [currentParty, setCurrentParty] = useState(party.party_bc_registration.name_text);
   const [isAssociated, setIsAssociated] = useState(!!party.party_bc_registration.name_text);

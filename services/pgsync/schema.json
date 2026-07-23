@@ -198,11 +198,11 @@
             ],
             "children": [
                 {
-                    "table": "party_bc_registration",
+                    "table": "party_orgbook_entity",
                     "columns": [
                         "registration_id"
                     ],
-                    "label": "party_bc_registration",
+                    "label": "party_orgbook_entity",
                     "relationship": {
                         "type": "one_to_one",
                         "variant": "object",

@@ -9,8 +9,8 @@ import { IOrgBookSearchResult } from "@mds/common/interfaces";
 
 interface OrgBookSearchProps {
   isDisabled?: boolean;
-  setRegistrationId: (registration_id: string) => void;
-  setBusinessName: (business_name: string) => void;
+  setRegistrationId: (registration_id: string | null) => void;
+  setBusinessName: (business_name: string | null) => void;
   current_party: string;
 }
 

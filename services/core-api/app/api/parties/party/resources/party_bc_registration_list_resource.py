@@ -1,5 +1,3 @@
-import json
-import requests
 from typing import Optional
 from flask import request
 from flask_restx import Resource, fields
@@ -11,7 +9,7 @@ from app.api.utils.access_decorators import requires_role_manage_orgbook
 from app.api.utils.resources_mixins import UserMixin
 from app.api.parties.party.models.party_bc_registration import PartyBCRegistration
 from app.api.parties.response_models import PARTY_BC_REGISTRATION
-from app.api.services.orgbook_service import OrgBookService, BCRegistriesService
+from app.api.services.orgbook_service import OrgBookService
 from app.api.parties.party.models.party import Party
 
 
