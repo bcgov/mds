@@ -92,9 +92,3 @@ class OrgBookService():
         credential = self._make_get(url)
 
         return credential
-
-    # def verify_credential(self, credential_id):
-    #     url = f'{Config.ORGBOOK_API_URL}/v4/credential/{credential_id}/verify'
-    #     verification = self._make_get(url)
-
-    #     return verification
