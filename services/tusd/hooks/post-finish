@@ -51,4 +51,13 @@ else
   json_data=$(echo "{\"Upload\": $upload}" | tr -d '\r\n' | tr -d '\0')
 fi
 
-curl -s -o /dev/null -w "tusd-hooks response status: %{http_code}\n" --retry 5 --retry-delay 2 --retry-all-errors -X POST -H "Content-Type: application/json" -H "Authorization: $authorization" -H "Hook-Name: post-finish" -d "$json_data" $DOCUMENT_MANAGER_URL/tusd-hooks >&2
+response=$(curl -s -w "\n%{http_code}" --retry 5 --retry-delay 2 --retry-all-errors -X POST -H "Content-Type: application/json" -H "Authorization: $authorization" -H "Hook-Name: post-finish" -d "$json_data" $DOCUMENT_MANAGER_URL/tusd-hooks)
+status=$(echo "$response" | tail -n1)
+body=$(echo "$response" | sed '$d')
+
+if [ "$status" -lt 200 ] || [ "$status" -ge 300 ]; then
+  echo "tusd-hooks request failed with status $status: $body" >&2
+  exit 1
+fi
+
+echo "tusd-hooks request succeeded with status $status" >&2
