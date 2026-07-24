@@ -1,7 +1,11 @@
 #!/bin/sh
 
+# tusd reads this script's stdout and tries to parse it as a JSON
+# HookResponse; anything else logs as a HookInvocationError even on success.
+# Keep all diagnostic output on stderr so stdout stays empty.
+
 # print a message to the tusd log
-echo "post-finish hook called"
+echo "post-finish hook called" >&2
 
 # Set the AWS credentials
 export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
@@ -17,14 +21,17 @@ upload=$(echo "$stdin_data" | jq -r '.Event.Upload')
 # check if the upload object has version_guid in MetaData
 version_guid=$(echo "$upload" | jq -r '.MetaData."version_guid"')
 
-# Extract all the HTTP headers from the JSON-encoded object
-headers=$(echo "$stdin_data" | jq -r '.Event.HTTPRequest.Header | to_entries | map("\(.key): \(.value | join(","))") | join("\n")')
+# Only forward the Authorization header from the original request - the
+# tusd-hooks endpoint requires it for auth and reads nothing else. Forwarding
+# the full raw header set (previous behavior) included Host, which corrupts
+# the outgoing request to document-manager.
+authorization=$(echo "$stdin_data" | jq -r '.Event.HTTPRequest.Header.Authorization[0] // empty')
 
 # Extract the ID and Size properties from the Upload object
 id=$(echo "$upload" | jq -r '.ID')
 size=$(echo "$upload" | jq -r '.Size')
 
-echo "Upload ID $id ($size bytes) finished"
+echo "Upload ID $id ($size bytes) finished" >&2
 
 S3_PREFIX_CLEAN=$(echo $S3_PREFIX | sed 's/\/$//')
 storageKey="$S3_PREFIX_CLEAN$(echo "$upload" | jq -r '.MetaData.path')"
@@ -35,7 +42,7 @@ if [ $version_guid != "null" ]; then
 
   aws_exit_code=$?
   if [ $aws_exit_code -ne 0 ]; then
-    echo "aws command failed with exit code $aws_exit_code"
+    echo "aws command failed with exit code $aws_exit_code" >&2
   fi
 
   # Forward the request through the hooks-http option
@@ -44,4 +51,4 @@ else
   json_data=$(echo "{\"Upload\": $upload}" | tr -d '\r\n' | tr -d '\0')
 fi
 
-curl --retry 5 --retry-delay 2 --retry-all-errors -X POST -H "Content-Type: application/json" -H "$headers" -H "Hook-Name: post-finish" -d "$json_data" $DOCUMENT_MANAGER_URL/tusd-hooks
+curl -s -o /dev/null -w "tusd-hooks response status: %{http_code}\n" --retry 5 --retry-delay 2 --retry-all-errors -X POST -H "Content-Type: application/json" -H "Authorization: $authorization" -H "Hook-Name: post-finish" -d "$json_data" $DOCUMENT_MANAGER_URL/tusd-hooks >&2
