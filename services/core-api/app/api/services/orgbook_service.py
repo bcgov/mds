@@ -7,7 +7,6 @@ from app.api.services.orgbook_types import (
     BulkBusinessSearchResponse,
     BusinessSearchResult,
     OrgBookSearchResultItem,
-    OrgBookVerificationResponse,
 )
 
 
@@ -89,13 +88,13 @@ class OrgBookService():
         return self._make_get(detail_url, params)
 
     def get_credential(self, credential_id):
-        url = f'{Config.ORGBOOK_API_URL}/v2/credential/{credential_id}/formatted'
+        url = f'{Config.ORGBOOK_API_URL}/v4/credential/{credential_id}'
         credential = self._make_get(url)
 
         return credential
 
-    def verify_credential(self, credential_id):
-        url = f'{Config.ORGBOOK_API_URL}/v2/credential/{credential_id}/verify'
-        verification = self._make_get(url)
+    # def verify_credential(self, credential_id):
+    #     url = f'{Config.ORGBOOK_API_URL}/v4/credential/{credential_id}/verify'
+    #     verification = self._make_get(url)
 
-        return verification
+    #     return verification
