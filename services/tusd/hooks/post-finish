@@ -12,13 +12,13 @@ export S3_PREFIX=$S3_PREFIX
 read -r stdin_data
 
 # Extract the Upload object from the JSON-encoded object
-upload=$(echo "$stdin_data" | jq -r '.Event.Upload')
+upload=$(echo "$stdin_data" | jq -r '.Upload')
 
 # check if the upload object has version_guid in MetaData
 version_guid=$(echo "$upload" | jq -r '.MetaData."version_guid"')
 
 # Extract all the HTTP headers from the JSON-encoded object
-headers=$(echo "$stdin_data" | jq -r '.Event.HTTPRequest.Header | to_entries | map("\(.key): \(.value | join(","))") | join("\n")')
+headers=$(echo "$stdin_data" | jq -r '.HTTPRequest.Header | to_entries | map("\(.key): \(.value | join(","))") | join("\n")')
 
 # Extract the ID and Size properties from the Upload object
 id=$(echo "$upload" | jq -r '.ID')
@@ -44,4 +44,4 @@ else
   json_data=$(echo "{\"Upload\": $upload}" | tr -d '\r\n' | tr -d '\0')
 fi
 
-curl --retry 5 --retry-delay 2 --retry-all-errors -X POST -H "Content-Type: application/json" -H "$headers" -H "Hook-Name: post-finish" -d "$json_data" $DOCUMENT_MANAGER_URL/tusd-hooks
+curl -X POST -H "Content-Type: application/json" -H "$headers" -H "Hook-Name: post-finish" -d "$json_data" $DOCUMENT_MANAGER_URL/tusd-hooks
