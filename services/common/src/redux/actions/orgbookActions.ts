@@ -1,7 +1,7 @@
 import * as ActionTypes from "@mds/common/constants/actionTypes";
 import { IBCRegistrationSearchResult, IOrgbookCredential } from "@mds/common/interfaces";
 
-export const storeSearchOrgBookResults = (payload: IBCRegistrationSearchResult[]) => ({
+export const storeBCRegistrationResults = (payload: IBCRegistrationSearchResult[]) => ({
   type: ActionTypes.STORE_ORGBOOK_SEARCH_RESULTS,
   payload,
 });

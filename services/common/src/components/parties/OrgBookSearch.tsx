@@ -2,8 +2,8 @@ import React, { FC, useEffect, useRef, useState } from "react";
 import { Form, Select, Spin } from "antd";
 import { debounce, DebouncedFunc } from "lodash";
 import { useDispatch, useSelector } from "react-redux";
-import { getSearchOrgBookResults } from "@mds/common/redux/selectors/orgbookSelectors";
-import { searchOrgBook } from "@mds/common/redux/actionCreators/orgbookActionCreator";
+import { getBCRegistrationSearchResults } from "@mds/common/redux/selectors/orgbookSelectors";
+import { searchBCRegistrations } from "@mds/common/redux/actionCreators/orgbookActionCreator";
 import { LoadingOutlined } from "@ant-design/icons";
 import { IBCRegistrationSearchResult } from "@mds/common/interfaces";
 
@@ -22,7 +22,7 @@ const OrgBookSearch: FC<OrgBookSearchProps> = ({
 }) => {
   const dispatch = useDispatch();
 
-  const searchOrgBookResults: IBCRegistrationSearchResult[] = useSelector(getSearchOrgBookResults);
+  const searchBCRegistrationsResults: IBCRegistrationSearchResult[] = useSelector(getBCRegistrationSearchResults);
 
   const lastFetchId = useRef(0);
 
@@ -46,7 +46,7 @@ const OrgBookSearch: FC<OrgBookSearchProps> = ({
     setIsSearching(true);
     setRegistrationId(null);
 
-    await dispatch(searchOrgBook(search));
+    await dispatch(searchBCRegistrations(search));
 
     if (fetchId !== lastFetchId) {
       return;
@@ -62,14 +62,14 @@ const OrgBookSearch: FC<OrgBookSearchProps> = ({
   }, [current_party]);
 
   useEffect(() => {
-    if (searchOrgBookResults) {
-      const selectOptions = searchOrgBookResults.map((result) => ({
+    if (searchBCRegistrationsResults) {
+      const selectOptions = searchBCRegistrationsResults.map((result) => ({
         text: result.text,
         value: result.registration_id,
       }));
       setOptions(selectOptions);
     }
-  }, [searchOrgBookResults]);
+  }, [searchBCRegistrationsResults]);
 
   const handleSelect = async (value) => {
     setSelectedParty(value.label);

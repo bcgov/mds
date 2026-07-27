@@ -16,7 +16,7 @@ import {
 import { getDropdownProvinceOptions } from "@mds/common/redux/selectors/staticContentSelectors";
 import { IOrgbookCredential } from "@mds/common/interfaces/party";
 import { CONTACTS_COUNTRY_OPTIONS } from "@mds/common/constants/strings";
-import RenderOrgBookSearch from "@mds/common/components/forms/RenderOrgBookSearch";
+import RenderBCRegistrationSearch from "@mds/common/components/forms/RenderBCRegistrationSearch";
 import {
   fetchOrgBookCredential,
 } from "@mds/common/redux/actionCreators/orgbookActionCreator";
@@ -125,11 +125,11 @@ export const Agent: FC<ProjectSummaryFormComponentProps> = ({ fieldsDisabled }) 
       if (verified) {
         icon = faCircleCheck;
         color = COLOR.successGreen;
-        text = "Verified on Orgbook BC";
+        text = "Verified on BC Registries";
       } else {
         icon = faCircleX;
         color = "#D8292F";
-        text = "Not registered on Orgbook BC";
+        text = "Not found in BC Registries lookup";
       }
     }
 
@@ -208,7 +208,7 @@ export const Agent: FC<ProjectSummaryFormComponentProps> = ({ fieldsDisabled }) 
                 setCredential={setCredential}
                 data={orgBookOptions}
                 help={"as registered with the BC Registrar of Companies"}
-                component={RenderOrgBookSearch}
+                component={RenderBCRegistrationSearch}
                 disabled={fieldsDisabled}
               />
               {verifiedCredential && (
@@ -225,6 +225,7 @@ export const Agent: FC<ProjectSummaryFormComponentProps> = ({ fieldsDisabled }) 
                   <Typography.Paragraph className="light margin-none">
                     BC Registration Status {verifiedCredential.registrationStatus}
                   </Typography.Paragraph>
+                  <br />
                 </div>
               )}
               <Row gutter={16}>

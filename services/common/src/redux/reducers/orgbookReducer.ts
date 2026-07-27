@@ -34,7 +34,7 @@ const orgbookReducerObject = {
   [ORGBOOK]: orgbookReducer,
 };
 
-export const getSearchOrgBookResults = (state: RootState): IBCRegistrationSearchResult[] =>
+export const getBCRegistrationSearchResults = (state: RootState): IBCRegistrationSearchResult[] =>
   state[ORGBOOK].searchOrgBookResults;
 export const getOrgBookCredential = (state: RootState): IOrgbookCredential =>
   state[ORGBOOK].orgBookCredential;

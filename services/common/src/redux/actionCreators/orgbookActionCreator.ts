@@ -10,14 +10,14 @@ import CustomAxios from "../customAxios";
 import { AppThunk } from "@mds/common/interfaces/appThunk.type";
 import { IBCRegistrationSearchResult } from "@mds/common/interfaces";
 
-export const searchOrgBook = (search: string): AppThunk => (dispatch) => {
+export const searchBCRegistrations = (search: string): AppThunk => (dispatch) => {
   dispatch(request(NetworkReducerTypes.BC_REGISTRATION_SEARCH));
   dispatch(showLoading());
   return CustomAxios()
     .get(ENVIRONMENT.apiUrl + API.BC_REGISTRATION_SEARCH(search), createRequestHeader())
     .then((response: AxiosResponse<IBCRegistrationSearchResult[]>) => {
       dispatch(success(NetworkReducerTypes.BC_REGISTRATION_SEARCH));
-      dispatch(orgbookActions.storeSearchOrgBookResults(response.data));
+      dispatch(orgbookActions.storeBCRegistrationResults(response.data));
     })
     .catch(() => dispatch(error(NetworkReducerTypes.BC_REGISTRATION_SEARCH)))
     .finally(() => dispatch(hideLoading()));

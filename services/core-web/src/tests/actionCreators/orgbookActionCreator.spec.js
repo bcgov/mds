@@ -1,9 +1,8 @@
 import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
 import {
-  searchOrgBook,
+  searchBCRegistrations,
   fetchOrgBookCredential,
-  verifyOrgBookCredential,
 } from "@mds/common/redux/actionCreators/orgbookActionCreator";
 import * as genericActions from "@mds/common/redux/actions/genericActions";
 import { ENVIRONMENT } from "@mds/common/constants/environment";
@@ -24,13 +23,13 @@ beforeEach(() => {
   errorSpy.mockClear();
 });
 
-describe("`searchOrgBook` action creator", () => {
+describe("`searchBCRegistrations` action creator", () => {
   const search = "foo";
   const url = ENVIRONMENT.apiUrl + API.BC_REGISTRATION_SEARCH(search);
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onGet(url, search).reply(200, mockResponse);
-    return searchOrgBook(search)(dispatch).then(() => {
+    return searchBCRegistrations(search)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(5);
@@ -39,7 +38,7 @@ describe("`searchOrgBook` action creator", () => {
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onGet(url).reply(418, MOCK.ERROR);
-    return searchOrgBook(search)(dispatch).then(() => {
+    return searchBCRegistrations(search)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);

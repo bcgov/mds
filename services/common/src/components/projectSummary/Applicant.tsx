@@ -14,7 +14,7 @@ import RenderRadioButtons from "@mds/common/components/forms/RenderRadioButtons"
 import { FORM } from "@mds/common/constants/forms";
 import { CONTACTS_COUNTRY_OPTIONS } from "@mds/common/constants/strings";
 import { IOrgbookCredential } from "@mds/common/interfaces/party";
-import RenderOrgBookSearch from "@mds/common/components/forms/RenderOrgBookSearch";
+import RenderBCRegistrationSearch from "@mds/common/components/forms/RenderBCRegistrationSearch";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleCheck, faCircleX, faSpinner } from "@fortawesome/pro-light-svg-icons";
 import {
@@ -43,7 +43,7 @@ const Applicant: FC<ProjectSummaryFormComponentProps> = ({ fieldsDisabled }) => 
   const provinceOptions = useSelector(getDropdownProvinceOptions);
   const [credential, setCredential] = useState<IOrgbookCredential>(null);
   const [checkingStatus, setCheckingStatus] = useState(false);
-  const [orgBookOptions, setOrgBookOptions] = useState([]);
+  const [bcRegistrationOptions, setBcRegistrationOptions] = useState([]);
   const [verifiedCredential, setVerifiedCredential] = useState<IVerifiedCredential>(null);
 
   const orgBookCredential = useSelector(getOrgBookCredential);
@@ -68,7 +68,7 @@ const Applicant: FC<ProjectSummaryFormComponentProps> = ({ fieldsDisabled }) => 
   };
 
   useEffect(() => {
-    setOrgBookOptions([]);
+    setBcRegistrationOptions([]);
     setCredential(null);
     setVerifiedCredential(null);
     dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "applicant.party_bc_registration", null));
@@ -85,7 +85,7 @@ const Applicant: FC<ProjectSummaryFormComponentProps> = ({ fieldsDisabled }) => 
   useEffect(() => {
     if (credential_id && orgBookCredential?.topic?.local_name?.text) {
       const options = [{ text: orgBookCredential.topic.local_name.text, value: credential_id }];
-      setOrgBookOptions(options);
+      setBcRegistrationOptions(options);
     }
   }, [orgBookCredential]);
 
@@ -185,7 +185,7 @@ const Applicant: FC<ProjectSummaryFormComponentProps> = ({ fieldsDisabled }) => 
     dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "company_alias", null));
     setCredential(null);
     setVerifiedCredential(null);
-    setOrgBookOptions(null);
+    setBcRegistrationOptions(null);
   };
 
   const handleUpdateAddress = (
@@ -287,9 +287,9 @@ const Applicant: FC<ProjectSummaryFormComponentProps> = ({ fieldsDisabled }) => 
             validate={[required]}
             label="Company Legal Name"
             setCredential={setCredential}
-            data={orgBookOptions}
+            data={bcRegistrationOptions}
             help={"as registered with the BC Registrar of Companies"}
-            component={RenderOrgBookSearch}
+            component={RenderBCRegistrationSearch}
             disabled={fieldsDisabled}
           />
           {verifiedCredential && (

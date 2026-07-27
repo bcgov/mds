@@ -4,23 +4,23 @@ import { debounce, DebouncedFunc } from "lodash";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getOrgBookCredential,
-  getSearchOrgBookResults,
+  getBCRegistrationSearchResults,
 } from "@mds/common/redux/selectors/orgbookSelectors";
 import {
   fetchOrgBookCredential,
-  searchOrgBook,
+  searchBCRegistrations,
 } from "@mds/common/redux/actionCreators/orgbookActionCreator";
 import { LoadingOutlined } from "@ant-design/icons";
 import { IOrgbookCredential, IBCRegistrationSearchResult } from "@mds/common/interfaces";
 import { BaseInputProps, getFormItemLabel } from "./BaseInput";
 import { FormContext } from "./FormWrapper";
 
-interface OrgBookSearchProps extends BaseInputProps {
+interface BCRegistrationSearchProps extends BaseInputProps {
   data?: any;
   setCredential: (credential: IOrgbookCredential) => void;
 }
 
-const RenderOrgBookSearch: FC<OrgBookSearchProps> = ({
+const RenderBCRegistrationSearch: FC<BCRegistrationSearchProps> = ({
   data,
   help,
   label = "",
@@ -34,7 +34,7 @@ const RenderOrgBookSearch: FC<OrgBookSearchProps> = ({
 }) => {
   const dispatch = useDispatch();
   const { isEditMode } = useContext(FormContext);
-  const searchOrgBookResults: IBCRegistrationSearchResult[] = useSelector(getSearchOrgBookResults);
+  const searchBCRegistrationsResults: IBCRegistrationSearchResult[] = useSelector(getBCRegistrationSearchResults);
   const orgBookCredential = useSelector(getOrgBookCredential);
 
   const lastFetchId = useRef(0);
@@ -63,7 +63,7 @@ const RenderOrgBookSearch: FC<OrgBookSearchProps> = ({
     setIsSearching(true);
     setCredential(null);
 
-    await dispatch(searchOrgBook(search));
+    await dispatch(searchBCRegistrations(search));
 
     if (fetchId !== lastFetchId) {
       return;
@@ -73,14 +73,14 @@ const RenderOrgBookSearch: FC<OrgBookSearchProps> = ({
   };
 
   useEffect(() => {
-    if (searchOrgBookResults) {
-      const selectOptions = searchOrgBookResults.map((result) => ({
+    if (searchBCRegistrationsResults) {
+      const selectOptions = searchBCRegistrationsResults.map((result) => ({
         text: result.text,
         value: result.registration_id,
       }));
       setOptions(selectOptions);
     }
-  }, [searchOrgBookResults]);
+  }, [searchBCRegistrationsResults]);
 
   useEffect(() => {
     if (data) {
@@ -90,7 +90,7 @@ const RenderOrgBookSearch: FC<OrgBookSearchProps> = ({
 
   const handleSelect = async (value) => {
     const registrationId = value.key;
-    const credential = searchOrgBookResults.find((result) => result.registration_id === registrationId);
+    const credential = searchBCRegistrationsResults.find((result) => result.registration_id === registrationId);
     const credentialId = credential?.credential_id;
 
     await dispatch(fetchOrgBookCredential(credentialId));
@@ -128,7 +128,7 @@ const RenderOrgBookSearch: FC<OrgBookSearchProps> = ({
           showSearch
           showArrow
           labelInValue
-          placeholder="Start typing to search OrgBook..."
+          placeholder="Start typing to search for BC Registrations..."
           notFoundContent={isSearching ? <Spin size="small" indicator={<LoadingOutlined />} /> : null}
           filterOption={false}
           onSearch={handleSearchDebounced}
@@ -150,4 +150,4 @@ const RenderOrgBookSearch: FC<OrgBookSearchProps> = ({
   );
 };
 
-export default RenderOrgBookSearch;
+export default RenderBCRegistrationSearch;
