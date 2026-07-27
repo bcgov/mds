@@ -271,7 +271,7 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
             <Typography.Paragraph className="margin-small--bottom">
               To add new spatial files, go to{" "}
               <Link to={documentUploadHref}>Project Description &gt; Document Upload</Link>. This
-              tab supports replacing, archiving, and downloading files already submitted.
+              tab supports downloading and viewing the details of files already submitted.
             </Typography.Paragraph>
           )}
           <SpatialDocumentTable documents={pdSpatialDocuments} categoryText={spatialCategoryText} />
