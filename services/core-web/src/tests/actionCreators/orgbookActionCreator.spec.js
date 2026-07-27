@@ -26,7 +26,7 @@ beforeEach(() => {
 
 describe("`searchOrgBook` action creator", () => {
   const search = "foo";
-  const url = ENVIRONMENT.apiUrl + API.ORGBOOK_SEARCH(search);
+  const url = ENVIRONMENT.apiUrl + API.BC_REGISTRATION_SEARCH(search);
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onGet(url, search).reply(200, mockResponse);

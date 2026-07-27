@@ -11,15 +11,15 @@ import { AppThunk } from "@mds/common/interfaces/appThunk.type";
 import { IOrgBookSearchResult } from "@mds/common/interfaces";
 
 export const searchOrgBook = (search: string): AppThunk => (dispatch) => {
-  dispatch(request(NetworkReducerTypes.ORGBOOK_SEARCH));
+  dispatch(request(NetworkReducerTypes.BC_REGISTRATION_SEARCH));
   dispatch(showLoading());
   return CustomAxios()
-    .get(ENVIRONMENT.apiUrl + API.ORGBOOK_SEARCH(search), createRequestHeader())
+    .get(ENVIRONMENT.apiUrl + API.BC_REGISTRATION_SEARCH(search), createRequestHeader())
     .then((response: AxiosResponse<IOrgBookSearchResult[]>) => {
-      dispatch(success(NetworkReducerTypes.ORGBOOK_SEARCH));
+      dispatch(success(NetworkReducerTypes.BC_REGISTRATION_SEARCH));
       dispatch(orgbookActions.storeSearchOrgBookResults(response.data));
     })
-    .catch(() => dispatch(error(NetworkReducerTypes.ORGBOOK_SEARCH)))
+    .catch(() => dispatch(error(NetworkReducerTypes.BC_REGISTRATION_SEARCH)))
     .finally(() => dispatch(hideLoading()));
 };
 
@@ -33,18 +33,5 @@ export const fetchOrgBookCredential = (credentialId) => (dispatch) => {
       dispatch(orgbookActions.storeOrgBookCredential(response.data));
     })
     .catch(() => dispatch(error(NetworkReducerTypes.ORGBOOK_CREDENTIAL)))
-    .finally(() => dispatch(hideLoading()));
-};
-
-export const verifyOrgBookCredential = (credentialId) => (dispatch) => {
-  dispatch(request(NetworkReducerTypes.ORGBOOK_VERIFY));
-  dispatch(showLoading());
-  return CustomAxios()
-    .get(ENVIRONMENT.apiUrl + API.ORGBOOK_VERIFY(credentialId), createRequestHeader())
-    .then((response) => {
-      dispatch(success(NetworkReducerTypes.ORGBOOK_VERIFY));
-      return response.data;
-    })
-    .catch(() => dispatch(error(NetworkReducerTypes.ORGBOOK_VERIFY)))
     .finally(() => dispatch(hideLoading()));
 };

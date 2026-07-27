@@ -72,7 +72,7 @@ export const PartyOrgBookForm: FC<PartyOrgBookFormProps> = ({ party }) => {
         <Button
           className="full-mobile"
           href={ORGBOOK_ENTITY_URL(registrationId)}
-          disabled={!!registrationId}
+          disabled={!registrationId}
           target="_blank"
         >
           <span>

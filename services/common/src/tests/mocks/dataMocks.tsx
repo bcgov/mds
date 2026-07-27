@@ -143,7 +143,7 @@ export const TSF: ITailingsStorageFacilityForm = {
       organization: undefined,
       organization_guid: "",
       party_name: "O'Reilly",
-      party_orgbook_entity: undefined,
+      party_bc_registration: undefined,
       party_type_code: PartyTypeCodeEnum.PER,
       phone_no: "123-123-1234",
     },
@@ -160,7 +160,7 @@ export const TSF: ITailingsStorageFacilityForm = {
       organization: undefined,
       organization_guid: "",
       party_name: "Petersen",
-      party_orgbook_entity: undefined,
+      party_bc_registration: undefined,
       party_type_code: PartyTypeCodeEnum.PER,
       phone_no: "123-123-1234",
       address: undefined,
@@ -876,7 +876,7 @@ export const PARTY = {
       now_party_appt: [],
       organization: null,
       organization_guid: null,
-      party_orgbook_entity: null,
+      party_bc_registration: null,
     },
     "18145c75-49ad-0101-85f3-a43e45ae989a": {
       party_guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
@@ -898,7 +898,7 @@ export const PARTY = {
       now_party_appt: [],
       organization: null,
       organization_guid: null,
-      party_orgbook_entity: null,
+      party_bc_registration: null,
     },
   },
   partiesWithAppointments: {
@@ -922,7 +922,7 @@ export const PARTY = {
       now_party_appt: [],
       organization: null,
       organization_guid: null,
-      party_orgbook_entity: null,
+      party_bc_registration: null,
     },
     "18145c75-49ad-0101-85f3-a43e45ae989a": {
       party_guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
@@ -943,7 +943,7 @@ export const PARTY = {
       now_party_appt: [],
       organization: null,
       organization_guid: null,
-      party_orgbook_entity: null,
+      party_bc_registration: null,
       business_role_appts: [
         {
           end_date: "2020-08-29T00:00:00",

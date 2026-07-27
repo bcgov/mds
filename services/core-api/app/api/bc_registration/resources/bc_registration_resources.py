@@ -20,19 +20,21 @@ class SearchResource(Resource):
     @api.marshal_with(ORGBOOK_SEARCH_RESULT_ITEM, code=200, as_list=True)
     def get(self):
 
-        search = request.args.get('search_name')
+        search_name = request.args.get('search_name')
         registration_id = request.args.get('registration_id')
+        print(search_name)
+        print(registration_id)
 
-        if not (bool(search) ^ bool(registration_id)):
+        if not (bool(search_name) ^ bool(registration_id)):
             raise ValueError(
                 'Either search_name or registration_id must be provided, and not both.')
         ## SEARCH BY NAME
-        if search:
-            results = OrgBookService().search(search)
+        if search_name:
+            results = OrgBookService().search(search_name)
             if is_feature_enabled(Feature.BC_REGISTRIES_SEARCH):
                 reg_results = None
                 try:
-                    reg_results = BCRegistriesService().search(search)
+                    reg_results = BCRegistriesService().search(search_name)
                     current_app.logger.debug(f"New BC Registries API results: {reg_results}")
                 except Exception as e:
                     current_app.logger.warning(f"BCREG_API ERROR: {str(e)}")

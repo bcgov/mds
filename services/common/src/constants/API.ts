@@ -429,9 +429,8 @@ export const MINE_COMMENTS = (mineGuid) => `/mines/${mineGuid}/comments`;
 export const MINE_COMMENT = (mineGuid, commentGuid) => `/mines/${mineGuid}/comments/${commentGuid}`;
 
 // OrgBook
-export const ORGBOOK_SEARCH = (search) => `/orgbook/search?${queryString.stringify({ search })}`;
-export const ORGBOOK_CREDENTIAL = (credentialId) => `/orgbook/credential/${credentialId}`;
-export const ORGBOOK_VERIFY = (credentialId) => `/orgbook/credential/${credentialId}/verify`;
+export const BC_REGISTRATION_SEARCH = (search_name) => `/bc-registration/search?${queryString.stringify({ search_name })}`;
+export const ORGBOOK_CREDENTIAL = (credentialId) => `/bc-registraton/orgbook/credential/${credentialId}`;
 
 // Activities
 export const ACTIVITIES = () => "/activities";
