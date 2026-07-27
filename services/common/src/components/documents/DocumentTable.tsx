@@ -27,7 +27,7 @@ import FileOutlined from "@ant-design/icons/FileOutlined";
 import InboxOutlined from "@ant-design/icons/InboxOutlined";
 import SyncOutlined from "@ant-design/icons/SyncOutlined";
 import { openDocument } from "@mds/common/components/syncfusion/DocumentViewer";
-import { Button, Col, Row, Typography } from "antd";
+import { Button, Col, Row, Tooltip, Typography } from "antd";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import DocumentTableProps from "@mds/common/interfaces/document/documentTableProps.interface";
 import ArchiveDocumentModal from "./ArchiveDocumentModal";
@@ -299,6 +299,10 @@ export const DocumentTable: FC<DocumentTableProps> = ({
     }
   ].filter((a) => allowedTableActions[a.key]);
 
+  const bulkActionsTooltipText = documentsCanBulkDropDown
+    ? "Select one or more files below using the checkboxes to download or archive them."
+    : "Select one or more files below using the checkboxes to download them.";
+
   const renderBulkActions = () => {
     let element = (
       <Button
@@ -320,9 +324,17 @@ export const DocumentTable: FC<DocumentTableProps> = ({
       );
     }
 
+    // wrap in a span: antd disables pointer events on disabled buttons, which
+    // would otherwise prevent the tooltip from showing on hover
+    element = (
+      <Tooltip title={bulkActionsTooltipText}>
+        <span>{element}</span>
+      </Tooltip>
+    );
+
     const hasHeader = Boolean(props.header);
 
-    return (enableBulkActions || hasHeader) && <Row justify={hasHeader ? "space-between" : "end"} align="bottom" className="document-table-header">
+    return (enableBulkActions || hasHeader) && <Row justify={hasHeader ? "space-between" : "end"} align="middle" className="document-table-header">
       {hasHeader && <Col>{props.header}</Col>}
       {enableBulkActions && <Col className="document-table-actions">{element}</Col>}
     </Row>;

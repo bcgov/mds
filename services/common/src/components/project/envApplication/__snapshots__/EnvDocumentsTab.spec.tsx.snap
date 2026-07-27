@@ -538,20 +538,22 @@ exports[`EnvDocumentsTab renders properly 1`] = `
         <div>
           <div />
           <div
-            class="ant-row ant-row-end ant-row-bottom document-table-header"
+            class="ant-row ant-row-end ant-row-middle document-table-header"
           >
             <div
               class="ant-col document-table-actions"
             >
-              <button
-                class="ant-btn ant-btn-primary"
-                disabled=""
-                type="button"
-              >
-                <div>
-                  Download
-                </div>
-              </button>
+              <span>
+                <button
+                  class="ant-btn ant-btn-primary"
+                  disabled=""
+                  type="button"
+                >
+                  <div>
+                    Download
+                  </div>
+                </button>
+              </span>
             </div>
           </div>
           <div
