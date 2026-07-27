@@ -306,6 +306,7 @@ const Applicant: FC<ProjectSummaryFormComponentProps> = ({ fieldsDisabled }) => 
               <Paragraph className="light margin-none">
                 BC Registration Status {verifiedCredential.registrationStatus}
               </Paragraph>
+              <br />
             </div>
           )}
           <Row gutter={16}>
