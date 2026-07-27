@@ -56,7 +56,7 @@ class SearchResource(Resource):
 
 class CredentialResource(Resource):
 
-    @api.doc(description='Get information on an OrgBook credential.')
+    @api.doc(description='Get information on an OrgBook credential using v2 api.')
     # @requires_role_view_all
     def get(self, credential_id):
         credential = OrgBookService().get_credential(credential_id)

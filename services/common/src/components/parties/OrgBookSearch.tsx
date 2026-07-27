@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getSearchOrgBookResults } from "@mds/common/redux/selectors/orgbookSelectors";
 import { searchOrgBook } from "@mds/common/redux/actionCreators/orgbookActionCreator";
 import { LoadingOutlined } from "@ant-design/icons";
-import { IOrgBookSearchResult } from "@mds/common/interfaces";
+import { IBCRegistrationSearchResult } from "@mds/common/interfaces";
 
 interface OrgBookSearchProps {
   isDisabled?: boolean;
@@ -22,7 +22,7 @@ const OrgBookSearch: FC<OrgBookSearchProps> = ({
 }) => {
   const dispatch = useDispatch();
 
-  const searchOrgBookResults: IOrgBookSearchResult[] = useSelector(getSearchOrgBookResults);
+  const searchOrgBookResults: IBCRegistrationSearchResult[] = useSelector(getSearchOrgBookResults);
 
   const lastFetchId = useRef(0);
 

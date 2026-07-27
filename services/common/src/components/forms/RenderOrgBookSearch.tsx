@@ -11,7 +11,7 @@ import {
   searchOrgBook,
 } from "@mds/common/redux/actionCreators/orgbookActionCreator";
 import { LoadingOutlined } from "@ant-design/icons";
-import { IOrgbookCredential, IOrgBookSearchResult } from "@mds/common/interfaces";
+import { IOrgbookCredential, IBCRegistrationSearchResult } from "@mds/common/interfaces";
 import { BaseInputProps, getFormItemLabel } from "./BaseInput";
 import { FormContext } from "./FormWrapper";
 
@@ -34,7 +34,7 @@ const RenderOrgBookSearch: FC<OrgBookSearchProps> = ({
 }) => {
   const dispatch = useDispatch();
   const { isEditMode } = useContext(FormContext);
-  const searchOrgBookResults: IOrgBookSearchResult[] = useSelector(getSearchOrgBookResults);
+  const searchOrgBookResults: IBCRegistrationSearchResult[] = useSelector(getSearchOrgBookResults);
   const orgBookCredential = useSelector(getOrgBookCredential);
 
   const lastFetchId = useRef(0);
