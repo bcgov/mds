@@ -9,9 +9,7 @@ from app.api.utils.include.user_info import User
 class PartyBCRegistration(AuditMixin, Base):
     __tablename__ = 'party_orgbook_entity'       #used to be orgbook specific
 
-    #TODO REDESIGN THIS MODEL FOR BC REGISTRIES.....
-    # Credential ID is the primary id, but not in new system.
-
+    #preserve old column names for backwards compatibility with existing code
     party_orgbook_entity_id = db.Column(db.Integer, primary_key=True)
     data_source = db.Column(db.String, nullable=False, default="ORGBOOK")
 

@@ -70,28 +70,28 @@ class PartyBCRegistrationListResource(Resource, UserMixin):
             except:
                 raise BadGateway('OrgBook API responded with unexpected data.')
 
-            party_orgbook_entity = PartyBCRegistration.create(party_guid, registration_id,
-                                                              name_text, registration_status,
-                                                              registration_date, name_id,
-                                                              credential_id)
-            if not party_orgbook_entity:
+            party_bc_registration = PartyBCRegistration.create(party_guid, registration_id,
+                                                               name_text, registration_status,
+                                                               registration_date, name_id,
+                                                               credential_id)
+            if not party_bc_registration:
                 raise InternalServerError('Failed to create the Party OrgBook Entity.')
 
-        else:  # registration_id
-            party_orgbook_entity = PartyBCRegistration.create(party_guid, registration_id,
-                                                              business_name)
-            party_orgbook_entity.data_source = "BC_REGISTRIES"
-        party_orgbook_entity.save()
+        else:                                                                               # registration_id
+            party_bc_registration = PartyBCRegistration.create(party_guid, registration_id,
+                                                               business_name)
+            party_bc_registration.data_source = "BC_REGISTRIES"
+        party_bc_registration.save()
         party.save()
 
-        return party_orgbook_entity, 201
+        return party_bc_registration, 201
 
     @api.doc(description='Delete a Party OrgBook Entity.')
     @requires_role_manage_orgbook
     def delete(self, party_guid):
-        party_orgbook_entity = PartyBCRegistration.find_by_party_guid(party_guid)
-        if party_orgbook_entity is None:
+        party_bc_registration = PartyBCRegistration.find_by_party_guid(party_guid)
+        if party_bc_registration is None:
             raise NotFound('OrgBook entity not found.')
 
-        party_orgbook_entity.delete()
+        party_bc_registration.delete()
         return None, 204

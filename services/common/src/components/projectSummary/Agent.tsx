@@ -52,7 +52,7 @@ export const Agent: FC<ProjectSummaryFormComponentProps> = ({ fieldsDisabled }) 
     setCredential(null);
     setVerified(false);
     setVerifiedCredential(null);
-    dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "agent.party_orgbook_entity", null));
+    dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "agent.party_bc_registration", null));
     if (credential_id) dispatch(fetchOrgBookCredential(credential_id));
   }, [credential_id]);
 
@@ -112,7 +112,7 @@ export const Agent: FC<ProjectSummaryFormComponentProps> = ({ fieldsDisabled }) 
         credential_id: credential.topic.local_name.credential_id,
         company_alias: null,
       };
-      dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "agent.party_orgbook_entity", orgBookEntity));
+      dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "agent.party_bc_registration", orgBookEntity));
     }
   }, [credential]);
 
@@ -151,7 +151,7 @@ export const Agent: FC<ProjectSummaryFormComponentProps> = ({ fieldsDisabled }) 
     dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "agent.party_name", null));
     dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "agent.first_name", null));
     dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "agent.middle_name", null));
-    dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "agent.party_orgbook_entity", null));
+    dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "agent.party_bc_registration", null));
     setCredential(null);
     setOrgBookOptions(null);
     setVerifiedCredential(null);
@@ -230,8 +230,8 @@ export const Agent: FC<ProjectSummaryFormComponentProps> = ({ fieldsDisabled }) 
               <Row gutter={16}>
                 <Col md={12} sm={24}>
                   <Field
-                    id="agent.party_orgbook_entity.registration_id"
-                    name="agent.party_orgbook_entity.registration_id"
+                    id="agent.party_bc_registration.registration_id"
+                    name="agent.party_bc_registration.registration_id"
                     label="Incorporation Number"
                     required
                     validate={[required, maxLength(25)]}

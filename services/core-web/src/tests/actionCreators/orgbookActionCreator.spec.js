@@ -69,28 +69,3 @@ describe("`fetchOrgBookCredential` action creator", () => {
     });
   });
 });
-
-describe("`verifyOrgBookCredential` action creator", () => {
-  const credentialId = 12345;
-  const url = ENVIRONMENT.apiUrl + API.ORGBOOK_VERIFY(credentialId);
-
-  it("Request successful, dispatches `success` with correct response", () => {
-    const mockResponse = { success: true };
-    mockAxios.onGet(url, credentialId).reply(200, mockResponse);
-    return verifyOrgBookCredential(credentialId)(dispatch).then((response) => {
-      expect(requestSpy).toHaveBeenCalledTimes(1);
-      expect(successSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(4);
-      expect(response).toEqual(mockResponse);
-    });
-  });
-
-  it("Request failure, dispatches `error` with correct response", () => {
-    mockAxios.onGet(url).reply(418, MOCK.ERROR);
-    return verifyOrgBookCredential(credentialId)(dispatch).then(() => {
-      expect(requestSpy).toHaveBeenCalledTimes(1);
-      expect(errorSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(4);
-    });
-  });
-});

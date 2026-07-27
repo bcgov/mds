@@ -71,7 +71,7 @@ const Applicant: FC<ProjectSummaryFormComponentProps> = ({ fieldsDisabled }) => 
     setOrgBookOptions([]);
     setCredential(null);
     setVerifiedCredential(null);
-    dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "applicant.party_orgbook_entity", null));
+    dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "applicant.party_bc_registration", null));
     if (credential_id) dispatch(fetchOrgBookCredential(credential_id));
   }, [credential_id]);
 
@@ -179,7 +179,7 @@ const Applicant: FC<ProjectSummaryFormComponentProps> = ({ fieldsDisabled }) => 
 
   const handleResetParty = () => {
     dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "applicant.party_name", null));
-    dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "applicant.party_orgbook_entity", null));
+    dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "applicant.party_bc_registration", null));
     dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "applicant.first_name", null));
     dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "applicant.middle_name", null));
     dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "company_alias", null));
