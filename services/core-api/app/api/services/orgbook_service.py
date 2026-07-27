@@ -47,7 +47,7 @@ class BCRegistriesService():
         except (ValueError, TypeError) as e:
             raise BadGateway('BC Registries API responded with unexpected data.') from e
 
-        return response.get('results', [])
+        return [], 200
 
 
 class OrgBookService():

@@ -18,6 +18,7 @@ class SearchResource(Resource):
             'registration_id': 'The registration number to lookup.'
         })
     @api.marshal_with(ORGBOOK_SEARCH_RESULT_ITEM, code=200, as_list=True)
+    @requires_role_view_all
     def get(self):
 
         search_name = request.args.get('search_name')
@@ -57,7 +58,7 @@ class SearchResource(Resource):
 class CredentialResource(Resource):
 
     @api.doc(description='Get information on an OrgBook credential using v2 api.')
-    # @requires_role_view_all
+    @requires_role_view_all
     def get(self, credential_id):
         credential = OrgBookService().get_credential(credential_id)
         return credential
