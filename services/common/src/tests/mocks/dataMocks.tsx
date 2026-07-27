@@ -47,7 +47,7 @@ import {
   IMinespaceUser,
   IMinePartyAppt,
   IPartyAppt,
-  IOrgBookSearchResult,
+  IBCRegistrationSearchResult,
 } from "@mds/common/interfaces";
 import { IAmsFinalApplication } from "@mds/common/interfaces/projects/amsFinalApplication.interface";
 import { HaystackDocumentSearchResult } from "@mds/common/interfaces/search/facet-search.interface";
@@ -11306,7 +11306,7 @@ export const MINE_ALERTS = {
   ],
 };
 
-export const ORGBOOK_SEARCH_RESULTS: IOrgBookSearchResult[] = [
+export const ORGBOOK_SEARCH_RESULTS: IBCRegistrationSearchResult[] = [
   {
     registration_id: "BC777855",
     text: "ZINEX MINING CORP.",

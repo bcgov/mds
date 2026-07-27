@@ -1,10 +1,10 @@
 import * as actionTypes from "@mds/common/constants/actionTypes";
 import { ORGBOOK } from "@mds/common/constants/reducerTypes";
 import { RootState } from "@mds/common/redux/rootState";
-import { IOrgBookSearchResult, IOrgbookCredential } from "@mds/common/interfaces";
+import { IBCRegistrationSearchResult, IOrgbookCredential } from "@mds/common/interfaces";
 
 interface IOrgbookReducerState {
-  searchOrgBookResults: IOrgBookSearchResult[];
+  searchOrgBookResults: IBCRegistrationSearchResult[];
   orgBookCredential: IOrgbookCredential;
 }
 
@@ -34,7 +34,7 @@ const orgbookReducerObject = {
   [ORGBOOK]: orgbookReducer,
 };
 
-export const getSearchOrgBookResults = (state: RootState): IOrgBookSearchResult[] =>
+export const getSearchOrgBookResults = (state: RootState): IBCRegistrationSearchResult[] =>
   state[ORGBOOK].searchOrgBookResults;
 export const getOrgBookCredential = (state: RootState): IOrgbookCredential =>
   state[ORGBOOK].orgBookCredential;
