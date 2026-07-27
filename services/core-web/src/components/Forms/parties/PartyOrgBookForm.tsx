@@ -21,10 +21,12 @@ interface PartyOrgBookFormProps {
 export const PartyOrgBookForm: FC<PartyOrgBookFormProps> = ({ party }) => {
   const [isAssociating, setIsAssociating] = useState(false);
   const dispatch = useDispatch();
-  const [registrationId, setRegistrationId] = useState<string | null>(party.party_bc_registration.registration_id);
-  const [businesssName, setBusinessName] = useState(null);
-  const [currentParty, setCurrentParty] = useState(party.party_bc_registration.name_text);
-  const [isAssociated, setIsAssociated] = useState(!!party.party_bc_registration.name_text);
+  const [registrationId, setRegistrationId] = useState<string | null>(
+    party.party_bc_registration?.registration_id ?? null
+  );
+  const [businessName, setBusinessName] = useState(null);
+  const [currentParty, setCurrentParty] = useState(party.party_bc_registration?.name_text);
+  const [isAssociated, setIsAssociated] = useState(!!party.party_bc_registration?.name_text);
 
   const canManageOrgbook = useAppSelector(userHasRole(USER_ROLES.role_manage_orgbook));
 
@@ -35,7 +37,7 @@ export const PartyOrgBookForm: FC<PartyOrgBookFormProps> = ({ party }) => {
         partyGuid: party.party_guid,
         data: {
           registration_id: registrationId,
-          business_name: businesssName
+          business_name: businessName
         },
       })
     );
