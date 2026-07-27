@@ -59,6 +59,8 @@ class PartyBCRegistrationListResource(Resource, UserMixin):
         if not credential_id and not registration_id:
             raise BadRequest("one of 'credential_id' or 'registration_id' must be provided ")
 
+        if registration_id and not credential_id and not business_name:
+            raise BadRequest("'business_name' must be provided when using 'registration_id'.")
         if credential_id:
             credential = OrgBookService().get_credential(credential_id)
             try:
