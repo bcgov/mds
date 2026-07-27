@@ -19,7 +19,6 @@ import { CONTACTS_COUNTRY_OPTIONS } from "@mds/common/constants/strings";
 import RenderOrgBookSearch from "@mds/common/components/forms/RenderOrgBookSearch";
 import {
   fetchOrgBookCredential,
-  verifyOrgBookCredential,
 } from "@mds/common/redux/actionCreators/orgbookActionCreator";
 import { getOrgBookCredential } from "@mds/common/redux/selectors/orgbookSelectors";
 import { normalizePhone } from "@mds/common/redux/utils/helpers";
@@ -95,7 +94,7 @@ export const Agent: FC<ProjectSummaryFormComponentProps> = ({ fieldsDisabled }) 
     setVerified(false);
     setCheckingStatus(true);
     if (credential) {
-      dispatch(verifyOrgBookCredential(credential.id)).then((response) => {
+      dispatch(fetchOrgBookCredential(credential.id)).then((response) => {
         setVerified(response.success);
         setCheckingStatus(false);
         const payload = {

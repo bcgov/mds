@@ -22,8 +22,6 @@ class SearchResource(Resource):
 
         search_name = request.args.get('search_name')
         registration_id = request.args.get('registration_id')
-        print(search_name)
-        print(registration_id)
 
         if not (bool(search_name) ^ bool(registration_id)):
             raise ValueError(

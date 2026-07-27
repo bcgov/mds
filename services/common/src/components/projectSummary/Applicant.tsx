@@ -18,7 +18,6 @@ import RenderOrgBookSearch from "@mds/common/components/forms/RenderOrgBookSearc
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleCheck, faCircleX, faSpinner } from "@fortawesome/pro-light-svg-icons";
 import {
-  verifyOrgBookCredential,
   fetchOrgBookCredential,
 } from "@mds/common/redux/actionCreators/orgbookActionCreator";
 import RenderField from "@mds/common/components/forms/RenderField";
@@ -98,7 +97,7 @@ const Applicant: FC<ProjectSummaryFormComponentProps> = ({ fieldsDisabled }) => 
     setCheckingStatus(true);
     if (credential) {
       // @ts-ignore
-      dispatch(verifyOrgBookCredential(credential.id)).then((response) => {
+      dispatch(fetchOrgBookCredential(credential.credential_id)).then((response) => {
         setVerified(response.success);
         setCheckingStatus(false);
         const payload = {
@@ -112,18 +111,15 @@ const Applicant: FC<ProjectSummaryFormComponentProps> = ({ fieldsDisabled }) => 
       if (credential_id !== credential.id)
         dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "company_alias", null));
 
-      dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "applicant.credential_id", credential.id));
+      dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "applicant.credential_id", credential.credential_id));
+      alert(JSON.stringify(credential));
       const orgBookEntity = {
         registration_id: credential.topic.source_id,
-        registration_status: !credential.inactive,
-        registration_date: credential.attributes[0].value,
-        name_id: credential.topic.local_name.id,
-        name_text: credential.topic.local_name.text,
+        business_name: credential.topic.local_name.text,
         credential_id: credential.topic.local_name.credential_id,
-        company_alias: null,
       };
       dispatch(
-        change(FORM.ADD_EDIT_PROJECT_SUMMARY, "applicant.party_orgbook_entity", orgBookEntity)
+        change(FORM.ADD_EDIT_PROJECT_SUMMARY, "applicant.party_bc_registration", orgBookEntity)
       );
       dispatch(
         change(FORM.ADD_EDIT_PROJECT_SUMMARY, "incorporation_number", credential.topic.source_id)

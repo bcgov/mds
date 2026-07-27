@@ -430,7 +430,7 @@ export const MINE_COMMENT = (mineGuid, commentGuid) => `/mines/${mineGuid}/comme
 
 // OrgBook
 export const BC_REGISTRATION_SEARCH = (search_name) => `/bc-registration/search?${queryString.stringify({ search_name })}`;
-export const ORGBOOK_CREDENTIAL = (credentialId) => `/bc-registraton/orgbook/credential/${credentialId}`;
+export const ORGBOOK_CREDENTIAL = (credentialId) => `/bc-registration/orgbook/credential/${credentialId}`;
 
 // Activities
 export const ACTIVITIES = () => "/activities";
