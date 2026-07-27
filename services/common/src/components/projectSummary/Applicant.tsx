@@ -42,7 +42,6 @@ const Applicant: FC<ProjectSummaryFormComponentProps> = ({ fieldsDisabled }) => 
   const dispatch = useDispatch();
   const provinceOptions = useSelector(getDropdownProvinceOptions);
   const [credential, setCredential] = useState<IOrgbookCredential>(null);
-  const [verified, setVerified] = useState(false);
   const [checkingStatus, setCheckingStatus] = useState(false);
   const [orgBookOptions, setOrgBookOptions] = useState([]);
   const [verifiedCredential, setVerifiedCredential] = useState<IVerifiedCredential>(null);
@@ -71,7 +70,6 @@ const Applicant: FC<ProjectSummaryFormComponentProps> = ({ fieldsDisabled }) => 
   useEffect(() => {
     setOrgBookOptions([]);
     setCredential(null);
-    setVerified(false);
     setVerifiedCredential(null);
     dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "applicant.party_orgbook_entity", null));
     if (credential_id) dispatch(fetchOrgBookCredential(credential_id));
@@ -85,34 +83,27 @@ const Applicant: FC<ProjectSummaryFormComponentProps> = ({ fieldsDisabled }) => 
   }, []);
 
   useEffect(() => {
-    if (credential_id && orgBookCredential?.topic) {
-      setCredential(orgBookCredential);
+    if (credential_id && orgBookCredential?.topic?.local_name?.text) {
       const options = [{ text: orgBookCredential.topic.local_name.text, value: credential_id }];
       setOrgBookOptions(options);
     }
   }, [orgBookCredential]);
 
   useEffect(() => {
-    setVerified(false);
     setCheckingStatus(true);
     if (credential) {
-      // @ts-ignore
-      dispatch(fetchOrgBookCredential(credential.credential_id)).then((response) => {
-        setVerified(response.success);
-        setCheckingStatus(false);
-        const payload = {
-          businessNumber: credential.topic.source_id || "-",
-          registrationStatus: credential.inactive ? "Inactive" : "Active",
-          registriesId: credential.id,
-        };
-        setVerifiedCredential(payload);
-      });
+      setCheckingStatus(false);
+      const payload = {
+        businessNumber: credential.topic.source_id || "-",
+        registrationStatus: credential.inactive ? "Inactive" : "Active",
+        registriesId: credential.id,
+      };
+      setVerifiedCredential(payload);
 
       if (credential_id !== credential.id)
         dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "company_alias", null));
 
       dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "applicant.credential_id", credential.credential_id));
-      alert(JSON.stringify(credential));
       const orgBookEntity = {
         registration_id: credential.topic.source_id,
         business_name: credential.topic.local_name.text,
@@ -136,14 +127,14 @@ const Applicant: FC<ProjectSummaryFormComponentProps> = ({ fieldsDisabled }) => 
     let color = undefined;
     let text = undefined;
 
-    if ((!checkingStatus && verified) || verifiedCredential) {
+    if ((!checkingStatus) || verifiedCredential) {
       icon = faCircleCheck;
       color = COLOR.successGreen;
-      text = "Verified on Orgbook BC";
+      text = "Verified by BC Registries";
     } else {
       icon = faCircleX;
       color = "#D8292F";
-      text = "Not registered on Orgbook BC";
+      text = "Not found in BC Registries lookup";
     }
 
     return (

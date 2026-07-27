@@ -17,7 +17,7 @@ import { FormContext } from "./FormWrapper";
 
 interface OrgBookSearchProps extends BaseInputProps {
   data?: any;
-  // setCredential: (credential: IOrgbookCredential) => void;
+  setCredential: (credential: IOrgbookCredential) => void;
 }
 
 const RenderOrgBookSearch: FC<OrgBookSearchProps> = ({
@@ -30,7 +30,7 @@ const RenderOrgBookSearch: FC<OrgBookSearchProps> = ({
   meta,
   required,
   disabled = false,
-  // setCredential,
+  setCredential,
 }) => {
   const dispatch = useDispatch();
   const { isEditMode } = useContext(FormContext);
@@ -61,7 +61,7 @@ const RenderOrgBookSearch: FC<OrgBookSearchProps> = ({
     const fetchId = lastFetchId;
     setOptions([]);
     setIsSearching(true);
-    // setCredential(null);
+    setCredential(null);
 
     await dispatch(searchOrgBook(search));
 
@@ -89,13 +89,16 @@ const RenderOrgBookSearch: FC<OrgBookSearchProps> = ({
   }, [data]);
 
   const handleSelect = async (value) => {
-    const credentialId = value.key;
+    const registrationId = value.key;
+    const credential = searchOrgBookResults.find((result) => result.registration_id === registrationId);
+    const credentialId = credential?.credential_id;
+
     await dispatch(fetchOrgBookCredential(credentialId));
   };
 
   useEffect(() => {
     if (orgBookCredential) {
-      // setCredential(orgBookCredential);
+      setCredential(orgBookCredential);
     }
   }, [orgBookCredential]);
 

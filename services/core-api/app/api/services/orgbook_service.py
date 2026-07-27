@@ -88,7 +88,7 @@ class OrgBookService():
         return self._make_get(detail_url, params)
 
     def get_credential(self, credential_id) -> dict:
-        url = f'{Config.ORGBOOK_API_URL}/v2/credential/{credential_id}'
+        url = f'{Config.ORGBOOK_API_URL}/v2/credential/{credential_id}/formatted'
         credential = self._make_get(url)
 
         return credential

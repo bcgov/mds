@@ -57,7 +57,7 @@ export const Agent: FC<ProjectSummaryFormComponentProps> = ({ fieldsDisabled }) 
   }, [credential_id]);
 
   useEffect(() => {
-    if (credential_id && orgBookCredential?.topic) {
+    if (credential_id && orgBookCredential?.topic?.local_name?.text) {
       setCredential(orgBookCredential);
       const options = [{ text: orgBookCredential.topic.local_name.text, value: credential_id }];
       setOrgBookOptions(options);
@@ -94,16 +94,14 @@ export const Agent: FC<ProjectSummaryFormComponentProps> = ({ fieldsDisabled }) 
     setVerified(false);
     setCheckingStatus(true);
     if (credential) {
-      dispatch(fetchOrgBookCredential(credential.id)).then((response) => {
-        setVerified(response.success);
-        setCheckingStatus(false);
-        const payload = {
-          businessNumber: credential.topic.source_id || "-",
-          registrationStatus: credential.inactive ? "Inactive" : "Active",
-          registriesId: credential.id,
-        };
-        setVerifiedCredential(payload);
-      });
+      setVerified(true);
+      setCheckingStatus(false);
+      const payload = {
+        businessNumber: credential.topic.source_id || "-",
+        registrationStatus: credential.inactive ? "Inactive" : "Active",
+        registriesId: credential.id,
+      };
+      setVerifiedCredential(payload);
       dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "agent.credential_id", credential.id));
       const orgBookEntity = {
         registration_id: credential.topic.source_id,
