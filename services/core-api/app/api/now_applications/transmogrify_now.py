@@ -413,13 +413,17 @@ def _transmogrify_exploration_surface_drilling(now_app, now_sub, mms_now_sub):
     expsurfacedrillreclamationcost = mms_now_sub.expsurfacedrillreclamationcost or now_sub.expsurfacedrillreclamationcost
     expsurfacedrilltotaldistarea = now_sub.expsurfacedrilltotaldistarea
     expsurfacedrillprogam = now_sub.expsurfacedrillprogam
-    if expsurfacedrillreclcorestorage or expsurfacedrillreclamation or expsurfacedrillreclamationcost or expsurfacedrilltotaldistarea:
+    nowmorethan25drillsites = now_sub.nowmorethan25drillsites
+    nowexplnumprpsdunrecldrillsite = now_sub.nowexplnumprpsdunrecldrillsite
+    if expsurfacedrillreclcorestorage or expsurfacedrillreclamation or expsurfacedrillreclamationcost or expsurfacedrilltotaldistarea or nowmorethan25drillsites or nowexplnumprpsdunrecldrillsite:
         esd = app_models.ExplorationSurfaceDrilling(
             reclamation_description=expsurfacedrillreclamation,
             reclamation_cost=expsurfacedrillreclamationcost,
             total_disturbed_area=expsurfacedrilltotaldistarea,
             reclamation_core_storage=expsurfacedrillreclcorestorage,
             drill_program=expsurfacedrillprogam,
+            has_more_than_25_unreclaimed_drill_sites=get_boolean_value(nowmorethan25drillsites),
+            num_unreclaimed_drill_sites=nowexplnumprpsdunrecldrillsite,
             total_disturbed_area_unit_type_code='HA')
 
         if (len(mms_now_sub.exp_surface_drill_activity) > 0):

@@ -301,6 +301,8 @@ APPLICATION = api.model(
         'expsurfacedrillreclcorestorage': fields.String,
         'expsurfacedrillprogam': fields.String,
         'expsurfacedrillreclamationcost': fields.Arbitrary,
+        'nowmorethan25drillsites': fields.String,
+        'nowexplnumprpsdunrecldrillsite': fields.Integer,
         'expaccessreclamation': fields.String,
         'expaccessreclamationcost': fields.Arbitrary,
         'surfacebulksampleprocmethods': fields.String,

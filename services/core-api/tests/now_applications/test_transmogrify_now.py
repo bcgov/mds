@@ -53,3 +53,11 @@ class TestPostApplicationImportResource:
         now_application_identity = NOWApplicationIdentity(messageid=now_submission.messageid, mine_guid=now_submission.mine_guid)
         na = transmogrify_now(now_application_identity)
         assert na.work_year_info == 'Seasonal'
+
+    def test_transmogrify_drill_site_fields(self, db_session):
+        now_submission = NOWSubmissionFactory(
+            nowmorethan25drillsites='Yes', nowexplnumprpsdunrecldrillsite=50)
+        now_application_identity = NOWApplicationIdentity(messageid=now_submission.messageid, mine_guid=now_submission.mine_guid)
+        na = transmogrify_now(now_application_identity)
+        assert na.exploration_surface_drilling.has_more_than_25_unreclaimed_drill_sites is True
+        assert na.exploration_surface_drilling.num_unreclaimed_drill_sites == 50

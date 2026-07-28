@@ -139,6 +139,8 @@ NOW_APPLICATION_EXP_SURFACE_DRILL = api.inherit(
         'reclamation_core_storage': fields.String,
         'calculated_total_disturbance': fields.Fixed(decimals=5),
         'drill_program': fields.String,
+        'has_more_than_25_unreclaimed_drill_sites': fields.Boolean,
+        'num_unreclaimed_drill_sites': fields.Integer,
         'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE, skip_none=True))
     })
 

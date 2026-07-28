@@ -62,6 +62,8 @@ class Application(Base):
             validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO), allow_none=True)
         archsitesaffected = fields.String(
             validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO), allow_none=True)
+        nowmorethan25drillsites = fields.String(
+            validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO), allow_none=True)
         fuellubstoreonsite = fields.String(
             validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO), allow_none=True)
         placerundergroundoperations = fields.String(
@@ -173,6 +175,8 @@ class Application(Base):
     expsurfacedrillreclcorestorage = db.Column(db.String)
     expsurfacedrillprogam = db.Column(db.String)
     expsurfacedrillreclamationcost = db.Column(db.Numeric(14, 2))
+    nowmorethan25drillsites = db.Column(db.String)
+    nowexplnumprpsdunrecldrillsite = db.Column(db.Integer)
     expaccessreclamation = db.Column(db.String)
     expaccessreclamationcost = db.Column(db.Numeric(14, 2))
     surfacebulksampleprocmethods = db.Column(db.String)
