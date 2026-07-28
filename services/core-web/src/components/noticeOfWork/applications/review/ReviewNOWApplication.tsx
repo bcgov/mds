@@ -83,11 +83,7 @@ export const ReviewNOWApplication: FC<ReviewNOWApplicationProps> = (
     (state) => selector(state, "state_of_land.has_auth_lieutenant_gov_council")
   );
   const archaeologySitesAffected = useAppSelector((state) => selector(state, "state_of_land.has_archaeology_sites_affected"));
-  const sharedInfoWithFn = useAppSelector((state) => selector(state, "state_of_land.has_shared_info_with_fn"));
   const acknowledgedUNDRIP = useAppSelector((state) => selector(state, "state_of_land.has_acknowledged_undrip"));
-  const culturalHeritageSites = useAppSelector(
-    (state) => selector(state, "state_of_land.has_fn_cultural_heritage_sites_in_area")
-  );
   const isOnCrownLand = useAppSelector((state) => selector(state, "state_of_land.is_on_crown_land"));
   const hasLicenceOfOccupation = useAppSelector((state) => selector(state, "state_of_land.has_licence_of_occupation"));
   const appliedLicenceOccupation = useAppSelector(
@@ -1099,133 +1095,31 @@ export const ReviewNOWApplication: FC<ReviewNOWApplicationProps> = (
             )}
           </>
         </ScrollContentWrapper>
-        <ScrollContentWrapper id="first-nations-engagement" title="First Nations Engagement">
-          <>
-            <Row gutter={16}>
-              <Col md={12} sm={24}>
-                <div className="field-title">
-                  Have you shared information and engaged with First Nations in the area of the
-                  proposed activity?
-                  {props.isPreLaunch && <NOWFieldOriginTooltip />}
-                  <NOWOriginalValueTooltip
-                    originalValue={
-                      props.renderOriginalValues("state_of_land.has_shared_info_with_fn").value
-                    }
-                    isVisible={
-                      props.renderOriginalValues("state_of_land.has_shared_info_with_fn").edited
-                    }
-                  />
-                </div>
-                <Field
-                  id="has_shared_info_with_fn"
-                  name="has_shared_info_with_fn"
-                  component={RenderRadioButtons}
-                  disabled={props.isViewMode}
-                />
-              </Col>
-              <Col md={12} sm={24}>
-                {sharedInfoWithFn && (
-                  <>
-                    <div className="field-title">
-                      Describe your First Nations engagement activities
-                      {props.isPreLaunch && <NOWFieldOriginTooltip />}
-                      <NOWOriginalValueTooltip
-                        originalValue={
-                          props.renderOriginalValues("state_of_land.fn_engagement_activities").value
-                        }
-                        isVisible={
-                          props.renderOriginalValues("state_of_land.fn_engagement_activities")
-                            .edited
-                        }
-                      />
-                    </div>
-                    <Field
-                      id="fn_engagement_activities"
-                      name="fn_engagement_activities"
-                      component={RenderAutoSizeField}
-                      disabled={props.isViewMode}
-                    />
-                  </>
-                )}
-              </Col>
-            </Row>
-            {sharedInfoWithFn && (
-              <Row gutter={16}>
-                <Col md={12} sm={24}>
-                  <div className="field-title">
-                    As a result of the engagement, are you aware of any cultural heritage resources
-                    in the area where the work is proposed?
-                    {props.isPreLaunch && <NOWFieldOriginTooltip />}
-                    <NOWOriginalValueTooltip
-                      originalValue={
-                        props.renderOriginalValues(
-                          "state_of_land.has_fn_cultural_heritage_sites_in_area"
-                        ).value
-                      }
-                      isVisible={
-                        props.renderOriginalValues(
-                          "state_of_land.has_fn_cultural_heritage_sites_in_area"
-                        ).edited
-                      }
-                    />
-                  </div>
-                  <Field
-                    id="has_fn_cultural_heritage_sites_in_area"
-                    name="has_fn_cultural_heritage_sites_in_area"
-                    component={RenderRadioButtons}
-                    disabled={props.isViewMode}
-                  />
-                </Col>
-                {culturalHeritageSites && (
-                  <Col md={12} sm={24}>
-                    <div className="field-title">
-                      Describe any cultural heritage resources in the area
-                      {props.isPreLaunch && <NOWFieldOriginTooltip />}
-                      <NOWOriginalValueTooltip
-                        originalValue={
-                          props.renderOriginalValues("state_of_land.cultural_heritage_description")
-                            .value
-                        }
-                        isVisible={
-                          props.renderOriginalValues("state_of_land.cultural_heritage_description")
-                            .edited
-                        }
-                      />
-                    </div>
-                    <Field
-                      id="cultural_heritage_description"
-                      name="cultural_heritage_description"
-                      component={RenderAutoSizeField}
-                      disabled={props.isViewMode}
-                    />
-                  </Col>
-                )}
-              </Row>
-            )}
-          </>
-        </ScrollContentWrapper>
-        <ScrollContentWrapper id="indigenous-engagement" title="Indigenous Engagement">
+        <ScrollContentWrapper id="cultural-heritage-resources" title="Cultural Heritage Resources">
           <Row gutter={16}>
             <Col md={12} sm={24}>
               <div className="field-title">
-                Have you read and understand United Nations Declaration on the Rights of
-                Indigenous Peoples and the Truth and Reconciliation Commission of Canada&apos;s
-                Calls to Action?
+                Protection of Cultural Heritage Resources
                 {props.isPreLaunch && <NOWFieldOriginTooltip />}
                 <NOWOriginalValueTooltip
                   originalValue={
-                    props.renderOriginalValues("state_of_land.has_acknowledged_undrip").value
+                    props.renderOriginalValues(
+                      "state_of_land.protection_of_cultural_heritage_resources"
+                    ).value
                   }
                   isVisible={
-                    props.renderOriginalValues("state_of_land.has_acknowledged_undrip").edited
+                    props.renderOriginalValues(
+                      "state_of_land.protection_of_cultural_heritage_resources"
+                    ).edited
                   }
                 />
               </div>
               <Field
-                id="has_acknowledged_undrip"
-                name="has_acknowledged_undrip"
-                component={RenderRadioButtons}
+                id="protection_of_cultural_heritage_resources"
+                name="protection_of_cultural_heritage_resources"
+                component={RenderAutoSizeField}
                 disabled={props.isViewMode}
+                validate={[maxLength(4000)]}
               />
             </Col>
           </Row>

@@ -410,6 +410,7 @@ APPLICATION = api.model(
         'archaeologicalprotectionplan': fields.String,
         'firstnationsactivities': fields.String,
         'curturalheritageresources': fields.String,
+        'protectionofculturalheritageresources': fields.String,
         'hasproposedcrossings': fields.String,
         'proposedcrossingschanges': fields.String,
         'cleanoutdisposalplan': fields.String,

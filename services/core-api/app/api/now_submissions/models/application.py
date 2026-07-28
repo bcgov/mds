@@ -316,6 +316,7 @@ class Application(Base):
     hasculturalheritageresources = db.Column(db.String)
     firstnationsactivities = db.Column(db.String)
     curturalheritageresources = db.Column(db.String)
+    protectionofculturalheritageresources = db.Column(db.String)
     hasproposedcrossings = db.Column(db.String)
     proposedcrossingschanges = db.Column(db.String)
     cleanoutdisposalplan = db.Column(db.String)

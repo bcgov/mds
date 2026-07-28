@@ -61,3 +61,10 @@ class TestPostApplicationImportResource:
         na = transmogrify_now(now_application_identity)
         assert na.exploration_surface_drilling.has_more_than_25_unreclaimed_drill_sites is True
         assert na.exploration_surface_drilling.num_unreclaimed_drill_sites == 50
+
+    def test_transmogrify_protection_of_cultural_heritage_resources(self, db_session):
+        now_submission = NOWSubmissionFactory(
+            protectionofculturalheritageresources='Some protected resources description')
+        now_application_identity = NOWApplicationIdentity(messageid=now_submission.messageid, mine_guid=now_submission.mine_guid)
+        na = transmogrify_now(now_application_identity)
+        assert na.state_of_land.protection_of_cultural_heritage_resources == 'Some protected resources description'
