@@ -114,6 +114,7 @@ def _transmogrify_now_details(now_app, now_sub, mms_now_sub):
     now_app.relationship_to_applicant = now_sub.applicantrelationship
     now_app.term_of_application = now_sub.termofapplication
     now_app.mine_purpose = now_sub.minepurpose
+    now_app.work_year_info = now_sub.yearroundseasonal
     now_app.has_req_access_authorizations = get_boolean_value(now_sub.hasaccessauthorizations)
     now_app.req_access_authorization_numbers = now_sub.accessauthorizationsdetails
     now_app.has_key_for_inspector = get_boolean_value(now_sub.accessauthorizationskeyprovided)

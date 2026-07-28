@@ -1395,6 +1395,8 @@ export const ReviewNOWApplication: FC<ReviewNOWApplicationProps> = (
       <Col md={12} sm={24}>
         <div className="field-title">Proposed Authorization End Date</div>
         <Field id="proposed_end_date" name="proposed_end_date" component={RenderDate} disabled />
+        <div className="field-title">Type of Activity</div>
+        <Field id="work_year_info" name="work_year_info" component={RenderField} disabled />
       </Col>
     </Row>
   );

@@ -47,3 +47,9 @@ class TestPostApplicationImportResource:
         assert na.water_supply
         assert not na.settling_pond
         assert not na.underground_exploration
+
+    def test_transmogrify_work_year_info(self, db_session):
+        now_submission = NOWSubmissionFactory(yearroundseasonal='Seasonal')
+        now_application_identity = NOWApplicationIdentity(messageid=now_submission.messageid, mine_guid=now_submission.mine_guid)
+        na = transmogrify_now(now_application_identity)
+        assert na.work_year_info == 'Seasonal'

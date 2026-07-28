@@ -618,6 +618,8 @@ NOW_APPLICATION_MODEL = api.model(
         fields.Boolean,
         'mine_purpose':
         fields.String,
+        'work_year_info':
+        fields.String,
         'ats_authorization_number':
         fields.Integer,
         'ats_project_number':

@@ -2821,6 +2821,54 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                         </div>
                       </div>
                     </div>
+                    <div
+                      class="field-title"
+                    >
+                      Type of Activity
+                    </div>
+                    <div
+                      class="ant-form-item ant-form-item-with-help"
+                    >
+                      <div
+                        class="ant-row ant-form-item-row"
+                      >
+                        <div
+                          class="ant-col ant-form-item-control"
+                        >
+                          <div
+                            class="ant-form-item-control-input"
+                          >
+                            <div
+                              class="ant-form-item-control-input-content"
+                            >
+                              <input
+                                aria-label="work_year_info"
+                                class="ant-input ant-input-disabled"
+                                data-testid="work_year_info"
+                                disabled=""
+                                id="work_year_info"
+                                name="work_year_info"
+                                type="text"
+                                value=""
+                              />
+                            </div>
+                          </div>
+                          <div
+                            style="display: flex; flex-wrap: nowrap;"
+                          >
+                            <div
+                              class="ant-form-item-explain ant-form-item-explain-connected"
+                              id="EDIT_NOTICE_OF_WORK_work_year_info_help"
+                              role="alert"
+                            >
+                              <div
+                                class=""
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </span>
