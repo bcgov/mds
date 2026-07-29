@@ -306,7 +306,7 @@ const partiesSlice = createAppSlice({
         thunkApi.dispatch(showLoading("modal"));
         try {
           const response = await CustomAxios().post(
-            ENVIRONMENT.apiUrl + API.PARTY_ORGBOOK_ENTITY(partyGuid),
+            ENVIRONMENT.apiUrl + API.PARTY_BC_REGISTRATION(partyGuid),
             data,
             createRequestHeader()
           );
@@ -324,7 +324,7 @@ const partiesSlice = createAppSlice({
       thunkApi.dispatch(showLoading("modal"));
       try {
         const response = await CustomAxios().delete(
-          ENVIRONMENT.apiUrl + API.PARTY_ORGBOOK_ENTITY(partyGuid),
+          ENVIRONMENT.apiUrl + API.PARTY_BC_REGISTRATION(partyGuid),
           createRequestHeader()
         );
         notification.success({

@@ -289,7 +289,9 @@
                     "label": "mine_guids",
                     "relationship": {
                         "type": "one_to_many",
-                        "through_tables": ["mine_permit_xref"],
+                        "through_tables": [
+                            "mine_permit_xref"
+                        ],
                         "variant": "object"
                     }
                 }

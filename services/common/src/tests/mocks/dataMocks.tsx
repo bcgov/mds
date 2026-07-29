@@ -47,6 +47,7 @@ import {
   IMinespaceUser,
   IMinePartyAppt,
   IPartyAppt,
+  IBCRegistrationSearchResult,
 } from "@mds/common/interfaces";
 import { IAmsFinalApplication } from "@mds/common/interfaces/projects/amsFinalApplication.interface";
 import { HaystackDocumentSearchResult } from "@mds/common/interfaces/search/facet-search.interface";
@@ -142,7 +143,7 @@ export const TSF: ITailingsStorageFacilityForm = {
       organization: undefined,
       organization_guid: "",
       party_name: "O'Reilly",
-      party_orgbook_entity: undefined,
+      party_bc_registration: undefined,
       party_type_code: PartyTypeCodeEnum.PER,
       phone_no: "123-123-1234",
     },
@@ -159,7 +160,7 @@ export const TSF: ITailingsStorageFacilityForm = {
       organization: undefined,
       organization_guid: "",
       party_name: "Petersen",
-      party_orgbook_entity: undefined,
+      party_bc_registration: undefined,
       party_type_code: PartyTypeCodeEnum.PER,
       phone_no: "123-123-1234",
       address: undefined,
@@ -875,7 +876,7 @@ export const PARTY = {
       now_party_appt: [],
       organization: null,
       organization_guid: null,
-      party_orgbook_entity: null,
+      party_bc_registration: null,
     },
     "18145c75-49ad-0101-85f3-a43e45ae989a": {
       party_guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
@@ -897,7 +898,7 @@ export const PARTY = {
       now_party_appt: [],
       organization: null,
       organization_guid: null,
-      party_orgbook_entity: null,
+      party_bc_registration: null,
     },
   },
   partiesWithAppointments: {
@@ -921,7 +922,7 @@ export const PARTY = {
       now_party_appt: [],
       organization: null,
       organization_guid: null,
-      party_orgbook_entity: null,
+      party_bc_registration: null,
     },
     "18145c75-49ad-0101-85f3-a43e45ae989a": {
       party_guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
@@ -942,7 +943,7 @@ export const PARTY = {
       now_party_appt: [],
       organization: null,
       organization_guid: null,
-      party_orgbook_entity: null,
+      party_bc_registration: null,
       business_role_appts: [
         {
           end_date: "2020-08-29T00:00:00",
@@ -11305,19 +11306,11 @@ export const MINE_ALERTS = {
   ],
 };
 
-export const ORGBOOK_SEARCH_RESULTS = [
+export const ORGBOOK_SEARCH_RESULTS: IBCRegistrationSearchResult[] = [
   {
-    id: 777855,
-    names: [
-      {
-        id: 712594,
-        text: "ZINEX MINING CORP.",
-        language: null,
-        credential_id: 777855,
-        type: "entity_name",
-      },
-    ],
-    inactive: false,
+    registration_id: "BC777855",
+    text: "ZINEX MINING CORP.",
+    credential_id: 777855,
   },
 ];
 

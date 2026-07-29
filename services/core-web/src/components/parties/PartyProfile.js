@@ -319,13 +319,13 @@ export class PartyProfile extends Component {
                 </div>
               </Col>
               <Col md={8} xs={12}>
-                {!isEmpty(party.party_orgbook_entity) && (
+                {!isEmpty(party.party_bc_registration) && (
                   <div className="light-grey-background padding-md">
                     <Typography.Title level={4}>
                       <CheckCircleOutlined style={{ paddingRight: 5 }} />
                       OrgBook Registration Information{" "}
                       <a
-                        href={routes.ORGBOOK_ENTITY_URL(party.party_orgbook_entity.registration_id)}
+                        href={routes.ORGBOOK_ENTITY_URL(party.party_bc_registration.registration_id)}
                         target="_blank"
                         rel="noopener noreferrer"
                       >
@@ -335,11 +335,11 @@ export class PartyProfile extends Component {
                     <br />
                     <FontAwesomeIcon className="fa-fw" icon={faHashtag} />
                     <span className="padding-left">
-                      {party.party_orgbook_entity.registration_id}
+                      {party.party_bc_registration.registration_id}
                     </span>
                     <br />
                     <FontAwesomeIcon className="fa-fw" icon={faFileSignature} />
-                    <span className="padding-left">{party.party_orgbook_entity.name_text}</span>
+                    <span className="padding-left">{party.party_bc_registration.name_text}</span>
                   </div>
                 )}
               </Col>

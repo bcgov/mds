@@ -34,7 +34,7 @@ from app.api.exports.namespace import api as exports_api
 from app.api.document_generation.namespace import api as doc_gen_api
 from app.api.securities.namespace import api as securities_api
 from app.api.verify.namespace import api as verify_api
-from app.api.orgbook.namespace import api as orgbook_api
+from app.api.bc_registration.namespace import api as bc_registration_api
 from app.api.ministry_contacts.namespace import api as ministry_contacts_api
 from app.api.projects.namespace import api as projects_api
 from app.api.notice_of_departure.namespace import api as notice_of_departure_api
@@ -194,7 +194,7 @@ def register_routes(app):
     root_api_namespace.add_namespace(doc_gen_api)
     root_api_namespace.add_namespace(securities_api)
     root_api_namespace.add_namespace(verify_api)
-    root_api_namespace.add_namespace(orgbook_api)
+    root_api_namespace.add_namespace(bc_registration_api)
     root_api_namespace.add_namespace(ministry_contacts_api)
     root_api_namespace.add_namespace(projects_api)
     root_api_namespace.add_namespace(notice_of_departure_api)

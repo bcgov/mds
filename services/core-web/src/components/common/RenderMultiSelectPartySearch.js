@@ -64,8 +64,8 @@ const propTypes = {
 };
 
 const defaultProps = {
-  onSearchResultsChanged: () => {},
-  onSearchSubsetResultsChanged: () => {},
+  onSearchResultsChanged: () => { },
+  onSearchSubsetResultsChanged: () => { },
 };
 
 export const RenderMultiSelectPartySearch = (props) => {
@@ -91,7 +91,7 @@ export const RenderMultiSelectPartySearch = (props) => {
             party.result.mine_party_appt.filter(
               ({ mine_party_appt_type_code }) => mine_party_appt_type_code === "PMT"
             ).length > 0;
-          const isOrgbookEntity = !isEmpty(party.result.party_orgbook_entity);
+          const isOrgbookEntity = !isEmpty(party.result.party_bc_registration);
           const isInspector =
             party.result.business_role_appts.filter(
               ({ party_business_role_code }) => party_business_role_code === "INS"

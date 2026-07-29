@@ -74,7 +74,7 @@ export const EditFullPartyForm: FC<EditFullPartyFormProps> = ({
   };
 
   const isPerson = party?.party_type_code === "PER";
-  const orgBookEntity = party?.party_orgbook_entity;
+  const orgBookEntity = party?.party_bc_registration;
   const hasOrgBookEntity = !isEmpty(orgBookEntity);
   return (
     <div>

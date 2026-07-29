@@ -271,8 +271,7 @@ def push_untp_map_data_to_publisher():
     ## the publisher structures the data and sends it to the orgbook.
     ## the publisher also manages the BitStringStatusLists.
     query = permit_amendments_for_orgbook_query
-    permit_amendment_query_results = db.session.execute(
-        query).fetchall()
+    permit_amendment_query_results = db.session.execute(query).fetchall()
 
     failed_credentials: List[Tuple[str, str | None]] = []
     success_count = 0
@@ -344,19 +343,20 @@ def push_untp_map_data_to_publisher():
         current_app.logger.debug(f"publishing record={publish_payload}")
 
         # NEED TO REPLACE ALL THE CODE ABOVE WITH prepare_permit_amendment_untp_credential
-        other_publish_payload = VerifiableCredentialManager.prepare_permit_amendment_untp_credential_without_id(row[0])
+        other_publish_payload = VerifiableCredentialManager.prepare_permit_amendment_untp_credential_without_id(
+            row[0])
         other_payload_hash = md5(json.dumps(other_publish_payload).encode('utf-8')).hexdigest()
-        
+
         payload_hash = md5(json.dumps(publish_payload).encode('utf-8')).hexdigest()
         current_app.logger.debug(f"payload hash={payload_hash}")
-        
+
         if other_payload_hash != payload_hash:
             current_app.logger.info(f"payloads do not match for {row[0]}")
             current_app.logger.info("live payload" + pprint.pformat(publish_payload))
             current_app.logger.info("test endpoint payload" + pprint.pformat(other_publish_payload))
-        
+
         #MUST BE AFTER HASHING
-        publish_payload["options"]["credentialId"] = str(uuid4()) 
+        publish_payload["options"]["credentialId"] = str(uuid4())
 
         publish_record = PermitAmendmentOrgBookPublish(
             unsigned_payload_hash=payload_hash,
@@ -411,28 +411,30 @@ class VerifiableCredentialManager():
     def __init__(self):
         pass
 
-    @classmethod   
-    def prepare_permit_amendment_untp_credential_without_id(cls, permit_amendment_guid: str) -> dict|None:
+    @classmethod
+    def prepare_permit_amendment_untp_credential_without_id(
+            cls, permit_amendment_guid: str) -> dict | None:
         pa = PermitAmendment.find_by_permit_amendment_guid(permit_amendment_guid, unsafe=True)
         mine = Mine.find_by_mine_guid(pa.mine_guid)
         if not pa or not mine:
             current_app.logger.warning(
-                f"Permit Amendment or mine not found for permit_amendment_guid={permit_amendment_guid}")
+                f"Permit Amendment or mine not found for permit_amendment_guid={permit_amendment_guid}"
+            )
             return
         #get other permit_amendments
         pa.permit._context_mine = mine
-        pa_list = pa.permit.permit_amendments 
+        pa_list = pa.permit.permit_amendments
         pos = pa_list.index(pa)
         next_pa: str | None = None
         valid_until_date: date | None = None
         try:
             next_pa = pa_list[pos - 1] if pos > 0 else None
-        except IndexError: 
+        except IndexError:
             pass
-        
+
         if next_pa:
             valid_until_date = next_pa.issue_date
-        
+
         if pa.permit_no[1] in ("X", "x"):
             current_app.logger.info(
                 f"exclude exploration permit={pa.permit_no}, they cannot produce goods for sale")
@@ -444,8 +446,8 @@ class VerifiableCredentialManager():
             current_app.logger.warning(
                 f"pa_cred could not be created for permit_amendment_guid={permit_amendment_guid}")
             return None
-        
-               #only one assessment per credential
+
+            #only one assessment per credential
         publish_payload: dict[str, Any] = {
             "credential": {
                 "type": "BCMinesActPermitCredential",
@@ -475,8 +477,7 @@ class VerifiableCredentialManager():
                 valid_until_date)
 
         return publish_payload
-            
-        
+
     @classmethod
     def delete_any_unsuccessful_untp_push(cls, live: bool = False) -> int:
         if not live:
@@ -503,7 +504,7 @@ class VerifiableCredentialManager():
         #mine_types should related to the permits
         #all mine_types for all permits are used in mine.mine_type
         #but we only want the mine_type for this specific permit/permit_amendment.
-        
+
         #not really a 'mine_type' if it's managed at the permit level.
         mine_types = [
             mt for mt in permit_amendment.permit.site_properties
@@ -512,7 +513,7 @@ class VerifiableCredentialManager():
 
         #there my be mine types on other mines, so check again after filtering.
         mine_type = mine_types[0] if mine_types else None
-    
+
         #provide permit object the permit_amendment mine_guid
         permit_amendment.permit._context_mine = permit_amendment.mine_guid
 
@@ -602,15 +603,16 @@ class VerifiableCredentialManager():
         """Produce payload for Mines Act Permit UNTP Conformity Credential from permit amendment and did."""
 
         pmt_appts: List[MinePartyAppointment] = permit_amendment.permittee_appointments
-        current_app.logger.debug(f"starting... produce_untp_cc_map_payload_without_id permit_amendment_guid={permit_amendment.permit_amendment_guid}")
+        current_app.logger.debug(
+            f"starting... produce_untp_cc_map_payload_without_id permit_amendment_guid={permit_amendment.permit_amendment_guid}"
+        )
         permit_amendment_issue_date = permit_amendment.issue_date if isinstance(
             permit_amendment.issue_date, date) else permit_amendment.issue_date.date()
 
         def ensure_start_date_type(d) -> date:
             if not d:
                 current_app.logger.info(
-                    f"mine_party_appointment.start_date is None, setting to 1900-01-01"
-                )
+                    f"mine_party_appointment.start_date is None, setting to 1900-01-01")
                 return date(1900, 1, 1)
             elif isinstance(d, date):
                 return d
@@ -621,28 +623,28 @@ class VerifiableCredentialManager():
                     f"mine_party_appointment.start_date is neither `date` or `datetime` object, it's {type(d)}"
                 )
 
-        
         if pmt_appts is None or len(pmt_appts) == 0:
             current_app.logger.warning(
                 f"No permittee appointments found for permit_amendment_guid={permit_amendment.permit_amendment_guid}, cannot produce Mines Act Permit UNTP CC"
             )
             return None
-        
+
         #remove all appointments after the issue_date then take the top one, there are overlapping entries that may not be handled here.
-    
+
         try:
             curr_appt = [
                 pa for pa in pmt_appts
                 if ensure_start_date_type(pa.start_date) <= permit_amendment_issue_date
-            ][0] 
+            ][0]
         except IndexError:
             current_app.logger.warning(
                 f"No valid permittee appointments found for permit_amendment_guid={permit_amendment.permit_amendment_guid}, cannot produce Mines Act Permit UNTP CC"
             )
             return None
-        
+
+
 #
-        orgbook_entity = curr_appt.party.party_orgbook_entity
+        orgbook_entity = curr_appt.party.party_bc_registration
         if not orgbook_entity:
             if curr_appt.party:
                 current_app.logger.warning(
@@ -662,10 +664,10 @@ class VerifiableCredentialManager():
             idScheme=base.IdentifierScheme(
                 id="https://w3c-ccg.github.io/did-method-web/", name="DID Web"))
 
-        orgbook_cred_url = f"https://orgbook.gov.bc.ca/entity/{orgbook_entity.registration_id}/credential/{orgbook_entity.credential_id}"
+        business_registration_url = f"https://orgbook.gov.bc.ca/entity/{orgbook_entity.registration_id}"
 
         untp_party_business = base.Party(
-            id=orgbook_cred_url,
+            id=business_registration_url,
             name=orgbook_entity.name_text,
             registeredId=str(orgbook_entity.registration_id))
 
@@ -679,7 +681,8 @@ class VerifiableCredentialManager():
             id=None,
             name=permit_amendment.mine.mine_name,
             registeredId=permit_amendment.mine.mine_no,
-            locationInformation=f'https://plus.codes/{plus_code_encode(permit_amendment.mine.latitude, permit_amendment.mine.longitude)}',
+            locationInformation=
+            f'https://plus.codes/{plus_code_encode(permit_amendment.mine.latitude, permit_amendment.mine.longitude)}',
             address=None,
             IDverifiedByCAB=True)
 
@@ -688,7 +691,7 @@ class VerifiableCredentialManager():
         product_names = list(set([c for c in permit_amendment.mine.commodities]))
         #sort list of strings for consistency
         product_names.sort()
-        
+
         products = [cc.Product(id=None, name=c, IDverifiedByCAB=False) for c in product_names]
 
         issue_date = permit_amendment.issue_date

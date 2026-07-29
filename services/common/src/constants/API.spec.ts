@@ -189,9 +189,8 @@ describe("API", () => {
   });
 
   it("should have correct values for ORGBOOK URLs", () => {
-    expect(API.ORGBOOK_SEARCH("test")).toBe("/orgbook/search?search=test");
-    expect(API.ORGBOOK_CREDENTIAL("cred1")).toBe("/orgbook/credential/cred1");
-    expect(API.ORGBOOK_VERIFY("cred1")).toBe("/orgbook/credential/cred1/verify");
+    expect(API.BC_REGISTRATION_SEARCH("test")).toBe("/bc-registration/search?search_name=test");
+    expect(API.ORGBOOK_CREDENTIAL("cred1")).toBe("/bc-registration/orgbook/credential/cred1");
   });
 
   it("should have correct values for DAM URLs", () => {

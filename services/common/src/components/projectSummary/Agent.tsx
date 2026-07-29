@@ -16,10 +16,9 @@ import {
 import { getDropdownProvinceOptions } from "@mds/common/redux/selectors/staticContentSelectors";
 import { IOrgbookCredential } from "@mds/common/interfaces/party";
 import { CONTACTS_COUNTRY_OPTIONS } from "@mds/common/constants/strings";
-import RenderOrgBookSearch from "@mds/common/components/forms/RenderOrgBookSearch";
+import RenderBCRegistrationSearch from "@mds/common/components/forms/RenderBCRegistrationSearch";
 import {
   fetchOrgBookCredential,
-  verifyOrgBookCredential,
 } from "@mds/common/redux/actionCreators/orgbookActionCreator";
 import { getOrgBookCredential } from "@mds/common/redux/selectors/orgbookSelectors";
 import { normalizePhone } from "@mds/common/redux/utils/helpers";
@@ -53,12 +52,12 @@ export const Agent: FC<ProjectSummaryFormComponentProps> = ({ fieldsDisabled }) 
     setCredential(null);
     setVerified(false);
     setVerifiedCredential(null);
-    dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "agent.party_orgbook_entity", null));
+    dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "agent.party_bc_registration", null));
     if (credential_id) dispatch(fetchOrgBookCredential(credential_id));
   }, [credential_id]);
 
   useEffect(() => {
-    if (credential_id && orgBookCredential?.topic) {
+    if (credential_id && orgBookCredential?.topic?.local_name?.text) {
       setCredential(orgBookCredential);
       const options = [{ text: orgBookCredential.topic.local_name.text, value: credential_id }];
       setOrgBookOptions(options);
@@ -95,16 +94,14 @@ export const Agent: FC<ProjectSummaryFormComponentProps> = ({ fieldsDisabled }) 
     setVerified(false);
     setCheckingStatus(true);
     if (credential) {
-      dispatch(verifyOrgBookCredential(credential.id)).then((response) => {
-        setVerified(response.success);
-        setCheckingStatus(false);
-        const payload = {
-          businessNumber: credential.topic.source_id || "-",
-          registrationStatus: credential.inactive ? "Inactive" : "Active",
-          registriesId: credential.id,
-        };
-        setVerifiedCredential(payload);
-      });
+      setVerified(true);
+      setCheckingStatus(false);
+      const payload = {
+        businessNumber: credential.topic.source_id || "-",
+        registrationStatus: credential.inactive ? "Inactive" : "Active",
+        registriesId: credential.id,
+      };
+      setVerifiedCredential(payload);
       dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "agent.credential_id", credential.id));
       const orgBookEntity = {
         registration_id: credential.topic.source_id,
@@ -115,7 +112,7 @@ export const Agent: FC<ProjectSummaryFormComponentProps> = ({ fieldsDisabled }) 
         credential_id: credential.topic.local_name.credential_id,
         company_alias: null,
       };
-      dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "agent.party_orgbook_entity", orgBookEntity));
+      dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "agent.party_bc_registration", orgBookEntity));
     }
   }, [credential]);
 
@@ -128,11 +125,11 @@ export const Agent: FC<ProjectSummaryFormComponentProps> = ({ fieldsDisabled }) 
       if (verified) {
         icon = faCircleCheck;
         color = COLOR.successGreen;
-        text = "Verified on Orgbook BC";
+        text = "Verified on BC Registries";
       } else {
         icon = faCircleX;
         color = "#D8292F";
-        text = "Not registered on Orgbook BC";
+        text = "Not found in BC Registries lookup";
       }
     }
 
@@ -154,7 +151,7 @@ export const Agent: FC<ProjectSummaryFormComponentProps> = ({ fieldsDisabled }) 
     dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "agent.party_name", null));
     dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "agent.first_name", null));
     dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "agent.middle_name", null));
-    dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "agent.party_orgbook_entity", null));
+    dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "agent.party_bc_registration", null));
     setCredential(null);
     setOrgBookOptions(null);
     setVerifiedCredential(null);
@@ -211,7 +208,7 @@ export const Agent: FC<ProjectSummaryFormComponentProps> = ({ fieldsDisabled }) 
                 setCredential={setCredential}
                 data={orgBookOptions}
                 help={"as registered with the BC Registrar of Companies"}
-                component={RenderOrgBookSearch}
+                component={RenderBCRegistrationSearch}
                 disabled={fieldsDisabled}
               />
               {verifiedCredential && (
@@ -228,13 +225,14 @@ export const Agent: FC<ProjectSummaryFormComponentProps> = ({ fieldsDisabled }) 
                   <Typography.Paragraph className="light margin-none">
                     BC Registration Status {verifiedCredential.registrationStatus}
                   </Typography.Paragraph>
+                  <br />
                 </div>
               )}
               <Row gutter={16}>
                 <Col md={12} sm={24}>
                   <Field
-                    id="agent.party_orgbook_entity.registration_id"
-                    name="agent.party_orgbook_entity.registration_id"
+                    id="agent.party_bc_registration.registration_id"
+                    name="agent.party_bc_registration.registration_id"
                     label="Incorporation Number"
                     required
                     validate={[required, maxLength(25)]}

@@ -169,7 +169,7 @@ exports[`Applicant Component should render the component with expected fields 1`
                       <span
                         class="ant-select-selection-placeholder"
                       >
-                        Start typing to search OrgBook...
+                        Start typing to search for BC Registrations...
                       </span>
                     </div>
                     <span

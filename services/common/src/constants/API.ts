@@ -15,7 +15,7 @@ export const MINE_BASIC_INFO_LIST = `/mines/basicinfo`;
 export const PARTY = "/parties";
 export const MANAGER = "/parties/managers";
 export const PARTY_RELATIONSHIP = "/parties/mines";
-export const PARTY_ORGBOOK_ENTITY = (partyGuid) => `/parties/${partyGuid}/orgbook-entity`;
+export const PARTY_BC_REGISTRATION = (partyGuid) => `/parties/${partyGuid}/bc-registration`;
 export const MERGE_PARTIES = () => `/parties/merge`;
 export const PERMITTEE = "/permits/permittees";
 export const MINE_NAME_LIST = (params = {}) => `/mines/search?${queryString.stringify(params)}`;
@@ -429,9 +429,8 @@ export const MINE_COMMENTS = (mineGuid) => `/mines/${mineGuid}/comments`;
 export const MINE_COMMENT = (mineGuid, commentGuid) => `/mines/${mineGuid}/comments/${commentGuid}`;
 
 // OrgBook
-export const ORGBOOK_SEARCH = (search) => `/orgbook/search?${queryString.stringify({ search })}`;
-export const ORGBOOK_CREDENTIAL = (credentialId) => `/orgbook/credential/${credentialId}`;
-export const ORGBOOK_VERIFY = (credentialId) => `/orgbook/credential/${credentialId}/verify`;
+export const BC_REGISTRATION_SEARCH = (search_name) => `/bc-registration/search?${queryString.stringify({ search_name })}`;
+export const ORGBOOK_CREDENTIAL = (credentialId) => `/bc-registration/orgbook/credential/${credentialId}`;
 
 // Activities
 export const ACTIVITIES = () => "/activities";

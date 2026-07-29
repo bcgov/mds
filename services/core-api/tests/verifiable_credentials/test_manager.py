@@ -3,7 +3,7 @@ from zoneinfo import ZoneInfo
 
 from app.api.verifiable_credentials.manager import VerifiableCredentialManager
 from app.api.mines.mine.models.mine_type import MineType
-from tests.factories import create_mine_and_permit, PartyFactory, MinePartyAppointmentFactory, PartyOrgBookEntityFactory
+from tests.factories import create_mine_and_permit, PartyFactory, MinePartyAppointmentFactory, PartyBCRegistrationFactory
 
 
 class TestVerifiableCredentialManager:
@@ -75,8 +75,8 @@ class TestVerifiableCredentialManager:
         print(permit._all_permit_amendments[0].issue_date)
         print(permittee_appt.start_date)
 
-        poe = PartyOrgBookEntityFactory(party_guid=permittee_appt.party_guid)
-        permittee_appt.party.party_orgbook_entity = poe
+        poe = PartyBCRegistrationFactory(party_guid=permittee_appt.party_guid)
+        permittee_appt.party.party_bc_registration = poe
 
         pa_cred = VerifiableCredentialManager.produce_untp_cc_map_payload_without_id(
             "did:test:10230123", permit.permit_amendments[0])
