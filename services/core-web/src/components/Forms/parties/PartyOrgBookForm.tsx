@@ -84,7 +84,6 @@ export const PartyOrgBookForm: FC<PartyOrgBookFormProps> = ({ party }) => {
           <Button
             type="primary"
             className="full-mobile"
-            // disabled={!isAssociated} //Admin is allowed to disassociate
             onClick={!isAssociated ? handleAssociateButtonClick : handleDisassociateButtonClick}
             loading={isAssociating}
             danger={isAssociated}
