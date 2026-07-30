@@ -12,6 +12,7 @@ import CoreEditableTable from "@/components/common/CoreEditableTable";
 import { NOWOriginalValueTooltip, NOWFieldOriginTooltip } from "@/components/common/CoreTooltip";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
+import { hasLegacyFuelData } from "@/constants/NOWConditions";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
@@ -22,10 +23,7 @@ const propTypes = {
 
 export const Camps = (props) => {
   const hasFuel = props.campFormValues.has_fuel_stored;
-  const hasLegacyFuelData =
-    props.campFormValues.has_fuel_stored_in_bulk != null ||
-    props.campFormValues.has_fuel_stored_in_barrels != null ||
-    props.campFormValues.volume_fuel_stored != null;
+  const showLegacyFuelData = hasLegacyFuelData(props.campFormValues);
   return (
     <div>
       <h4>
@@ -242,7 +240,7 @@ export const Camps = (props) => {
             validate={[requiredRadioButton]}
           />
         </Col>
-        {hasLegacyFuelData && (
+        {showLegacyFuelData && (
           <Col md={12} sm={24}>
             <div className="field-title">
               Volume of fuel stored (litres)
@@ -261,7 +259,7 @@ export const Camps = (props) => {
           </Col>
         )}
       </Row>
-      {hasLegacyFuelData && (
+      {showLegacyFuelData && (
         <Row gutter={16}>
           <Col md={12} sm={24}>
             <div className="field-title">Storage Method</div>

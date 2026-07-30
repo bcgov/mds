@@ -4727,7 +4727,7 @@ exports[`AdminAmendmentApplication renders properly 1`] = `
                                 class="scroll-wrapper--title"
                               >
                                 <h3>
-                                  Camps, Buildings, Staging Areas, Fuel/Lubricant Storage
+                                  Camps, Buildings, Staging Areas
                                 </h3>
                               </div>
                             </div>

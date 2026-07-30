@@ -15,6 +15,15 @@ export const renderActivities = (type, activity) => {
   return activityConditions[type].includes(activity);
 };
 
+// Legacy fuel fields (has_fuel_stored_in_bulk, has_fuel_stored_in_barrels, volume_fuel_stored) are
+// always null on new applications going forward, but must stay visible for older applications that
+// still have data in them. `camp` may be a redux-form live-values object or a fetched application's
+// `camp` object; both use the same field names.
+export const hasLegacyFuelData = (camp) =>
+  camp?.has_fuel_stored_in_bulk != null ||
+  camp?.has_fuel_stored_in_barrels != null ||
+  camp?.volume_fuel_stored != null;
+
 export const sideMenuOptions = (tab, hasPermitConditionsFlow = true, hasLegacyFuelData = false) => {
   const options = {
     application: [
