@@ -155,9 +155,9 @@ exports[`NOWSideMenu renders properly 1`] = `
           <a
             class="ant-anchor-link-title"
             href="#camp"
-            title="Camps, Buildings, Staging Areas, Fuel/Lubricant Storage"
+            title="Camps, Buildings, Staging Areas"
           >
-            Camps, Buildings, Staging Areas, Fuel/Lubricant Storage
+            Camps, Buildings, Staging Areas
           </a>
         </div>
         <div

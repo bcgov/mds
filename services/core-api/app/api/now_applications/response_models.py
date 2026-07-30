@@ -79,6 +79,14 @@ NOW_APPLICATION_BUILDING_DETAIL = api.inherit('NOWApplicationBuildingDetail',
                                                   'purpose': fields.String,
                                                   'structure': fields.String,
                                               })
+NOW_APPLICATION_FUEL_DETAIL = api.inherit('NOWApplicationFuelDetail',
+                                          NOW_APPLICATION_ACTIVITY_DETAIL_BASE, {
+                                              'fuel_type': fields.String,
+                                              'fuel_related_activity': fields.String,
+                                              'estimated_fuel_volume': fields.Fixed(decimals=2),
+                                              'description_of_fuel_related_activity': fields.String,
+                                              'description_of_precautionary_measures': fields.String,
+                                          })
 NOW_APPLICATION_CAMP = api.inherit(
     'NOWApplicationCamp', NOW_APPLICATION_ACTIVITY_SUMMARY_BASE, {
         'health_authority_consent':
@@ -101,6 +109,8 @@ NOW_APPLICATION_CAMP = api.inherit(
         fields.List(fields.Nested(NOW_APPLICATION_BUILDING_DETAIL, skip_none=True)),
         'staging_area_details':
         fields.List(fields.Nested(NOW_APPLICATION_STAGING_AREA_DETAIL, skip_none=True)),
+        'fuel_details':
+        fields.List(fields.Nested(NOW_APPLICATION_FUEL_DETAIL, skip_none=True)),
     })
 
 NOW_APPLICATION_BLASTING_OPERATION = api.inherit(

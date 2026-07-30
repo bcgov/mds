@@ -15,7 +15,7 @@ export const renderActivities = (type, activity) => {
   return activityConditions[type].includes(activity);
 };
 
-export const sideMenuOptions = (tab, hasPermitConditionsFlow = true) => {
+export const sideMenuOptions = (tab, hasPermitConditionsFlow = true, hasLegacyFuelData = false) => {
   const options = {
     application: [
       {
@@ -82,7 +82,9 @@ export const sideMenuOptions = (tab, hasPermitConditionsFlow = true) => {
       },
       {
         href: "camp",
-        title: "Camps, Buildings, Staging Areas, Fuel/Lubricant Storage",
+        title: hasLegacyFuelData
+          ? "Camps, Buildings, Staging Areas, Fuel/Lubricant Storage"
+          : "Camps, Buildings, Staging Areas",
         alwaysVisible: true,
         applicationType: ["NOW"],
       },

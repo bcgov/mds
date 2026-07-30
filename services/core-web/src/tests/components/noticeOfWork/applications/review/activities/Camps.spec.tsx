@@ -21,4 +21,27 @@ describe("Camps", () => {
     const { container: component } = render(<ReduxWrapper><FormWrapper name="formName"><Camps {...reducerProps} /></FormWrapper></ReduxWrapper>);
     expect(component).toMatchSnapshot();
   });
+
+  it("renders the Fuel Transportation and Storage table when has_fuel_stored is true, without legacy fuel fields", () => {
+    const props = {
+      ...reducerProps,
+      campFormValues: { has_fuel_stored: true },
+    };
+    const { container: component } = render(<ReduxWrapper><FormWrapper name="formName"><Camps {...props} /></FormWrapper></ReduxWrapper>);
+    expect(component).toMatchSnapshot();
+  });
+
+  it("renders both the legacy fuel fields and the Fuel Transportation and Storage table when legacy fuel data is present", () => {
+    const props = {
+      ...reducerProps,
+      campFormValues: {
+        has_fuel_stored: true,
+        has_fuel_stored_in_bulk: false,
+        has_fuel_stored_in_barrels: false,
+        volume_fuel_stored: "5727.00",
+      },
+    };
+    const { container: component } = render(<ReduxWrapper><FormWrapper name="formName"><Camps {...props} /></FormWrapper></ReduxWrapper>);
+    expect(component).toMatchSnapshot();
+  });
 });

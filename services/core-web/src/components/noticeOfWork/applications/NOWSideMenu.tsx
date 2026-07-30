@@ -36,6 +36,11 @@ export const NOWSideMenu: FC<NOWSideMenuProps> = ({
     ? draftPermitAmendment.has_permit_conditions
     : true;
 
+  const hasLegacyFuelData =
+    noticeOfWork.camp?.has_fuel_stored_in_bulk != null ||
+    noticeOfWork.camp?.has_fuel_stored_in_barrels != null ||
+    noticeOfWork.camp?.volume_fuel_stored != null;
+
   const updateUrlRoute = (route: string) => {
     const nowGuid = params.id;
     const nowRoute = noticeOfWork.is_historic
@@ -110,7 +115,7 @@ export const NOWSideMenu: FC<NOWSideMenuProps> = ({
         onChange={handleAnchorOnChange}
         onClick={handleAnchorOnClick}
       >
-        {sideMenuOptions(tabSection, hasPermitConditionsFlow)
+        {sideMenuOptions(tabSection, hasPermitConditionsFlow, hasLegacyFuelData)
           .filter(
             ({ href, alwaysVisible, applicationType, featureFlag }) =>
               (alwaysVisible ||

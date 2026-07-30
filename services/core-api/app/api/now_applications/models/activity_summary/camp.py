@@ -33,6 +33,11 @@ class Camp(ActivitySummaryBase):
         overlaps='staging_area_detail_associations,staging_area_summary_associations,summary')
     building_details = db.relationship(
         'BuildingDetail', secondary='activity_summary_building_detail_xref', load_on_pending=True, overlaps='building_detail_associations,detail,building_summary_associations,summary')
+    fuel_details = db.relationship(
+        'FuelDetail',
+        secondary='activity_summary_fuel_detail_xref',
+        load_on_pending=True,
+        overlaps='fuel_detail_associations,fuel_summary_associations,summary')
 
     @hybrid_property
     def calculated_total_disturbance_camp(self):

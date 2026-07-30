@@ -327,7 +327,7 @@ def _transmogrify_camp_activities(now_app, now_sub, mms_now_sub):
     camphealthconsent = now_sub.camphealthconsent
 
     fuellubstoreonsite = mms_now_sub.fuellubstoreonsite or now_sub.fuellubstoreonsite
-    if cbsfreclamation or cbsfreclamationcost or campbuildstgetotaldistarea or fuellubstoreonsite:
+    if cbsfreclamation or cbsfreclamationcost or campbuildstgetotaldistarea or fuellubstoreonsite or now_sub.fuel:
 
         camp = app_models.Camp(
             reclamation_description=cbsfreclamation,
@@ -336,7 +336,7 @@ def _transmogrify_camp_activities(now_app, now_sub, mms_now_sub):
             total_disturbed_area_unit_type_code='HA',
             health_authority_consent=get_boolean_value(camphealthconsent),
             health_authority_notified=get_boolean_value(camphealthauthority),
-            has_fuel_stored=get_boolean_value(fuellubstoreonsite),
+            has_fuel_stored=get_boolean_value(fuellubstoreonsite) or bool(now_sub.fuel),
             has_fuel_stored_in_bulk=get_boolean_value(fuellubstoremethodbulk),
             volume_fuel_stored=fuellubstored,
             has_fuel_stored_in_barrels=get_boolean_value(fuellubstoremethodbarrel))
@@ -376,6 +376,15 @@ def _transmogrify_camp_activities(now_app, now_sub, mms_now_sub):
                 disturbed_area=detail.disturbedarea,
                 timber_volume=detail.timbervolume)
             camp.staging_area_details.append(staging_area_detail)
+
+        for detail in now_sub.fuel:
+            fuel_detail = app_models.FuelDetail(
+                fuel_type=detail.fueltype,
+                fuel_related_activity=detail.fuelrelatedactivity,
+                estimated_fuel_volume=detail.estimatedfuelvolume,
+                description_of_fuel_related_activity=detail.descriptionoffuelrelatedactivity,
+                description_of_precautionary_measures=detail.descriptionofprecautionarymeasures)
+            camp.fuel_details.append(fuel_detail)
 
         now_app.camp = camp
 

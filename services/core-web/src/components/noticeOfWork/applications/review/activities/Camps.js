@@ -22,6 +22,10 @@ const propTypes = {
 
 export const Camps = (props) => {
   const hasFuel = props.campFormValues.has_fuel_stored;
+  const hasLegacyFuelData =
+    props.campFormValues.has_fuel_stored_in_bulk != null ||
+    props.campFormValues.has_fuel_stored_in_barrels != null ||
+    props.campFormValues.volume_fuel_stored != null;
   return (
     <div>
       <h4>
@@ -238,68 +242,119 @@ export const Camps = (props) => {
             validate={[requiredRadioButton]}
           />
         </Col>
-        <Col md={12} sm={24}>
-          <div className="field-title">
-            Volume of fuel stored (litres)
-            <NOWOriginalValueTooltip
-              originalValue={props.renderOriginalValues("camp.volume_fuel_stored").value}
-              isVisible={props.renderOriginalValues("camp.volume_fuel_stored").edited}
+        {hasLegacyFuelData && (
+          <Col md={12} sm={24}>
+            <div className="field-title">
+              Volume of fuel stored (litres)
+              <NOWOriginalValueTooltip
+                originalValue={props.renderOriginalValues("camp.volume_fuel_stored").value}
+                isVisible={props.renderOriginalValues("camp.volume_fuel_stored").edited}
+              />
+            </div>
+            <Field
+              id="volume_fuel_stored"
+              name="volume_fuel_stored"
+              component={RenderField}
+              disabled={props.isViewMode}
+              validate={hasFuel ? [number, required] : [number]}
             />
-          </div>
-          <Field
-            id="volume_fuel_stored"
-            name="volume_fuel_stored"
-            component={RenderField}
-            disabled={props.isViewMode}
-            validate={hasFuel ? [number, required] : [number]}
+          </Col>
+        )}
+      </Row>
+      {hasLegacyFuelData && (
+        <Row gutter={16}>
+          <Col md={12} sm={24}>
+            <div className="field-title">Storage Method</div>
+            <Col md={12} sm={24}>
+              <Field
+                label={
+                  <span>
+                    Bulk
+                    <NOWOriginalValueTooltip
+                      style={{ marginLeft: "20%" }}
+                      originalValue={props.renderOriginalValues("camp.has_fuel_stored_in_bulk").value}
+                      isVisible={props.renderOriginalValues("camp.has_fuel_stored_in_bulk").edited}
+                    />
+                  </span>
+                }
+                id="has_fuel_stored_in_bulk"
+                name="has_fuel_stored_in_bulk"
+                component={RenderRadioButtons}
+                disabled={props.isViewMode}
+                validate={hasFuel ? [requiredRadioButton] : []}
+              />
+            </Col>
+            <Col md={12} sm={24}>
+              <Field
+                label={
+                  <span>
+                    Barrel
+                    <NOWOriginalValueTooltip
+                      style={{ marginLeft: "20%" }}
+                      originalValue={
+                        props.renderOriginalValues("camp.has_fuel_stored_in_barrels").value
+                      }
+                      isVisible={props.renderOriginalValues("camp.has_fuel_stored_in_barrels").edited}
+                    />
+                  </span>
+                }
+                id="has_fuel_stored_in_barrels"
+                name="has_fuel_stored_in_barrels"
+                component={RenderRadioButtons}
+                disabled={props.isViewMode}
+                validate={hasFuel ? [requiredRadioButton] : []}
+              />
+            </Col>
+          </Col>
+        </Row>
+      )}
+      <br />
+      {hasFuel && (
+        <>
+          <h4>Fuel Transportation and Storage</h4>
+          <CoreEditableTable
+            isViewMode={props.isViewMode}
+            fieldName="fuel_details"
+            fieldID="activity_detail_id"
+            tableContent={[
+              {
+                title: "Fuel Type",
+                value: "fuel_type",
+                component: RenderField,
+                minRows: 1,
+                validate: [maxLength(100)],
+              },
+              {
+                title: "Fuel Related Activity",
+                value: "fuel_related_activity",
+                component: RenderField,
+                minRows: 1,
+                validate: [maxLength(100)],
+              },
+              {
+                title: "Estimated Fuel Volume (litres)",
+                value: "estimated_fuel_volume",
+                component: RenderField,
+                validate: [number],
+              },
+              {
+                title: "Description of Fuel Related Activity",
+                value: "description_of_fuel_related_activity",
+                component: RenderAutoSizeField,
+                minRows: 1,
+                validate: [maxLength(4000)],
+              },
+              {
+                title: "Description of Precautionary Measures",
+                value: "description_of_precautionary_measures",
+                component: RenderAutoSizeField,
+                minRows: 1,
+                validate: [maxLength(4000)],
+              },
+            ]}
           />
-        </Col>
-      </Row>
-      <Row gutter={16}>
-        <Col md={12} sm={24}>
-          <div className="field-title">Storage Method</div>
-          <Col md={12} sm={24}>
-            <Field
-              label={
-                <span>
-                  Bulk
-                  <NOWOriginalValueTooltip
-                    style={{ marginLeft: "20%" }}
-                    originalValue={props.renderOriginalValues("camp.has_fuel_stored_in_bulk").value}
-                    isVisible={props.renderOriginalValues("camp.has_fuel_stored_in_bulk").edited}
-                  />
-                </span>
-              }
-              id="has_fuel_stored_in_bulk"
-              name="has_fuel_stored_in_bulk"
-              component={RenderRadioButtons}
-              disabled={props.isViewMode}
-              validate={hasFuel ? [requiredRadioButton] : []}
-            />
-          </Col>
-          <Col md={12} sm={24}>
-            <Field
-              label={
-                <span>
-                  Barrel
-                  <NOWOriginalValueTooltip
-                    style={{ marginLeft: "20%" }}
-                    originalValue={
-                      props.renderOriginalValues("camp.has_fuel_stored_in_barrels").value
-                    }
-                    isVisible={props.renderOriginalValues("camp.has_fuel_stored_in_barrels").edited}
-                  />
-                </span>
-              }
-              id="has_fuel_stored_in_barrels"
-              name="has_fuel_stored_in_barrels"
-              component={RenderRadioButtons}
-              disabled={props.isViewMode}
-              validate={hasFuel ? [requiredRadioButton] : []}
-            />
-          </Col>
-        </Col>
-      </Row>
+        </>
+      )}
       <br />
       <h4>Reclamation Program</h4>
       <Row gutter={16}>
