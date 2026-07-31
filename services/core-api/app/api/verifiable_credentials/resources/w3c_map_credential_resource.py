@@ -12,7 +12,8 @@ from app.extensions import api
 
 from app.api.utils.resources_mixins import UserMixin
 from app.api.services.traction_service import TractionService
-from app.api.verifiable_credentials.manager import VerifiableCredentialManager, process_all_untp_map_for_orgbook
+from app.api.verifiable_credentials.untp_manager import UNTPCredentialManager
+from app.api.verifiable_credentials.anoncred_manager import AnonCredCredentialManager
 from app.api.verifiable_credentials.models.orgbook_publish_status import PermitAmendmentOrgBookPublish
 from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
 
@@ -70,7 +71,7 @@ class W3CCredentialIssueResource(Resource, UserMixin):
         public_did = Config.CHIEF_PERMITTING_OFFICER_DID_WEB
         public_verkey = public_did_dict["verkey"]
 
-        credential_dict = VerifiableCredentialManager.produce_map_01_credential_payload(
+        credential_dict = AnonCredCredentialManager.produce_map_01_credential_payload(
             public_did, permit_amendment)
 
         signed_credential = traction_service.sign_add_data_integrity_proof(
@@ -90,7 +91,7 @@ class W3CCredentialIssueResource(Resource, UserMixin):
 
         permit_amendment = PermitAmendment.find_by_permit_amendment_guid(permit_amendment_guid)
 
-        payload = VerifiableCredentialManager.prepare_permit_amendment_untp_credential_without_id(
+        payload = UNTPCredentialManager.prepare_permit_amendment_untp_credential_without_id(
             permit_amendment_guid)
         payload_hash = md5(dumps(payload).encode('utf-8')).hexdigest()
 
