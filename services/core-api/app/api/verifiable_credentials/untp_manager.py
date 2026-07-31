@@ -1,4 +1,4 @@
-# for midware/business level actions between requests and data access
+# For verificable credential actions to be sent to the UNTP publisher. Midware/business level actions between requests and data access
 import json
 import requests
 import pprint
@@ -169,7 +169,9 @@ def process_all_untp_map_for_orgbook():
                 f"Permit Amendment not found for permit_amendment_guid={row[0]}")
             continue
 
-        pa_cred = VerifiableCredentialManager.produce_untp_cc_map_payload_without_id(public_did, pa)
+        pa_cred = UNTPCredentialManager.prepare_permit_amendment_untp_credential_without_id(
+            pa.permit_amendment_guid)
+
         if not pa_cred:
             current_app.logger.warning(f"pa_cred could not be created")
             continue
@@ -288,7 +290,7 @@ def push_untp_map_data_to_publisher():
 
         # Shape matches PublicationRequest from the untp-publisher API:
         # https://untp-publisher-api-dev.apps.gold.devops.gov.bc.ca/docs#/Credentials/publish_credential_credentials_publish_post
-        publish_payload = VerifiableCredentialManager.prepare_permit_amendment_untp_credential_without_id(
+        publish_payload = UNTPCredentialManager.prepare_permit_amendment_untp_credential_without_id(
             row[0])
 
         if not publish_payload:

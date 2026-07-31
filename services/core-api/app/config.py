@@ -305,7 +305,7 @@ class Config(object):
             'schedule': crontab(hour="11", minute="0"),                                              # Run daily at 3am (11am UTC)
         },
         'push_untp_map_data_to_publisher': {
-            'task': 'app.api.verifiable_credentials.manager.push_untp_map_data_to_publisher',
+            'task': 'app.api.verifiable_credentials.untp_manager.push_untp_map_data_to_publisher',
             'schedule': crontab(day_of_week="1", hour="16", minute="0"),                             #Run 8am Mondays
         },
     }

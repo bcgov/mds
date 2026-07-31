@@ -1,4 +1,4 @@
-# for midware/business level actions between requests and data access
+# For verificable credential actions to connect and issue anoncreds directly to other business wallets. Midware/business level actions between requests and data access
 
 from datetime import datetime, date
 from typing import List, Union, Tuple, Optional, Any

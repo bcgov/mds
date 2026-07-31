@@ -1,4 +1,4 @@
-# for midware/business level actions between requests and data access
+# For verificable credential actions to product and sign W3C Credentials without any other service. Midware/business level actions between requests and data access
 import json
 import requests
 import pprint

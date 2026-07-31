@@ -1,7 +1,7 @@
 from datetime import datetime
 from zoneinfo import ZoneInfo
 
-from app.api.verifiable_credentials.manager import VerifiableCredentialManager
+from app.api.verifiable_credentials.anoncred_manager import AnonCredCredentialManager
 from app.api.mines.mine.models.mine_type import MineType
 from tests.factories import create_mine_and_permit, PartyFactory, MinePartyAppointmentFactory, PartyBCRegistrationFactory
 
