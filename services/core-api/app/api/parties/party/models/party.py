@@ -215,7 +215,8 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
                     else_=cls.party_name)
 
     @classmethod
-    def find_by_party_guid(cls, party_guid) -> Self:
+    def find_by_party_guid(cls, party_guid, unsafe: bool = False) -> Self:
+        query = cls.query.unbound_unsafe() if unsafe else cls.query
         return cls.query.filter_by(party_guid=party_guid, deleted_ind=False).one_or_none()
 
     @classmethod

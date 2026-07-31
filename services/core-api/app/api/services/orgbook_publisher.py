@@ -1,6 +1,4 @@
 import requests
-
-from flask import current_app
 from app.config import Config
 
 token_url = f"{Config.ORGBOOK_PUBLISHER_BASE_URL}/auth/token"
