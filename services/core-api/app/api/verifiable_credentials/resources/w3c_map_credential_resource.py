@@ -1,16 +1,15 @@
 from json import dumps, loads
 from hashlib import md5
 from datetime import datetime
-from flask import current_app, request
+from flask import current_app
 from werkzeug.exceptions import BadRequest, ServiceUnavailable
 from flask_restx import Resource, reqparse
-from app.api.utils.include.user_info import User
-from app.api.utils.access_decorators import requires_any_of, MINESPACE_PROPONENT, EDIT_PARTY, VIEW_ALL
+from sqlalchemy.exc import IntegrityError
 
-from app.config import Config
 from app.extensions import api
-
+from app.api.utils.access_decorators import requires_any_of, MINESPACE_PROPONENT, EDIT_PARTY, VIEW_ALL
 from app.api.utils.resources_mixins import UserMixin
+
 from app.api.services.untp_publisher import UNTPPublisherService
 from app.api.verifiable_credentials.untp_manager import UNTPCredentialManager
 from app.api.verifiable_credentials.anoncred_manager import AnonCredCredentialManager
@@ -77,6 +76,22 @@ class W3CCredentialIssueResource(Resource, UserMixin):
             )
 
         publisher_service = UNTPPublisherService()
+        try:
+            publish_record = PermitAmendmentOrgBookPublish(
+                unsigned_payload_hash=payload_hash,
+                permit_amendment_guid=permit_amendment_guid,
+                party_guid=payload["data"]["permittee"]["party_guid"],
+                signed_credential='Produced by publisher',
+                publish_state=None,
+                permit_number=payload["data"]["permit"]["identifier"],
+                orgbook_entity_id=payload["data"]["permittee"]["identifier"],
+                orgbook_credential_id=None,
+                error_msg=None)
+            publish_record.save()
+        except IntegrityError as e:
+            current_app.logger.info(
+                f"credential hash collision, skipping duplicate payload for permit_amendment={permit_amendment_guid}"
+            )
 
         return publisher_service.publish_cred(payload).json()
 
