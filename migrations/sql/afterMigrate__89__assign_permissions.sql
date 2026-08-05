@@ -60,3 +60,34 @@ BEGIN
     END IF;
 END
 $$;
+
+/**
+Allow mds_data_analytics user to READ specific tables on the public schema
+**/
+DO
+$$
+BEGIN
+    IF EXISTS (SELECT FROM pg_catalog.pg_roles WHERE rolname = 'mds_data_analytics') THEN
+        GRANT USAGE ON SCHEMA public TO mds_data_analytics;
+        GRANT SELECT ON
+            public.minespace_user_document_xref,
+            public.notice_of_work_tier,
+            public.major_mine_application_document_subtype,
+            public.ams_final_application_document_xref,
+            public.ams_final_application_version,
+            public.minespace_user_version,
+            public.minespace_user_request,
+            public.minespace_user_role_xref,
+            public.now_application_tier,
+            public.email_tracking,
+            public.permit_condition_tag_xref,
+            public.standard_permit_condition_tag_xref,
+            public.minespace_user_role,
+            public.ams_final_application,
+            public.now_application_tier_version,
+            public.ams_final_application_document_type,
+            public.permit_condition_tag
+        TO mds_data_analytics;
+    END IF;
+END
+$$;
