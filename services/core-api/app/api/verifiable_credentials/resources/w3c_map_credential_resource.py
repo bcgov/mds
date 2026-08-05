@@ -64,7 +64,10 @@ class W3CCredentialIssueResource(Resource, UserMixin):
 
         payload = UNTPCredentialManager.prepare_permit_amendment_untp_credential_without_id(
             permit_amendment_guid)
-        assert payload is not None, f"payload is None for permit_amendment_guid={permit_amendment_guid}"
+        if payload is None:
+            raise BadRequest(
+                f"payload could not be produced for permit_amendment_guid={permit_amendment_guid}")
+
         payload_hash = md5(dumps(payload).encode('utf-8')).hexdigest()
 
         existing: bool = PermitAmendmentOrgBookPublish.find_by_unsigned_payload_hash(
