@@ -88,7 +88,7 @@ class ActivityDetailBase(AuditMixin, Base):
                     ActivitySummaryBase.activity_type_code == 'camp')).limit(1).as_scalar()))
 
     activity_type_code = db.column_property(
-        case([(_activity_type_code_identity in ['building', 'staging_area', 'fuel'], 'camp')], else_=_activity_type_code_identity))
+        case([(_activity_type_code_identity.expression.in_(['building', 'staging_area', 'fuel']), 'camp')], else_=_activity_type_code_identity))
 
     __mapper_args__ = {'polymorphic_on': _activity_type_code_identity}
 

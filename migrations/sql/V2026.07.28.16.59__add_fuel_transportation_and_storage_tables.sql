@@ -11,7 +11,7 @@ ALTER TABLE now_submissions.fuel OWNER TO mds;
 
 CREATE TABLE IF NOT EXISTS activity_summary_fuel_detail_xref (
     activity_summary_id INTEGER NOT NULL REFERENCES activity_summary(activity_summary_id),
-    activity_detail_id INTEGER NOT NULL REFERENCES activity_detail(activity_detail_id),
+    activity_detail_id INTEGER NOT NULL REFERENCES activity_detail(activity_detail_id) ON DELETE CASCADE,
 
     PRIMARY KEY(activity_summary_id, activity_detail_id)
 );
