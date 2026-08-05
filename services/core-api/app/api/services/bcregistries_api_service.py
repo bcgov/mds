@@ -47,4 +47,4 @@ class BCRegistriesService():
         except (ValueError, TypeError) as e:
             raise BadGateway('BC Registries API responded with unexpected data.') from e
 
-        return [], 200
+        return []

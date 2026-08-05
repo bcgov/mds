@@ -215,6 +215,7 @@ class UNTPCredentialManager():
             appt for appt in pa.permittee_appointments
             if ensure_start_date_type(appt.start_date) <= pa.issue_date
         ][0]
+
         permittee_bc_regisration: PartyBCRegistration = permittee_appt.party.party_bc_registration
         if not permittee_bc_regisration:
             return None      # ensure party is loaded
