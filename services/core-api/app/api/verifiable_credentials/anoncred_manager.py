@@ -28,9 +28,6 @@ class UNTPCCMinesActPermit(cc.ConformityAttestation):
     permitNumber: str
 
 
-W3C_CRED_ID_PREFIX = f"{Config.ORGBOOK_PUBLISHER_BASE_URL}/credentials/"
-
-
 def convert_date_to_iso_datetime(dt: datetime | date) -> str:
     return datetime(dt.year, dt.month, dt.day, 0, 0, 0, tzinfo=ZoneInfo("UTC")).isoformat()
 

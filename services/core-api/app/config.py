@@ -333,10 +333,10 @@ class Config(object):
     UNTP_BC_MINES_ACT_PERMIT_CONTEXT = os.environ.get("UNTP_BC_MINES_ACT_PERMIT_CONTEXT",
                                                       "UNTP_BC_MINES_ACT_PERMIT_CONTEXT")
 
-    ORGBOOK_PUBLISHER_BASE_URL = os.environ.get(
-        "ORGBOOK_PUBLISHER_BASE_URL", "https://untp-publisher-api-dev.apps.gold.devops.gov.bc.ca")
-    ORGBOOK_PUBLISHER_CLIENT_SECRET = os.environ.get("ORGBOOK_PUBLISHER_CLIENT_SECRET",
-                                                     "ORGBOOK_PUBLISHER_CLIENT_SECRET")
+    UNTP_PUBLISHER_BASE_URL = os.environ.get(
+        "UNTP_PUBLISHER_BASE_URL", "https://untp-publisher-api-dev.apps.gold.devops.gov.bc.ca")
+    UNTP_PUBLISHER_CLIENT_SECRET = os.environ.get("UNTP_PUBLISHER_CLIENT_SECRET",
+                                                  "UNTP_PUBLISHER_CLIENT_SECRET")
 
 
 class TestConfig(Config):

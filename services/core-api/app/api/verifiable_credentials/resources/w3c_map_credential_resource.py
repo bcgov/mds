@@ -11,7 +11,7 @@ from app.config import Config
 from app.extensions import api
 
 from app.api.utils.resources_mixins import UserMixin
-from app.api.services.traction_service import TractionService
+from app.api.services.untp_publisher import UNTPPublisherService
 from app.api.verifiable_credentials.untp_manager import UNTPCredentialManager
 from app.api.verifiable_credentials.anoncred_manager import AnonCredCredentialManager
 from app.api.verifiable_credentials.models.orgbook_publish_status import PermitAmendmentOrgBookPublish
@@ -54,30 +54,31 @@ class W3CCredentialIssueResource(Resource, UserMixin):
         store_missing=False)
 
     @api.expect(parser)
-    @api.doc(
-        description=
-        "returns a signed w3c credential for a specific permit_amendment using deprecated aca-py endpoint, but with did:indy:bcovrin:test:"
-    )
+    @api.doc(description="issues a w3c credential to the untp publisher")
     @requires_any_of([EDIT_PARTY, MINESPACE_PROPONENT])
     def post(self):
         if not is_feature_enabled(Feature.VC_W3C):
             raise ServiceUnavailable("This feature is not enabled.")
 
         data = self.parser.parse_args()
-        permit_amendment = PermitAmendment.find_by_permit_amendment_guid(
-            data["permit_amendment_guid"])
-        traction_service = TractionService()
-        public_did_dict = traction_service.fetch_current_public_did()
-        public_did = Config.CHIEF_PERMITTING_OFFICER_DID_WEB
-        public_verkey = public_did_dict["verkey"]
+        permit_amendment_guid = data["permit_amendment_guid"]
 
-        credential_dict = AnonCredCredentialManager.produce_map_01_credential_payload(
-            public_did, permit_amendment)
+        payload = UNTPCredentialManager.prepare_permit_amendment_untp_credential_without_id(
+            permit_amendment_guid)
+        assert payload is not None, f"payload is None for permit_amendment_guid={permit_amendment_guid}"
+        payload_hash = md5(dumps(payload).encode('utf-8')).hexdigest()
 
-        signed_credential = traction_service.sign_add_data_integrity_proof(
-            Config.CHIEF_PERMITTING_OFFICER_DID_WEB_VERIFICATION_METHOD, credential_dict)
+        existing: bool = PermitAmendmentOrgBookPublish.find_by_unsigned_payload_hash(
+            payload_hash) is not None
 
-        return signed_credential["securedDocument"]
+        if existing:
+            raise BadRequest(
+                f"Permit amendment {permit_amendment_guid} has already been published to the UNTP publisher."
+            )
+
+        publisher_service = UNTPPublisherService()
+
+        return publisher_service.publish_cred(payload).json()
 
     @api.expect(query_parser)
     @api.doc(description="returns the prepared payload to be sent to the untp publisher")

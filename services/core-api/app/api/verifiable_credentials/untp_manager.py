@@ -31,7 +31,7 @@ from app.api.verifiable_credentials.models.credentials import PartyVerifiableCre
 from app.api.verifiable_credentials.models.connection import PartyVerifiableCredentialConnection
 from app.api.verifiable_credentials.models.orgbook_publish_status import PermitAmendmentOrgBookPublish
 from app.api.services.traction_service import TractionService
-from app.api.services.orgbook_publisher import OrgbookPublisherService
+from app.api.services.untp_publisher import UNTPPublisherService
 
 from untp_models import codes, base, conformity_credential as cc
 
@@ -41,7 +41,7 @@ class UNTPCCMinesActPermit(cc.ConformityAttestation):
     permitNumber: str
 
 
-W3C_CRED_ID_PREFIX = f"{Config.ORGBOOK_PUBLISHER_BASE_URL}/credentials/"
+W3C_CRED_ID_PREFIX = f"{Config.UNTP_PUBLISHER_BASE_URL}/credentials/"
 
 permit_amendments_for_orgbook_query = """
     select pa.permit_amendment_guid, p.party_guid, pmt.permit_no
@@ -106,150 +106,6 @@ def ensure_start_date_type(d) -> date:
         )
 
 
-@celery.task()
-def revoke_all_credentials_for_permit(permit_guid: str, mine_guid: str, reason: str):
-    cred_exch = PartyVerifiableCredentialMinesActPermit.find_by_permit_guid_and_mine_guid(
-        permit_guid, mine_guid)
-    for ce in cred_exch:
-        traction_svc = TractionService()
-        connection = PartyVerifiableCredentialConnection.find_active_by_party_guid(ce.party_guid)
-        if ce.cred_exch_state in PartyVerifiableCredentialMinesActPermit._active_credential_states:
-            traction_svc.revoke_credential(connection.connection_id, ce.rev_reg_id, ce.cred_rev_id,
-                                           reason)
-
-            attempts = 0
-            while not ce.cred_rev_id:
-                sleep(1)
-                db.session.refresh(cred_exch)
-                attempts += 1
-                if attempts > 60:
-                    ce.error_description = "Never received webhook confirming revokation credential"
-                    ce.save()
-                    raise Exception("Never received webhook confirming revokation credential")
-
-        if ce.cred_exch_state in PartyVerifiableCredentialMinesActPermit._pending_credential_states:
-            traction_svc.send_issue_credential_problem_report(ce.cred_exch_id, "problem_report")
-            #problem reports set the state to abandoned in both agents, cannot continue afterwards
-
-    info_str = f"revoked all credentials for permit_guid={permit_guid} and mine_guid={mine_guid}"
-    current_app.logger.warning(info_str)         # not sure where to find this.
-
-    return info_str
-
-
-@celery.task()
-def process_all_untp_map_for_orgbook():
-    """Find all permit amendments connected to orgbook verified parties, preprocess and sign any new credentials."""
-
-    # https://metabase-4c2ba9-prod.apps.silver.devops.gov.bc.ca/question/2937-permit-amendments-for-each-party-orgbook-entity
-
-    permit_amendment_query_results = db.session.execute(
-        permit_amendments_for_orgbook_query).fetchall()
-
-    current_app.logger.info("Num of results from query to process:" +
-                            str(len(permit_amendment_query_results)))
-
-    traction_service = TractionService()
-    public_did_dict = traction_service.fetch_current_public_did()
-    public_did = Config.CHIEF_PERMITTING_OFFICER_DID_WEB
-    public_verkey = public_did_dict["verkey"]
-
-    assert public_did.startswith(
-        "did:web:"
-    ), f"Config.CHIEF_PERMITTING_OFFICER_DID_WEB = {Config.CHIEF_PERMITTING_OFFICER_DID_WEB} is not a did:web"
-    current_app.logger.info("public did: " + public_did)
-
-    records: List[Tuple[W3CCred,
-                        PermitAmendmentOrgBookPublish]] = [] # list of tuples[payload, record]
-
-    for row in permit_amendment_query_results:
-        pa = PermitAmendment.find_by_permit_amendment_guid(row[0], unsafe=True)
-        if not pa:
-            current_app.logger.warning(
-                f"Permit Amendment not found for permit_amendment_guid={row[0]}")
-            continue
-
-        pa_cred = UNTPCredentialManager.prepare_permit_amendment_untp_credential_without_id(
-            pa.permit_amendment_guid)
-
-        if not pa_cred:
-            current_app.logger.warning(f"pa_cred could not be created")
-            continue
-
-        payload_hash = md5(pa_cred.model_dump_json(by_alias=True).encode('utf-8')).hexdigest()
-        existing_paob = PermitAmendmentOrgBookPublish.find_by_unsigned_payload_hash(
-            payload_hash, unsafe=True)
-
-        if existing_paob:
-            #this hash has already been seen, do not make new record or publish
-            #this assumes acapy is not changing the result if the payload is unchanged
-            continue
-
-        new_credential_id = f"{Config.ORGBOOK_PUBLISHER_BASE_URL}/credentials/{uuid4()}"
-        pa_cred.id = new_credential_id
-
-        paob = PermitAmendmentOrgBookPublish(
-            permit_amendment_guid=row[0],
-            party_guid=row[1],
-            unsigned_payload_hash=payload_hash,
-            permit_number=pa_cred.credentialSubject.permitNumber,
-            orgbook_entity_id=pa_cred.credentialSubject.issuedToParty.registeredId,
-            orgbook_credential_id=new_credential_id,
-        )
-        records.append((pa_cred, paob))
-
-    current_app.logger.info(f"public_verkey={public_verkey}")
-    # send to traction to be signed
-    for cred_payload, record in records:
-        signed_cred = traction_service.sign_add_data_integrity_proof(
-            Config.CHIEF_PERMITTING_OFFICER_DID_WEB_VERIFICATION_METHOD, cred_payload)
-        if signed_cred:
-            record.signed_credential = json.dumps(signed_cred["securedDocument"])
-            record.sign_date = datetime.now()
-        try:
-            record.save()
-        except IntegrityError:
-            current_app.logger.warning(f"ignoring duplicate={str(record.unsigned_payload_hash)}")
-            continue
-        current_app.logger.info("bcreg_uri=" +
-                                str(cred_payload.credentialSubject.issuedToParty.id) +
-                                ", for permit_amendment_guid=" + str(row[0]))
-        current_app.logger.warning("unsigned_hash=" + str(record.unsigned_payload_hash))
-
-    current_app.logger.info("num of records created: " + str(len(records or [])))
-
-    return [record for payload, record in records]
-
-
-@celery.task()
-def forward_all_pending_untp_vc_to_orgbook():
-    """celery job to publish all pending vc to orgbook."""
-    ## CORE signs and structures the credential, the publisher just validates and forwards it.
-    records_to_forward = PermitAmendmentOrgBookPublish.find_all_unpublished(unsafe=True)
-    ORGBOOK_W3C_CRED_FORWARD = f"{Config.ORGBOOK_PUBLISHER_BASE_URL}/credentials/forward"
-
-    current_app.logger.warning(f"going to publish {len(records_to_forward)} records to orgbook")
-
-    for record in records_to_forward:
-        current_app.logger.warning(f"publishing record={json.loads(record.signed_credential)}")
-        payload = {
-            "verifiableCredential": json.loads(record.signed_credential),
-            "options": {
-                "entityId": record.orgbook_entity_id,
-                "resourceId": record.permit_number,
-                "credentialId": record.orgbook_credential_id,
-                "credentialType": "BCMinesActPermitCredential"
-            }
-        }
-        resp = requests.post(ORGBOOK_W3C_CRED_FORWARD, json=payload)
-        if resp.status_code == 201:
-            record.publish_state = True
-        else:
-            record.error_msg = resp.text
-        record.save()
-
-
-@celery.task()
 def push_untp_map_data_to_publisher():
 
     ## This is a different process that passes the data to the publisher.
@@ -264,7 +120,7 @@ def push_untp_map_data_to_publisher():
     not_created_count = 0
     current_app.logger.info(f"num_records_to_process={len(permit_amendment_query_results)}")
     #token is valid for an hour currently.
-    publisher_service = OrgbookPublisherService()
+    publisher_service = UNTPPublisherService()
 
     for index, row in enumerate(permit_amendment_query_results):
         pa = PermitAmendment.find_by_permit_amendment_guid(row[0], unsafe=True)
@@ -379,7 +235,10 @@ class UNTPCredentialManager():
             if ensure_start_date_type(appt.start_date) <= pa.issue_date
         ][0]
 
-        next_pmt_appt: str | None = None
+        if not permittee_appt.party.party_bc_registration:
+            return None      # ensure party is loaded
+
+        next_pmt_appt: MinePartyAppointment | None = None
         valid_until_date: date | None = None
         try:
             next_pmt_appt = pmt_appt_list[pos - 1] if pos > 0 else None

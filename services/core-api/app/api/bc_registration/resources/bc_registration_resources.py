@@ -5,7 +5,8 @@ from app.config import Config
 from app.extensions import api
 from app.api.utils.access_decorators import requires_role_view_all
 from app.api.utils.feature_flag import Feature, is_feature_enabled
-from app.api.services.orgbook_service import OrgBookService, BCRegistriesService
+from app.api.services.orgbook_service import OrgBookService
+from app.api.services.bcregistries_api_service import BCRegistriesService
 from app.api.bc_registration.response_models import ORGBOOK_SEARCH_RESULT_ITEM, ORGBOOK_CREDENTIAL
 
 
