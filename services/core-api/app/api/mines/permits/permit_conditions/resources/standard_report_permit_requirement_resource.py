@@ -55,7 +55,9 @@ class StandardReportPermitRequirementResource(Resource, UserMixin):
                 due_date_period_months=data.get("due_date_period_months"),
                 cim_or_cpo=cim_or_cpo,
                 ministry_recipient=data.get("ministry_recipient"),
-                permit_condition_ids=permit_condition_ids
+                permit_condition_ids=permit_condition_ids,
+                condition_category_code=permit_conditions[0].condition_category_code,
+                notice_of_work_type=permit_conditions[0].notice_of_work_type
             )
         except IntegrityError as e:
             current_app.logger.info(e)
@@ -89,6 +91,8 @@ class StandardReportPermitRequirementResource(Resource, UserMixin):
             
         cim_or_cpo = data.get("cim_or_cpo")
         data['cim_or_cpo'] = None if cim_or_cpo == "NONE" else CimOrCpo(cim_or_cpo)
+        data['condition_category_code'] = permit_conditions[0].condition_category_code
+        data['notice_of_work_type'] = permit_conditions[0].notice_of_work_type
 
         try:
             report_requirement.update(**data)
