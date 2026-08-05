@@ -476,21 +476,10 @@ exports[`AdminAmendmentApplication renders properly 1`] = `
                         >
                           <a
                             class="ant-anchor-link-title"
-                            href="#first-nations-engagement"
-                            title="First Nations Engagement"
+                            href="#cultural-heritage-resources"
+                            title="Cultural Heritage Resources"
                           >
-                            First Nations Engagement
-                          </a>
-                        </div>
-                        <div
-                          class="ant-anchor-link now-menu-link"
-                        >
-                          <a
-                            class="ant-anchor-link-title"
-                            href="#indigenous-engagement"
-                            title="Indigenous Engagement"
-                          >
-                            Indigenous Engagement
+                            Cultural Heritage Resources
                           </a>
                         </div>
                         <div
@@ -510,9 +499,9 @@ exports[`AdminAmendmentApplication renders properly 1`] = `
                           <a
                             class="ant-anchor-link-title"
                             href="#camp"
-                            title="Camps, Buildings, Staging Areas, Fuel/Lubricant Storage"
+                            title="Camps, Buildings, Staging Areas"
                           >
-                            Camps, Buildings, Staging Areas, Fuel/Lubricant Storage
+                            Camps, Buildings, Staging Areas
                           </a>
                         </div>
                         <div
@@ -3443,6 +3432,54 @@ exports[`AdminAmendmentApplication renders properly 1`] = `
                                           </div>
                                         </div>
                                       </div>
+                                      <div
+                                        class="field-title"
+                                      >
+                                        Type of Activity
+                                      </div>
+                                      <div
+                                        class="ant-form-item ant-form-item-with-help"
+                                      >
+                                        <div
+                                          class="ant-row ant-form-item-row"
+                                        >
+                                          <div
+                                            class="ant-col ant-form-item-control"
+                                          >
+                                            <div
+                                              class="ant-form-item-control-input"
+                                            >
+                                              <div
+                                                class="ant-form-item-control-input-content"
+                                              >
+                                                <input
+                                                  aria-label="work_year_info"
+                                                  class="ant-input ant-input-disabled"
+                                                  data-testid="work_year_info"
+                                                  disabled=""
+                                                  id="work_year_info"
+                                                  name="work_year_info"
+                                                  type="text"
+                                                  value=""
+                                                />
+                                              </div>
+                                            </div>
+                                            <div
+                                              style="display: flex; flex-wrap: nowrap;"
+                                            >
+                                              <div
+                                                class="ant-form-item-explain ant-form-item-explain-connected"
+                                                id="EDIT_NOTICE_OF_WORK_work_year_info_help"
+                                                role="alert"
+                                              >
+                                                <div
+                                                  class=""
+                                                />
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
                                     </div>
                                   </div>
                                 </span>
@@ -4529,13 +4566,13 @@ exports[`AdminAmendmentApplication renders properly 1`] = `
                                 class="circle grey"
                               />
                               <div
-                                id="first-nations-engagement"
+                                id="cultural-heritage-resources"
                               >
                                 <div
                                   class="scroll-wrapper--title"
                                 >
                                   <h3>
-                                    First Nations Engagement
+                                    Cultural Heritage Resources
                                   </h3>
                                 </div>
                               </div>
@@ -4562,7 +4599,7 @@ exports[`AdminAmendmentApplication renders properly 1`] = `
                                           <div
                                             class="field-title"
                                           >
-                                            Have you shared information and engaged with First Nations in the area of the proposed activity?
+                                            Protection of Cultural Heritage Resources
                                             <span
                                               class="position-right"
                                             />
@@ -4582,199 +4619,21 @@ exports[`AdminAmendmentApplication renders properly 1`] = `
                                                   <div
                                                     class="ant-form-item-control-input-content"
                                                   >
-                                                    <div
-                                                      class="ant-radio-group ant-radio-group-solid"
-                                                    >
-                                                      <label
-                                                        class="ant-radio-wrapper ant-radio-wrapper-disabled ant-radio-wrapper-in-form-item"
-                                                      >
-                                                        <span
-                                                          class="ant-radio ant-radio-disabled"
-                                                        >
-                                                          <input
-                                                            class="ant-radio-input"
-                                                            disabled=""
-                                                            name="state_of_land.has_shared_info_with_fn"
-                                                            type="radio"
-                                                            value="true"
-                                                          />
-                                                          <span
-                                                            class="ant-radio-inner"
-                                                          />
-                                                        </span>
-                                                        <span>
-                                                          Yes
-                                                        </span>
-                                                      </label>
-                                                      <label
-                                                        class="ant-radio-wrapper ant-radio-wrapper-disabled ant-radio-wrapper-in-form-item"
-                                                      >
-                                                        <span
-                                                          class="ant-radio ant-radio-disabled"
-                                                        >
-                                                          <input
-                                                            class="ant-radio-input"
-                                                            disabled=""
-                                                            name="state_of_land.has_shared_info_with_fn"
-                                                            type="radio"
-                                                            value="false"
-                                                          />
-                                                          <span
-                                                            class="ant-radio-inner"
-                                                          />
-                                                        </span>
-                                                        <span>
-                                                          No
-                                                        </span>
-                                                      </label>
-                                                    </div>
-                                                  </div>
-                                                </div>
-                                                <div
-                                                  style="display: flex; flex-wrap: nowrap;"
-                                                >
-                                                  <div
-                                                    class="ant-form-item-explain ant-form-item-explain-connected"
-                                                    id="EDIT_NOTICE_OF_WORK_state_of_land.has_shared_info_with_fn_help"
-                                                    role="alert"
-                                                  >
-                                                    <div
-                                                      class=""
+                                                    <textarea
+                                                      class="ant-input ant-input-disabled"
+                                                      disabled=""
+                                                      id="protection_of_cultural_heritage_resources"
+                                                      name="state_of_land.protection_of_cultural_heritage_resources"
+                                                      style="height: 0px; resize: none; min-height: -12px;"
                                                     />
                                                   </div>
                                                 </div>
-                                              </div>
-                                            </div>
-                                          </div>
-                                        </div>
-                                        <div
-                                          class="ant-col ant-col-sm-24 ant-col-md-12"
-                                          style="padding-left: 8px; padding-right: 8px;"
-                                        />
-                                      </div>
-                                    </span>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <div
-                            class="scroll-wrapper"
-                          >
-                            <div
-                              class="inline-flex"
-                            >
-                              <div
-                                class="circle grey"
-                              />
-                              <div
-                                id="indigenous-engagement"
-                              >
-                                <div
-                                  class="scroll-wrapper--title"
-                                >
-                                  <h3>
-                                    Indigenous Engagement
-                                  </h3>
-                                </div>
-                              </div>
-                            </div>
-                            <div
-                              class="scroll-wrapper--border"
-                            >
-                              <div>
-                                <div
-                                  class="fade-in"
-                                >
-                                  <div
-                                    class="scroll-wrapper--body"
-                                  >
-                                    <span>
-                                      <div
-                                        class="ant-row"
-                                        style="margin-left: -8px; margin-right: -8px;"
-                                      >
-                                        <div
-                                          class="ant-col ant-col-sm-24 ant-col-md-12"
-                                          style="padding-left: 8px; padding-right: 8px;"
-                                        >
-                                          <div
-                                            class="field-title"
-                                          >
-                                            Have you read and understand United Nations Declaration on the Rights of Indigenous Peoples and the Truth and Reconciliation Commission of Canada's Calls to Action?
-                                            <span
-                                              class="position-right"
-                                            />
-                                          </div>
-                                          <div
-                                            class="ant-form-item ant-form-item-with-help"
-                                          >
-                                            <div
-                                              class="ant-row ant-form-item-row"
-                                            >
-                                              <div
-                                                class="ant-col ant-form-item-control"
-                                              >
-                                                <div
-                                                  class="ant-form-item-control-input"
-                                                >
-                                                  <div
-                                                    class="ant-form-item-control-input-content"
-                                                  >
-                                                    <div
-                                                      class="ant-radio-group ant-radio-group-solid"
-                                                    >
-                                                      <label
-                                                        class="ant-radio-wrapper ant-radio-wrapper-disabled ant-radio-wrapper-in-form-item"
-                                                      >
-                                                        <span
-                                                          class="ant-radio ant-radio-disabled"
-                                                        >
-                                                          <input
-                                                            class="ant-radio-input"
-                                                            disabled=""
-                                                            name="state_of_land.has_acknowledged_undrip"
-                                                            type="radio"
-                                                            value="true"
-                                                          />
-                                                          <span
-                                                            class="ant-radio-inner"
-                                                          />
-                                                        </span>
-                                                        <span>
-                                                          Yes
-                                                        </span>
-                                                      </label>
-                                                      <label
-                                                        class="ant-radio-wrapper ant-radio-wrapper-disabled ant-radio-wrapper-in-form-item"
-                                                      >
-                                                        <span
-                                                          class="ant-radio ant-radio-disabled"
-                                                        >
-                                                          <input
-                                                            class="ant-radio-input"
-                                                            disabled=""
-                                                            name="state_of_land.has_acknowledged_undrip"
-                                                            type="radio"
-                                                            value="false"
-                                                          />
-                                                          <span
-                                                            class="ant-radio-inner"
-                                                          />
-                                                        </span>
-                                                        <span>
-                                                          No
-                                                        </span>
-                                                      </label>
-                                                    </div>
-                                                  </div>
-                                                </div>
                                                 <div
                                                   style="display: flex; flex-wrap: nowrap;"
                                                 >
                                                   <div
                                                     class="ant-form-item-explain ant-form-item-explain-connected"
-                                                    id="EDIT_NOTICE_OF_WORK_state_of_land.has_acknowledged_undrip_help"
+                                                    id="EDIT_NOTICE_OF_WORK_state_of_land.protection_of_cultural_heritage_resources_help"
                                                     role="alert"
                                                   >
                                                     <div
@@ -4868,7 +4727,7 @@ exports[`AdminAmendmentApplication renders properly 1`] = `
                                 class="scroll-wrapper--title"
                               >
                                 <h3>
-                                  Camps, Buildings, Staging Areas, Fuel/Lubricant Storage
+                                  Camps, Buildings, Staging Areas
                                 </h3>
                               </div>
                             </div>
@@ -5405,290 +5264,8 @@ exports[`AdminAmendmentApplication renders properly 1`] = `
                                             </div>
                                           </div>
                                         </div>
-                                        <div
-                                          class="ant-col ant-col-sm-24 ant-col-md-12"
-                                          style="padding-left: 8px; padding-right: 8px;"
-                                        >
-                                          <div
-                                            class="field-title"
-                                          >
-                                            Volume of fuel stored (litres)
-                                            <span
-                                              class="position-right"
-                                            />
-                                          </div>
-                                          <div
-                                            class="ant-form-item ant-form-item-with-help"
-                                          >
-                                            <div
-                                              class="ant-row ant-form-item-row"
-                                            >
-                                              <div
-                                                class="ant-col ant-form-item-control"
-                                              >
-                                                <div
-                                                  class="ant-form-item-control-input"
-                                                >
-                                                  <div
-                                                    class="ant-form-item-control-input-content"
-                                                  >
-                                                    <input
-                                                      aria-label="camp.volume_fuel_stored"
-                                                      class="ant-input ant-input-disabled"
-                                                      data-testid="camp.volume_fuel_stored"
-                                                      disabled=""
-                                                      id="volume_fuel_stored"
-                                                      name="camp.volume_fuel_stored"
-                                                      type="text"
-                                                      value=""
-                                                    />
-                                                  </div>
-                                                </div>
-                                                <div
-                                                  style="display: flex; flex-wrap: nowrap;"
-                                                >
-                                                  <div
-                                                    class="ant-form-item-explain ant-form-item-explain-connected"
-                                                    id="EDIT_NOTICE_OF_WORK_camp.volume_fuel_stored_help"
-                                                    role="alert"
-                                                  >
-                                                    <div
-                                                      class=""
-                                                    />
-                                                  </div>
-                                                </div>
-                                              </div>
-                                            </div>
-                                          </div>
-                                        </div>
                                       </div>
-                                      <div
-                                        class="ant-row"
-                                        style="margin-left: -8px; margin-right: -8px;"
-                                      >
-                                        <div
-                                          class="ant-col ant-col-sm-24 ant-col-md-12"
-                                          style="padding-left: 8px; padding-right: 8px;"
-                                        >
-                                          <div
-                                            class="field-title"
-                                          >
-                                            Storage Method
-                                          </div>
-                                          <div
-                                            class="ant-col ant-col-sm-24 ant-col-md-12"
-                                            style="padding-left: 8px; padding-right: 8px;"
-                                          >
-                                            <div
-                                              class="ant-form-item ant-form-item-with-help"
-                                            >
-                                              <div
-                                                class="ant-row ant-form-item-row"
-                                              >
-                                                <div
-                                                  class="ant-col ant-form-item-label"
-                                                >
-                                                  <label
-                                                    class=""
-                                                    for="EDIT_NOTICE_OF_WORK_camp.has_fuel_stored_in_bulk"
-                                                    title=""
-                                                  >
-                                                    <div>
-                                                      <span>
-                                                        Bulk
-                                                        <span />
-                                                      </span>
-                                                       
-                                                      <span
-                                                        class="form-item-optional"
-                                                      >
-                                                         (optional)
-                                                      </span>
-                                                    </div>
-                                                  </label>
-                                                </div>
-                                                <div
-                                                  class="ant-col ant-form-item-control"
-                                                >
-                                                  <div
-                                                    class="ant-form-item-control-input"
-                                                  >
-                                                    <div
-                                                      class="ant-form-item-control-input-content"
-                                                    >
-                                                      <div
-                                                        class="ant-radio-group ant-radio-group-solid"
-                                                      >
-                                                        <label
-                                                          class="ant-radio-wrapper ant-radio-wrapper-disabled ant-radio-wrapper-in-form-item"
-                                                        >
-                                                          <span
-                                                            class="ant-radio ant-radio-disabled"
-                                                          >
-                                                            <input
-                                                              class="ant-radio-input"
-                                                              disabled=""
-                                                              name="camp.has_fuel_stored_in_bulk"
-                                                              type="radio"
-                                                              value="true"
-                                                            />
-                                                            <span
-                                                              class="ant-radio-inner"
-                                                            />
-                                                          </span>
-                                                          <span>
-                                                            Yes
-                                                          </span>
-                                                        </label>
-                                                        <label
-                                                          class="ant-radio-wrapper ant-radio-wrapper-disabled ant-radio-wrapper-in-form-item"
-                                                        >
-                                                          <span
-                                                            class="ant-radio ant-radio-disabled"
-                                                          >
-                                                            <input
-                                                              class="ant-radio-input"
-                                                              disabled=""
-                                                              name="camp.has_fuel_stored_in_bulk"
-                                                              type="radio"
-                                                              value="false"
-                                                            />
-                                                            <span
-                                                              class="ant-radio-inner"
-                                                            />
-                                                          </span>
-                                                          <span>
-                                                            No
-                                                          </span>
-                                                        </label>
-                                                      </div>
-                                                    </div>
-                                                  </div>
-                                                  <div
-                                                    style="display: flex; flex-wrap: nowrap;"
-                                                  >
-                                                    <div
-                                                      class="ant-form-item-explain ant-form-item-explain-connected"
-                                                      id="EDIT_NOTICE_OF_WORK_camp.has_fuel_stored_in_bulk_help"
-                                                      role="alert"
-                                                    >
-                                                      <div
-                                                        class=""
-                                                      />
-                                                    </div>
-                                                  </div>
-                                                </div>
-                                              </div>
-                                            </div>
-                                          </div>
-                                          <div
-                                            class="ant-col ant-col-sm-24 ant-col-md-12"
-                                            style="padding-left: 8px; padding-right: 8px;"
-                                          >
-                                            <div
-                                              class="ant-form-item ant-form-item-with-help"
-                                            >
-                                              <div
-                                                class="ant-row ant-form-item-row"
-                                              >
-                                                <div
-                                                  class="ant-col ant-form-item-label"
-                                                >
-                                                  <label
-                                                    class=""
-                                                    for="EDIT_NOTICE_OF_WORK_camp.has_fuel_stored_in_barrels"
-                                                    title=""
-                                                  >
-                                                    <div>
-                                                      <span>
-                                                        Barrel
-                                                        <span />
-                                                      </span>
-                                                       
-                                                      <span
-                                                        class="form-item-optional"
-                                                      >
-                                                         (optional)
-                                                      </span>
-                                                    </div>
-                                                  </label>
-                                                </div>
-                                                <div
-                                                  class="ant-col ant-form-item-control"
-                                                >
-                                                  <div
-                                                    class="ant-form-item-control-input"
-                                                  >
-                                                    <div
-                                                      class="ant-form-item-control-input-content"
-                                                    >
-                                                      <div
-                                                        class="ant-radio-group ant-radio-group-solid"
-                                                      >
-                                                        <label
-                                                          class="ant-radio-wrapper ant-radio-wrapper-disabled ant-radio-wrapper-in-form-item"
-                                                        >
-                                                          <span
-                                                            class="ant-radio ant-radio-disabled"
-                                                          >
-                                                            <input
-                                                              class="ant-radio-input"
-                                                              disabled=""
-                                                              name="camp.has_fuel_stored_in_barrels"
-                                                              type="radio"
-                                                              value="true"
-                                                            />
-                                                            <span
-                                                              class="ant-radio-inner"
-                                                            />
-                                                          </span>
-                                                          <span>
-                                                            Yes
-                                                          </span>
-                                                        </label>
-                                                        <label
-                                                          class="ant-radio-wrapper ant-radio-wrapper-disabled ant-radio-wrapper-in-form-item"
-                                                        >
-                                                          <span
-                                                            class="ant-radio ant-radio-disabled"
-                                                          >
-                                                            <input
-                                                              class="ant-radio-input"
-                                                              disabled=""
-                                                              name="camp.has_fuel_stored_in_barrels"
-                                                              type="radio"
-                                                              value="false"
-                                                            />
-                                                            <span
-                                                              class="ant-radio-inner"
-                                                            />
-                                                          </span>
-                                                          <span>
-                                                            No
-                                                          </span>
-                                                        </label>
-                                                      </div>
-                                                    </div>
-                                                  </div>
-                                                  <div
-                                                    style="display: flex; flex-wrap: nowrap;"
-                                                  >
-                                                    <div
-                                                      class="ant-form-item-explain ant-form-item-explain-connected"
-                                                      id="EDIT_NOTICE_OF_WORK_camp.has_fuel_stored_in_barrels_help"
-                                                      role="alert"
-                                                    >
-                                                      <div
-                                                        class=""
-                                                      />
-                                                    </div>
-                                                  </div>
-                                                </div>
-                                              </div>
-                                            </div>
-                                          </div>
-                                        </div>
-                                      </div>
+                                      <br />
                                       <br />
                                       <h4>
                                         Reclamation Program
@@ -6302,6 +5879,159 @@ exports[`AdminAmendmentApplication renders properly 1`] = `
                                       <h4>
                                         Reclamation Program
                                       </h4>
+                                      <div
+                                        class="ant-row"
+                                        style="margin-left: -8px; margin-right: -8px;"
+                                      >
+                                        <div
+                                          class="ant-col ant-col-sm-24 ant-col-md-12"
+                                          style="padding-left: 8px; padding-right: 8px;"
+                                        >
+                                          <div
+                                            class="field-title"
+                                          >
+                                            Do you propose to have more than 25 drill sites unreclaimed at any given time?
+                                            <span
+                                              class="position-right"
+                                            />
+                                          </div>
+                                          <div
+                                            class="ant-form-item ant-form-item-with-help"
+                                          >
+                                            <div
+                                              class="ant-row ant-form-item-row"
+                                            >
+                                              <div
+                                                class="ant-col ant-form-item-control"
+                                              >
+                                                <div
+                                                  class="ant-form-item-control-input"
+                                                >
+                                                  <div
+                                                    class="ant-form-item-control-input-content"
+                                                  >
+                                                    <div
+                                                      class="ant-radio-group ant-radio-group-solid"
+                                                    >
+                                                      <label
+                                                        class="ant-radio-wrapper ant-radio-wrapper-disabled ant-radio-wrapper-in-form-item"
+                                                      >
+                                                        <span
+                                                          class="ant-radio ant-radio-disabled"
+                                                        >
+                                                          <input
+                                                            class="ant-radio-input"
+                                                            disabled=""
+                                                            name="exploration_surface_drilling.has_more_than_25_unreclaimed_drill_sites"
+                                                            type="radio"
+                                                            value="true"
+                                                          />
+                                                          <span
+                                                            class="ant-radio-inner"
+                                                          />
+                                                        </span>
+                                                        <span>
+                                                          Yes
+                                                        </span>
+                                                      </label>
+                                                      <label
+                                                        class="ant-radio-wrapper ant-radio-wrapper-disabled ant-radio-wrapper-in-form-item"
+                                                      >
+                                                        <span
+                                                          class="ant-radio ant-radio-disabled"
+                                                        >
+                                                          <input
+                                                            class="ant-radio-input"
+                                                            disabled=""
+                                                            name="exploration_surface_drilling.has_more_than_25_unreclaimed_drill_sites"
+                                                            type="radio"
+                                                            value="false"
+                                                          />
+                                                          <span
+                                                            class="ant-radio-inner"
+                                                          />
+                                                        </span>
+                                                        <span>
+                                                          No
+                                                        </span>
+                                                      </label>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                                <div
+                                                  style="display: flex; flex-wrap: nowrap;"
+                                                >
+                                                  <div
+                                                    class="ant-form-item-explain ant-form-item-explain-connected"
+                                                    id="EDIT_NOTICE_OF_WORK_exploration_surface_drilling.has_more_than_25_unreclaimed_drill_sites_help"
+                                                    role="alert"
+                                                  >
+                                                    <div
+                                                      class=""
+                                                    />
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                        <div
+                                          class="ant-col ant-col-sm-24 ant-col-md-12"
+                                          style="padding-left: 8px; padding-right: 8px;"
+                                        >
+                                          <div
+                                            class="field-title"
+                                          >
+                                            Number of drill sites proposed to be unreclaimed at any given time
+                                            <span
+                                              class="position-right"
+                                            />
+                                          </div>
+                                          <div
+                                            class="ant-form-item ant-form-item-with-help"
+                                          >
+                                            <div
+                                              class="ant-row ant-form-item-row"
+                                            >
+                                              <div
+                                                class="ant-col ant-form-item-control"
+                                              >
+                                                <div
+                                                  class="ant-form-item-control-input"
+                                                >
+                                                  <div
+                                                    class="ant-form-item-control-input-content"
+                                                  >
+                                                    <input
+                                                      aria-label="exploration_surface_drilling.num_unreclaimed_drill_sites"
+                                                      class="ant-input ant-input-disabled"
+                                                      data-testid="exploration_surface_drilling.num_unreclaimed_drill_sites"
+                                                      disabled=""
+                                                      id="num_unreclaimed_drill_sites"
+                                                      name="exploration_surface_drilling.num_unreclaimed_drill_sites"
+                                                      type="text"
+                                                      value=""
+                                                    />
+                                                  </div>
+                                                </div>
+                                                <div
+                                                  style="display: flex; flex-wrap: nowrap;"
+                                                >
+                                                  <div
+                                                    class="ant-form-item-explain ant-form-item-explain-connected"
+                                                    id="EDIT_NOTICE_OF_WORK_exploration_surface_drilling.num_unreclaimed_drill_sites_help"
+                                                    role="alert"
+                                                  >
+                                                    <div
+                                                      class=""
+                                                    />
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
                                       <div
                                         class="ant-row"
                                         style="margin-left: -8px; margin-right: -8px;"

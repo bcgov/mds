@@ -27,7 +27,7 @@ exports[`ReviewActivities renders properly 1`] = `
     }
     id="camp"
     isViewMode={true}
-    title="Camps, Buildings, Staging Areas, Fuel/Lubricant Storage"
+    title="Camps, Buildings, Staging Areas"
   >
     <FormSection
       name="camp"

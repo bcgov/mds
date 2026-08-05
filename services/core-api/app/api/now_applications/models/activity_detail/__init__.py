@@ -3,6 +3,7 @@ from .etl_activity_detail import *
 from .camp_detail import *
 from .staging_area_detail import *
 from .building_detail import *
+from .fuel_detail import *
 from .cut_lines_polarization_survey_detail import *
 from .exploration_access_detail import *
 from .exploration_surface_drilling_detail import *
@@ -17,3 +18,4 @@ from .water_supply_detail import *
 from .activity_summary_detail_xref import *
 from .activity_summary_building_detail_xref import *
 from .activity_summary_staging_area_detail_xref import *
+from .activity_summary_fuel_detail_xref import *

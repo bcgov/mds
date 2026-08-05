@@ -170,6 +170,15 @@ EXP_SURFACE_DRILL_ACTIVITY = api.model(
         'width': fields.Integer,
     })
 
+FUEL = api.model(
+    'FUEL', {
+        'fueltype': fields.String,
+        'fuelrelatedactivity': fields.String,
+        'estimatedfuelvolume': fields.Arbitrary,
+        'descriptionoffuelrelatedactivity': fields.String,
+        'descriptionofprecautionarymeasures': fields.String,
+    })
+
 MECH_TRENCHING_ACTIVITY = api.model(
     'MECH_TRENCHING_ACTIVITY', {
         'type': fields.String,
@@ -301,6 +310,8 @@ APPLICATION = api.model(
         'expsurfacedrillreclcorestorage': fields.String,
         'expsurfacedrillprogam': fields.String,
         'expsurfacedrillreclamationcost': fields.Arbitrary,
+        'nowmorethan25drillsites': fields.String,
+        'nowexplnumprpsdunrecldrillsite': fields.Integer,
         'expaccessreclamation': fields.String,
         'expaccessreclamationcost': fields.Arbitrary,
         'surfacebulksampleprocmethods': fields.String,
@@ -408,6 +419,7 @@ APPLICATION = api.model(
         'archaeologicalprotectionplan': fields.String,
         'firstnationsactivities': fields.String,
         'curturalheritageresources': fields.String,
+        'protectionofculturalheritageresources': fields.String,
         'hasproposedcrossings': fields.String,
         'proposedcrossingschanges': fields.String,
         'cleanoutdisposalplan': fields.String,
@@ -450,6 +462,7 @@ APPLICATION = api.model(
         'existing_settling_pond': fields.Nested(SETTLING_POND),
         'exp_access_activity': fields.List(fields.Nested(EXP_ACCESS_ACTIVITY)),
         'exp_surface_drill_activity': fields.List(fields.Nested(EXP_SURFACE_DRILL_ACTIVITY)),
+        'fuel': fields.List(fields.Nested(FUEL)),
         'proposed_placer_activity': fields.Nested(PLACER_ACTIVITY),
         'proposed_settling_pond': fields.Nested(SETTLING_POND),
         'surface_bulk_sample_activity': fields.List(fields.Nested(SURFACE_BULK_SAMPLE_ACTIVITY)),

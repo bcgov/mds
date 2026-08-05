@@ -22,6 +22,7 @@ from app.api.now_submissions.models.under_exp_rehab_activity import UnderExpReha
 from app.api.now_submissions.models.under_exp_surface_activity import UnderExpSurfaceActivity
 from app.api.now_submissions.models.exp_access_activity import ExpAccessActivity
 from app.api.now_submissions.models.exp_surface_drill_activity import ExpSurfaceDrillActivity
+from app.api.now_submissions.models.fuel import Fuel
 from app.api.now_submissions.models.water_source_activity import WaterSourceActivity
 from app.api.now_submissions.models.mech_trenching_activity import MechTrenchingActivity
 
@@ -61,6 +62,8 @@ class Application(Base):
         landcommunitywatershed = fields.String(
             validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO), allow_none=True)
         archsitesaffected = fields.String(
+            validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO), allow_none=True)
+        nowmorethan25drillsites = fields.String(
             validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO), allow_none=True)
         fuellubstoreonsite = fields.String(
             validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO), allow_none=True)
@@ -173,6 +176,8 @@ class Application(Base):
     expsurfacedrillreclcorestorage = db.Column(db.String)
     expsurfacedrillprogam = db.Column(db.String)
     expsurfacedrillreclamationcost = db.Column(db.Numeric(14, 2))
+    nowmorethan25drillsites = db.Column(db.String)
+    nowexplnumprpsdunrecldrillsite = db.Column(db.Integer)
     expaccessreclamation = db.Column(db.String)
     expaccessreclamationcost = db.Column(db.Numeric(14, 2))
     surfacebulksampleprocmethods = db.Column(db.String)
@@ -312,6 +317,7 @@ class Application(Base):
     hasculturalheritageresources = db.Column(db.String)
     firstnationsactivities = db.Column(db.String)
     curturalheritageresources = db.Column(db.String)
+    protectionofculturalheritageresources = db.Column(db.String)
     hasproposedcrossings = db.Column(db.String)
     proposedcrossingschanges = db.Column(db.String)
     cleanoutdisposalplan = db.Column(db.String)
@@ -361,6 +367,7 @@ class Application(Base):
     water_source_activity = db.relationship('WaterSourceActivity', lazy='select')
     exp_access_activity = db.relationship('ExpAccessActivity', lazy='select')
     exp_surface_drill_activity = db.relationship('ExpSurfaceDrillActivity', lazy='select')
+    fuel = db.relationship('Fuel', lazy='select')
     mech_trenching_activity = db.relationship('MechTrenchingActivity', lazy='select')
     camps = db.relationship('Camps', lazy='select')
     stagingareas = db.relationship('StagingAreas', lazy='select')
