@@ -26,6 +26,7 @@ from app.api.mines.mine.models.mine import Mine
 from app.api.mines.permits.permit.models.permit import Permit
 from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
+from app.api.parties.party.models.party_bc_registration import PartyBCRegistration
 from app.api.parties.party.models.party import Party
 from app.api.verifiable_credentials.models.credentials import PartyVerifiableCredentialMinesActPermit
 from app.api.verifiable_credentials.models.connection import PartyVerifiableCredentialConnection
@@ -234,8 +235,8 @@ class UNTPCredentialManager():
             appt for appt in pa.permittee_appointments
             if ensure_start_date_type(appt.start_date) <= pa.issue_date
         ][0]
-
-        if not permittee_appt.party.party_bc_registration:
+        permittee_bc_regisration: PartyBCRegistration = permittee_appt.party.party_bc_registration
+        if not permittee_bc_regisration:
             return None      # ensure party is loaded
 
         next_pmt_appt: MinePartyAppointment | None = None
@@ -277,8 +278,8 @@ class UNTPCredentialManager():
                     "issuanceDate": convert_date_to_iso_datetime(pa.issue_date),
                 },
                 "permittee": {
-                    "identifier": permittee_appt.party.party_bc_registration.registration_id,
-                    "name": permittee_appt.party.party_bc_registration.name_text,
+                    "identifier": permittee_bc_regisration.registration_id,
+                    "name": permittee_bc_regisration.name_text,
                 },
             },
         }

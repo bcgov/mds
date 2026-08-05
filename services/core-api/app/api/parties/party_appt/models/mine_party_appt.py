@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, TYPE_CHECKING
 from datetime import datetime, timedelta, date
 from enum import Enum
 from werkzeug.exceptions import BadRequest
@@ -6,6 +6,7 @@ from werkzeug.exceptions import BadRequest
 from sqlalchemy import and_, or_, nullsfirst, nullslast
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
+from sqlalchemy.orm import Mapped
 
 from app.extensions import db, cache
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, DraftMixin, Base
@@ -20,6 +21,9 @@ from app.config import Config
 from app.api.utils.access_decorators import EDIT_TSF
 from app.api.utils.helpers import format_email_datetime_to_string
 from werkzeug.exceptions import NotFound
+
+if TYPE_CHECKING:
+    from app.api.parties.party.models.party import Party
 
 
 class MinePartyAppointmentStatus(str, Enum):
@@ -68,7 +72,7 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, DraftMixin, Base):
     union_rep_company = db.Column(db.String)
 
     # Relationships
-    party = db.relationship(
+    party: Mapped["Party | None"] = db.relationship(
         'Party', lazy='joined', foreign_keys=party_guid, back_populates='mine_party_appt')
     merged_from_party = db.relationship('Party', foreign_keys=merged_from_party_guid)
     mine_tailings_storage_facility = db.relationship('MineTailingsStorageFacility', lazy='joined')
