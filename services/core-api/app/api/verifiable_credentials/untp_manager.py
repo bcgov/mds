@@ -68,27 +68,6 @@ permit_amendments_for_orgbook_query = """
 """
 
 
-#this should probably be imported from somewhere.
-class W3CCred(BaseModel):
-    #based on VCDM 2.0. https://www.w3.org/TR/vc-data-model-2.0/
-    model_config = ConfigDict(
-        populate_by_name=True, json_encoders={datetime: lambda v: v.isoformat()})
-
-    context: List[Union[str, dict]] = Field(
-        alias="@context",
-        default=[
-            "https://www.w3.org/ns/credentials/v2",
-            Config.UNTP_DIGITAL_CONFORMITY_CREDENTIAL_CONTEXT,
-            Config.UNTP_BC_MINES_ACT_PERMIT_CONTEXT,
-        ])
-    id: str | None
-    type: List[str]
-    issuer: Union[str, dict[str, str]]
-    validFrom: str
-    credentialSubject: UNTPCCMinesActPermit
-    credentialSchema: List[dict]
-
-
 def convert_date_to_iso_datetime(dt: datetime | date) -> str:
     return datetime(dt.year, dt.month, dt.day, 0, 0, 0, tzinfo=ZoneInfo("UTC")).isoformat()
 
@@ -107,6 +86,7 @@ def ensure_start_date_type(d) -> date:
         )
 
 
+@celery.task()
 def push_untp_map_data_to_publisher():
 
     ## This is a different process that passes the data to the publisher.

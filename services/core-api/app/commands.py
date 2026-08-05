@@ -186,26 +186,6 @@ def register_commands(app):
             revoke_all_credentials_for_permit.apply_async(kwargs={"permit_guid": permit_guid})
             print("celery job started")
 
-    @app.cli.command('process_all_untp_map_for_orgbook')
-    def process_all_untp_map_for_orgbook():
-        from app import auth
-        from app.api.verifiable_credentials.untp_manager import (
-            process_all_untp_map_for_orgbook, )
-        auth.apply_security = False
-        with current_app.app_context() as app:
-            result = process_all_untp_map_for_orgbook.apply_async()
-            print("celery job started: process_all_untp_map_for_orgbook")
-
-    @app.cli.command('forward_all_pending_untp_vc_to_orgbook')
-    def forward_all_pending_untp_vc_to_orgbook():
-        from app import auth
-        from app.api.verifiable_credentials.untp_manager import (
-            forward_all_pending_untp_vc_to_orgbook, )
-        auth.apply_security = False
-        with current_app.app_context():
-            result = forward_all_pending_untp_vc_to_orgbook.apply_async()
-            print("celery job started: forward_all_pending_untp_vc_to_orgbook")
-
     @app.cli.command('push_untp_map_data_to_publisher')
     def push_untp_map_data_to_publisher():
         from app import auth
