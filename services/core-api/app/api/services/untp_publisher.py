@@ -22,6 +22,7 @@ class UNTPPublisherService():
         }
         token_resp = requests.post(token_url, json=payload)
         token_resp.raise_for_status()
+        self.token = token_resp.json()["access_token"]
         return token_resp.json()["access_token"]
 
     def publish_cred(self, payload: dict) -> requests.Response:
