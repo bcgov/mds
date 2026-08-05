@@ -69,31 +69,42 @@ class W3CCredentialIssueResource(Resource, UserMixin):
 
         existing: bool = PermitAmendmentOrgBookPublish.find_by_unsigned_payload_hash(
             payload_hash) is not None
-
-        if existing:
-            raise BadRequest(
-                f"Permit amendment {permit_amendment_guid} has already been published to the UNTP publisher."
-            )
+        collision: bool | None = None
 
         publisher_service = UNTPPublisherService()
+        publish_record = PermitAmendmentOrgBookPublish(
+            unsigned_payload_hash=payload_hash,
+            permit_amendment_guid=permit_amendment_guid,
+            party_guid=payload["data"]["permittee"]["party_guid"],
+            signed_credential='Produced by publisher',
+            publish_state=None,
+            permit_number=payload["data"]["permit"]["identifier"],
+            orgbook_entity_id=payload["data"]["permittee"]["identifier"],
+            orgbook_credential_id=None,
+            error_msg=None)
         try:
-            publish_record = PermitAmendmentOrgBookPublish(
-                unsigned_payload_hash=payload_hash,
-                permit_amendment_guid=permit_amendment_guid,
-                party_guid=payload["data"]["permittee"]["party_guid"],
-                signed_credential='Produced by publisher',
-                publish_state=None,
-                permit_number=payload["data"]["permit"]["identifier"],
-                orgbook_entity_id=payload["data"]["permittee"]["identifier"],
-                orgbook_credential_id=None,
-                error_msg=None)
             publish_record.save()
+            collision = True
         except IntegrityError as e:
             current_app.logger.info(
                 f"credential hash collision, skipping duplicate payload for permit_amendment={permit_amendment_guid}"
             )
+            collision = False
 
-        return publisher_service.publish_cred(payload).json()
+        response = publisher_service.publish_cred(payload)
+        #save success
+        publish_record.publish_state = response.ok
+        publish_record.error_msg = response.text if not response.ok else None
+        publish_record.orgbook_credential_id = response.json().get("credential_id")
+
+        publish_record.save()
+
+        return {
+            "hash": payload_hash,
+            "existing": existing,
+            "collision": collision,
+            "response": response.json()
+        }, 200
 
     @api.expect(query_parser)
     @api.doc(description="returns the prepared payload to be sent to the untp publisher")
