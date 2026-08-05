@@ -166,7 +166,7 @@ def test_post_same_report_name_different_category_same_template_fails(test_clien
     # Standard conditions in the SAME template (same notice_of_work_type) but DIFFERENT condition_category_code
     condition_cat1 = StandardPermitConditionsFactory(
         notice_of_work_type='SAG',
-        condition_category_code='GNC'
+        condition_category_code='GEC'
     )
     condition_cat2 = StandardPermitConditionsFactory(
         notice_of_work_type='SAG',
