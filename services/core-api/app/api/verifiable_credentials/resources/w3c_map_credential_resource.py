@@ -69,7 +69,6 @@ class W3CCredentialIssueResource(Resource, UserMixin):
 
         existing: bool = PermitAmendmentOrgBookPublish.find_by_unsigned_payload_hash(
             payload_hash) is not None
-        collision: bool | None = None
 
         publisher_service = UNTPPublisherService()
         publish_record = PermitAmendmentOrgBookPublish(
