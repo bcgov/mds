@@ -1,6 +1,7 @@
 from json import dumps, loads
 from hashlib import md5
 from datetime import datetime
+from uuid import uuid4, UUID
 from flask import current_app
 from werkzeug.exceptions import BadRequest, ServiceUnavailable
 from flask_restx import Resource, reqparse
@@ -69,11 +70,13 @@ class W3CCredentialIssueResource(Resource, UserMixin):
                 f"payload could not be produced for permit_amendment_guid={permit_amendment_guid}")
 
         payload_hash = md5(dumps(payload).encode('utf-8')).hexdigest()
+        payload["credentialId"] = str(uuid4())
 
         existing: bool = PermitAmendmentOrgBookPublish.find_by_unsigned_payload_hash(
             payload_hash) is not None
 
         publisher_service = UNTPPublisherService()
+
         publish_record = PermitAmendmentOrgBookPublish(
             unsigned_payload_hash=payload_hash,
             permit_amendment_guid=permit_amendment_guid,
