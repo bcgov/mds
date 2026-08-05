@@ -76,7 +76,7 @@ class W3CCredentialIssueResource(Resource, UserMixin):
             payload_hash) is not None
 
         publisher_service = UNTPPublisherService()
-
+        post_resp = None
         publish_record = PermitAmendmentOrgBookPublish(
             unsigned_payload_hash=payload_hash,
             permit_amendment_guid=permit_amendment_guid,
@@ -88,27 +88,27 @@ class W3CCredentialIssueResource(Resource, UserMixin):
             orgbook_credential_id=None,
             error_msg=None)
         try:
-            publish_record.save()
             collision = True
+
+            post_resp = publisher_service.publish_cred(payload)
+            #save success
+            publish_record.publish_state = post_resp.ok
+            publish_record.error_msg = post_resp.text if not post_resp.ok else None
+            publish_record.orgbook_credential_id = post_resp.json().get("credential_id")
+
+            publish_record.save()
+
         except IntegrityError as e:
             current_app.logger.info(
                 f"credential hash collision, skipping duplicate payload for permit_amendment={permit_amendment_guid}"
             )
             collision = False
 
-        response = publisher_service.publish_cred(payload)
-        #save success
-        publish_record.publish_state = response.ok
-        publish_record.error_msg = response.text if not response.ok else None
-        publish_record.orgbook_credential_id = response.json().get("credential_id")
-
-        publish_record.save()
-
         return {
             "hash": payload_hash,
             "existing": existing,
             "collision": collision,
-            "response": response.json()
+            "response": post_resp.json() if post_resp is not None else None
         }, 200
 
     @api.expect(query_parser)
