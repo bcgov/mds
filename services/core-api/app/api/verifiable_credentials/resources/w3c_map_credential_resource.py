@@ -94,7 +94,7 @@ class W3CCredentialIssueResource(Resource, UserMixin):
 
         permit_amendment = PermitAmendment.find_by_permit_amendment_guid(permit_amendment_guid)
 
-        payload = UNTPCredentialManager.prepare_permit_amendment_untp_credential_without_id(
+        payload, party_guid = UNTPCredentialManager.prepare_permit_amendment_untp_credential_without_id(
             permit_amendment_guid)
         payload_hash = md5(dumps(payload).encode('utf-8')).hexdigest()
 
