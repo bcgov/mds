@@ -88,13 +88,13 @@ class W3CCredentialIssueResource(Resource, UserMixin):
             orgbook_credential_id=None,
             error_msg=None)
         try:
-            collision = True
+            collision = False
 
             post_resp = publisher_service.publish_cred(payload)
             #save success
             publish_record.publish_state = post_resp.ok
             publish_record.error_msg = post_resp.text if not post_resp.ok else None
-            publish_record.orgbook_credential_id = post_resp.json().get("credential_id")
+            publish_record.orgbook_credential_id = post_resp.json().get("credentialId")
 
             publish_record.save()
 
@@ -102,7 +102,7 @@ class W3CCredentialIssueResource(Resource, UserMixin):
             current_app.logger.info(
                 f"credential hash collision, skipping duplicate payload for permit_amendment={permit_amendment_guid}"
             )
-            collision = False
+            collision = True
 
         return {
             "hash": payload_hash,
