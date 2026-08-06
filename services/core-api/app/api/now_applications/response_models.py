@@ -79,6 +79,14 @@ NOW_APPLICATION_BUILDING_DETAIL = api.inherit('NOWApplicationBuildingDetail',
                                                   'purpose': fields.String,
                                                   'structure': fields.String,
                                               })
+NOW_APPLICATION_FUEL_DETAIL = api.inherit('NOWApplicationFuelDetail',
+                                          NOW_APPLICATION_ACTIVITY_DETAIL_BASE, {
+                                              'fuel_type': fields.String,
+                                              'fuel_related_activity': fields.String,
+                                              'estimated_fuel_volume': fields.Fixed(decimals=2),
+                                              'description_of_fuel_related_activity': fields.String,
+                                              'description_of_precautionary_measures': fields.String,
+                                          })
 NOW_APPLICATION_CAMP = api.inherit(
     'NOWApplicationCamp', NOW_APPLICATION_ACTIVITY_SUMMARY_BASE, {
         'health_authority_consent':
@@ -101,6 +109,8 @@ NOW_APPLICATION_CAMP = api.inherit(
         fields.List(fields.Nested(NOW_APPLICATION_BUILDING_DETAIL, skip_none=True)),
         'staging_area_details':
         fields.List(fields.Nested(NOW_APPLICATION_STAGING_AREA_DETAIL, skip_none=True)),
+        'fuel_details':
+        fields.List(fields.Nested(NOW_APPLICATION_FUEL_DETAIL, skip_none=True)),
     })
 
 NOW_APPLICATION_BLASTING_OPERATION = api.inherit(
@@ -139,6 +149,8 @@ NOW_APPLICATION_EXP_SURFACE_DRILL = api.inherit(
         'reclamation_core_storage': fields.String,
         'calculated_total_disturbance': fields.Fixed(decimals=5),
         'drill_program': fields.String,
+        'has_more_than_25_unreclaimed_drill_sites': fields.Boolean,
+        'num_unreclaimed_drill_sites': fields.Integer,
         'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE, skip_none=True))
     })
 
@@ -308,6 +320,7 @@ NOW_APPLICATION_STATE_OF_LAND = api.model(
         'arch_site_protection_plan': fields.String,
         'fn_engagement_activities': fields.String,
         'cultural_heritage_description': fields.String,
+        'protection_of_cultural_heritage_resources': fields.String,
         'has_shared_info_with_fn': fields.Boolean,
         'has_acknowledged_undrip': fields.Boolean,
         'has_fn_cultural_heritage_sites_in_area': fields.Boolean,
@@ -618,6 +631,8 @@ NOW_APPLICATION_MODEL = api.model(
         'is_first_year_of_multi':
         fields.Boolean,
         'mine_purpose':
+        fields.String,
+        'work_year_info':
         fields.String,
         'ats_authorization_number':
         fields.Integer,

@@ -4,7 +4,7 @@ import { isEmpty } from "lodash";
 import { Anchor } from "antd";
 import * as routes from "@/constants/routes";
 import { getNoticeOfWork } from "@mds/common/redux/selectors/noticeOfWorkSelectors";
-import { renderActivities, sideMenuOptions } from "@/constants/NOWConditions";
+import { renderActivities, sideMenuOptions, hasLegacyFuelData } from "@/constants/NOWConditions";
 import { getDraftPermitAmendmentForNOW } from "@mds/common/redux/selectors/permitSelectors";
 import { useAppSelector } from "@mds/common/redux/rootState";
 import { IPermitAmendment } from "@mds/common/interfaces";
@@ -35,6 +35,8 @@ export const NOWSideMenu: FC<NOWSideMenuProps> = ({
   const hasPermitConditionsFlow = !isEmpty(draftPermitAmendment)
     ? draftPermitAmendment.has_permit_conditions
     : true;
+
+  const showLegacyFuelData = hasLegacyFuelData(noticeOfWork.camp);
 
   const updateUrlRoute = (route: string) => {
     const nowGuid = params.id;
@@ -110,7 +112,7 @@ export const NOWSideMenu: FC<NOWSideMenuProps> = ({
         onChange={handleAnchorOnChange}
         onClick={handleAnchorOnClick}
       >
-        {sideMenuOptions(tabSection, hasPermitConditionsFlow)
+        {sideMenuOptions(tabSection, hasPermitConditionsFlow, showLegacyFuelData)
           .filter(
             ({ href, alwaysVisible, applicationType, featureFlag }) =>
               (alwaysVisible ||

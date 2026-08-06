@@ -2,6 +2,12 @@ from flask_restx import fields
 
 from app.extensions import api
 
+ORGBOOK_SEARCH_RESULT_ITEM = api.model('OrgBookSearchResultItem', {
+    'registration_id': fields.String,
+    'text': fields.String,
+    'credential_id': fields.String,
+})
+
 ORGBOOK_ENTITY_NAME = api.model(
     'OrgBookEntityName', {
         'id': fields.Integer,
@@ -9,13 +15,6 @@ ORGBOOK_ENTITY_NAME = api.model(
         'language': fields.String,
         'credential_id': fields.Integer,
         'type': fields.String,
-    })
-
-ORGBOOK_SEARCH_RESULT = api.model(
-    'OrgBookSearchResult', {
-        'id': fields.Integer,
-        'names': fields.List(fields.Nested(ORGBOOK_ENTITY_NAME)),
-        'inactive': fields.Boolean,
     })
 
 # ---------------------------------------------------------------------------
@@ -124,6 +123,10 @@ ORGBOOK_CREDENTIAL_SET = api.model(
         'credentials': fields.List(fields.Nested(ORGBOOK_CREDENTIAL_SET_ENTRY)),
     })
 
+REGISTRATION_DETAILS_RESPONSE = api.model('RegistrationDetailsResponse', {
+    'credential_id': fields.String,
+})
+
 ORGBOOK_CREDENTIAL = api.model(
     'OrgBookCredential', {
         'id': fields.Integer,
@@ -137,7 +140,7 @@ ORGBOOK_CREDENTIAL = api.model(
         'credential_type': fields.Nested(ORGBOOK_CREDENTIAL_TYPE),
         'addresses': fields.List(fields.Raw),
         'attributes': fields.List(fields.Nested(ORGBOOK_ATTRIBUTE)),
-        'names': fields.List(fields.Nested(ORGBOOK_ENTITY_NAME)),
+        'names': fields.List(fields.Nested(ORGBOOK_SEARCH_RESULT_ITEM)),
         'local_name': fields.Nested(ORGBOOK_ENTITY_NAME, allow_null=True, skip_none=True),
         'remote_name': fields.Nested(ORGBOOK_ENTITY_NAME, allow_null=True, skip_none=True),
         'topic': fields.Nested(ORGBOOK_TOPIC),

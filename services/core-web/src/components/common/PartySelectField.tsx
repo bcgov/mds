@@ -47,7 +47,7 @@ const transformData = (options: ItemMap<IParty>, header: JSX.Element) => {
             <div className="padding-right">
               <FontAwesomeIcon icon={faHashtag} />
             </div>
-            <span>{party.party_orgbook_entity?.registration_id}</span>
+            <span>{party.party_bc_registration?.registration_id}</span>
           </div>
           <div className="inline-flex">
             <div className="padding-right">

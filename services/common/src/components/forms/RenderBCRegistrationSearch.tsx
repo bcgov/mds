@@ -4,23 +4,23 @@ import { debounce, DebouncedFunc } from "lodash";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getOrgBookCredential,
-  getSearchOrgBookResults,
+  getBCRegistrationSearchResults,
 } from "@mds/common/redux/selectors/orgbookSelectors";
 import {
   fetchOrgBookCredential,
-  searchOrgBook,
+  searchBCRegistrations,
 } from "@mds/common/redux/actionCreators/orgbookActionCreator";
 import { LoadingOutlined } from "@ant-design/icons";
-import { IOrgbookCredential } from "@mds/common/interfaces";
+import { IOrgbookCredential, IBCRegistrationSearchResult } from "@mds/common/interfaces";
 import { BaseInputProps, getFormItemLabel } from "./BaseInput";
 import { FormContext } from "./FormWrapper";
 
-interface OrgBookSearchProps extends BaseInputProps {
+interface BCRegistrationSearchProps extends BaseInputProps {
   data?: any;
   setCredential: (credential: IOrgbookCredential) => void;
 }
 
-const RenderOrgBookSearch: FC<OrgBookSearchProps> = ({
+const RenderBCRegistrationSearch: FC<BCRegistrationSearchProps> = ({
   data,
   help,
   label = "",
@@ -34,7 +34,7 @@ const RenderOrgBookSearch: FC<OrgBookSearchProps> = ({
 }) => {
   const dispatch = useDispatch();
   const { isEditMode } = useContext(FormContext);
-  const searchOrgBookResults = useSelector(getSearchOrgBookResults);
+  const searchBCRegistrationsResults: IBCRegistrationSearchResult[] = useSelector(getBCRegistrationSearchResults);
   const orgBookCredential = useSelector(getOrgBookCredential);
 
   const lastFetchId = useRef(0);
@@ -63,7 +63,7 @@ const RenderOrgBookSearch: FC<OrgBookSearchProps> = ({
     setIsSearching(true);
     setCredential(null);
 
-    await dispatch(searchOrgBook(search));
+    await dispatch(searchBCRegistrations(search));
 
     if (fetchId !== lastFetchId) {
       return;
@@ -73,16 +73,14 @@ const RenderOrgBookSearch: FC<OrgBookSearchProps> = ({
   };
 
   useEffect(() => {
-    if (searchOrgBookResults) {
-      const selectOptions = searchOrgBookResults
-        .filter((result) => result.names && result.names.length > 0)
-        .map((result) => ({
-          text: result.names[0].text,
-          value: result.names[0].credential_id,
-        }));
+    if (searchBCRegistrationsResults) {
+      const selectOptions = searchBCRegistrationsResults.map((result) => ({
+        text: result.text,
+        value: result.registration_id,
+      }));
       setOptions(selectOptions);
     }
-  }, [searchOrgBookResults]);
+  }, [searchBCRegistrationsResults]);
 
   useEffect(() => {
     if (data) {
@@ -91,7 +89,10 @@ const RenderOrgBookSearch: FC<OrgBookSearchProps> = ({
   }, [data]);
 
   const handleSelect = async (value) => {
-    const credentialId = value.key;
+    const registrationId = value.key;
+    const credential = searchBCRegistrationsResults.find((result) => result.registration_id === registrationId);
+    const credentialId = credential?.credential_id;
+
     await dispatch(fetchOrgBookCredential(credentialId));
   };
 
@@ -127,7 +128,7 @@ const RenderOrgBookSearch: FC<OrgBookSearchProps> = ({
           showSearch
           showArrow
           labelInValue
-          placeholder="Start typing to search OrgBook..."
+          placeholder="Start typing to search for BC Registrations..."
           notFoundContent={isSearching ? <Spin size="small" indicator={<LoadingOutlined />} /> : null}
           filterOption={false}
           onSearch={handleSearchDebounced}
@@ -138,7 +139,9 @@ const RenderOrgBookSearch: FC<OrgBookSearchProps> = ({
           value={options.length === 1 ? { key: options[0].text } : undefined}
         >
           {options.map((option) => (
-            <Select.Option key={option.value}>{option.text}</Select.Option>
+            <Select.Option key={option.value} value={option.value}>
+              {option.text}
+            </Select.Option>
           ))}
         </Select>
         {help && <div className={`form-item-help ${input?.name}-form-help`}>{help}</div>}
@@ -147,4 +150,4 @@ const RenderOrgBookSearch: FC<OrgBookSearchProps> = ({
   );
 };
 
-export default RenderOrgBookSearch;
+export default RenderBCRegistrationSearch;

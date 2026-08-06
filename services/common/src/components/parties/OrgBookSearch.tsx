@@ -2,32 +2,27 @@ import React, { FC, useEffect, useRef, useState } from "react";
 import { Form, Select, Spin } from "antd";
 import { debounce, DebouncedFunc } from "lodash";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getOrgBookCredential,
-  getSearchOrgBookResults,
-} from "@mds/common/redux/selectors/orgbookSelectors";
-import {
-  fetchOrgBookCredential,
-  searchOrgBook,
-} from "@mds/common/redux/actionCreators/orgbookActionCreator";
+import { getBCRegistrationSearchResults } from "@mds/common/redux/selectors/orgbookSelectors";
+import { searchBCRegistrations } from "@mds/common/redux/actionCreators/orgbookActionCreator";
 import { LoadingOutlined } from "@ant-design/icons";
-import { IOrgbookCredential } from "@mds/common/interfaces";
+import { IBCRegistrationSearchResult } from "@mds/common/interfaces";
 
 interface OrgBookSearchProps {
   isDisabled?: boolean;
-  setCredential: (credential: IOrgbookCredential) => void;
+  setRegistrationId: (registration_id: string | null) => void;
+  setBusinessName: (business_name: string | null) => void;
   current_party: string;
 }
 
 const OrgBookSearch: FC<OrgBookSearchProps> = ({
   isDisabled = false,
-  setCredential,
+  setRegistrationId,
+  setBusinessName,
   current_party,
 }) => {
   const dispatch = useDispatch();
 
-  const searchOrgBookResults = useSelector(getSearchOrgBookResults);
-  const orgBookCredential = useSelector(getOrgBookCredential);
+  const searchBCRegistrationsResults: IBCRegistrationSearchResult[] = useSelector(getBCRegistrationSearchResults);
 
   const lastFetchId = useRef(0);
 
@@ -49,9 +44,9 @@ const OrgBookSearch: FC<OrgBookSearchProps> = ({
     const fetchId = lastFetchId;
     setOptions([]);
     setIsSearching(true);
-    setCredential(null);
+    setRegistrationId(null);
 
-    await dispatch(searchOrgBook(search));
+    await dispatch(searchBCRegistrations(search));
 
     if (fetchId !== lastFetchId) {
       return;
@@ -67,28 +62,20 @@ const OrgBookSearch: FC<OrgBookSearchProps> = ({
   }, [current_party]);
 
   useEffect(() => {
-    if (searchOrgBookResults) {
-      const selectOptions = searchOrgBookResults
-        .filter((result) => result.names && result.names.length > 0)
-        .map((result) => ({
-          text: result.names[0].text,
-          value: result.names[0].credential_id,
-        }));
+    if (searchBCRegistrationsResults) {
+      const selectOptions = searchBCRegistrationsResults.map((result) => ({
+        text: result.text,
+        value: result.registration_id,
+      }));
       setOptions(selectOptions);
     }
-  }, [searchOrgBookResults]);
+  }, [searchBCRegistrationsResults]);
 
   const handleSelect = async (value) => {
-    const credentialId = value.key;
-    await dispatch(fetchOrgBookCredential(credentialId));
     setSelectedParty(value.label);
+    setBusinessName(value.label);
+    setRegistrationId(value.key);
   };
-
-  useEffect(() => {
-    if (orgBookCredential) {
-      setCredential(orgBookCredential);
-    }
-  }, [orgBookCredential]);
 
   const debouncedSearch: DebouncedFunc<typeof handleSearch> = debounce(handleSearch, 1000);
   const handleSearchDebounced = useRef(debouncedSearch).current;
@@ -112,7 +99,9 @@ const OrgBookSearch: FC<OrgBookSearchProps> = ({
         value={selectedParty}
       >
         {options.map((option) => (
-          <Select.Option key={option.value}>{option.text}</Select.Option>
+          <Select.Option key={option.value} value={option.value}>
+            {option.text}
+          </Select.Option>
         ))}
       </Select>
     </Form.Item>

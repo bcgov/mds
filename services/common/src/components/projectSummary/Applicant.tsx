@@ -14,11 +14,10 @@ import RenderRadioButtons from "@mds/common/components/forms/RenderRadioButtons"
 import { FORM } from "@mds/common/constants/forms";
 import { CONTACTS_COUNTRY_OPTIONS } from "@mds/common/constants/strings";
 import { IOrgbookCredential } from "@mds/common/interfaces/party";
-import RenderOrgBookSearch from "@mds/common/components/forms/RenderOrgBookSearch";
+import RenderBCRegistrationSearch from "@mds/common/components/forms/RenderBCRegistrationSearch";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleCheck, faCircleX, faSpinner } from "@fortawesome/pro-light-svg-icons";
 import {
-  verifyOrgBookCredential,
   fetchOrgBookCredential,
 } from "@mds/common/redux/actionCreators/orgbookActionCreator";
 import RenderField from "@mds/common/components/forms/RenderField";
@@ -43,9 +42,8 @@ const Applicant: FC<ProjectSummaryFormComponentProps> = ({ fieldsDisabled }) => 
   const dispatch = useDispatch();
   const provinceOptions = useSelector(getDropdownProvinceOptions);
   const [credential, setCredential] = useState<IOrgbookCredential>(null);
-  const [verified, setVerified] = useState(false);
   const [checkingStatus, setCheckingStatus] = useState(false);
-  const [orgBookOptions, setOrgBookOptions] = useState([]);
+  const [bcRegistrationOptions, setBcRegistrationOptions] = useState([]);
   const [verifiedCredential, setVerifiedCredential] = useState<IVerifiedCredential>(null);
 
   const orgBookCredential = useSelector(getOrgBookCredential);
@@ -70,11 +68,10 @@ const Applicant: FC<ProjectSummaryFormComponentProps> = ({ fieldsDisabled }) => 
   };
 
   useEffect(() => {
-    setOrgBookOptions([]);
+    setBcRegistrationOptions([]);
     setCredential(null);
-    setVerified(false);
     setVerifiedCredential(null);
-    dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "applicant.party_orgbook_entity", null));
+    dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "applicant.party_bc_registration", null));
     if (credential_id) dispatch(fetchOrgBookCredential(credential_id));
   }, [credential_id]);
 
@@ -86,44 +83,34 @@ const Applicant: FC<ProjectSummaryFormComponentProps> = ({ fieldsDisabled }) => 
   }, []);
 
   useEffect(() => {
-    if (credential_id && orgBookCredential?.topic) {
-      setCredential(orgBookCredential);
+    if (credential_id && orgBookCredential?.topic?.local_name?.text) {
       const options = [{ text: orgBookCredential.topic.local_name.text, value: credential_id }];
-      setOrgBookOptions(options);
+      setBcRegistrationOptions(options);
     }
   }, [orgBookCredential]);
 
   useEffect(() => {
-    setVerified(false);
     setCheckingStatus(true);
     if (credential) {
-      // @ts-ignore
-      dispatch(verifyOrgBookCredential(credential.id)).then((response) => {
-        setVerified(response.success);
-        setCheckingStatus(false);
-        const payload = {
-          businessNumber: credential.topic.source_id || "-",
-          registrationStatus: credential.inactive ? "Inactive" : "Active",
-          registriesId: credential.id,
-        };
-        setVerifiedCredential(payload);
-      });
+      setCheckingStatus(false);
+      const payload = {
+        businessNumber: credential.topic.source_id || "-",
+        registrationStatus: credential.inactive ? "Inactive" : "Active",
+        registriesId: credential.id,
+      };
+      setVerifiedCredential(payload);
 
       if (credential_id !== credential.id)
         dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "company_alias", null));
 
-      dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "applicant.credential_id", credential.id));
+      dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "applicant.credential_id", credential.credential_id));
       const orgBookEntity = {
         registration_id: credential.topic.source_id,
-        registration_status: !credential.inactive,
-        registration_date: credential.attributes[0].value,
-        name_id: credential.topic.local_name.id,
-        name_text: credential.topic.local_name.text,
+        business_name: credential.topic.local_name.text,
         credential_id: credential.topic.local_name.credential_id,
-        company_alias: null,
       };
       dispatch(
-        change(FORM.ADD_EDIT_PROJECT_SUMMARY, "applicant.party_orgbook_entity", orgBookEntity)
+        change(FORM.ADD_EDIT_PROJECT_SUMMARY, "applicant.party_bc_registration", orgBookEntity)
       );
       dispatch(
         change(FORM.ADD_EDIT_PROJECT_SUMMARY, "incorporation_number", credential.topic.source_id)
@@ -140,14 +127,14 @@ const Applicant: FC<ProjectSummaryFormComponentProps> = ({ fieldsDisabled }) => 
     let color = undefined;
     let text = undefined;
 
-    if ((!checkingStatus && verified) || verifiedCredential) {
+    if ((!checkingStatus) || verifiedCredential) {
       icon = faCircleCheck;
       color = COLOR.successGreen;
-      text = "Verified on Orgbook BC";
+      text = "Verified by BC Registries";
     } else {
       icon = faCircleX;
       color = "#D8292F";
-      text = "Not registered on Orgbook BC";
+      text = "Not found in BC Registries lookup";
     }
 
     return (
@@ -192,13 +179,13 @@ const Applicant: FC<ProjectSummaryFormComponentProps> = ({ fieldsDisabled }) => 
 
   const handleResetParty = () => {
     dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "applicant.party_name", null));
-    dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "applicant.party_orgbook_entity", null));
+    dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "applicant.party_bc_registration", null));
     dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "applicant.first_name", null));
     dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "applicant.middle_name", null));
     dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "company_alias", null));
     setCredential(null);
     setVerifiedCredential(null);
-    setOrgBookOptions(null);
+    setBcRegistrationOptions(null);
   };
 
   const handleUpdateAddress = (
@@ -300,9 +287,9 @@ const Applicant: FC<ProjectSummaryFormComponentProps> = ({ fieldsDisabled }) => 
             validate={[required]}
             label="Company Legal Name"
             setCredential={setCredential}
-            data={orgBookOptions}
+            data={bcRegistrationOptions}
             help={"as registered with the BC Registrar of Companies"}
-            component={RenderOrgBookSearch}
+            component={RenderBCRegistrationSearch}
             disabled={fieldsDisabled}
           />
           {verifiedCredential && (
@@ -319,6 +306,7 @@ const Applicant: FC<ProjectSummaryFormComponentProps> = ({ fieldsDisabled }) => 
               <Paragraph className="light margin-none">
                 BC Registration Status {verifiedCredential.registrationStatus}
               </Paragraph>
+              <br />
             </div>
           )}
           <Row gutter={16}>

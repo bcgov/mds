@@ -827,7 +827,7 @@ export class ProcessPermit extends Component {
     //   const permittee = this.props.noticeOfWork.contacts.filter(
     //     (contact) => contact.mine_party_appt_type_code === "PMT"
     //   )[0];
-    //   if (isEmpty(permittee.party.party_orgbook_entity)) {
+    //   if (isEmpty(permittee.party.party_bc_registration)) {
     //     validationMessages.push({
     //       message:
     //         "Permittee has not been verified with OrgBook. Update the contact to associate them with an entity on OrgBook.",

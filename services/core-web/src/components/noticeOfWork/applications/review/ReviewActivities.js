@@ -15,7 +15,7 @@ import SurfaceBulkSamples from "@/components/noticeOfWork/applications/review/ac
 import WaterSupply from "@/components/noticeOfWork/applications/review/activities/WaterSupply";
 import UndergroundExploration from "@/components/noticeOfWork/applications/review/activities/UndergroundExploration";
 import Placer from "@/components/noticeOfWork/applications/review/activities/Placer";
-import { renderActivities } from "@/constants/NOWConditions";
+import { renderActivities, hasLegacyFuelData } from "@/constants/NOWConditions";
 import Equipment from "@/components/noticeOfWork/applications/review/activities/Equipment";
 
 /**
@@ -31,6 +31,7 @@ const propTypes = {
 };
 
 export const ReviewActivities = (props) => {
+  const showLegacyFuelData = hasLegacyFuelData(props.noticeOfWork.camp);
   return (
     <div>
       <ScrollContentWrapper
@@ -51,7 +52,11 @@ export const ReviewActivities = (props) => {
       </ScrollContentWrapper>
       <ScrollContentWrapper
         id="camp"
-        title="Camps, Buildings, Staging Areas, Fuel/Lubricant Storage"
+        title={
+          showLegacyFuelData
+            ? "Camps, Buildings, Staging Areas, Fuel/Lubricant Storage"
+            : "Camps, Buildings, Staging Areas"
+        }
         data={props.noticeOfWork.camp}
         isViewMode={props.isViewMode}
       >

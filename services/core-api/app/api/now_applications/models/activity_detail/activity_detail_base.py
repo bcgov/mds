@@ -8,6 +8,7 @@ from app.api.utils.models_mixins import AuditMixin, Base
 from app.api.now_applications.models.activity_detail.activity_summary_detail_xref import ActivitySummaryDetailXref
 from app.api.now_applications.models.activity_detail.activity_summary_staging_area_detail_xref import ActivitySummaryStagingAreaDetailXref
 from app.api.now_applications.models.activity_detail.activity_summary_building_detail_xref import ActivitySummaryBuildingDetailXref
+from app.api.now_applications.models.activity_detail.activity_summary_fuel_detail_xref import ActivitySummaryFuelDetailXref
 from app.api.now_applications.models.activity_summary.activity_summary_base import ActivitySummaryBase
 from app.api.constants import NOW_APPLICATION_EDIT_GROUP
 
@@ -49,6 +50,7 @@ class ActivityDetailBase(AuditMixin, Base):
     
     activitySummaryBuildingDetailXrefChild = db.relationship('ActivitySummaryBuildingDetailXref', foreign_keys='ActivitySummaryBuildingDetailXref.activity_detail_id', backref=db.backref('activity_detail', overlaps='building_detail_associations,building_details,detail'), cascade='all,delete-orphan', overlaps='building_detail_associations,building_details,detail')
     activitySummaryStagingAreaDetailXrefChild = db.relationship('ActivitySummaryStagingAreaDetailXref', foreign_keys='ActivitySummaryStagingAreaDetailXref.activity_detail_id', backref=db.backref('activity_detail', overlaps='detail,staging_area_detail_associations,staging_area_details'), cascade='all,delete-orphan', overlaps='detail,staging_area_detail_associations,staging_area_details')
+    activitySummaryFuelDetailXrefChild = db.relationship('ActivitySummaryFuelDetailXref', foreign_keys='ActivitySummaryFuelDetailXref.activity_detail_id', backref=db.backref('activity_detail', overlaps='detail,fuel_detail_associations,fuel_details'), cascade='all,delete-orphan', overlaps='detail,fuel_detail_associations,fuel_details')
 
     # Here be dragons...
     # This is a polymorphic association that is used to determine the type of the activity detail.
@@ -77,10 +79,16 @@ class ActivityDetailBase(AuditMixin, Base):
                     ActivitySummaryBuildingDetailXref.activity_summary_id ==
                     ActivitySummaryBase.activity_summary_id,
                     ActivitySummaryBuildingDetailXref.activity_detail_id == activity_detail_id,
+                    ActivitySummaryBase.activity_type_code == 'camp')).limit(1).as_scalar(),
+            db.select([text("'fuel'")]).where(
+                and_(
+                    ActivitySummaryFuelDetailXref.activity_summary_id ==
+                    ActivitySummaryBase.activity_summary_id,
+                    ActivitySummaryFuelDetailXref.activity_detail_id == activity_detail_id,
                     ActivitySummaryBase.activity_type_code == 'camp')).limit(1).as_scalar()))
 
     activity_type_code = db.column_property(
-        case([(_activity_type_code_identity in ['building', 'staging_area'], 'camp')], else_=_activity_type_code_identity))
+        case([(_activity_type_code_identity.expression.in_(['building', 'staging_area', 'fuel']), 'camp')], else_=_activity_type_code_identity))
 
     __mapper_args__ = {'polymorphic_on': _activity_type_code_identity}
 

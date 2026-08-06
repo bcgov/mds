@@ -424,7 +424,7 @@ export const NOTICE_OF_WORK_APP_FORM: INoWApplicationForm = {
         postnominal_letters: null,
         idir_username: null,
         // @ts-ignore
-        party_orgbook_entity: {},
+        party_bc_registration: {},
         business_role_appts: [],
         signature: null,
         now_party_appt: [],
@@ -457,7 +457,7 @@ export const NOTICE_OF_WORK_APP_FORM: INoWApplicationForm = {
         postnominal_letters: null,
         idir_username: null,
         // @ts-ignore
-        party_orgbook_entity: {},
+        party_bc_registration: {},
         business_role_appts: [],
         signature: null,
         now_party_appt: [],
