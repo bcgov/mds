@@ -68,3 +68,30 @@ class TestAnonCredCredentialManager:
         assert attributes["latitude"] == str(pa.mine.latitude)
         assert attributes["longitude"] == str(pa.mine.longitude)
         assert attributes["bond_total"] == str(pa.permit.active_bond_total)
+
+    def test_produce_untp_cc_map_payload_happy(self, db_session):
+        mine, permit = create_mine_and_permit()
+        permittee_appt = MinePartyAppointmentFactory(permittee=True, permit_id=permit.permit_id)
+
+        print(permit._all_permit_amendments[0].issue_date)
+        print(permittee_appt.start_date)
+
+        poe = PartyBCRegistrationFactory(party_guid=permittee_appt.party_guid)
+        permittee_appt.party.party_bc_registration = poe
+
+        pa_cred = UNTPCredentialManager.prepare_permit_amendment_untp_credential_without_id(
+            "did:test:10230123", permit.permit_amendments[0])
+
+        pa = permit.permit_amendments[0]
+
+        assert pa_cred
+        assert str(pa_cred.credentialSubject.issuedToParty.registeredId) == str(poe.registration_id)
+
+    def test_produce_untp_cc_map_payload_null_if_no_orgbook(self, db_session):
+        mine, permit = create_mine_and_permit()
+        permittee_appt = MinePartyAppointmentFactory(permittee=True, permit_id=permit.permit_id)
+
+        pa_cred = UNTPCredentialManager.prepare_permit_amendment_untp_credential_without_id(
+            "did:test:10230123", permit.permit_amendments[0])
+
+        assert not pa_cred

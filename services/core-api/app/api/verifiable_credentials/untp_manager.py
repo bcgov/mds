@@ -13,7 +13,6 @@ from openlocationcode.openlocationcode import encode as plus_code_encode
 from hashlib import md5
 from zoneinfo import ZoneInfo
 from time import sleep
-from typing import List
 from flask import current_app
 
 from app.tasks.celery import celery
@@ -100,51 +99,99 @@ def push_untp_map_data_to_publisher():
     skipped_count = 0
     not_created_count = 0
     current_app.logger.info(f"num_records_to_process={len(permit_amendment_query_results)}")
-    #token is valid for an hour currently.
     publisher_service = UNTPPublisherService()
 
-    for index, row in enumerate(permit_amendment_query_results):
+    for row in permit_amendment_query_results:
         pa = PermitAmendment.find_by_permit_amendment_guid(row[0], unsafe=True)
+        if not pa:
+            current_app.logger.warning(
+                f"permit_amendment could not be loaded for permit_amendment_guid={row[0]}")
+            not_created_count += 1
+            continue
 
-        next_pa_guid: str | None = None
-        valid_until_date: date | None = None
-        # only valid until the next permit_amendment was issued
-        try:
-            if permit_amendment_query_results[index + 1][2] == row[2]: # ensure same permit_no
-                next_pa_guid = permit_amendment_query_results[index + 1][0]
-        except IndexError:
-            pass
+        result = UNTPCredentialManager.push_permit_amendment_to_untp_publisher(
+            pa, publisher_service=publisher_service)
 
-        if next_pa_guid:
-            next_pa = PermitAmendment.find_by_permit_amendment_guid(next_pa_guid)
-            valid_until_date = next_pa.issue_date
+        if result["status"] == "published":
+            success_count += 1
+            continue
 
+        if result["status"] == "failed":
+            failed_credentials.append((result["hash"], result["error_msg"]))
+            current_app.logger.warning(
+                f"failed to publish unsigned_payload_id={result['hash']} error={result['error_msg']}"
+            )
+            continue
+
+        if result["status"] in ("collision", "skipped"):
+            skipped_count += 1
+            continue
+
+        not_created_count += 1
+
+    return f"counts, published={success_count}, not_created={not_created_count}, skipped={skipped_count}, failed={len(failed_credentials)}"
+
+
+class UNTPCredentialManager():
+
+    def __init__(self):
+        pass
+
+    @classmethod
+    def push_permit_amendment_to_untp_publisher(
+            cls, pa: PermitAmendment, publisher_service: UNTPPublisherService) -> dict[str, Any]:
         if pa.permit_no[1] in ("X", "x"):
             current_app.logger.info(
                 f"exclude exploration permit={pa.permit_no}, they cannot produce goods for sale")
-            not_created_count += 1
-            continue
+            return {
+                "status":
+                "skipped",
+                "hash":
+                None,
+                "existing":
+                False,
+                "collision":
+                False,
+                "response":
+                None,
+                "error_msg":
+                f"exclude exploration permit={pa.permit_no}, they cannot produce goods for sale",
+            }
 
         # Shape matches PublicationRequest from the untp-publisher API:
         # https://untp-publisher-api-dev.apps.gold.devops.gov.bc.ca/docs#/Credentials/publish_credential_credentials_publish_post
-        publish_payload = UNTPCredentialManager.prepare_permit_amendment_untp_credential_without_id(
-            row[0])
-
+        publish_payload, party_guid = cls.prepare_permit_amendment_untp_credential_without_id(
+            pa.permit_amendment_guid)
         if not publish_payload:
             current_app.logger.warning(
-                f"publish_payload could not be created for permit_amendment_guid={row[0]}")
-            not_created_count += 1
-            continue
+                f"publish_payload could not be created for permit_amendment_guid={pa.permit_amendment_guid}"
+            )
+            return {
+                "status":
+                "not_created",
+                "hash":
+                None,
+                "existing":
+                False,
+                "collision":
+                False,
+                "response":
+                None,
+                "error_msg":
+                f"publish_payload could not be created for permit_amendment_guid={pa.permit_amendment_guid}",
+            }
 
         payload_hash = md5(json.dumps(publish_payload, default=str).encode('utf-8')).hexdigest()
         current_app.logger.debug(f"payload hash={payload_hash}")
 
-        #MUST BE AFTER HASHING
         publish_payload["credentialId"] = str(uuid4())
+        publisher_service = publisher_service or UNTPPublisherService()
+        existing = PermitAmendmentOrgBookPublish.find_by_unsigned_payload_hash(
+            payload_hash) is not None
         publish_record = PermitAmendmentOrgBookPublish(
             unsigned_payload_hash=payload_hash,
-            permit_amendment_guid=row[0],
-            party_guid=row[1],
+            permit_amendment_guid=pa.permit_amendment_guid,
+            party_guid=party_guid,
             signed_credential='Produced by publisher',
             publish_state=None,
             permit_number=publish_payload["data"]["permit"]["identifier"],
@@ -162,50 +209,69 @@ def push_untp_map_data_to_publisher():
             publish_record.publish_state = post_resp.ok
             publish_record.error_msg = post_resp.text if not post_resp.ok else None
             if post_resp.ok:
-                publish_record.orgbook_credential_id = post_resp.json()["credentialId"]
+                publish_record.orgbook_credential_id = post_resp.json().get("credentialId")
 
             publish_record.save()
 
         except IntegrityError:
             current_app.logger.info(
-                f"credential hash collision, skipping duplicate payload for permit_amendment={row[0]}"
+                f"credential hash collision, skipping duplicate payload for permit_amendment={pa.permit_amendment_guid}"
             )
+            return {
+                "status": "collision",
+                "hash": payload_hash,
+                "existing": existing,
+                "collision": True,
+                "response": None,
+                "error_msg": None,
+            }
 
         if publish_record.error_msg:
             current_app.logger.warning(
                 f"failed to publish unsigned_payload_id={publish_record.unsigned_payload_hash} error={publish_record.error_msg}"
             )
             current_app.logger.warning(f"..failed payload={publish_payload}")
-            failed_credentials.append(
-                (publish_record.unsigned_payload_hash, publish_record.error_msg))
+            return {
+                "status": "failed",
+                "hash": payload_hash,
+                "existing": existing,
+                "collision": False,
+                "response": post_resp.json() if post_resp is not None else None,
+                "error_msg": publish_record.error_msg,
+            }
 
-        elif publish_record.orgbook_credential_id:
+        if publish_record.orgbook_credential_id:
             current_app.logger.info(
                 f"successful publish of unsigned_payload_id={publish_record.unsigned_payload_hash} url={publish_record.orgbook_credential_id}"
             )
-            success_count += 1
+            return {
+                "status": "published",
+                "hash": payload_hash,
+                "existing": existing,
+                "collision": False,
+                "response": post_resp.json() if post_resp is not None else None,
+                "error_msg": None,
+            }
 
-        else:
-            skipped_count += 1
-
-    return f"counts, published={success_count}, not_created={not_created_count}, skipped={skipped_count}, failed={len(failed_credentials)}"
-
-
-class UNTPCredentialManager():
-
-    def __init__(self):
-        pass
+        return {
+            "status": "skipped",
+            "hash": payload_hash,
+            "existing": existing,
+            "collision": False,
+            "response": post_resp.json() if post_resp is not None else None,
+            "error_msg": None,
+        }
 
     @classmethod
     def prepare_permit_amendment_untp_credential_without_id(
-            cls, permit_amendment_guid: str) -> dict | None:
+            cls, permit_amendment_guid: str) -> tuple[dict | None, str | None]:
         pa = PermitAmendment.find_by_permit_amendment_guid(permit_amendment_guid, unsafe=True)
         mine = Mine.find_by_mine_guid(pa.mine_guid)
         if not pa or not mine:
             current_app.logger.warning(
                 f"Permit Amendment or mine not found for permit_amendment_guid={permit_amendment_guid}"
             )
-            return
+            return None, None
         #get other permit_amendments
         pa.permit._context_mine = mine
         pmt_appt_list = pa.permit.permit_amendments
@@ -218,7 +284,7 @@ class UNTPCredentialManager():
 
         permittee_bc_regisration: PartyBCRegistration = permittee_appt.party.party_bc_registration
         if not permittee_bc_regisration:
-            return None      # ensure party is loaded
+            return None, None                    # ensure party is loaded
 
         next_pmt_appt: MinePartyAppointment | None = None
         valid_until_date: date | None = None
@@ -233,7 +299,7 @@ class UNTPCredentialManager():
         if pa.permit_no[1] in ("X", "x"):
             current_app.logger.info(
                 f"exclude exploration permit={pa.permit_no}, they cannot produce goods for sale")
-            return None
+            return None, None
 
         publish_payload = {
             "template": "BCMinesActPermitCredential",
@@ -265,7 +331,7 @@ class UNTPCredentialManager():
             },
         }
                                                                                                    #TODO: Combine continous permit_amendments where the contents of the credential and permittee did not change into one credential.
-        return publish_payload
+        return publish_payload, permittee_appt.party.party_guid
 
     @classmethod
     def delete_any_unsuccessful_untp_push(cls, live: bool = False) -> int:
