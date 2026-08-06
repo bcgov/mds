@@ -1,9 +1,15 @@
+from typing import TYPE_CHECKING
+
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.orm import Mapped
 
 from app.extensions import db
 from app.api.utils.models_mixins import AuditMixin, Base
 from app.api.utils.include.user_info import User
+
+if TYPE_CHECKING:
+    from app.api.parties.party.models.party import Party
 
 
 class PartyBCRegistration(AuditMixin, Base):
@@ -25,6 +31,7 @@ class PartyBCRegistration(AuditMixin, Base):
 
     party_guid = db.Column(
         UUID(as_uuid=True), db.ForeignKey('party.party_guid'), nullable=False, unique=True)
+    party: Mapped["Party"] = db.relationship('Party', back_populates='party_bc_registration')
     association_user = db.Column(db.String, nullable=False, default=User().get_user_username)
     association_timestamp = db.Column(db.DateTime, nullable=False, server_default=FetchedValue())
 

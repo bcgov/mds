@@ -1,13 +1,14 @@
 from datetime import datetime
 from flask import current_app
 import re
-from typing import Self
+from typing import Self, TYPE_CHECKING
 
 from sqlalchemy import func, case, and_
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import validates
+from sqlalchemy.orm import Mapped
 
 from app.extensions import db
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
@@ -17,6 +18,9 @@ from app.api.verifiable_credentials.models.connection import PartyVerifiableCred
 from app.api.utils.helpers import validate_phone_no
 
 MAX_NAME_LENGTH = 100
+
+if TYPE_CHECKING:
+    from app.api.parties.party.models.party_bc_registration import PartyBCRegistration
 
 
 class Party(SoftDeleteMixin, AuditMixin, Base):
@@ -68,8 +72,8 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
         'and_(PartyBusinessRoleAppointment.party_guid == Party.party_guid, PartyBusinessRoleAppointment.deleted_ind==False)',
         back_populates='party')
 
-    party_bc_registration = db.relationship(
-        'PartyBCRegistration', backref='party', uselist=False, lazy='select')
+    party_bc_registration: Mapped["PartyBCRegistration | None"] = db.relationship(
+        'PartyBCRegistration', back_populates='party', uselist=False, lazy='select')
 
     organization = db.relationship(
         'Party',
@@ -215,8 +219,9 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
                     else_=cls.party_name)
 
     @classmethod
-    def find_by_party_guid(cls, party_guid) -> Self:
-        return cls.query.filter_by(party_guid=party_guid, deleted_ind=False).one_or_none()
+    def find_by_party_guid(cls, party_guid, unsafe: bool = False) -> Self:
+        query = cls.query.unbound_unsafe() if unsafe else cls.query
+        return query.filter_by(party_guid=party_guid, deleted_ind=False).one_or_none()
 
     @classmethod
     def find_by_name(cls, party_name, first_name=None):

@@ -10,7 +10,7 @@ from app.api.verifiable_credentials.models.connection import PartyVerifiableCred
 from app.api.verifiable_credentials.models.credentials import PartyVerifiableCredentialMinesActPermit
 from app.api.verifiable_credentials.aries_constants import IssueCredentialIssuerState
 from app.api.verifiable_credentials.response_models import PARTY_VERIFIABLE_CREDENTIAL_MINES_ACT_PERMIT
-from app.api.verifiable_credentials.manager import VerifiableCredentialManager
+from app.api.verifiable_credentials.anoncred_manager import AnonCredCredentialManager
 from app.api.services.traction_service import TractionService
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.access_decorators import requires_any_of, MINESPACE_PROPONENT, EDIT_PARTY
@@ -33,7 +33,8 @@ class VerifiableCredentialMinesActPermitResource(Resource, UserMixin):
         return party_credential_exchanges
 
     @api.doc(
-        description="Send credential offer for permit_amendment_guid to connection for a party by guid",
+        description=
+        "Send credential offer for permit_amendment_guid to connection for a party by guid",
         params={
             "party_guid":
             "guid for party with wallet connection",
@@ -75,7 +76,7 @@ class VerifiableCredentialMinesActPermitResource(Resource, UserMixin):
         if permit_amendment.permit.mines_act_permit_vc_locked:
             raise BadRequest(f"This permit cannot be offered as a credential")
 
-        attributes = VerifiableCredentialManager.collect_attributes_for_mines_act_permit_111(
+        attributes = AnonCredCredentialManager.collect_attributes_for_mines_act_permit_111(
             permit_amendment)
 
         vc_conn = PartyVerifiableCredentialConnection.find_by_party_guid(party_guid)
@@ -90,8 +91,8 @@ class VerifiableCredentialMinesActPermitResource(Resource, UserMixin):
             raise BadRequest("Party does not have an active Digital Wallet connection")
         else:
             traction_svc = TractionService()
-            response, cred_exch_id = traction_svc.offer_mines_act_permit_111(active_connections[0].connection_id,
-                                                               attributes)
+            response, cred_exch_id = traction_svc.offer_mines_act_permit_111(
+                active_connections[0].connection_id, attributes)
             map_vc = PartyVerifiableCredentialMinesActPermit(
                 cred_exch_id=cred_exch_id,
                 party_guid=party_guid,

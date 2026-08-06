@@ -305,7 +305,7 @@ class Config(object):
             'schedule': crontab(hour="11", minute="0"),                                              # Run daily at 3am (11am UTC)
         },
         'push_untp_map_data_to_publisher': {
-            'task': 'app.api.verifiable_credentials.manager.push_untp_map_data_to_publisher',
+            'task': 'app.api.verifiable_credentials.untp_manager.push_untp_map_data_to_publisher',
             'schedule': crontab(day_of_week="1", hour="16", minute="0"),                             #Run 8am Mondays
         },
     }
@@ -333,10 +333,10 @@ class Config(object):
     UNTP_BC_MINES_ACT_PERMIT_CONTEXT = os.environ.get("UNTP_BC_MINES_ACT_PERMIT_CONTEXT",
                                                       "UNTP_BC_MINES_ACT_PERMIT_CONTEXT")
 
-    ORGBOOK_PUBLISHER_BASE_URL = os.environ.get("ORGBOOK_PUBLISHER_BASE_URL",
-                                                "https://dev.orgbook.traceability.site")
-    ORGBOOK_PUBLISHER_CLIENT_SECRET = os.environ.get("ORGBOOK_PUBLISHER_CLIENT_SECRET",
-                                                     "ORGBOOK_PUBLISHER_CLIENT_SECRET")
+    UNTP_PUBLISHER_BASE_URL = os.environ.get(
+        "UNTP_PUBLISHER_BASE_URL", "https://untp-publisher-api-dev.apps.gold.devops.gov.bc.ca")
+    UNTP_PUBLISHER_CLIENT_SECRET = os.environ.get("UNTP_PUBLISHER_CLIENT_SECRET",
+                                                  "UNTP_PUBLISHER_CLIENT_SECRET")
 
 
 class TestConfig(Config):
