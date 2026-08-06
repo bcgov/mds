@@ -79,19 +79,19 @@ class TestAnonCredCredentialManager:
         poe = PartyBCRegistrationFactory(party_guid=permittee_appt.party_guid)
         permittee_appt.party.party_bc_registration = poe
 
-        pa_cred = UNTPCredentialManager.prepare_permit_amendment_untp_credential_without_id(
-            "did:test:10230123", permit.permit_amendments[0])
+        untp_post_resp, party_guid = UNTPCredentialManager.prepare_permit_amendment_untp_credential_without_id(
+            str(permit.permit_amendments[0].permit_amendment_guid))
 
         pa = permit.permit_amendments[0]
 
-        assert pa_cred
-        assert str(pa_cred.credentialSubject.issuedToParty.registeredId) == str(poe.registration_id)
+        assert untp_post_resp
+        assert str(untp_post_resp["data"]["permittee"]["identifier"]) == str(poe.registration_id)
 
     def test_produce_untp_cc_map_payload_null_if_no_orgbook(self, db_session):
         mine, permit = create_mine_and_permit()
         permittee_appt = MinePartyAppointmentFactory(permittee=True, permit_id=permit.permit_id)
 
-        pa_cred = UNTPCredentialManager.prepare_permit_amendment_untp_credential_without_id(
-            "did:test:10230123", permit.permit_amendments[0])
+        pa_cred, party_guid = UNTPCredentialManager.prepare_permit_amendment_untp_credential_without_id(
+            str(permit.permit_amendments[0].permit_amendment_guid))
 
         assert not pa_cred
