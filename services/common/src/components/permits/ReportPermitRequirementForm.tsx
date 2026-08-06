@@ -98,12 +98,22 @@ export const ReportPermitRequirementForm: FC<ReportPermitRequirementProps> = ({
   // filter to only those requirements matching the notice_of_work_type (template)
   // as the condition currently being edited.
   const currentTemplateCondition = condition as unknown as IStandardPermitCondition;
-  const standardRequirementsForTemplate = isStandardConditionEditor
-    ? standardRequirements.filter((r) => {
-      const nowType = r.notice_of_work_type || (conditionMap[r.permit_condition_ids?.[0]] as unknown as IStandardPermitCondition)?.notice_of_work_type;
-      return nowType === currentTemplateCondition?.notice_of_work_type;
-    })
-    : standardRequirements;
+  const targetNowType =
+    currentTemplateCondition?.notice_of_work_type ||
+    selectedRequirement?.notice_of_work_type ||
+    (selectedRequirement?.permit_condition_ids?.[0]
+      ? (conditionMap[selectedRequirement.permit_condition_ids[0]] as unknown as IStandardPermitCondition)?.notice_of_work_type
+      : undefined);
+
+  const standardRequirementsForTemplate =
+    isStandardConditionEditor && targetNowType
+      ? standardRequirements.filter((r) => {
+          const nowType =
+            r.notice_of_work_type ||
+            (conditionMap[r.permit_condition_ids?.[0]] as unknown as IStandardPermitCondition)?.notice_of_work_type;
+          return nowType === targetNowType;
+        })
+      : standardRequirements;
 
 
   const existingRequirements = isStandardConditionEditor ? standardRequirementsForTemplate : permitRequirements;

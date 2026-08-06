@@ -24,6 +24,7 @@ FROM (
     JOIN standard_permit_conditions spc
         ON spc.standard_permit_condition_id = xref.standard_permit_condition_id
     WHERE xref.is_standard = TRUE AND xref.deleted_ind = FALSE
+    ORDER BY xref.mine_report_permit_requirement_id, spc.standard_permit_condition_id ASC
 ) linked
 WHERE mrpr.mine_report_permit_requirement_id = linked.mine_report_permit_requirement_id
     AND mrpr.is_standard = TRUE;

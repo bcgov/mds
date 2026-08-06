@@ -203,3 +203,64 @@ def test_post_same_report_name_different_category_same_template_fails(test_clien
     assert post_resp.status_code == 400
     data = json.loads(post_resp.data.decode())
     assert "Report name must be unique" in data.get("message", "")
+
+def test_post_mixed_now_types_bad_request(test_client, db_session, auth_headers):
+    condition_a = StandardPermitConditionsFactory(notice_of_work_type='SAG')
+    condition_b = StandardPermitConditionsFactory(notice_of_work_type='MIN')
+
+    submission_data = {
+        'due_date_period_months': 6,
+        'cim_or_cpo': 'CIM',
+        'ministry_recipient': ['HS'],
+        'permit_condition_ids': [
+            condition_a.standard_permit_condition_id,
+            condition_b.standard_permit_condition_id
+        ],
+        'report_name': "MIXED_NOW_TYPES_TEST"
+    }
+    post_resp = test_client.post(
+        '/mines/reports/standard-permit-requirements',
+        headers=auth_headers['full_auth_header'],
+        json=submission_data
+    )
+    assert post_resp.status_code == 400
+    data = json.loads(post_resp.data.decode())
+    assert "All permit conditions must belong to the same Notice of Work type" in data.get("message", "")
+
+def test_put_mixed_now_types_bad_request(test_client, db_session, auth_headers):
+    condition_a = StandardPermitConditionsFactory(notice_of_work_type='SAG')
+    condition_b = StandardPermitConditionsFactory(notice_of_work_type='MIN')
+
+    report_req = StandardReportPermitRequirementFactory(
+        due_date_period_months=6,
+        cim_or_cpo='CIM',
+        ministry_recipient=['HS'],
+        report_name="MIXED_NOW_TYPES_PUT_TEST",
+        condition_category_code=condition_a.condition_category_code,
+        notice_of_work_type=condition_a.notice_of_work_type
+    )
+    StandardReportReqConditionXrefFactory(
+        permit_condition=condition_a,
+        mine_report_permit_requirement=report_req
+    )
+    db_session.commit()
+
+    update_data = {
+        'mine_report_permit_requirement_id': report_req.mine_report_permit_requirement_id,
+        'due_date_period_months': 12,
+        'cim_or_cpo': 'CPO',
+        'ministry_recipient': ['MMO'],
+        'permit_condition_ids': [
+            condition_a.standard_permit_condition_id,
+            condition_b.standard_permit_condition_id
+        ],
+        'report_name': "MIXED_NOW_TYPES_PUT_TEST"
+    }
+    put_resp = test_client.put(
+        '/mines/reports/standard-permit-requirements',
+        headers=auth_headers['full_auth_header'],
+        json=update_data
+    )
+    assert put_resp.status_code == 400
+    data = json.loads(put_resp.data.decode())
+    assert "All permit conditions must belong to the same Notice of Work type" in data.get("message", "")

@@ -102,4 +102,44 @@ describe("ReportPermitRequirementForm - standard condition template scoping", ()
     // "Select an Existing Report" field should not render at all.
     expect(queryByText("Select an Existing Report")).not.toBeInTheDocument();
   });
+
+  it("correctly filters standard requirements by template when condition is undefined but requirement has notice_of_work_type", () => {
+    const anotherSameTemplateRequirement = {
+      mine_report_permit_requirement_id: 3,
+      report_name: "Another Same Template Report",
+      permit_condition_ids: [999],
+      condition_category_code: "GEC",
+      notice_of_work_type: "MIN",
+      due_date_period_months: 12,
+      cim_or_cpo: "CIM",
+      ministry_recipient: ["HS"],
+    };
+
+    const customState = {
+      [mineReportPermitRequirementReducerType]: {
+        standardReportRequirements: [
+          sameTemplateRequirement,
+          differentTemplateRequirement,
+          anotherSameTemplateRequirement,
+        ],
+      },
+    };
+
+    const { container } = render(
+      <ReduxWrapper initialState={customState}>
+        <PermitConditionsProvider value={providerParams}>
+          <ReportPermitRequirementForm
+            canEditPermitConditions={true}
+            refreshData={jest.fn()}
+            mineReportPermitRequirement={sameTemplateRequirement as any}
+            isModal
+          />
+        </PermitConditionsProvider>
+      </ReduxWrapper>
+    );
+
+    const input = container.querySelector('input[name="report_name"]');
+    expect(input).not.toBeNull();
+    expect(input).toHaveValue("Same Template Report");
+  });
 });
