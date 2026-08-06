@@ -31,6 +31,7 @@ class NOWApplicationDocumentXref(SoftDeleteMixin, AuditMixin, Base):
     is_final_package = db.Column(db.Boolean)
     is_referral_package = db.Column(db.Boolean, server_default=FetchedValue())
     is_consultation_package = db.Column(db.Boolean, server_default=FetchedValue())
+    is_system_generated = db.Column(db.Boolean, server_default=FetchedValue())
 
     preamble_title = db.Column(db.String)
     preamble_author = db.Column(db.String)

@@ -387,6 +387,7 @@ class NOWApplication(Base, AuditMixin):
         from app.api.now_applications.models.now_application_document_xref import NOWApplicationDocumentXref
         from app.api.now_applications.resources.now_application_export_resource import NOWApplicationExportResource
         from app.api.document_generation.resources.now_document_resource import NoticeOfWorkDocumentResource
+        from datetime import date
 
         # Generate the Notice of Work Form document
         token = NOWApplicationExportResource.get_now_form_generate_token(self.now_application_guid)
@@ -405,8 +406,12 @@ class NOWApplication(Base, AuditMixin):
         now_application_document_xref_guid = now_doc_dict['now_application_document_xref_guid']
         now_doc = NOWApplicationDocumentXref.find_by_guid(now_application_document_xref_guid)
         now_doc.is_final_package = True
+        now_doc.is_system_generated = True
         now_doc.final_package_order = self.next_document_final_package_order
         now_doc.description = description
+        now_doc.preamble_title = "Notice of Work Application"
+        now_doc.preamble_author = "N/A"
+        now_doc.preamble_date = date.today()
         now_doc.save()
 
     @classmethod

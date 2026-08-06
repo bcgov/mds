@@ -47,6 +47,87 @@ export class FinalPermitDocuments extends Component {
         ({ is_final_package }) => is_final_package
       );
 
+    const isNoWApplication = this.props.noticeOfWork.application_type_code === "NOW";
+    let nowApplicationDocument = null;
+    let lockedNtrGuid = null;
+    if (isNoWApplication && this.props.showInUnifiedView) {
+      // Shared fields for all locked 1.1 row variants.
+      const LOCKED_ROW_BASE = {
+        now_application_document_xref_guid: "application-form-1.1",
+        final_package_order: -1,
+        isLockedApplicationForm: true,
+        now_application_document_type_code: null,
+        is_final_package: true,
+        is_referral_package: false,
+        is_consultation_package: false,
+      };
+
+      // Placeholder shown when no qualifying system-generated NTR is available yet.
+      const NA_ROW = {
+        ...LOCKED_ROW_BASE,
+        preamble_title: "N/A",
+        preamble_author: "N/A",
+        preamble_date: null,
+        category: "N/A",
+        description: "N/A",
+        mine_document: {
+          mine_document_guid: null,
+          document_manager_guid: null,
+          document_name: null,
+          upload_date: null,
+        },
+      };
+
+      // Is there any system-generated NTR for this application?
+      // If not, the 1.1 row is not shown at all.
+      const hasSystemGeneratedNtr = this.props.noticeOfWork.documents.some(
+        (doc) => doc.now_application_document_type_code === "NTR" && doc.is_system_generated
+      );
+
+      if (hasSystemGeneratedNtr) {
+        // Only show the 1.1 row once Technical Review has been completed at least once.
+        const TECHNICAL_REVIEW_NTR_DESCRIPTION = "This document was automatically created when Technical Review was completed.";
+        const technicalReviewEverCompleted =
+          !!this.props.progress.REV?.end_date ||
+          this.props.noticeOfWork.documents.some(
+            (doc) =>
+              doc.now_application_document_type_code === "NTR" &&
+              doc.is_system_generated &&
+              doc.description === TECHNICAL_REVIEW_NTR_DESCRIPTION
+          );
+
+        if (technicalReviewEverCompleted) {
+          const qualifyingNtrs = this.props.noticeOfWork.documents.filter(
+            (doc) =>
+              doc.now_application_document_type_code === "NTR" &&
+              doc.is_final_package &&
+              doc.is_system_generated &&
+              !doc.deleted_ind
+          );
+          const latestNtr = qualifyingNtrs.sort((a, b) => {
+            const aDate = a.mine_document?.upload_date || "";
+            const bDate = b.mine_document?.upload_date || "";
+            return bDate > aDate ? 1 : -1;
+          })[0] || null;
+
+          if (latestNtr) {
+            lockedNtrGuid = latestNtr.now_application_document_xref_guid;
+            nowApplicationDocument = {
+              ...latestNtr,
+              ...LOCKED_ROW_BASE,
+              preamble_title: latestNtr.preamble_title || "Notice of Work Application",
+              preamble_author: latestNtr.preamble_author || "N/A",
+              preamble_date: latestNtr.preamble_date ?? latestNtr.mine_document?.upload_date ?? null,
+              category: "Notice of Work Form",
+              description: "Latest version of the Notice of Work application. Always included and system-managed.",
+            };
+          } else {
+            nowApplicationDocument = NA_ROW;
+          }
+        }
+      }
+    }
+
     const nowSubmissionDocuments = (
       <NOWSubmissionDocuments
         now_application_guid={this.props.noticeOfWork.now_application_guid}
@@ -87,21 +168,28 @@ export class FinalPermitDocuments extends Component {
         <NOWDocuments
           now_application_guid={this.props.noticeOfWork.now_application_guid}
           mine_guid={this.props.mineGuid}
-          documents={permitDocuments.concat(
-            permitSubmissionDocuments.map((doc) => {
-              return {
-                ...doc,
-                now_application_document_type_code: doc.documenttype,
-                now_application_document_sub_type_code: doc.documenttype,
-                mine_document: {
-                  document_manager_guid: doc.document_manager_guid,
-                  document_name: doc.filename,
-                  mine_document_guid: doc.mine_document_guid,
-                  mine_guid: this.props.noticeOfWork.mine_guid,
-                },
-              };
-            })
-          )}
+          documents={
+            (nowApplicationDocument ? [nowApplicationDocument] : [])
+              .concat(
+                permitDocuments.filter(
+                  (doc) => !lockedNtrGuid || doc.now_application_document_xref_guid !== lockedNtrGuid
+                )
+              )
+              .concat(
+                (permitSubmissionDocuments || [])
+                  .map((doc) => ({
+                    ...doc,
+                    now_application_document_type_code: doc.documenttype,
+                    now_application_document_sub_type_code: doc.documenttype,
+                    mine_document: {
+                      document_manager_guid: doc.document_manager_guid,
+                      document_name: doc.filename,
+                      mine_document_guid: doc.mine_document_guid,
+                      mine_guid: this.props.noticeOfWork.mine_guid,
+                    },
+                  }))
+              )
+          }
           isViewMode
           disableCategoryFilter={this.props.disableCategoryFilter}
           showPreambleFileMetadata={this.props.showPreambleFileMetadata}

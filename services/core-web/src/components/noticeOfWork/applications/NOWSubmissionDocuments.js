@@ -64,6 +64,7 @@ const propTypes = {
   isFinalPackageTable: PropTypes.bool,
   isAdminView: PropTypes.bool,
   isPackageModal: PropTypes.bool,
+  lockedRowKeys: PropTypes.arrayOf(PropTypes.string),
 };
 
 const defaultProps = {
@@ -81,6 +82,7 @@ const defaultProps = {
   isFinalPackageTable: false,
   isAdminView: false,
   isPackageModal: false,
+  lockedRowKeys: [],
 };
 
 const transformDocuments = (
@@ -679,7 +681,9 @@ export const NOWSubmissionDocuments = (props) => {
                 props.selectedRows.setSelectedSubmissionRows(selectedRowKeys);
               },
               getCheckboxProps: (record) => ({
-                disabled: record && !record.mine_document_guid,
+                disabled:
+                  (record && !record.mine_document_guid) ||
+                  props.lockedRowKeys?.includes(record.mine_document_guid),
               }),
             }
             : null

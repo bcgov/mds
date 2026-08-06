@@ -22,12 +22,40 @@ const defaultProps = {
 };
 
 export const EditFinalPermitDocumentPackage = (props) => {
+  const applicationFilesTypes = ["AAF", "AEF", "MDO", "SDO"];
+  const systemGeneratedNtrDoc = props.noticeOfWork.documents.find(
+    (doc) =>
+      doc.now_application_document_type_code === "NTR" &&
+      doc.is_final_package
+  ) ?? null;
+
+  const systemGeneratedNtrMineDocGuid = systemGeneratedNtrDoc?.mine_document?.mine_document_guid ?? null;
+  const systemGeneratedNtrDocXrefGuid = systemGeneratedNtrDoc?.now_application_document_xref_guid ?? null;
+
+  const lockedSubmissionRowKeys = systemGeneratedNtrMineDocGuid ? [systemGeneratedNtrMineDocGuid] : [];
+  const lockedCoreRowKeys = systemGeneratedNtrDocXrefGuid ? [systemGeneratedNtrDocXrefGuid] : [];
+
   const [selectedCoreRows, setSelectedCoreRows] = useState(props.finalDocuments);
-  const [selectedSubmissionRows, setSelectedSubmissionRows] = useState(
-    props.finalSubmissionDocuments
+  const [selectedSubmissionRows, setSelectedSubmissionRows] = useState(() =>
+    systemGeneratedNtrMineDocGuid && !props.finalSubmissionDocuments.includes(systemGeneratedNtrMineDocGuid)
+      ? [...props.finalSubmissionDocuments, systemGeneratedNtrMineDocGuid]
+      : props.finalSubmissionDocuments
   );
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const applicationFilesTypes = ["AAF", "AEF", "MDO", "SDO"];
+
+  const handleSetSelectedSubmissionRows = (keys) => {
+    const withLocked = systemGeneratedNtrMineDocGuid && !keys.includes(systemGeneratedNtrMineDocGuid)
+      ? [...keys, systemGeneratedNtrMineDocGuid]
+      : keys;
+    setSelectedSubmissionRows(withLocked);
+  };
+
+  const handleSetSelectedCoreRows = (keys) => {
+    const withLocked = systemGeneratedNtrDocXrefGuid && !keys.includes(systemGeneratedNtrDocXrefGuid)
+      ? [...keys, systemGeneratedNtrDocXrefGuid]
+      : keys;
+    setSelectedCoreRows(withLocked);
+  };
 
   const handleSubmit = () => {
     setIsSubmitting(true);
@@ -73,7 +101,8 @@ export const EditFinalPermitDocumentPackage = (props) => {
             })
         )}
         importNowSubmissionDocumentsJob={props.importNowSubmissionDocumentsJob}
-        selectedRows={{ selectedSubmissionRows, setSelectedSubmissionRows }}
+        selectedRows={{ selectedSubmissionRows, setSelectedSubmissionRows: handleSetSelectedSubmissionRows }}
+        lockedRowKeys={lockedSubmissionRowKeys}
         isPackageModal
         isAdminView
         isViewMode
@@ -83,7 +112,8 @@ export const EditFinalPermitDocumentPackage = (props) => {
       <NOWDocuments
         documents={props.documents}
         isViewMode
-        selectedRows={{ selectedCoreRows, setSelectedCoreRows }}
+        selectedRows={{ selectedCoreRows, setSelectedCoreRows: handleSetSelectedCoreRows }}
+        lockedRowKeys={lockedCoreRowKeys}
         categoriesToShow={["GDO"]}
         isPackageModal
       />
