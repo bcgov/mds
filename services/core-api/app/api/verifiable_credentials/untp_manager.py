@@ -276,11 +276,16 @@ class UNTPCredentialManager():
         pa.permit._context_mine = mine
         pmt_appt_list = pa.permit.permit_amendments
         pos = pmt_appt_list.index(pa)
-
-        permittee_appt = [
-            appt for appt in pa.permittee_appointments
-            if ensure_start_date_type(appt.start_date) <= pa.issue_date
-        ][0]
+        try:
+            permittee_appt = [
+                appt for appt in pa.permittee_appointments
+                if ensure_start_date_type(appt.start_date) <= pa.issue_date
+            ][0]
+        except IndexError:
+            current_app.logger.warning(
+                f"permittee appointment not found for permit_amendment_guid={permit_amendment_guid}"
+            )
+            return None, None
 
         permittee_bc_regisration: PartyBCRegistration = permittee_appt.party.party_bc_registration
         if not permittee_bc_regisration:
