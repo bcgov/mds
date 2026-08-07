@@ -167,7 +167,7 @@ export const inspectionOrderNumberSorter = (a, b, dataIndex) => {
   return subA - subB;
 };
 
-export const getLockedSystemNtrGuid = (documents) => {
+export const getLockedSystemNtrDoc = (documents) => {
   const qualifying = (documents || []).filter(
     (doc) =>
       doc.now_application_document_type_code === "NTR" &&
@@ -181,5 +181,9 @@ export const getLockedSystemNtrGuid = (documents) => {
     const bDate = b.mine_document?.upload_date || "";
     return bDate > aDate ? 1 : -1;
   });
-  return sorted[0]?.now_application_document_xref_guid || null;
+  return sorted[0] || null;
+};
+
+export const getLockedSystemNtrGuid = (documents) => {
+  return getLockedSystemNtrDoc(documents)?.now_application_document_xref_guid || null;
 };

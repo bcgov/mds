@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { Button, Popconfirm } from "antd";
 import { DownloadOutlined } from "@ant-design/icons";
 import CustomPropTypes from "@/customPropTypes";
+import { getLockedSystemNtrDoc } from "@mds/common/utils/helpers";
 import NOWDocuments from "../noticeOfWork/applications/NOWDocuments";
 import NOWSubmissionDocuments from "../noticeOfWork/applications/NOWSubmissionDocuments";
 
@@ -23,11 +24,7 @@ const defaultProps = {
 
 export const EditFinalPermitDocumentPackage = (props) => {
   const applicationFilesTypes = ["AAF", "AEF", "MDO", "SDO"];
-  const systemGeneratedNtrDoc = props.noticeOfWork.documents.find(
-    (doc) =>
-      doc.now_application_document_type_code === "NTR" &&
-      doc.is_final_package
-  ) ?? null;
+  const systemGeneratedNtrDoc = getLockedSystemNtrDoc(props.noticeOfWork.documents);
 
   const systemGeneratedNtrMineDocGuid = systemGeneratedNtrDoc?.mine_document?.mine_document_guid ?? null;
   const systemGeneratedNtrDocXrefGuid = systemGeneratedNtrDoc?.now_application_document_xref_guid ?? null;

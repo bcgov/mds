@@ -1,4 +1,4 @@
-import { getLockedSystemNtrGuid } from "../../utils/helpers";
+import { getLockedSystemNtrDoc, getLockedSystemNtrGuid } from "../../utils/helpers";
 
 const makeDoc = (overrides = {}) => ({
   now_application_document_type_code: "NTR",
@@ -67,5 +67,29 @@ describe("getLockedSystemNtrGuid", () => {
     const originalOrder = docs.map((d) => d.now_application_document_xref_guid);
     getLockedSystemNtrGuid(docs);
     expect(docs.map((d) => d.now_application_document_xref_guid)).toEqual(originalOrder);
+  });
+});
+
+describe("getLockedSystemNtrDoc", () => {
+  it("returns null for empty documents", () => {
+    expect(getLockedSystemNtrDoc([])).toBeNull();
+    expect(getLockedSystemNtrDoc(undefined)).toBeNull();
+  });
+
+  it("returns the full document object, not just the GUID", () => {
+    const doc = makeDoc({ now_application_document_xref_guid: "target-guid" });
+    const result = getLockedSystemNtrDoc([doc]);
+    expect(result).toBe(doc);
+  });
+
+  it("returns the most recently uploaded qualifying doc", () => {
+    const older = makeDoc({ now_application_document_xref_guid: "old", mine_document: { upload_date: "2024-01-01" } });
+    const newer = makeDoc({ now_application_document_xref_guid: "new", mine_document: { upload_date: "2025-06-01" } });
+    expect(getLockedSystemNtrDoc([older, newer])).toBe(newer);
+  });
+
+  it("getLockedSystemNtrGuid delegates to getLockedSystemNtrDoc", () => {
+    const doc = makeDoc({ now_application_document_xref_guid: "delegated-guid" });
+    expect(getLockedSystemNtrGuid([doc])).toBe("delegated-guid");
   });
 });

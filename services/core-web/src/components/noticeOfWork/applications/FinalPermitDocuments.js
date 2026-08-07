@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { FormSection } from "@mds/common/components/forms/form";
 import { connect } from "react-redux";
 import { getNOWProgress } from "@mds/common/redux/selectors/noticeOfWorkSelectors";
+import { getLockedSystemNtrDoc } from "@mds/common/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";
 import PermitPackage from "@/components/noticeOfWork/applications/PermitPackage";
 import NOWDocuments from "@/components/noticeOfWork/applications/NOWDocuments";
@@ -97,18 +98,7 @@ export class FinalPermitDocuments extends Component {
           );
 
         if (technicalReviewEverCompleted) {
-          const qualifyingNtrs = this.props.noticeOfWork.documents.filter(
-            (doc) =>
-              doc.now_application_document_type_code === "NTR" &&
-              doc.is_final_package &&
-              doc.is_system_generated &&
-              !doc.deleted_ind
-          );
-          const latestNtr = qualifyingNtrs.sort((a, b) => {
-            const aDate = a.mine_document?.upload_date || "";
-            const bDate = b.mine_document?.upload_date || "";
-            return bDate > aDate ? 1 : -1;
-          })[0] || null;
+          const latestNtr = getLockedSystemNtrDoc(this.props.noticeOfWork.documents);
 
           if (latestNtr) {
             lockedNtrGuid = latestNtr.now_application_document_xref_guid;
