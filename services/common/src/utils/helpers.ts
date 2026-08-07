@@ -166,3 +166,20 @@ export const inspectionOrderNumberSorter = (a, b, dataIndex) => {
   if (mainA !== mainB) return mainA - mainB;
   return subA - subB;
 };
+
+export const getLockedSystemNtrGuid = (documents) => {
+  const qualifying = (documents || []).filter(
+    (doc) =>
+      doc.now_application_document_type_code === "NTR" &&
+      doc.is_final_package &&
+      doc.is_system_generated &&
+      !doc.deleted_ind
+  );
+  if (!qualifying.length) return null;
+  const sorted = [...qualifying].sort((a, b) => {
+    const aDate = a.mine_document?.upload_date || "";
+    const bDate = b.mine_document?.upload_date || "";
+    return bDate > aDate ? 1 : -1;
+  });
+  return sorted[0]?.now_application_document_xref_guid || null;
+};
