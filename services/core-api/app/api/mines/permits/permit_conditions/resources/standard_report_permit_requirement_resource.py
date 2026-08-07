@@ -41,11 +41,27 @@ class StandardReportPermitRequirementResource(Resource, UserMixin):
         data = self.parser.parse_args()
 
         permit_condition_ids = data.get("permit_condition_ids")
+        if not permit_condition_ids or len(permit_condition_ids) == 0:
+            raise BadRequest("Report requirement must be associated with one or more standard permit conditions.")
+
         permit_conditions = StandardPermitConditions.find_many_by_permit_condition_ids(permit_condition_ids)
 
         if not permit_conditions:
             raise NotFound("Standard Permit Conditions not found")
-        
+
+        if len(permit_conditions) != len(permit_condition_ids):
+            found_ids = {x.standard_permit_condition_id for x in permit_conditions}
+            not_found_ids = [pid for pid in permit_condition_ids if pid not in found_ids]
+            current_app.logger.info(f"Standard conditions with the following ids were not found: {', '.join(map(str, not_found_ids))}")
+            raise BadRequest(f"{len(not_found_ids)} standard conditions were not found")
+
+        now_types = {c.notice_of_work_type for c in permit_conditions}
+        if len(now_types) > 1:
+            raise BadRequest("All permit conditions must belong to the same Notice of Work type")
+
+        condition_map = {c.standard_permit_condition_id: c for c in permit_conditions}
+        ordered_permit_conditions = [condition_map[pid] for pid in permit_condition_ids if pid in condition_map]
+
         cim_or_cpo = data.get("cim_or_cpo")
         cim_or_cpo = None if cim_or_cpo == "NONE" else CimOrCpo(cim_or_cpo)
 
@@ -55,7 +71,9 @@ class StandardReportPermitRequirementResource(Resource, UserMixin):
                 due_date_period_months=data.get("due_date_period_months"),
                 cim_or_cpo=cim_or_cpo,
                 ministry_recipient=data.get("ministry_recipient"),
-                permit_condition_ids=permit_condition_ids
+                permit_condition_ids=permit_condition_ids,
+                condition_category_code=ordered_permit_conditions[0].condition_category_code,
+                notice_of_work_type=ordered_permit_conditions[0].notice_of_work_type
             )
         except IntegrityError as e:
             current_app.logger.info(e)
@@ -80,15 +98,24 @@ class StandardReportPermitRequirementResource(Resource, UserMixin):
         if not permit_condition_ids or len(permit_condition_ids) == 0:
             raise BadRequest("Report requirement must be associated with one or more standard permit conditions.")
         
-        permit_conditions = StandardPermitConditions.find_many_by_permit_condition_ids(permit_condition_ids
-                                                                               )
+        permit_conditions = StandardPermitConditions.find_many_by_permit_condition_ids(permit_condition_ids)
         if len(permit_conditions) != len(permit_condition_ids):
-            not_found_ids = [x.permit_condition_id for x in permit_conditions if x.permit_condition_id not in permit_condition_ids]
+            found_ids = {x.standard_permit_condition_id for x in permit_conditions}
+            not_found_ids = [pid for pid in permit_condition_ids if pid not in found_ids]
             current_app.logger.info(f"Standard conditions with the following ids were not found: {', '.join(map(str, not_found_ids))}")
             raise BadRequest(f"{len(not_found_ids)} standard conditions were not found")
-            
+
+        now_types = {c.notice_of_work_type for c in permit_conditions}
+        if len(now_types) > 1:
+            raise BadRequest("All permit conditions must belong to the same Notice of Work type")
+
+        condition_map = {c.standard_permit_condition_id: c for c in permit_conditions}
+        ordered_permit_conditions = [condition_map[pid] for pid in permit_condition_ids if pid in condition_map]
+
         cim_or_cpo = data.get("cim_or_cpo")
         data['cim_or_cpo'] = None if cim_or_cpo == "NONE" else CimOrCpo(cim_or_cpo)
+        data['condition_category_code'] = ordered_permit_conditions[0].condition_category_code
+        data['notice_of_work_type'] = ordered_permit_conditions[0].notice_of_work_type
 
         try:
             report_requirement.update(**data)

@@ -46,6 +46,14 @@ class MineReportPermitRequirement(SoftDeleteMixin, AuditMixin, HistoryMixin, Bas
     permit_amendment_id: int = db.Column(db.Integer, db.ForeignKey('permit_amendment.permit_amendment_id'))
     is_standard: bool = db.Column(db.Boolean, nullable=False, server_default='false')
 
+    # Only set for standard (template) report requirements, to scope report_name
+    # uniqueness to the template (condition_category_code + notice_of_work_type)
+    # rather than globally across all templates.
+    condition_category_code: Optional[str] = db.Column(
+        db.String, db.ForeignKey('permit_condition_category.condition_category_code'))
+    notice_of_work_type: Optional[str] = db.Column(
+        db.String, db.ForeignKey('notice_of_work_type.notice_of_work_type_code'))
+
     # creates a filter for the class so that all results returned by the cls.query have is_standard=False
     __mapper_args__ = {
         "polymorphic_on": is_standard,
@@ -252,7 +260,9 @@ class StandardReportPermitRequirement(MineReportPermitRequirement):
                due_date_period_months: int,
                cim_or_cpo: Optional[CimOrCpo],
                ministry_recipient: Optional[list[OfficeDestination]],
-               permit_condition_ids: list[int]
+               permit_condition_ids: list[int],
+               condition_category_code: Optional[str] = None,
+               notice_of_work_type: Optional[str] = None
                ) -> Self:
 
         standard_report_permit_requirement = cls(
@@ -260,6 +270,8 @@ class StandardReportPermitRequirement(MineReportPermitRequirement):
             due_date_period_months=due_date_period_months,\
             cim_or_cpo=cim_or_cpo,
             ministry_recipient=ministry_recipient,
+            condition_category_code=condition_category_code,
+            notice_of_work_type=notice_of_work_type,
         )
         for permit_condition_id in permit_condition_ids:
             xref = StandardReportReqPermitConditionXref.create(

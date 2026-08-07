@@ -7,4 +7,7 @@ export interface IMineReportPermitRequirement {
   due_date_period_months: number;
   initial_due_date: string;
   permit_amendment_id?: number;
+  condition_category_code?: string;
+  notice_of_work_type?: string;
 }
+
