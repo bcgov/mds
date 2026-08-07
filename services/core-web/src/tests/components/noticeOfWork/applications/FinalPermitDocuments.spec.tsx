@@ -67,7 +67,7 @@ describe("FinalPermitDocuments", () => {
   describe("getNowApplicationDocument", () => {
     it("does not show locked 1.1 row when showInUnifiedView is false", () => {
       renderComponent({ showInUnifiedView: false });
-      expect(screen.queryByText("1.1")).toBeNull();
+      expect(document.querySelector('[data-row-key="application-form-1.1"]')).toBeNull();
     });
 
     it("does not show locked 1.1 row for non-NOW application types", () => {
@@ -75,7 +75,7 @@ describe("FinalPermitDocuments", () => {
         showInUnifiedView: true,
         noticeOfWork: { ...IMPORTED_NOTICE_OF_WORK, application_type_code: "AIA", documents: [] },
       });
-      expect(screen.queryByText("1.1")).toBeNull();
+      expect(document.querySelector('[data-row-key="application-form-1.1"]')).toBeNull();
     });
 
     it("does not show locked 1.1 row when no system-generated NTR exists", () => {
@@ -88,7 +88,7 @@ describe("FinalPermitDocuments", () => {
           ],
         },
       });
-      expect(screen.queryByText("1.1")).toBeNull();
+      expect(document.querySelector('[data-row-key="application-form-1.1"]')).toBeNull();
     });
 
     it("does not show locked 1.1 row when technical review has not been completed", () => {
@@ -102,7 +102,7 @@ describe("FinalPermitDocuments", () => {
           ],
         },
       });
-      expect(screen.queryByText("1.1")).toBeNull();
+      expect(document.querySelector('[data-row-key="application-form-1.1"]')).toBeNull();
     });
 
     it("shows the NA row when technical review is done but no qualifying NTR is in the package", () => {
@@ -114,7 +114,7 @@ describe("FinalPermitDocuments", () => {
           documents: [makeNtrDoc({ is_final_package: false })],
         },
       });
-      expect(screen.getByText("1.1")).toBeInTheDocument();
+      expect(document.querySelector('[data-row-key="application-form-1.1"]')).toBeTruthy();
     });
 
     it("shows locked 1.1 row with NTR data when tech review done via progress.REV.end_date", () => {
@@ -127,7 +127,7 @@ describe("FinalPermitDocuments", () => {
           documents: [ntrDoc],
         },
       });
-      expect(screen.getByText("1.1")).toBeInTheDocument();
+      expect(document.querySelector('[data-row-key="application-form-1.1"]')).toBeTruthy();
     });
 
     it("picks the most recent qualifying NTR when multiple exist", () => {
@@ -147,7 +147,9 @@ describe("FinalPermitDocuments", () => {
           documents: [olderNtr, newerNtr],
         },
       });
-      expect(screen.getByText("1.1")).toBeInTheDocument();
+      expect(document.querySelector('[data-row-key="application-form-1.1"]')).toBeTruthy();
+      expect(document.querySelector('[data-row-key="ntr-xref-old"]')).toBeTruthy();
+      expect(document.querySelector('[data-row-key="ntr-xref-new"]')).toBeNull();
     });
   });
 });

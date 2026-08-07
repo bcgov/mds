@@ -239,6 +239,23 @@ class NOWApplicationExportResource(Resource, UserMixin):
     parser = CustomReqparser()
     parser.add_argument('now_application_guid', type=str, location='json', required=True)
 
+    @staticmethod
+    def get_locked_ntr_guid(docs):
+        """Return the xref GUID of the most-recently-uploaded qualifying system-generated NTR
+        document that is in the final package, or None when no such document exists."""
+        system_generated_ntrs = [
+            doc for doc in docs
+            if doc.get('now_application_document_type_code') == 'NTR'
+            and doc.get('is_final_package')
+            and doc.get('is_system_generated')
+        ]
+        if not system_generated_ntrs:
+            return None
+        latest_ntr = max(
+            system_generated_ntrs,
+            key=lambda doc: (doc.get('mine_document') or {}).get('upload_date') or '')
+        return latest_ntr.get('now_application_document_xref_guid')
+
     @api.doc(
         description=
         'Generates the specified document for the NoW using the provided template data and issues a one_time token that is used to download the document.',
@@ -417,18 +434,7 @@ class NOWApplicationExportResource(Resource, UserMixin):
             docs = now_application.get('documents', [])
             submission_docs = now_application.get('imported_submission_documents', [])
 
-            system_generated_ntrs = [
-                doc for doc in docs
-                if doc.get('now_application_document_type_code') == 'NTR'
-                and doc.get('is_final_package')
-                and doc.get('is_system_generated')
-            ]
-            locked_ntr_guid = None
-            if system_generated_ntrs:
-                latest_ntr = max(
-                    system_generated_ntrs,
-                    key=lambda doc: (doc.get('mine_document') or {}).get('upload_date') or '')
-                locked_ntr_guid = latest_ntr.get('now_application_document_xref_guid')
+            locked_ntr_guid = NOWApplicationExportResource.get_locked_ntr_guid(docs)
 
             for doc in docs:
                 if doc['now_application_document_type_code'] in EXCLUDED_APPLICATION_DOCUMENT_TYPES:
