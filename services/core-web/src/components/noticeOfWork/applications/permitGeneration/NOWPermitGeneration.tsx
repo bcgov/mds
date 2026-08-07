@@ -248,6 +248,20 @@ export const NOWPermitGeneration: FC<NOWPermitGenerationProps> = ({
     let filteredSubmissionDocuments = noticeOfWork?.filtered_submission_documents;
     let requestedDocuments = noticeOfWork?.documents;
 
+    const qualifyingNtrs = (requestedDocuments || []).filter(
+      (doc) =>
+        doc.now_application_document_type_code === "NTR" &&
+        doc.is_final_package &&
+        doc.is_system_generated &&
+        !doc.deleted_ind
+    );
+    const lockedNtrGuid =
+      qualifyingNtrs.sort((a, b) => {
+        const aDate = a.mine_document?.upload_date || "";
+        const bDate = b.mine_document?.upload_date || "";
+        return bDate > aDate ? 1 : -1;
+      })[0]?.now_application_document_xref_guid || null;
+
     if (!isEmpty(filteredSubmissionDocuments)) {
       filteredSubmissionDocuments = filteredSubmissionDocuments
         ?.filter(({ is_final_package }) => is_final_package)
@@ -260,7 +274,10 @@ export const NOWPermitGeneration: FC<NOWPermitGenerationProps> = ({
 
     if (!isEmpty(requestedDocuments)) {
       requestedDocuments = requestedDocuments
-        ?.filter(({ is_final_package }) => is_final_package)
+        ?.filter(
+          ({ is_final_package, now_application_document_xref_guid }) =>
+            is_final_package && now_application_document_xref_guid !== lockedNtrGuid
+        )
         .map((doc) => ({
           document_info: getDocumentInfo(doc),
           final_package_order: doc.final_package_order,

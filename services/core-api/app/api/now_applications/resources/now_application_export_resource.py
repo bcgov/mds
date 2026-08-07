@@ -416,8 +416,24 @@ class NOWApplicationExportResource(Resource, UserMixin):
             included_docs = []
             docs = now_application.get('documents', [])
             submission_docs = now_application.get('imported_submission_documents', [])
+
+            system_generated_ntrs = [
+                doc for doc in docs
+                if doc.get('now_application_document_type_code') == 'NTR'
+                and doc.get('is_final_package')
+                and doc.get('is_system_generated')
+            ]
+            locked_ntr_guid = None
+            if system_generated_ntrs:
+                latest_ntr = max(
+                    system_generated_ntrs,
+                    key=lambda doc: (doc.get('mine_document') or {}).get('upload_date') or '')
+                locked_ntr_guid = latest_ntr.get('now_application_document_xref_guid')
+
             for doc in docs:
                 if doc['now_application_document_type_code'] in EXCLUDED_APPLICATION_DOCUMENT_TYPES:
+                    continue
+                if doc.get('now_application_document_xref_guid') == locked_ntr_guid:
                     continue
 
                 document_type = NOWApplicationDocumentType.query.get(
