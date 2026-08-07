@@ -12,7 +12,7 @@ class TestAddNowFormToFap:
     def _make_now_application(self, app_module, documents=None):
         """Build a minimal NOWApplication-like object backed by mocks."""
         NOWApplication = app_module
-        instance = MagicMock(spec=NOWApplication)
+        instance = MagicMock()
         instance.now_application_guid = 'test-now-guid'
         instance.next_document_final_package_order = 5
         instance.documents = documents or []

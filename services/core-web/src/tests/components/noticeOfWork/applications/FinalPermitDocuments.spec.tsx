@@ -84,7 +84,7 @@ describe("FinalPermitDocuments", () => {
         noticeOfWork: {
           ...IMPORTED_NOTICE_OF_WORK,
           documents: [
-            { now_application_document_type_code: "OTH", is_system_generated: false, is_final_package: true },
+            { now_application_document_type_code: "OTH", is_system_generated: false, is_final_package: true, mine_document: {} },
           ],
         },
       });
