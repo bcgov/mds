@@ -1,4 +1,4 @@
-import { ICreatePermitSiteProperties, IimportedNOWApplication, IMineDocument, INoticeOfWorkApplicationProgress, IParty } from "@mds/common/interfaces";
+import { ICreatePermitSiteProperties, IimportedNOWApplication, IMineDocument, INoticeOfWorkApplicationProgress, INoWDocument, IParty } from "@mds/common/interfaces";
 
 export interface INoticeOfWorkContact {
   type: string;
@@ -40,6 +40,8 @@ export interface INoticeOfWork {
   received_date: string;
   originating_system: string;
   application_documents: IMineDocument[];
+  documents?: INoWDocument[];
+  issuing_inspector?: IParty;
   is_historic: boolean;
   imported_to_core: boolean;
   now_application_guid: string;

@@ -1,21 +1,17 @@
 import React from "react";
 import { render } from "@testing-library/react";
 import { NOWApplicationAdministrative } from "@/components/noticeOfWork/applications/administrative/NOWApplicationAdministrative";
-import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { IMPORTED_NOTICE_OF_WORK } from "@mds/common/tests/mocks/noticeOfWorkMock";
 import { BrowserRouter } from "react-router-dom";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 import { NOTICE_OF_WORK } from "@mds/common/constants/reducerTypes";
 
-const dispatchProps = {
-  fetchPermits: jest.fn(),
-  createNoticeOfWorkApplication: jest.fn(() => Promise.resolve()),
-  handleSaveNOWEdit: jest.fn(),
-};
-
-const reducerProps = {
-  mineGuid: MOCK.MINES.mineIds[0],
-  noticeOfWork: IMPORTED_NOTICE_OF_WORK,
+const props = {
+  inspectors: [],
+  consultationAdvisors: [],
+  handleUpdateInspectors: jest.fn(),
+  handleUpdateTier: jest.fn(),
+  isLoaded: true,
 };
 
 const initialState = {
@@ -30,7 +26,7 @@ describe("NOWApplicationAdministrative", () => {
     const { container: component } = render(
       <BrowserRouter>
         <ReduxWrapper initialState={initialState}>
-          <NOWApplicationAdministrative {...reducerProps} {...dispatchProps} />
+          <NOWApplicationAdministrative {...props} />
         </ReduxWrapper>
       </BrowserRouter>
     );
