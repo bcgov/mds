@@ -207,6 +207,20 @@ PERMIT_AMENDMENT_DOCUMENT_MODEL = api.model(
         'create_timestamp': fields.DateTime
     })
 
+PERMIT_AMENDMENT_ORGBOOK_PUBLISH_STATUS_MODEL = api.model(
+    'PermitAmendmentOrgBookPublishStatus', {
+        'unsigned_payload_hash': fields.String,
+        'permit_amendment_guid': fields.String,
+        'party_guid': fields.String,
+        'publish_state': fields.Boolean,
+        'permit_number': fields.String,
+        'orgbook_entity_id': fields.String,
+        'orgbook_credential_id': fields.String,
+        'error_msg': fields.String,
+        'create_timestamp': fields.DateTime,
+        'update_timestamp': fields.DateTime,
+    })
+
 PERMIT_AMENDMENT_SHORT_MODEL = api.model(
     'PermitAmendment', {
         'permit_amendment_id': fields.Integer,
@@ -341,6 +355,7 @@ PERMIT_AMENDMENT_MODEL = api.model(
         'mine_report_permit_requirements': fields.List(fields.Nested(MINE_REPORT_PERMIT_REQUIREMENT)),
         'condition_categories': fields.List(fields.Nested(PERMIT_CONDITION_CATEGORY_MODEL)),
         'conditions_review_completed': fields.Boolean,
+        'active_orgbook_publish_status': fields.Nested(PERMIT_AMENDMENT_ORGBOOK_PUBLISH_STATUS_MODEL),
     })
 
 PERMIT_CONDITIONS_DATA_MODEL = api.model(

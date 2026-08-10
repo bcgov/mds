@@ -1,6 +1,6 @@
 import uuid
 from datetime import date, datetime
-from typing import Union
+from typing import TYPE_CHECKING, Union
 
 from app.api.constants import *
 from app.api.mines.permits.permit_amendment.models.permit_amendment_document import (
@@ -20,6 +20,9 @@ from sqlalchemy.orm import validates
 from sqlalchemy.schema import FetchedValue
 
 from . import permit_amendment_status_code, permit_amendment_type_code
+
+if TYPE_CHECKING:
+    from app.api.verifiable_credentials.models.orgbook_publish_status import PermitAmendmentOrgBookPublish
 
 
 class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
@@ -116,6 +119,10 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
         'PartyVerifiableCredentialMinesActPermit',
         lazy='selectin',
         order_by='desc(PartyVerifiableCredentialMinesActPermit.update_timestamp)')
+    orgbook_publish_status_records: list["PermitAmendmentOrgBookPublish"] = db.relationship(
+        'PermitAmendmentOrgBookPublish',
+        lazy='select',
+        order_by='desc(PermitAmendmentOrgBookPublish.update_timestamp)')                                   #type: ignore[reportAssignmentType]
     mines_act_permit_vc_locked = association_proxy("permit", 'mines_act_permit_vc_locked')
 
     # Note: This relationship is lazy loaded on purpose to avoid being loaded unless absolutely necessary
@@ -190,6 +197,18 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
         else:
             return self.vc_credential_exch[0].cred_exch_state if len(
                 self.vc_credential_exch) > 0 else None
+
+    @hybrid_property
+    def active_orgbook_publish_status(self):
+        active = [
+            x for x in self.orgbook_publish_status_records if x.publish_state is True
+        ]
+
+        if active:
+            return active[0]
+
+        return self.orgbook_publish_status_records[0] if len(
+            self.orgbook_publish_status_records) > 0 else None
 
     def __repr__(self):
         return '<PermitAmendment %r, %r>' % (self.mine_guid, self.permit_id)

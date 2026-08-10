@@ -5,6 +5,19 @@ import { IMineReportPermitRequirement } from "./mineReportPermitRequirements.int
 import { IPermitAmendmentDocument } from "./permitAmendmentDocument.interface";
 import { IPermitCondition, IPermitConditionCategory } from "./permitCondition.interface";
 
+export interface IActiveOrgbookPublishStatus {
+  unsigned_payload_hash: string;
+  permit_amendment_guid: string;
+  party_guid: string;
+  publish_state: boolean;
+  permit_number: string;
+  orgbook_entity_id: string;
+  orgbook_credential_id: string;
+  error_msg: string;
+  create_timestamp: string;
+  update_timestamp: string;
+}
+
 export interface IPermitAmendment {
   permit_amendment_id: number;
   permit_no: string;
@@ -32,6 +45,7 @@ export interface IPermitAmendment {
   is_generated_in_core: boolean;
   preamble_text: string;
   vc_credential_exch_state: VC_CRED_ISSUE_STATES;
+  active_orgbook_publish_status?: IActiveOrgbookPublishStatus;
   mine_report_permit_requirements?: IMineReportPermitRequirement[];
   condition_categories: IPermitConditionCategory[];
   conditions_review_completed: boolean;

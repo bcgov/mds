@@ -227,6 +227,24 @@ export const PermitsTable: FC<PermitsTableProps> = (props) => {
         </div>
       ),
     },
+    {
+      title: "UNTP Conformity Credential",
+      dataIndex: "active_orgbook_publish_status",
+      key: "untp_conformity_credential",
+      render: (status) => {
+        const credentialUrl = status?.orgbook_credential_id;
+
+        if (!credentialUrl) {
+          return Strings.EMPTY_FIELD;
+        }
+
+        return (
+          <a href={credentialUrl} target="_blank" rel="noopener noreferrer" title={credentialUrl}>
+            View Credential
+          </a>
+        );
+      },
+    },
   ];
 
   return (
