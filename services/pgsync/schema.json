@@ -215,6 +215,31 @@
                             ]
                         }
                     }
+                },
+                {
+                    "table": "address",
+                    "columns": [
+                        "suite_no",
+                        "address_line_1",
+                        "address_line_2",
+                        "city",
+                        "sub_division_code",
+                        "post_code",
+                        "address_type_code"
+                    ],
+                    "label": "address",
+                    "relationship": {
+                        "type": "one_to_many",
+                        "variant": "object",
+                        "foreign_key": {
+                            "child": [
+                                "party_guid"
+                            ],
+                            "parent": [
+                                "party_guid"
+                            ]
+                        }
+                    }
                 }
             ]
         }

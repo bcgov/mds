@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, TYPE_CHECKING
 from datetime import datetime, timedelta, date
 from enum import Enum
 from werkzeug.exceptions import BadRequest
@@ -6,6 +6,7 @@ from werkzeug.exceptions import BadRequest
 from sqlalchemy import and_, or_, nullsfirst, nullslast
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
+from sqlalchemy.orm import Mapped
 
 from app.extensions import db, cache
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, DraftMixin, Base
@@ -20,6 +21,9 @@ from app.config import Config
 from app.api.utils.access_decorators import EDIT_TSF
 from app.api.utils.helpers import format_email_datetime_to_string
 from werkzeug.exceptions import NotFound
+
+if TYPE_CHECKING:
+    from app.api.parties.party.models.party import Party
 
 
 class MinePartyAppointmentStatus(str, Enum):
@@ -68,7 +72,7 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, DraftMixin, Base):
     union_rep_company = db.Column(db.String)
 
     # Relationships
-    party = db.relationship(
+    party: Mapped["Party | None"] = db.relationship(
         'Party', lazy='joined', foreign_keys=party_guid, back_populates='mine_party_appt')
     merged_from_party = db.relationship('Party', foreign_keys=merged_from_party_guid)
     mine_tailings_storage_facility = db.relationship('MineTailingsStorageFacility', lazy='joined')
@@ -153,7 +157,8 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, DraftMixin, Base):
             str(self.start_date) if self.start_date else None,
             'end_date':
             str(self.end_date) if self.end_date else None,
-            'is_draft': str(self.is_draft),
+            'is_draft':
+            str(self.is_draft),
             'union_rep_company':
             self.union_rep_company,
             'documents': [doc.json() for doc in self.documents],
@@ -276,8 +281,7 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, DraftMixin, Base):
                 deleted_ind=False, mine_guid=mine_guid, status=MinePartyAppointmentStatus.active)
         else:
             built_query = cls.query.filter(
-                cls.deleted_ind == False,
-                cls.mine_guid == mine_guid,
+                cls.deleted_ind == False, cls.mine_guid == mine_guid,
                 or_(cls.end_date == None, cls.end_date > datetime.utcnow().date()))
 
         if permit_id:
@@ -383,8 +387,7 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, DraftMixin, Base):
         button_link = f'{Config.CORE_WEB_URL}/mine-dashboard/{self.mine.mine_guid}/permits-and-approvals/tailings/{self.mine_tailings_storage_facility.mine_tailings_storage_facility_guid}/{party_page}'
         # change from UTC to PST
         submitted_at = format_email_datetime_to_string(datetime.utcnow())
-        start_date = self.start_date.strftime(
-            '%b %d %Y') if self.start_date else 'No date provided'
+        start_date = self.start_date.strftime('%b %d %Y') if self.start_date else 'No date provided'
 
         email_context = {
             "tsf_name": self.mine_tailings_storage_facility.mine_tailings_storage_facility_name,
@@ -499,8 +502,8 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, DraftMixin, Base):
         if add_to_session:
             mpa.save(commit=False)
         return mpa
-    
-    def request_termination_report_if_required(self, trigger_with_pending_assignment = False):
+
+    def request_termination_report_if_required(self, trigger_with_pending_assignment=False):
         if not is_feature_enabled(Feature.TSF_TERMINATE_APPTS):
             return
 
@@ -514,8 +517,11 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, DraftMixin, Base):
             mine_report_definition = MineReportDefinition.find_one_by_section(*section)
             if not mine_report_definition:
                 section_output = '.'.join(section)
-                raise NotFound(f'{self.mine_party_appt_type_code} Report definition not found by section {section_output}')
-            calculated_due_date = self.end_date + timedelta(hours=72) if self.end_date else datetime.now() + timedelta(hours=72)
+                raise NotFound(
+                    f'{self.mine_party_appt_type_code} Report definition not found by section {section_output}'
+                )
+            calculated_due_date = self.end_date + timedelta(
+                hours=72) if self.end_date else datetime.now() + timedelta(hours=72)
             report = MineReport.create(
                 mine_report_definition_id=mine_report_definition.mine_report_definition_id,
                 mine_guid=self.mine_guid,

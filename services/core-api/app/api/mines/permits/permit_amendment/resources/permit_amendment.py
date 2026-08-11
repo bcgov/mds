@@ -26,7 +26,7 @@ from app.api.mines.permits.permit_amendment.models.permit_amendment_document imp
 from app.api.mines.mine.resources.mine_type import MineType
 from app.api.utils.helpers import get_preamble_text
 from app.api.verifiable_credentials.models.credentials import PartyVerifiableCredentialMinesActPermit
-from app.api.verifiable_credentials.manager import revoke_all_credentials_for_permit, offer_newest_amendment_to_current_permittee
+from app.api.verifiable_credentials.anoncred_manager import revoke_all_credentials_for_permit, offer_newest_amendment_to_current_permittee
 
 ROLES_ALLOWED_TO_CREATE_HISTORICAL_AMENDMENTS = [MINE_ADMIN, EDIT_HISTORICAL_PERMIT_AMENDMENTS]
 
@@ -263,9 +263,13 @@ class PermitAmendmentListResource(Resource, UserMixin):
 
         new_pa.save()
 
-        revoke_all_credentials_for_permit.apply_async(kwargs={"permit_guid": permit_guid, "mine_guid":mine_guid, "reason":"it was amended"})
-        offer_newest_amendment_to_current_permittee.apply_async(kwargs={"permit_amendment_guid": new_pa.permit_amendment_guid})
-
+        revoke_all_credentials_for_permit.apply_async(kwargs={
+            "permit_guid": permit_guid,
+            "mine_guid": mine_guid,
+            "reason": "it was amended"
+        })
+        offer_newest_amendment_to_current_permittee.apply_async(
+            kwargs={"permit_amendment_guid": new_pa.permit_amendment_guid})
 
         return new_pa
 
@@ -346,11 +350,7 @@ class PermitAmendmentResource(Resource, UserMixin):
         store_missing=False,
         help='{ mine_commodity_code, mine_disturbance_code}.')
     parser.add_argument(
-        'preamble_text',
-        type=str,
-        location='json',
-        store_missing=False,
-        help='Preamble text.')
+        'preamble_text', type=str, location='json', store_missing=False, help='Preamble text.')
 
     @api.doc(params={'permit_amendment_guid': 'Permit amendment guid.'})
     @requires_role_view_all

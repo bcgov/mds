@@ -261,6 +261,8 @@ MINE_REPORT_PERMIT_REQUIREMENT = api.model(
         'permit_condition_ids': fields.List(fields.Integer),
         'permit_amendment_id': fields.Integer,
         'is_standard': fields.Boolean,
+        'condition_category_code': fields.String,
+        'notice_of_work_type': fields.String,
     }
 )
 

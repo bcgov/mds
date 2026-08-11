@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 import {
   IMineReportPermitRequirement,
   IPermitCondition,
+  IStandardPermitCondition,
 } from "@mds/common/interfaces";
 import { required, requiredRadioButton, maxLength, requiredList, notInList } from "@mds/common/redux/utils/Validate";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
@@ -82,12 +83,6 @@ export const ReportPermitRequirementForm: FC<ReportPermitRequirementProps> = ({
 
   const standardRequirements = useAppSelector(getStandardReportRequirements);
   const permitRequirements = useAppSelector(getMineReportPermitRequirementsByAmendment(permitGuid, currentAmendment?.permit_amendment_guid, isNowEditor));
-  const existingRequirements = isStandardConditionEditor ? standardRequirements : permitRequirements;
-
-  const hasExistingRequirements = existingRequirements?.length > 0;
-  const existingRequirementsOptions = existingRequirements.map((r) => { return { label: r.report_name, value: r.mine_report_permit_requirement_id } });
-  const disableFields = mineReportPermitRequirement?.mine_report_permit_requirement_id !== selectedRequirement?.mine_report_permit_requirement_id;
-  const multipleConditions = selectedRequirement?.permit_condition_ids.length > 1;
 
   const nowConditions = useAppSelector(getNowDraftConditionsFormatted);
   const permitConditions = useAppSelector(getPermitConditionCategories(permitGuid, currentAmendment?.permit_amendment_guid));
@@ -99,6 +94,34 @@ export const ReportPermitRequirementForm: FC<ReportPermitRequirementProps> = ({
 
   const { conditionMap, categoriesWithConditions } = conditions;
 
+  // Standard report requirements aren't filtered by template on the GET endpoint, so
+  // filter to only those requirements matching the notice_of_work_type (template)
+  // as the condition currently being edited.
+  const currentTemplateCondition = condition as unknown as IStandardPermitCondition;
+  const targetNowType =
+    currentTemplateCondition?.notice_of_work_type ||
+    selectedRequirement?.notice_of_work_type ||
+    (selectedRequirement?.permit_condition_ids?.[0]
+      ? (conditionMap[selectedRequirement.permit_condition_ids[0]] as unknown as IStandardPermitCondition)?.notice_of_work_type
+      : undefined);
+
+  const standardRequirementsForTemplate =
+    isStandardConditionEditor && targetNowType
+      ? standardRequirements.filter((r) => {
+          const nowType =
+            r.notice_of_work_type ||
+            (conditionMap[r.permit_condition_ids?.[0]] as unknown as IStandardPermitCondition)?.notice_of_work_type;
+          return nowType === targetNowType;
+        })
+      : standardRequirements;
+
+
+  const existingRequirements = isStandardConditionEditor ? standardRequirementsForTemplate : permitRequirements;
+
+  const hasExistingRequirements = existingRequirements?.length > 0;
+  const existingRequirementsOptions = existingRequirements.map((r) => { return { label: r.report_name, value: r.mine_report_permit_requirement_id } });
+  const disableFields = mineReportPermitRequirement?.mine_report_permit_requirement_id !== selectedRequirement?.mine_report_permit_requirement_id;
+  const multipleConditions = selectedRequirement?.permit_condition_ids.length > 1;
 
   const getLinkedConditionList = () => {
     if (!hasExistingRequirements || !selectedRequirement) {
@@ -176,6 +199,7 @@ export const ReportPermitRequirementForm: FC<ReportPermitRequirementProps> = ({
       resp = await dispatch(createMineReportPermitRequirement({ mineGuid, values }));
     }
     if (resp.payload) {
+      setSelectedRequirement(resp.payload);
       await refreshData();
       if (conditionId !== undefined) {
         clearActiveConditionId(conditionId);

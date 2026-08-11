@@ -1,12 +1,13 @@
 from datetime import datetime
 from zoneinfo import ZoneInfo
 
-from app.api.verifiable_credentials.manager import VerifiableCredentialManager
+from app.api.verifiable_credentials.anoncred_manager import AnonCredCredentialManager
+from app.api.verifiable_credentials.untp_manager import UNTPCredentialManager
 from app.api.mines.mine.models.mine_type import MineType
 from tests.factories import create_mine_and_permit, PartyFactory, MinePartyAppointmentFactory, PartyBCRegistrationFactory
 
 
-class TestVerifiableCredentialManager:
+class TestAnonCredCredentialManager:
     """test MinesActPermit 1.1.1 attributes"""
 
     def test_collect_attributes_for_mines_act_permit_111(self, test_client, db_session):
@@ -44,7 +45,7 @@ class TestVerifiableCredentialManager:
         assert pa.mine.longitude
         assert permit.active_bond_total
 
-        attribute_list = VerifiableCredentialManager.collect_attributes_for_mines_act_permit_111(pa)
+        attribute_list = AnonCredCredentialManager.collect_attributes_for_mines_act_permit_111(pa)
         attributes = {x["name"]: x["value"] for x in attribute_list}
 
         assert attributes["permit_no"] == pa.permit_no
@@ -78,19 +79,19 @@ class TestVerifiableCredentialManager:
         poe = PartyBCRegistrationFactory(party_guid=permittee_appt.party_guid)
         permittee_appt.party.party_bc_registration = poe
 
-        pa_cred = VerifiableCredentialManager.produce_untp_cc_map_payload_without_id(
-            "did:test:10230123", permit.permit_amendments[0])
+        untp_post_resp, party_guid = UNTPCredentialManager.prepare_permit_amendment_untp_credential_without_id(
+            str(permit.permit_amendments[0].permit_amendment_guid))
 
         pa = permit.permit_amendments[0]
 
-        assert pa_cred
-        assert str(pa_cred.credentialSubject.issuedToParty.registeredId) == str(poe.registration_id)
+        assert untp_post_resp
+        assert str(untp_post_resp["data"]["permittee"]["identifier"]) == str(poe.registration_id)
 
     def test_produce_untp_cc_map_payload_null_if_no_orgbook(self, db_session):
         mine, permit = create_mine_and_permit()
         permittee_appt = MinePartyAppointmentFactory(permittee=True, permit_id=permit.permit_id)
 
-        pa_cred = VerifiableCredentialManager.produce_untp_cc_map_payload_without_id(
-            "did:test:10230123", permit.permit_amendments[0])
+        pa_cred, party_guid = UNTPCredentialManager.prepare_permit_amendment_untp_credential_without_id(
+            str(permit.permit_amendments[0].permit_amendment_guid))
 
         assert not pa_cred

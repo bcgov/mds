@@ -1,4 +1,4 @@
-FROM postgis/postgis:16-3.4
+FROM postgis/postgis:18-3.6
 
 RUN sed -i 's/$/ 13/' /etc/apt/sources.list.d/pgdg.list
 
@@ -11,10 +11,10 @@ RUN set -eux; \
     rm -rf /var/lib/apt/lists/*
 
 ENV PGBINOLD /usr/lib/postgresql/13/bin
-ENV PGBINNEW /usr/lib/postgresql/16/bin
+ENV PGBINNEW /usr/lib/postgresql/18/bin
 
 ENV PGDATAOLD /var/lib/postgresql/13/data
-ENV PGDATANEW /var/lib/postgresql/16/data
+ENV PGDATANEW /var/lib/postgresql/18/data
 
 RUN set -eux; \
     mkdir -p "$PGDATAOLD" "$PGDATANEW"; \
