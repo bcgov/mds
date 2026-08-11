@@ -15,7 +15,7 @@ from typing import Any, Dict, List, Optional, TypedDict
 class OrgBookSearchResultItem(TypedDict):
     registration_id: str
     text: str
-    credential_id: str
+    credential_id: str | None
 
 
 # ---------------------------------------------------------------------------

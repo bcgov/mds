@@ -23,28 +23,35 @@ class BCRegistriesService():
                 "identifier": "",
                 "bn": ""
             },
-            "categories": {
-                "legalType": ["BC", "BEN", "CP"],
-                "status": ["ACTIVE"]
-            },
+            "legalType": ["[\"BC\", \"BEN\", \"CP\"]"],
+            "status": ["[\"ACTIVE\"]"],
+            "categories": {},
             "rows": 1,
             "start": 1
         }
 
         url = f'{BC_REGISTRIES_API_URL}/api/v2/search/businesses'
-        resp = requests.get(
+        resp = requests.post(
             url=url,
             json=data,
-            headers={"X-Apikey": BC_REGISTRIES_SECRET_TOKEN},
+            headers={
+                "x-apikey": BC_REGISTRIES_SECRET_TOKEN,
+                "account-id": ""
+            },
             timeout=10,
         )
 
         if resp.status_code != requests.codes.ok:
+            print(resp.text)
             raise BadGateway(f'BC Registries API responded with {resp.status_code}: {resp.reason}')
 
         try:
-            response: BulkBusinessSearchResponse = resp.json()
+            response: BulkBusinessSearchResponse = resp.json()["searchResults"]
         except (ValueError, TypeError) as e:
             raise BadGateway('BC Registries API responded with unexpected data.') from e
 
-        return []
+        return [{
+            "registration_id": r["identifier"],
+            "text": r["name"],
+            "credential_id": None
+        } for r in response["results"]]
