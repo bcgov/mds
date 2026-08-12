@@ -180,6 +180,38 @@ export const PermitsTable: FC<PermitsTableProps> = (props) => {
     rowData = permitRowData;
   }
 
+  const hasCredentialLinks = rowData.some((record) =>
+    record.permit_amendments?.some((amendment) =>
+      Boolean(amendment.active_orgbook_publish_status?.orgbook_credential_id)
+    )
+  );
+
+  const credentialColumn = {
+    title: "UNTP Conformity Credential",
+    dataIndex: "active_orgbook_publish_status",
+    key: "untp_conformity_credential",
+    render: (status) => {
+      const credentialUrl = status?.orgbook_credential_id;
+
+      if (!credentialUrl) {
+        return Strings.EMPTY_FIELD;
+      }
+
+      try {
+        const publisherHostname = new URL(credentialUrl).hostname;
+        const linkUrl = `https://${publisherHostname}/view?url=${credentialUrl}`;
+
+        return (
+          <a href={linkUrl} target="_blank" rel="noopener noreferrer" title={linkUrl}>
+            View Credential
+          </a>
+        );
+      } catch {
+        return Strings.EMPTY_FIELD;
+      }
+    },
+  };
+
   const expandedColumns = [
     renderTextColumn("amendmentNumber", "Amendment No."),
     renderDateColumn("issue_date", "Date Issued"),
@@ -227,24 +259,7 @@ export const PermitsTable: FC<PermitsTableProps> = (props) => {
         </div>
       ),
     },
-    {
-      title: "UNTP Conformity Credential",
-      dataIndex: "active_orgbook_publish_status",
-      key: "untp_conformity_credential",
-      render: (status) => {
-        const credentialUrl = status?.orgbook_credential_id;
-
-        if (!credentialUrl) {
-          return Strings.EMPTY_FIELD;
-        }
-
-        return (
-          <a href={credentialUrl} target="_blank" rel="noopener noreferrer" title={credentialUrl}>
-            View Credential
-          </a>
-        );
-      },
-    },
+    ...(hasCredentialLinks ? [credentialColumn] : []),
   ];
 
   return (
