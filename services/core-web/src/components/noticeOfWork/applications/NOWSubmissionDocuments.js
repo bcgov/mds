@@ -682,7 +682,7 @@ export const NOWSubmissionDocuments = (props) => {
               },
               getCheckboxProps: (record) => ({
                 disabled:
-                  (record && !record.mine_document_guid) ||
+                  !record?.mine_document_guid ||
                   props.lockedRowKeys?.includes(record.mine_document_guid),
               }),
             }

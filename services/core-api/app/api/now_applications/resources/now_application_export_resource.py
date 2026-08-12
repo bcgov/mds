@@ -241,8 +241,15 @@ class NOWApplicationExportResource(Resource, UserMixin):
 
     @staticmethod
     def get_locked_ntr_guid(docs):
-        """Return the xref GUID of the most-recently-uploaded qualifying system-generated NTR
-        document that is in the final package, or None when no such document exists."""
+        """Return the xref GUID of the most-recently-created qualifying system-generated NTR
+        document that is in the final package, or None when no such document exists.
+
+        Operates on marshaled dicts rather than ORM objects.
+
+        Equivalent implementations:
+          - services/common/src/utils/helpers.ts     (getLockedSystemNtrDoc / getLockedSystemNtrGuid)
+          - now_application_document_resource.py     (_get_locked_system_ntr_xref_guid)
+        """
         system_generated_ntrs = [
             doc for doc in docs
             if doc.get('now_application_document_type_code') == 'NTR'
@@ -253,7 +260,7 @@ class NOWApplicationExportResource(Resource, UserMixin):
             return None
         latest_ntr = max(
             system_generated_ntrs,
-            key=lambda doc: (doc.get('mine_document') or {}).get('upload_date') or '')
+            key=lambda doc: doc.get('create_timestamp') or '')
         return latest_ntr.get('now_application_document_xref_guid')
 
     @api.doc(

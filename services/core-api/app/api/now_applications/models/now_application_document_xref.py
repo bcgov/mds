@@ -13,6 +13,7 @@ class NOWApplicationDocumentXref(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = 'now_application_document_xref'
 
     _edit_groups = [NOW_APPLICATION_EDIT_GROUP]
+    _protected_columns = ['is_system_generated']
 
     now_application_document_xref_guid = db.Column(
         UUID(as_uuid=True), primary_key=True, server_default=FetchedValue())

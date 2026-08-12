@@ -7,6 +7,7 @@ const makeDoc = (overrides = {}) => ({
   is_system_generated: true,
   deleted_ind: false,
   mine_document: { upload_date: "2025-01-01" },
+  create_timestamp: "2025-01-01T10:00:00",
   ...overrides,
 });
 
@@ -45,11 +46,11 @@ describe("getLockedSystemNtrGuid", () => {
   it("returns the GUID of the most recently uploaded document when multiple qualify", () => {
     const older = makeDoc({
       now_application_document_xref_guid: "old-guid",
-      mine_document: { upload_date: "2024-06-01" },
+      create_timestamp: "2024-06-01T08:00:00",
     });
     const newer = makeDoc({
       now_application_document_xref_guid: "new-guid",
-      mine_document: { upload_date: "2025-01-15" },
+      create_timestamp: "2025-01-15T14:30:00",
     });
     expect(getLockedSystemNtrGuid([older, newer])).toBe("new-guid");
   });
@@ -61,8 +62,8 @@ describe("getLockedSystemNtrGuid", () => {
 
   it("does not mutate the original documents array", () => {
     const docs = [
-      makeDoc({ now_application_document_xref_guid: "a", mine_document: { upload_date: "2025-01-01" } }),
-      makeDoc({ now_application_document_xref_guid: "b", mine_document: { upload_date: "2024-01-01" } }),
+      makeDoc({ now_application_document_xref_guid: "a", create_timestamp: "2025-01-01T10:00:00" }),
+      makeDoc({ now_application_document_xref_guid: "b", create_timestamp: "2024-01-01T10:00:00" }),
     ];
     const originalOrder = docs.map((d) => d.now_application_document_xref_guid);
     getLockedSystemNtrGuid(docs);
@@ -83,8 +84,8 @@ describe("getLockedSystemNtrDoc", () => {
   });
 
   it("returns the most recently uploaded qualifying doc", () => {
-    const older = makeDoc({ now_application_document_xref_guid: "old", mine_document: { upload_date: "2024-01-01" } });
-    const newer = makeDoc({ now_application_document_xref_guid: "new", mine_document: { upload_date: "2025-06-01" } });
+    const older = makeDoc({ now_application_document_xref_guid: "old", create_timestamp: "2024-01-01T09:00:00" });
+    const newer = makeDoc({ now_application_document_xref_guid: "new", create_timestamp: "2025-06-01T15:00:00" });
     expect(getLockedSystemNtrDoc([older, newer])).toBe(newer);
   });
 

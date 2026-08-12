@@ -394,9 +394,10 @@ class NOWApplication(Base, AuditMixin):
         token = NOWApplicationExportResource.get_now_form_generate_token(self.now_application_guid)
         now_doc_dict = NoticeOfWorkDocumentResource.generate_now_document(token, True)
 
-        # Exclude all previous Notice of Work Form documents from the final application package
+        # Only evict previous system-generated NTRs; user-uploaded NTRs stay in the package.
         now_form_docs = [
-            doc for doc in self.documents if doc.now_application_document_type_code == 'NTR'
+            doc for doc in self.documents
+            if doc.now_application_document_type_code == 'NTR' and doc.is_system_generated
         ]
         for doc in now_form_docs:
             doc.is_final_package = False

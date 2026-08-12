@@ -77,6 +77,7 @@ class Base(db.Model):
     __abstract__ = True
     _edit_groups = []
     _edit_key = None
+    _protected_columns = []  # columns excluded from deep_update_from_dict
     # Set default query_class on base class.
     query_class = UserBoundQuery
 
@@ -133,7 +134,9 @@ class Base(db.Model):
         current_app.logger.debug(depth * '-' + f'updating{self}')
         mapper = inspect(self.__class__)
         editable_columns = [
-            c for c in mapper.columns if c.name not in [pk.name for pk in mapper.primary_key]
+            c for c in mapper.columns
+            if c.name not in [pk.name for pk in mapper.primary_key]
+            and c.name not in self._protected_columns
         ]
         class_relationships = mapper.relationships
 

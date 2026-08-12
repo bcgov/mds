@@ -20,6 +20,13 @@ from app.api.now_submissions.models.document import Document
 
 
 def _get_locked_system_ntr_xref_guid(now_application):
+    """Return the xref GUID of the currently locked system-generated NTR document
+    (the most recently created system-generated NTR in the final package), or None.
+
+    Equivalent implementations:
+      - services/common/src/utils/helpers.ts          (getLockedSystemNtrDoc / getLockedSystemNtrGuid)
+      - now_application_export_resource.py            (NOWApplicationExportResource.get_locked_ntr_guid)
+    """
     qualifying = [
         doc for doc in now_application.documents
         if doc.now_application_document_type_code == 'NTR'
@@ -31,8 +38,7 @@ def _get_locked_system_ntr_xref_guid(now_application):
         return None
     latest = max(
         qualifying,
-        key=lambda d: str(d.mine_document.upload_date)
-        if d.mine_document and d.mine_document.upload_date else ''
+        key=lambda d: str(d.create_timestamp) if d.create_timestamp else ''
     )
     return str(latest.now_application_document_xref_guid)
 

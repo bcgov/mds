@@ -1,6 +1,6 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
-import { FinalPermitDocuments } from "@/components/noticeOfWork/applications/FinalPermitDocuments";
+import { render } from "@testing-library/react";
+import { FinalPermitDocuments, getNowApplicationDocument } from "@/components/noticeOfWork/applications/FinalPermitDocuments";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { IMPORTED_NOTICE_OF_WORK } from "@mds/common/tests/mocks/noticeOfWorkMock";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
@@ -40,6 +40,7 @@ const makeNtrDoc = (overrides = {}) => ({
   preamble_title: "Notice of Work Application",
   preamble_author: "N/A",
   preamble_date: "2025-01-15",
+  create_timestamp: "2025-01-15T10:00:00",
   mine_document: {
     mine_document_guid: "mine-doc-guid-1",
     document_manager_guid: "doc-mgr-guid-1",
@@ -65,91 +66,103 @@ describe("FinalPermitDocuments", () => {
   });
 
   describe("getNowApplicationDocument", () => {
-    it("does not show locked 1.1 row when showInUnifiedView is false", () => {
-      renderComponent({ showInUnifiedView: false });
-      expect(document.querySelector('[data-row-key="application-form-1.1"]')).toBeNull();
+    it("returns null when showInUnifiedView is false", () => {
+      const result = getNowApplicationDocument(IMPORTED_NOTICE_OF_WORK, {}, false);
+      expect(result.nowApplicationDocument).toBeNull();
+      expect(result.lockedNtrGuid).toBeNull();
     });
 
-    it("does not show locked 1.1 row for non-NOW application types", () => {
-      renderComponent({
-        showInUnifiedView: true,
-        noticeOfWork: { ...IMPORTED_NOTICE_OF_WORK, application_type_code: "AIA", documents: [] },
-      });
-      expect(document.querySelector('[data-row-key="application-form-1.1"]')).toBeNull();
+    it("returns null for non-NOW application types", () => {
+      const result = getNowApplicationDocument(
+        { ...IMPORTED_NOTICE_OF_WORK, application_type_code: "AIA", documents: [] },
+        {},
+        true
+      );
+      expect(result.nowApplicationDocument).toBeNull();
     });
 
-    it("does not show locked 1.1 row when no system-generated NTR exists", () => {
-      renderComponent({
-        showInUnifiedView: true,
-        noticeOfWork: {
+    it("returns null when no system-generated NTR exists", () => {
+      const result = getNowApplicationDocument(
+        {
           ...IMPORTED_NOTICE_OF_WORK,
           documents: [
-            { now_application_document_type_code: "OTH", is_system_generated: false, is_final_package: true, mine_document: {} },
+            { now_application_document_type_code: "OTH", is_system_generated: false, is_final_package: true },
           ],
         },
-      });
-      expect(document.querySelector('[data-row-key="application-form-1.1"]')).toBeNull();
+        {},
+        true
+      );
+      expect(result.nowApplicationDocument).toBeNull();
     });
 
-    it("does not show locked 1.1 row when technical review has not been completed", () => {
-      renderComponent({
-        showInUnifiedView: true,
-        progress: {},
-        noticeOfWork: {
+    it("returns null when technical review has not been completed", () => {
+      const result = getNowApplicationDocument(
+        {
           ...IMPORTED_NOTICE_OF_WORK,
-          documents: [
-            makeNtrDoc({ is_final_package: false, description: "Some other description" }),
-          ],
+          documents: [makeNtrDoc({ is_final_package: false, description: "Some other description" })],
         },
-      });
-      expect(document.querySelector('[data-row-key="application-form-1.1"]')).toBeNull();
+        {},
+        true
+      );
+      expect(result.nowApplicationDocument).toBeNull();
     });
 
-    it("shows the NA row when technical review is done but no qualifying NTR is in the package", () => {
-      renderComponent({
-        showInUnifiedView: true,
-        progress: { REV: { end_date: "2025-01-01" } },
-        noticeOfWork: {
+    it("returns the NA row when tech review is done but no qualifying NTR is in the package", () => {
+      const result = getNowApplicationDocument(
+        {
           ...IMPORTED_NOTICE_OF_WORK,
           documents: [makeNtrDoc({ is_final_package: false })],
         },
-      });
-      expect(document.querySelector('[data-row-key="application-form-1.1"]')).toBeTruthy();
+        { REV: { end_date: "2025-01-01" } },
+        true
+      );
+      expect(result.nowApplicationDocument).not.toBeNull();
+      expect(result.nowApplicationDocument.isLockedApplicationForm).toBe(true);
+      expect(result.nowApplicationDocument.preamble_title).toBe("N/A");
+      expect(result.lockedNtrGuid).toBeNull();
     });
 
-    it("shows locked 1.1 row with NTR data when tech review done via progress.REV.end_date", () => {
+    it("returns the locked row when tech review is done via progress.REV.end_date", () => {
       const ntrDoc = makeNtrDoc();
-      renderComponent({
-        showInUnifiedView: true,
-        progress: { REV: { end_date: "2025-01-01" } },
-        noticeOfWork: {
-          ...IMPORTED_NOTICE_OF_WORK,
-          documents: [ntrDoc],
-        },
-      });
-      expect(document.querySelector('[data-row-key="application-form-1.1"]')).toBeTruthy();
+      const result = getNowApplicationDocument(
+        { ...IMPORTED_NOTICE_OF_WORK, documents: [ntrDoc] },
+        { REV: { end_date: "2025-01-01" } },
+        true
+      );
+      expect(result.nowApplicationDocument).not.toBeNull();
+      expect(result.nowApplicationDocument.isLockedApplicationForm).toBe(true);
+      expect(result.nowApplicationDocument.category).toBe("Notice of Work Form");
+      expect(result.lockedNtrGuid).toBe("ntr-xref-guid-1");
     });
 
-    it("picks the most recent qualifying NTR when multiple exist", () => {
+    it("returns the locked row when tech review is done via the NTR description sentinel", () => {
+      const ntrDoc = makeNtrDoc();
+      const result = getNowApplicationDocument(
+        { ...IMPORTED_NOTICE_OF_WORK, documents: [ntrDoc] },
+        {},
+        true
+      );
+      expect(result.nowApplicationDocument).not.toBeNull();
+      expect(result.lockedNtrGuid).toBe("ntr-xref-guid-1");
+    });
+
+    it("picks the most recent qualifying NTR and sets lockedNtrGuid to its xref GUID", () => {
       const olderNtr = makeNtrDoc({
         now_application_document_xref_guid: "ntr-xref-old",
-        mine_document: { upload_date: "2024-06-01", mine_document_guid: "old-guid", document_manager_guid: null, document_name: "old.pdf" },
+        create_timestamp: "2024-06-01T08:00:00",
       });
       const newerNtr = makeNtrDoc({
         now_application_document_xref_guid: "ntr-xref-new",
-        mine_document: { upload_date: "2025-01-15", mine_document_guid: "new-guid", document_manager_guid: null, document_name: "new.pdf" },
+        create_timestamp: "2025-01-15T14:30:00",
       });
-      renderComponent({
-        showInUnifiedView: true,
-        progress: { REV: { end_date: "2025-01-01" } },
-        noticeOfWork: {
-          ...IMPORTED_NOTICE_OF_WORK,
-          documents: [olderNtr, newerNtr],
-        },
-      });
-      expect(document.querySelector('[data-row-key="application-form-1.1"]')).toBeTruthy();
-      expect(document.querySelector('[data-row-key="ntr-xref-old"]')).toBeTruthy();
-      expect(document.querySelector('[data-row-key="ntr-xref-new"]')).toBeNull();
+      const result = getNowApplicationDocument(
+        { ...IMPORTED_NOTICE_OF_WORK, documents: [olderNtr, newerNtr] },
+        { REV: { end_date: "2025-01-01" } },
+        true
+      );
+
+      expect(result.lockedNtrGuid).toBe("ntr-xref-new");
+      expect(result.nowApplicationDocument.now_application_document_xref_guid).toBe("ntr-xref-new");
     });
   });
 });

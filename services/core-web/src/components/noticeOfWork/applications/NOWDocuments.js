@@ -148,23 +148,16 @@ export class NOWDocuments extends Component {
   onSortEnd = ({ oldIndex, newIndex }) => {
     if (oldIndex !== newIndex) {
       const hasLockedRow = this.state.dataSource?.some((d) => d.isLockedApplicationForm);
-      if (hasLockedRow) {
-        const adjustedNewIndex = newIndex === 0 ? 1 : newIndex;
-        const newData = arrayMove([].concat(this.state.dataSource), oldIndex, adjustedNewIndex);
-        newData.forEach((doc, i) => {
-          if (!doc.isLockedApplicationForm) {
-            doc.index = i;
-            doc.final_package_order = i;
-          }
-        });
-        this.setState({ dataSource: newData });
-        this.handleSortDocument(newData);
-      } else {
-        const newData = arrayMove([].concat(this.state.dataSource), oldIndex, newIndex);
-        newData.map((doc, index) => ((doc.index = index), (doc.final_package_order = index)));
-        this.setState({ dataSource: newData });
-        this.handleSortDocument(newData);
-      }
+      const targetIndex = hasLockedRow && newIndex === 0 ? 1 : newIndex;
+      const newData = arrayMove([].concat(this.state.dataSource), oldIndex, targetIndex);
+      newData.forEach((doc, i) => {
+        if (!(hasLockedRow && doc.isLockedApplicationForm)) {
+          doc.index = i;
+          doc.final_package_order = i;
+        }
+      });
+      this.setState({ dataSource: newData });
+      this.handleSortDocument(newData);
     }
   };
 

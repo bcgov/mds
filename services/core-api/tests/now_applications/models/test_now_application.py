@@ -63,7 +63,7 @@ class TestAddNowFormToFap:
     @patch(_EXPORT_PATH)
     def test_excludes_previous_ntr_docs_from_final_package(self, mock_export, mock_doc_resource,
                                                             mock_xref, app):
-        """Existing NTR documents must be removed from the final package."""
+        """Only system-generated NTRs are evicted; user-uploaded NTRs stay in the package."""
         from app.api.now_applications.models.now_application import NOWApplication
         mock_export.get_now_form_generate_token.return_value = 'token-abc'
         mock_doc_resource.generate_now_document.return_value = {
@@ -71,20 +71,30 @@ class TestAddNowFormToFap:
         }
         mock_xref.find_by_guid.return_value = MagicMock()
 
-        old_ntr = MagicMock()
-        old_ntr.now_application_document_type_code = 'NTR'
-        old_ntr.is_final_package = True
+        system_ntr = MagicMock()
+        system_ntr.now_application_document_type_code = 'NTR'
+        system_ntr.is_system_generated = True
+        system_ntr.is_final_package = True
+
+        user_ntr = MagicMock()
+        user_ntr.now_application_document_type_code = 'NTR'
+        user_ntr.is_system_generated = False
+        user_ntr.is_final_package = True
 
         other_doc = MagicMock()
         other_doc.now_application_document_type_code = 'OTH'
         other_doc.is_final_package = True
 
-        instance = self._make_now_application(NOWApplication, documents=[old_ntr, other_doc])
+        instance = self._make_now_application(NOWApplication, documents=[system_ntr, user_ntr, other_doc])
         instance.add_now_form_to_fap('A description')
 
-        assert old_ntr.is_final_package is False
-        assert old_ntr.final_package_order is None
-        old_ntr.save.assert_called_once()
+        # System-generated NTR is evicted
+        assert system_ntr.is_final_package is False
+        assert system_ntr.final_package_order is None
+        system_ntr.save.assert_called_once()
+        # User-uploaded NTR and other docs are untouched
+        assert user_ntr.is_final_package is True
+        user_ntr.save.assert_not_called()
         assert other_doc.is_final_package is True
 
     @patch(_XREF_PATH)

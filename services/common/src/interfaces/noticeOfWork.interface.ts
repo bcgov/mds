@@ -142,6 +142,7 @@ export interface INoWApplicationForm extends Omit<IimportedNOWApplication, "docu
     now_application_document_xref_guid?: string;
     is_system_generated?: boolean;
     deleted_ind?: boolean;
+    create_timestamp?: string;
     mine_document?: {
       upload_date?: string;
     };

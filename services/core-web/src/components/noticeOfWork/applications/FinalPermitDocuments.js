@@ -36,8 +36,97 @@ const defaultProps = {
   showBCMIWarning: false,
 };
 
+const LOCKED_ROW_BASE = {
+  final_package_order: -1,
+  isLockedApplicationForm: true,
+  now_application_document_type_code: null,
+  is_final_package: true,
+  is_referral_package: false,
+  is_consultation_package: false,
+};
+
+const NA_ROW = {
+  ...LOCKED_ROW_BASE,
+  now_application_document_xref_guid: "application-form-1.1", // synthetic key — no real NTR doc exists yet
+  preamble_title: "N/A",
+  preamble_author: "N/A",
+  preamble_date: null,
+  category: "N/A",
+  description: "N/A",
+  mine_document: {
+    mine_document_guid: null,
+    document_manager_guid: null,
+    document_name: null,
+    upload_date: null,
+  },
+};
+
+const TECHNICAL_REVIEW_NTR_DESCRIPTION =
+  "This document was automatically created when Technical Review was completed.";
+
+/**
+ * Determines the locked "1.1" row for the unified permit package view.
+ * Returns { nowApplicationDocument, lockedNtrGuid }.
+ * Both values are null when the row should not be shown.
+ *
+ * See also (server-side equivalents):
+ *   - now_application_document_resource.py  (_get_locked_system_ntr_xref_guid)
+ *   - now_application_export_resource.py    (NOWApplicationExportResource.get_locked_ntr_guid)
+ */
+export const getNowApplicationDocument = (noticeOfWork, progress, showInUnifiedView) => {
+  const nullResult = { nowApplicationDocument: null, lockedNtrGuid: null };
+
+  if (noticeOfWork.application_type_code !== "NOW" || !showInUnifiedView) {
+    return nullResult;
+  }
+
+  const hasSystemGeneratedNtr = noticeOfWork.documents.some(
+    (doc) => doc.now_application_document_type_code === "NTR" && doc.is_system_generated
+  );
+  if (!hasSystemGeneratedNtr) {
+    return nullResult;
+  }
+
+  const technicalReviewEverCompleted =
+    !!progress.REV?.end_date ||
+    noticeOfWork.documents.some(
+      (doc) =>
+        doc.now_application_document_type_code === "NTR" &&
+        doc.is_system_generated &&
+        doc.description === TECHNICAL_REVIEW_NTR_DESCRIPTION
+    );
+  if (!technicalReviewEverCompleted) {
+    return nullResult;
+  }
+
+  const latestNtr = getLockedSystemNtrDoc(noticeOfWork.documents);
+  if (!latestNtr) {
+    return { nowApplicationDocument: NA_ROW, lockedNtrGuid: null };
+  }
+
+  return {
+    lockedNtrGuid: latestNtr.now_application_document_xref_guid,
+    nowApplicationDocument: {
+      ...latestNtr,
+      ...LOCKED_ROW_BASE,
+      preamble_title: latestNtr.preamble_title || "Notice of Work Application",
+      preamble_author: latestNtr.preamble_author || "N/A",
+      preamble_date: latestNtr.preamble_date ?? latestNtr.mine_document?.upload_date ?? null,
+      category: "Notice of Work Form",
+      description:
+        "Latest version of the Notice of Work application. Always included and system-managed.",
+    },
+  };
+};
+
 export class FinalPermitDocuments extends Component {
   render() {
+    const { nowApplicationDocument, lockedNtrGuid } = getNowApplicationDocument(
+      this.props.noticeOfWork,
+      this.props.progress,
+      this.props.showInUnifiedView
+    );
+
     const permitDocuments = this.props.noticeOfWork.documents.filter(
       ({ is_final_package }) => is_final_package
     );
@@ -47,76 +136,6 @@ export class FinalPermitDocuments extends Component {
       this.props.noticeOfWork.filtered_submission_documents.filter(
         ({ is_final_package }) => is_final_package
       );
-
-    const isNoWApplication = this.props.noticeOfWork.application_type_code === "NOW";
-    let nowApplicationDocument = null;
-    let lockedNtrGuid = null;
-    if (isNoWApplication && this.props.showInUnifiedView) {
-      // Shared fields for all locked 1.1 row variants.
-      const LOCKED_ROW_BASE = {
-        now_application_document_xref_guid: "application-form-1.1",
-        final_package_order: -1,
-        isLockedApplicationForm: true,
-        now_application_document_type_code: null,
-        is_final_package: true,
-        is_referral_package: false,
-        is_consultation_package: false,
-      };
-
-      // Placeholder shown when no qualifying system-generated NTR is available yet.
-      const NA_ROW = {
-        ...LOCKED_ROW_BASE,
-        preamble_title: "N/A",
-        preamble_author: "N/A",
-        preamble_date: null,
-        category: "N/A",
-        description: "N/A",
-        mine_document: {
-          mine_document_guid: null,
-          document_manager_guid: null,
-          document_name: null,
-          upload_date: null,
-        },
-      };
-
-      // Is there any system-generated NTR for this application?
-      // If not, the 1.1 row is not shown at all.
-      const hasSystemGeneratedNtr = this.props.noticeOfWork.documents.some(
-        (doc) => doc.now_application_document_type_code === "NTR" && doc.is_system_generated
-      );
-
-      if (hasSystemGeneratedNtr) {
-        // Only show the 1.1 row once Technical Review has been completed at least once.
-        const TECHNICAL_REVIEW_NTR_DESCRIPTION = "This document was automatically created when Technical Review was completed.";
-        const technicalReviewEverCompleted =
-          !!this.props.progress.REV?.end_date ||
-          this.props.noticeOfWork.documents.some(
-            (doc) =>
-              doc.now_application_document_type_code === "NTR" &&
-              doc.is_system_generated &&
-              doc.description === TECHNICAL_REVIEW_NTR_DESCRIPTION
-          );
-
-        if (technicalReviewEverCompleted) {
-          const latestNtr = getLockedSystemNtrDoc(this.props.noticeOfWork.documents);
-
-          if (latestNtr) {
-            lockedNtrGuid = latestNtr.now_application_document_xref_guid;
-            nowApplicationDocument = {
-              ...latestNtr,
-              ...LOCKED_ROW_BASE,
-              preamble_title: latestNtr.preamble_title || "Notice of Work Application",
-              preamble_author: latestNtr.preamble_author || "N/A",
-              preamble_date: latestNtr.preamble_date ?? latestNtr.mine_document?.upload_date ?? null,
-              category: "Notice of Work Form",
-              description: "Latest version of the Notice of Work application. Always included and system-managed.",
-            };
-          } else {
-            nowApplicationDocument = NA_ROW;
-          }
-        }
-      }
-    }
 
     const nowSubmissionDocuments = (
       <NOWSubmissionDocuments

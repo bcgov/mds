@@ -3,6 +3,7 @@ import { removeNullValuesRecursive } from "@mds/common/constants/utils";
 import { AMS_AUTHORIZATION_TYPES } from "@mds/common/constants/enums";
 import { IPermitCondition } from "@mds/common/interfaces/permits/permitCondition.interface";
 import { IMineReportPermitRequirement } from "../interfaces/permits";
+import { INoWApplicationForm } from "../interfaces/noticeOfWork.interface";
 import { REPORT_FREQUENCY_HASH, REPORT_MINISTRY_RECIPIENT_HASH, REPORT_REGULATORY_AUTHORITY_CODES_HASH } from "../constants/strings";
 
 
@@ -167,7 +168,19 @@ export const inspectionOrderNumberSorter = (a, b, dataIndex) => {
   return subA - subB;
 };
 
-export const getLockedSystemNtrDoc = (documents) => {
+/**
+ * Returns the most-recently-created qualifying system-generated NTR document that is in the
+ * final permit package (the "locked 1.1 row"), or null when none exists.
+ *
+ * Equivalent server-side implementations live in:
+ *   - now_application_document_resource.py  (_get_locked_system_ntr_xref_guid)
+ *   - now_application_export_resource.py    (NOWApplicationExportResource.get_locked_ntr_guid)
+ *
+ * FinalPermitDocuments.js also calls this helper but wraps it with additional UI logic
+ * (technicalReviewEverCompleted check, NA-row placeholder, display field overrides) that
+ * is intentionally frontend-only.
+ */
+export const getLockedSystemNtrDoc = (documents: INoWApplicationForm["documents"]) => {
   const qualifying = (documents || []).filter(
     (doc) =>
       doc.now_application_document_type_code === "NTR" &&
@@ -177,8 +190,8 @@ export const getLockedSystemNtrDoc = (documents) => {
   );
   if (!qualifying.length) return null;
   const sorted = [...qualifying].sort((a, b) => {
-    const aDate = a.mine_document?.upload_date || "";
-    const bDate = b.mine_document?.upload_date || "";
+    const aDate = a.create_timestamp || "";
+    const bDate = b.create_timestamp || "";
     return bDate > aDate ? 1 : -1;
   });
   return sorted[0] || null;
