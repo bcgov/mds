@@ -187,7 +187,7 @@ export const PermitsTable: FC<PermitsTableProps> = (props) => {
   );
 
   const credentialColumn = {
-    title: "UNTP Conformity Credential",
+    title: "UNTP CC",
     dataIndex: "active_orgbook_publish_status",
     key: "untp_conformity_credential",
     render: (status) => {
@@ -203,7 +203,7 @@ export const PermitsTable: FC<PermitsTableProps> = (props) => {
 
         return (
           <a href={linkUrl} target="_blank" rel="noopener noreferrer" title={linkUrl}>
-            View Credential
+            View
           </a>
         );
       } catch {
