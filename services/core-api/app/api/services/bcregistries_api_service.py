@@ -1,5 +1,6 @@
 import json
 import requests
+from flask import current_app
 from typing import List
 from werkzeug.exceptions import BadGateway
 from app.config import Config
@@ -42,7 +43,7 @@ class BCRegistriesService():
         )
 
         if resp.status_code != requests.codes.ok:
-            print(resp.text)
+            current_app.logger.warning(resp.text)
             raise BadGateway(f'BC Registries API responded with {resp.status_code}: {resp.reason}')
 
         try:
