@@ -134,11 +134,11 @@ def _make_ntr_doc(xref_guid, create_timestamp=None, is_final_package=True,
 
 class TestLockedNtrGuid:
     def _get(self, app_module, documents):
-        """Call the hybrid_property's getter directly against a plain mock instance."""
         from app.api.now_applications.models.now_application import NOWApplication
         instance = MagicMock()
         instance.documents = documents
-        return NOWApplication.locked_ntr_guid.fget(instance)
+        hybrid_descriptor = NOWApplication.__dict__['locked_ntr_guid']
+        return hybrid_descriptor.fget(instance)
 
     def test_returns_none_for_no_documents(self, app):
         from app.api.now_applications.models.now_application import NOWApplication
