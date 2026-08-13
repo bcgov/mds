@@ -19,6 +19,12 @@ jobs:
       - name: Login
         run: |
           docker login -u ${{ secrets.CLUSTER_REGISTRY_USER }} -p ${{ secrets.BUILD_TOKEN }} ${{ secrets.CLUSTER_REGISTRY }}
+      - name: Login to Artifactory
+        uses: docker/login-action@v3
+        with:
+          registry: artifacts.developer.gov.bc.ca
+          username: ${{ secrets.ARTIFACTORY_USER }}
+          password: ${{ secrets.ARTIFACTORY_PASSWORD }}
       - name: Build n Tag
         run: |
           docker build -t ${{ env.NAME }}:${{ env.INITIAL_TAG }} ${{ env.CONTEXT }} -f ${{ env.CONTEXT }}Dockerfile
