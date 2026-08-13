@@ -9,11 +9,11 @@ export interface IActiveOrgbookPublishStatus {
   unsigned_payload_hash: string;
   permit_amendment_guid: string;
   party_guid: string;
-  publish_state: boolean;
+  publish_state: boolean | null;
   permit_number: string;
   orgbook_entity_id: string;
-  orgbook_credential_id: string;
-  error_msg: string;
+  orgbook_credential_id: string | null;
+  error_msg?: string | null;
   create_timestamp: string;
   update_timestamp: string;
 }
