@@ -168,35 +168,10 @@ export const inspectionOrderNumberSorter = (a, b, dataIndex) => {
   return subA - subB;
 };
 
-/**
- * Returns the most-recently-created qualifying system-generated NTR document that is in the
- * final permit package (the "locked 1.1 row"), or null when none exists.
- *
- * Equivalent server-side implementations live in:
- *   - now_application_document_resource.py  (_get_locked_system_ntr_xref_guid)
- *   - now_application_export_resource.py    (NOWApplicationExportResource.get_locked_ntr_guid)
- *
- * FinalPermitDocuments.js also calls this helper but wraps it with additional UI logic
- * (technicalReviewEverCompleted check, NA-row placeholder, display field overrides) that
- * is intentionally frontend-only.
- */
-export const getLockedSystemNtrDoc = (documents: INoWApplicationForm["documents"]) => {
-  const qualifying = (documents || []).filter(
-    (doc) =>
-      doc.now_application_document_type_code === "NTR" &&
-      doc.is_final_package &&
-      doc.is_system_generated &&
-      !doc.deleted_ind
-  );
-  if (!qualifying.length) return null;
-  const sorted = [...qualifying].sort((a, b) => {
-    const aDate = a.create_timestamp || "";
-    const bDate = b.create_timestamp || "";
-    return bDate > aDate ? 1 : -1;
-  });
-  return sorted[0] || null;
-};
-
-export const getLockedSystemNtrGuid = (documents) => {
-  return getLockedSystemNtrDoc(documents)?.now_application_document_xref_guid || null;
+export const getLockedSystemNtrDoc = (
+  documents: INoWApplicationForm["documents"],
+  lockedNtrGuid: string | null | undefined
+) => {
+  if (!lockedNtrGuid) return null;
+  return (documents || []).find((doc) => doc.now_application_document_xref_guid === lockedNtrGuid) || null;
 };

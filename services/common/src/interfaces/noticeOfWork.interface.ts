@@ -147,6 +147,7 @@ export interface INoWApplicationForm extends Omit<IimportedNOWApplication, "docu
       upload_date?: string;
     };
   }>;
+  locked_ntr_guid?: string | null;
   regional_contact: string;
   submitted_to_core_date: string;
   last_updated_date: string;

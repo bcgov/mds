@@ -19,30 +19,6 @@ from app.api.mines.response_models import MINE_DOCUMENT_MODEL
 from app.api.now_submissions.models.document import Document
 
 
-def _get_locked_system_ntr_xref_guid(now_application):
-    """Return the xref GUID of the currently locked system-generated NTR document
-    (the most recently created system-generated NTR in the final package), or None.
-
-    Equivalent implementations:
-      - services/common/src/utils/helpers.ts          (getLockedSystemNtrDoc / getLockedSystemNtrGuid)
-      - now_application_export_resource.py            (NOWApplicationExportResource.get_locked_ntr_guid)
-    """
-    qualifying = [
-        doc for doc in now_application.documents
-        if doc.now_application_document_type_code == 'NTR'
-        and doc.is_system_generated
-        and doc.is_final_package
-        and not doc.deleted_ind
-    ]
-    if not qualifying:
-        return None
-    latest = max(
-        qualifying,
-        key=lambda d: str(d.create_timestamp) if d.create_timestamp else ''
-    )
-    return str(latest.now_application_document_xref_guid)
-
-
 class NOWApplicationDocumentUploadResource(Resource, UserMixin):
     @api.doc(description='Request a document_manager_guid for uploading a document')
     @requires_role_edit_permit
@@ -79,7 +55,7 @@ class NOWApplicationDocumentSortResource(Resource, UserMixin):
 
         data = self.parser.parse_args()
 
-        locked_ntr_guid = _get_locked_system_ntr_xref_guid(now_application_identity.now_application)
+        locked_ntr_guid = now_application_identity.now_application.locked_ntr_guid
 
         sorted_documents = data.get('sorted_documents', [])
         for doc in sorted_documents:
@@ -172,7 +148,7 @@ class NOWApplicationDocumentResource(Resource, UserMixin):
 
         now_app_xref = mine_document.now_application_document_xref
         if now_app_xref:
-            locked_ntr_guid = _get_locked_system_ntr_xref_guid(now_app_xref.now_application)
+            locked_ntr_guid = now_app_xref.now_application.locked_ntr_guid
             if locked_ntr_guid and str(now_app_xref.now_application_document_xref_guid) == locked_ntr_guid:
                 raise BadRequest('Cannot modify the active system-generated document.')
 

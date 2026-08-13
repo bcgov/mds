@@ -189,6 +189,8 @@ PERMIT_AMENDMENT_NOW_DOCUMENT = api.model(
         'description': fields.String,
         'is_final_package': fields.Boolean,
         'final_package_order': fields.Integer,
+        'is_system_generated': fields.Boolean,
+        'create_timestamp': fields.DateTime,
         'mine_document': fields.Nested(MINE_DOCUMENT_MODEL),
     })
 

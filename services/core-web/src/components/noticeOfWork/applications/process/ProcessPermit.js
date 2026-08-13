@@ -25,7 +25,6 @@ import {
   isPitsQuarriesAdjustmentFeeValid,
   determineExemptionFeeStatus,
 } from "@mds/common/redux/utils/helpers";
-import { getLockedSystemNtrGuid } from "@mds/common/utils/helpers";
 import { bindActionCreators } from "redux";
 import {
   getDropdownNoticeOfWorkApplicationStatusCodes,
@@ -398,7 +397,7 @@ export class ProcessPermit extends Component {
     let filteredSubmissionDocuments = noticeOfWork?.filtered_submission_documents;
     let requestedDocuments = noticeOfWork?.documents;
 
-    const lockedNtrGuid = getLockedSystemNtrGuid(requestedDocuments);
+    const lockedNtrGuid = noticeOfWork?.locked_ntr_guid || null;
 
     if (!isEmpty(filteredSubmissionDocuments)) {
       filteredSubmissionDocuments = filteredSubmissionDocuments

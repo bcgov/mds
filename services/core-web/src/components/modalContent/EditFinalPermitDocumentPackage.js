@@ -24,7 +24,10 @@ const defaultProps = {
 
 export const EditFinalPermitDocumentPackage = (props) => {
   const applicationFilesTypes = ["AAF", "AEF", "MDO", "SDO"];
-  const systemGeneratedNtrDoc = getLockedSystemNtrDoc(props.noticeOfWork.documents);
+  const systemGeneratedNtrDoc = getLockedSystemNtrDoc(
+    props.noticeOfWork.documents,
+    props.noticeOfWork.locked_ntr_guid
+  );
 
   const systemGeneratedNtrMineDocGuid = systemGeneratedNtrDoc?.mine_document?.mine_document_guid ?? null;
   const systemGeneratedNtrDocXrefGuid = systemGeneratedNtrDoc?.now_application_document_xref_guid ?? null;

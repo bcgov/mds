@@ -276,6 +276,22 @@ class NOWApplication(Base, AuditMixin):
         return max_order + 1
 
     @hybrid_property
+    def locked_ntr_guid(self):
+        qualifying = [
+            doc for doc in self.documents
+            if doc.now_application_document_type_code == 'NTR'
+            and doc.is_system_generated
+            and doc.is_final_package
+            and not doc.deleted_ind
+        ]
+        if not qualifying:
+            return None
+        latest = max(
+            qualifying,
+            key=lambda doc: str(doc.create_timestamp) if doc.create_timestamp else '')
+        return str(latest.now_application_document_xref_guid)
+
+    @hybrid_property
     def total_merchantable_timber_volume(self):
         total = 0
         for activity in self.get_activities():

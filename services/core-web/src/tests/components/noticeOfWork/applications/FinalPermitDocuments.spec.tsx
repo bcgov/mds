@@ -125,7 +125,7 @@ describe("FinalPermitDocuments", () => {
     it("returns the locked row when tech review is done via progress.REV.end_date", () => {
       const ntrDoc = makeNtrDoc();
       const result = getNowApplicationDocument(
-        { ...IMPORTED_NOTICE_OF_WORK, documents: [ntrDoc] },
+        { ...IMPORTED_NOTICE_OF_WORK, documents: [ntrDoc], locked_ntr_guid: "ntr-xref-guid-1" },
         { REV: { end_date: "2025-01-01" } },
         true
       );
@@ -138,7 +138,7 @@ describe("FinalPermitDocuments", () => {
     it("returns the locked row when tech review is done via the NTR description sentinel", () => {
       const ntrDoc = makeNtrDoc();
       const result = getNowApplicationDocument(
-        { ...IMPORTED_NOTICE_OF_WORK, documents: [ntrDoc] },
+        { ...IMPORTED_NOTICE_OF_WORK, documents: [ntrDoc], locked_ntr_guid: "ntr-xref-guid-1" },
         {},
         true
       );
@@ -146,7 +146,7 @@ describe("FinalPermitDocuments", () => {
       expect(result.lockedNtrGuid).toBe("ntr-xref-guid-1");
     });
 
-    it("picks the most recent qualifying NTR and sets lockedNtrGuid to its xref GUID", () => {
+    it("uses the server-computed locked_ntr_guid to pick the right doc when multiple NTRs qualify", () => {
       const olderNtr = makeNtrDoc({
         now_application_document_xref_guid: "ntr-xref-old",
         create_timestamp: "2024-06-01T08:00:00",
@@ -156,7 +156,11 @@ describe("FinalPermitDocuments", () => {
         create_timestamp: "2025-01-15T14:30:00",
       });
       const result = getNowApplicationDocument(
-        { ...IMPORTED_NOTICE_OF_WORK, documents: [olderNtr, newerNtr] },
+        {
+          ...IMPORTED_NOTICE_OF_WORK,
+          documents: [olderNtr, newerNtr],
+          locked_ntr_guid: "ntr-xref-new",
+        },
         { REV: { end_date: "2025-01-01" } },
         true
       );

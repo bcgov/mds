@@ -64,15 +64,6 @@ const NA_ROW = {
 const TECHNICAL_REVIEW_NTR_DESCRIPTION =
   "This document was automatically created when Technical Review was completed.";
 
-/**
- * Determines the locked "1.1" row for the unified permit package view.
- * Returns { nowApplicationDocument, lockedNtrGuid }.
- * Both values are null when the row should not be shown.
- *
- * See also (server-side equivalents):
- *   - now_application_document_resource.py  (_get_locked_system_ntr_xref_guid)
- *   - now_application_export_resource.py    (NOWApplicationExportResource.get_locked_ntr_guid)
- */
 export const getNowApplicationDocument = (noticeOfWork, progress, showInUnifiedView) => {
   const nullResult = { nowApplicationDocument: null, lockedNtrGuid: null };
 
@@ -99,7 +90,7 @@ export const getNowApplicationDocument = (noticeOfWork, progress, showInUnifiedV
     return nullResult;
   }
 
-  const latestNtr = getLockedSystemNtrDoc(noticeOfWork.documents);
+  const latestNtr = getLockedSystemNtrDoc(noticeOfWork.documents, noticeOfWork.locked_ntr_guid);
   if (!latestNtr) {
     return { nowApplicationDocument: NA_ROW, lockedNtrGuid: null };
   }

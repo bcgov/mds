@@ -118,3 +118,70 @@ class TestAddNowFormToFap:
         assert mock_now_doc.description == 'My custom description'
         assert mock_now_doc.is_final_package is True
         mock_now_doc.save.assert_called_once()
+
+
+def _make_ntr_doc(xref_guid, create_timestamp=None, is_final_package=True,
+                   is_system_generated=True, deleted_ind=False, type_code='NTR'):
+    doc = MagicMock()
+    doc.now_application_document_type_code = type_code
+    doc.now_application_document_xref_guid = xref_guid
+    doc.is_final_package = is_final_package
+    doc.is_system_generated = is_system_generated
+    doc.deleted_ind = deleted_ind
+    doc.create_timestamp = create_timestamp
+    return doc
+
+
+class TestLockedNtrGuid:
+    def _get(self, app_module, documents):
+        """Call the hybrid_property's getter directly against a plain mock instance."""
+        from app.api.now_applications.models.now_application import NOWApplication
+        instance = MagicMock()
+        instance.documents = documents
+        return NOWApplication.locked_ntr_guid.fget(instance)
+
+    def test_returns_none_for_no_documents(self, app):
+        from app.api.now_applications.models.now_application import NOWApplication
+        assert self._get(NOWApplication, []) is None
+
+    def test_returns_none_when_no_ntr_docs(self, app):
+        from app.api.now_applications.models.now_application import NOWApplication
+        doc = _make_ntr_doc('guid-1', type_code='OTH')
+        assert self._get(NOWApplication, [doc]) is None
+
+    def test_returns_none_when_ntr_not_in_final_package(self, app):
+        from app.api.now_applications.models.now_application import NOWApplication
+        doc = _make_ntr_doc('guid-1', is_final_package=False)
+        assert self._get(NOWApplication, [doc]) is None
+
+    def test_returns_none_when_ntr_not_system_generated(self, app):
+        from app.api.now_applications.models.now_application import NOWApplication
+        doc = _make_ntr_doc('guid-1', is_system_generated=False)
+        assert self._get(NOWApplication, [doc]) is None
+
+    def test_returns_none_when_ntr_soft_deleted(self, app):
+        from app.api.now_applications.models.now_application import NOWApplication
+        doc = _make_ntr_doc('guid-1', deleted_ind=True)
+        assert self._get(NOWApplication, [doc]) is None
+
+    def test_returns_guid_for_single_qualifying_doc(self, app):
+        from app.api.now_applications.models.now_application import NOWApplication
+        doc = _make_ntr_doc('target-guid', create_timestamp='2025-01-15T10:00:00')
+        assert self._get(NOWApplication, [doc]) == 'target-guid'
+
+    def test_returns_most_recent_guid_when_multiple_qualify(self, app):
+        from app.api.now_applications.models.now_application import NOWApplication
+        older = _make_ntr_doc('old-guid', create_timestamp='2024-06-01T09:00:00')
+        newer = _make_ntr_doc('new-guid', create_timestamp='2025-01-15T10:00:00')
+        assert self._get(NOWApplication, [older, newer]) == 'new-guid'
+
+    def test_returns_guid_when_create_timestamp_is_none(self, app):
+        from app.api.now_applications.models.now_application import NOWApplication
+        doc = _make_ntr_doc('no-date-guid', create_timestamp=None)
+        assert self._get(NOWApplication, [doc]) == 'no-date-guid'
+
+    def test_ignores_non_system_generated_ntrs_when_mixing(self, app):
+        from app.api.now_applications.models.now_application import NOWApplication
+        manual = _make_ntr_doc('manual-guid', create_timestamp='2025-06-01T10:00:00', is_system_generated=False)
+        system = _make_ntr_doc('system-guid', create_timestamp='2024-01-01T09:00:00', is_system_generated=True)
+        assert self._get(NOWApplication, [manual, system]) == 'system-guid'

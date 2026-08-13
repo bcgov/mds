@@ -5,7 +5,6 @@ import { Button, Popconfirm } from "antd";
 import { DownloadOutlined } from "@ant-design/icons";
 import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
 import { formatDate, getDurationText, flattenObject, formatDateUTC } from "@mds/common/redux/utils/helpers";
-import { getLockedSystemNtrGuid } from "@mds/common/utils/helpers";
 import { getFormValues, reset, isSubmitting, getFormSyncErrors, submit } from "@mds/common/components/forms/form";
 import {
   getNoticeOfWorkApplicationTypeOptions,
@@ -249,7 +248,7 @@ export const NOWPermitGeneration: FC<NOWPermitGenerationProps> = ({
     let filteredSubmissionDocuments = noticeOfWork?.filtered_submission_documents;
     let requestedDocuments = noticeOfWork?.documents;
 
-    const lockedNtrGuid = getLockedSystemNtrGuid(requestedDocuments);
+    const lockedNtrGuid = noticeOfWork?.locked_ntr_guid || null;
 
     if (!isEmpty(filteredSubmissionDocuments)) {
       filteredSubmissionDocuments = filteredSubmissionDocuments
