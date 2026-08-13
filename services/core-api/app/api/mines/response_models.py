@@ -25,6 +25,7 @@ class PermitCondition(fields.Raw):
     def format(self, value):
         return marshal(value, PERMIT_CONDITION_MODEL)
 
+
 class PermitConditionTemplate(fields.Raw):
 
     def format(self, value):
@@ -117,19 +118,15 @@ MAJOR_MINE_APPLICATION_DOCUMENT_XREF_MODEL = api.model(
     })
 
 PROJECT_SUMMARY_DOCUMENT_XREF_MODEL = api.model(
-    'ProjectSummaryDocumentXref', {
-        'project_summary_document_type_code': fields.String
-    })
+    'ProjectSummaryDocumentXref', {'project_summary_document_type_code': fields.String})
 
 PROJECT_DECISION_PACKAGE_DOCUMENT_XREF_MODEL = api.model(
-    'ProjectDecisionPackageDocumentXref', {
-        'project_decision_package_document_type_code': fields.String
-    })
+    'ProjectDecisionPackageDocumentXref',
+    {'project_decision_package_document_type_code': fields.String})
 
 INFORMATION_REQUIREMENTS_TABLE_DOCUMENT_XREF_MODEL = api.model(
-    'InformationRequirementsTableDocumentXref', {
-        'information_requirements_table_document_type_code': fields.String
-    })
+    'InformationRequirementsTableDocumentXref',
+    {'information_requirements_table_document_type_code': fields.String})
 
 MINE_DOCUMENT_BUNDLE_MODEL = api.model(
     'MineDocumentBundle', {
@@ -138,36 +135,49 @@ MINE_DOCUMENT_BUNDLE_MODEL = api.model(
         'name': fields.String,
         'geomark_id': fields.String,
         'docman_bundle_guid': fields.String
-    }
-)
+    })
 
 MINE_DOCUMENT_MODEL = api.model(
     'MineDocument', {
-        'mine_document_guid': fields.String,
-        'mine_guid': fields.String,
-        'document_manager_guid': fields.String,
-        'document_name': fields.String,
-        'upload_date': fields.String,
-        'update_timestamp': fields.String,
-        'create_user': fields.String,
-        'is_archived': fields.Boolean,
-        'archived_date': fields.String,
-        'archived_by': fields.String,
-        'mine_document_bundle_id': fields.Integer,
-        'versions': fields.List(fields.Nested(MINE_DOCUMENT_VERSION_MODEL)),
-        'major_mine_application_document_xref': fields.Nested(MAJOR_MINE_APPLICATION_DOCUMENT_XREF_MODEL),
-        'project_summary_document_xref': fields.Nested(PROJECT_SUMMARY_DOCUMENT_XREF_MODEL),
-        'project_decision_package_document_xref': fields.Nested(PROJECT_DECISION_PACKAGE_DOCUMENT_XREF_MODEL),
-        'information_requirements_table_document_xref': fields.Nested(INFORMATION_REQUIREMENTS_TABLE_DOCUMENT_XREF_MODEL),
+        'mine_document_guid':
+        fields.String,
+        'mine_guid':
+        fields.String,
+        'document_manager_guid':
+        fields.String,
+        'document_name':
+        fields.String,
+        'upload_date':
+        fields.String,
+        'update_timestamp':
+        fields.String,
+        'create_user':
+        fields.String,
+        'is_archived':
+        fields.Boolean,
+        'archived_date':
+        fields.String,
+        'archived_by':
+        fields.String,
+        'mine_document_bundle_id':
+        fields.Integer,
+        'versions':
+        fields.List(fields.Nested(MINE_DOCUMENT_VERSION_MODEL)),
+        'major_mine_application_document_xref':
+        fields.Nested(MAJOR_MINE_APPLICATION_DOCUMENT_XREF_MODEL),
+        'project_summary_document_xref':
+        fields.Nested(PROJECT_SUMMARY_DOCUMENT_XREF_MODEL),
+        'project_decision_package_document_xref':
+        fields.Nested(PROJECT_DECISION_PACKAGE_DOCUMENT_XREF_MODEL),
+        'information_requirements_table_document_xref':
+        fields.Nested(INFORMATION_REQUIREMENTS_TABLE_DOCUMENT_XREF_MODEL),
     })
 
-ARCHIVE_MINE_DOCUMENT = api.model('ARCHIVE_MINE_DOCUMENT', {
-    'mine_document_guids': fields.List(fields.String)
-})
+ARCHIVE_MINE_DOCUMENT = api.model('ARCHIVE_MINE_DOCUMENT',
+                                  {'mine_document_guids': fields.List(fields.String)})
 
-DOCUMENT_MANAGER_ZIP = api.model('DOCUMENT_MANAGER_ZIP', {
-    'document_manager_guids': fields.List(fields.String)
-})
+DOCUMENT_MANAGER_ZIP = api.model('DOCUMENT_MANAGER_ZIP',
+                                 {'document_manager_guids': fields.List(fields.String)})
 
 IMPORTED_NOW_SUBMISSION_DOCUMENT = api.model(
     'IMPORTED_NOW_SUBMISSION_DOCUMENT', {
@@ -205,6 +215,15 @@ PERMIT_AMENDMENT_DOCUMENT_MODEL = api.model(
         'preamble_date': fields.DateTime,
         'create_user': fields.String,
         'create_timestamp': fields.DateTime
+    })
+
+PERMIT_AMENDMENT_ORGBOOK_PUBLISH_STATUS_MODEL = api.model(
+    'PermitAmendmentOrgBookPublishStatus', {
+        'permit_amendment_guid': fields.String,
+        'party_guid': fields.String,
+        'publish_state': fields.Boolean,
+        'orgbook_entity_id': fields.String,
+        'orgbook_credential_id': fields.String,
     })
 
 PERMIT_AMENDMENT_SHORT_MODEL = api.model(
@@ -263,8 +282,7 @@ MINE_REPORT_PERMIT_REQUIREMENT = api.model(
         'is_standard': fields.Boolean,
         'condition_category_code': fields.String,
         'notice_of_work_type': fields.String,
-    }
-)
+    })
 
 PERMIT_CONDITION_CATEGORY_MODEL = api.model(
     'PermitConditionCategory', {
@@ -281,66 +299,70 @@ PERMIT_CONDITION_REVIEW_ASSIGNMENT_MODEL = api.model(
         'permit_amendment_id': fields.Integer,
         'condition_category_code': fields.String,
         'assigned_review_user': fields.Nested(USER_MODEL),
-    }
-)
+    })
 
 PERMIT_AMENDMENT_MODEL = api.model(
     'PermitAmendment', {
         'permit_amendment_id':
-            fields.Integer,
+        fields.Integer,
         'permit_no':
-            fields.String,
+        fields.String,
         'permit_amendment_guid':
-            fields.String,
+        fields.String,
         'permit_amendment_status_code':
-            fields.String,
+        fields.String,
         'permit_amendment_type_code':
-            fields.String,
+        fields.String,
         'received_date':
-            fields.DateTime(dt_format='iso8601'),
+        fields.DateTime(dt_format='iso8601'),
         'issue_date':
-            fields.DateTime(dt_format='iso8601'),
+        fields.DateTime(dt_format='iso8601'),
         'authorization_end_date':
-            fields.DateTime(dt_format='iso8601'),
+        fields.DateTime(dt_format='iso8601'),
         'liability_adjustment':
-            fields.Fixed(description='Currency', decimals=2),
+        fields.Fixed(description='Currency', decimals=2),
         'security_received_date':
-            fields.DateTime(dt_format='iso8601'),
+        fields.DateTime(dt_format='iso8601'),
         'security_not_required':
-            fields.Boolean,
+        fields.Boolean,
         'security_not_required_reason':
-            fields.String,
+        fields.String,
         'description':
-            fields.String,
+        fields.String,
         'issuing_inspector_title':
-            fields.String,
+        fields.String,
         'regional_office':
-            fields.String,
+        fields.String,
         'now_application_guid':
-            fields.String,
+        fields.String,
         'now_application_documents':
-            fields.List(fields.Nested(PERMIT_AMENDMENT_NOW_DOCUMENT)),
+        fields.List(fields.Nested(PERMIT_AMENDMENT_NOW_DOCUMENT)),
         'imported_now_application_documents':
-            fields.List(fields.Nested(IMPORTED_NOW_SUBMISSION_DOCUMENT)),
+        fields.List(fields.Nested(IMPORTED_NOW_SUBMISSION_DOCUMENT)),
         'related_documents':
-            fields.List(fields.Nested(PERMIT_AMENDMENT_DOCUMENT_MODEL)),
+        fields.List(fields.Nested(PERMIT_AMENDMENT_DOCUMENT_MODEL)),
         'permit_conditions_last_updated_by':
-            fields.String,
+        fields.String,
         'permit_conditions_last_updated_date':
-            fields.DateTime,
+        fields.DateTime,
         'has_permit_conditions':
-            fields.Boolean,
+        fields.Boolean,
         'vc_credential_exch_state':
-            fields.String,
+        fields.String,
         'conditions':
-            fields.List(PermitCondition),
+        fields.List(PermitCondition),
         'is_generated_in_core':
-            fields.Boolean,
+        fields.Boolean,
         'preamble_text':
-            fields.String,
-        'mine_report_permit_requirements': fields.List(fields.Nested(MINE_REPORT_PERMIT_REQUIREMENT)),
-        'condition_categories': fields.List(fields.Nested(PERMIT_CONDITION_CATEGORY_MODEL)),
-        'conditions_review_completed': fields.Boolean,
+        fields.String,
+        'mine_report_permit_requirements':
+        fields.List(fields.Nested(MINE_REPORT_PERMIT_REQUIREMENT)),
+        'condition_categories':
+        fields.List(fields.Nested(PERMIT_CONDITION_CATEGORY_MODEL)),
+        'conditions_review_completed':
+        fields.Boolean,
+        'active_orgbook_publish_status':
+        fields.Nested(PERMIT_AMENDMENT_ORGBOOK_PUBLISH_STATUS_MODEL),
     })
 
 PERMIT_CONDITIONS_DATA_MODEL = api.model(
@@ -354,7 +376,8 @@ PERMIT_CONDITIONS_DATA_MODEL = api.model(
         'permit_conditions_last_updated_date': fields.DateTime,
         'permit_conditions_last_updated_by': fields.String,
         'conditions': fields.List(PermitCondition),
-        'mine_report_permit_requirements': fields.List(fields.Nested(MINE_REPORT_PERMIT_REQUIREMENT)),
+        'mine_report_permit_requirements': fields.List(
+            fields.Nested(MINE_REPORT_PERMIT_REQUIREMENT)),
         'condition_categories': fields.List(fields.Nested(PERMIT_CONDITION_CATEGORY_MODEL)),
     })
 
@@ -430,19 +453,31 @@ MINE_REPORT_SUBMISSION_STATUS = api.model(
 
 MINE_PARTY_APPT_PARTY = api.model(
     'MinePartyAppointment', {
-        'update_timestamp': fields.DateTime,
-        'mine_party_appt_guid': fields.String,
-        'mine_guid': fields.String,
-        'party_guid': fields.String,
-        'mine_party_appt_type_code': fields.String,
-        'start_date': fields.Date,
-        'end_date': fields.Date,
-        'party': fields.Nested(PARTY),
-        'status': fields.String(enum=MinePartyAppointmentStatus, attribute='status.name'),
-        'update_user': fields.String,
-        'mine_party_acknowledgement_status': fields.String(
+        'update_timestamp':
+        fields.DateTime,
+        'mine_party_appt_guid':
+        fields.String,
+        'mine_guid':
+        fields.String,
+        'party_guid':
+        fields.String,
+        'mine_party_appt_type_code':
+        fields.String,
+        'start_date':
+        fields.Date,
+        'end_date':
+        fields.Date,
+        'party':
+        fields.Nested(PARTY),
+        'status':
+        fields.String(enum=MinePartyAppointmentStatus, attribute='status.name'),
+        'update_user':
+        fields.String,
+        'mine_party_acknowledgement_status':
+        fields.String(
             enum=MinePartyAcknowledgedStatus, attribute='mine_party_acknowledgement_status.name'),
-        'is_draft': fields.Boolean,
+        'is_draft':
+        fields.Boolean,
     })
 
 MINE_TSF_MODEL = api.model(
@@ -474,20 +509,18 @@ INDIVIDUAL_CHANGE_MODEL = api.model('IndividualChange', {
     'to': fields.Raw
 })
 
-CHANGE_MODEL = api.model('Change', {
-    'updated_by': fields.String,
-    'updated_at': fields.DateTime,
-    'changeset': fields.List(fields.Nested(INDIVIDUAL_CHANGE_MODEL))
-})
+CHANGE_MODEL = api.model(
+    'Change', {
+        'updated_by': fields.String,
+        'updated_at': fields.DateTime,
+        'changeset': fields.List(fields.Nested(INDIVIDUAL_CHANGE_MODEL))
+    })
 
-MINE_TSF_DETAIL_MODEL = api.clone('MineTailingsStorageFacilityDetail', MINE_TSF_MODEL, {
-    'history': fields.List(fields.Nested(CHANGE_MODEL))
-})
+MINE_TSF_DETAIL_MODEL = api.clone('MineTailingsStorageFacilityDetail', MINE_TSF_MODEL,
+                                  {'history': fields.List(fields.Nested(CHANGE_MODEL))})
 
-DAM_HISTORY_MODEL = api.clone('DamHistory', DAM_MODEL, {
-    'history': fields.List(fields.Nested(CHANGE_MODEL))
-} )
-
+DAM_HISTORY_MODEL = api.clone('DamHistory', DAM_MODEL,
+                              {'history': fields.List(fields.Nested(CHANGE_MODEL))})
 
 MINE_WORK_INFORMATION_MODEL = api.model(
     'MineWorkInformation', {
@@ -673,8 +706,7 @@ MINE_ALERT_MODEL = api.model(
         'create_timestamp': fields.DateTime,
         'update_user': fields.String,
         'update_timestamp': fields.DateTime,
-    }
-)
+    })
 
 VARIANCE_DOCUMENT_MODEL = api.inherit('VarianceDocumentModel', MINE_DOCUMENT_MODEL, {
     'created_at': fields.Date,
@@ -729,7 +761,7 @@ MINE_STATUS_CODE_MODEL = api.model(
         'mine_operation_status': fields.Nested(MINE_OPERATION_STATUS_CODE_MODEL),
         'mine_operation_status_reason': fields.Nested(MINE_OPERATION_STATUS_REASON_CODE_MODEL),
         'mine_operation_status_sub_reason':
-            fields.Nested(MINE_OPERATION_STATUS_SUB_REASON_CODE_MODEL),
+        fields.Nested(MINE_OPERATION_STATUS_SUB_REASON_CODE_MODEL),
         'description': fields.String,
     })
 
@@ -751,94 +783,122 @@ MINE_REPORT_COMMENT_MODEL = api.model(
         'from_latest_submission': fields.Boolean
     })
 
-MINE_REPORT_CONTACT_MODEL = api.model(
-    'MineReportContact', {
-        'mine_report_contact_id': fields.String,
-        'name': fields.String,
-        'email': fields.String
-    })
+MINE_REPORT_CONTACT_MODEL = api.model('MineReportContact', {
+    'mine_report_contact_id': fields.String,
+    'name': fields.String,
+    'email': fields.String
+})
 
 MINE_REPORT_SUBMISSION_MODEL = api.model(
     'MineReportSubmission', {
-        'mine_report_guid': fields.String,
-        'mine_report_id': fields.Integer,
-        'mine_report_submission_guid': fields.String,
-        'submission_date': fields.Date,
-        'mine_report_submission_status_code': fields.String,
-        'documents': fields.List(fields.Nested(MINE_DOCUMENT_MODEL)),
-        'mine_report_definition_guid': fields.String,
+        'mine_report_guid':
+        fields.String,
+        'mine_report_id':
+        fields.Integer,
+        'mine_report_submission_guid':
+        fields.String,
+        'submission_date':
+        fields.Date,
+        'mine_report_submission_status_code':
+        fields.String,
+        'documents':
+        fields.List(fields.Nested(MINE_DOCUMENT_MODEL)),
+        'mine_report_definition_guid':
+        fields.String,
         'mine_report_category':
-            fields.List(
-                fields.String(attribute='mine_report_category'),
-                attribute='mine_report_definition.categories'),
-        'report_type': fields.String,
-        'report_name': fields.String,
-        'due_date': fields.Date,
-        'received_date': fields.Date,
-        'submission_year': fields.Integer,
-        'create_user': fields.String,
-        'create_timestamp': fields.DateTime,
-        'update_user': fields.String,
-        'update_timestamp': fields.DateTime,
-        'permit_guid': fields.String,
-        'permit_number': fields.String,
-        'mine_guid': fields.String,
-        'mine_name': fields.String,
-        'permit_condition_category_code': fields.String,
-        'mine_report_permit_requirement_id': fields.Integer,
-        'description_comment': fields.String,
-        'submitter_name': fields.String,
-        'submitter_email': fields.String,
-        'mine_report_contacts': fields.List(fields.Nested(MINE_REPORT_CONTACT_MODEL)),
-        'formatted_mine_report_name': fields.String,
+        fields.List(
+            fields.String(attribute='mine_report_category'),
+            attribute='mine_report_definition.categories'),
+        'report_type':
+        fields.String,
+        'report_name':
+        fields.String,
+        'due_date':
+        fields.Date,
+        'received_date':
+        fields.Date,
+        'submission_year':
+        fields.Integer,
+        'create_user':
+        fields.String,
+        'create_timestamp':
+        fields.DateTime,
+        'update_user':
+        fields.String,
+        'update_timestamp':
+        fields.DateTime,
+        'permit_guid':
+        fields.String,
+        'permit_number':
+        fields.String,
+        'mine_guid':
+        fields.String,
+        'mine_name':
+        fields.String,
+        'permit_condition_category_code':
+        fields.String,
+        'mine_report_permit_requirement_id':
+        fields.Integer,
+        'description_comment':
+        fields.String,
+        'submitter_name':
+        fields.String,
+        'submitter_email':
+        fields.String,
+        'mine_report_contacts':
+        fields.List(fields.Nested(MINE_REPORT_CONTACT_MODEL)),
+        'formatted_mine_report_name':
+        fields.String,
     })
 
 MINE_REPORT_MODEL = api.model(
     'MineReportModel', {
         'mine_report_id':
-            fields.Integer,
+        fields.Integer,
         'mine_report_guid':
-            fields.String,
+        fields.String,
         'mine_report_definition_guid':
-            fields.String,
+        fields.String,
         'mine_report_category':
-            fields.List(
-                fields.String(attribute='mine_report_category'),
-                attribute='mine_report_definition.categories'),
+        fields.List(
+            fields.String(attribute='mine_report_category'),
+            attribute='mine_report_definition.categories'),
         'report_name':
-            fields.String,
+        fields.String,
         'due_date':
-            fields.Date,
+        fields.Date,
         'is_overdue':
-            fields.Boolean,
+        fields.Boolean,
         'received_date':
-            fields.Date,
+        fields.Date,
         'submission_year':
-            fields.Integer,
+        fields.Integer,
         'created_by_idir':
-            fields.String,
+        fields.String,
         'permit_guid':
-            fields.String,
+        fields.String,
         'permit_number':
-            fields.String,
-       'latest_submission':
-            fields.Nested(MINE_REPORT_SUBMISSION_MODEL),
+        fields.String,
+        'latest_submission':
+        fields.Nested(MINE_REPORT_SUBMISSION_MODEL),
         'mine_guid':
-            fields.String,
+        fields.String,
         'mine_name':
-            fields.String,
+        fields.String,
         'permit_condition_category_code':
-            fields.String,
+        fields.String,
         'description_comment':
-            fields.String,
+        fields.String,
         'submitter_name':
-            fields.String,
+        fields.String,
         'submitter_email':
-            fields.String,
+        fields.String,
         'mine_report_contacts':
-            fields.List(fields.Nested(MINE_REPORT_CONTACT_MODEL)),
-        'mine_report_status_code': fields.String,
-        'mine_report_permit_requirement_id': fields.Integer,
+        fields.List(fields.Nested(MINE_REPORT_CONTACT_MODEL)),
+        'mine_report_status_code':
+        fields.String,
+        'mine_report_permit_requirement_id':
+        fields.Integer,
     })
 
 MINE_REPORT_DEFINITION_CATEGORIES = api.model('MineReportDefinitionCategoriesModel', {
@@ -875,17 +935,19 @@ PAGINATED_LIST = api.model(
         'total': fields.Integer,
     })
 
-PAGINATED_MINE_REPORT_DEFINITION_MODEL = api.inherit('MineReportDefinition', PAGINATED_LIST, {
-    'records': fields.List(fields.Nested(MINE_REPORT_DEFINITION_MODEL)),
-})
+PAGINATED_MINE_REPORT_DEFINITION_MODEL = api.inherit(
+    'MineReportDefinition', PAGINATED_LIST, {
+        'records': fields.List(fields.Nested(MINE_REPORT_DEFINITION_MODEL)),
+    })
 
 PAGINATED_REPORT_LIST = api.inherit('ReportList', PAGINATED_LIST, {
     'records': fields.List(fields.Nested(MINE_REPORT_MODEL)),
 })
 
-PAGINATED_GLOBAL_MINE_ALERT_LIST = api.inherit('GlobalMineAlertList', PAGINATED_LIST, {
-    'records': fields.List(fields.Nested(MINE_ALERT_MODEL)),
-})
+PAGINATED_GLOBAL_MINE_ALERT_LIST = api.inherit(
+    'GlobalMineAlertList', PAGINATED_LIST, {
+        'records': fields.List(fields.Nested(MINE_ALERT_MODEL)),
+    })
 
 ORDER_DOCUMENT_MODEL = api.model(
     'MineComplianceOrderDocument', {
@@ -938,17 +1000,18 @@ MINE_REPORT_STATS_MODEL = api.model(
         'due_next_90_days': fields.Integer,
     })
 
+FILTER_CONDITION_MODEL = api.model(
+    'FilterCondition', {
+        'field': fields.String,
+        'operator': fields.String(enum=["==", "!=", ">", ">=", "<", "<=", "in", "not in"]),
+        'value': fields.List(fields.String)
+    })
 
-FILTER_CONDITION_MODEL = api.model('FilterCondition', {
-    'field': fields.String,
-    'operator': fields.String(enum=["==", "!=", ">", ">=", "<", "<=", "in", "not in"]),
-    'value': fields.List(fields.String)
-})
-
-QUERY_FILTER_MODEL = api.model('QueryFilter', {
-    'operator': fields.String(enum=['AND', 'OR', 'NOT']),
-    'conditions': fields.List(fields.Nested(FILTER_CONDITION_MODEL))
-})
+QUERY_FILTER_MODEL = api.model(
+    'QueryFilter', {
+        'operator': fields.String(enum=['AND', 'OR', 'NOT']),
+        'conditions': fields.List(fields.Nested(FILTER_CONDITION_MODEL))
+    })
 
 PERMIT_CONDITION_SEARCH_MODEL = api.model(
     'PermitConditionSearch', {
@@ -962,19 +1025,16 @@ NOW_DOCUMENT_SEARCH_MODEL = api.model(
         'filters': fields.Nested(QUERY_FILTER_MODEL, required=False),
     })
 
+PERMIT_SERVICE_DOCUMENT_MODEL = api.model('PermitServiceDocumentModel', {
+    "id": fields.String,
+    "content": fields.String,
+    "meta": fields.Raw,
+    "score": fields.Float,
+})
 
-PERMIT_SERVICE_DOCUMENT_MODEL = api.model(
-    'PermitServiceDocumentModel', {
-        "id": fields.String,
-        "content": fields.String,
-        "meta": fields.Raw,
-        "score": fields.Float,
-    })
-
-PERMIT_SERVICE_LLM_RESPONSE_MODEL = api.model(
-    'PermitServiceLLMResponseModel', {
-        'answers': fields.List(fields.String),
-    })
+PERMIT_SERVICE_LLM_RESPONSE_MODEL = api.model('PermitServiceLLMResponseModel', {
+    'answers': fields.List(fields.String),
+})
 
 PERMIT_CONDITION_SEARCH_RESULT_MODEL = api.model(
     'PermitConditionSearchResult', {
@@ -1032,7 +1092,6 @@ STANDARD_PERMIT_CONDITION_MODEL = api.model(
         'step': fields.String,
         'display_order': fields.Integer,
         'condition_tags': fields.List(fields.String)
-        
     })
 
 GOVERNMENT_AGENCY_TYPE_MODEL = api.model(

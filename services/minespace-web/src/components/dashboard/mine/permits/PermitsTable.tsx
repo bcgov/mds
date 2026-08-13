@@ -180,6 +180,44 @@ export const PermitsTable: FC<PermitsTableProps> = (props) => {
     rowData = permitRowData;
   }
 
+  const hasCredentialLinks = rowData.some((record) =>
+    record.permit_amendments?.some((amendment) =>
+      Boolean(amendment.active_orgbook_publish_status?.orgbook_credential_id)
+    )
+  );
+
+  const credentialColumn = {
+    title: "UNTP CC",
+    dataIndex: "active_orgbook_publish_status",
+    key: "untp_conformity_credential",
+    render: (status) => {
+      const credentialUrl = status?.orgbook_credential_id;
+
+      if (!credentialUrl) {
+        return Strings.EMPTY_FIELD;
+      }
+
+      try {
+        const publisherUrl = new URL(credentialUrl);
+        const linkUrl = new URL("/view", publisherUrl.origin);
+        linkUrl.searchParams.set("url", publisherUrl.toString());
+
+        return (
+          <a
+            href={linkUrl.toString()}
+            target="_blank"
+            rel="noopener noreferrer"
+            title={linkUrl.toString()}
+          >
+            View
+          </a>
+        );
+      } catch {
+        return Strings.EMPTY_FIELD;
+      }
+    },
+  };
+
   const expandedColumns = [
     renderTextColumn("amendmentNumber", "Amendment No."),
     renderDateColumn("issue_date", "Date Issued"),
@@ -227,6 +265,7 @@ export const PermitsTable: FC<PermitsTableProps> = (props) => {
         </div>
       ),
     },
+    ...(hasCredentialLinks ? [credentialColumn] : []),
   ];
 
   return (
