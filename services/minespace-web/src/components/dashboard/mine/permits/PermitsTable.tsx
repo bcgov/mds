@@ -198,11 +198,17 @@ export const PermitsTable: FC<PermitsTableProps> = (props) => {
       }
 
       try {
-        const publisherHostname = new URL(credentialUrl).hostname;
-        const linkUrl = `https://${publisherHostname}/view?url=${credentialUrl}`;
+        const publisherUrl = new URL(credentialUrl);
+        const linkUrl = new URL("/view", publisherUrl.origin);
+        linkUrl.searchParams.set("url", publisherUrl.toString());
 
         return (
-          <a href={linkUrl} target="_blank" rel="noopener noreferrer" title={linkUrl}>
+          <a
+            href={linkUrl.toString()}
+            target="_blank"
+            rel="noopener noreferrer"
+            title={linkUrl.toString()}
+          >
             View
           </a>
         );
