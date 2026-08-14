@@ -248,6 +248,8 @@ export const NOWPermitGeneration: FC<NOWPermitGenerationProps> = ({
     let filteredSubmissionDocuments = noticeOfWork?.filtered_submission_documents;
     let requestedDocuments = noticeOfWork?.documents;
 
+    const lockedNtrGuid = noticeOfWork?.locked_ntr_guid || null;
+
     if (!isEmpty(filteredSubmissionDocuments)) {
       filteredSubmissionDocuments = filteredSubmissionDocuments
         ?.filter(({ is_final_package }) => is_final_package)
@@ -260,7 +262,10 @@ export const NOWPermitGeneration: FC<NOWPermitGenerationProps> = ({
 
     if (!isEmpty(requestedDocuments)) {
       requestedDocuments = requestedDocuments
-        ?.filter(({ is_final_package }) => is_final_package)
+        ?.filter(
+          ({ is_final_package, now_application_document_xref_guid }) =>
+            is_final_package && now_application_document_xref_guid !== lockedNtrGuid
+        )
         .map((doc) => ({
           document_info: getDocumentInfo(doc),
           final_package_order: doc.final_package_order,

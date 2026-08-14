@@ -93,7 +93,15 @@ export const PermitsTable: FC<PermitsTableProps> = (props) => {
       amendment?.imported_now_application_documents?.length > 0
         ? amendment.imported_now_application_documents.filter((doc) => doc.is_final_package)
         : [];
-    return finalAppPackageCore.concat(finalAppPackageImported);
+    return finalAppPackageCore.concat(finalAppPackageImported).sort((a, b) => {
+      if (a.is_system_generated && b.is_system_generated) {
+        // Among system-generated NTRs, newest create_timestamp first (1.1 = locked row)
+        return (b.create_timestamp ?? "") > (a.create_timestamp ?? "") ? 1 : -1;
+      }
+      if (a.is_system_generated) return -1;
+      if (b.is_system_generated) return 1;
+      return (a.final_package_order ?? 0) - (b.final_package_order ?? 0);
+    });
   };
 
   const transformExpandedPermitRowData = (amendment: IPermitAmendment, amendmentNumber) => ({

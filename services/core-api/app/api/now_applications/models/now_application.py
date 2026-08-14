@@ -276,6 +276,22 @@ class NOWApplication(Base, AuditMixin):
         return max_order + 1
 
     @hybrid_property
+    def locked_ntr_guid(self):
+        qualifying = [
+            doc for doc in self.documents
+            if doc.now_application_document_type_code == 'NTR'
+            and doc.is_system_generated
+            and doc.is_final_package
+            and not doc.deleted_ind
+        ]
+        if not qualifying:
+            return None
+        latest = max(
+            qualifying,
+            key=lambda doc: str(doc.create_timestamp) if doc.create_timestamp else '')
+        return str(latest.now_application_document_xref_guid)
+
+    @hybrid_property
     def total_merchantable_timber_volume(self):
         total = 0
         for activity in self.get_activities():
@@ -388,14 +404,16 @@ class NOWApplication(Base, AuditMixin):
         from app.api.now_applications.models.now_application_document_xref import NOWApplicationDocumentXref
         from app.api.now_applications.resources.now_application_export_resource import NOWApplicationExportResource
         from app.api.document_generation.resources.now_document_resource import NoticeOfWorkDocumentResource
+        from datetime import date
 
         # Generate the Notice of Work Form document
         token = NOWApplicationExportResource.get_now_form_generate_token(self.now_application_guid)
         now_doc_dict = NoticeOfWorkDocumentResource.generate_now_document(token, True)
 
-        # Exclude all previous Notice of Work Form documents from the final application package
+        # Only evict previous system-generated NTRs; user-uploaded NTRs stay in the package.
         now_form_docs = [
-            doc for doc in self.documents if doc.now_application_document_type_code == 'NTR'
+            doc for doc in self.documents
+            if doc.now_application_document_type_code == 'NTR' and doc.is_system_generated
         ]
         for doc in now_form_docs:
             doc.is_final_package = False
@@ -406,8 +424,12 @@ class NOWApplication(Base, AuditMixin):
         now_application_document_xref_guid = now_doc_dict['now_application_document_xref_guid']
         now_doc = NOWApplicationDocumentXref.find_by_guid(now_application_document_xref_guid)
         now_doc.is_final_package = True
+        now_doc.is_system_generated = True
         now_doc.final_package_order = self.next_document_final_package_order
         now_doc.description = description
+        now_doc.preamble_title = "Notice of Work Application"
+        now_doc.preamble_author = "N/A"
+        now_doc.preamble_date = date.today()
         now_doc.save()
 
     @classmethod

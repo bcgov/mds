@@ -64,6 +64,7 @@ const propTypes = {
   isPackageModal: PropTypes.bool,
   isSortingAllowed: PropTypes.bool,
   showDescription: PropTypes.bool,
+  lockedRowKeys: PropTypes.arrayOf(PropTypes.string),
   applicationDelay: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
@@ -80,6 +81,7 @@ const defaultProps = {
   isPackageModal: false,
   isSortingAllowed: false,
   showDescription: false,
+  lockedRowKeys: [],
 };
 
 const transformDocuments = (
@@ -145,8 +147,15 @@ export class NOWDocuments extends Component {
 
   onSortEnd = ({ oldIndex, newIndex }) => {
     if (oldIndex !== newIndex) {
-      const newData = arrayMove([].concat(this.state.dataSource), oldIndex, newIndex);
-      newData.map((doc, index) => ((doc.index = index), (doc.final_package_order = index)));
+      const hasLockedRow = this.state.dataSource?.some((d) => d.isLockedApplicationForm);
+      const targetIndex = hasLockedRow && newIndex === 0 ? 1 : newIndex;
+      const newData = arrayMove([].concat(this.state.dataSource), oldIndex, targetIndex);
+      newData.forEach((doc, i) => {
+        if (!(hasLockedRow && doc.isLockedApplicationForm)) {
+          doc.index = i;
+          doc.final_package_order = i;
+        }
+      });
       this.setState({ dataSource: newData });
       this.handleSortDocument(newData);
     }
@@ -166,7 +175,8 @@ export class NOWDocuments extends Component {
     const index =
       this.state.dataSource &&
       this.state.dataSource.findIndex((x) => x.index === restProps["data-row-key"]);
-    return <SortableItem index={index} {...restProps} />;
+    const isLockedRow = this.state.dataSource?.[index]?.isLockedApplicationForm;
+    return <SortableItem index={index} disabled={isLockedRow} {...restProps} />;
   };
 
   isInCompleteStatus = () =>
@@ -205,10 +215,12 @@ export class NOWDocuments extends Component {
   };
 
   handleSortDocument = (newData) => {
-    const sortedDocuments = newData.map((document, index) => ({
-      mine_document_guid: document.mine_document_guid,
-      final_package_order: index + 1,
-    }));
+    const sortedDocuments = newData
+      .filter((document) => !document.isLockedApplicationForm)
+      .map((document, index) => ({
+        mine_document_guid: document.mine_document_guid,
+        final_package_order: index + 1,
+      }));
     const values = { sorted_documents: sortedDocuments };
     return this.props
       .sortNoticeOfWorkDocuments(this.props.noticeOfWork.now_application_guid, values)
@@ -295,13 +307,23 @@ export class NOWDocuments extends Component {
       title: "Order",
       dataIndex: "index",
       className: "drag-visible",
-      render: (text) => (
-        <>
-          <DragHandle />
-          {/* NOTE: We are adding 2 here because "1.1" in the issued permits is currently always the application form document. */}
-          &nbsp; 1.{text + 2}
-        </>
-      ),
+      render: (text, record) => {
+        if (record.isLockedApplicationForm) {
+          // The NoW application document (NTR — system-generated Notice of Work Form) is
+          // always position 1.1 in the permit; it is locked and cannot be reordered.
+          return <span style={{ paddingLeft: "26px" }}>1.1</span>;
+        }
+        // Offset is 1 when the locked 1.1 row is present (its index is 0),
+        // or 2 when there is no locked row (preserves numbering
+        // for applications where no system generated NTR doc has been found).
+        const hasLockedRow = this.state.dataSource?.some((d) => d.isLockedApplicationForm);
+        return (
+          <>
+            <DragHandle />
+            &nbsp; 1.{text + (hasLockedRow ? 1 : 2)}
+          </>
+        );
+      },
     };
 
     const fileNameColumn = this.props.selectedRows
@@ -317,15 +339,20 @@ export class NOWDocuments extends Component {
         dataIndex: "filename",
         key: "filename",
         sorter: (a, b) => (a.filename > b.filename ? -1 : 1),
-        render: (text, record) => (
-          <div title="File Name">
-            <DocumentLink
-              documentManagerGuid={record.document_manager_guid}
-              documentName={record.filename}
-              truncateDocumentName={false}
-            />
-          </div>
-        ),
+        render: (text, record) => {
+          if (record.isLockedApplicationForm && !record.document_manager_guid) {
+            return <div title="File Name">N/A</div>;
+          }
+          return (
+            <div title="File Name">
+              <DocumentLink
+                documentManagerGuid={record.document_manager_guid}
+                documentName={record.filename}
+                truncateDocumentName={false}
+              />
+            </div>
+          );
+        },
       };
 
     const descriptionColumn = {
@@ -385,6 +412,9 @@ export class NOWDocuments extends Component {
       key: "isModificationAllowed",
       width: 170,
       render: (isModificationAllowed, record) => {
+        if (record.isLockedApplicationForm) {
+          return <div />;
+        }
         if (!this.isInCompleteStatus()) {
           if (isModificationAllowed) {
             return (
@@ -665,6 +695,9 @@ export class NOWDocuments extends Component {
                 onChange: (selectedRowKeys) => {
                   this.props.selectedRows.setSelectedCoreRows(selectedRowKeys);
                 },
+                getCheckboxProps: (record) => ({
+                  disabled: this.props.lockedRowKeys?.includes(record.key),
+                }),
               }
               : null
           }

@@ -3,6 +3,7 @@ import { removeNullValuesRecursive } from "@mds/common/constants/utils";
 import { AMS_AUTHORIZATION_TYPES } from "@mds/common/constants/enums";
 import { IPermitCondition } from "@mds/common/interfaces/permits/permitCondition.interface";
 import { IMineReportPermitRequirement } from "../interfaces/permits";
+import { INoWApplicationForm } from "../interfaces/noticeOfWork.interface";
 import { REPORT_FREQUENCY_HASH, REPORT_MINISTRY_RECIPIENT_HASH, REPORT_REGULATORY_AUTHORITY_CODES_HASH } from "../constants/strings";
 
 
@@ -165,4 +166,12 @@ export const inspectionOrderNumberSorter = (a, b, dataIndex) => {
 
   if (mainA !== mainB) return mainA - mainB;
   return subA - subB;
+};
+
+export const getLockedSystemNtrDoc = (
+  documents: INoWApplicationForm["documents"],
+  lockedNtrGuid: string | null | undefined
+) => {
+  if (!lockedNtrGuid) return null;
+  return (documents || []).find((doc) => doc.now_application_document_xref_guid === lockedNtrGuid) || null;
 };
