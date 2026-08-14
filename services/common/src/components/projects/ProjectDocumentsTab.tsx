@@ -129,11 +129,11 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
   const documentUploadHref =
     !isCore && project?.project_summary?.project_summary_guid
       ? GLOBAL_ROUTES?.EDIT_PROJECT_SUMMARY?.dynamicRoute(
-          project.project_guid,
-          project.project_summary.project_summary_guid,
-          "document-upload",
-          isProjectDescriptionEditableStatus
-        )
+        project.project_guid,
+        project.project_summary.project_summary_guid,
+        "document-upload",
+        isProjectDescriptionEditableStatus
+      )
       : null;
 
   const projectSummaryDocs =
@@ -327,7 +327,7 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
         <>
           <Typography.Title level={3}>Application</Typography.Title>
           <Typography.Paragraph>
-            Below are the documents submitted as part of the Major Mine Application.
+            Below are the documents submitted as part of the major mine application. Go to the Application stage to add new application documents. This tab supports replacing, archiving and downloading files already submitted.
           </Typography.Paragraph>
         </>
       ),
@@ -396,20 +396,20 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
       ),
     },
     amsSections.length > 1 &&
-      isAmsDocumentsEnabled && {
-        href: "ENV Applications",
-        title: <div className="sub-tab-1">ENV Applications</div>,
-        content: (
-          <>
-            <Typography.Title level={4}>ENV Applications</Typography.Title>
-            <Alert
-              className={isCore ? "ant-alert-grey" : ""}
-              description="Some informative text for ENV Applications"
-              showIcon
-            />
-          </>
-        ),
-      },
+    isAmsDocumentsEnabled && {
+      href: "ENV Applications",
+      title: <div className="sub-tab-1">ENV Applications</div>,
+      content: (
+        <>
+          <Typography.Title level={4}>ENV Applications</Typography.Title>
+          <Alert
+            className={isCore ? "ant-alert-grey" : ""}
+            description="Some informative text for ENV Applications"
+            showIcon
+          />
+        </>
+      ),
+    },
     ...amsSections,
     isCore && {
       href: "ministry-decision-documentation",
