@@ -64,10 +64,10 @@ const NA_ROW = {
 const TECHNICAL_REVIEW_NTR_DESCRIPTION =
   "This document was automatically created when Technical Review was completed.";
 
-export const getNowApplicationDocument = (noticeOfWork, progress, showInUnifiedView) => {
+export const getNowApplicationDocument = (noticeOfWork, progress) => {
   const nullResult = { nowApplicationDocument: null, lockedNtrGuid: null };
 
-  if (noticeOfWork.application_type_code !== "NOW" || !showInUnifiedView) {
+  if (noticeOfWork.application_type_code !== "NOW") {
     return nullResult;
   }
 
@@ -114,8 +114,7 @@ export class FinalPermitDocuments extends Component {
   render() {
     const { nowApplicationDocument, lockedNtrGuid } = getNowApplicationDocument(
       this.props.noticeOfWork,
-      this.props.progress,
-      this.props.showInUnifiedView
+      this.props.progress
     );
 
     const permitDocuments = this.props.noticeOfWork.documents.filter(

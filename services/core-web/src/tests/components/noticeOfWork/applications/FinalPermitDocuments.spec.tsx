@@ -66,17 +66,10 @@ describe("FinalPermitDocuments", () => {
   });
 
   describe("getNowApplicationDocument", () => {
-    it("returns null when showInUnifiedView is false", () => {
-      const result = getNowApplicationDocument(IMPORTED_NOTICE_OF_WORK, {}, false);
-      expect(result.nowApplicationDocument).toBeNull();
-      expect(result.lockedNtrGuid).toBeNull();
-    });
-
     it("returns null for non-NOW application types", () => {
       const result = getNowApplicationDocument(
         { ...IMPORTED_NOTICE_OF_WORK, application_type_code: "AIA", documents: [] },
-        {},
-        true
+        {}
       );
       expect(result.nowApplicationDocument).toBeNull();
     });
@@ -89,8 +82,7 @@ describe("FinalPermitDocuments", () => {
             { now_application_document_type_code: "OTH", is_system_generated: false, is_final_package: true },
           ],
         },
-        {},
-        true
+        {}
       );
       expect(result.nowApplicationDocument).toBeNull();
     });
@@ -101,8 +93,7 @@ describe("FinalPermitDocuments", () => {
           ...IMPORTED_NOTICE_OF_WORK,
           documents: [makeNtrDoc({ is_final_package: false, description: "Some other description" })],
         },
-        {},
-        true
+        {}
       );
       expect(result.nowApplicationDocument).toBeNull();
     });
@@ -113,8 +104,7 @@ describe("FinalPermitDocuments", () => {
           ...IMPORTED_NOTICE_OF_WORK,
           documents: [makeNtrDoc({ is_final_package: false })],
         },
-        { REV: { end_date: "2025-01-01" } },
-        true
+        { REV: { end_date: "2025-01-01" } }
       );
       expect(result.nowApplicationDocument).not.toBeNull();
       expect(result.nowApplicationDocument.isLockedApplicationForm).toBe(true);
@@ -126,8 +116,7 @@ describe("FinalPermitDocuments", () => {
       const ntrDoc = makeNtrDoc();
       const result = getNowApplicationDocument(
         { ...IMPORTED_NOTICE_OF_WORK, documents: [ntrDoc], locked_ntr_guid: "ntr-xref-guid-1" },
-        { REV: { end_date: "2025-01-01" } },
-        true
+        { REV: { end_date: "2025-01-01" } }
       );
       expect(result.nowApplicationDocument).not.toBeNull();
       expect(result.nowApplicationDocument.isLockedApplicationForm).toBe(true);
@@ -139,8 +128,7 @@ describe("FinalPermitDocuments", () => {
       const ntrDoc = makeNtrDoc();
       const result = getNowApplicationDocument(
         { ...IMPORTED_NOTICE_OF_WORK, documents: [ntrDoc], locked_ntr_guid: "ntr-xref-guid-1" },
-        {},
-        true
+        {}
       );
       expect(result.nowApplicationDocument).not.toBeNull();
       expect(result.lockedNtrGuid).toBe("ntr-xref-guid-1");
@@ -161,8 +149,7 @@ describe("FinalPermitDocuments", () => {
           documents: [olderNtr, newerNtr],
           locked_ntr_guid: "ntr-xref-new",
         },
-        { REV: { end_date: "2025-01-01" } },
-        true
+        { REV: { end_date: "2025-01-01" } }
       );
 
       expect(result.lockedNtrGuid).toBe("ntr-xref-new");
