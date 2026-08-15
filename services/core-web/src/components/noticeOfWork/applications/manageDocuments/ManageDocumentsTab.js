@@ -16,6 +16,7 @@ import {
   getNoticeOfWorkReviews,
 } from "@mds/common/redux/selectors/noticeOfWorkSelectors";
 import { getGeneratableNoticeOfWorkApplicationDocumentTypeOptions } from "@mds/common/redux/selectors/staticContentSelectors";
+import { getDraftPermitAmendmentForNOW } from "@mds/common/redux/selectors/permitSelectors";
 import { getDropdownInspectors } from "@mds/common/redux/slices/partiesSlice";
 import CustomPropTypes from "@/customPropTypes";
 import * as FORM from "@/constants/forms";
@@ -42,6 +43,7 @@ const propTypes = {
   noticeOfWorkReviews: PropTypes.arrayOf(CustomPropTypes.NOWApplicationReview).isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
+  draftPermitAmendment: CustomPropTypes.permitAmendment,
 };
 
 export class ManageDocumentsTab extends Component {
@@ -168,6 +170,7 @@ export class ManageDocumentsTab extends Component {
             handleSaveNOWEdit={this.handleSaveNOWEdit}
             isLoaded={this.state.isInspectorsLoaded}
             noticeOfWorkReviews={this.props.noticeOfWorkReviews}
+            draftPermitAmendment={this.props.draftPermitAmendment}
           />
         </div>
       </div>
@@ -182,6 +185,7 @@ const mapStateToProps = (state) => ({
   importNowSubmissionDocumentsJob: getImportNowSubmissionDocumentsJob(state),
   generatableApplicationDocuments: getGeneratableNoticeOfWorkApplicationDocumentTypeOptions(state),
   noticeOfWorkReviews: getNoticeOfWorkReviews(state),
+  draftPermitAmendment: getDraftPermitAmendmentForNOW(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

@@ -12,7 +12,7 @@ const dispatchProps = {
   fetchNoticeOfWorkApplicationReviews: jest.fn(),
 };
 const reducerProps = {
-  noticeOfWork: NOW_MOCK.NOTICE_OF_WORK,
+  noticeOfWork: { ...NOW_MOCK.NOTICE_OF_WORK, application_type_code: "NOW" },
   inspectors: [],
   importNowSubmissionDocumentsJob: false,
   fixedTop: false,

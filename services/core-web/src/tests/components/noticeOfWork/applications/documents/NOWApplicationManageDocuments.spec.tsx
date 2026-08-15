@@ -13,7 +13,7 @@ const dispatchProps = {
 };
 const reducerProps = {
   mineGuid: NOW_MOCK.NOTICE_OF_WORK.mine_guid,
-  noticeOfWork: NOW_MOCK.NOTICE_OF_WORK,
+  noticeOfWork: { ...NOW_MOCK.NOTICE_OF_WORK, application_type_code: "NOW" },
   isLoaded: true,
   noticeOfWorkReviews: [],
 };

@@ -327,6 +327,13 @@ export const sideMenuOptions = (tab, hasPermitConditionsFlow = true, hasLegacyFu
         applicationType: ["NOW", , "ADA"],
       },
       {
+        href: "generated-documents",
+        title: "System-generated documents",
+        alwaysVisible: hasPermitConditionsFlow,
+        children: [],
+        applicationType: ["NOW", "ADA"],
+      },
+      {
         href: "referral-consultation-public-comment-documents",
         title: "Referral, Consultation and Public Comment Documents",
         alwaysVisible: true,
