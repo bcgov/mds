@@ -124,8 +124,8 @@ export const NOWApplicationManageDocuments = (props) => {
                 mine_document,
               }) =>
                 now_application_document_sub_type_code === "AEF" &&
-                (now_application_document_type_code !== "PMT" ||
-                  now_application_document_type_code !== "PMA" ||
+                ((now_application_document_type_code !== "PMT" &&
+                  now_application_document_type_code !== "PMA") ||
                   mine_document.document_name.includes("DRAFT"))
             )}
             isViewMode={props.isViewMode}

@@ -110,6 +110,17 @@ exports[`ManageDocumentsTab renders properly 1`] = `
             >
               <a
                 class="ant-anchor-link-title"
+                href="#generated-documents"
+                title="System-generated documents"
+              >
+                System-generated documents
+              </a>
+            </div>
+            <div
+              class="ant-anchor-link now-menu-link"
+            >
+              <a
+                class="ant-anchor-link-title"
                 href="#referral-consultation-public-comment-documents"
                 title="Referral, Consultation and Public Comment Documents"
               >
