@@ -14,9 +14,31 @@ const props = {
   isLoaded: true,
 };
 
+// Covers the Reclamation Securities documents filter's SDO branch, which the base mock's
+// documents array (empty) never exercises.
 const initialState = {
   [NOTICE_OF_WORK]: {
-    noticeOfWork: IMPORTED_NOTICE_OF_WORK,
+    noticeOfWork: {
+      ...IMPORTED_NOTICE_OF_WORK,
+      documents: [
+        {
+          now_application_document_xref_guid: "sdo-doc",
+          now_application_document_sub_type_code: "SDO",
+          mine_document: {
+            mine_document_guid: "sdo-doc-guid",
+            document_name: "security.pdf",
+          },
+        },
+        {
+          now_application_document_xref_guid: "gdo-doc",
+          now_application_document_sub_type_code: "GDO",
+          mine_document: {
+            mine_document_guid: "gdo-doc-guid",
+            document_name: "government.pdf",
+          },
+        },
+      ],
+    },
     applicationDelays: [],
   }
 };

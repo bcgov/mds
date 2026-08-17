@@ -515,7 +515,7 @@ exports[`NOWApplicationAdministrative renders properly 1`] = `
                         class="ant-spin-container"
                       >
                         <div
-                          class="ant-table ant-table-empty"
+                          class="ant-table"
                         >
                           <div
                             class="ant-table-container"
@@ -827,12 +827,73 @@ exports[`NOWApplicationAdministrative renders properly 1`] = `
                                 <tbody
                                   class="ant-table-tbody"
                                 >
-                                  <tr>
+                                  <tr
+                                    data-row-key="sdo-doc"
+                                  >
+                                    <td
+                                      class="ant-table-cell ant-table-cell-with-append"
+                                    >
+                                      <span
+                                        class="ant-table-row-indent indent-level-0"
+                                        style="padding-left: 0px;"
+                                      />
+                                      <div
+                                        title="Category"
+                                      >
+                                        N/A
+                                      </div>
+                                    </td>
                                     <td
                                       class="ant-table-cell"
-                                      colspan="7"
                                     >
-                                      No Data Yet
+                                      <div
+                                        title="File Name"
+                                      >
+                                        <a
+                                          role="link"
+                                          tabindex="0"
+                                          title="security.pdf"
+                                        >
+                                          security.pdf
+                                        </a>
+                                      </div>
+                                    </td>
+                                    <td
+                                      class="ant-table-cell"
+                                    >
+                                      <div
+                                        title="Due"
+                                      />
+                                    </td>
+                                    <td
+                                      class="ant-table-cell"
+                                    />
+                                    <td
+                                      class="ant-table-cell"
+                                    >
+                                      <div
+                                        title="Referral Package"
+                                      >
+                                        No
+                                      </div>
+                                    </td>
+                                    <td
+                                      class="ant-table-cell"
+                                    >
+                                      <div
+                                        title="Consultation Package"
+                                      >
+                                        No
+                                      </div>
+                                    </td>
+                                    <td
+                                      class="ant-table-cell"
+                                    >
+                                      <div
+                                        title="Part of Permit"
+                                      >
+                                        No
+                                      </div>
                                     </td>
                                   </tr>
                                 </tbody>

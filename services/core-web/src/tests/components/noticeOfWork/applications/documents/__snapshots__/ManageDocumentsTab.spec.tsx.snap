@@ -1367,7 +1367,7 @@ exports[`ManageDocumentsTab renders properly 1`] = `
                             class="ant-spin-container"
                           >
                             <div
-                              class="ant-table ant-table-empty"
+                              class="ant-table"
                             >
                               <div
                                 class="ant-table-container"
@@ -1679,12 +1679,142 @@ exports[`ManageDocumentsTab renders properly 1`] = `
                                     <tbody
                                       class="ant-table-tbody"
                                     >
-                                      <tr>
+                                      <tr
+                                        data-row-key="aef-ntr"
+                                      >
+                                        <td
+                                          class="ant-table-cell ant-table-cell-with-append"
+                                        >
+                                          <span
+                                            class="ant-table-row-indent indent-level-0"
+                                            style="padding-left: 0px;"
+                                          />
+                                          <div
+                                            title="Category"
+                                          >
+                                            Notice of Work Form
+                                          </div>
+                                        </td>
                                         <td
                                           class="ant-table-cell"
-                                          colspan="7"
                                         >
-                                          No Data Yet
+                                          <div
+                                            title="File Name"
+                                          >
+                                            <a
+                                              role="link"
+                                              tabindex="0"
+                                              title="notice_of_work_form.pdf"
+                                            >
+                                              notice_of_work_form.pdf
+                                            </a>
+                                          </div>
+                                        </td>
+                                        <td
+                                          class="ant-table-cell"
+                                        >
+                                          <div
+                                            title="Due"
+                                          />
+                                        </td>
+                                        <td
+                                          class="ant-table-cell"
+                                        />
+                                        <td
+                                          class="ant-table-cell"
+                                        >
+                                          <div
+                                            title="Referral Package"
+                                          >
+                                            No
+                                          </div>
+                                        </td>
+                                        <td
+                                          class="ant-table-cell"
+                                        >
+                                          <div
+                                            title="Consultation Package"
+                                          >
+                                            No
+                                          </div>
+                                        </td>
+                                        <td
+                                          class="ant-table-cell"
+                                        >
+                                          <div
+                                            title="Part of Permit"
+                                          >
+                                            No
+                                          </div>
+                                        </td>
+                                      </tr>
+                                      <tr
+                                        data-row-key="aef-pmt-draft"
+                                      >
+                                        <td
+                                          class="ant-table-cell ant-table-cell-with-append"
+                                        >
+                                          <span
+                                            class="ant-table-row-indent indent-level-0"
+                                            style="padding-left: 0px;"
+                                          />
+                                          <div
+                                            title="Category"
+                                          >
+                                            Working Permit
+                                          </div>
+                                        </td>
+                                        <td
+                                          class="ant-table-cell"
+                                        >
+                                          <div
+                                            title="File Name"
+                                          >
+                                            <a
+                                              role="link"
+                                              tabindex="0"
+                                              title="DRAFT_permit.pdf"
+                                            >
+                                              DRAFT_permit.pdf
+                                            </a>
+                                          </div>
+                                        </td>
+                                        <td
+                                          class="ant-table-cell"
+                                        >
+                                          <div
+                                            title="Due"
+                                          />
+                                        </td>
+                                        <td
+                                          class="ant-table-cell"
+                                        />
+                                        <td
+                                          class="ant-table-cell"
+                                        >
+                                          <div
+                                            title="Referral Package"
+                                          >
+                                            No
+                                          </div>
+                                        </td>
+                                        <td
+                                          class="ant-table-cell"
+                                        >
+                                          <div
+                                            title="Consultation Package"
+                                          >
+                                            No
+                                          </div>
+                                        </td>
+                                        <td
+                                          class="ant-table-cell"
+                                        >
+                                          <div
+                                            title="Part of Permit"
+                                          >
+                                            No
+                                          </div>
                                         </td>
                                       </tr>
                                     </tbody>

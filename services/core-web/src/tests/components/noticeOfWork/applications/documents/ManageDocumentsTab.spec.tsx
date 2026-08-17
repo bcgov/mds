@@ -11,8 +11,44 @@ const dispatchProps = {
   fetchImportedNoticeOfWorkApplication: jest.fn(),
   fetchNoticeOfWorkApplicationReviews: jest.fn(),
 };
+// Covers the System-generated documents filter's AEF/PMT/PMA/DRAFT branches: a non-permit AEF
+// doc (included), a draft PMT (included via the DRAFT name check), and a final PMA (excluded).
+const SYSTEM_GENERATED_DOCUMENTS_TEST_DOCS = [
+  {
+    now_application_document_xref_guid: "aef-ntr",
+    now_application_document_sub_type_code: "AEF",
+    now_application_document_type_code: "NTR",
+    mine_document: {
+      mine_document_guid: "aef-ntr-guid",
+      document_name: "notice_of_work_form.pdf",
+    },
+  },
+  {
+    now_application_document_xref_guid: "aef-pmt-draft",
+    now_application_document_sub_type_code: "AEF",
+    now_application_document_type_code: "PMT",
+    mine_document: {
+      mine_document_guid: "aef-pmt-draft-guid",
+      document_name: "DRAFT_permit.pdf",
+    },
+  },
+  {
+    now_application_document_xref_guid: "aef-pma-final",
+    now_application_document_sub_type_code: "AEF",
+    now_application_document_type_code: "PMA",
+    mine_document: {
+      mine_document_guid: "aef-pma-final-guid",
+      document_name: "final_permit.pdf",
+    },
+  },
+];
+
 const reducerProps = {
-  noticeOfWork: { ...NOW_MOCK.NOTICE_OF_WORK, application_type_code: "NOW" },
+  noticeOfWork: {
+    ...NOW_MOCK.NOTICE_OF_WORK,
+    application_type_code: "NOW",
+    documents: SYSTEM_GENERATED_DOCUMENTS_TEST_DOCS,
+  },
   inspectors: [],
   importNowSubmissionDocumentsJob: false,
   fixedTop: false,
