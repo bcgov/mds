@@ -86,6 +86,7 @@ class NOWApplicationDocumentResource(Resource, UserMixin):
     parser.add_argument('preamble_author', type=str, required=False)
     parser.add_argument('preamble_date', type=str, required=False)
     parser.add_argument('is_final_package', type=bool, required=False)
+    parser.add_argument('permit_package_document_type_code', type=str, required=False)
     parser.add_argument('final_package_order', type=int, required=False)
     parser.add_argument('description', type=str, required=False)
 
@@ -162,6 +163,7 @@ class NOWApplicationDocumentResource(Resource, UserMixin):
             xref.preamble_title = data.get('preamble_title')
             xref.preamble_author = data.get('preamble_author')
             xref.preamble_date = data.get('preamble_date')
+            xref.permit_package_document_type_code = data.get('permit_package_document_type_code')
 
             now_application = NOWApplication.find_by_application_guid(application_guid)
             if not now_application:
@@ -173,6 +175,7 @@ class NOWApplicationDocumentResource(Resource, UserMixin):
             xref.final_package_order = final_package_order
         else:
             xref.final_package_order = None
+            xref.permit_package_document_type_code = None
 
         xref.save()
         mine_document.save()
