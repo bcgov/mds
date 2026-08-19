@@ -276,30 +276,9 @@ export const sideMenuOptions = (tab, hasPermitConditionsFlow = true, hasLegacyFu
     ],
     administrative: [
       {
-        href: "permit-package",
-        title: "Permit Package",
-        alwaysVisible: true,
-        children: [],
-        applicationType: ["NOW", "ADA"],
-      },
-      {
         href: "reclamation-securities",
         title: "Reclamation Securities",
         alwaysVisible: true,
-        children: [],
-        applicationType: ["NOW", "ADA"],
-      },
-      {
-        href: "government-documents",
-        title: "Government Documents",
-        alwaysVisible: true,
-        children: [],
-        applicationType: ["NOW", "ADA"],
-      },
-      {
-        href: "generated-documents",
-        title: "Application Export Files",
-        alwaysVisible: hasPermitConditionsFlow,
         children: [],
         applicationType: ["NOW", "ADA"],
       },
@@ -348,6 +327,13 @@ export const sideMenuOptions = (tab, hasPermitConditionsFlow = true, hasLegacyFu
         applicationType: ["NOW", , "ADA"],
       },
       {
+        href: "generated-documents",
+        title: "System-generated documents",
+        alwaysVisible: hasPermitConditionsFlow,
+        children: [],
+        applicationType: ["NOW", "ADA"],
+      },
+      {
         href: "referral-consultation-public-comment-documents",
         title: "Referral, Consultation and Public Comment Documents",
         alwaysVisible: true,
@@ -391,7 +377,7 @@ export const TAB_DISCLAIMERS = {
   permit type. You can add, edit or remove any condition.`,
   PRO: "This page allows you to review the progress of the application and record decisions.",
   ADMIN:
-    "This page contains information about securities, inspectors, progress tracking, and any internal files relevant to processing the application.",
+    "This page contains information about securities, inspectors, and progress tracking. All application documents are managed on the Manage Documents tab.",
   MND: "This page allows you to work with all documents related to this application.",
 };
 
