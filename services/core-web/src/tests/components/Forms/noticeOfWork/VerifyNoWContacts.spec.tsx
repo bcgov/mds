@@ -1,11 +1,13 @@
 import React from "react";
 import { render, screen, fireEvent, waitFor, within, act } from "@testing-library/react";
+import { http, HttpResponse } from "msw";
 import VerifyNoWContacts from "@/components/Forms/noticeOfWork/VerifyNoWContacts";
 import * as FORM from "@/constants/forms";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
 import { STATIC_CONTENT } from "@mds/common/constants/reducerTypes";
 import { searchReducerType } from "@mds/common/redux/slices/searchSlice";
+import server from "@/tests/server";
 
 jest.mock("@/components/common/wrappers/AuthorizationWrapper", () => ({ children }: any) => <>{children}</>);
 
@@ -150,5 +152,50 @@ describe("VerifyNoWContacts (add new contact flow)", () => {
             expect(headingEl).toBeInTheDocument();
         });
 
+    });
+});
+
+describe("VerifyNoWContacts (null address defensive rendering)", () => {
+    afterEach(() => {
+        server.resetHandlers();
+    });
+
+    it("does not crash when a matched contact's address is null", async () => {
+        server.use(
+            http.get("/%3CAPI_URL%3E/search", async () => {
+                return HttpResponse.json({
+                    search_results: {
+                        party: [
+                            {
+                                result: {
+                                    party_guid: "p-null-addr",
+                                    name: "No Address Person",
+                                    email: "noaddr@test.ca",
+                                    phone_no: "555",
+                                    address: null,
+                                },
+                            },
+                        ],
+                    },
+                });
+            })
+        );
+
+        renderWithStore();
+
+        fireEvent.click(screen.getAllByRole("button", { name: /Search Contact/i })[0]);
+        await waitFor(() => expect(screen.getByText(/Add New Core Contact/i)).toBeInTheDocument());
+
+        const optionsHeading = screen.getByRole("heading", { name: /Matching Contact Options/i });
+        const optionsContainer = optionsHeading.closest(".contact-rows") as HTMLElement;
+        const rowCheckboxes = within(optionsContainer).getAllByRole("checkbox");
+
+        fireEvent.click(rowCheckboxes[rowCheckboxes.length - 1]);
+
+        await waitFor(() => {
+            const coreDetailHeading = screen.getByRole("heading", { name: /Core Contact Detail/i });
+            const coreDetailContainer = coreDetailHeading.closest(".contact-rows") as HTMLElement;
+            expect(within(coreDetailContainer).getByText(/No Address Person/i)).toBeInTheDocument();
+        });
     });
 });
