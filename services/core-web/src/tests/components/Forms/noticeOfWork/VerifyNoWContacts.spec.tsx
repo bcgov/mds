@@ -184,7 +184,8 @@ describe("VerifyNoWContacts (null address defensive rendering)", () => {
         renderWithStore();
 
         fireEvent.click(screen.getAllByRole("button", { name: /Search Contact/i })[0]);
-        await waitFor(() => expect(screen.getByText(/Add New Core Contact/i)).toBeInTheDocument());
+        const addCoreContactButton = await screen.findByText(/Add New Core Contact/i);
+        expect(addCoreContactButton).toBeInTheDocument();
 
         const optionsHeading = screen.getByRole("heading", { name: /Matching Contact Options/i });
         const optionsContainer = optionsHeading.closest(".contact-rows") as HTMLElement;
