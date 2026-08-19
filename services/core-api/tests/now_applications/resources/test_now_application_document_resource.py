@@ -63,7 +63,6 @@ class TestNOWApplicationDocumentResourcePut:
             json={'is_final_package': True, 'permit_package_document_type_code': 'NOT_A_REAL_CODE'},
             headers=auth_headers['full_auth_header'])
 
-        # A rejected FK triggers the app's generic error handler, which tears down the
-        # shared test session entirely - so we can't query through it further in this
-        # test. The 400 here is the meaningful assertion (rejected, not silently saved).
+        # A rejected FK triggers the generic error handler, which tears down the shared test session entirely - we can't query through it further in this test
+        # A 400 here is a meaningful assertion (rejected, not silently saved).
         assert resp.status_code == 400

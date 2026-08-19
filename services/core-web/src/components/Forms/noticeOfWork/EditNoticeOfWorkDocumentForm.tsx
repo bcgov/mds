@@ -17,6 +17,15 @@ import RenderField from "@mds/common/components/forms/RenderField";
 import RenderDate from "@mds/common/components/forms/RenderDate";
 import RenderFileUpload from "@mds/common/components/forms/RenderFileUpload";
 import { IMineDocument, INoWDocument } from "@mds/common/interfaces";
+import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
+import { Feature } from "@mds/common/utils/featureFlag";
+import AuthorizationWrapper from "@mds/common/wrappers/AuthorizationWrapper";
+import * as Permission from "@/constants/permissions";
+
+const PERMIT_PACKAGE_DOCUMENT_TYPE_OPTIONS = [
+  { value: "FIGURE", label: "Figure" },
+  { value: "DOCUMENT", label: "Document" },
+];
 
 export interface EditNoticeOfWorkDocumentFormProps {
   onSubmit: (values) => void | Promise<void>;
@@ -38,6 +47,7 @@ const EditNoticeOfWorkDocumentForm: FC<EditNoticeOfWorkDocumentFormProps> = ({
   initialValues,
 }) => {
   const dispatch = useDispatch();
+  const { isFeatureEnabled } = useFeatureFlag();
   const formValues = useSelector(getFormValues(FORM.EDIT_NOTICE_OF_WORK_DOCUMENT_FORM)) as INoWDocument ?? { is_final_package: false};
   const { is_final_package } = formValues;
   const dropdownNoticeOfWorkApplicationDocumentTypeOptions = useSelector(
@@ -58,6 +68,14 @@ const EditNoticeOfWorkDocumentForm: FC<EditNoticeOfWorkDocumentFormProps> = ({
   useEffect(() => {
     dispatch(change(FORM.EDIT_NOTICE_OF_WORK_DOCUMENT_FORM, "uploadedFiles", uploadedFiles));
   }, [uploadedFiles]);
+
+  useEffect(() => {
+    if (!is_final_package) {
+      dispatch(
+        change(FORM.EDIT_NOTICE_OF_WORK_DOCUMENT_FORM, "permit_package_document_type_code", undefined)
+      );
+    }
+  }, [is_final_package]);
 
   const onFileLoad = (document_name: string, document_manager_guid: string) => {
     const newFile = { document_name, document_manager_guid } as IMineDocument;
@@ -109,15 +127,35 @@ const EditNoticeOfWorkDocumentForm: FC<EditNoticeOfWorkDocumentFormProps> = ({
             maximumCharacters={280}
             validate={maxLength(280)}
           />
-          {!isInCompleteStatus && (
-            <Field
-              id="is_final_package"
-              name="is_final_package"
-              label="Part of permit package"
-              type="checkbox"
-              component={RenderCheckbox}
-            />
-          )}
+          <Row gutter={16} align="middle">
+            {!isInCompleteStatus && (
+              <Col md={12} xs={24}>
+                <Field
+                  id="is_final_package"
+                  name="is_final_package"
+                  label="Part of permit package"
+                  type="checkbox"
+                  component={RenderCheckbox}
+                />
+              </Col>
+            )}
+            {is_final_package && isFeatureEnabled(Feature.INSPECTOR_PERMIT_PACKAGE_TYPE_SELECTOR) && (
+              <Col md={12} xs={24}>
+                <AuthorizationWrapper permission={Permission.EDIT_PERMITS} showToolTip={false}>
+                  <Field
+                    id="permit_package_document_type_code"
+                    name="permit_package_document_type_code"
+                    label="Document Type"
+                    placeholder="Select a type"
+                    component={RenderSelect}
+                    data={PERMIT_PACKAGE_DOCUMENT_TYPE_OPTIONS}
+                    validate={[required]}
+                    required
+                  />
+                </AuthorizationWrapper>
+              </Col>
+            )}
+          </Row>
           {is_final_package && (
             <>
               <Row gutter={16}>
