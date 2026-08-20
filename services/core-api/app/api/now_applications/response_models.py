@@ -344,6 +344,7 @@ NOW_APPLICATION_DOCUMENT = api.model(
         'now_application_document_sub_type_code': fields.String,
         'description': fields.String,
         'is_final_package': fields.Boolean,
+        'permit_package_document_type_code': fields.String,
         'is_system_generated': fields.Boolean,
         'final_package_order': fields.Integer,
         'is_referral_package': fields.Boolean,
