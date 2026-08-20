@@ -123,3 +123,97 @@ class GeomarkHelper:
                 current_app.logger.error('Error uploading spatial file to Geomark: ', response.text)
 
         return response.json() if response.text.strip() else None
+
+    # Geomark attribution field names, as returned by the info and feature resources.
+    # https://test.apps.gov.bc.ca/pub/geomark/docs/glossary.html
+    GEOMARK_ATTRIBUTION_FIELDS = {
+        'geometry_type': 'geometryType',
+        'num_parts': 'numParts',
+        'num_vertices': 'numVertices',
+        'area': 'area',
+        'length': 'length',
+        'minimum_clearance': 'minimumClearance',
+        'is_valid': 'isValid',
+        'is_simple': 'isSimple',
+        'is_robust': 'isRobust',
+        'geometry_validation_error': 'validationError',
+    }
+
+    @staticmethod
+    def _get_json(url):
+        response = requests.get(url, headers={'Accept': 'application/json'}, timeout=30)
+        return response.json() if response.status_code == 200 else None
+
+    @classmethod
+    def _parse_attribution(cls, properties):
+        """Pull the attribution Geomark records about the geometry itself.
+
+        Area and length are square metres and metres; the bounding box and centroid are
+        decimal degrees, matching the coordinate system of the geometry resources we request.
+        """
+        parsed = {}
+        for key, source in cls.GEOMARK_ATTRIBUTION_FIELDS.items():
+            value = properties.get(source)
+            if value is not None:
+                parsed[key] = value
+
+        if all(k in properties for k in ('minX', 'minY', 'maxX', 'maxY')):
+            parsed['extent'] = {
+                'minX': properties.get('minX'),
+                'minY': properties.get('minY'),
+                'maxX': properties.get('maxX'),
+                'maxY': properties.get('maxY'),
+            }
+
+        if all(k in properties for k in ('centroidX', 'centroidY')):
+            parsed['centroid'] = {
+                'centroidX': properties.get('centroidX'),
+                'centroidY': properties.get('centroidY'),
+            }
+
+        return parsed
+
+    def fetch_geomark_metadata(self, geomark_id):
+        """Fetch the attribution Geomark holds for a geomark.
+
+        The info resource carries the full attribution, so it is read first; the feature and
+        boundingBox resources remain as fallbacks for geometry type and extent.
+        """
+        if not geomark_id:
+            return None
+
+        metadata = {'geometry_type': None, 'extent': None}
+        try:
+            info = self._get_json(f'{self.GEOMARK_URL_BASE}/geomarks/{geomark_id}.json')
+            if info:
+                metadata.update(self._parse_attribution(info))
+
+            if not metadata['geometry_type'] or not metadata['extent']:
+                feature_url = f'{self.GEOMARK_URL_BASE}/geomarks/{geomark_id}/feature.geojson'
+                feature = self._get_json(feature_url)
+                if feature:
+                    props = feature.get('properties') or {}
+                    geom = feature.get('geometry') or {}
+                    metadata.update(self._parse_attribution(props))
+                    metadata['geometry_type'] = (
+                        metadata['geometry_type'] or props.get('geometryType') or geom.get('type')
+                    )
+
+            if not metadata['extent']:
+                bbox_url = f'{self.GEOMARK_URL_BASE}/geomarks/{geomark_id}/boundingBox.geojson'
+                bbox = self._get_json(bbox_url)
+                if bbox:
+                    props = bbox.get('properties') or {}
+                    if all(k in props for k in ('minX', 'minY', 'maxX', 'maxY')):
+                        metadata['extent'] = {
+                            'minX': props.get('minX'),
+                            'minY': props.get('minY'),
+                            'maxX': props.get('maxX'),
+                            'maxY': props.get('maxY'),
+                        }
+                    elif bbox.get('geometry'):
+                        metadata['extent'] = {'geometry': bbox.get('geometry')}
+        except Exception as e:
+            current_app.logger.warning(f'Failed to fetch Geomark metadata for {geomark_id}: {e}')
+
+        return metadata

@@ -173,11 +173,36 @@ class DocumentManagerService():
 
     @classmethod
     def importNoticeOfWorkSubmissionDocuments(cls, request, now_application):
+        submission_documents = marshal(now_application.submission_documents, NOW_SUBMISSION_DOCUMENT)
+        invalid_submission_documents = [
+            {
+                'messageid': document.get('messageid'),
+                'filename': document.get('filename'),
+                'missing_fields': [
+                    field for field in ('documenturl', 'filename', 'messageid', 'documenttype', 'description')
+                    if document.get(field) is None
+                ],
+            }
+            for document in submission_documents
+            if any(
+                document.get(field) is None
+                for field in ('documenturl', 'filename', 'messageid', 'documenttype', 'description')
+            )
+        ]
+        current_app.logger.info(
+            'Sending %s NoW submission documents to Document Manager for application %s.',
+            len(submission_documents),
+            now_application.now_application_guid)
+        if invalid_submission_documents:
+            current_app.logger.warning(
+                'NoW submission documents have missing required import fields for application %s: %s',
+                now_application.now_application_guid,
+                invalid_submission_documents)
         data = {
             'now_application_id':
             now_application.now_application_id,
             'submission_documents':
-            marshal(now_application.submission_documents, NOW_SUBMISSION_DOCUMENT),
+            submission_documents,
             'now_application_guid':
             str(now_application.now_application_guid)
         }
@@ -187,6 +212,20 @@ class DocumentManagerService():
             headers={key: value
                      for (key, value) in request.headers if key != 'Host'},
             data=json.dumps(data))
+
+        return Response(resp.content, resp.status_code, resp.raw.headers.items())
+
+    @classmethod
+    def processSpatialDocuments(cls, request, document_manager_guids):
+        """Queue non-blocking spatial detection, validation and Geomark registration."""
+        current_app.logger.info('Sending %s document(s) to Document Manager for spatial processing.',
+                                len(document_manager_guids))
+
+        resp = requests.post(
+            url=f'{Config.DOCUMENT_MANAGER_URL}/documents/spatial-bundles',
+            headers={key: value
+                     for (key, value) in request.headers if key != 'Host'},
+            data=json.dumps({'document_guids': document_manager_guids}))
 
         return Response(resp.content, resp.status_code, resp.raw.headers.items())
 

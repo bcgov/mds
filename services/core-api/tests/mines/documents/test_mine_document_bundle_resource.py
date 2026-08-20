@@ -2,11 +2,9 @@ from tests.factories import MineDocumentBundleFactory
 
 
 class TestMineDocumentBundle():
-    """Tests for GET /mines/{mine_guid}/documents/bundle"""
+    """Tests for GET/PATCH /mines/document-bundle"""
 
     def test_get_mine_document_bundle(self, test_client, db_session, auth_headers):
-        """Should return a zip file with all documents"""
-
         document_bundle = MineDocumentBundleFactory()
 
         get_resp = test_client.get(
@@ -15,14 +13,37 @@ class TestMineDocumentBundle():
         )
 
         assert get_resp.status_code == 200
+        data = get_resp.json
+        assert data['bundle_id'] == document_bundle.bundle_id
+        assert 'purpose_codes' in data
+        assert 'validation_status' in data
 
     def test_get_mine_document_bundle_invalid_id(self, test_client, db_session, auth_headers):
-        """Should return a 404 for an invalid id"""
-
         get_resp = test_client.get(
             f'/mines/document-bundle/invalid_id',
             headers=auth_headers['full_auth_header']
         )
 
         assert get_resp.status_code == 400
+
+    def test_patch_purpose_codes(self, test_client, db_session, auth_headers):
+        from app.api.mines.documents.models.spatial_bundle_purpose_code import SpatialBundlePurposeCode
+
+        if not SpatialBundlePurposeCode.find_by_code('MBD'):
+            SpatialBundlePurposeCode(
+                spatial_bundle_purpose_code='MBD',
+                description='Mine Boundary',
+                display_order=10,
+                active_ind=True,
+                is_exclusive_per_parent=False,
+            ).save()
+
+        document_bundle = MineDocumentBundleFactory()
+        patch_resp = test_client.patch(
+            f'/mines/document-bundle/{document_bundle.bundle_id}',
+            headers=auth_headers['full_auth_header'],
+            json={'purpose_codes': ['MBD']},
+        )
+        assert patch_resp.status_code == 200
+        assert 'MBD' in patch_resp.json['purpose_codes']
 

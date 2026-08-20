@@ -189,16 +189,32 @@ def import_now_submission_documents(self, import_now_submission_documents_job_id
         import_job.complete_timestamp = current_timestamp
         import_job.import_now_submission_documents_job_status_code = 'SUC'
         import_job.save()
+        # Non-blocking spatial detect / validate / Geomark
+        try:
+            from app.tasks.process_now_spatial_bundles import process_now_spatial_bundles
+            process_now_spatial_bundles.delay(import_now_submission_documents_job_id)
+        except Exception as spatial_err:
+            logger.error(f'Failed to enqueue spatial bundle processing: {spatial_err}')
         return result
 
     import_job.error = result
     if import_job.attempt >= len(RETRY_DELAYS):
         import_job.import_now_submission_documents_job_status_code = 'FAI'
+        import_job.save()
+        # Still attempt spatial processing for any successfully imported docs
+        try:
+            from app.tasks.process_now_spatial_bundles import process_now_spatial_bundles
+            process_now_spatial_bundles.delay(import_now_submission_documents_job_id)
+        except Exception as spatial_err:
+            logger.error(f'Failed to enqueue spatial bundle processing: {spatial_err}')
     else:
         import_job.import_now_submission_documents_job_status_code = 'DEL'
-    import_job.save()
-    index = min(import_job.attempt - 1, len(RETRY_DELAYS) - 1)
-    self.retry(exc=result, countdown=RETRY_DELAYS[index])
+        import_job.save()
+        index = min(import_job.attempt - 1, len(RETRY_DELAYS) - 1)
+        self.retry(exc=result, countdown=RETRY_DELAYS[index])
+        return result
+
+    return result
 
 
 def associate_now_submissions_document_with_document(guid,

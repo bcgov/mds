@@ -9690,9 +9690,6 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                                 style="table-layout: auto;"
                               >
                                 <colgroup>
-                                  <col
-                                    class="ant-table-expand-icon-col"
-                                  />
                                   <col />
                                   <col />
                                   <col
@@ -9712,9 +9709,6 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                                   class="ant-table-thead"
                                 >
                                   <tr>
-                                    <th
-                                      class="ant-table-cell ant-table-row-expand-icon-cell"
-                                    />
                                     <th
                                       aria-label="Category"
                                       class="ant-table-cell ant-table-column-has-sorters"
@@ -9911,7 +9905,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                                   >
                                     <td
                                       class="ant-table-cell"
-                                      colspan="8"
+                                      colspan="7"
                                     >
                                       No Data Yet
                                     </td>

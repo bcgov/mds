@@ -37,6 +37,91 @@ def test_add_geomark_to_group(requests_mock, app):
         assert result == response_json
         assert requests_mock.called
 
+GEOMARK_INFO_RESPONSE = {
+    'id': 'gm-test',
+    'geometryType': 'Polygon',
+    'numPolygons': 1,
+    'numParts': 1,
+    'createDate': '2011-04-11',
+    'minX': -144.664931,
+    'minY': 47.527035,
+    'maxX': -112.989186,
+    'maxY': 60.724742,
+    'centroidX': -128.104468,
+    'centroidY': 54.745332,
+    'numVertices': 13,
+    'length': 5958503.516035516,
+    'area': 1878642016189,
+    'isValid': True,
+    'validationError': None,
+    'isSimple': True,
+    'isRobust': True,
+    'minimumClearance': 94994.294,
+}
+
+
+def test_fetch_geomark_metadata_reads_the_info_attribution(requests_mock, app):
+    requests_mock.get(
+        'https://test.apps.gov.bc.ca/pub/geomarks/gm-test.json',
+        json=GEOMARK_INFO_RESPONSE,
+        status_code=200)
+
+    with app.app_context():
+        metadata = GeomarkHelper().fetch_geomark_metadata('gm-test')
+
+    assert metadata['geometry_type'] == 'Polygon'
+    assert metadata['extent'] == {
+        'minX': -144.664931,
+        'minY': 47.527035,
+        'maxX': -112.989186,
+        'maxY': 60.724742,
+    }
+    assert metadata['centroid'] == {'centroidX': -128.104468, 'centroidY': 54.745332}
+    assert metadata['num_parts'] == 1
+    assert metadata['num_vertices'] == 13
+    assert metadata['area'] == 1878642016189
+    assert metadata['length'] == 5958503.516035516
+    assert metadata['minimum_clearance'] == 94994.294
+    assert metadata['is_valid'] is True
+    assert metadata['is_simple'] is True
+    assert metadata['is_robust'] is True
+    # Geomark sends validationError=null for valid geometry; nulls are not carried through.
+    assert 'geometry_validation_error' not in metadata
+
+
+def test_fetch_geomark_metadata_falls_back_to_the_feature_resource(requests_mock, app):
+    requests_mock.get(
+        'https://test.apps.gov.bc.ca/pub/geomarks/gm-test.json', status_code=404)
+    requests_mock.get(
+        'https://test.apps.gov.bc.ca/pub/geomarks/gm-test/feature.geojson',
+        json={
+            'geometry': {'type': 'Polygon'},
+            'properties': {'minX': 1, 'minY': 2, 'maxX': 3, 'maxY': 4, 'isValid': True},
+        },
+        status_code=200)
+
+    with app.app_context():
+        metadata = GeomarkHelper().fetch_geomark_metadata('gm-test')
+
+    assert metadata['geometry_type'] == 'Polygon'
+    assert metadata['extent'] == {'minX': 1, 'minY': 2, 'maxX': 3, 'maxY': 4}
+    assert metadata['is_valid'] is True
+
+
+def test_fetch_geomark_metadata_survives_geomark_being_unavailable(requests_mock, app):
+    requests_mock.get(
+        'https://test.apps.gov.bc.ca/pub/geomarks/gm-test.json', status_code=500)
+    requests_mock.get(
+        'https://test.apps.gov.bc.ca/pub/geomarks/gm-test/feature.geojson', status_code=500)
+    requests_mock.get(
+        'https://test.apps.gov.bc.ca/pub/geomarks/gm-test/boundingBox.geojson', status_code=500)
+
+    with app.app_context():
+        metadata = GeomarkHelper().fetch_geomark_metadata('gm-test')
+
+    assert metadata == {'geometry_type': None, 'extent': None}
+
+
 @mock.patch('time.time', mock.MagicMock(return_value=1))
 def test_add_geomark_to_group_wrong_status(requests_mock, app):
     geomark_id = '123'

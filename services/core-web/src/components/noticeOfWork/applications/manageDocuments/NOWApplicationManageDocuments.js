@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
 import FinalPermitDocuments from "@/components/noticeOfWork/applications/FinalPermitDocuments";
 import NOWDocuments from "@/components/noticeOfWork/applications//NOWDocuments";
 import ScrollContentWrapper from "@/components/noticeOfWork/applications/ScrollContentWrapper";
 import NOWSubmissionDocuments from "@/components/noticeOfWork/applications//NOWSubmissionDocuments";
+import NOWSpatialFiles from "@/components/noticeOfWork/applications/NOWSpatialFiles";
+import { spatialBundleIdOf } from "@mds/common/utils/spatialFiles";
 
 /**
  * @class NOWApplicationManageDocuments- contains all information relating to the documents on a Notice of Work Application
@@ -23,11 +25,21 @@ const propTypes = {
 const defaultProps = { importNowSubmissionDocumentsJob: {}, isViewMode: false };
 
 export const NOWApplicationManageDocuments = (props) => {
+  const [spatialFocus, setSpatialFocus] = useState(null);
   const isNoWApplication = props.noticeOfWork.application_type_code === "NOW";
   const applicationFilesTypes = ["AAF", "MDO", "SDO"];
   const tableDescription = isNoWApplication
     ? "In this table, you can see all documents submitted during initial application, revision and new files requested from the proponent. Documents added in this section will not show up in the permit package unless otherwise specified."
     : "In this table, you can see all documents uploaded to the application, revision and new files requested from the proponent. Documents added in this section will not show up in the permit package unless otherwise specified.";
+
+  const focusSpatialFiles = (record) =>
+    setSpatialFocus({
+      requestId: Date.now(),
+      mineDocumentGuid: record.mine_document_guid,
+      documentManagerGuid: record.document_manager_guid,
+      bundleId: spatialBundleIdOf(record),
+    });
+
   return (
     <div>
       <ScrollContentWrapper id="permit-package" title="Permit Package" isLoaded={props.isLoaded}>
@@ -88,6 +100,16 @@ export const NOWApplicationManageDocuments = (props) => {
           isViewMode={props.isViewMode}
           hideJobStatusColumn={!isNoWApplication}
           hideImportStatusColumn={!isNoWApplication}
+          onSpatialFileLinkClick={focusSpatialFiles}
+          preTableContent={
+            <NOWSpatialFiles
+              filteredSubmissionDocuments={props.noticeOfWork.filtered_submission_documents || []}
+              documents={props.noticeOfWork.documents || []}
+              spatialDocumentBundles={props.noticeOfWork.spatial_document_bundles || []}
+              isViewMode={props.isViewMode}
+              focusRequest={spatialFocus}
+            />
+          }
         />
       </ScrollContentWrapper>
       <ScrollContentWrapper

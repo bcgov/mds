@@ -1,9 +1,10 @@
 import React from "react";
-import { render } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
+import { Provider } from "react-redux";
 import { PROJECTS } from "@mds/common/constants/reducerTypes";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
-import ViewSpatialDetail from "./ViewSpatialDetail";
+import ViewSpatialDetail, { GeomarkMapPreview } from "./ViewSpatialDetail";
 import {
   groupSpatialBundles,
   spatialDataReducerType,
@@ -40,5 +41,47 @@ describe("ViewSpatialDetail", () => {
       </ReduxWrapper>
     );
     expect(container).toMatchSnapshot();
+  });
+
+  it("renders GeoMark geometry with the existing map component", async () => {
+    const store = {
+      getState: () => initialState,
+      subscribe: () => () => undefined,
+      dispatch: jest.fn().mockResolvedValue({
+        type: "spatialData/fetchGeomarkMapData/fulfilled",
+      }),
+    };
+
+    render(
+      <Provider store={store as any}>
+        <GeomarkMapPreview geomarkId="gm-test" />
+      </Provider>
+    );
+
+    await waitFor(() => expect(document.getElementById("leaflet-map")).toBeInTheDocument());
+  });
+
+  it("shows an unavailable state when GeoMark geometry cannot be loaded", async () => {
+    const store = {
+      getState: () => ({
+        ...initialState,
+        [spatialDataReducerType]: {
+          ...initialState[spatialDataReducerType],
+          geoJsonData: null,
+        },
+      }),
+      subscribe: () => () => undefined,
+      dispatch: jest.fn().mockResolvedValue({
+        type: "spatialData/fetchGeomarkMapData/rejected",
+      }),
+    };
+
+    render(
+      <Provider store={store as any}>
+        <GeomarkMapPreview geomarkId="gm-test" />
+      </Provider>
+    );
+
+    expect(await screen.findByText("Map preview unavailable")).toBeInTheDocument();
   });
 });

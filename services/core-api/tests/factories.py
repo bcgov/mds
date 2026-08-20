@@ -388,6 +388,9 @@ class MineDocumentBundleFactory(BaseFactory):
     name = factory.Faker('word')
     geomark_id = factory.Faker('word')
     docman_bundle_guid = GUID
+    validation_status = None
+    validation_error = None
+    validation_checks = None
 
     bundle_documents = []
 

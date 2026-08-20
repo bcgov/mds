@@ -159,6 +159,42 @@ const spatialSlice = createAppSlice({
         },
       }
     ),
+    updateSpatialBundlePurposes: create.asyncThunk(
+      async (
+        payload: {
+          bundle_id: string | number;
+          purpose_codes: string[];
+          sibling_bundle_ids?: Array<string | number>;
+        },
+        thunkAPI
+      ) => {
+        const headers = createRequestHeader();
+        const url = `${ENVIRONMENT.apiUrl}${CORE_API_DOCUMENT_BUNDLE}${payload.bundle_id}`;
+        thunkAPI.dispatch(showLoading());
+        const response = await CustomAxios({
+          errorToastMessage: "default",
+          successToastMessage: "Spatial purpose updated",
+        }).patch(
+          url,
+          {
+            purpose_codes: payload.purpose_codes,
+            sibling_bundle_ids: payload.sibling_bundle_ids,
+          },
+          headers
+        );
+        thunkAPI.dispatch(hideLoading());
+        return response.data;
+      },
+      {
+        fulfilled: (state, action) => {
+          state.spatialBundle = action.payload;
+          state.bundle_id = action.payload.bundle_id;
+        },
+        rejected: (_state, action) => {
+          rejectHandler(action);
+        },
+      }
+    ),
   }),
   selectors: {
     getGeomarkMapData: (state: SpatialDataState) => {
@@ -178,6 +214,7 @@ export const {
   fetchGeomarkMapData,
   clearSpatialData,
   fetchSpatialBundle,
+  updateSpatialBundlePurposes,
 } = spatialSlice.actions;
 export const { getGeomarkMapData, getSpatialBundleGuid, getSpatialBundle } = spatialSlice.selectors;
 export const spatialDataReducer = spatialSlice.reducer;

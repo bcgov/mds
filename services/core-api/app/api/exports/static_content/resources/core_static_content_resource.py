@@ -73,6 +73,7 @@ from app.api.projects.project_decision_package.models.project_decision_package_s
 from app.api.projects.project_decision_package.models.project_decision_package_document_type import ProjectDecisionPackageDocumentType
 from app.api.now_applications.models.now_application_nation_event_code import NOWApplicationNationEventCode
 from app.api.now_applications.models.now_application_nation_status import NOWApplicationNationStatus
+from app.api.mines.documents.models.spatial_bundle_purpose_code import SpatialBundlePurposeCode
 
 
 MODELS_GET_ACTIVE = [
@@ -93,7 +94,7 @@ MODELS_GET_ACTIVE = [
     ProjectSummaryStatusCode, MinistryContactType, ProjectSummaryAuthorizationType,
     ProjectSummaryPermitType, InformationRequirementsTableStatusCode, InformationRequirementsTableDocumentType,
     MajorMineApplicationStatusCode, MajorMineApplicationDocumentType, MajorMineApplicationDocumentSubtype, ProjectDecisionPackageStatusCode, ProjectDecisionPackageDocumentType, Municipality,
-    NOWApplicationNationEventCode, NOWApplicationNationStatus
+    NOWApplicationNationEventCode, NOWApplicationNationStatus, SpatialBundlePurposeCode
 ]
 
 

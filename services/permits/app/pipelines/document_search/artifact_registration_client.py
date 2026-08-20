@@ -4,7 +4,9 @@ import os
 from urllib.parse import quote
 
 import requests
-from app.pipelines.document_search.permits_oauth_session_helper import build_permits_oauth_session
+from app.pipelines.document_search.permits_oauth_session_helper import (
+    build_permits_oauth_session,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -30,6 +32,7 @@ class DocumentManagerArtifactUploader:
 
 
         if not self.base_url:
+            logger.info('Skipping artifact upload for %s: Document Manager URL is not configured.', artifact_id)
             return None, 'skipped'
 
         file_bytes = upload_data.get('content_bytes')

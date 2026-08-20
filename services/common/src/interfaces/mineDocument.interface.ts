@@ -12,7 +12,7 @@ export interface IMineDocument {
   archived_by?: string;
   active_ind?: boolean;
   versions?: IMineDocumentVersion[];
-  mine_document_bundle_id?: string;
+  mine_document_bundle_id?: string | number;
   update_timestamp?: string;
   label?: string;
 }

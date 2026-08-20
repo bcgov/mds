@@ -128,13 +128,37 @@ INFORMATION_REQUIREMENTS_TABLE_DOCUMENT_XREF_MODEL = api.model(
     'InformationRequirementsTableDocumentXref',
     {'information_requirements_table_document_type_code': fields.String})
 
+SPATIAL_BUNDLE_PURPOSE_CODE_MODEL = api.model(
+    'SpatialBundlePurposeCode', {
+        'spatial_bundle_purpose_code': fields.String,
+        'description': fields.String,
+        'display_order': fields.Integer,
+        'active_ind': fields.Boolean,
+        'is_exclusive_per_parent': fields.Boolean,
+        'context_codes': fields.List(fields.String),
+    })
+
+MINE_DOCUMENT_BUNDLE_DOCUMENT_MODEL = api.model(
+    'MineDocumentBundleDocument', {
+        'mine_document_guid': fields.String,
+        'document_manager_guid': fields.String,
+        'document_name': fields.String,
+        'upload_date': fields.String,
+        'create_user': fields.String,
+    })
+
 MINE_DOCUMENT_BUNDLE_MODEL = api.model(
     'MineDocumentBundle', {
         'bundle_id': fields.Integer,
         'bundle_guid': fields.String,
         'name': fields.String,
         'geomark_id': fields.String,
-        'docman_bundle_guid': fields.String
+        'docman_bundle_guid': fields.String,
+        'validation_status': fields.String,
+        'validation_error': fields.String,
+        'validation_checks': fields.Raw,
+        'purpose_codes': fields.List(fields.String),
+        'bundle_documents': fields.List(fields.Nested(MINE_DOCUMENT_BUNDLE_DOCUMENT_MODEL)),
     })
 
 MINE_DOCUMENT_MODEL = api.model(

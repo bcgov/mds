@@ -407,3 +407,24 @@
 .now-events-table .ant-table-footer {
   border-top: none;
 }
+
+// Spatial files sit among the other documents, tinted so a shapefile set reads as one group.
+// The :not(:hover) keeps antd's own row hover colour in charge while the cursor is on the row.
+.ant-table-tbody > tr.spatial-file-row:not(:hover) > td {
+  background-color: #f8f7fb;
+}
+
+.spatial-files-row-link {
+  margin-left: 8px;
+  font-size: 12px;
+  color: $light-violet;
+  white-space: nowrap;
+
+  .anticon {
+    margin-right: 4px;
+  }
+
+  &:hover {
+    color: $violet;
+  }
+}
