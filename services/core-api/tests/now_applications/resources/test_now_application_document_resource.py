@@ -51,6 +51,25 @@ class TestNOWApplicationDocumentResourcePut:
         assert xref.is_final_package is False
         assert xref.permit_package_document_type_code is None
 
+    def test_put_preserves_permit_package_document_type_when_not_supplied(
+            self, test_client, db_session, auth_headers):
+        now_application_identity = NOWApplicationIdentityFactory()
+        mine_doc, xref = _make_document_xref(now_application_identity)
+        xref.is_final_package = True
+        xref.permit_package_document_type_code = 'FIGURE'
+        db_session.add(xref)
+        db_session.commit()
+
+        resp = test_client.put(
+            f'/now-applications/{now_application_identity.now_application_guid}/document/{mine_doc.mine_document_guid}',
+            json={'is_final_package': True, 'description': 'Updated description only'},
+            headers=auth_headers['full_auth_header'])
+
+        assert resp.status_code == 200
+        db_session.refresh(xref)
+        assert xref.description == 'Updated description only'
+        assert xref.permit_package_document_type_code == 'FIGURE'
+
     def test_put_rejects_invalid_permit_package_document_type(
             self, test_client, db_session, auth_headers):
         now_application_identity = NOWApplicationIdentityFactory()

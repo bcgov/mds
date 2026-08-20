@@ -140,7 +140,7 @@ const EditNoticeOfWorkDocumentForm: FC<EditNoticeOfWorkDocumentFormProps> = ({
               </Col>
             )}
             {is_final_package && isFeatureEnabled(Feature.INSPECTOR_PERMIT_PACKAGE_TYPE_SELECTOR) && (
-              <Col md={12} xs={24}>
+              <Col md={isInCompleteStatus ? 24 : 12} xs={24}>
                 <AuthorizationWrapper permission={Permission.EDIT_PERMITS} showToolTip={false}>
                   <Field
                     id="permit_package_document_type_code"

@@ -163,7 +163,9 @@ class NOWApplicationDocumentResource(Resource, UserMixin):
             xref.preamble_title = data.get('preamble_title')
             xref.preamble_author = data.get('preamble_author')
             xref.preamble_date = data.get('preamble_date')
-            xref.permit_package_document_type_code = data.get('permit_package_document_type_code')
+            permit_package_document_type_code = data.get('permit_package_document_type_code')
+            if permit_package_document_type_code is not None:
+                xref.permit_package_document_type_code = permit_package_document_type_code
 
             now_application = NOWApplication.find_by_application_guid(application_guid)
             if not now_application:
