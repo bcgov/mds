@@ -37,7 +37,6 @@ const defaultProps = {
 };
 
 const LOCKED_ROW_BASE = {
-  final_package_order: -1,
   isLockedApplicationForm: true,
   now_application_document_type_code: null,
   is_final_package: true,
@@ -47,6 +46,7 @@ const LOCKED_ROW_BASE = {
 
 const NA_ROW = {
   ...LOCKED_ROW_BASE,
+  final_package_order: -1,
   now_application_document_xref_guid: "application-form-1.1", // synthetic key — no real NTR doc exists yet
   preamble_title: "N/A",
   preamble_author: "N/A",

@@ -103,7 +103,7 @@ class TestAddNowFormToFap:
     def test_sets_final_package_order_and_description(self, mock_export, mock_doc_resource,
                                                       mock_xref, app):
         """final_package_order and description must be set on the new document."""
-        from app.api.now_applications.models.now_application import NOWApplication
+        from app.api.now_applications.models.now_application import NOWApplication, LOCKED_NTR_FINAL_PACKAGE_ORDER
         mock_export.get_now_form_generate_token.return_value = 'token-abc'
         mock_doc_resource.generate_now_document.return_value = {
             'now_application_document_xref_guid': 'new-xref-guid'
@@ -114,7 +114,7 @@ class TestAddNowFormToFap:
         instance = self._make_now_application(NOWApplication)
         instance.add_now_form_to_fap('My custom description')
 
-        assert mock_now_doc.final_package_order == 5
+        assert mock_now_doc.final_package_order == LOCKED_NTR_FINAL_PACKAGE_ORDER
         assert mock_now_doc.description == 'My custom description'
         assert mock_now_doc.is_final_package is True
         mock_now_doc.save.assert_called_once()
