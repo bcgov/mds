@@ -21,7 +21,7 @@ from app.api.now_submissions.models.document import Document
 from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
 from app.api.mines.mine.models.mine_type import MineType
 from app.api.mines.permits.permit_conditions.models.permit_conditions import PermitConditions
-from flask import current_app
+LOCKED_NTR_FINAL_PACKAGE_ORDER = -1
 
 
 class NOWApplication(Base, AuditMixin):
@@ -425,7 +425,7 @@ class NOWApplication(Base, AuditMixin):
         now_doc = NOWApplicationDocumentXref.find_by_guid(now_application_document_xref_guid)
         now_doc.is_final_package = True
         now_doc.is_system_generated = True
-        now_doc.final_package_order = self.next_document_final_package_order
+        now_doc.final_package_order = LOCKED_NTR_FINAL_PACKAGE_ORDER
         now_doc.description = description
         now_doc.preamble_title = "Notice of Work Application"
         now_doc.preamble_author = "N/A"
