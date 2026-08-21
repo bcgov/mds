@@ -1,6 +1,15 @@
+from datetime import datetime
+
 from app.api.mines.response_models import NOW_DOCUMENT_SEARCH_MODEL
+from app.api.now_applications.models.now_application_document_index_run import (
+    NowApplicationDocumentIndexRun,
+    to_utc_isoformat,
+)
 from app.api.now_applications.models.now_application_identity import (
     NOWApplicationIdentity,
+)
+from app.api.now_applications.tasks import (
+    poll_update_now_application_document_index_status,
 )
 from app.api.search.search.now_application_search_service import (
     NowApplicationSearchService,
@@ -79,6 +88,18 @@ class NOWApplicationDocumentIndexResource(Resource, UserMixin):
             return {'message': 'No indexable documents found for this application.'}, 200
 
         result = NowApplicationSearchService().index_documents(now_application_guid, documents)
+
+        run = NowApplicationDocumentIndexRun.create(
+            now_application_guid=now_application_guid,
+            status='running',
+            document_count=len(documents),
+            last_run_start=datetime.utcnow(),
+        )
+        poll_task = poll_update_now_application_document_index_status.delay(
+            str(run.now_application_document_index_run_id))
+        run.core_status_task_id = poll_task.id
+        run.save()
+
         return result, 200
 
     @api.doc(description="Cancel the active indexing task for a Notice of Work application.")
@@ -89,7 +110,15 @@ class NOWApplicationDocumentIndexResource(Resource, UserMixin):
         if not now_application_identity:
             raise NotFound('Notice of Work application not found.')
 
-        return NowApplicationSearchService().cancel_indexing(now_application_guid), 200
+        result = NowApplicationSearchService().cancel_indexing(now_application_guid)
+
+        run = NowApplicationDocumentIndexRun.get_latest_by_now_application_guid(now_application_guid)
+        if run and run.status == 'running':
+            run.status = 'cancelled'
+            run.last_run_end = datetime.utcnow()
+            run.save()
+
+        return result, 200
 
 
 class NOWApplicationDocumentIndexStatusResource(Resource, UserMixin):
@@ -101,7 +130,20 @@ class NOWApplicationDocumentIndexStatusResource(Resource, UserMixin):
         if not now_application_identity:
             raise NotFound('Notice of Work application not found.')
 
-        return NowApplicationSearchService().get_index_status(now_application_guid), 200
+        status = NowApplicationSearchService().get_index_status(now_application_guid)
+
+        run = NowApplicationDocumentIndexRun.get_latest_by_now_application_guid(now_application_guid)
+        if run:
+            status['last_run_start'] = to_utc_isoformat(run.last_run_start)
+            status['last_run_end'] = to_utc_isoformat(run.last_run_end)
+            status['document_count'] = run.document_count
+            if run.status != 'running':
+                status['status'] = run.status
+                status['items_processed'] = run.items_processed
+                status['error_count'] = run.error_count
+                status['error_message'] = run.error_message
+
+        return status, 200
 
 
 # ---------------------------------------------------------------------------
