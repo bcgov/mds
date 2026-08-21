@@ -139,7 +139,7 @@ def start_zip_job(job_type, docs, task, zip_file_name=None):
     response = Response(json.dumps(response_data), content_type='application/json')
     return json.loads(response.data.decode('utf-8'))
 
-def create_import_now_submission_documents(import_now_submission_documents_job_id):
+def create_import_now_submission_documents(import_now_submission_documents_job_id, mine_guid=None):
     """Creates a job that imports a Notice of Work's submission documents to the object store."""
 
     response = None
@@ -149,7 +149,7 @@ def create_import_now_submission_documents(import_now_submission_documents_job_i
 
     # Create the task for this job
     try:
-        data = {"args": [import_job.import_now_submission_documents_job_id]}
+        data = {"args": [import_job.import_now_submission_documents_job_id, mine_guid]}
         response = apply_task_async(
             'app.tasks.import_now_submission_documents.import_now_submission_documents', data)
         import_job.celery_task_id = response['task-id']
@@ -163,11 +163,11 @@ def create_import_now_submission_documents(import_now_submission_documents_job_i
     return message
 
 
-def create_process_spatial_documents_task(document_guids):
+def create_process_spatial_documents_task(document_guids, mine_guid=None):
     """Creates a job that detects, validates and Geomarks spatial bundles in the given documents."""
     result = celery.send_task(
         'app.tasks.process_now_spatial_bundles.process_spatial_document_guids',
-        args=[document_guids],
+        args=[document_guids, mine_guid],
     )
 
     current_app.logger.info(

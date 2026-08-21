@@ -114,10 +114,16 @@ const spatialSlice = createAppSlice({
       }
     ),
     fetchSpatialBundle: create.asyncThunk(
-      async (mine_document_bundle_id: string | number, thunkAPI) => {
+      async (
+        payload: { mineGuid: string; mine_document_bundle_id: string | number },
+        thunkAPI
+      ) => {
         thunkAPI.dispatch(showLoading());
         const headers = createRequestHeader();
-        const url = `${ENVIRONMENT.apiUrl}${CORE_API_DOCUMENT_BUNDLE}${mine_document_bundle_id}`;
+        const url = `${ENVIRONMENT.apiUrl}${CORE_API_DOCUMENT_BUNDLE(
+          payload.mineGuid,
+          payload.mine_document_bundle_id
+        )}`;
         const response = await CustomAxios({
           errorToastMessage: "default",
         }).get(url, headers);
@@ -160,13 +166,17 @@ const spatialSlice = createAppSlice({
     updateSpatialBundlePurposes: create.asyncThunk(
       async (
         payload: {
+          mineGuid: string;
           bundle_id: string | number;
           purpose_codes: string[];
         },
         thunkAPI
       ) => {
         const headers = createRequestHeader();
-        const url = `${ENVIRONMENT.apiUrl}${CORE_API_DOCUMENT_BUNDLE}${payload.bundle_id}`;
+        const url = `${ENVIRONMENT.apiUrl}${CORE_API_DOCUMENT_BUNDLE(
+          payload.mineGuid,
+          payload.bundle_id
+        )}`;
         thunkAPI.dispatch(showLoading());
         const response = await CustomAxios({
           errorToastMessage: "default",

@@ -16,6 +16,7 @@ interface NOWSpatialFilesProps {
   spatialDocumentBundles?: ISpatialBundle[];
   isViewMode: boolean;
   focusRequest?: ISpatialFocusRequest | null;
+  mineGuid?: string;
 }
 
 const NOWSpatialFiles: FC<NOWSpatialFilesProps> = ({
@@ -24,6 +25,7 @@ const NOWSpatialFiles: FC<NOWSpatialFilesProps> = ({
   spatialDocumentBundles = [],
   isViewMode,
   focusRequest = null,
+  mineGuid,
 }) => {
   const purposeCodesAll = useSelector(getSpatialBundlePurposeCodes) || [];
   const userRoles = useSelector(getUserAccessData) || [];
@@ -48,7 +50,7 @@ const NOWSpatialFiles: FC<NOWSpatialFilesProps> = ({
         mine_document_bundle_id: doc.mine_document_bundle_id,
         upload_date: doc.update_timestamp || doc.upload_date,
         create_user: doc.create_user,
-        mine_guid: doc.mine_guid,
+        mine_guid: doc.mine_guid || mineGuid,
       }));
 
     const addedDocuments = (documents || [])
@@ -61,7 +63,7 @@ const NOWSpatialFiles: FC<NOWSpatialFilesProps> = ({
         mine_document_bundle_id: mineDoc.mine_document_bundle_id,
         upload_date: mineDoc.upload_date,
         create_user: mineDoc.create_user,
-        mine_guid: mineDoc.mine_guid,
+        mine_guid: mineDoc.mine_guid || mineGuid,
       }));
 
     const seen = new Set<string>();
@@ -73,7 +75,7 @@ const NOWSpatialFiles: FC<NOWSpatialFilesProps> = ({
       seen.add(key);
       return true;
     });
-  }, [filteredSubmissionDocuments, documents]);
+  }, [filteredSubmissionDocuments, documents, mineGuid]);
 
   if (!spatialDocuments.length && !spatialDocumentBundles.length) {
     return null;
@@ -94,6 +96,7 @@ const NOWSpatialFiles: FC<NOWSpatialFilesProps> = ({
       showDetails
       compactColumns
       focusRequest={focusRequest}
+      mineGuid={mineGuid}
       description="A read-only view of spatial files detected during import. Mine Boundary selections are preserved when a bundle is re-synced. To replace or archive a file, use the Application Documents table below."
       emptyText="No spatial files detected on this application."
     />

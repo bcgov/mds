@@ -108,6 +108,13 @@ class SpatialBundleProcessingResource(Resource):
         help='List of document guids to detect and validate spatial bundles in.',
         location='json',
     )
+    parser.add_argument(
+        'mine_guid',
+        type=str,
+        required=False,
+        help='Mine GUID used when syncing spatial bundles to Core.',
+        location='json',
+    )
 
     @requires_any_of(DOCUMENT_UPLOAD_ROLES)
     def post(self):
@@ -119,7 +126,8 @@ class SpatialBundleProcessingResource(Resource):
         if not document_guids:
             raise BadRequest('No documents provided to process')
 
-        response = create_process_spatial_documents_task(document_guids)
+        response = create_process_spatial_documents_task(
+            document_guids, mine_guid=data.get('mine_guid'))
 
         return {
             'task_id': response.get('task-id'),

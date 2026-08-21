@@ -118,7 +118,8 @@ class MineDocumentBundle(SoftDeleteMixin, AuditMixin, Base):
                                    validation_status=None,
                                    validation_error=None,
                                    validation_checks=None,
-                                   preserve_purposes=True):
+                                   preserve_purposes=True,
+                                   mine_guid=None):
         """Create or update a Core bundle and link MineDocuments by document_manager_guid."""
         from app.api.mines.documents.models.mine_document import MineDocument
 
@@ -136,6 +137,14 @@ class MineDocumentBundle(SoftDeleteMixin, AuditMixin, Base):
             missing = [str(guid) for guid in document_manager_guids if str(guid) not in found]
             if missing:
                 raise BadRequest(f'Unknown document_manager_guids: {", ".join(missing)}')
+            if mine_guid:
+                expected = str(mine_guid)
+                foreign = [
+                    str(doc.document_manager_guid) for doc in docs
+                    if str(doc.mine_guid) != expected
+                ]
+                if foreign:
+                    raise BadRequest('Mine document not attached to Mine')
             mine_guids = {str(doc.mine_guid) for doc in docs if doc.mine_guid}
             if len(mine_guids) > 1:
                 raise BadRequest('Spatial documents must belong to a single mine')
@@ -146,6 +155,8 @@ class MineDocumentBundle(SoftDeleteMixin, AuditMixin, Base):
                     if doc.mine_guid and not getattr(doc, 'deleted_ind', False)
                 }
                 if existing_mines and mine_guids and existing_mines != mine_guids:
+                    raise BadRequest('Cannot link documents from another mine onto this bundle')
+                if mine_guid and existing_mines and existing_mines != {str(mine_guid)}:
                     raise BadRequest('Cannot link documents from another mine onto this bundle')
 
         preserved_purposes = existing.purpose_codes if (existing and preserve_purposes) else []

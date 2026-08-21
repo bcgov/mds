@@ -39,7 +39,7 @@ const mineHandlers = [
 ];
 
 const geoSpatialHandlers = [
-  http.get("/%3CAPI_URL%3E/mines/document-bundle/shape", async () => {
+  http.get("/%3CAPI_URL%3E/mines/:mineGuid/document-bundle/:bundleId", async () => {
     return HttpResponse.json(GEOMARK_DATA);
   }),
 ];

@@ -248,8 +248,10 @@ class NOWApplicationResource(Resource, UserMixin):
 
         if new_spatial_document_guids:
             try:
-                DocumentManagerService.processSpatialDocuments(request,
-                                                              new_spatial_document_guids)
+                DocumentManagerService.processSpatialDocuments(
+                    request,
+                    new_spatial_document_guids,
+                    mine_guid=now_application_identity.mine_guid)
             except Exception:
                 current_app.logger.exception(
                     'Failed to queue spatial processing for application %s', application_guid)

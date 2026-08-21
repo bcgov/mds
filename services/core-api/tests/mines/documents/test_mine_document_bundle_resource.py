@@ -1,14 +1,15 @@
-from tests.factories import MineDocumentBundleFactory
+from tests.factories import MineDocumentBundleFactory, MineDocumentFactory, MineFactory
 
 
 class TestMineDocumentBundle():
-    """Tests for GET/PATCH /mines/document-bundle"""
+    """Tests for GET/PATCH /mines/<mine_guid>/document-bundle"""
 
     def test_get_mine_document_bundle(self, test_client, db_session, auth_headers):
+        mine = MineFactory()
         document_bundle = MineDocumentBundleFactory()
 
         get_resp = test_client.get(
-            f'/mines/document-bundle/{document_bundle.bundle_id}',
+            f'/mines/{mine.mine_guid}/document-bundle/{document_bundle.bundle_id}',
             headers=auth_headers['full_auth_header']
         )
 
@@ -19,8 +20,23 @@ class TestMineDocumentBundle():
         assert 'validation_status' in data
 
     def test_get_mine_document_bundle_invalid_id(self, test_client, db_session, auth_headers):
+        mine = MineFactory()
         get_resp = test_client.get(
-            f'/mines/document-bundle/invalid_id',
+            f'/mines/{mine.mine_guid}/document-bundle/invalid_id',
+            headers=auth_headers['full_auth_header']
+        )
+
+        assert get_resp.status_code == 400
+
+    def test_get_rejects_documents_from_another_mine(self, test_client, db_session, auth_headers):
+        mine = MineFactory()
+        other_doc = MineDocumentFactory()
+        document_bundle = MineDocumentBundleFactory()
+        other_doc.mine_document_bundle_id = document_bundle.bundle_id
+        other_doc.save()
+
+        get_resp = test_client.get(
+            f'/mines/{mine.mine_guid}/document-bundle/{document_bundle.bundle_id}',
             headers=auth_headers['full_auth_header']
         )
 
@@ -38,9 +54,13 @@ class TestMineDocumentBundle():
                 is_exclusive_per_parent=False,
             ).save()
 
+        mine_doc = MineDocumentFactory()
         document_bundle = MineDocumentBundleFactory()
+        mine_doc.mine_document_bundle_id = document_bundle.bundle_id
+        mine_doc.save()
+
         patch_resp = test_client.patch(
-            f'/mines/document-bundle/{document_bundle.bundle_id}',
+            f'/mines/{mine_doc.mine_guid}/document-bundle/{document_bundle.bundle_id}',
             headers=auth_headers['full_auth_header'],
             json={'purpose_codes': ['MBD']},
         )
@@ -50,11 +70,9 @@ class TestMineDocumentBundle():
     def test_post_creates_bundle(self, test_client, db_session, auth_headers):
         import uuid
 
-        from tests.factories import MineDocumentFactory
-
         mine_doc = MineDocumentFactory()
         post_resp = test_client.post(
-            '/mines/document-bundle',
+            f'/mines/{mine_doc.mine_guid}/document-bundle',
             headers=auth_headers['full_auth_header'],
             json={
                 'name': 'boundary',
@@ -70,8 +88,9 @@ class TestMineDocumentBundle():
     def test_post_rejects_unknown_document_guids(self, test_client, db_session, auth_headers):
         import uuid
 
+        mine = MineFactory()
         post_resp = test_client.post(
-            '/mines/document-bundle',
+            f'/mines/{mine.mine_guid}/document-bundle',
             headers=auth_headers['full_auth_header'],
             json={
                 'name': 'boundary',
@@ -81,11 +100,27 @@ class TestMineDocumentBundle():
         )
         assert post_resp.status_code == 400
 
-    def test_post_rejects_view_only(self, test_client, db_session, auth_headers):
+    def test_post_rejects_documents_from_another_mine(self, test_client, db_session, auth_headers):
+        import uuid
+
+        mine = MineFactory()
+        mine_doc = MineDocumentFactory()
         post_resp = test_client.post(
-            '/mines/document-bundle',
+            f'/mines/{mine.mine_guid}/document-bundle',
+            headers=auth_headers['full_auth_header'],
+            json={
+                'name': 'boundary',
+                'docman_bundle_guid': str(uuid.uuid4()),
+                'document_manager_guids': [str(mine_doc.document_manager_guid)],
+            },
+        )
+        assert post_resp.status_code == 400
+
+    def test_post_rejects_view_only(self, test_client, db_session, auth_headers):
+        mine = MineFactory()
+        post_resp = test_client.post(
+            f'/mines/{mine.mine_guid}/document-bundle',
             headers=auth_headers['view_only_auth_header'],
             json={'name': 'boundary', 'document_manager_guids': ['not-a-guid']},
         )
         assert post_resp.status_code == 403
-

@@ -1,4 +1,5 @@
 import json
+import re
 
 import requests
 from celery.utils.log import get_task_logger
@@ -12,9 +13,29 @@ from app.tasks.import_now_submission_documents import get_core_authorization_tok
 
 logger = get_task_logger(__name__)
 
+_MINE_GUID_PATH_RE = re.compile(
+    r'mines/([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})/'
+)
 
-def sync_bundle_to_core(result, authorization_token):
+
+def mine_guid_from_documents(documents):
+    found = set()
+    for doc in documents or []:
+        for path in (getattr(doc, 'full_storage_path', None), getattr(doc, 'path_display_name', None)):
+            if not path:
+                continue
+            match = _MINE_GUID_PATH_RE.search(path)
+            if match:
+                found.add(match.group(1).lower())
+    if len(found) == 1:
+        return next(iter(found))
+    return None
+
+
+def sync_bundle_to_core(result, authorization_token, mine_guid):
     """Persist spatial bundle validation result on Core MineDocumentBundle."""
+    if not mine_guid:
+        raise Exception('mine_guid is required to sync spatial bundles to Core')
     payload = {
         'name': result['name'],
         'docman_bundle_guid': result.get('docman_bundle_guid'),
@@ -26,7 +47,7 @@ def sync_bundle_to_core(result, authorization_token):
         'preserve_purposes': True,
     }
     resp = requests.post(
-        url=f'{Config.CORE_API_URL}/mines/document-bundle',
+        url=f'{Config.CORE_API_URL}/mines/{mine_guid}/document-bundle',
         headers={
             'Content-Type': 'application/json',
             'Authorization': authorization_token,
@@ -41,8 +62,9 @@ def sync_bundle_to_core(result, authorization_token):
     return resp.json()
 
 
-def _process_and_sync(documents, token_ref=None, log_context=''):
+def _process_and_sync(documents, token_ref=None, log_context='', mine_guid=None):
     """Detect/validate spatial groups in `documents` and persist results on Core."""
+    mine_guid = mine_guid or mine_guid_from_documents(documents)
     results = SpatialBundleService.process_all_spatial_documents(documents, blocking=False)
     authorization_token = get_core_authorization_token(token_ref)
 
@@ -50,7 +72,7 @@ def _process_and_sync(documents, token_ref=None, log_context=''):
     errors = []
     for result in results:
         try:
-            core_bundle = sync_bundle_to_core(result, authorization_token)
+            core_bundle = sync_bundle_to_core(result, authorization_token, mine_guid)
             synced.append(core_bundle)
         except Exception as e:
             logger.exception(f'Failed syncing spatial bundle {result.get("name")}: {e}')
@@ -74,7 +96,7 @@ def _process_and_sync(documents, token_ref=None, log_context=''):
     acks_late=True,
     autoretry_for=(Exception,),
 )
-def process_now_spatial_bundles(self, import_now_submission_documents_job_id):
+def process_now_spatial_bundles(self, import_now_submission_documents_job_id, mine_guid=None):
     """Non-blocking spatial detect/validate after NoW document import."""
     import_job = ImportNowSubmissionDocumentsJob.query.filter_by(
         import_now_submission_documents_job_id=import_now_submission_documents_job_id
@@ -99,7 +121,8 @@ def process_now_spatial_bundles(self, import_now_submission_documents_job_id):
     return _process_and_sync(
         documents,
         token_ref=import_now_submission_documents_job_id,
-        log_context=f'for job {import_now_submission_documents_job_id}')
+        log_context=f'for job {import_now_submission_documents_job_id}',
+        mine_guid=mine_guid)
 
 
 @celery.task(
@@ -108,7 +131,7 @@ def process_now_spatial_bundles(self, import_now_submission_documents_job_id):
     acks_late=True,
     autoretry_for=(Exception,),
 )
-def process_spatial_document_guids(self, document_guids):
+def process_spatial_document_guids(self, document_guids, mine_guid=None):
     """Non-blocking spatial detect/validate for an explicit set of documents."""
     if not document_guids:
         return {'success': True, 'bundles': []}
@@ -120,4 +143,6 @@ def process_spatial_document_guids(self, document_guids):
         raise Exception(f'Documents not found for spatial processing: {missing}')
 
     return _process_and_sync(
-        documents, log_context=f'for {len(documents)} document(s)')
+        documents,
+        log_context=f'for {len(documents)} document(s)',
+        mine_guid=mine_guid)

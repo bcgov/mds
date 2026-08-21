@@ -237,8 +237,9 @@ api.add_resource(MineDocumentListResource, '/<string:mine_guid>/documents')
 api.add_resource(MineDocumentArchiveResource, '/<string:mine_guid>/documents/archive')
 api.add_resource(MineDocumentVersionUploadResource, '/<string:mine_guid>/documents/<string:mine_document_guid>/versions/upload')
 api.add_resource(MineDocumentVersionListResource, '/<string:mine_guid>/documents/<string:mine_document_guid>/versions')
-api.add_resource(MineDocumentBundleListResource, '/document-bundle')
-api.add_resource(MineDocumentBundleResource, '/document-bundle/<string:mine_document_bundle_id>')
+api.add_resource(MineDocumentBundleListResource, '/<string:mine_guid>/document-bundle')
+api.add_resource(MineDocumentBundleResource,
+                 '/<string:mine_guid>/document-bundle/<string:mine_document_bundle_id>')
 
 api.add_resource(ZipResource, '/<string:mine_guid>/documents/zip')
 api.add_resource(ZipProgressResource, '/documents/zip/<string:task_id>')

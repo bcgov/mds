@@ -19,6 +19,7 @@ class ImportNowSubmissionDocumentsJobListResource(Resource):
     parser.add_argument('now_application_id', type=int, required=True)
     parser.add_argument('now_application_guid', type=str, required=True)
     parser.add_argument('submission_documents', type=list, location='json', required=True)
+    parser.add_argument('mine_guid', type=str, required=False)
 
     @requires_role_edit_permit
     def post(self):
@@ -30,6 +31,7 @@ class ImportNowSubmissionDocumentsJobListResource(Resource):
         now_application_id = data.get('now_application_id', None)
         now_application_guid = data.get('now_application_guid', None)
         submission_documents = data.get('submission_documents', [])
+        mine_guid = data.get('mine_guid', None)
         current_app.logger.info(
             'Received %s NoW submission documents for import, application ID %s, application GUID %s.',
             len(submission_documents),
@@ -103,7 +105,7 @@ class ImportNowSubmissionDocumentsJobListResource(Resource):
 
         # Create the Import NoW Submission Documents job.
         message = create_import_now_submission_documents(
-            import_job.import_now_submission_documents_job_id)
+            import_job.import_now_submission_documents_job_id, mine_guid=mine_guid)
 
         # Return a response indicating that the task has started.
         result = make_response(jsonify(message=message), 201)

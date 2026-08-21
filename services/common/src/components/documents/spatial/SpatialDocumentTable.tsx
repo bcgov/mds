@@ -69,6 +69,8 @@ export interface SpatialDocumentTableProps extends GenericDocTableProps<ISpatial
   collapsible?: boolean;
   /** Reveals and briefly highlights the bundle holding a document linked from another table */
   focusRequest?: ISpatialFocusRequest | null;
+  /** Used when individual document rows do not carry mine_guid */
+  mineGuid?: string;
 }
 
 const VALIDATION_TAG_COLOR: Record<string, string> = {
@@ -153,6 +155,7 @@ const SpatialDocumentTable: FC<SpatialDocumentTableProps> = ({
   showCountBadge = false,
   collapsible = false,
   focusRequest = null,
+  mineGuid,
 }) => {
   const dispatch = useDispatch();
   const [isCompressionModalVisible, setIsCompressionModalVisible] = useState(false);
@@ -275,12 +278,12 @@ const SpatialDocumentTable: FC<SpatialDocumentTableProps> = ({
   );
 
   // Bundles returned by the API carry no mine_guid; compression needs one to resolve the files.
-  const fallbackMineGuid = documents.find((doc) => doc.mine_guid)?.mine_guid;
+  const fallbackMineGuid = mineGuid || documents.find((doc) => doc.mine_guid)?.mine_guid;
   const mineDocuments = (compressionFiles ?? documents).map(
     (doc) => new MineDocument({ ...doc, mine_guid: doc.mine_guid ?? fallbackMineGuid })
   );
   const togglePurpose = async (record: any, purposeCode: string, checked: boolean) => {
-    if (!canEditPurposes || !record.bundle_id) {
+    if (!canEditPurposes || !record.bundle_id || !fallbackMineGuid) {
       return;
     }
     const current = new Set<string>(record.purpose_codes || []);
@@ -292,6 +295,7 @@ const SpatialDocumentTable: FC<SpatialDocumentTableProps> = ({
     try {
       const updated: any = await (dispatch(
         updateSpatialBundlePurposes({
+          mineGuid: fallbackMineGuid,
           bundle_id: record.bundle_id,
           purpose_codes: Array.from(current),
         }) as any

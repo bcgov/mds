@@ -118,6 +118,7 @@ class TestPutTriggersSpatialProcessing:
         assert resp.status_code == 200, resp.data
         mock_process.assert_called_once()
         assert mock_process.call_args[0][1] == [document_manager_guid]
+        assert mock_process.call_args[1]['mine_guid'] is not None
 
     @patch(f'{_RESOURCE_PATH}.NROSNOWStatusService.nros_now_status_update')
     @patch(f'{_RESOURCE_PATH}.DocumentManagerService.importNoticeOfWorkSubmissionDocuments')

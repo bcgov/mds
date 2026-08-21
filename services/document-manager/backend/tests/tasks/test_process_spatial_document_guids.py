@@ -9,7 +9,7 @@ from app.docman.utils.spatial_bundle_service import (
     VALIDATION_STATUS_UNABLE_TO_VALIDATE,
     VALIDATION_STATUS_VALID,
 )
-from app.tasks.process_now_spatial_bundles import process_spatial_document_guids
+from app.tasks.process_now_spatial_bundles import mine_guid_from_documents, process_spatial_document_guids
 
 _TASK_PATH = 'app.tasks.process_now_spatial_bundles'
 _SERVICE_PATH = 'app.docman.utils.spatial_bundle_service'
@@ -24,7 +24,7 @@ def app_context():
     ctx.pop()
 
 
-def _doc(name, guid=None):
+def _doc(name, guid=None, path=None):
     return SimpleNamespace(
         file_display_name=name,
         document_guid=guid or name,
@@ -32,6 +32,8 @@ def _doc(name, guid=None):
         document_bundle=None,
         upload_completed_date=None,
         update_user=None,
+        full_storage_path=path,
+        path_display_name=path,
     )
 
 
@@ -133,6 +135,16 @@ class TestProcessSpatialDocumentGuids:
 
         with pytest.raises(Exception, match='Core unavailable'):
             _run(documents)
+
+
+class TestMineGuidFromDocuments:
+    def test_extracts_guid_from_storage_path(self):
+        mine_guid = '18133c75-49ad-4101-85f3-a43e35ae989a'
+        documents = [_doc('area.kml', path=f'mines/{mine_guid}/noticeofwork/area.kml')]
+        assert mine_guid_from_documents(documents) == mine_guid
+
+    def test_returns_none_when_paths_are_empty(self):
+        assert mine_guid_from_documents([_doc('area.kml')]) is None
 
 
 class TestAuditUserOutsideRequestContext:

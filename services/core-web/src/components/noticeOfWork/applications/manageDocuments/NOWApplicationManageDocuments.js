@@ -108,6 +108,7 @@ export const NOWApplicationManageDocuments = (props) => {
               spatialDocumentBundles={props.noticeOfWork.spatial_document_bundles || []}
               isViewMode={props.isViewMode}
               focusRequest={spatialFocus}
+              mineGuid={props.noticeOfWork.mine_guid}
             />
           }
         />
