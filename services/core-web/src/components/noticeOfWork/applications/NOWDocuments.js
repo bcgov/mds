@@ -93,6 +93,7 @@ const transformDocuments = (
   documents &&
   documents
     .sort((a, b) => {
+      if (a.isLockedApplicationForm && b.isLockedApplicationForm) return 0;
       if (a.isLockedApplicationForm) return -1;
       if (b.isLockedApplicationForm) return 1;
       return a.final_package_order - b.final_package_order;
