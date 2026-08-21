@@ -1,4 +1,5 @@
 import {
+  isRequiredShapefilePart,
   isSingleFileSpatialFilename,
   isSpatialFilename,
   isValidatedSpatialBundleMember,
@@ -15,11 +16,11 @@ describe("isSpatialFilename", () => {
   });
 });
 
-describe("isSingleFileSpatialFilename", () => {
-  it("only treats KML and KMZ as self-contained", () => {
-    expect(isSingleFileSpatialFilename("site.kml")).toBe(true);
-    expect(isSingleFileSpatialFilename("site.KMZ")).toBe(true);
-    expect(isSingleFileSpatialFilename("site.shp")).toBe(false);
+describe("isRequiredShapefilePart", () => {
+  it("recognises required shapefile sidecars only", () => {
+    expect(isRequiredShapefilePart("boundary.shp")).toBe(true);
+    expect(isRequiredShapefilePart("boundary.xml")).toBe(false);
+    expect(isRequiredShapefilePart("site.kml")).toBe(false);
   });
 });
 

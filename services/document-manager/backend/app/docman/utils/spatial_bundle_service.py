@@ -1,19 +1,19 @@
 import os
 import re
+import tempfile
 import zipfile
 from collections import defaultdict
 from datetime import datetime
 
+from app.docman.models.document import Document
+from app.docman.models.document_bundle import DocumentBundle
+from app.docman.utils.document_upload_helper import DocumentUploadHelper
+from app.docman.utils.geomark_helper import GeomarkHelper
+from app.extensions import db
+from app.utils.include.user_info import User
 from flask import current_app
 from werkzeug.exceptions import BadRequest, NotFound
 from werkzeug.utils import secure_filename
-
-from app.docman.models.document import Document
-from app.docman.models.document_bundle import DocumentBundle
-from app.docman.utils.geomark_helper import GeomarkHelper
-from app.docman.utils.document_upload_helper import DocumentUploadHelper
-from app.extensions import db
-from app.utils.include.user_info import User
 
 SYSTEM_USER = 'mds'
 
@@ -111,7 +111,18 @@ class SpatialBundleService:
             else:
                 groups[basename].append(doc)
 
-        return list(groups.values()) + singles
+        shapefile_groups = []
+        for group in groups.values():
+            extensions = {
+                os.path.splitext(
+                    getattr(d, 'file_display_name', None) or getattr(d, 'document_name', '') or ''
+                )[1].lower()
+                for d in group
+            }
+            # .xml/.sbn/.sbx are sidecars; a lone report.xml is not a spatial bundle.
+            if extensions & REQUIRED_SHAPEFILE_EXTENSIONS:
+                shapefile_groups.append(group)
+        return shapefile_groups + singles
 
     @classmethod
     def analyze_group(cls, bundle_documents):
@@ -158,8 +169,9 @@ class SpatialBundleService:
 
     @classmethod
     def _expected_projection(cls, analysis):
-        """Geomark is told the file is BC Albers, except for KML which is always WGS 84."""
-        if analysis.get('is_single_file') and (analysis.get('name') or '').lower().endswith('.kml'):
+        """Geomark is told the file is BC Albers, except KML/KMZ which are WGS 84."""
+        name = (analysis.get('name') or '').lower()
+        if analysis.get('is_single_file') and (name.endswith('.kml') or name.endswith('.kmz')):
             return WGS84_PROJECTION
         return BC_ALBERS_PROJECTION
 
@@ -299,6 +311,64 @@ class SpatialBundleService:
         return (error_text or 'Geomark validation failed')[:1000]
 
     @classmethod
+    def _temporary_file_path(cls, suffix):
+        os.makedirs('/tmp/spatial', exist_ok=True)
+        file_descriptor, file_path = tempfile.mkstemp(
+            prefix='spatial-', suffix=suffix, dir='/tmp/spatial')
+        os.close(file_descriptor)
+        return file_path
+
+    @classmethod
+    def _result_dict(cls,
+                     name,
+                     document_guids,
+                     status,
+                     error,
+                     checks,
+                     geomark_id=None,
+                     docman_bundle_guid=None):
+        return {
+            'name': name,
+            'geomark_id': geomark_id,
+            'docman_bundle_guid': docman_bundle_guid,
+            'document_guids': document_guids,
+            'validation_status': status,
+            'validation_error': error,
+            'validation_checks': checks,
+        }
+
+    @classmethod
+    def _attach_bundle(cls, result, bundle_documents, set_upload_completed=False):
+        bundle = cls._new_bundle(result['name'], error=result.get('validation_error'))
+        if result.get('geomark_id'):
+            bundle.geomark_id = result['geomark_id']
+        cls._link_documents(bundle, bundle_documents, set_upload_completed=set_upload_completed)
+        result['docman_bundle_guid'] = str(bundle.bundle_guid)
+        return result
+
+    @classmethod
+    def _result_from_existing_bundle(cls, bundle, documents):
+        """Rebuild a Core-sync payload without calling Geomark again."""
+        document_guids = [str(d.document_guid) for d in documents]
+        if bundle.geomark_id:
+            status = VALIDATION_STATUS_VALID
+        elif bundle.error and str(bundle.error).startswith('Missing required'):
+            status = VALIDATION_STATUS_UNABLE_TO_VALIDATE
+        elif bundle.error:
+            status = VALIDATION_STATUS_INVALID
+        else:
+            status = VALIDATION_STATUS_UNABLE_TO_VALIDATE
+        return cls._result_dict(
+            bundle.name,
+            document_guids,
+            status,
+            bundle.error,
+            None,
+            geomark_id=bundle.geomark_id,
+            docman_bundle_guid=str(bundle.bundle_guid),
+        )
+
+    @classmethod
     def process_document_group(cls, bundle_documents, name=None, blocking=True):
         """Validate and optionally Geomark a group of Document records.
 
@@ -319,57 +389,40 @@ class SpatialBundleService:
         )
 
         if not analysis['complete']:
-            result = {
-                'name': bundle_name,
-                'geomark_id': None,
-                'docman_bundle_guid': None,
-                'document_guids': document_guids,
-                'validation_status': VALIDATION_STATUS_UNABLE_TO_VALIDATE,
-                'validation_error': (
-                    f"Missing required file types: {', '.join(analysis['missing_extensions'])}"
-                ),
-                'validation_checks': checks,
-            }
+            result = cls._result_dict(
+                bundle_name,
+                document_guids,
+                VALIDATION_STATUS_UNABLE_TO_VALIDATE,
+                f"Missing required file types: {', '.join(analysis['missing_extensions'])}",
+                checks,
+            )
             if blocking:
                 raise BadRequest(result['validation_error'])
+            return cls._attach_bundle(result, bundle_documents)
 
-            # Non-blocking: still create a docman bundle so Core can link incomplete sets
-            bundle = cls._new_bundle(bundle_name, error=result['validation_error'])
-            cls._link_documents(bundle, bundle_documents)
-            result['docman_bundle_guid'] = str(bundle.bundle_guid)
-            return result
-
-        # File size check — download and inspect
+        file_path = None
         try:
             if analysis['is_single_file']:
-                file_path = f"/tmp/spatial/{secure_filename(bundle_documents[0].file_display_name)}"
-                os.makedirs('/tmp/spatial', exist_ok=True)
+                file_path = cls._temporary_file_path(
+                    os.path.splitext(secure_filename(bundle_documents[0].file_display_name))[1])
                 DocumentUploadHelper.download_kml_kmz_files(bundle_documents[0], file_path)
             else:
-                file_path = f'/tmp/spatial/{secure_filename(bundle_name)}.shpz'
-                os.makedirs('/tmp/spatial', exist_ok=True)
+                file_path = cls._temporary_file_path('.shpz')
                 DocumentUploadHelper.zip_spatial_files(bundle_documents, file_path)
 
             file_size = os.path.getsize(file_path) if os.path.exists(file_path) else 0
             if file_size <= 0:
                 checks['file_size_gt_0'] = False
-                result = {
-                    'name': bundle_name,
-                    'geomark_id': None,
-                    'docman_bundle_guid': None,
-                    'document_guids': document_guids,
-                    'validation_status': VALIDATION_STATUS_INVALID,
-                    'validation_error': 'File size must be greater than 0',
-                    'validation_checks': checks,
-                }
-                if os.path.exists(file_path):
-                    os.remove(file_path)
-                bundle = cls._new_bundle(bundle_name, error=result['validation_error'])
-                cls._link_documents(bundle, bundle_documents)
-                result['docman_bundle_guid'] = str(bundle.bundle_guid)
+                result = cls._result_dict(
+                    bundle_name,
+                    document_guids,
+                    VALIDATION_STATUS_INVALID,
+                    'File size must be greater than 0',
+                    checks,
+                )
                 if blocking:
                     raise BadRequest(result['validation_error'])
-                return result
+                return cls._attach_bundle(result, bundle_documents)
 
             checks['file_size_gt_0'] = True
             checks['declared_projection'] = cls._read_declared_projection(
@@ -377,32 +430,30 @@ class SpatialBundleService:
             geomark_response = GeomarkHelper().send_spatial_file_to_geomark(file_path)
         except BadRequest:
             raise
-        except Exception as e:
+        except Exception:
             current_app.logger.exception('Spatial bundle processing failed')
-            checks['file_size_gt_0'] = checks.get('file_size_gt_0')
-            result = {
-                'name': bundle_name,
-                'geomark_id': None,
-                'docman_bundle_guid': None,
-                'document_guids': document_guids,
-                'validation_status': VALIDATION_STATUS_INVALID,
-                'validation_error': str(e),
-                'validation_checks': checks,
-            }
-            bundle = cls._new_bundle(bundle_name, error=result['validation_error'][:1000])
-            cls._link_documents(bundle, bundle_documents)
-            result['docman_bundle_guid'] = str(bundle.bundle_guid)
+            result = cls._result_dict(
+                bundle_name,
+                document_guids,
+                VALIDATION_STATUS_UNABLE_TO_VALIDATE,
+                'Unable to process spatial file.',
+                checks,
+            )
             if blocking:
                 raise BadRequest(result['validation_error'])
-            return result
-
-        bundle = cls._new_bundle(bundle_name)
+            return cls._attach_bundle(result, bundle_documents)
+        finally:
+            if file_path and os.path.exists(file_path):
+                os.remove(file_path)
 
         if not geomark_response:
-            # The projection was never assessed, so leave its check unknown rather than failed.
-            bundle.error = 'Geomark API request failed'
-            result_status = VALIDATION_STATUS_INVALID
-            validation_error = bundle.error
+            result = cls._result_dict(
+                bundle_name,
+                document_guids,
+                VALIDATION_STATUS_UNABLE_TO_VALIDATE,
+                'Geomark API request failed',
+                checks,
+            )
         elif geomark_response.get('error'):
             error_text = geomark_response['error']
             current_app.logger.warning(
@@ -410,46 +461,62 @@ class SpatialBundleService:
             mapped = cls._map_geomark_error(
                 error_text, expected_projection=checks.get('expected_projection'))
             checks.update({k: v for k, v in mapped.items() if v is not None or k == 'found_projection'})
-            validation_error = cls._user_facing_error(error_text, checks)
-            bundle.error = validation_error[:1000]
-            result_status = VALIDATION_STATUS_INVALID
-        elif geomark_response.get('id') or geomark_response.get('url'):
-            bundle.geomark_id = geomark_response.get('id')
+            result = cls._result_dict(
+                bundle_name,
+                document_guids,
+                VALIDATION_STATUS_INVALID,
+                cls._user_facing_error(error_text, checks)[:1000],
+                checks,
+            )
+        elif geomark_response.get('id'):
+            geomark_id = geomark_response.get('id')
             checks['in_bc'] = True
+            # True means the file matched the CRS Geomark was asked to validate, not always Albers.
             checks['bc_albers'] = True
             checks['file_size_gt_0'] = True
-            # Enrich metadata from the Geomark attribution
-            metadata = GeomarkHelper().fetch_geomark_metadata(bundle.geomark_id)
+            metadata = GeomarkHelper().fetch_geomark_metadata(geomark_id)
             if metadata:
                 checks.update({
                     key: metadata[key]
                     for key in GEOMARK_METADATA_KEYS
                     if metadata.get(key) is not None
                 })
-            result_status = VALIDATION_STATUS_VALID
-            validation_error = None
+            if metadata and metadata.get('is_valid') is False:
+                geometry_error = metadata.get('geometry_validation_error') or 'Geometry is not valid'
+                result = cls._result_dict(
+                    bundle_name,
+                    document_guids,
+                    VALIDATION_STATUS_INVALID,
+                    geometry_error[:1000],
+                    checks,
+                    geomark_id=geomark_id,
+                )
+            else:
+                result = cls._result_dict(
+                    bundle_name,
+                    document_guids,
+                    VALIDATION_STATUS_VALID,
+                    None,
+                    checks,
+                    geomark_id=geomark_id,
+                )
         else:
-            bundle.error = 'Unexpected Geomark response'
-            result_status = VALIDATION_STATUS_INVALID
-            validation_error = bundle.error
+            result = cls._result_dict(
+                bundle_name,
+                document_guids,
+                VALIDATION_STATUS_UNABLE_TO_VALIDATE,
+                'Unexpected Geomark response',
+                checks,
+            )
 
-        cls._link_documents(bundle, bundle_documents, set_upload_completed=bool(bundle.geomark_id))
+        if blocking and result['validation_status'] != VALIDATION_STATUS_VALID:
+            raise BadRequest(result['validation_error'] or 'Spatial validation failed')
 
-        result = {
-            'name': bundle_name,
-            'geomark_id': bundle.geomark_id,
-            'docman_bundle_guid': str(bundle.bundle_guid),
-            'document_guids': document_guids,
-            'validation_status': result_status,
-            'validation_error': validation_error,
-            'validation_checks': checks,
-        }
-
-        if blocking and result_status != VALIDATION_STATUS_VALID:
-            raise BadRequest(validation_error or 'Spatial validation failed')
-
+        cls._attach_bundle(
+            result, bundle_documents, set_upload_completed=bool(result.get('geomark_id')))
         current_app.logger.info(
-            f"Completed spatial bundle '{bundle_name}' status={result_status} geomark={bundle.geomark_id}"
+            f"Completed spatial bundle '{bundle_name}' status={result['validation_status']} "
+            f"geomark={result.get('geomark_id')}"
         )
         return result
 
@@ -466,13 +533,15 @@ class SpatialBundleService:
         groups = cls.group_documents_by_basename(documents)
         results = []
         for group in groups:
-            # Skip groups already linked to a bundle with matching set
             if all(getattr(d, 'document_bundle_guid', None) for d in group):
                 bundle_guids = {str(d.document_bundle_guid) for d in group}
-                if len(bundle_guids) == 1:
+                bundle = getattr(group[0], 'document_bundle', None)
+                if len(bundle_guids) == 1 and bundle:
                     current_app.logger.info(
-                        f"Skipping already-bundled spatial group {[d.file_display_name for d in group]}"
+                        f"Re-syncing already-bundled spatial group "
+                        f"{[d.file_display_name for d in group]}"
                     )
+                    results.append(cls._result_from_existing_bundle(bundle, group))
                     continue
             try:
                 results.append(cls.process_document_group(group, blocking=blocking))

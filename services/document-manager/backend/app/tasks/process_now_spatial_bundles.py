@@ -57,10 +57,14 @@ def _process_and_sync(documents, token_ref=None, log_context=''):
             errors.append({'name': result.get('name'), 'error': str(e)})
 
     logger.info(f'Spatial processing {log_context}: {len(synced)} synced, {len(errors)} errors')
+    if errors:
+        raise Exception(
+            f'Spatial processing {log_context} failed to sync {len(errors)} bundle(s) to Core: {errors}'
+        )
     return {
-        'success': len(errors) == 0,
+        'success': True,
         'bundles': synced,
-        'errors': errors,
+        'errors': [],
     }
 
 
@@ -110,10 +114,10 @@ def process_spatial_document_guids(self, document_guids):
         return {'success': True, 'bundles': []}
 
     documents = Document.query.filter(Document.document_guid.in_(document_guids)).all()
-
-    if not documents:
-        logger.warning(f'No documents found for spatial processing: {document_guids}')
-        return {'success': True, 'bundles': []}
+    found_guids = {str(doc.document_guid) for doc in documents}
+    missing = [str(guid) for guid in document_guids if str(guid) not in found_guids]
+    if missing:
+        raise Exception(f'Documents not found for spatial processing: {missing}')
 
     return _process_and_sync(
         documents, log_context=f'for {len(documents)} document(s)')

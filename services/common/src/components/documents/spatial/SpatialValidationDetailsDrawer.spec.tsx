@@ -50,7 +50,7 @@ describe("SpatialValidationDetailsDrawer", () => {
 
     expect(screen.getAllByText("Legacy_Boundary_2024")).toHaveLength(2);
     expect(screen.getByText("Location is within BC")).toBeInTheDocument();
-    expect(screen.getByText("Is in BC Albers projection")).toBeInTheDocument();
+    expect(screen.getByText("Is in NAD83 / BC Albers (EPSG:3005)")).toBeInTheDocument();
     expect(
       screen.getByText(
         /Required: NAD83 \/ BC Albers \(EPSG:3005\).*Coordinates suggest: UTM \(northern hemisphere\)/

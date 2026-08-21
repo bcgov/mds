@@ -46,10 +46,11 @@ class TestProcessSpatialDocumentGuids:
         assert process_spatial_document_guids.run([]) == {'success': True, 'bundles': []}
 
     @patch(f'{_TASK_PATH}.Document')
-    def test_unknown_guids_short_circuit(self, mock_document, app_context):
+    def test_unknown_guids_raise_for_retry(self, mock_document, app_context):
         mock_document.query.filter.return_value.all.return_value = []
 
-        assert _run([_doc('area.kml')]) == {'success': True, 'bundles': []}
+        with pytest.raises(Exception, match='Documents not found'):
+            _run([_doc('area.kml')])
 
     @patch(f'{_TASK_PATH}.sync_bundle_to_core')
     @patch(f'{_TASK_PATH}.get_core_authorization_token', return_value='Bearer test')
@@ -130,10 +131,8 @@ class TestProcessSpatialDocumentGuids:
         documents = [_doc('boundary.shp')]
         mock_document.query.filter.return_value.all.return_value = documents
 
-        result = _run(documents)
-
-        assert result['success'] is False
-        assert result['errors'][0]['error'] == 'Core unavailable'
+        with pytest.raises(Exception, match='Core unavailable'):
+            _run(documents)
 
 
 class TestAuditUserOutsideRequestContext:

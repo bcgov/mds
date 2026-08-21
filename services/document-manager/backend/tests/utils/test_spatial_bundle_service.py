@@ -4,18 +4,17 @@ from types import SimpleNamespace
 from unittest.mock import patch
 
 import pytest
-from werkzeug.exceptions import BadRequest
-
 from app import create_app
 from app.config import TestConfig
 from app.docman.utils.spatial_bundle_service import (
     BC_ALBERS_PROJECTION,
-    SpatialBundleService,
     UTM_PROJECTION_DESCRIPTION,
     VALIDATION_STATUS_INVALID,
     VALIDATION_STATUS_UNABLE_TO_VALIDATE,
     VALIDATION_STATUS_VALID,
+    SpatialBundleService,
 )
+from werkzeug.exceptions import BadRequest
 
 UTM_PRJ_WKT = (
     'PROJCS["NAD83 / UTM zone 10N",GEOGCS["NAD83",DATUM["North_American_Datum_1983",'
@@ -82,6 +81,10 @@ class TestSpatialBundleServiceGrouping:
         docs = [_doc('report.pdf'), _doc('notes.txt')]
         assert SpatialBundleService.group_documents_by_basename(docs) == []
 
+    def test_ignores_xml_without_a_shapefile(self):
+        docs = [_doc('report.xml'), _doc('notes.sbn')]
+        assert SpatialBundleService.group_documents_by_basename(docs) == []
+
     def test_analyze_complete_shapefile(self):
         docs = [_doc(f'b.{ext}') for ext in ('shp', 'shx', 'dbf', 'prj')]
         analysis = SpatialBundleService.analyze_group(docs)
@@ -99,6 +102,11 @@ class TestSpatialBundleServiceGrouping:
         analysis = SpatialBundleService.analyze_group([_doc('area.kml')])
         assert analysis['complete'] is True
         assert analysis['is_single_file'] is True
+        assert SpatialBundleService._expected_projection(analysis) == 'WGS 84 (EPSG:4326)'
+
+    def test_kmz_expects_wgs84(self):
+        analysis = SpatialBundleService.analyze_group([_doc('area.kmz')])
+        assert SpatialBundleService._expected_projection(analysis) == 'WGS 84 (EPSG:4326)'
 
 
 class TestSpatialBundleServiceErrorMapping:
@@ -262,6 +270,97 @@ class TestSpatialBundleServiceProcess:
         assert checks['is_simple'] is True
         assert checks['is_robust'] is False
         assert checks['centroid'] == {'centroidX': -128.1, 'centroidY': 54.7}
+
+    @patch('app.docman.utils.spatial_bundle_service.GeomarkHelper')
+    @patch('app.docman.utils.spatial_bundle_service.DocumentUploadHelper')
+    @patch('app.docman.utils.spatial_bundle_service.db')
+    @patch('app.docman.utils.spatial_bundle_service.os.path.exists', return_value=True)
+    @patch('app.docman.utils.spatial_bundle_service.os.path.getsize', return_value=100)
+    @patch('app.docman.utils.spatial_bundle_service.os.makedirs')
+    def test_geomark_response_without_id_is_not_marked_valid(
+        self, _makedirs, _getsize, _exists, mock_db, mock_upload_helper, mock_geomark
+    ):
+        docs = [_doc(f'b.{ext}') for ext in ('shp', 'shx', 'dbf', 'prj')]
+        mock_geomark.return_value.send_spatial_file_to_geomark.return_value = {
+            'url': 'https://example/gm-test',
+        }
+
+        result = SpatialBundleService.process_document_group(docs, name='b', blocking=False)
+
+        assert result['validation_status'] == VALIDATION_STATUS_UNABLE_TO_VALIDATE
+        assert result['validation_error'] == 'Unexpected Geomark response'
+        mock_geomark.return_value.fetch_geomark_metadata.assert_not_called()
+
+    @patch('app.docman.utils.spatial_bundle_service.DocumentUploadHelper')
+    @patch('app.docman.utils.spatial_bundle_service.db')
+    @patch('app.docman.utils.spatial_bundle_service.os.path.exists', return_value=True)
+    @patch('app.docman.utils.spatial_bundle_service.os.makedirs')
+    def test_processing_failure_does_not_expose_exception_details(
+        self, _makedirs, _exists, mock_db, mock_upload_helper
+    ):
+        docs = [_doc(f'b.{ext}') for ext in ('shp', 'shx', 'dbf', 'prj')]
+        mock_upload_helper.zip_spatial_files.side_effect = RuntimeError(
+            'database password=/secret/private')
+
+        result = SpatialBundleService.process_document_group(docs, name='b', blocking=False)
+
+        assert result['validation_status'] == VALIDATION_STATUS_UNABLE_TO_VALIDATE
+        assert result['validation_error'] == 'Unable to process spatial file.'
+        assert 'password' not in result['validation_error']
+
+    @patch('app.docman.utils.spatial_bundle_service.DocumentUploadHelper')
+    @patch('app.docman.utils.spatial_bundle_service.db')
+    @patch('app.docman.utils.spatial_bundle_service.os.path.exists', return_value=True)
+    @patch('app.docman.utils.spatial_bundle_service.os.makedirs')
+    def test_blocking_processing_failure_does_not_persist(self, _makedirs, _exists, mock_db,
+                                                          mock_upload_helper):
+        docs = [_doc(f'b.{ext}') for ext in ('shp', 'shx', 'dbf', 'prj')]
+        mock_upload_helper.zip_spatial_files.side_effect = RuntimeError('disk full')
+
+        with pytest.raises(BadRequest):
+            SpatialBundleService.process_document_group(docs, name='b', blocking=True)
+
+        mock_db.session.commit.assert_not_called()
+
+    @patch('app.docman.utils.spatial_bundle_service.GeomarkHelper')
+    @patch('app.docman.utils.spatial_bundle_service.DocumentUploadHelper')
+    @patch('app.docman.utils.spatial_bundle_service.db')
+    @patch('app.docman.utils.spatial_bundle_service.os.path.exists', return_value=True)
+    @patch('app.docman.utils.spatial_bundle_service.os.path.getsize', return_value=100)
+    @patch('app.docman.utils.spatial_bundle_service.os.makedirs')
+    def test_invalid_geometry_is_not_marked_valid(
+        self, _makedirs, _getsize, _exists, mock_db, mock_upload_helper, mock_geomark
+    ):
+        docs = [_doc(f'b.{ext}') for ext in ('shp', 'shx', 'dbf', 'prj')]
+        mock_geomark.return_value.send_spatial_file_to_geomark.return_value = {'id': 'gm-test'}
+        mock_geomark.return_value.fetch_geomark_metadata.return_value = {
+            'is_valid': False,
+            'geometry_validation_error': 'Self-intersection',
+        }
+
+        result = SpatialBundleService.process_document_group(docs, name='b', blocking=False)
+
+        assert result['validation_status'] == VALIDATION_STATUS_INVALID
+        assert result['validation_error'] == 'Self-intersection'
+
+    def test_already_bundled_group_is_returned_for_core_sync(self):
+        bundle = SimpleNamespace(
+            name='boundary',
+            geomark_id='gm-existing',
+            error=None,
+            bundle_guid='bundle-guid',
+        )
+        docs = [_doc(f'boundary.{ext}') for ext in ('shp', 'shx', 'dbf', 'prj')]
+        for doc in docs:
+            doc.document_bundle_guid = bundle.bundle_guid
+            doc.document_bundle = bundle
+
+        results = SpatialBundleService.process_all_spatial_documents(docs, blocking=False)
+
+        assert len(results) == 1
+        assert results[0]['geomark_id'] == 'gm-existing'
+        assert results[0]['validation_status'] == VALIDATION_STATUS_VALID
+        assert results[0]['docman_bundle_guid'] == 'bundle-guid'
 
     @patch('app.docman.utils.spatial_bundle_service.GeomarkHelper')
     @patch('app.docman.utils.spatial_bundle_service.DocumentUploadHelper')

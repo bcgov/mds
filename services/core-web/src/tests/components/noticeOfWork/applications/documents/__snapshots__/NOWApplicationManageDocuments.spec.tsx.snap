@@ -1533,12 +1533,8 @@ exports[`NOWApplicationManageDocuments renders properly 1`] = `
                                     data-row-key="aef-ntr"
                                   >
                                     <td
-                                      class="ant-table-cell ant-table-cell-with-append"
+                                      class="ant-table-cell"
                                     >
-                                      <span
-                                        class="ant-table-row-indent indent-level-0"
-                                        style="padding-left: 0px;"
-                                      />
                                       <div
                                         title="Category"
                                       >
@@ -1602,12 +1598,8 @@ exports[`NOWApplicationManageDocuments renders properly 1`] = `
                                     data-row-key="aef-pmt-draft"
                                   >
                                     <td
-                                      class="ant-table-cell ant-table-cell-with-append"
+                                      class="ant-table-cell"
                                     >
-                                      <span
-                                        class="ant-table-row-indent indent-level-0"
-                                        style="padding-left: 0px;"
-                                      />
                                       <div
                                         title="Category"
                                       >

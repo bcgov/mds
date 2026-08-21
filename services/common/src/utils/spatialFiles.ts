@@ -16,6 +16,8 @@ export const SPATIAL_BUNDLE_EXTENSIONS = [
 // own, so they are never part of a multi-file bundle.
 export const SPATIAL_SINGLE_FILE_EXTENSIONS = [".kml", ".kmz"];
 
+export const REQUIRED_SHAPEFILE_EXTENSIONS = [".shp", ".shx", ".dbf", ".prj"];
+
 export const isSpatialFilename = (filename?: string): boolean => {
   if (!filename) {
     return false;
@@ -27,6 +29,11 @@ export const isSpatialFilename = (filename?: string): boolean => {
 export const isSingleFileSpatialFilename = (filename?: string): boolean => {
   const lower = (filename || "").toLowerCase();
   return SPATIAL_SINGLE_FILE_EXTENSIONS.some((ext) => lower.endsWith(ext));
+};
+
+export const isRequiredShapefilePart = (filename?: string): boolean => {
+  const lower = (filename || "").toLowerCase();
+  return REQUIRED_SHAPEFILE_EXTENSIONS.some((ext) => lower.endsWith(ext));
 };
 
 /** The bundle a document row belongs to, whether the row is a document or a NoW document xref. */

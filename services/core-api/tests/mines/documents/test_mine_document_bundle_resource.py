@@ -47,3 +47,45 @@ class TestMineDocumentBundle():
         assert patch_resp.status_code == 200
         assert 'MBD' in patch_resp.json['purpose_codes']
 
+    def test_post_creates_bundle(self, test_client, db_session, auth_headers):
+        import uuid
+
+        from tests.factories import MineDocumentFactory
+
+        mine_doc = MineDocumentFactory()
+        post_resp = test_client.post(
+            '/mines/document-bundle',
+            headers=auth_headers['full_auth_header'],
+            json={
+                'name': 'boundary',
+                'docman_bundle_guid': str(uuid.uuid4()),
+                'document_manager_guids': [str(mine_doc.document_manager_guid)],
+                'validation_status': 'VALID',
+            },
+        )
+        assert post_resp.status_code == 200
+        assert post_resp.json['name'] == 'boundary'
+        assert post_resp.json['validation_status'] == 'VALID'
+
+    def test_post_rejects_unknown_document_guids(self, test_client, db_session, auth_headers):
+        import uuid
+
+        post_resp = test_client.post(
+            '/mines/document-bundle',
+            headers=auth_headers['full_auth_header'],
+            json={
+                'name': 'boundary',
+                'docman_bundle_guid': str(uuid.uuid4()),
+                'document_manager_guids': [str(uuid.uuid4())],
+            },
+        )
+        assert post_resp.status_code == 400
+
+    def test_post_rejects_view_only(self, test_client, db_session, auth_headers):
+        post_resp = test_client.post(
+            '/mines/document-bundle',
+            headers=auth_headers['view_only_auth_header'],
+            json={'name': 'boundary', 'document_manager_guids': ['not-a-guid']},
+        )
+        assert post_resp.status_code == 403
+

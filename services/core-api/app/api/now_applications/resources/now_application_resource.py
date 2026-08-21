@@ -32,23 +32,27 @@ from app.api.mines.mine.models.mine_type import MineTypeDetail
 
 class NOWApplicationResource(Resource, UserMixin):
     @staticmethod
-    def _get_new_spatial_document_guids(documents):
-        """document_manager_guids of spatial files being added by this request.
+    def _get_spatial_document_guids_to_process(documents):
+        """document_manager_guids to send for spatial processing.
 
         Nested documents without a xref guid are treated as new by deep_update_from_dict.
+        When any spatial file is new, include every spatial file on the payload so completing a
+        shapefile across saves revalidates the whole group.
         """
-        guids = []
+        new_guids = []
+        all_spatial_guids = []
         for document in documents or []:
-            if document.get('now_application_document_xref_guid'):
-                continue
             mine_document = document.get('mine_document') or {}
             document_manager_guid = mine_document.get('document_manager_guid')
             document_name = mine_document.get('document_name') or ''
             if not document_manager_guid:
                 continue
-            if os.path.splitext(document_name)[1].lower() in SPATIAL_FILE_EXTENSIONS:
-                guids.append(document_manager_guid)
-        return guids
+            if os.path.splitext(document_name)[1].lower() not in SPATIAL_FILE_EXTENSIONS:
+                continue
+            all_spatial_guids.append(document_manager_guid)
+            if not document.get('now_application_document_xref_guid'):
+                new_guids.append(document_manager_guid)
+        return all_spatial_guids if new_guids else []
 
     @api.doc(
         description='Get a Notice of Work application.',
@@ -237,7 +241,8 @@ class NOWApplicationResource(Resource, UserMixin):
                 )
                 now_application_identity.now_application.application_tier = new_tier
 
-        new_spatial_document_guids = self._get_new_spatial_document_guids(data.get('documents'))
+        new_spatial_document_guids = self._get_spatial_document_guids_to_process(
+            data.get('documents'))
 
         now_application_identity.now_application.deep_update_from_dict(data)
 

@@ -7,19 +7,17 @@ import { ISpatialBundle } from "@mds/common/interfaces/document/spatialBundle.in
 import { IMineDocument } from "@mds/common/interfaces/mineDocument.interface";
 import { ENVIRONMENT } from "@mds/common/constants/environment";
 import { COMPLETE_SPATIAL_BUNDLE, CORE_API_DOCUMENT_BUNDLE } from "@mds/common/constants/API";
+import { isRequiredShapefilePart, isSingleFileSpatialFilename, isSpatialFilename } from "@mds/common/utils/spatialFiles";
 
 const createRequestHeader = REQUEST_HEADER.createRequestHeader;
 
 export const spatialDataReducerType = "spatialData";
 
 export const groupSpatialBundles = (files: IMineDocument[]) => {
-  const temp_indiv = files.filter(
-    (f) => f.document_name.endsWith("kmz") || f.document_name.endsWith("kml")
-  );
+  const temp_indiv = files.filter((f) => isSingleFileSpatialFilename(f.document_name));
 
-  // Get the core-api spatial bundles.  If these have not yet been created assign the document_name to the mine_document_bundle_id temporarily
   const temp_spatial = files
-    .filter((f) => !f.document_name.endsWith("kmz") && !f.document_name.endsWith("kml"))
+    .filter((f) => isSpatialFilename(f.document_name) && !isSingleFileSpatialFilename(f.document_name))
     .map((f) => {
       return {
         ...f,
@@ -54,7 +52,7 @@ export const groupSpatialBundles = (files: IMineDocument[]) => {
       isParent: true,
       isSingleFile: false,
     };
-  });
+  }).filter((bundle) => bundle.bundleFiles.some((file) => isRequiredShapefilePart(file.document_name)));
 
   const individualFiles = temp_indiv.map((f) => {
     return {
@@ -94,7 +92,7 @@ const spatialSlice = createAppSlice({
     fetchGeomarkMapData: create.asyncThunk(
       async (geomark_id: string, thunkAPI) => {
         thunkAPI.dispatch(showLoading());
-        const geomark_link = `${ENVIRONMENT.geoMarkUrl}/geomarks/${geomark_id}`;
+        const geomark_link = `${ENVIRONMENT.geoMarkUrl}/geomarks/${encodeURIComponent(geomark_id)}`;
 
         const suffix = "/feature.geojson";
         const url = `${geomark_link}${suffix}`;
@@ -116,7 +114,7 @@ const spatialSlice = createAppSlice({
       }
     ),
     fetchSpatialBundle: create.asyncThunk(
-      async (mine_document_bundle_id: string, thunkAPI) => {
+      async (mine_document_bundle_id: string | number, thunkAPI) => {
         thunkAPI.dispatch(showLoading());
         const headers = createRequestHeader();
         const url = `${ENVIRONMENT.apiUrl}${CORE_API_DOCUMENT_BUNDLE}${mine_document_bundle_id}`;
@@ -164,7 +162,6 @@ const spatialSlice = createAppSlice({
         payload: {
           bundle_id: string | number;
           purpose_codes: string[];
-          sibling_bundle_ids?: Array<string | number>;
         },
         thunkAPI
       ) => {
@@ -178,7 +175,6 @@ const spatialSlice = createAppSlice({
           url,
           {
             purpose_codes: payload.purpose_codes,
-            sibling_bundle_ids: payload.sibling_bundle_ids,
           },
           headers
         );

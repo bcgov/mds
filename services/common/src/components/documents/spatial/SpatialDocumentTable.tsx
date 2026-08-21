@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useMemo, useRef, useState } from "react";
+import React, { FC, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Checkbox, Tag, Typography } from "antd";
 import {
@@ -174,10 +174,7 @@ const SpatialDocumentTable: FC<SpatialDocumentTableProps> = ({
     const matched = new Set<ISpatialBundle>();
     const enriched = grouped.map((row) => {
       const match = spatialBundlesProp.find(
-        (b) =>
-          String(b.bundle_id) === String(row.bundle_id) ||
-          b.name === row.document_name ||
-          b.document_name === row.document_name
+        (b) => String(b.bundle_id) === String(row.bundle_id)
       );
       if (!match) {
         return row;
@@ -282,10 +279,34 @@ const SpatialDocumentTable: FC<SpatialDocumentTableProps> = ({
   const mineDocuments = (compressionFiles ?? documents).map(
     (doc) => new MineDocument({ ...doc, mine_guid: doc.mine_guid ?? fallbackMineGuid })
   );
-  const siblingBundleIds = useMemo(
-    () => spatialBundles.map((b) => b.bundle_id).filter(Boolean),
-    [spatialBundles]
-  );
+  const togglePurpose = async (record: any, purposeCode: string, checked: boolean) => {
+    if (!canEditPurposes || !record.bundle_id) {
+      return;
+    }
+    const current = new Set<string>(record.purpose_codes || []);
+    if (checked) {
+      current.add(purposeCode);
+    } else {
+      current.delete(purposeCode);
+    }
+    try {
+      const updated: any = await (dispatch(
+        updateSpatialBundlePurposes({
+          bundle_id: record.bundle_id,
+          purpose_codes: Array.from(current),
+        }) as any
+      ) as any).unwrap();
+      setSpatialBundles((prev) =>
+        prev.map((b) =>
+          String(b.bundle_id) === String(record.bundle_id)
+            ? { ...b, purpose_codes: updated?.purpose_codes || Array.from(current) }
+            : b
+        )
+      );
+    } catch {
+      // rejectHandler already surfaced the failure
+    }
+  };
 
   const downloadSpatialBundle = (_, record) => {
     setCompressionFiles(record?.bundleFiles?.length ? record.bundleFiles : null);
@@ -337,32 +358,6 @@ const SpatialDocumentTable: FC<SpatialDocumentTableProps> = ({
   const openDetails = (_, record) => {
     setDetailsBundle(record);
     setDetailsOpen(true);
-  };
-
-  const togglePurpose = async (record: any, purposeCode: string, checked: boolean) => {
-    if (!canEditPurposes || !record.bundle_id) {
-      return;
-    }
-    const current = new Set(record.purpose_codes || []);
-    if (checked) {
-      current.add(purposeCode);
-    } else {
-      current.delete(purposeCode);
-    }
-    await dispatch(
-      updateSpatialBundlePurposes({
-        bundle_id: record.bundle_id,
-        purpose_codes: Array.from(current),
-        sibling_bundle_ids: siblingBundleIds,
-      }) as any
-    );
-    setSpatialBundles((prev) =>
-      prev.map((b) =>
-        String(b.bundle_id) === String(record.bundle_id)
-          ? { ...b, purpose_codes: Array.from(current) }
-          : b
-      )
-    );
   };
 
   const getBundleType = (record: any) => {
@@ -493,11 +488,10 @@ const SpatialDocumentTable: FC<SpatialDocumentTableProps> = ({
             return null;
           }
           const status = record.validation_status;
-          const label = VALIDATION_LABEL[status] || status;
-
-          if (!label) {
-            return null;
+          if (!status) {
+            return <Tag>Pending</Tag>;
           }
+          const label = VALIDATION_LABEL[status] || status;
           const reason =
             status === "INVALID" && record.validation_error
               ? ` — ${summarizeError(record.validation_error)}`
@@ -591,7 +585,7 @@ const SpatialDocumentTable: FC<SpatialDocumentTableProps> = ({
         }}
       />
       <SpatialValidationDetailsDrawer
-        open={detailsOpen}
+        open={detailsOpen && detailsBundle !== null}
         onClose={() => setDetailsOpen(false)}
         bundle={detailsBundle}
         onDownload={() => downloadBundle(detailsBundle)}

@@ -21,7 +21,7 @@ class MineDocumentBundle(SoftDeleteMixin, AuditMixin, Base):
     bundle_guid = db.Column(UUID(as_uuid=True), nullable=False, server_default=text("gen_random_uuid()"))
     name = db.Column(db.String(300), nullable=False)
     geomark_id = db.Column(db.String(300), nullable=True)
-    docman_bundle_guid = db.Column(UUID(as_uuid=True))
+    docman_bundle_guid = db.Column(UUID(as_uuid=True), nullable=False)
     validation_status = db.Column(db.String(30), nullable=True)
     validation_error = db.Column(db.String(1000), nullable=True)
     validation_checks = db.Column(JSONB, nullable=True)
@@ -52,6 +52,7 @@ class MineDocumentBundle(SoftDeleteMixin, AuditMixin, Base):
                     'upload_date': str(doc.upload_date) if doc.upload_date else None,
                     'create_user': doc.create_user,
                 } for doc in (self.bundle_documents or [])
+                if not getattr(doc, 'deleted_ind', False)
             ],
         }
 
@@ -87,30 +88,25 @@ class MineDocumentBundle(SoftDeleteMixin, AuditMixin, Base):
                 return candidate
         return None
 
-    def set_purpose_codes(self, purpose_codes, sibling_bundle_ids=None):
-        """Replace purpose assignments. Enforces is_exclusive_per_parent against siblings."""
+    def set_purpose_codes(self, purpose_codes):
+        """Replace purpose assignments."""
         purpose_codes = list(dict.fromkeys(purpose_codes or []))
-        sibling_bundle_ids = sibling_bundle_ids or []
 
         for code in purpose_codes:
             purpose = SpatialBundlePurposeCode.find_by_code(code)
             if not purpose or not purpose.active_ind:
                 raise BadRequest(f'Invalid spatial bundle purpose code: {code}')
-            if purpose.is_exclusive_per_parent and sibling_bundle_ids:
-                conflict = MineDocumentBundlePurposeXref.query.filter(
-                    MineDocumentBundlePurposeXref.spatial_bundle_purpose_code == code,
-                    MineDocumentBundlePurposeXref.bundle_id.in_(sibling_bundle_ids),
-                    MineDocumentBundlePurposeXref.bundle_id != self.bundle_id,
-                ).first()
-                if conflict:
-                    raise BadRequest(
-                        f'Purpose {code} may only be assigned to one spatial bundle on this record')
 
-        MineDocumentBundlePurposeXref.query.filter_by(bundle_id=self.bundle_id).delete()
+        # Mutate the relationship rather than issuing a bulk delete so the
+        # delete-orphan cascade keeps the loaded collection in sync.
+        existing = {xref.spatial_bundle_purpose_code: xref for xref in self.purpose_xrefs}
+        for code, xref in existing.items():
+            if code not in purpose_codes:
+                self.purpose_xrefs.remove(xref)
         for code in purpose_codes:
-            db.session.add(
-                MineDocumentBundlePurposeXref(
-                    bundle_id=self.bundle_id, spatial_bundle_purpose_code=code))
+            if code not in existing:
+                self.purpose_xrefs.append(
+                    MineDocumentBundlePurposeXref(spatial_bundle_purpose_code=code))
         db.session.flush()
 
     @classmethod
@@ -132,17 +128,41 @@ class MineDocumentBundle(SoftDeleteMixin, AuditMixin, Base):
         if not existing:
             existing = cls.find_by_name_and_document_manager_guids(name, document_manager_guids)
 
+        docs = []
+        if document_manager_guids:
+            docs = MineDocument.query.filter(
+                MineDocument.document_manager_guid.in_(document_manager_guids)).all()
+            found = {str(doc.document_manager_guid) for doc in docs}
+            missing = [str(guid) for guid in document_manager_guids if str(guid) not in found]
+            if missing:
+                raise BadRequest(f'Unknown document_manager_guids: {", ".join(missing)}')
+            mine_guids = {str(doc.mine_guid) for doc in docs if doc.mine_guid}
+            if len(mine_guids) > 1:
+                raise BadRequest('Spatial documents must belong to a single mine')
+            if existing:
+                existing_mines = {
+                    str(doc.mine_guid)
+                    for doc in (existing.bundle_documents or [])
+                    if doc.mine_guid and not getattr(doc, 'deleted_ind', False)
+                }
+                if existing_mines and mine_guids and existing_mines != mine_guids:
+                    raise BadRequest('Cannot link documents from another mine onto this bundle')
+
         preserved_purposes = existing.purpose_codes if (existing and preserve_purposes) else []
 
         if existing:
             bundle = existing
             bundle.name = name
-            bundle.geomark_id = geomark_id
+            if geomark_id:
+                bundle.geomark_id = geomark_id
             if docman_bundle_guid:
                 bundle.docman_bundle_guid = docman_bundle_guid
-            bundle.validation_status = validation_status
-            bundle.validation_error = validation_error
-            bundle.validation_checks = validation_checks
+            if validation_status is not None:
+                bundle.validation_status = validation_status
+            if validation_error is not None or validation_status:
+                bundle.validation_error = validation_error
+            if validation_checks is not None:
+                bundle.validation_checks = validation_checks
         else:
             bundle = cls(
                 name=name,
@@ -155,11 +175,8 @@ class MineDocumentBundle(SoftDeleteMixin, AuditMixin, Base):
             db.session.add(bundle)
             db.session.flush()
 
-        if document_manager_guids:
-            docs = MineDocument.query.filter(
-                MineDocument.document_manager_guid.in_(document_manager_guids)).all()
-            for doc in docs:
-                doc.mine_document_bundle_id = bundle.bundle_id
+        for doc in docs:
+            doc.mine_document_bundle_id = bundle.bundle_id
 
         if preserved_purposes:
             bundle.set_purpose_codes(preserved_purposes)

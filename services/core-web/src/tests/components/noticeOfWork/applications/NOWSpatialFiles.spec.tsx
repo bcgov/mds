@@ -1,10 +1,11 @@
 import React from "react";
 import { fireEvent, render } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
+import { ISpatialBundle } from "@mds/common/interfaces/document/spatialBundle.interface";
 import NOWSpatialFiles from "@/components/noticeOfWork/applications/NOWSpatialFiles";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 
-const INVALID_BUNDLE = {
+const INVALID_BUNDLE: ISpatialBundle = {
   bundle_id: 29,
   bundle_guid: "71b9e45e-ff14-44da-8ba3-aff1d74ba80f",
   name: "index (1) (1).kml",

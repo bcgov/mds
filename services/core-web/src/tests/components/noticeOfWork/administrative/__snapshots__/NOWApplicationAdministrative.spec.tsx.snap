@@ -831,12 +831,8 @@ exports[`NOWApplicationAdministrative renders properly 1`] = `
                                     data-row-key="sdo-doc"
                                   >
                                     <td
-                                      class="ant-table-cell ant-table-cell-with-append"
+                                      class="ant-table-cell"
                                     >
-                                      <span
-                                        class="ant-table-row-indent indent-level-0"
-                                        style="padding-left: 0px;"
-                                      />
                                       <div
                                         title="Category"
                                       >

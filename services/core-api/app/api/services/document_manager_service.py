@@ -225,7 +225,12 @@ class DocumentManagerService():
             url=f'{Config.DOCUMENT_MANAGER_URL}/documents/spatial-bundles',
             headers={key: value
                      for (key, value) in request.headers if key != 'Host'},
-            data=json.dumps({'document_guids': document_manager_guids}))
+            data=json.dumps({'document_guids': document_manager_guids}),
+            timeout=30)
+
+        if resp.status_code not in (200, 202):
+            raise Exception(
+                f'Document Manager spatial processing failed ({resp.status_code}): {resp.content}')
 
         return Response(resp.content, resp.status_code, resp.raw.headers.items())
 

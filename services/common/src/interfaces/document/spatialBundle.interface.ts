@@ -34,8 +34,15 @@ export interface ISpatialBundlePurposeCode {
   context_codes: string[];
 }
 
+/** Slim document shape returned on a bundle by Core; it carries no mine_guid or versions. */
+export type ISpatialBundleDocument = Pick<
+  IMineDocument,
+  "mine_document_guid" | "document_manager_guid" | "document_name" | "upload_date" | "create_user"
+>;
+
 export interface ISpatialBundle {
   bundle_id: string | number;
+  bundle_guid?: string;
   document_name?: string;
   name?: string;
   upload_date?: string;
@@ -47,5 +54,5 @@ export interface ISpatialBundle {
   validation_checks?: ISpatialValidationChecks;
   purpose_codes?: string[];
   docman_bundle_guid?: string;
-  bundle_documents?: IMineDocument[];
+  bundle_documents?: ISpatialBundleDocument[];
 }

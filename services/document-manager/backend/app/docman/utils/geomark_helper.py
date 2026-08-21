@@ -4,6 +4,7 @@ import hmac
 import logging
 import mimetypes
 import os
+import re
 import time
 import urllib.parse
 
@@ -54,7 +55,7 @@ class GeomarkHelper:
         encoded_signature = url_encode(signature)
 
         url = f"{self.GEOMARK_URL_BASE}/geomarkGroups/{group_id}/geomarks/add?geomarkId={geomark_id}&signature={encoded_signature}&time={timestamp}"
-        response = requests.post(url, headers = {'Accept': 'application/json'})
+        response = requests.post(url, headers = {'Accept': 'application/json'}, timeout=30)
 
         if response.status_code != 200:
             raise InternalServerError('Error adding geomark to group. Geomark service returned status code: ' + str(response.status_code))
@@ -70,44 +71,40 @@ class GeomarkHelper:
         return resp
 
     def send_spatial_file_to_geomark(self,file_path):
-        try:
-            file_extension = os.path.splitext(file_path)[1].lstrip('.')
+        file_extension = os.path.splitext(file_path)[1].lstrip('.')
 
-            # Ensure the format is one of the allowed ones
-            assert file_extension in ['shpz', 'kml', 'kmz'], "Invalid file format. Must be one of: 'shpz', 'kml', 'kmz'."
+        # Ensure the format is one of the allowed ones
+        assert file_extension in ['shpz', 'kml', 'kmz'], "Invalid file format. Must be one of: 'shpz', 'kml', 'kmz'."
 
-            mime_type = mimetypes.guess_type(file_path)[0]
+        mime_type = mimetypes.guess_type(file_path)[0]
 
-            url = f'{self.GEOMARK_URL_BASE}/geomarks/new'
+        url = f'{self.GEOMARK_URL_BASE}/geomarks/new'
 
-            # https://apps.gov.bc.ca/pub/geomark/docs/coordinateSystems.html
-            accepted_projection = {
-                'shpz': '3005', # BC Albers
-                'kmz': '3005', # BC Albers
-                'kml': '4326', # WGS 84 <-- kml files are always in this projection
-            }
+        # https://apps.gov.bc.ca/pub/geomark/docs/coordinateSystems.html
+        accepted_projection = {
+            'shpz': '3005', # BC Albers
+            'kmz': '4326',  # KMZ is KML-in-a-zip; Geomark expects WGS 84
+            'kml': '4326', # WGS 84 <-- kml files are always in this projection
+        }
 
-            with open(file_path, 'rb') as file:
-                multipart_data = MultipartEncoder(
-                    fields={
-                        'body': (os.path.basename(file_path), file, mime_type),
-                        'resultFormat': 'json',
-                        'format': file_extension,
-                        'srid': accepted_projection[file_extension] # Validate that the projection is correct
-                    }
-                )
-                headers = {
-                    'Content-Type': multipart_data.content_type
+        with open(file_path, 'rb') as file:
+            multipart_data = MultipartEncoder(
+                fields={
+                    'body': (os.path.basename(file_path), file, mime_type),
+                    'resultFormat': 'json',
+                    'format': file_extension,
+                    'srid': accepted_projection[file_extension] # Validate that the projection is correct
                 }
-                # Send the request
-                response = requests.post(
-                    url,
-                    data=multipart_data,
-                    headers=headers
-                )
-        finally:
-            # Delete the file
-            os.remove(file_path)
+            )
+            headers = {
+                'Content-Type': multipart_data.content_type
+            }
+            response = requests.post(
+                url,
+                data=multipart_data,
+                headers=headers,
+                timeout=60,
+            )
 
         response_data = response.json() if response.text.strip() else None
 
@@ -182,14 +179,15 @@ class GeomarkHelper:
         if not geomark_id:
             return None
 
+        encoded_id = urllib.parse.quote(str(geomark_id), safe='')
         metadata = {'geometry_type': None, 'extent': None}
         try:
-            info = self._get_json(f'{self.GEOMARK_URL_BASE}/geomarks/{geomark_id}.json')
+            info = self._get_json(f'{self.GEOMARK_URL_BASE}/geomarks/{encoded_id}.json')
             if info:
                 metadata.update(self._parse_attribution(info))
 
             if not metadata['geometry_type'] or not metadata['extent']:
-                feature_url = f'{self.GEOMARK_URL_BASE}/geomarks/{geomark_id}/feature.geojson'
+                feature_url = f'{self.GEOMARK_URL_BASE}/geomarks/{encoded_id}/feature.geojson'
                 feature = self._get_json(feature_url)
                 if feature:
                     props = feature.get('properties') or {}
@@ -200,7 +198,7 @@ class GeomarkHelper:
                     )
 
             if not metadata['extent']:
-                bbox_url = f'{self.GEOMARK_URL_BASE}/geomarks/{geomark_id}/boundingBox.geojson'
+                bbox_url = f'{self.GEOMARK_URL_BASE}/geomarks/{encoded_id}/boundingBox.geojson'
                 bbox = self._get_json(bbox_url)
                 if bbox:
                     props = bbox.get('properties') or {}

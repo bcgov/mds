@@ -59,27 +59,6 @@ def test_set_purpose_codes_rejects_invalid(db_session):
         bundle.set_purpose_codes(['ZZZ'])
 
 
-def test_exclusive_purpose_rejects_sibling(db_session):
-    exclusive = SpatialBundlePurposeCode.find_by_code('EXC')
-    if not exclusive:
-        exclusive = SpatialBundlePurposeCode(
-            spatial_bundle_purpose_code='EXC',
-            description='Exclusive Test',
-            display_order=99,
-            active_ind=True,
-            is_exclusive_per_parent=True,
-        )
-        exclusive.save()
-
-    first = MineDocumentBundleFactory()
-    second = MineDocumentBundleFactory()
-    first.set_purpose_codes(['EXC'])
-    first.save()
-
-    with pytest.raises(BadRequest):
-        second.set_purpose_codes(['EXC'], sibling_bundle_ids=[first.bundle_id, second.bundle_id])
-
-
 def test_upsert_preserves_purposes(db_session, mine_boundary_purpose):
     docman_guid = uuid.uuid4()
     mine_doc = MineDocumentFactory(document_manager_guid=uuid.uuid4())

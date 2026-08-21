@@ -27,8 +27,8 @@ def _document_payload(document_name, document_manager_guid, mine_guid, xref_guid
     return payload
 
 
-class TestGetNewSpatialDocumentGuids:
-    """NOWApplicationResource._get_new_spatial_document_guids"""
+class TestGetSpatialDocumentGuidsToProcess:
+    """NOWApplicationResource._get_spatial_document_guids_to_process"""
 
     def test_returns_spatial_documents_being_added(self):
         guid = uuid.uuid4()
@@ -37,7 +37,9 @@ class TestGetNewSpatialDocumentGuids:
             _document_payload('report.pdf', uuid.uuid4(), uuid.uuid4()),
         ]
 
-        assert NOWApplicationResource._get_new_spatial_document_guids(documents) == [str(guid)]
+        assert NOWApplicationResource._get_spatial_document_guids_to_process(documents) == [
+            str(guid)
+        ]
 
     def test_ignores_documents_already_on_the_application(self):
         documents = [
@@ -45,7 +47,7 @@ class TestGetNewSpatialDocumentGuids:
                 'boundary.kml', uuid.uuid4(), uuid.uuid4(), xref_guid=uuid.uuid4())
         ]
 
-        assert NOWApplicationResource._get_new_spatial_document_guids(documents) == []
+        assert NOWApplicationResource._get_spatial_document_guids_to_process(documents) == []
 
     def test_ignores_documents_without_a_document_manager_guid(self):
         documents = [{
@@ -55,10 +57,10 @@ class TestGetNewSpatialDocumentGuids:
             }
         }]
 
-        assert NOWApplicationResource._get_new_spatial_document_guids(documents) == []
+        assert NOWApplicationResource._get_spatial_document_guids_to_process(documents) == []
 
     def test_handles_missing_documents(self):
-        assert NOWApplicationResource._get_new_spatial_document_guids(None) == []
+        assert NOWApplicationResource._get_spatial_document_guids_to_process(None) == []
 
     def test_groups_all_parts_of_a_shapefile(self):
         mine_guid = uuid.uuid4()
@@ -68,8 +70,22 @@ class TestGetNewSpatialDocumentGuids:
             for ext, guid in zip(('shp', 'shx', 'dbf', 'prj'), guids)
         ]
 
-        assert NOWApplicationResource._get_new_spatial_document_guids(documents) == [
+        assert NOWApplicationResource._get_spatial_document_guids_to_process(documents) == [
             str(guid) for guid in guids
+        ]
+
+    def test_includes_existing_sidecars_when_a_part_is_added(self):
+        mine_guid = uuid.uuid4()
+        existing = uuid.uuid4()
+        added = uuid.uuid4()
+        documents = [
+            _document_payload('boundary.shp', existing, mine_guid, xref_guid=uuid.uuid4()),
+            _document_payload('boundary.prj', added, mine_guid),
+        ]
+
+        assert NOWApplicationResource._get_spatial_document_guids_to_process(documents) == [
+            str(existing),
+            str(added),
         ]
 
 

@@ -217,7 +217,9 @@ const SpatialValidationDetailsDrawer: FC<SpatialValidationDetailsDrawerProps> = 
             value: checks.in_bc,
           },
           {
-            label: "Is in BC Albers projection",
+            label: checks.expected_projection
+              ? `Is in ${checks.expected_projection}`
+              : "Is in the required projection",
             value: checks.bc_albers,
             note: formatProjectionNote(checks),
           },

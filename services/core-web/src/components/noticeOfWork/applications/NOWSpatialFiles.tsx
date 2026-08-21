@@ -94,7 +94,7 @@ const NOWSpatialFiles: FC<NOWSpatialFilesProps> = ({
       showDetails
       compactColumns
       focusRequest={focusRequest}
-      description="A read-only view of spatial files detected during import. Validation re-runs on Reimport; your Mine Boundary selections are preserved. To replace or archive a file, use the Application Documents table below."
+      description="A read-only view of spatial files detected during import. Mine Boundary selections are preserved when a bundle is re-synced. To replace or archive a file, use the Application Documents table below."
       emptyText="No spatial files detected on this application."
     />
   );

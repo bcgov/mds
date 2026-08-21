@@ -355,7 +355,7 @@ class DocumentUploadHelper:
                     current_app.logger.info(f"Successfully downloaded document: {doc.file_display_name}")
                     file_data = response.get_data()
 
-                    zipf.writestr(doc.file_display_name, file_data)
+                    zipf.writestr(os.path.basename(doc.file_display_name), file_data)
                 else:
                     raise Exception(f"Failed to download document: {doc.file_display_name}")
 
