@@ -1,0 +1,182 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MineNavigation renders properly for a major mine 1`] = `
+<div>
+  <div>
+    <div
+      data-testid="mine-information"
+    >
+      Mine Information
+      <div
+        data-testid="general"
+      >
+        <a
+          href="/mine-dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/mine-information/general"
+        >
+          General
+        </a>
+      </div>
+      <div
+        data-testid="contacts"
+      >
+        <a
+          href="/mine-dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/mine-information/contacts"
+        >
+          Contacts
+        </a>
+      </div>
+      <div
+        data-testid="mms-archive"
+      >
+        <a
+          href="/mine-dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/mine-information/mms-archive"
+        >
+          Archived MMS Files
+        </a>
+      </div>
+      <div
+        data-testid="user-access"
+      >
+        <a
+          href="/mine-dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/mine-information/user-access"
+        >
+          User Access
+        </a>
+      </div>
+    </div>
+    <div
+      data-testid="permits-and-approvals"
+    >
+      Permits & Approvals
+      <div
+        data-testid="permits"
+      >
+        <a
+          href="/mine-dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/permits-and-approvals/permits"
+        >
+          Permits
+        </a>
+      </div>
+      <div
+        data-testid="securities"
+      >
+        <a
+          href="/mine-dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/permits-and-approvals/securities"
+        >
+          Securities
+        </a>
+      </div>
+      <div
+        data-testid="variances"
+      >
+        <a
+          href="/mine-dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/permits-and-approvals/variances"
+        >
+          Variances
+        </a>
+      </div>
+      <div
+        data-testid="pre-applications"
+      >
+        <a
+          data-cy="major-projects-link"
+          href="/mine-dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/permits-and-approvals/pre-applications"
+        >
+          Major Projects
+        </a>
+      </div>
+      <div
+        data-testid="notices-of-work"
+      >
+        <a
+          href="/mine-dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/permits-and-approvals/applications"
+        >
+          Applications
+        </a>
+      </div>
+      <div
+        data-testid="external-authorizations"
+      >
+        <a
+          href="/mine-dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/external-authorizations"
+        >
+          Other Ministry Applications and Authorizations
+        </a>
+      </div>
+      <div
+        data-testid="nods"
+      >
+        <a
+          href="/mine-dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/permits-and-approvals/notices-of-departure"
+        >
+          Notices of Departure
+        </a>
+      </div>
+      <div
+        data-testid="tailings"
+      >
+        <a
+          href="/mine-dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/permits-and-approvals/tailings"
+        >
+          Tailings Storage Facilities
+        </a>
+      </div>
+    </div>
+    <div
+      data-testid="oversight"
+    >
+      Oversight
+      <div
+        data-testid="inspections-and-audits"
+      >
+        <a
+          href="/mine-dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/oversight/inspections-and-audits"
+        >
+          Inspections & Audits
+        </a>
+      </div>
+      <div
+        data-testid="incidents-and-investigations"
+      >
+        <a
+          href="/mine-dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/oversight/incidents-and-investigations"
+        >
+          Incidents & Investigations
+        </a>
+      </div>
+    </div>
+    <div
+      data-testid="reports"
+    >
+      Reports
+      <div
+        data-testid="code-required-reports"
+      >
+        <a
+          href="/mine-dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/required-reports/code-required-reports"
+        >
+          Code Required Reports
+        </a>
+      </div>
+      <div
+        data-testid="permit-required-reports"
+      >
+        <a
+          href="/mine-dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/required-reports/permit-required-reports"
+        >
+          Permit Required Reports
+        </a>
+      </div>
+      <div
+        data-testid="tailings-reports"
+      >
+        <a
+          href="/mine-dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/reports/tailings-reports"
+        >
+          Tailings Storage Facilities Reports
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+`;
