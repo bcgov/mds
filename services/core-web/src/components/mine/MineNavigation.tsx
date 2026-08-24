@@ -71,10 +71,10 @@ const MineNavigation: FC<MineNavigationProps> = ({ mine, activeButton, openSubMe
           key: "external-authorizations",
           label: <Link to={routes.MINE_EXTERNAL_AUTHORIZATIONS.dynamicRoute(mine.mine_guid)}>Other Ministry Applications and Authorizations</Link>
         },
-        {
+        ...(isMajorMine ? [{
           key: "nods",
           label: <Link to={routes.MINE_NOTICES_OF_DEPARTURE.dynamicRoute(mine.mine_guid)}>Notices of Departure</Link>
-        },
+        }] : []),
         {
           key: "tailings",
           label: <Link to={routes.MINE_TAILINGS.dynamicRoute(mine.mine_guid)}>Tailings Storage Facilities</Link>
