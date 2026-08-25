@@ -31,7 +31,10 @@ class NowApplicationIndexTaskBase(Task):
             run = NowApplicationDocumentIndexRun.query.get(now_application_document_index_run_id)
 
             if not run:
-                raise InternalServerError('NowApplicationDocumentIndexRun not found')
+                current_app.logger.error(
+                    f'NowApplicationDocumentIndexRun {now_application_document_index_run_id} not found '
+                    f'while handling task failure: {exc}')
+                return
 
             run.status = 'error'
             run.error_message = str(exc)

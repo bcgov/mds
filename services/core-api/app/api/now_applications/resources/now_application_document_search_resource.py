@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from app.api.mines.response_models import NOW_DOCUMENT_SEARCH_MODEL
 from app.api.now_applications.models.now_application_document_index_run import (
@@ -87,14 +87,22 @@ class NOWApplicationDocumentIndexResource(Resource, UserMixin):
         if not documents:
             return {'message': 'No indexable documents found for this application.'}, 200
 
-        result = NowApplicationSearchService().index_documents(now_application_guid, documents)
-
         run = NowApplicationDocumentIndexRun.create(
             now_application_guid=now_application_guid,
             status='running',
             document_count=len(documents),
             last_run_start=datetime.utcnow(),
         )
+
+        try:
+            result = NowApplicationSearchService().index_documents(now_application_guid, documents)
+        except Exception as exc:
+            run.status = 'error'
+            run.error_message = str(exc)
+            run.last_run_end = datetime.utcnow()
+            run.save()
+            raise
+
         poll_task = poll_update_now_application_document_index_status.delay(
             str(run.now_application_document_index_run_id))
         run.core_status_task_id = poll_task.id
@@ -134,6 +142,14 @@ class NOWApplicationDocumentIndexStatusResource(Resource, UserMixin):
 
         run = NowApplicationDocumentIndexRun.get_latest_by_now_application_guid(now_application_guid)
         if run:
+            if run.status == 'running' and run.last_run_start and (
+                datetime.utcnow() - run.last_run_start
+            ) > timedelta(minutes=STALE_RUNNING_THRESHOLD_MINUTES):
+                run.status = 'error'
+                run.error_message = 'Indexing run timed out with no status update from the search service.'
+                run.last_run_end = datetime.utcnow()
+                run.save()
+
             status['last_run_start'] = to_utc_isoformat(run.last_run_start)
             status['last_run_end'] = to_utc_isoformat(run.last_run_end)
             status['document_count'] = run.document_count
@@ -151,6 +167,12 @@ class NOWApplicationDocumentIndexStatusResource(Resource, UserMixin):
 # ---------------------------------------------------------------------------
 
 SPATIAL_EXTENSIONS = {'.shp', '.shx', '.dbf', '.prj', '.kml', '.kmz', '.gdb', '.gpx', '.geojson'}
+
+# The polling task retries every 10s for up to 360 attempts (~1 hour) before giving up and
+# marking the run as errored. If the celery worker is restarted mid-poll, the task is lost
+# entirely and on_failure never fires, so this is a fallback so a run doesn't display as
+# "running" forever in that case.
+STALE_RUNNING_THRESHOLD_MINUTES = 90
 
 
 def _collect_indexable_documents(now_application) -> list:
