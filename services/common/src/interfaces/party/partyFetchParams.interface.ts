@@ -12,4 +12,5 @@ export interface IPartyFetchParams {
   sort_field?: string;
   sort_dir?: string;
   business_role?: string;
+  per_page?: number;
 }
