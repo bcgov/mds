@@ -92,8 +92,7 @@ describe("NOWApplicationManageDocuments", () => {
   });
 
   it("shows System-generated Documents (empty state) for an ADA application before a draft permit amendment exists", () => {
-    // No draftPermitAmendment prop passed - defaults to {}, which should default to visible,
-    // matching NOWSideMenu's hasPermitConditionsFlow fallback.
+    // No draftPermitAmendment prop passed - defaults to {}, which should default to visible
     const { getByText } = render(
       <BrowserRouter>
         <ReduxWrapper initialState={initialState}>
