@@ -1192,7 +1192,7 @@ exports[`NOWApplicationManageDocuments renders properly 1`] = `
             class="scroll-wrapper--title"
           >
             <h3>
-              System-generated documents
+              System-generated Documents
             </h3>
           </div>
         </div>

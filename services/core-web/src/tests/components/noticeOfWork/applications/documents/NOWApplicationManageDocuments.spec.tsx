@@ -12,7 +12,7 @@ const dispatchProps = {
   fetchNoticeOfWorkApplicationReviews: jest.fn(),
 };
 
-// Covers the System-generated documents filter's AEF/PMT/PMA/DRAFT branches: a non-permit AEF
+// Covers the System-generated Documents filter's AEF/PMT/PMA/DRAFT branches: a non-permit AEF
 // doc (included), a draft PMT (included via the DRAFT name check), and a final PMA (excluded).
 const SYSTEM_GENERATED_DOCUMENTS_TEST_DOCS = [
   {
@@ -74,7 +74,7 @@ describe("NOWApplicationManageDocuments", () => {
     expect(component).toMatchSnapshot();
   });
 
-  it("shows System-generated documents for an ADA application with drafted permit conditions", () => {
+  it("shows System-generated Documents for an ADA application with drafted permit conditions", () => {
     const { getByText } = render(
       <BrowserRouter>
         <ReduxWrapper initialState={initialState}>
@@ -87,12 +87,14 @@ describe("NOWApplicationManageDocuments", () => {
         </ReduxWrapper>
       </BrowserRouter>
     );
-    expect(getByText("System-generated documents")).toBeInTheDocument();
+    expect(getByText("System-generated Documents")).toBeInTheDocument();
     expect(getByText("This table shows generated Draft Permit PDFs.")).toBeInTheDocument();
   });
 
-  it("hides System-generated documents for an ADA application without drafted permit conditions", () => {
-    const { queryByText } = render(
+  it("shows System-generated Documents (empty state) for an ADA application before a draft permit amendment exists", () => {
+    // No draftPermitAmendment prop passed - defaults to {}, which should default to visible,
+    // matching NOWSideMenu's hasPermitConditionsFlow fallback.
+    const { getByText } = render(
       <BrowserRouter>
         <ReduxWrapper initialState={initialState}>
           <NOWApplicationManageDocuments
@@ -103,6 +105,23 @@ describe("NOWApplicationManageDocuments", () => {
         </ReduxWrapper>
       </BrowserRouter>
     );
-    expect(queryByText("System-generated documents")).not.toBeInTheDocument();
+    expect(getByText("System-generated Documents")).toBeInTheDocument();
+    expect(getByText("This table shows generated Draft Permit PDFs.")).toBeInTheDocument();
+  });
+
+  it("hides System-generated Documents for an ADA application when the draft permit amendment explicitly has no permit conditions", () => {
+    const { queryByText } = render(
+      <BrowserRouter>
+        <ReduxWrapper initialState={initialState}>
+          <NOWApplicationManageDocuments
+            {...dispatchProps}
+            {...reducerProps}
+            noticeOfWork={{ ...reducerProps.noticeOfWork, application_type_code: "ADA" }}
+            draftPermitAmendment={{ has_permit_conditions: false }}
+          />
+        </ReduxWrapper>
+      </BrowserRouter>
+    );
+    expect(queryByText("System-generated Documents")).not.toBeInTheDocument();
   });
 });
