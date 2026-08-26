@@ -205,7 +205,7 @@ export const ReviewAdminAmendmentApplication = (props) => {
                 now_application_document_sub_type_code === "AAF" ||
                 now_application_document_sub_type_code === "MDO"
             )}
-            isViewMode={!props.isViewMode}
+            isViewMode={props.isViewMode}
             disclaimerText="Attach any file revisions or new files requested from the proponent here."
             categoriesToShow={["AAF", "MDO"]}
             isStandardDocuments
