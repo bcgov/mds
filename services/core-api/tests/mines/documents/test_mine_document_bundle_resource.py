@@ -51,7 +51,6 @@ class TestMineDocumentBundle():
                 description='Mine Boundary',
                 display_order=10,
                 active_ind=True,
-                is_exclusive_per_parent=False,
             ).save()
 
         mine_doc = MineDocumentFactory()

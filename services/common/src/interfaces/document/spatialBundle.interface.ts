@@ -30,8 +30,6 @@ export interface ISpatialBundlePurposeCode {
   description: string;
   display_order: number;
   active_ind: boolean;
-  is_exclusive_per_parent: boolean;
-  context_codes: string[];
 }
 
 /** Slim document shape returned on a bundle by Core; it carries no mine_guid or versions. */

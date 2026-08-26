@@ -20,7 +20,6 @@ def mine_boundary_purpose(db_session):
             description='Mine Boundary',
             display_order=10,
             active_ind=True,
-            is_exclusive_per_parent=False,
         )
         purpose.save()
     return purpose

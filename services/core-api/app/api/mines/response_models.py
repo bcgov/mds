@@ -134,8 +134,6 @@ SPATIAL_BUNDLE_PURPOSE_CODE_MODEL = api.model(
         'description': fields.String,
         'display_order': fields.Integer,
         'active_ind': fields.Boolean,
-        'is_exclusive_per_parent': fields.Boolean,
-        'context_codes': fields.List(fields.String),
     })
 
 MINE_DOCUMENT_BUNDLE_DOCUMENT_MODEL = api.model(

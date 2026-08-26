@@ -33,10 +33,7 @@ const NOWSpatialFiles: FC<NOWSpatialFilesProps> = ({
     !isViewMode && userRoles.includes(Permission.EDIT_PERMITS);
 
   const purposeCodes = useMemo(
-    () =>
-      purposeCodesAll.filter(
-        (p) => p.active_ind !== false && (p.context_codes || []).includes("NOW")
-      ),
+    () => purposeCodesAll.filter((p) => p.active_ind !== false),
     [purposeCodesAll]
   );
 

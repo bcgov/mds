@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import moment from "moment";
 import { PropTypes } from "prop-types";
-import { Badge, Tooltip, Button, Popconfirm, Row, Col, Typography, notification } from "antd";
+import { Badge, Tooltip, Button, Popconfirm, Row, Col, Typography } from "antd";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { ImportOutlined, ReloadOutlined, FlagOutlined } from "@ant-design/icons";
@@ -35,15 +35,9 @@ import PermitPackage from "@/components/noticeOfWork/applications/PermitPackage"
 import CoreTable from "@mds/common/components/common/CoreTable";
 import SpatialFilesRowLink from "@mds/common/components/documents/spatial/SpatialFilesRowLink";
 import {
-  isSpatialFilename,
   isValidatedSpatialBundleMember,
   validatedSpatialBundleIds,
 } from "@mds/common/utils/spatialFiles";
-
-// Spatial validation runs asynchronously in the Document Manager, so the results
-// only appear on the application a few seconds after the documents are saved.
-const SPATIAL_POLL_INTERVAL_MS = 4000;
-const SPATIAL_POLL_MAX_ATTEMPTS = 10;
 
 const propTypes = {
   openModal: PropTypes.func.isRequired,
@@ -151,48 +145,11 @@ const transformDocuments = (
 
 export const NOWSubmissionDocuments = (props) => {
   const [isLoaded, setIsLoaded] = useState(true);
-  const isMounted = useRef(true);
   const isInCompleteStatus =
     props.noticeOfWork.now_application_status_code === "AIA" ||
     props.noticeOfWork.now_application_status_code === "WDN" ||
     props.noticeOfWork.now_application_status_code === "REJ" ||
     props.noticeOfWork.now_application_status_code === "NPR";
-
-  useEffect(() => {
-    return () => {
-      isMounted.current = false;
-    };
-  }, []);
-
-  const pollForSpatialValidation = (pendingGuids) => {
-    let attempts = 0;
-
-    const poll = () =>
-      new Promise((resolve) => setTimeout(resolve, SPATIAL_POLL_INTERVAL_MS))
-        .then(() => {
-          if (!isMounted.current) {
-            return null;
-          }
-          return props.fetchImportedNoticeOfWorkApplication(
-            props.noticeOfWork.now_application_guid
-          );
-        })
-        .then((response) => {
-          attempts += 1;
-          if (!isMounted.current || attempts >= SPATIAL_POLL_MAX_ATTEMPTS) {
-            return null;
-          }
-          const validatedGuids = (response?.data?.spatial_document_bundles || []).flatMap(
-            (bundle) => (bundle.bundle_documents || []).map((doc) => doc.document_manager_guid)
-          );
-          if (pendingGuids.every((guid) => validatedGuids.includes(guid))) {
-            return null;
-          }
-          return poll();
-        });
-
-    return poll();
-  };
 
   const handleAddDocument = (values) => {
     const documents = values.uploadedFiles.map((file) => {
@@ -208,10 +165,6 @@ export const NOWSubmissionDocuments = (props) => {
         },
       };
     });
-    const spatialGuids = values.uploadedFiles
-      .filter((file) => isSpatialFilename(file.document_name))
-      .map((file) => file.document_manager_guid);
-
     return props
       .updateNoticeOfWorkApplication(
         { documents },
@@ -221,14 +174,6 @@ export const NOWSubmissionDocuments = (props) => {
       .then(() => {
         props.fetchImportedNoticeOfWorkApplication(props.noticeOfWork.now_application_guid);
         props.closeModal();
-
-        if (spatialGuids.length > 0) {
-          notification.info({
-            message: "Validating spatial files. Results will appear shortly.",
-            duration: 10,
-          });
-          pollForSpatialValidation(spatialGuids);
-        }
       });
   };
 
