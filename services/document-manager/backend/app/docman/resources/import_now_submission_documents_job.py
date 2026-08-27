@@ -32,11 +32,6 @@ class ImportNowSubmissionDocumentsJobListResource(Resource):
         now_application_guid = data.get('now_application_guid', None)
         submission_documents = data.get('submission_documents', [])
         mine_guid = data.get('mine_guid', None)
-        current_app.logger.info(
-            'Received %s NoW submission documents for import, application ID %s, application GUID %s.',
-            len(submission_documents),
-            now_application_id,
-            now_application_guid)
 
         # If any jobs for this Notice of Work are in progress, cancel them.
         in_progress_jobs = ImportNowSubmissionDocumentsJob.query.filter(
@@ -62,23 +57,6 @@ class ImportNowSubmissionDocumentsJobListResource(Resource):
             messageid = doc['messageid']
             documenttype = doc['documenttype']
             description = doc['description']
-            missing_fields = [
-                field for field, value in {
-                    'documenturl': documenturl,
-                    'filename': filename,
-                    'messageid': messageid,
-                    'documenttype': documenttype,
-                    'description': description,
-                }.items() if value is None
-            ]
-            if missing_fields:
-                current_app.logger.warning(
-                    'NoW submission document has missing required import fields for application ID %s, '
-                    'message ID %s, filename %s: %s',
-                    now_application_id,
-                    messageid,
-                    filename,
-                    missing_fields)
 
             # Get the possible already-existing record for this document.
             existing_doc = ImportNowSubmissionDocument.query.filter(

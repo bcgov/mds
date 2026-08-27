@@ -173,36 +173,11 @@ class DocumentManagerService():
 
     @classmethod
     def importNoticeOfWorkSubmissionDocuments(cls, request, now_application):
-        submission_documents = marshal(now_application.submission_documents, NOW_SUBMISSION_DOCUMENT)
-        invalid_submission_documents = [
-            {
-                'messageid': document.get('messageid'),
-                'filename': document.get('filename'),
-                'missing_fields': [
-                    field for field in ('documenturl', 'filename', 'messageid', 'documenttype', 'description')
-                    if document.get(field) is None
-                ],
-            }
-            for document in submission_documents
-            if any(
-                document.get(field) is None
-                for field in ('documenturl', 'filename', 'messageid', 'documenttype', 'description')
-            )
-        ]
-        current_app.logger.info(
-            'Sending %s NoW submission documents to Document Manager for application %s.',
-            len(submission_documents),
-            now_application.now_application_guid)
-        if invalid_submission_documents:
-            current_app.logger.warning(
-                'NoW submission documents have missing required import fields for application %s: %s',
-                now_application.now_application_guid,
-                invalid_submission_documents)
         data = {
             'now_application_id':
             now_application.now_application_id,
             'submission_documents':
-            submission_documents,
+            marshal(now_application.submission_documents, NOW_SUBMISSION_DOCUMENT),
             'now_application_guid':
             str(now_application.now_application_guid),
             'mine_guid':
