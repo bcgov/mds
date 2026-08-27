@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import NowApplicationDocumentSearch from './NowApplicationDocumentSearch';
@@ -188,5 +188,132 @@ describe('NowApplicationDocumentSearch', () => {
         );
 
         expect(screen.queryByText('Showing results for:')).not.toBeInTheDocument();
+    });
+
+    describe('last indexed label', () => {
+        it('shows the last indexed date and document count once a run has completed', () => {
+            const store = createMockStore({
+                indexerStatus: {
+                    status: 'success',
+                    items_processed: 42,
+                    document_count: 3,
+                    error_count: 0,
+                    last_run_start: '2026-08-21T18:00:00.000Z',
+                    last_run_end: '2026-08-21T18:08:00.000Z',
+                    error_message: null,
+                },
+            });
+            const { container } = render(
+                <Provider store={store}>
+                    <NowApplicationDocumentSearch nowApplicationGuid="test-guid" />
+                </Provider>
+            );
+
+            expect(container.textContent).toContain('Last indexed:');
+            expect(container.textContent).toContain('3 documents');
+        });
+
+        it('uses singular "document" when only one document was indexed', () => {
+            const store = createMockStore({
+                indexerStatus: {
+                    status: 'success',
+                    items_processed: 1,
+                    document_count: 1,
+                    error_count: 0,
+                    last_run_start: '2026-08-21T18:00:00.000Z',
+                    last_run_end: '2026-08-21T18:08:00.000Z',
+                    error_message: null,
+                },
+            });
+            const { container } = render(
+                <Provider store={store}>
+                    <NowApplicationDocumentSearch nowApplicationGuid="test-guid" />
+                </Provider>
+            );
+
+            expect(container.textContent).toContain('1 document');
+            expect(container.textContent).not.toContain('1 documents');
+        });
+
+        it('does not show a last indexed label while indexing is running', () => {
+            const store = createMockStore({
+                indexerStatus: {
+                    status: 'running',
+                    percent: 50,
+                    document_count: 3,
+                    last_run_start: '2026-08-21T18:00:00.000Z',
+                    last_run_end: null,
+                },
+            });
+            const { container } = render(
+                <Provider store={store}>
+                    <NowApplicationDocumentSearch nowApplicationGuid="test-guid" />
+                </Provider>
+            );
+
+            expect(container.textContent).not.toContain('Last indexed:');
+        });
+
+        it('does not show a last indexed label before a run has ever completed', () => {
+            const store = createMockStore({
+                indexerStatus: { status: 'never_run' },
+            });
+            const { container } = render(
+                <Provider store={store}>
+                    <NowApplicationDocumentSearch nowApplicationGuid="test-guid" />
+                </Provider>
+            );
+
+            expect(container.textContent).not.toContain('Last indexed:');
+        });
+    });
+
+    describe('status polling', () => {
+        beforeEach(() => {
+            jest.useFakeTimers();
+        });
+
+        afterEach(() => {
+            jest.useRealTimers();
+        });
+
+        it('keeps polling for status while indexing is running', async () => {
+            mockAxios.get.mockResolvedValue({ data: { status: 'running', percent: 10 } });
+            const store = createMockStore({ indexerStatus: { status: 'running', percent: 10 } });
+            render(
+                <Provider store={store}>
+                    <NowApplicationDocumentSearch nowApplicationGuid="test-guid" />
+                </Provider>
+            );
+
+            const initialCalls = mockAxios.get.mock.calls.length;
+
+            await act(async () => {
+                await jest.advanceTimersByTimeAsync(2_000);
+            });
+
+            expect(mockAxios.get.mock.calls.length).toBeGreaterThan(initialCalls);
+        });
+
+        it('stops polling once indexing has reached a terminal status', async () => {
+            mockAxios.get.mockResolvedValue({ data: { status: 'success', document_count: 3 } });
+            const store = createMockStore({
+                indexerStatus: { status: 'success', document_count: 3 },
+            });
+            render(
+                <Provider store={store}>
+                    <NowApplicationDocumentSearch nowApplicationGuid="test-guid" />
+                </Provider>
+            );
+
+            const initialCalls = mockAxios.get.mock.calls.length;
+
+            // Advance well past what the old idle-polling interval (10s) would have fired.
+            await act(async () => {
+                await jest.advanceTimersByTimeAsync(30_000);
+            });
+
+            expect(mockAxios.get.mock.calls.length).toBe(initialCalls);
+        });
     });
 });

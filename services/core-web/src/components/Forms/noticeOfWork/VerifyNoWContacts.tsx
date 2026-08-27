@@ -209,7 +209,7 @@ const renderContacts = ({
                                                                 : ""}
                                                         </p>
                                                     </div>
-                                                    <Address address={contactInformation.party?.address[0] || {}} />
+                                                    <Address address={contactInformation.party?.address?.[0] || {}} />
                                                 </div>
                                             )}
                                         </Col>
@@ -591,7 +591,7 @@ export const VerifyNoWContacts: React.FC<VerifyNoWContactsProps> = (props) => {
                                                         </div>
                                                         <p>{result.phone_no}</p>
                                                     </div>
-                                                    <Address address={result.address[0] || {}} />
+                                                    <Address address={result.address?.[0] || {}} />
                                                     {!result.phone_no && (
                                                         <Alert message="Phone number is required." type="error" showIcon />
                                                     )}

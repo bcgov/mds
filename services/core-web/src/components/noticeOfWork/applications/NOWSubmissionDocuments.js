@@ -153,6 +153,7 @@ export const NOWSubmissionDocuments = (props) => {
         now_application_document_type_code: values.now_application_document_type_code,
         description: values.description,
         is_final_package: values.is_final_package,
+        permit_package_document_type_code: values.permit_package_document_type_code,
         preamble_title: values?.preamble_title,
         preamble_author: values?.preamble_author,
         mine_document: {

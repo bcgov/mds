@@ -72,7 +72,11 @@ const MineDashboard: FC = () => {
   const dynamicRoute = (key: string) => {
     return MINE_DASHBOARD.dynamicRoute(mine?.mine_guid, key, "");
   };
-  const items = getMineDashboardRoutes(showApplications, reportsBadgeCount).map((item) => ({
+  const items = getMineDashboardRoutes(
+    showApplications,
+    reportsBadgeCount,
+    mine?.major_mine_ind
+  ).map((item) => ({
     ...item,
     path: dynamicRoute(item.key),
   }));

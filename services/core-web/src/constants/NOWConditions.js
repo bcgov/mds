@@ -328,7 +328,7 @@ export const sideMenuOptions = (tab, hasPermitConditionsFlow = true, hasLegacyFu
       },
       {
         href: "generated-documents",
-        title: "System-generated documents",
+        title: "System-generated Documents",
         alwaysVisible: hasPermitConditionsFlow,
         children: [],
         applicationType: ["NOW", "ADA"],

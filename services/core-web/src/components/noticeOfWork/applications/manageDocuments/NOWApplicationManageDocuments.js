@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
+import { isEmpty } from "lodash";
 import CustomPropTypes from "@/customPropTypes";
 import FinalPermitDocuments from "@/components/noticeOfWork/applications/FinalPermitDocuments";
 import NOWDocuments from "@/components/noticeOfWork/applications//NOWDocuments";
@@ -27,6 +28,10 @@ export const NOWApplicationManageDocuments = (props) => {
   const [spatialScrollRequestId, setSpatialScrollRequestId] = useState(null);
   const isNoWApplication = props.noticeOfWork.application_type_code === "NOW";
   const applicationFilesTypes = ["AAF", "MDO", "SDO"];
+  // default to true, as the preferred flow has permit conditions.
+  const hasPermitConditionsFlow = !isEmpty(props.draftPermitAmendment)
+    ? props.draftPermitAmendment.has_permit_conditions
+    : true;
   const tableDescription = isNoWApplication
     ? "In this table, you can see all documents submitted during initial application, revision and new files requested from the proponent. Documents added in this section will not show up in the permit package unless otherwise specified."
     : "In this table, you can see all documents uploaded to the application, revision and new files requested from the proponent. Documents added in this section will not show up in the permit package unless otherwise specified.";
@@ -124,10 +129,10 @@ export const NOWApplicationManageDocuments = (props) => {
           showDescription
         />
       </ScrollContentWrapper>
-      {(isNoWApplication || props.draftPermitAmendment?.has_permit_conditions) && (
+      {(isNoWApplication || hasPermitConditionsFlow) && (
         <ScrollContentWrapper
           id="generated-documents"
-          title="System-generated documents"
+          title="System-generated Documents"
           isLoaded={props.isLoaded}
         >
           <NOWDocuments

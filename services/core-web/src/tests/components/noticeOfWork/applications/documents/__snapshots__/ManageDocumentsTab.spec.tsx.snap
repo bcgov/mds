@@ -111,9 +111,9 @@ exports[`ManageDocumentsTab renders properly 1`] = `
               <a
                 class="ant-anchor-link-title"
                 href="#generated-documents"
-                title="System-generated documents"
+                title="System-generated Documents"
               >
-                System-generated documents
+                System-generated Documents
               </a>
             </div>
             <div
@@ -1308,7 +1308,7 @@ exports[`ManageDocumentsTab renders properly 1`] = `
                 class="scroll-wrapper--title"
               >
                 <h3>
-                  System-generated documents
+                  System-generated Documents
                 </h3>
               </div>
             </div>

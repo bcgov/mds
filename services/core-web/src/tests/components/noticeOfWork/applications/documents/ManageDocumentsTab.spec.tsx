@@ -11,7 +11,7 @@ const dispatchProps = {
   fetchImportedNoticeOfWorkApplication: jest.fn(),
   fetchNoticeOfWorkApplicationReviews: jest.fn(),
 };
-// Covers the System-generated documents filter's AEF/PMT/PMA/DRAFT branches: a non-permit AEF
+// Covers the System-generated Documents filter's AEF/PMT/PMA/DRAFT branches: a non-permit AEF
 // doc (included), a draft PMT (included via the DRAFT name check), and a final PMA (excluded).
 const SYSTEM_GENERATED_DOCUMENTS_TEST_DOCS = [
   {
