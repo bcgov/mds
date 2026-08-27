@@ -28,7 +28,13 @@ export enum SearchEventType {
 
 export type NowApplicationSearchFilters = Array<{ category: string; value: string }>;
 
-export type NowIndexerStatusValue = "never_run" | "running" | "success" | "error" | "transientFailure";
+export type NowIndexerStatusValue =
+  | "never_run"
+  | "running"
+  | "success"
+  | "error"
+  | "transientFailure"
+  | "cancelled";
 
 export interface NowIndexerStatus {
   status: NowIndexerStatusValue;

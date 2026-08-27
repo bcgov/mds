@@ -83,6 +83,7 @@ function IndexerStatusBadge({ status }: { status: NowIndexerStatus | null }) {
     success: { color: "success", icon: <CheckCircleOutlined />, label: "Indexed" },
     error: { color: "error", icon: <CloseCircleOutlined />, label: "Index error" },
     transientFailure: { color: "warning", icon: <CloseCircleOutlined />, label: "Index warning" },
+    cancelled: { color: "default", icon: <CloseCircleOutlined />, label: "Index cancelled" },
   };
 
   const cfg = configs[status.status] ?? configs.never_run;
@@ -194,7 +195,7 @@ const NowApplicationDocumentSearch: React.FC<NowApplicationDocumentSearchProps> 
             <Tooltip title="Cancel Indexing">
               <CoreButton
                 aria-label="Cancel"
-                loading={loading}
+                loading={cancelling}
                 className={"form-btn margin-none"}
                 type={"primary"}
                 danger
