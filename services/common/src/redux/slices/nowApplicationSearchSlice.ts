@@ -28,11 +28,18 @@ export enum SearchEventType {
 
 export type NowApplicationSearchFilters = Array<{ category: string; value: string }>;
 
-export type NowIndexerStatusValue = "never_run" | "running" | "success" | "error" | "transientFailure";
+export type NowIndexerStatusValue =
+  | "never_run"
+  | "running"
+  | "success"
+  | "error"
+  | "transientFailure"
+  | "cancelled";
 
 export interface NowIndexerStatus {
   status: NowIndexerStatusValue;
   items_processed: number;
+  document_count?: number;
   error_count: number;
   last_run_start: string | null;
   last_run_end: string | null;
