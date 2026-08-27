@@ -289,7 +289,7 @@ describe('NowApplicationDocumentSearch', () => {
             const initialCalls = mockAxios.get.mock.calls.length;
 
             await act(async () => {
-                await jest.advanceTimersByTimeAsync(2_000);
+                jest.advanceTimersByTime(2_000);
             });
 
             expect(mockAxios.get.mock.calls.length).toBeGreaterThan(initialCalls);
@@ -310,7 +310,7 @@ describe('NowApplicationDocumentSearch', () => {
 
             // Advance well past what the old idle-polling interval (10s) would have fired.
             await act(async () => {
-                await jest.advanceTimersByTimeAsync(30_000);
+                jest.advanceTimersByTime(30_000);
             });
 
             expect(mockAxios.get.mock.calls.length).toBe(initialCalls);
