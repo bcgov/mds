@@ -1,4 +1,3 @@
-import os
 import requests
 import dateutil.parser
 from datetime import datetime
@@ -9,7 +8,6 @@ from flask_restx import Resource, marshal
 from werkzeug.exceptions import BadRequest, NotFound, NotImplemented
 
 from app.extensions import api, db
-from app.api.constants import SPATIAL_FILE_EXTENSIONS
 from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_permit, requires_any_of, can_edit_now_dates, VIEW_ALL, GIS
 
 from app.api.utils.include.user_info import User
@@ -36,23 +34,21 @@ class NOWApplicationResource(Resource, UserMixin):
         """document_manager_guids to send for spatial processing.
 
         Nested documents without a xref guid are treated as new by deep_update_from_dict.
-        When any spatial file is new, include every spatial file on the payload so completing a
-        shapefile across saves revalidates the whole group.
+        When any document is new, include every document_manager_guid on the payload so completing
+        a shapefile across saves revalidates the whole group. Document Manager decides which files
+        are spatial.
         """
         new_guids = []
-        all_spatial_guids = []
+        all_guids = []
         for document in documents or []:
             mine_document = document.get('mine_document') or {}
             document_manager_guid = mine_document.get('document_manager_guid')
-            document_name = mine_document.get('document_name') or ''
             if not document_manager_guid:
                 continue
-            if os.path.splitext(document_name)[1].lower() not in SPATIAL_FILE_EXTENSIONS:
-                continue
-            all_spatial_guids.append(document_manager_guid)
+            all_guids.append(document_manager_guid)
             if not document.get('now_application_document_xref_guid'):
                 new_guids.append(document_manager_guid)
-        return all_spatial_guids if new_guids else []
+        return all_guids if new_guids else []
 
     @api.doc(
         description='Get a Notice of Work application.',

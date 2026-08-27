@@ -1,7 +1,5 @@
 import os
-import re
 import tempfile
-import zipfile
 from collections import defaultdict
 from datetime import datetime
 
@@ -29,29 +27,6 @@ SPATIAL_EXTENSIONS = ALL_SHAPEFILE_EXTENSIONS | SINGLE_FILE_EXTENSIONS
 
 BC_INTERSECT_ERROR_FRAGMENT = 'intersect the Province of British Columbia'
 OUT_OF_AREA_ERROR_FRAGMENT = 'outside the valid area'
-
-BC_ALBERS_PROJECTION = 'NAD83 / BC Albers (EPSG:3005)'
-WGS84_PROJECTION = 'WGS 84 (EPSG:4326)'
-
-UTM_PROJECTION_DESCRIPTION = 'UTM (northern hemisphere)'
-GEOGRAPHIC_PROJECTION_DESCRIPTION = 'geographic latitude/longitude (e.g. WGS 84)'
-
-# Geomark attribution copied into validation_checks for VALID bundles. Anything Geomark
-# omits stays None so consumers can skip it.
-GEOMARK_METADATA_KEYS = (
-    'geometry_type',
-    'extent',
-    'centroid',
-    'num_parts',
-    'num_vertices',
-    'area',
-    'length',
-    'minimum_clearance',
-    'is_valid',
-    'is_simple',
-    'is_robust',
-    'geometry_validation_error',
-)
 
 
 class SpatialBundleService:
@@ -159,156 +134,20 @@ class SpatialBundleService:
             'bc_albers': None,
             'file_size_gt_0': None,
             'missing_extensions': [],
-            'found_projection': None,
-            'declared_projection': None,
-            'expected_projection': None,
         }
-        checks.update({key: None for key in GEOMARK_METADATA_KEYS})
         checks.update(overrides)
         return checks
 
     @classmethod
-    def _expected_projection(cls, analysis):
-        """Geomark is told the file is BC Albers, except KML/KMZ which are WGS 84."""
-        name = (analysis.get('name') or '').lower()
-        if analysis.get('is_single_file') and (name.endswith('.kml') or name.endswith('.kmz')):
-            return WGS84_PROJECTION
-        return BC_ALBERS_PROJECTION
-
-    @classmethod
-    def _map_geomark_error(cls, error_text, expected_projection=BC_ALBERS_PROJECTION):
+    def _map_geomark_error(cls, error_text):
         """Map Geomark error text to validation_checks flags."""
-        checks = cls._empty_checks(
-            file_size_gt_0=True, expected_projection=expected_projection)
+        checks = cls._empty_checks(file_size_gt_0=True)
         error_lower = (error_text or '').lower()
-
-        if BC_INTERSECT_ERROR_FRAGMENT.lower() in error_lower or 'british columbia' in error_lower:
+        if BC_INTERSECT_ERROR_FRAGMENT.lower() in error_lower:
             checks['in_bc'] = False
-            checks['bc_albers'] = True  # CRS accepted enough to evaluate location
-            return checks
-
-        found = cls._extract_found_projection(error_text, expected_projection)
-        if found or OUT_OF_AREA_ERROR_FRAGMENT in error_lower:
+        elif OUT_OF_AREA_ERROR_FRAGMENT in error_lower:
             checks['bc_albers'] = False
-            checks['found_projection'] = found
-
-        # Otherwise Geomark could not read the file at all, so the projection remains unknown.
         return checks
-
-    @classmethod
-    def _names_projection(cls, candidate, projection_name):
-        """True when candidate is a (possibly partial) name for projection_name."""
-
-        def squash(value):
-            return re.sub(r'[^a-z0-9]', '', (value or '').lower())
-
-        candidate_squashed = squash(candidate)
-        return bool(candidate_squashed) and candidate_squashed in squash(projection_name)
-
-    @classmethod
-    def _extract_found_projection(cls, error_text, expected_projection=BC_ALBERS_PROJECTION):
-        """Name the projection the data is actually in, never the one we declared to Geomark.
-
-        Geomark echoes the srid we sent it ("Source Geometry Factory: NAD83 / BC Albers"), so any
-        match naming the expected projection describes our own request rather than the file.
-        """
-        if not error_text:
-            return None
-
-        for match in re.finditer(r'(NAD83[^\n,()]*|UTM zone[^\n,()]*|EPSG[:\s]?\d+|WGS\s*84)',
-                                 error_text, re.I):
-            candidate = match.group(1).strip()
-            if not cls._names_projection(candidate, expected_projection):
-                return candidate
-
-        return cls._infer_projection_from_coordinates(error_text)
-
-    @classmethod
-    def _infer_projection_from_coordinates(cls, error_text):
-        """Classify the coordinates Geomark echoed back.
-
-        BC Albers northings top out near 1.8 million, so northings in the millions are metres from
-        the equator, i.e. UTM.
-        """
-        coordinate = cls._first_coordinate(error_text)
-        if not coordinate:
-            return None
-
-        easting, northing = coordinate
-        if abs(easting) <= 180 and abs(northing) <= 90:
-            return GEOGRAPHIC_PROJECTION_DESCRIPTION
-        if 100000 <= abs(easting) <= 1000000 and 3000000 <= abs(northing) <= 10000000:
-            return UTM_PROJECTION_DESCRIPTION
-        return None
-
-    @classmethod
-    def _first_coordinate(cls, error_text):
-        bbox = re.search(r'Geometry Bounding Box:[^(\n]*\(\s*(-?[\d.]+)\s+(-?[\d.]+)',
-                         error_text, re.I)
-        geometry = bbox or re.search(
-            r'(?:POLYGON|MULTIPOLYGON|POINT|MULTIPOINT|LINESTRING|MULTILINESTRING)'
-            r'[^(]*\(+\s*(-?[\d.]+)\s+(-?[\d.]+)', error_text, re.I)
-        if not geometry:
-            return None
-        try:
-            return float(geometry.group(1)), float(geometry.group(2))
-        except ValueError:
-            return None
-
-    @classmethod
-    def _read_declared_projection(cls, file_path, is_single_file=False):
-        """The shapefile .prj is the only statement of the file's own CRS; Geomark never reports it."""
-        if is_single_file or not file_path or not file_path.endswith('.shpz'):
-            return None
-
-        try:
-            with zipfile.ZipFile(file_path) as archive:
-                prj_names = [n for n in archive.namelist() if n.lower().endswith('.prj')]
-                if not prj_names:
-                    return None
-                wkt = archive.read(prj_names[0]).decode('utf-8', errors='ignore')
-        except Exception as e:
-            current_app.logger.warning(f'Unable to read .prj from spatial bundle: {e}')
-            return None
-
-        return cls._parse_prj_wkt(wkt)
-
-    @classmethod
-    def _parse_prj_wkt(cls, wkt):
-        name_match = re.search(r'(?:PROJCS|GEOGCS)\s*\[\s*"([^"]+)"', wkt or '', re.I)
-        if not name_match:
-            return None
-
-        name = name_match.group(1).strip()
-        # The outermost AUTHORITY closes the WKT, so the last code identifies the CRS itself.
-        epsg_codes = re.findall(r'AUTHORITY\s*\[\s*"EPSG"\s*,\s*"?(\d+)"?\s*\]', wkt, re.I)
-        return f'{name} (EPSG:{epsg_codes[-1]})' if epsg_codes else name
-
-    @classmethod
-    def _user_facing_error(cls, error_text, checks):
-        """Geomark errors are raw geometry dumps; state what is wrong and what is required."""
-        if checks.get('in_bc') is False:
-            return 'Spatial file must be located within the Province of British Columbia.'
-
-        if checks.get('bc_albers') is False:
-            expected = checks.get('expected_projection') or BC_ALBERS_PROJECTION
-            found = checks.get('found_projection')
-            declared = checks.get('declared_projection')
-
-            if found and declared and cls._names_projection(declared, expected):
-                detail = (f'The .prj file declares {declared}, but the coordinates are outside the '
-                          f'valid area for it and appear to be in {found}.')
-            elif declared:
-                detail = f'The .prj file declares {declared}.'
-            elif found:
-                detail = f'The coordinates appear to be in {found}.'
-            else:
-                detail = f'The coordinates are outside the valid area for {expected}.'
-
-            return (f'Spatial file must be in the {expected} projection. {detail} '
-                    f'Re-project the file to {expected} and upload it again.')
-
-        return (error_text or 'Geomark validation failed')[:1000]
 
     @classmethod
     def _temporary_file_path(cls, suffix):
@@ -383,10 +222,7 @@ class SpatialBundleService:
         bundle_name = name or analysis['name']
         document_guids = [str(d.document_guid) for d in bundle_documents]
 
-        checks = cls._empty_checks(
-            missing_extensions=analysis['missing_extensions'],
-            expected_projection=cls._expected_projection(analysis),
-        )
+        checks = cls._empty_checks(missing_extensions=analysis['missing_extensions'])
 
         if not analysis['complete']:
             result = cls._result_dict(
@@ -425,8 +261,6 @@ class SpatialBundleService:
                 return cls._attach_bundle(result, bundle_documents)
 
             checks['file_size_gt_0'] = True
-            checks['declared_projection'] = cls._read_declared_projection(
-                file_path, analysis['is_single_file'])
             geomark_response = GeomarkHelper().send_spatial_file_to_geomark(file_path)
         except BadRequest:
             raise
@@ -458,36 +292,30 @@ class SpatialBundleService:
             error_text = geomark_response['error']
             current_app.logger.warning(
                 f"Geomark rejected spatial bundle '{bundle_name}': {error_text}")
-            mapped = cls._map_geomark_error(
-                error_text, expected_projection=checks.get('expected_projection'))
-            checks.update({k: v for k, v in mapped.items() if v is not None or k == 'found_projection'})
+            mapped = cls._map_geomark_error(error_text)
+            checks.update({k: v for k, v in mapped.items() if v is not None})
             result = cls._result_dict(
                 bundle_name,
                 document_guids,
                 VALIDATION_STATUS_INVALID,
-                cls._user_facing_error(error_text, checks)[:1000],
+                (error_text or 'Geomark validation failed')[:1000],
                 checks,
             )
         elif geomark_response.get('id'):
             geomark_id = geomark_response.get('id')
             checks['in_bc'] = True
-            # True means the file matched the CRS Geomark was asked to validate, not always Albers.
             checks['bc_albers'] = True
             checks['file_size_gt_0'] = True
             metadata = GeomarkHelper().fetch_geomark_metadata(geomark_id)
             if metadata:
-                checks.update({
-                    key: metadata[key]
-                    for key in GEOMARK_METADATA_KEYS
-                    if metadata.get(key) is not None
-                })
-            if metadata and metadata.get('is_valid') is False:
-                geometry_error = metadata.get('geometry_validation_error') or 'Geometry is not valid'
+                checks.update(metadata)
+            if metadata and metadata.get('isValid') is False:
+                geometry_error = metadata.get('validationError') or 'Geometry is not valid'
                 result = cls._result_dict(
                     bundle_name,
                     document_guids,
                     VALIDATION_STATUS_INVALID,
-                    geometry_error[:1000],
+                    str(geometry_error)[:1000],
                     checks,
                     geomark_id=geomark_id,
                 )

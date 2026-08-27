@@ -55,25 +55,23 @@ const CheckIcon: FC<{ value: boolean | null | undefined }> = ({ value }) => {
 const formatNumber = (value: number, maximumFractionDigits: number) =>
   value.toLocaleString(undefined, { maximumFractionDigits });
 
-// Geomark reports the bounding box and centroid in decimal degrees, area in square metres
-// and length in metres.
-const formatExtent = (extent: ISpatialValidationChecks["extent"]) => {
-  const e = extent as any;
-  if (!e) {
+const formatExtent = (checks: ISpatialValidationChecks) => {
+  if (
+    checks.minX == null ||
+    checks.minY == null ||
+    checks.maxX == null ||
+    checks.maxY == null
+  ) {
     return undefined;
   }
-  if (["minX", "minY", "maxX", "maxY"].every((key) => e[key] !== undefined && e[key] !== null)) {
-    return `W ${e.minX} · S ${e.minY} · E ${e.maxX} · N ${e.maxY}`;
-  }
-  return e.geometry ? "Available" : undefined;
+  return `W ${checks.minX} · S ${checks.minY} · E ${checks.maxX} · N ${checks.maxY}`;
 };
 
-const formatCentroid = (centroid: ISpatialValidationChecks["centroid"]) => {
-  const c = centroid as any;
-  if (!c || typeof c.centroidX !== "number" || typeof c.centroidY !== "number") {
+const formatCentroid = (checks: ISpatialValidationChecks) => {
+  if (typeof checks.centroidX !== "number" || typeof checks.centroidY !== "number") {
     return undefined;
   }
-  return `${formatNumber(c.centroidY, 6)}, ${formatNumber(c.centroidX, 6)}`;
+  return `${formatNumber(checks.centroidY, 6)}, ${formatNumber(checks.centroidX, 6)}`;
 };
 
 const formatArea = (area?: number | null) =>
@@ -98,15 +96,6 @@ const formatFlag = (flag?: boolean | null) => {
 
 const formatCount = (count?: number | null) =>
   typeof count === "number" ? formatNumber(count, 0) : undefined;
-
-const formatProjectionNote = (checks: ISpatialValidationChecks) => {
-  const notes = [
-    checks.expected_projection && `Required: ${checks.expected_projection}`,
-    checks.declared_projection && `File declares: ${checks.declared_projection}`,
-    checks.found_projection && `Coordinates suggest: ${checks.found_projection}`,
-  ].filter(Boolean);
-  return notes.length ? notes.join(" · ") : undefined;
-};
 
 const VALIDATION_LABELS: Record<string, string> = {
   VALID: "Valid",
@@ -145,10 +134,10 @@ const SpatialValidationDetailsDrawer: FC<SpatialValidationDetailsDrawerProps> = 
       code
   );
 
-  const validity = formatFlag(checks.is_valid);
+  const validity = formatFlag(checks.isValid);
   const geometryValidity =
-    validity && checks.is_valid === false && checks.geometry_validation_error
-      ? `${validity} — ${checks.geometry_validation_error}`
+    validity && checks.isValid === false && checks.validationError
+      ? `${validity} — ${checks.validationError}`
       : validity;
 
   const metadataRows = [
@@ -161,13 +150,13 @@ const SpatialValidationDetailsDrawer: FC<SpatialValidationDetailsDrawerProps> = 
       label: "Purpose",
       value: purposeLabels.length ? purposeLabels.join(", ") : "Not assigned",
     },
-    { label: "Geometry Type", value: checks.geometry_type },
-    { label: "Parts", value: formatCount(checks.num_parts) },
-    { label: "Vertices", value: formatCount(checks.num_vertices) },
+    { label: "Geometry Type", value: checks.geometryType },
+    { label: "Parts", value: formatCount(checks.numParts) },
+    { label: "Vertices", value: formatCount(checks.numVertices) },
     { label: "Area", value: formatArea(checks.area) },
     { label: "Length", value: formatLength(checks.length) },
-    { label: "Centroid (lat, long)", value: formatCentroid(checks.centroid) },
-    { label: "Bounding Box", value: formatExtent(checks.extent) },
+    { label: "Centroid (lat, long)", value: formatCentroid(checks) },
+    { label: "Bounding Box", value: formatExtent(checks) },
     {
       label: "Geometry is valid",
       value: geometryValidity,
@@ -175,24 +164,18 @@ const SpatialValidationDetailsDrawer: FC<SpatialValidationDetailsDrawerProps> = 
     },
     {
       label: "Geometry is simple",
-      value: formatFlag(checks.is_simple),
+      value: formatFlag(checks.isSimple),
       glossaryTerm: "isSimple",
     },
     {
       label: "Geometry is robust",
-      value: formatFlag(checks.is_robust),
+      value: formatFlag(checks.isRobust),
       glossaryTerm: "isRobust",
     },
     {
       label: "Minimum Clearance",
-      value: formatClearance(checks.minimum_clearance),
+      value: formatClearance(checks.minimumClearance),
       glossaryTerm: "minimumClearance",
-    },
-    { label: "Expected Projection", value: checks.expected_projection || "Not provided" },
-    { label: "Declared Projection", value: checks.declared_projection || "Not detected" },
-    {
-      label: "Coordinate-derived Projection",
-      value: checks.found_projection || "Not detected",
     },
   ].filter((row) => row.value !== undefined && row.value !== null);
 
@@ -217,11 +200,8 @@ const SpatialValidationDetailsDrawer: FC<SpatialValidationDetailsDrawerProps> = 
             value: checks.in_bc,
           },
           {
-            label: checks.expected_projection
-              ? `Is in ${checks.expected_projection}`
-              : "Is in the required projection",
+            label: "Is in the required projection",
             value: checks.bc_albers,
-            note: formatProjectionNote(checks),
           },
           {
             label: "File size greater than 0",
@@ -232,14 +212,7 @@ const SpatialValidationDetailsDrawer: FC<SpatialValidationDetailsDrawerProps> = 
           <List.Item>
             <Space>
               <CheckIcon value={item.value} />
-              <div>
-                <div>{item.label}</div>
-                {item.note && (
-                  <Typography.Text type="secondary" style={{ fontSize: 12 }}>
-                    {item.note}
-                  </Typography.Text>
-                )}
-              </div>
+              <div>{item.label}</div>
             </Space>
           </List.Item>
         )}

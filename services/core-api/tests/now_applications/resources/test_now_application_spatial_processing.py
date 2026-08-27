@@ -34,11 +34,23 @@ class TestGetSpatialDocumentGuidsToProcess:
         guid = uuid.uuid4()
         documents = [
             _document_payload('boundary.shp', guid, uuid.uuid4()),
-            _document_payload('report.pdf', uuid.uuid4(), uuid.uuid4()),
         ]
 
         assert NOWApplicationResource._get_spatial_document_guids_to_process(documents) == [
             str(guid)
+        ]
+
+    def test_includes_non_spatial_files_when_any_document_is_new(self):
+        shp = uuid.uuid4()
+        pdf = uuid.uuid4()
+        documents = [
+            _document_payload('boundary.shp', shp, uuid.uuid4()),
+            _document_payload('report.pdf', pdf, uuid.uuid4()),
+        ]
+
+        assert NOWApplicationResource._get_spatial_document_guids_to_process(documents) == [
+            str(shp),
+            str(pdf),
         ]
 
     def test_ignores_documents_already_on_the_application(self):
@@ -123,13 +135,13 @@ class TestPutTriggersSpatialProcessing:
     @patch(f'{_RESOURCE_PATH}.NROSNOWStatusService.nros_now_status_update')
     @patch(f'{_RESOURCE_PATH}.DocumentManagerService.importNoticeOfWorkSubmissionDocuments')
     @patch(f'{_RESOURCE_PATH}.DocumentManagerService.processSpatialDocuments')
-    def test_non_spatial_document_does_not_queue_processing(self, mock_process, mock_import,
-                                                            mock_nros, test_client, db_session,
-                                                            auth_headers):
-        resp, _ = self._put(test_client, auth_headers, 'report.pdf')
+    def test_new_document_queues_processing(self, mock_process, mock_import, mock_nros,
+                                            test_client, db_session, auth_headers):
+        resp, document_manager_guid = self._put(test_client, auth_headers, 'report.pdf')
 
         assert resp.status_code == 200, resp.data
-        mock_process.assert_not_called()
+        mock_process.assert_called_once()
+        assert mock_process.call_args[0][1] == [document_manager_guid]
 
     @patch(f'{_RESOURCE_PATH}.NROSNOWStatusService.nros_now_status_update')
     @patch(f'{_RESOURCE_PATH}.DocumentManagerService.importNoticeOfWorkSubmissionDocuments')

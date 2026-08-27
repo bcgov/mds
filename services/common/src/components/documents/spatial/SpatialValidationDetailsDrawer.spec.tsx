@@ -24,11 +24,7 @@ describe("SpatialValidationDetailsDrawer", () => {
       bc_albers: false,
       file_size_gt_0: true,
       missing_extensions: [".prj"],
-      found_projection: "UTM (northern hemisphere)",
-      declared_projection: "NAD83 / BC Albers (EPSG:3005)",
-      expected_projection: "NAD83 / BC Albers (EPSG:3005)",
-      geometry_type: "Polygon",
-      extent: { minX: 1, minY: 2, maxX: 3, maxY: 4 },
+      geometryType: "Polygon",
     },
     bundleFiles: [
       { document_name: "Legacy_Boundary_2024.shp" },
@@ -50,15 +46,11 @@ describe("SpatialValidationDetailsDrawer", () => {
 
     expect(screen.getAllByText("Legacy_Boundary_2024")).toHaveLength(2);
     expect(screen.getByText("Location is within BC")).toBeInTheDocument();
-    expect(screen.getByText("Is in NAD83 / BC Albers (EPSG:3005)")).toBeInTheDocument();
-    expect(
-      screen.getByText(
-        /Required: NAD83 \/ BC Albers \(EPSG:3005\).*Coordinates suggest: UTM \(northern hemisphere\)/
-      )
-    ).toBeInTheDocument();
+    expect(screen.getByText("Is in the required projection")).toBeInTheDocument();
     expect(screen.getByText(/Geometry Type:/)).toBeInTheDocument();
     expect(screen.getByText("Polygon")).toBeInTheDocument();
-    expect(screen.getByText(/Expected Projection:/)).toBeInTheDocument();
+    expect(screen.queryByText(/Expected Projection:/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Declared Projection:/)).not.toBeInTheDocument();
     expect(screen.getByText("Legacy_Boundary_2024.shp")).toBeInTheDocument();
     expect(screen.getByText(".prj file not found")).toBeInTheDocument();
     expect(screen.getByText("Map preview unavailable")).toBeInTheDocument();
@@ -148,21 +140,20 @@ describe("SpatialValidationDetailsDrawer", () => {
               purpose_codes: ["MINE_BOUNDARY"],
               validation_checks: {
                 ...bundle.validation_checks,
-                extent: {
-                  minX: -144.664931,
-                  minY: 47.527035,
-                  maxX: -112.989186,
-                  maxY: 60.724742,
-                },
-                centroid: { centroidX: -128.104468, centroidY: 54.745332 },
-                num_parts: 1,
-                num_vertices: 13,
+                minX: -144.664931,
+                minY: 47.527035,
+                maxX: -112.989186,
+                maxY: 60.724742,
+                centroidX: -128.104468,
+                centroidY: 54.745332,
+                numParts: 1,
+                numVertices: 13,
                 area: 5000000,
                 length: 12500,
-                minimum_clearance: 0.0004,
-                is_valid: true,
-                is_simple: true,
-                is_robust: false,
+                minimumClearance: 0.0004,
+                isValid: true,
+                isSimple: true,
+                isRobust: false,
               },
             } as any
           }
@@ -199,10 +190,10 @@ describe("SpatialValidationDetailsDrawer", () => {
               ...bundle,
               validation_checks: {
                 ...bundle.validation_checks,
-                is_valid: true,
-                is_simple: true,
-                is_robust: false,
-                minimum_clearance: 4.325,
+                isValid: true,
+                isSimple: true,
+                isRobust: false,
+                minimumClearance: 4.325,
               },
             } as any
           }
@@ -235,10 +226,10 @@ describe("SpatialValidationDetailsDrawer", () => {
               ...bundle,
               validation_checks: {
                 ...bundle.validation_checks,
-                is_valid: true,
-                is_simple: false,
-                is_robust: true,
-                minimum_clearance: 4.325,
+                isValid: true,
+                isSimple: false,
+                isRobust: true,
+                minimumClearance: 4.325,
               },
             } as any
           }
@@ -304,7 +295,7 @@ describe("SpatialValidationDetailsDrawer", () => {
             {
               ...bundle,
               geomark_id: "gm-test",
-              validation_checks: { ...bundle.validation_checks, is_valid: true },
+              validation_checks: { ...bundle.validation_checks, isValid: true },
             } as any
           }
         />

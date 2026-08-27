@@ -73,7 +73,7 @@ describe("NOWSubmissionDocuments", () => {
       spatialDocument("Antler_2026.shp"),
       spatialDocument("Antler_2026.dbf"),
       spatialDocument("Antler_2026.prj"),
-      { ...spatialDocument("application.pdf"), category: "Application" },
+      { ...spatialDocument("application.pdf"), category: "Application", mine_document_bundle_id: null },
     ];
 
     // Bundle 7 holds the shapefile parts and has been through Geomark validation.
@@ -148,20 +148,15 @@ describe("NOWSubmissionDocuments", () => {
       expect(getByText("application.pdf").closest("tr")).not.toHaveClass("spatial-file-row");
     });
 
-    // The panel only lists bundles the Document Manager has processed and validated, so anything
-    // else has nothing to link to and is left looking like any other document.
-    it("leaves spatial files without a validated bundle untouched", () => {
+    it("leaves spatial files that are not in the Spatial Files panel untouched", () => {
       const unvalidated = [
         { ...spatialDocument("Orphan_2026.shp"), mine_document_bundle_id: null },
-        spatialDocument("Pending_2026.shp"),
+        { ...spatialDocument("Pending_2026.shp"), mine_document_bundle_id: 99 },
       ];
       const { getByText, queryAllByText } = renderTable({
         documents: unvalidated,
         onSpatialFileLinkClick: jest.fn(),
-        noticeOfWork: {
-          ...NOWMocks.IMPORTED_NOTICE_OF_WORK,
-          spatial_document_bundles: [{ bundle_id: 7, validation_status: null }],
-        },
+        ...withValidatedBundle,
       });
 
       expect(getByText("Orphan_2026.shp").closest("tr")).not.toHaveClass("spatial-file-row");

@@ -23,9 +23,7 @@ const INVALID_BUNDLE: ISpatialBundle = {
   ],
   validation_checks: {
     in_bc: null,
-    extent: null,
     bc_albers: false,
-    geometry_type: null,
     file_size_gt_0: true,
   },
   validation_error: "Unable to read geometry. Check the file is a valid format=KML - Google Earth file.",
@@ -38,8 +36,6 @@ describe("NOWSpatialFiles", () => {
       <ReduxWrapper>
         <BrowserRouter>
           <NOWSpatialFiles
-            filteredSubmissionDocuments={[]}
-            documents={[]}
             spatialDocumentBundles={[INVALID_BUNDLE]}
             isViewMode
           />
@@ -64,8 +60,6 @@ describe("NOWSpatialFiles", () => {
       <ReduxWrapper>
         <BrowserRouter>
           <NOWSpatialFiles
-            filteredSubmissionDocuments={[]}
-            documents={[]}
             spatialDocumentBundles={[INVALID_BUNDLE]}
             isViewMode
           />
@@ -79,8 +73,6 @@ describe("NOWSpatialFiles", () => {
       <ReduxWrapper>
         <BrowserRouter>
           <NOWSpatialFiles
-            filteredSubmissionDocuments={[]}
-            documents={[]}
             spatialDocumentBundles={[INVALID_BUNDLE]}
             isViewMode
             focusRequest={{ requestId: 1, documentManagerGuid: "abc-123" }}
@@ -97,8 +89,6 @@ describe("NOWSpatialFiles", () => {
       <ReduxWrapper>
         <BrowserRouter>
           <NOWSpatialFiles
-            filteredSubmissionDocuments={[]}
-            documents={[]}
             spatialDocumentBundles={[]}
             isViewMode
           />

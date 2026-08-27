@@ -170,40 +170,12 @@ const SpatialDocumentTable: FC<SpatialDocumentTableProps> = ({
   const highlightTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const username = useSelector(getFormattedUserName);
 
-  const enrichFromPropBundles = (grouped: any[]) => {
-    if (!spatialBundlesProp?.length) {
-      return grouped;
-    }
-    const matched = new Set<ISpatialBundle>();
-    const enriched = grouped.map((row) => {
-      const match = spatialBundlesProp.find(
-        (b) => String(b.bundle_id) === String(row.bundle_id)
-      );
-      if (!match) {
-        return row;
-      }
-      matched.add(match);
-      return {
-        ...row,
-        ...match,
-        document_name: row.document_name || match.name || match.document_name,
-        geomark_id: match.geomark_id || row.geomark_id,
-        validation_status: match.validation_status,
-        validation_error: match.validation_error,
-        validation_checks: match.validation_checks,
-        purpose_codes: match.purpose_codes || [],
-        bundle_id: match.bundle_id ?? row.bundle_id,
-        bundleFiles: row.bundleFiles,
-        isParent: row.isParent,
-        isSingleFile: row.isSingleFile,
-        key: row.key,
-      };
-    });
-    const unmatched = spatialBundlesProp.filter((b) => !matched.has(b)).map(bundleToRow);
-    return [...enriched, ...unmatched];
-  };
-
   const handleGetSpatialBundles = async () => {
+    if (spatialBundlesProp?.length) {
+      setSpatialBundles(spatialBundlesProp.map(bundleToRow));
+      return;
+    }
+
     const docs = documents.map((doc) => {
       if (doc.mine_document_guid) {
         return doc;
@@ -215,8 +187,7 @@ const SpatialDocumentTable: FC<SpatialDocumentTableProps> = ({
       };
     });
 
-    const newSpatialBundles = enrichFromPropBundles(groupSpatialBundles(docs));
-    setSpatialBundles(newSpatialBundles);
+    setSpatialBundles(groupSpatialBundles(docs));
   };
 
   useEffect(() => {

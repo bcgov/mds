@@ -7,22 +7,23 @@ export interface ISpatialValidationChecks {
   bc_albers?: boolean | null;
   file_size_gt_0?: boolean | null;
   missing_extensions?: string[];
-  geometry_type?: string | null;
-  extent?: Record<string, unknown> | null;
-  found_projection?: string | null;
-  declared_projection?: string | null;
-  expected_projection?: string | null;
-  /** Geomark attribution: centroid and extent are decimal degrees, area m², length m */
-  centroid?: Record<string, unknown> | null;
-  num_parts?: number | null;
-  num_vertices?: number | null;
+  /** Geomark info resource keys, stored as returned */
+  geometryType?: string | null;
+  numParts?: number | null;
+  numVertices?: number | null;
   area?: number | null;
   length?: number | null;
-  minimum_clearance?: number | null;
-  is_valid?: boolean | null;
-  is_simple?: boolean | null;
-  is_robust?: boolean | null;
-  geometry_validation_error?: string | null;
+  minimumClearance?: number | null;
+  isValid?: boolean | null;
+  isSimple?: boolean | null;
+  isRobust?: boolean | null;
+  validationError?: string | null;
+  minX?: number | null;
+  minY?: number | null;
+  maxX?: number | null;
+  maxY?: number | null;
+  centroidX?: number | null;
+  centroidY?: number | null;
 }
 
 export interface ISpatialBundlePurposeCode {

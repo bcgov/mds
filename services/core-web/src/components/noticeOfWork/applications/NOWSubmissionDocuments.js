@@ -34,10 +34,6 @@ import ReferralConsultationPackage from "@/components/noticeOfWork/applications/
 import PermitPackage from "@/components/noticeOfWork/applications/PermitPackage";
 import CoreTable from "@mds/common/components/common/CoreTable";
 import SpatialFilesRowLink from "@mds/common/components/documents/spatial/SpatialFilesRowLink";
-import {
-  isValidatedSpatialBundleMember,
-  validatedSpatialBundleIds,
-} from "@mds/common/utils/spatialFiles";
 
 const propTypes = {
   openModal: PropTypes.func.isRequired,
@@ -247,13 +243,18 @@ export const NOWSubmissionDocuments = (props) => {
     props
   );
 
-  const validatedBundleIds = validatedSpatialBundleIds(
-    props.noticeOfWork?.spatial_document_bundles
+  const spatialBundleIds = new Set(
+    (props.noticeOfWork?.spatial_document_bundles || [])
+      .map((bundle) => bundle?.bundle_id)
+      .filter((bundleId) => bundleId !== undefined && bundleId !== null && bundleId !== "")
+      .map((bundleId) => String(bundleId))
   );
-  // The tint and the link travel together: both mark a row the Spatial Files panel can show.
   const linksToSpatialFiles = (record) =>
     Boolean(props.onSpatialFileLinkClick) &&
-    isValidatedSpatialBundleMember(record, validatedBundleIds);
+    record?.mine_document_bundle_id !== undefined &&
+    record?.mine_document_bundle_id !== null &&
+    record?.mine_document_bundle_id !== "" &&
+    spatialBundleIds.has(String(record.mine_document_bundle_id));
 
   const renderDescriptionCaption = (record) =>
     props.showDescription &&

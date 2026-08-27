@@ -6,7 +6,6 @@ import NOWDocuments from "@/components/noticeOfWork/applications//NOWDocuments";
 import ScrollContentWrapper from "@/components/noticeOfWork/applications/ScrollContentWrapper";
 import NOWSubmissionDocuments from "@/components/noticeOfWork/applications//NOWSubmissionDocuments";
 import NOWSpatialFiles from "@/components/noticeOfWork/applications/NOWSpatialFiles";
-import { spatialBundleIdOf } from "@mds/common/utils/spatialFiles";
 
 /**
  * @class NOWApplicationManageDocuments- contains all information relating to the documents on a Notice of Work Application
@@ -37,7 +36,7 @@ export const NOWApplicationManageDocuments = (props) => {
       requestId: Date.now(),
       mineDocumentGuid: record.mine_document_guid,
       documentManagerGuid: record.document_manager_guid,
-      bundleId: spatialBundleIdOf(record),
+      bundleId: record.mine_document_bundle_id ?? record.mine_document?.mine_document_bundle_id,
     });
 
   return (
@@ -103,8 +102,6 @@ export const NOWApplicationManageDocuments = (props) => {
           onSpatialFileLinkClick={focusSpatialFiles}
           preTableContent={
             <NOWSpatialFiles
-              filteredSubmissionDocuments={props.noticeOfWork.filtered_submission_documents || []}
-              documents={props.noticeOfWork.documents || []}
               spatialDocumentBundles={props.noticeOfWork.spatial_document_bundles || []}
               isViewMode={props.isViewMode}
               focusRequest={spatialFocus}
