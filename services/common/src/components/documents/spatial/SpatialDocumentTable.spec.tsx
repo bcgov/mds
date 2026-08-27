@@ -45,11 +45,7 @@ describe("SpatialDocumentTable", () => {
 
     const { getByText } = render(
       <ReduxWrapper>
-        <SpatialDocumentTable
-          documents={[]}
-          spatialBundles={[invalidBundle]}
-          showValidation
-        />
+        <SpatialDocumentTable documents={[]} spatialBundles={[invalidBundle]} />
       </ReduxWrapper>
     );
 
@@ -57,41 +53,5 @@ describe("SpatialDocumentTable", () => {
     expect(
       getByText((content) => content.includes("Failed") && content.includes("Unable to read geometry."))
     ).toBeInTheDocument();
-  });
-
-  it("highlights the bundle holding a document another table linked to", () => {
-    const bundle = {
-      bundle_id: 31,
-      name: "Antler_2026",
-      purpose_codes: [],
-      validation_status: "VALID",
-      bundle_documents: [
-        {
-          mine_document_guid: "mine-doc-shp",
-          document_manager_guid: "dm-shp",
-          document_name: "Antler_2026.shp",
-        },
-        {
-          mine_document_guid: "mine-doc-dbf",
-          document_manager_guid: "dm-dbf",
-          document_name: "Antler_2026.dbf",
-        },
-      ],
-    };
-
-    const { getByText } = render(
-      <ReduxWrapper>
-        <SpatialDocumentTable
-          documents={[]}
-          spatialBundles={[bundle]}
-          showValidation
-          focusRequest={{ requestId: 1, documentManagerGuid: "dm-dbf" }}
-        />
-      </ReduxWrapper>
-    );
-
-    expect(getByText("Antler_2026").closest("tr")).toHaveStyle(
-      "background-color: rgb(255, 247, 230)"
-    );
   });
 });

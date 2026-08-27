@@ -38,6 +38,7 @@ describe("NOWSpatialFiles", () => {
           <NOWSpatialFiles
             spatialDocumentBundles={[INVALID_BUNDLE]}
             isViewMode
+            mineGuid="mine-guid"
           />
         </BrowserRouter>
       </ReduxWrapper>
@@ -55,13 +56,17 @@ describe("NOWSpatialFiles", () => {
     ).toBeInTheDocument();
   });
 
-  it("expands the panel when another table asks it to reveal a file", () => {
-    const { getByText, queryByText, rerender } = render(
+  it("scrolls to the panel when another table links to it, leaving it collapsed", () => {
+    const scrollIntoView = jest.fn();
+    Element.prototype.scrollIntoView = scrollIntoView;
+
+    const { queryByText, rerender } = render(
       <ReduxWrapper>
         <BrowserRouter>
           <NOWSpatialFiles
             spatialDocumentBundles={[INVALID_BUNDLE]}
             isViewMode
+            mineGuid="mine-guid"
           />
         </BrowserRouter>
       </ReduxWrapper>
@@ -75,23 +80,22 @@ describe("NOWSpatialFiles", () => {
           <NOWSpatialFiles
             spatialDocumentBundles={[INVALID_BUNDLE]}
             isViewMode
-            focusRequest={{ requestId: 1, documentManagerGuid: "abc-123" }}
+            mineGuid="mine-guid"
+            scrollRequestId={1}
           />
         </BrowserRouter>
       </ReduxWrapper>
     );
 
-    expect(getByText("index (1) (1).kml")).toBeInTheDocument();
+    expect(scrollIntoView).toHaveBeenCalledWith({ behavior: "smooth", block: "start" });
+    expect(queryByText("index (1) (1).kml")).not.toBeInTheDocument();
   });
 
   it("returns null when there are no documents and no bundles", () => {
     const { container } = render(
       <ReduxWrapper>
         <BrowserRouter>
-          <NOWSpatialFiles
-            spatialDocumentBundles={[]}
-            isViewMode
-          />
+          <NOWSpatialFiles spatialDocumentBundles={[]} isViewMode mineGuid="mine-guid" />
         </BrowserRouter>
       </ReduxWrapper>
     );

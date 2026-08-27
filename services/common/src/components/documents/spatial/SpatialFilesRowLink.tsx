@@ -4,15 +4,11 @@ import { EnvironmentOutlined } from "@ant-design/icons";
 
 interface SpatialFilesRowLinkProps {
   onClick: () => void;
-  label?: string;
 }
 
-/** Points a spatial document row at the Spatial Files panel that holds its validation details. */
-const SpatialFilesRowLink: FC<SpatialFilesRowLinkProps> = ({
-  onClick,
-  label = "in Spatial Files above",
-}) => (
-  <Tooltip title="Jump to this file's validation details" mouseEnterDelay={0.3}>
+/** Points a spatial document row at the Spatial Files panel that lists the file. */
+const SpatialFilesRowLink: FC<SpatialFilesRowLinkProps> = ({ onClick }) => (
+  <Tooltip title="Scroll to the Spatial Files table" mouseEnterDelay={0.3}>
     <a
       className="spatial-files-row-link"
       role="link"
@@ -31,7 +27,7 @@ const SpatialFilesRowLink: FC<SpatialFilesRowLinkProps> = ({
       }}
     >
       <EnvironmentOutlined />
-      <span>{label}</span>
+      <span>in Spatial Files above</span>
     </a>
   </Tooltip>
 );

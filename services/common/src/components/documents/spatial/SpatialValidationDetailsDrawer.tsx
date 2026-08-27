@@ -15,10 +15,10 @@ import {
 } from "@mds/common/interfaces/document/spatialBundle.interface";
 import { GeomarkMapPreview } from "./ViewSpatialDetail";
 
+/** The bundle doubles as the open signal: a null bundle means the drawer is closed. */
 interface SpatialValidationDetailsDrawerProps {
-  open: boolean;
-  onClose: () => void;
   bundle: ISpatialBundle | null;
+  onClose: () => void;
   onDownload?: () => void;
   purposeCodes?: ISpatialBundlePurposeCode[];
 }
@@ -110,9 +110,8 @@ const VALIDATION_COLORS: Record<string, string> = {
 };
 
 const SpatialValidationDetailsDrawer: FC<SpatialValidationDetailsDrawerProps> = ({
-  open,
-  onClose,
   bundle,
+  onClose,
   onDownload,
   purposeCodes = [],
 }) => {
@@ -188,7 +187,7 @@ const SpatialValidationDetailsDrawer: FC<SpatialValidationDetailsDrawerProps> = 
         setIsMapExpanded(false);
         onClose();
       }}
-      open={open}
+      open
       destroyOnClose
     >
       <Typography.Title level={5}>Validation Checks</Typography.Title>

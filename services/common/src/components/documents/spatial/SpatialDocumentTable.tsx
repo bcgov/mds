@@ -1,13 +1,10 @@
-import React, { FC, useEffect, useRef, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Checkbox, Tag, Typography } from "antd";
 import {
   CheckCircleOutlined,
   CloseCircleOutlined,
-  DownOutlined,
-  EnvironmentOutlined,
   ExclamationCircleOutlined,
-  RightOutlined,
 } from "@ant-design/icons";
 import { GenericDocTableProps } from "@mds/common/interfaces/document/documentTableProps.interface";
 import CoreTable from "../../common/CoreTable";
@@ -35,40 +32,18 @@ import { getFormattedUserName } from "@mds/common/redux/selectors/authentication
 import moment from "moment";
 import SpatialValidationDetailsDrawer from "./SpatialValidationDetailsDrawer";
 
-/**
- * Asks the table to reveal the bundle holding a particular document. `requestId` is what
- * triggers the reveal, so repeat clicks on the same file still work.
- */
-export interface ISpatialFocusRequest {
-  requestId: number;
-  mineDocumentGuid?: string;
-  documentManagerGuid?: string;
-  bundleId?: string | number;
-}
-
 export interface SpatialDocumentTableProps extends GenericDocTableProps<ISpatialBundle> {
   documents: IMineDocument[];
   categoryText?: string;
-  /** When provided, use server-side bundles instead of client grouping alone */
+  /**
+   * Server-side bundles, used instead of grouping the documents client-side. Their validation
+   * results also switch the table to the validation view: validation, type and file-set columns,
+   * Preview Shape and Details actions, and none of the upload columns.
+   */
   spatialBundles?: ISpatialBundle[];
-  showValidation?: boolean;
-  showType?: boolean;
   purposeCodes?: ISpatialBundlePurposeCode[];
   canEditPurposes?: boolean;
-  showPreviewShape?: boolean;
-  showDetails?: boolean;
-  description?: string;
   emptyText?: string;
-  /** Hide legacy upload date / created by columns (NoW spatial section) */
-  compactColumns?: boolean;
-  /** Renders a tinted panel header band with this title above the table */
-  title?: string;
-  /** Shows an "N detected" count badge in the panel header */
-  showCountBadge?: boolean;
-  /** Makes the titled panel header toggle the table; starts collapsed */
-  collapsible?: boolean;
-  /** Reveals and briefly highlights the bundle holding a document linked from another table */
-  focusRequest?: ISpatialFocusRequest | null;
   /** Used when individual document rows do not carry mine_guid */
   mineGuid?: string;
 }
@@ -93,9 +68,6 @@ const VALIDATION_LABEL: Record<string, string> = {
 
 // The expand icon is absolutely positioned inside a 25px cell, so the name needs its own gutter.
 const NAME_COLUMN_INDENT = 8;
-
-const HIGHLIGHT_DURATION_MS = 3000;
-const HIGHLIGHT_STYLE = { backgroundColor: "#FFF7E6", transition: "background-color 0.4s" };
 
 // The tag only has room for the headline; the Details drawer carries the full explanation.
 const summarizeError = (error: string) => {
@@ -142,19 +114,9 @@ const SpatialDocumentTable: FC<SpatialDocumentTableProps> = ({
   documents,
   categoryText,
   spatialBundles: spatialBundlesProp,
-  showValidation = false,
-  showType = false,
   purposeCodes = [],
   canEditPurposes = false,
-  showPreviewShape = false,
-  showDetails = false,
-  description,
   emptyText,
-  compactColumns = false,
-  title,
-  showCountBadge = false,
-  collapsible = false,
-  focusRequest = null,
   mineGuid,
 }) => {
   const dispatch = useDispatch();
@@ -162,13 +124,8 @@ const SpatialDocumentTable: FC<SpatialDocumentTableProps> = ({
   const [compressionFiles, setCompressionFiles] = useState<IMineDocument[] | null>(null);
   const [spatialBundles, setSpatialBundles] = useState<any[]>([]);
   const [detailsBundle, setDetailsBundle] = useState<ISpatialBundle | null>(null);
-  const [detailsOpen, setDetailsOpen] = useState(false);
-  const [isExpanded, setIsExpanded] = useState(!collapsible);
-  const [highlightKey, setHighlightKey] = useState<string | number | null>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const highlightedRequestRef = useRef<number | null>(null);
-  const highlightTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const username = useSelector(getFormattedUserName);
+  const showBundleValidation = Boolean(spatialBundlesProp?.length);
 
   const handleGetSpatialBundles = async () => {
     if (spatialBundlesProp?.length) {
@@ -195,58 +152,6 @@ const SpatialDocumentTable: FC<SpatialDocumentTableProps> = ({
       handleGetSpatialBundles();
     }
   }, [documents, spatialBundlesProp]);
-
-  const findFocusedRow = (request: ISpatialFocusRequest) =>
-    spatialBundles.find((row) =>
-      (row.bundleFiles || []).some(
-        (file) =>
-          (request.documentManagerGuid &&
-            file.document_manager_guid === request.documentManagerGuid) ||
-          (request.mineDocumentGuid && file.mine_document_guid === request.mineDocumentGuid)
-      )
-    ) ??
-    spatialBundles.find(
-      (row) =>
-        request.bundleId !== undefined &&
-        row.bundle_id !== undefined &&
-        String(row.bundle_id) === String(request.bundleId)
-    );
-
-  useEffect(() => {
-    if (!focusRequest?.requestId) {
-      return;
-    }
-    setIsExpanded(true);
-    containerRef.current?.scrollIntoView?.({ behavior: "smooth", block: "start" });
-  }, [focusRequest?.requestId]);
-
-  // The bundles load asynchronously, so the row to highlight may only show up after the request.
-  // The timer lives in a ref rather than in the effect cleanup so a later bundle update (a
-  // purpose toggle, say) cannot leave the highlight on forever.
-  useEffect(() => {
-    if (!focusRequest?.requestId || highlightedRequestRef.current === focusRequest.requestId) {
-      return;
-    }
-    const focusedRow = findFocusedRow(focusRequest);
-    if (!focusedRow) {
-      return;
-    }
-    highlightedRequestRef.current = focusRequest.requestId;
-    if (highlightTimerRef.current) {
-      clearTimeout(highlightTimerRef.current);
-    }
-    setHighlightKey(focusedRow.key);
-    highlightTimerRef.current = setTimeout(() => setHighlightKey(null), HIGHLIGHT_DURATION_MS);
-  }, [focusRequest?.requestId, spatialBundles]);
-
-  useEffect(
-    () => () => {
-      if (highlightTimerRef.current) {
-        clearTimeout(highlightTimerRef.current);
-      }
-    },
-    []
-  );
 
   // Bundles returned by the API carry no mine_guid; compression needs one to resolve the files.
   const fallbackMineGuid = mineGuid || documents.find((doc) => doc.mine_guid)?.mine_guid;
@@ -330,10 +235,7 @@ const SpatialDocumentTable: FC<SpatialDocumentTableProps> = ({
     viewSpatialBundle(_, record);
   };
 
-  const openDetails = (_, record) => {
-    setDetailsBundle(record);
-    setDetailsOpen(true);
-  };
+  const openDetails = (_, record) => setDetailsBundle(record);
 
   const getBundleType = (record: any) => {
     if (record.isSingleFile) {
@@ -355,7 +257,7 @@ const SpatialDocumentTable: FC<SpatialDocumentTableProps> = ({
     } else {
       actions = actions.filter((a) => a.key !== "download");
     }
-    if (showPreviewShape) {
+    if (showBundleValidation) {
       actions = actions.filter((a) => a.key !== "view-detail");
       if (record.validation_status !== "VALID") {
         actions = actions.filter((a) => a.key !== "preview-shape");
@@ -378,14 +280,12 @@ const SpatialDocumentTable: FC<SpatialDocumentTableProps> = ({
     },
   ];
 
-  if (showPreviewShape) {
+  if (showBundleValidation) {
     actions.push({
       key: "preview-shape",
       label: "Preview Shape",
       clickFunction: previewShape,
     });
-  }
-  if (showDetails) {
     actions.push({
       key: "details",
       label: "Details",
@@ -403,7 +303,7 @@ const SpatialDocumentTable: FC<SpatialDocumentTableProps> = ({
     ]
     : [];
 
-  const typeColumn = showType
+  const typeColumn = showBundleValidation
     ? [
       {
         key: "type",
@@ -453,7 +353,7 @@ const SpatialDocumentTable: FC<SpatialDocumentTableProps> = ({
       ]
       : [];
 
-  const validationColumn = showValidation
+  const validationColumn = showBundleValidation
     ? [
       {
         key: "validation",
@@ -484,7 +384,7 @@ const SpatialDocumentTable: FC<SpatialDocumentTableProps> = ({
     ]
     : [];
 
-  const nameColumn = showValidation
+  const nameColumn = showBundleValidation
     ? {
       key: "spatial_file",
       title: "Spatial File",
@@ -523,7 +423,7 @@ const SpatialDocumentTable: FC<SpatialDocumentTableProps> = ({
     ...typeColumn,
     ...purposeColumn,
     ...validationColumn,
-    ...(compactColumns
+    ...(showBundleValidation
       ? []
       : [
         uploadDateColumn("upload_date", "Last Modified"),
@@ -535,9 +435,8 @@ const SpatialDocumentTable: FC<SpatialDocumentTableProps> = ({
     }),
   ];
 
-  const body = (
-    <>
-      {description && <Typography.Paragraph type="secondary">{description}</Typography.Paragraph>}
+  return (
+    <div data-testid="spatial-document-table">
       <DocumentCompression
         mineDocuments={mineDocuments}
         setCompressionModalVisible={setIsCompressionModalVisible}
@@ -548,9 +447,6 @@ const SpatialDocumentTable: FC<SpatialDocumentTableProps> = ({
         dataSource={spatialBundles}
         columns={columns}
         emptyText={emptyText}
-        onRow={(record: any) => ({
-          style: record.key === highlightKey ? HIGHLIGHT_STYLE : undefined,
-        })}
         expandProps={{
           getDataSource: (record) => record.bundleFiles,
           recordDescription: "file information",
@@ -560,66 +456,11 @@ const SpatialDocumentTable: FC<SpatialDocumentTableProps> = ({
         }}
       />
       <SpatialValidationDetailsDrawer
-        open={detailsOpen && detailsBundle !== null}
-        onClose={() => setDetailsOpen(false)}
         bundle={detailsBundle}
+        onClose={() => setDetailsBundle(null)}
         onDownload={() => downloadBundle(detailsBundle)}
         purposeCodes={purposeCodes}
       />
-    </>
-  );
-
-  if (!title) {
-    return (
-      <div data-testid="spatial-document-table" ref={containerRef}>
-        {body}
-      </div>
-    );
-  }
-
-  const toggleExpanded = () => setIsExpanded((expanded) => !expanded);
-
-  return (
-    <div
-      data-testid="spatial-document-table"
-      ref={containerRef}
-      style={{ border: "1px solid #EFEDF6", borderRadius: 4, marginBottom: 24 }}
-    >
-      <div
-        role={collapsible ? "button" : undefined}
-        tabIndex={collapsible ? 0 : undefined}
-        aria-expanded={collapsible ? isExpanded : undefined}
-        onClick={collapsible ? toggleExpanded : undefined}
-        onKeyDown={
-          collapsible
-            ? (event) => {
-              if (event.key === "Enter" || event.key === " ") {
-                event.preventDefault();
-                toggleExpanded();
-              }
-            }
-            : undefined
-        }
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: 8,
-          padding: "12px 16px",
-          backgroundColor: "#EFEDF6",
-          cursor: collapsible ? "pointer" : undefined,
-        }}
-      >
-        {collapsible &&
-          (isExpanded ? (
-            <DownOutlined style={{ color: "#5e46a1", fontSize: 12 }} />
-          ) : (
-            <RightOutlined style={{ color: "#5e46a1", fontSize: 12 }} />
-          ))}
-        <EnvironmentOutlined style={{ color: "#5e46a1" }} />
-        <span style={{ fontWeight: "bold", color: "#5e46a1" }}>{title}</span>
-        {showCountBadge && <Tag color="purple">{`${spatialBundles.length} detected`}</Tag>}
-      </div>
-      {isExpanded && <div style={{ padding: 16 }}>{body}</div>}
     </div>
   );
 };

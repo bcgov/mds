@@ -37,7 +37,6 @@ describe("SpatialValidationDetailsDrawer", () => {
     render(
       <MemoryRouter>
         <SpatialValidationDetailsDrawer
-          open
           onClose={jest.fn()}
           bundle={bundle as any}
         />
@@ -63,7 +62,6 @@ describe("SpatialValidationDetailsDrawer", () => {
     render(
       <MemoryRouter>
         <SpatialValidationDetailsDrawer
-          open
           onClose={jest.fn()}
           bundle={bundle as any}
           onDownload={onDownload}
@@ -87,7 +85,7 @@ describe("SpatialValidationDetailsDrawer", () => {
   it("omits the Download button when no download handler is provided", () => {
     render(
       <MemoryRouter>
-        <SpatialValidationDetailsDrawer open onClose={jest.fn()} bundle={bundle as any} />
+        <SpatialValidationDetailsDrawer onClose={jest.fn()} bundle={bundle as any} />
       </MemoryRouter>
     );
 
@@ -98,7 +96,6 @@ describe("SpatialValidationDetailsDrawer", () => {
     render(
       <MemoryRouter>
         <SpatialValidationDetailsDrawer
-          open
           onClose={jest.fn()}
           bundle={{ ...bundle, geomark_id: "gm-test" } as any}
         />
@@ -115,7 +112,7 @@ describe("SpatialValidationDetailsDrawer", () => {
   it("omits Geomark attribution rows when Geomark reported none", () => {
     render(
       <MemoryRouter>
-        <SpatialValidationDetailsDrawer open onClose={jest.fn()} bundle={bundle as any} />
+        <SpatialValidationDetailsDrawer onClose={jest.fn()} bundle={bundle as any} />
       </MemoryRouter>
     );
 
@@ -129,7 +126,6 @@ describe("SpatialValidationDetailsDrawer", () => {
     render(
       <MemoryRouter>
         <SpatialValidationDetailsDrawer
-          open
           onClose={jest.fn()}
           bundle={
             {
@@ -183,7 +179,6 @@ describe("SpatialValidationDetailsDrawer", () => {
     render(
       <MemoryRouter>
         <SpatialValidationDetailsDrawer
-          open
           onClose={jest.fn()}
           bundle={
             {
@@ -219,7 +214,6 @@ describe("SpatialValidationDetailsDrawer", () => {
     render(
       <MemoryRouter>
         <SpatialValidationDetailsDrawer
-          open
           onClose={jest.fn()}
           bundle={
             {
@@ -251,7 +245,6 @@ describe("SpatialValidationDetailsDrawer", () => {
     render(
       <MemoryRouter>
         <SpatialValidationDetailsDrawer
-          open
           onClose={jest.fn()}
           bundle={{ ...bundle, geomark_id: "gm-test" } as any}
         />
@@ -277,7 +270,7 @@ describe("SpatialValidationDetailsDrawer", () => {
   it("does not offer a clickable preview without a geomark", () => {
     render(
       <MemoryRouter>
-        <SpatialValidationDetailsDrawer open onClose={jest.fn()} bundle={bundle as any} />
+        <SpatialValidationDetailsDrawer onClose={jest.fn()} bundle={bundle as any} />
       </MemoryRouter>
     );
 
@@ -289,7 +282,6 @@ describe("SpatialValidationDetailsDrawer", () => {
     render(
       <MemoryRouter>
         <SpatialValidationDetailsDrawer
-          open
           onClose={jest.fn()}
           bundle={
             {

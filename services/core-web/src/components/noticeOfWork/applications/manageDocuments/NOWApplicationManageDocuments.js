@@ -24,20 +24,14 @@ const propTypes = {
 const defaultProps = { importNowSubmissionDocumentsJob: {}, isViewMode: false };
 
 export const NOWApplicationManageDocuments = (props) => {
-  const [spatialFocus, setSpatialFocus] = useState(null);
+  const [spatialScrollRequestId, setSpatialScrollRequestId] = useState(null);
   const isNoWApplication = props.noticeOfWork.application_type_code === "NOW";
   const applicationFilesTypes = ["AAF", "MDO", "SDO"];
   const tableDescription = isNoWApplication
     ? "In this table, you can see all documents submitted during initial application, revision and new files requested from the proponent. Documents added in this section will not show up in the permit package unless otherwise specified."
     : "In this table, you can see all documents uploaded to the application, revision and new files requested from the proponent. Documents added in this section will not show up in the permit package unless otherwise specified.";
 
-  const focusSpatialFiles = (record) =>
-    setSpatialFocus({
-      requestId: Date.now(),
-      mineDocumentGuid: record.mine_document_guid,
-      documentManagerGuid: record.document_manager_guid,
-      bundleId: record.mine_document_bundle_id ?? record.mine_document?.mine_document_bundle_id,
-    });
+  const scrollToSpatialFiles = () => setSpatialScrollRequestId(Date.now());
 
   return (
     <div>
@@ -99,13 +93,13 @@ export const NOWApplicationManageDocuments = (props) => {
           isViewMode={props.isViewMode}
           hideJobStatusColumn={!isNoWApplication}
           hideImportStatusColumn={!isNoWApplication}
-          onSpatialFileLinkClick={focusSpatialFiles}
+          onSpatialFileLinkClick={scrollToSpatialFiles}
           preTableContent={
             <NOWSpatialFiles
               spatialDocumentBundles={props.noticeOfWork.spatial_document_bundles || []}
               isViewMode={props.isViewMode}
-              focusRequest={spatialFocus}
               mineGuid={props.noticeOfWork.mine_guid}
+              scrollRequestId={spatialScrollRequestId}
             />
           }
         />

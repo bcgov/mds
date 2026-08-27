@@ -243,18 +243,20 @@ export const NOWSubmissionDocuments = (props) => {
     props
   );
 
-  const spatialBundleIds = new Set(
+  // Matching on the guids the panel itself lists keeps "tinted here" and "shown in Spatial Files"
+  // the same statement, and works for both imported submissions and documents added in Core.
+  const spatialFileGuids = new Set(
     (props.noticeOfWork?.spatial_document_bundles || [])
-      .map((bundle) => bundle?.bundle_id)
-      .filter((bundleId) => bundleId !== undefined && bundleId !== null && bundleId !== "")
-      .map((bundleId) => String(bundleId))
+      .flatMap((bundle) => bundle?.bundle_documents || [])
+      .flatMap((document) => [document?.mine_document_guid, document?.document_manager_guid])
+      .filter(Boolean)
+      .map((guid) => String(guid))
   );
   const linksToSpatialFiles = (record) =>
     Boolean(props.onSpatialFileLinkClick) &&
-    record?.mine_document_bundle_id !== undefined &&
-    record?.mine_document_bundle_id !== null &&
-    record?.mine_document_bundle_id !== "" &&
-    spatialBundleIds.has(String(record.mine_document_bundle_id));
+    [record?.mine_document_guid, record?.document_manager_guid].some(
+      (guid) => guid && spatialFileGuids.has(String(guid))
+    );
 
   const renderDescriptionCaption = (record) =>
     props.showDescription &&
@@ -286,7 +288,7 @@ export const NOWSubmissionDocuments = (props) => {
             truncateDocumentName={false}
           />
           {linksToSpatialFiles(record) && (
-            <SpatialFilesRowLink onClick={() => props.onSpatialFileLinkClick(record)} />
+            <SpatialFilesRowLink onClick={() => props.onSpatialFileLinkClick()} />
           )}
           {renderDescriptionCaption(record)}
         </div>
