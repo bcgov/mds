@@ -1,6 +1,7 @@
 import json
 import logging
 import os
+import re
 from typing import Any, Dict, List, Optional
 
 from app.common.types.context import context
@@ -225,4 +226,82 @@ def _identify_bottom_of_first_page_header(paragraphs):
             and is_like_page_header
         ):
             return paragraphs[page_header_end_idx].meta["bounding_box"]["bottom"]
+
+    # Document Intelligence does not always tag a page header with the 'pageHeader'
+    # role - this has been observed for headers laid out as multi-column tables
+    # where the header comes back as several ordinary (role=None) paragraphs instead of one recognized
+    # header block. Fall back to detecting a block of boilerplate text that repeats
+    # near the top of multiple pages, regardless of the role Document Intelligence
+    # assigned it.
+    return _identify_bottom_of_repeating_header_fallback(paragraphs)
+
+HEADER_ADJACENCY_TOLERANCE = 0.05
+
+
+def _normalize_header_text(text):
+    return re.sub(r"\s+", " ", text or "").strip().lower()
+
+
+def _build_repeated_paragraph_texts(paragraphs, min_pages=3):
+    """
+    Find paragraph text that repeats across several different pages
+    """
+    text_to_pages = {}
+    for p in paragraphs:
+        page = p.meta.get("page")
+        text = _normalize_header_text(p.content.get("text"))
+        if not text or page is None:
+            continue
+        text_to_pages.setdefault(text, set()).add(page)
+
+    return {text for text, pages in text_to_pages.items() if len(pages) >= min_pages}
+
+
+def _identify_bottom_of_repeating_header_fallback(paragraphs, min_pages=3):
+    """
+    Identify the bottom of a repeating header block without relying on Document
+    Intelligence's 'pageHeader' role. For each page, checks whether the first
+    paragraph on that page is repeated on min_pages. The first
+    page/paragraph where this holds is used to compute the header cutoff.
+    """
+    repeated_texts = _build_repeated_paragraph_texts(paragraphs, min_pages=min_pages)
+
+    if not repeated_texts:
+        return None
+
+    seen_pages = set()
+
+    for idx, p in enumerate(paragraphs):
+        page = p.meta.get("page")
+
+        if page is None or page in seen_pages:
+            continue
+        seen_pages.add(page)
+
+        if _normalize_header_text(p.content.get("text")) not in repeated_texts:
+            continue
+
+        header_end_idx = idx
+        header_bottom = p.meta["bounding_box"]["bottom"]
+
+        for next_idx, next_p in enumerate(paragraphs[idx + 1 :], start=idx + 1):
+            if next_p.meta.get("page") != page:
+                break
+
+            text_repeats = (
+                _normalize_header_text(next_p.content.get("text")) in repeated_texts
+            )
+            touches_header_block = (
+                next_p.meta["bounding_box"]["top"] - header_bottom
+                <= HEADER_ADJACENCY_TOLERANCE
+            )
+
+            if not text_repeats and not touches_header_block:
+                break
+
+            header_end_idx = next_idx
+            header_bottom = next_p.meta["bounding_box"]["bottom"]
+
+        return paragraphs[header_end_idx].meta["bounding_box"]["bottom"]
+
     return None
