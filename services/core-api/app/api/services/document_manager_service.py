@@ -193,7 +193,7 @@ class DocumentManagerService():
         return Response(resp.content, resp.status_code, resp.raw.headers.items())
 
     @classmethod
-    def processSpatialDocuments(cls, request, document_manager_guids, mine_guid=None):
+    def process_spatial_documents(cls, request, document_manager_guids, mine_guid=None):
         """Queue non-blocking spatial detection, validation and Geomark registration."""
         current_app.logger.info('Sending %s document(s) to Document Manager for spatial processing.',
                                 len(document_manager_guids))
@@ -210,8 +210,9 @@ class DocumentManagerService():
             timeout=30)
 
         if resp.status_code not in (200, 202):
-            raise Exception(
-                f'Document Manager spatial processing failed ({resp.status_code}): {resp.content}')
+            raise requests.HTTPError(
+                f'Document Manager spatial processing failed ({resp.status_code}): {resp.content}',
+                response=resp)
 
         return Response(resp.content, resp.status_code, resp.raw.headers.items())
 

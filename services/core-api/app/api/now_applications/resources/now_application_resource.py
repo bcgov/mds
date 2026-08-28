@@ -244,7 +244,7 @@ class NOWApplicationResource(Resource, UserMixin):
 
         if new_spatial_document_guids:
             try:
-                DocumentManagerService.processSpatialDocuments(
+                DocumentManagerService.process_spatial_documents(
                     request,
                     new_spatial_document_guids,
                     mine_guid=now_application_identity.mine_guid)

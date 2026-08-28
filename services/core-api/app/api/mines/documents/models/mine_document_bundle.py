@@ -110,6 +110,78 @@ class MineDocumentBundle(SoftDeleteMixin, AuditMixin, Base):
         db.session.flush()
 
     @classmethod
+    def _find_bundle_for_spatial_result(cls, name, docman_bundle_guid, document_manager_guids):
+        existing = cls.find_by_docman_bundle_guid(docman_bundle_guid) if docman_bundle_guid else None
+        return existing or cls.find_by_name_and_document_manager_guids(
+            name, document_manager_guids)
+
+    @staticmethod
+    def _mine_guids_of(documents):
+        return {str(doc.mine_guid) for doc in documents if doc.mine_guid}
+
+    @staticmethod
+    def _fetch_documents_by_manager_guid(document_manager_guids):
+        from app.api.mines.documents.models.mine_document import MineDocument
+
+        docs = MineDocument.query.filter(
+            MineDocument.document_manager_guid.in_(document_manager_guids)).all()
+        found = {str(doc.document_manager_guid) for doc in docs}
+        missing = [str(guid) for guid in document_manager_guids if str(guid) not in found]
+        if missing:
+            raise BadRequest(f'Unknown document_manager_guids: {", ".join(missing)}')
+        return docs
+
+    @classmethod
+    def _assert_documents_share_one_mine(cls, docs, mine_guid):
+        if mine_guid:
+            expected = str(mine_guid)
+            foreign = [
+                str(doc.document_manager_guid) for doc in docs if str(doc.mine_guid) != expected
+            ]
+            if foreign:
+                raise BadRequest('Mine document not attached to Mine')
+        if len(cls._mine_guids_of(docs)) > 1:
+            raise BadRequest('Spatial documents must belong to a single mine')
+
+    def _assert_documents_match_bundle_mine(self, document_mine_guids, mine_guid):
+        existing_mines = {
+            str(doc.mine_guid)
+            for doc in (self.bundle_documents or [])
+            if doc.mine_guid and not getattr(doc, 'deleted_ind', False)
+        }
+        if not existing_mines:
+            return
+        if document_mine_guids and existing_mines != document_mine_guids:
+            raise BadRequest('Cannot link documents from another mine onto this bundle')
+        if mine_guid and existing_mines != {str(mine_guid)}:
+            raise BadRequest('Cannot link documents from another mine onto this bundle')
+
+    @classmethod
+    def _resolve_documents_for_spatial_result(cls, document_manager_guids, mine_guid, existing):
+        if not document_manager_guids:
+            return []
+
+        docs = cls._fetch_documents_by_manager_guid(document_manager_guids)
+        cls._assert_documents_share_one_mine(docs, mine_guid)
+        if existing:
+            existing._assert_documents_match_bundle_mine(cls._mine_guids_of(docs), mine_guid)
+        return docs
+
+    def _apply_spatial_result(self, name, docman_bundle_guid, geomark_id, validation_status,
+                              validation_error, validation_checks):
+        self.name = name
+        if geomark_id:
+            self.geomark_id = geomark_id
+        if docman_bundle_guid:
+            self.docman_bundle_guid = docman_bundle_guid
+        if validation_status is not None:
+            self.validation_status = validation_status
+        if validation_error is not None or validation_status:
+            self.validation_error = validation_error
+        if validation_checks is not None:
+            self.validation_checks = validation_checks
+
+    @classmethod
     def upsert_from_spatial_result(cls,
                                    name,
                                    docman_bundle_guid,
@@ -121,59 +193,15 @@ class MineDocumentBundle(SoftDeleteMixin, AuditMixin, Base):
                                    preserve_purposes=True,
                                    mine_guid=None):
         """Create or update a Core bundle and link MineDocuments by document_manager_guid."""
-        from app.api.mines.documents.models.mine_document import MineDocument
-
-        existing = None
-        if docman_bundle_guid:
-            existing = cls.find_by_docman_bundle_guid(docman_bundle_guid)
-        if not existing:
-            existing = cls.find_by_name_and_document_manager_guids(name, document_manager_guids)
-
-        docs = []
-        if document_manager_guids:
-            docs = MineDocument.query.filter(
-                MineDocument.document_manager_guid.in_(document_manager_guids)).all()
-            found = {str(doc.document_manager_guid) for doc in docs}
-            missing = [str(guid) for guid in document_manager_guids if str(guid) not in found]
-            if missing:
-                raise BadRequest(f'Unknown document_manager_guids: {", ".join(missing)}')
-            if mine_guid:
-                expected = str(mine_guid)
-                foreign = [
-                    str(doc.document_manager_guid) for doc in docs
-                    if str(doc.mine_guid) != expected
-                ]
-                if foreign:
-                    raise BadRequest('Mine document not attached to Mine')
-            mine_guids = {str(doc.mine_guid) for doc in docs if doc.mine_guid}
-            if len(mine_guids) > 1:
-                raise BadRequest('Spatial documents must belong to a single mine')
-            if existing:
-                existing_mines = {
-                    str(doc.mine_guid)
-                    for doc in (existing.bundle_documents or [])
-                    if doc.mine_guid and not getattr(doc, 'deleted_ind', False)
-                }
-                if existing_mines and mine_guids and existing_mines != mine_guids:
-                    raise BadRequest('Cannot link documents from another mine onto this bundle')
-                if mine_guid and existing_mines and existing_mines != {str(mine_guid)}:
-                    raise BadRequest('Cannot link documents from another mine onto this bundle')
-
+        existing = cls._find_bundle_for_spatial_result(name, docman_bundle_guid,
+                                                       document_manager_guids)
+        docs = cls._resolve_documents_for_spatial_result(document_manager_guids, mine_guid, existing)
         preserved_purposes = existing.purpose_codes if (existing and preserve_purposes) else []
 
         if existing:
             bundle = existing
-            bundle.name = name
-            if geomark_id:
-                bundle.geomark_id = geomark_id
-            if docman_bundle_guid:
-                bundle.docman_bundle_guid = docman_bundle_guid
-            if validation_status is not None:
-                bundle.validation_status = validation_status
-            if validation_error is not None or validation_status:
-                bundle.validation_error = validation_error
-            if validation_checks is not None:
-                bundle.validation_checks = validation_checks
+            bundle._apply_spatial_result(name, docman_bundle_guid, geomark_id, validation_status,
+                                         validation_error, validation_checks)
         else:
             bundle = cls(
                 name=name,

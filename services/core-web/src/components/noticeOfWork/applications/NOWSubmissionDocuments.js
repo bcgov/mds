@@ -251,7 +251,7 @@ export const NOWSubmissionDocuments = (props) => {
       .flatMap((bundle) => bundle?.bundle_documents || [])
       .flatMap((document) => [document?.mine_document_guid, document?.document_manager_guid])
       .filter(Boolean)
-      .map((guid) => String(guid))
+      .map(String)
   );
   const linksToSpatialFiles = (record) =>
     Boolean(props.onSpatialFileLinkClick) &&

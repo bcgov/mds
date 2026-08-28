@@ -97,6 +97,11 @@ const formatFlag = (flag?: boolean | null) => {
 const formatCount = (count?: number | null) =>
   typeof count === "number" ? formatNumber(count, 0) : undefined;
 
+const missingFileName = (extension: string) => {
+  const normalizedExtension = extension.startsWith(".") ? extension : `.${extension}`;
+  return `${normalizedExtension} file`;
+};
+
 const VALIDATION_LABELS: Record<string, string> = {
   VALID: "Valid",
   INVALID: "Failed",
@@ -231,30 +236,36 @@ const SpatialValidationDetailsDrawer: FC<SpatialValidationDetailsDrawerProps> = 
       <Typography.Title level={5}>Preview</Typography.Title>
       {bundle.geomark_id ? (
         <div
-          role="button"
-          tabIndex={0}
-          aria-label="Expand map preview"
-          data-testid="spatial-map-preview"
-          onClick={() => setIsMapExpanded(true)}
-          onKeyDown={(event) => {
-            if (event.key === "Enter" || event.key === " ") {
-              event.preventDefault();
-              setIsMapExpanded(true);
-            }
-          }}
           style={{
             position: "relative",
             height: PREVIEW_MAP_HEIGHT,
             overflow: "hidden",
             border: "1px solid #EFEDF6",
             borderRadius: 4,
-            cursor: "pointer",
           }}
         >
           <GeomarkMapPreview
             geomarkId={bundle.geomark_id}
             height={PREVIEW_MAP_HEIGHT}
             mapId={PREVIEW_MAP_ID}
+          />
+          <button
+            type="button"
+            aria-label="Expand map preview"
+            data-testid="spatial-map-preview"
+            onClick={() => setIsMapExpanded(true)}
+            style={{
+              position: "absolute",
+              inset: 0,
+              zIndex: 2,
+              width: "100%",
+              height: PREVIEW_MAP_HEIGHT,
+              overflow: "hidden",
+              border: 0,
+              padding: 0,
+              background: "transparent",
+              cursor: "pointer",
+            }}
           />
           <div
             style={{
@@ -313,7 +324,7 @@ const SpatialValidationDetailsDrawer: FC<SpatialValidationDetailsDrawerProps> = 
                 found: true,
               })),
               ...missing.map((extension) => ({
-                name: `${extension.startsWith(".") ? extension : `.${extension}`} file`,
+                name: missingFileName(extension),
                 found: false,
               })),
             ]}

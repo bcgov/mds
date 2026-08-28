@@ -71,7 +71,7 @@ const NAME_COLUMN_INDENT = 8;
 
 // The tag only has room for the headline; the Details drawer carries the full explanation.
 const summarizeError = (error: string) => {
-  const firstSentence = error.match(/^[^.]*\./);
+  const firstSentence = /^[^.]*\./.exec(error);
   return firstSentence ? firstSentence[0] : error;
 };
 
@@ -83,6 +83,27 @@ const isSingleFileName = (name?: string) => {
 const fileExtension = (fileName?: string) => {
   const parts = (fileName || "").split(".");
   return parts.length > 1 ? `.${parts[parts.length - 1].toLowerCase()}` : null;
+};
+
+const validationReason = (record: any) => {
+  if (record.validation_status === "INVALID" && record.validation_error) {
+    return ` — ${summarizeError(record.validation_error)}`;
+  }
+  if (
+    record.validation_status === "UNABLE_TO_VALIDATE" &&
+    record.validation_checks?.missing_extensions?.length
+  ) {
+    return ` — missing ${record.validation_checks.missing_extensions.join(", ")}`;
+  }
+  return "";
+};
+
+const bundleCaption = (prefix: string, extensions: string[], missing: string[]) => {
+  if (!extensions.length) {
+    return "";
+  }
+  const missingText = missing.length ? ` (missing ${missing.join(" ")})` : "";
+  return `${prefix} · ${extensions.join(" ")}${missingText}`;
 };
 
 // Builds a table row directly from a server-side bundle so validated bundles render even
@@ -278,20 +299,21 @@ const SpatialDocumentTable: FC<SpatialDocumentTableProps> = ({
       label: "View Details",
       clickFunction: viewSpatialBundle,
     },
+    ...(showBundleValidation
+      ? [
+        {
+          key: "preview-shape",
+          label: "Preview Shape",
+          clickFunction: previewShape,
+        },
+        {
+          key: "details",
+          label: "Details",
+          clickFunction: openDetails,
+        },
+      ]
+      : []),
   ];
-
-  if (showBundleValidation) {
-    actions.push({
-      key: "preview-shape",
-      label: "Preview Shape",
-      clickFunction: previewShape,
-    });
-    actions.push({
-      key: "details",
-      label: "Details",
-      clickFunction: openDetails,
-    });
-  }
 
   const categoryColumn = categoryText
     ? [
@@ -367,13 +389,7 @@ const SpatialDocumentTable: FC<SpatialDocumentTableProps> = ({
             return <Tag>Pending</Tag>;
           }
           const label = VALIDATION_LABEL[status] || status;
-          const reason =
-            status === "INVALID" && record.validation_error
-              ? ` — ${summarizeError(record.validation_error)}`
-              : status === "UNABLE_TO_VALIDATE" &&
-                record.validation_checks?.missing_extensions?.length
-                ? ` — missing ${record.validation_checks.missing_extensions.join(", ")}`
-                : "";
+          const reason = validationReason(record);
           return (
             <Tag color={VALIDATION_TAG_COLOR[status]} icon={VALIDATION_TAG_ICON[status]}>
               {`${label}${reason}`}
@@ -399,10 +415,7 @@ const SpatialDocumentTable: FC<SpatialDocumentTableProps> = ({
         const missing = (record.validation_checks?.missing_extensions || []).map((ext) =>
           ext.startsWith(".") ? ext.toLowerCase() : `.${ext.toLowerCase()}`
         );
-        const caption = extensions.length
-          ? `${prefix} · ${extensions.join(" ")}${missing.length ? ` (missing ${missing.join(" ")})` : ""
-          }`
-          : "";
+        const caption = bundleCaption(prefix, extensions, missing);
         return (
           <div style={{ paddingLeft: NAME_COLUMN_INDENT }}>
             <div>{record.document_name || record.name}</div>

@@ -122,7 +122,7 @@ class TestPutTriggersSpatialProcessing:
 
     @patch(f'{_RESOURCE_PATH}.NROSNOWStatusService.nros_now_status_update')
     @patch(f'{_RESOURCE_PATH}.DocumentManagerService.importNoticeOfWorkSubmissionDocuments')
-    @patch(f'{_RESOURCE_PATH}.DocumentManagerService.processSpatialDocuments')
+    @patch(f'{_RESOURCE_PATH}.DocumentManagerService.process_spatial_documents')
     def test_spatial_document_queues_processing(self, mock_process, mock_import, mock_nros,
                                                 test_client, db_session, auth_headers):
         resp, document_manager_guid = self._put(test_client, auth_headers, 'boundary.kml')
@@ -134,7 +134,7 @@ class TestPutTriggersSpatialProcessing:
 
     @patch(f'{_RESOURCE_PATH}.NROSNOWStatusService.nros_now_status_update')
     @patch(f'{_RESOURCE_PATH}.DocumentManagerService.importNoticeOfWorkSubmissionDocuments')
-    @patch(f'{_RESOURCE_PATH}.DocumentManagerService.processSpatialDocuments')
+    @patch(f'{_RESOURCE_PATH}.DocumentManagerService.process_spatial_documents')
     def test_new_document_queues_processing(self, mock_process, mock_import, mock_nros,
                                             test_client, db_session, auth_headers):
         resp, document_manager_guid = self._put(test_client, auth_headers, 'report.pdf')
@@ -146,7 +146,7 @@ class TestPutTriggersSpatialProcessing:
     @patch(f'{_RESOURCE_PATH}.NROSNOWStatusService.nros_now_status_update')
     @patch(f'{_RESOURCE_PATH}.DocumentManagerService.importNoticeOfWorkSubmissionDocuments')
     @patch(
-        f'{_RESOURCE_PATH}.DocumentManagerService.processSpatialDocuments',
+        f'{_RESOURCE_PATH}.DocumentManagerService.process_spatial_documents',
         side_effect=Exception('Document Manager unavailable'))
     def test_document_manager_failure_does_not_fail_the_save(self, mock_process, mock_import,
                                                              mock_nros, test_client, db_session,

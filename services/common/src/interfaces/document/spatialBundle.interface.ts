@@ -48,7 +48,7 @@ export interface ISpatialBundle {
   bundleFiles?: IMineDocument[];
   geomark_id?: string;
   isSingleFile?: boolean;
-  validation_status?: SpatialValidationStatus | string;
+  validation_status?: SpatialValidationStatus;
   validation_error?: string;
   validation_checks?: ISpatialValidationChecks;
   purpose_codes?: string[];

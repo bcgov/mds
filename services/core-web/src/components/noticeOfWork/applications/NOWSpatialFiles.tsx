@@ -54,23 +54,20 @@ const NOWSpatialFiles: FC<NOWSpatialFilesProps> = ({
       ref={containerRef}
       style={{ border: `1px solid ${BAND_COLOR}`, borderRadius: 4, marginBottom: 24 }}
     >
-      <div
-        role="button"
-        tabIndex={0}
+      <button
+        type="button"
         aria-expanded={isExpanded}
         onClick={toggleExpanded}
-        onKeyDown={(event) => {
-          if (event.key === "Enter" || event.key === " ") {
-            event.preventDefault();
-            toggleExpanded();
-          }
-        }}
         style={{
           display: "flex",
           alignItems: "center",
           gap: 8,
+          width: "100%",
           padding: "12px 16px",
+          border: 0,
           backgroundColor: BAND_COLOR,
+          font: "inherit",
+          textAlign: "left",
           cursor: "pointer",
         }}
       >
@@ -82,7 +79,7 @@ const NOWSpatialFiles: FC<NOWSpatialFilesProps> = ({
         <EnvironmentOutlined style={{ color: HEADER_COLOR }} />
         <span style={{ fontWeight: "bold", color: HEADER_COLOR }}>Spatial Files</span>
         <Tag color="purple">{`${spatialDocumentBundles.length} detected`}</Tag>
-      </div>
+      </button>
       {isExpanded && (
         <div style={{ padding: 16 }}>
           <Typography.Paragraph type="secondary">
