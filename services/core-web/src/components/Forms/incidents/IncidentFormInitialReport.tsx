@@ -51,11 +51,15 @@ const IncidentFormInitialReport: FC<IncidentFormInitialReportProps> = ({
   const incidentCategoryCodeOptions = useSelector(getDropdownIncidentCategoryCodeOptions);
   const [inspectorContactedValidation, setInspectorContactedValidation] = useState({});
   const [inspectorContacted, setInspectorContacted] = useState(null);
+  const [workerRepContacted, setWorkerRepContacted] = useState(null);
+  const [managementRepContacted, setManagementRepContacted] = useState(null);
 
   useEffect(() => {
     const inspectorSet = formValues?.reported_to_inspector_party_guid;
     setInspectorContactedValidation(inspectorSet ? { validate: [requiredRadioButton] } : {});
     setInspectorContacted(formValues?.reported_to_inspector_contacted);
+    setWorkerRepContacted(formValues?.johsc_worker_rep_contacted);
+    setManagementRepContacted(formValues?.johsc_management_rep_contacted);
   }, [formValues]);
 
   return (
@@ -403,6 +407,20 @@ const IncidentFormInitialReport: FC<IncidentFormInitialReportProps> = ({
                 disabled={!isEditMode}
               />
             </Col>
+            {workerRepContacted && (
+              <Col md={12} xs={24}>
+                <Field
+                  label="Initial Contact Method"
+                  id="johsc_worker_rep_contact_method"
+                  name="johsc_worker_rep_contact_method"
+                  component={renderConfig.RADIO}
+                  customOptions={INCIDENT_CONTACT_METHOD_OPTIONS.filter((cm) => !cm?.inspectorOnly)}
+                  disabled={!isEditMode}
+                  required
+                  validate={[required]}
+                />
+              </Col>
+            )}
             <Col md={12} xs={24}>
               <Field
                 label="JOHSC/Management Rep Name"
@@ -424,6 +442,20 @@ const IncidentFormInitialReport: FC<IncidentFormInitialReportProps> = ({
               />
               <br />
             </Col>
+            {managementRepContacted && (
+              <Col md={12} xs={24}>
+                <Field
+                  label="Initial Contact Method"
+                  id="johsc_management_rep_contact_method"
+                  name="johsc_management_rep_contact_method"
+                  component={renderConfig.RADIO}
+                  customOptions={INCIDENT_CONTACT_METHOD_OPTIONS.filter((cm) => !cm?.inspectorOnly)}
+                  disabled={!isEditMode}
+                  required
+                  validate={[required]}
+                />
+              </Col>
+            )}
           </Row>
           <br />
         </Col>
