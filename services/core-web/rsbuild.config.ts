@@ -1,29 +1,28 @@
-import path from "path";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
 import dotenv from "dotenv";
-import { pluginSass } from '@rsbuild/plugin-sass';
-import { pluginLess } from '@rsbuild/plugin-less';
-import { pluginReact } from '@rsbuild/plugin-react';
-import { defineConfig, rspack } from '@rsbuild/core';
-import { pluginTypeCheck } from '@rsbuild/plugin-type-check';
+import { defineConfig, rspack } from "@rsbuild/core";
+import { pluginLess } from "@rsbuild/plugin-less";
+import { pluginReact } from "@rsbuild/plugin-react";
+import { pluginSass } from "@rsbuild/plugin-sass";
+import { pluginTypeCheck } from "@rsbuild/plugin-type-check";
 
-
-dotenv.config({ path: `${__dirname}/.env` });
+const ROOT_DIR = path.dirname(fileURLToPath(import.meta.url));
+const { parsed = {} } = dotenv.config({ path: path.join(ROOT_DIR, ".env") });
 
 const BUILD_DIR = process.env.BUILD_DIR || "build";
 
 const PATHS = {
-  src: path.join(__dirname, "src"),
-  entry: path.join(__dirname, "src", "index.js"),
-  public: path.join(__dirname, "public"),
-  template: path.join(__dirname, "public", "index.html"),
-  build: path.join(__dirname, BUILD_DIR),
-  node_modules: path.join(__dirname, "node_modules"),
-  vendor: path.join(__dirname, "vendor"),
-  commonPackage: path.join(__dirname, "common"),
-  sharedPackage: path.join(__dirname, "..", "common", "src"),
+  src: path.join(ROOT_DIR, "src"),
+  entry: path.join(ROOT_DIR, "src", "index.js"),
+  public: path.join(ROOT_DIR, "public"),
+  template: path.join(ROOT_DIR, "public", "index.html"),
+  build: path.join(ROOT_DIR, BUILD_DIR),
+  vendor: path.join(ROOT_DIR, "vendor"),
+  commonPackage: path.join(ROOT_DIR, "common"),
+  sharedPackage: path.join(ROOT_DIR, "..", "common", "src"),
 };
-
 
 const PATH_ALIASES = {
   "@": PATHS.src,
@@ -32,25 +31,18 @@ const PATH_ALIASES = {
   "@mds/common": `${PATHS.sharedPackage}`,
 };
 
-const envFile: any = {};
+const getEnvironmentDefinitions = () => {
+  const environment = { BASE_PATH: "", ...process.env, ...parsed };
 
-if (process.env) {
-  Object.keys(process.env).map((key) => {
-    envFile[key] = JSON.stringify(process.env[key]);
-  });
-}
-if (dotenv.parsed) {
-  Object.keys(dotenv.parsed).map((key) => {
-    envFile[key] = JSON.stringify(dotenv.parsed[key]);
-  });
-}
+  return Object.fromEntries(
+    Object.entries(environment).map(([key, value]) => [key, JSON.stringify(value)]),
+  );
+};
 
-// Remove BASE_PATH from envFile for dev purposes only. When set, this adds a /"" to the path in RSBuild which causes some issues.
-delete envFile['BASE_PATH'];
-
-export default defineConfig({
+export default defineConfig(() => ({
+  root: ROOT_DIR,
   plugins: [
-    pluginReact({ swcReactOptions: { runtime: 'classic' } }),
+    pluginReact({ swcReactOptions: { runtime: "classic" } }),
     pluginSass(),
     pluginLess({
       lessLoaderOptions: {
@@ -73,17 +65,20 @@ export default defineConfig({
             "font-family": '"Open Sans", sans-serif',
             "border-radius-base": "5px",
           },
-        }
-      }
+        },
+      },
     }),
     pluginTypeCheck(),
   ],
   source: {
+    entry: {
+      index: PATHS.entry,
+    },
     include: [PATHS.commonPackage, PATHS.sharedPackage],
     assetsInclude: /\.(?:png|jpe?g|gif|svg|mp3|pdf|docx?|xlsx?|woff2?|ttf|eot)$/,
     define: {
-      "process.env": JSON.stringify(envFile),
-    }
+      "process.env": getEnvironmentDefinitions(),
+    },
   },
   resolve: {
     extensions: [".tsx", ".ts", ".js"],
@@ -93,28 +88,50 @@ export default defineConfig({
       lodash: "lodash-es",
     },
   },
-  output: {
-    assetPrefix: './',
+  html: {
+    template: PATHS.template,
   },
-
+  server: {
+    host: process.env.HOST || "0.0.0.0",
+    port: Number(process.env.PORT) || 3000,
+    // Served at "/" in dev like webpack-dev-server; output.copy handles build output.
+    publicDir: { copyOnBuild: false },
+    historyApiFallback: true,
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept",
+    },
+  },
+  output: {
+    assetPrefix: process.env.ASSET_PATH || "/",
+    distPath: {
+      root: PATHS.build,
+    },
+    copy: [
+      { from: PATHS.public, to: "public" },
+      { from: path.join(PATHS.public, "custom-script.js"), to: "custom-script.js" },
+    ],
+  },
   tools: {
     swc: {
       jsc: {
         parser: {
-          syntax: 'typescript',
+          syntax: "typescript",
           tsx: true,
-        }
-      }
-
+        },
+      },
     },
     rspack: {
       plugins: [
         new rspack.ProvidePlugin({
-          REQUEST_HEADER: path.resolve(__dirname, "common/utils/RequestHeaders.tsx"),
-          GLOBAL_ROUTES: path.resolve(__dirname, "src/constants/routes.ts"),
-        })
-      ]
-    }
-
-  }
-});
+          REQUEST_HEADER: path.resolve(ROOT_DIR, "common/utils/RequestHeaders.tsx"),
+          GLOBAL_ROUTES: path.resolve(ROOT_DIR, "src/constants/routes.ts"),
+        }),
+        new rspack.IgnorePlugin({
+          resourceRegExp: /^\.\/locale$/,
+          contextRegExp: /moment$/,
+        }),
+      ],
+    },
+  },
+}));

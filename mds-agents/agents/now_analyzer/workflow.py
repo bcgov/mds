@@ -176,7 +176,7 @@ completeness_checker_agent = Agent(
         "2. Fetch and verify Core API metadata; detect discrepancies (files in search but not API, vice versa, metadata mismatches).\n"
         "3. Evaluate all checklist items (True/False/N/A) with evidence from search results.\n"
         "4. Highlight discrepancies in the summary field (e.g., 'file.pdf missing from index' or 'metadata differs from API').\n"
-        "5. Write the Excel report with all findings.\n\n"
+        "5. Write the Excel report with all findings when the user asks for a complete review or report.\n\n"
         "TOOLS:\n"
         "- search_now_documents(now_application_guid, search_query, filters) — Query indexed NOW documents (PRIMARY).\n"
         "- lookup_now_application_in_core(now_application_guid, original) — Fetch Core API metadata and file listings (VERIFY).\n"
@@ -203,8 +203,10 @@ completeness_checker_agent = Agent(
         "      \"is_instruction\": false\n"
         "    }\n"
         "  ]\n"
-        "- Call write_now_checklist_report exactly once with the complete findings array.\n"
-        "- Do not ask the user for input."
+        "- For a complete review or report request, call write_now_checklist_report exactly once with the complete findings array.\n"
+        "- For a focused follow-up, answer directly from the indexed documents and Core API without generating a new report unless requested.\n"
+        "- Keep all follow-up work scoped to the NOW application GUID established in the conversation.\n"
+        "- Ask for a NOW application GUID only when the conversation does not establish one."
     ),
     tools=[
         search_now_documents,
@@ -221,13 +223,18 @@ completeness_checker_agent = Agent(
 orchestrator_agent = Agent(
     client=client,
     name="NOWOrchestratorAgent",
-    description="Dispatches to CompletenessCheckerAgent and stops when it reports the Excel path.",
+    description="Coordinates complete NOW reviews and focused analyst follow-up questions.",
     instructions=(
-        "You coordinate a BC mining Notice of Work (NOW) completeness review.\n\n"
-        "WORKFLOW:\n"
-        "1. Invoke CompletenessCheckerAgent exactly once, passing the now_application_guid.\n"
-        "2. When it reports 'Excel Report Generated: [path]', the workflow is COMPLETE. STOP.\n\n"
-        "Do not invoke any agent more than once. Do not loop."
+        "You coordinate a BC mining Notice of Work (NOW) analyst conversation.\n\n"
+        "THREAD CONTEXT:\n"
+        "- Use the prior conversation to retain the NOW application GUID and the current review context.\n"
+        "- For a new review, identify the GUID in the user's request and invoke CompletenessCheckerAgent once.\n"
+        "- For a follow-up question, invoke CompletenessCheckerAgent once with the established GUID and the user's focused request.\n"
+        "- If no GUID is available, ask the user to provide one.\n\n"
+        "COMPLETION:\n"
+        "- Complete reviews should produce an Excel report.\n"
+        "- Focused follow-ups should return a concise evidence-based answer and only produce a report when explicitly requested.\n"
+        "- Do not invoke any participant more than once per user message. Do not loop."
     ),
 )
 
@@ -235,17 +242,24 @@ orchestrator_agent = Agent(
 # Magentic workflow
 # ---------------------------------------------------------------------------
 
-workflow = (
-    MagenticBuilder(
-        participants=[
-            completeness_checker_agent,
-        ],
-        manager_agent=orchestrator_agent,
-        intermediate_output_from=[
-            completeness_checker_agent,
-        ],
-        max_round_count=20,   # 1 dispatch + 1 agent run + 1 buffer
-        max_stall_count=1,
+
+def build_now_analyzer_workflow():
+    """Build a fresh Workflow instance so concurrent runs don't share Magentic round-count state."""
+    return (
+        MagenticBuilder(
+            participants=[
+                completeness_checker_agent,
+            ],
+            manager_agent=orchestrator_agent,
+            intermediate_output_from=[
+                completeness_checker_agent,
+            ],
+            max_round_count=20,   # 1 dispatch + 1 agent run + 1 buffer
+            max_stall_count=1,
+        )
+        .build()
     )
-    .build()
-)
+
+
+# Singleton kept for the existing DevUI discovery entry point (agents/now_analyzer/__init__.py).
+workflow = build_now_analyzer_workflow()
