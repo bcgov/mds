@@ -387,75 +387,82 @@ const IncidentFormInitialReport: FC<IncidentFormInitialReportProps> = ({
               />
             </Col>
             <Divider />
-            <Col md={12} xs={24}>
-              <Field
-                label="JOHSC/Worker Rep Name"
-                id="johsc_worker_rep_name"
-                name="johsc_worker_rep_name"
-                component={renderConfig.FIELD}
-                placeholder="Enter name of representative..."
-                validate={[maxLength(100)]}
-                disabled={!isEditMode}
-              />
+            <Col span={24}>
+              <Row gutter={16} style={{ marginBottom: 16 }}>
+                <Col md={12} xs={24}>
+                  <Field
+                    label="JOHSC/Worker Rep Name"
+                    id="johsc_worker_rep_name"
+                    name="johsc_worker_rep_name"
+                    component={renderConfig.FIELD}
+                    placeholder="Enter name of representative..."
+                    validate={[maxLength(100)]}
+                    disabled={!isEditMode}
+                  />
+                </Col>
+                <Col md={12} xs={24}>
+                  <Field
+                    label="Was this person contacted?"
+                    id="johsc_worker_rep_contacted"
+                    name="johsc_worker_rep_contacted"
+                    component={renderConfig.RADIO}
+                    disabled={!isEditMode}
+                  />
+                </Col>
+                {workerRepContacted && (
+                  <Col md={12} xs={24}>
+                    <Field
+                      label="Initial Contact Method"
+                      id="johsc_worker_rep_contact_method"
+                      name="johsc_worker_rep_contact_method"
+                      component={renderConfig.RADIO}
+                      customOptions={INCIDENT_CONTACT_METHOD_OPTIONS.filter((cm) => !cm?.inspectorOnly)}
+                      disabled={!isEditMode}
+                      required
+                      validate={[required]}
+                    />
+                  </Col>
+                )}
+              </Row>
             </Col>
-            <Col md={12} xs={24}>
-              <Field
-                label="Was this person contacted?"
-                id="johsc_worker_rep_contacted"
-                name="johsc_worker_rep_contacted"
-                component={renderConfig.RADIO}
-                disabled={!isEditMode}
-              />
+            <Col span={24}>
+              <Row gutter={16}>
+                <Col md={12} xs={24}>
+                  <Field
+                    label="JOHSC/Management Rep Name"
+                    id="johsc_management_rep_name"
+                    name="johsc_management_rep_name"
+                    component={renderConfig.FIELD}
+                    placeholder="Enter name of representative..."
+                    validate={[maxLength(100)]}
+                    disabled={!isEditMode}
+                  />
+                </Col>
+                <Col md={12} xs={24}>
+                  <Field
+                    label="Was this person contacted?"
+                    id="johsc_management_rep_contacted"
+                    name="johsc_management_rep_contacted"
+                    component={renderConfig.RADIO}
+                    disabled={!isEditMode}
+                  />
+                </Col>
+                {managementRepContacted && (
+                  <Col md={12} xs={24}>
+                    <Field
+                      label="Initial Contact Method"
+                      id="johsc_management_rep_contact_method"
+                      name="johsc_management_rep_contact_method"
+                      component={renderConfig.RADIO}
+                      customOptions={INCIDENT_CONTACT_METHOD_OPTIONS.filter((cm) => !cm?.inspectorOnly)}
+                      disabled={!isEditMode}
+                      required
+                      validate={[required]}
+                    />
+                  </Col>
+                )}
+              </Row>
             </Col>
-            {workerRepContacted && (
-              <Col md={12} xs={24}>
-                <Field
-                  label="Initial Contact Method"
-                  id="johsc_worker_rep_contact_method"
-                  name="johsc_worker_rep_contact_method"
-                  component={renderConfig.RADIO}
-                  customOptions={INCIDENT_CONTACT_METHOD_OPTIONS.filter((cm) => !cm?.inspectorOnly)}
-                  disabled={!isEditMode}
-                  required
-                  validate={[required]}
-                />
-              </Col>
-            )}
-            <Col md={12} xs={24}>
-              <Field
-                label="JOHSC/Management Rep Name"
-                id="johsc_management_rep_name"
-                name="johsc_management_rep_name"
-                component={renderConfig.FIELD}
-                placeholder="Enter name of representative..."
-                validate={[maxLength(100)]}
-                disabled={!isEditMode}
-              />
-            </Col>
-            <Col md={12} xs={24}>
-              <Field
-                label="Was this person contacted?"
-                id="johsc_management_rep_contacted"
-                name="johsc_management_rep_contacted"
-                component={renderConfig.RADIO}
-                disabled={!isEditMode}
-              />
-              <br />
-            </Col>
-            {managementRepContacted && (
-              <Col md={12} xs={24}>
-                <Field
-                  label="Initial Contact Method"
-                  id="johsc_management_rep_contact_method"
-                  name="johsc_management_rep_contact_method"
-                  component={renderConfig.RADIO}
-                  customOptions={INCIDENT_CONTACT_METHOD_OPTIONS.filter((cm) => !cm?.inspectorOnly)}
-                  disabled={!isEditMode}
-                  required
-                  validate={[required]}
-                />
-              </Col>
-            )}
           </Row>
           <br />
         </Col>
