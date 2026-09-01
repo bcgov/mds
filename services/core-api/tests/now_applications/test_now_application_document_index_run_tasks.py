@@ -126,3 +126,23 @@ def test_on_failure_finds_run_via_task_args_even_when_core_status_task_id_unset(
     assert refreshed.status == 'error'
     assert refreshed.error_message == 'boom'
     assert refreshed.last_run_end is not None
+
+
+def test_poll_update_now_application_document_index_status_early_exit_if_not_running(
+    now_application_search_service_mock, celery_app, test_client, db_session
+):
+    now_application_identity = NOWApplicationIdentityFactory()
+    run = NowApplicationDocumentIndexRun.create(
+        now_application_guid=now_application_identity.now_application_guid,
+        status='success',
+        last_run_start=datetime.utcnow(),
+        last_run_end=datetime.utcnow(),
+    )
+
+    result = poll_update_now_application_document_index_status.apply(
+        args=(str(run.now_application_document_index_run_id),)
+    ).get()
+
+    assert result.status == 'success'
+    now_application_search_service_mock.return_value.get_index_status.assert_not_called()
+

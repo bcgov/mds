@@ -98,6 +98,14 @@ def test_get_now_application_document_search_status_prefers_fresh_live_status_wh
         assert resp.json['status'] == 'success'
         assert resp.json['items_processed'] == 99
         assert resp.json['document_count'] == 3
+        assert resp.json['last_run_end'] is not None
+
+        refreshed_run = NowApplicationDocumentIndexRun.get_latest_by_now_application_guid(
+            now_application_identity.now_application_guid
+        )
+        assert refreshed_run.status == 'success'
+        assert refreshed_run.last_run_end is not None
+        assert refreshed_run.items_processed == 99
 
 
 def test_get_now_application_document_search_status_uses_persisted_status_once_run_is_terminal(
