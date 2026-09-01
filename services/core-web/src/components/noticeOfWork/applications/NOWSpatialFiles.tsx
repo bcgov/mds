@@ -6,6 +6,7 @@ import SpatialDocumentTable from "@mds/common/components/documents/spatial/Spati
 import { getSpatialBundlePurposeCodes } from "@mds/common/redux/selectors/staticContentSelectors";
 import { getUserAccessData } from "@mds/common/redux/selectors/authenticationSelectors";
 import { ISpatialBundle } from "@mds/common/interfaces/document/spatialBundle.interface";
+import { USER_ROLES } from "@mds/common/constants/environment";
 import * as Permission from "@/constants/permissions";
 
 interface NOWSpatialFilesProps {
@@ -27,7 +28,7 @@ const NOWSpatialFiles: FC<NOWSpatialFilesProps> = ({
 }) => {
   const purposeCodesAll = useSelector(getSpatialBundlePurposeCodes) || [];
   const userRoles = useSelector(getUserAccessData) || [];
-  const canEdit = !isViewMode && userRoles.includes(Permission.EDIT_PERMITS);
+  const canEdit = !isViewMode && userRoles.includes(USER_ROLES[Permission.EDIT_PERMITS]);
   const [isExpanded, setIsExpanded] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
