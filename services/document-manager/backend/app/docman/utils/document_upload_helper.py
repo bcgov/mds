@@ -315,35 +315,6 @@ class DocumentUploadHelper:
         return ('', 204)
 
     @classmethod
-    def validate_bundle(cls, bundle_documents):
-        required_extensions = {'.shp', '.shx', '.dbf', '.prj'}
-        optional_extensions = {'.sbn', '.sbx', '.xml'}
-        all_shape_file_extensions = required_extensions.union(optional_extensions)
-        valid_single_file_extensions = {'.kml', '.kmz'}
-
-        if len(bundle_documents) == 1:
-            document_extension = os.path.splitext(bundle_documents[0].file_display_name)[1]
-
-            if document_extension in all_shape_file_extensions:
-                raise ValueError(f'${document_extension} must be uploaded as part of a shapefile')
-            if document_extension not in valid_single_file_extensions:
-                raise ValueError(f'Invalid file type: {document_extension}')
-        else:
-            allowed_extensions = required_extensions.union(optional_extensions)
-
-            # assuming Document.file_display_name or similar method gives file name including extension
-            document_extensions = {os.path.splitext(doc.file_display_name)[1] for doc in bundle_documents}
-
-            if not required_extensions.issubset(document_extensions):
-                missing_extensions = required_extensions - document_extensions
-                raise ValueError(f'Missing required file types: {", ".join(missing_extensions)}')
-
-            extra_extensions = document_extensions - allowed_extensions
-            if extra_extensions:
-                raise ValueError(
-                    f'Found non spatial bundle file types in spatial bundle: {", ".join(extra_extensions)}')
-
-    @classmethod
     def zip_spatial_files(cls, bundle_documents, file_path):
         oss_service = ObjectStoreStorageService()
 

@@ -1,13 +1,12 @@
-from sqlalchemy import text
-from sqlalchemy.dialects.postgresql import JSONB, UUID
-from werkzeug.exceptions import BadRequest
-
-from app.extensions import db
-from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 from app.api.mines.documents.models.spatial_bundle_purpose_code import (
     MineDocumentBundlePurposeXref,
     SpatialBundlePurposeCode,
 )
+from app.api.utils.models_mixins import AuditMixin, Base, SoftDeleteMixin
+from app.extensions import db
+from sqlalchemy import text
+from sqlalchemy.dialects.postgresql import JSONB, UUID
+from werkzeug.exceptions import BadRequest
 
 VALIDATION_STATUS_VALID = 'VALID'
 VALIDATION_STATUS_INVALID = 'INVALID'
@@ -89,8 +88,12 @@ class MineDocumentBundle(SoftDeleteMixin, AuditMixin, Base):
         return None
 
     def set_purpose_codes(self, purpose_codes):
-        """Replace purpose assignments."""
-        purpose_codes = list(dict.fromkeys(purpose_codes or []))
+        """Replace purpose assignments. An empty list clears all purposes; None is invalid."""
+        if purpose_codes is None:
+            raise BadRequest('purpose_codes is required')
+        if not isinstance(purpose_codes, (list, tuple)):
+            raise BadRequest('purpose_codes must be a list')
+        purpose_codes = list(dict.fromkeys(purpose_codes))
 
         for code in purpose_codes:
             purpose = SpatialBundlePurposeCode.find_by_code(code)
@@ -150,7 +153,7 @@ class MineDocumentBundle(SoftDeleteMixin, AuditMixin, Base):
             if doc.mine_guid and not getattr(doc, 'deleted_ind', False)
         }
         if not existing_mines:
-            return
+            raise BadRequest('Cannot link documents onto a bundle with no active mine documents')
         if document_mine_guids and existing_mines != document_mine_guids:
             raise BadRequest('Cannot link documents from another mine onto this bundle')
         if mine_guid and existing_mines != {str(mine_guid)}:
@@ -170,8 +173,8 @@ class MineDocumentBundle(SoftDeleteMixin, AuditMixin, Base):
     def _apply_spatial_result(self, name, docman_bundle_guid, geomark_id, validation_status,
                               validation_error, validation_checks):
         self.name = name
-        if geomark_id:
-            self.geomark_id = geomark_id
+        self.geomark_id = geomark_id
+
         if docman_bundle_guid:
             self.docman_bundle_guid = docman_bundle_guid
         if validation_status is not None:
@@ -265,8 +268,7 @@ class MineDocumentBundle(SoftDeleteMixin, AuditMixin, Base):
                         mine_doc_bundle.validation_status = doc.get('validation_status')
                         mine_doc_bundle.validation_error = doc.get('validation_error')
                         mine_doc_bundle.validation_checks = doc.get('validation_checks')
-                        if doc.get('geomark_id'):
-                            mine_doc_bundle.geomark_id = doc.get('geomark_id')
+                        mine_doc_bundle.geomark_id = doc.get('geomark_id')
                         mine_doc_bundle.save()
                     for spatial_doc in spatial_docs_copy:
                         if spatial_doc.get('docman_bundle_guid') == docman_bundle_guid:

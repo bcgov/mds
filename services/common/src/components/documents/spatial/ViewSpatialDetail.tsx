@@ -1,5 +1,4 @@
-import React, { FC, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { FC, useEffect, useMemo, useState } from "react";
 import { Alert, Skeleton } from "antd";
 import CoreTable from "../../common/CoreTable";
 import { renderTextColumn } from "../../common/CoreTableCommonColumns";
@@ -15,7 +14,7 @@ import {
 } from "@mds/common/redux/slices/spatialDataSlice";
 import { IMineDocument } from "@mds/common/interfaces";
 import CoreMap from "../../common/Map";
-import { getIsModalOpen } from "@mds/common/redux/selectors/modalSelectors";
+import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 
 export interface ViewSpatialDetailProps {
   spatialDocuments: (IMineDocument & { geomark_id?: string })[];
@@ -35,22 +34,28 @@ export const GeomarkMapPreview: FC<GeomarkMapPreviewProps> = ({
   height,
   mapId,
 }) => {
-  const dispatch = useDispatch();
-  const geomarkMapData = useSelector(getGeomarkMapData);
+  const dispatch = useAppDispatch();
+  const geomarkMapData = useAppSelector(getGeomarkMapData);
   const [previewState, setPreviewState] = useState<"loading" | "loaded" | "failed">("loading");
 
   useEffect(() => {
     if (!geomarkId) {
-      return;
+      return undefined;
     }
 
     let active = true;
     setPreviewState("loading");
 
     const loadPreview = async () => {
-      const result = (await dispatch(fetchGeomarkMapData(geomarkId) as any)) as any;
-      if (active) {
-        setPreviewState(result.type?.endsWith("/fulfilled") ? "loaded" : "failed");
+      try {
+        await dispatch(fetchGeomarkMapData(geomarkId)).unwrap();
+        if (active) {
+          setPreviewState("loaded");
+        }
+      } catch {
+        if (active) {
+          setPreviewState("failed");
+        }
       }
     };
 
@@ -84,58 +89,39 @@ export const GeomarkMapPreview: FC<GeomarkMapPreviewProps> = ({
 };
 
 const ViewSpatialDetail: FC<ViewSpatialDetailProps> = ({ spatialDocuments }) => {
-  const dispatch = useDispatch();
-  const username = useSelector(getFormattedUserName);
-  const spatialBundle = useSelector(getSpatialBundle);
-  const geomarkMapData = useSelector(getGeomarkMapData);
-  const isModalOpen = useSelector(getIsModalOpen);
-  const [mapLoaded, setMapLoaded] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [bundleNotYetCreated, setBundleNotYetCreated] = useState<boolean | null>();
+  const dispatch = useAppDispatch();
+  const username = useAppSelector(getFormattedUserName);
+  const spatialBundle = useAppSelector(getSpatialBundle);
+  const geomarkMapData = useAppSelector(getGeomarkMapData);
 
-  const handleGetSpatialBundles = async () => {
-    if (!spatialDocuments[0].geomark_id) {
-      const spatialBundles = groupSpatialBundles(spatialDocuments);
-      if (spatialDocuments[0].mine_guid && spatialBundles[0]?.bundle_id) {
-        await dispatch(
-          fetchSpatialBundle({
-            mineGuid: spatialDocuments[0].mine_guid,
-            mine_document_bundle_id: spatialBundles[0].bundle_id,
-          })
-        );
-      }
-      setBundleNotYetCreated(false);
-    } else {
-      setBundleNotYetCreated(true);
-    }
-
-    setIsLoaded(true);
-  };
+  const mineGuid = spatialDocuments[0]?.mine_guid;
+  // Documents imported before their bundle existed carry the geomark id themselves.
+  const documentGeomarkId = spatialDocuments[0]?.geomark_id;
+  const bundleId = useMemo(
+    () => (documentGeomarkId ? null : groupSpatialBundles(spatialDocuments)[0]?.bundle_id),
+    [documentGeomarkId, spatialDocuments]
+  );
 
   useEffect(() => {
-    if (spatialDocuments && !isLoaded) {
-      handleGetSpatialBundles();
+    if (mineGuid && bundleId) {
+      dispatch(fetchSpatialBundle({ mineGuid, mine_document_bundle_id: bundleId }));
     }
-  }, [spatialDocuments, isModalOpen]);
+  }, [dispatch, mineGuid, bundleId]);
 
-  const handleFetchMapData = () => {
-    setMapLoaded(false);
-    const geomarkId = bundleNotYetCreated
-      ? spatialDocuments[0].geomark_id
-      : spatialBundle.geomark_id;
-
-    dispatch(fetchGeomarkMapData(geomarkId));
-  };
+  // A rejected fetch leaves no bundle in the store, so no map is requested for a missing geometry.
+  const geomarkId = documentGeomarkId ?? spatialBundle?.geomark_id;
 
   useEffect(() => {
-    if ((!mapLoaded && spatialBundle) || bundleNotYetCreated) {
-      handleFetchMapData();
+    if (geomarkId) {
+      dispatch(fetchGeomarkMapData(geomarkId));
     }
+  }, [dispatch, geomarkId]);
+
+  useEffect(() => {
     return () => {
-      setMapLoaded(false);
       dispatch(clearSpatialData());
     };
-  }, [spatialBundle, bundleNotYetCreated, isModalOpen]);
+  }, [dispatch]);
 
   return (
     <>

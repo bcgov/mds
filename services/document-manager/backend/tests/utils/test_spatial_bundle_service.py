@@ -80,6 +80,17 @@ class TestSpatialBundleServiceGrouping:
         assert analysis['complete'] is True
         assert analysis['is_single_file'] is True
 
+    def test_analyze_rejects_extra_non_spatial_file(self):
+        docs = [_doc(f'b.{ext}') for ext in ('shp', 'shx', 'dbf', 'prj', 'pdf')]
+        analysis = SpatialBundleService.analyze_group(docs)
+        assert analysis['complete'] is False
+        assert analysis['extra_extensions'] == ['.pdf']
+
+    def test_analyze_rejects_non_spatial_single_file(self):
+        analysis = SpatialBundleService.analyze_group([_doc('report.jpg')])
+        assert analysis['complete'] is False
+        assert analysis['extra_extensions'] == ['.jpg']
+
 
 class TestSpatialBundleServiceErrorMapping:
     def test_maps_bc_intersect_error(self):
@@ -116,6 +127,15 @@ class TestSpatialBundleServiceProcess:
         docs = [_doc('b.shp'), _doc('b.shx'), _doc('b.dbf')]
         with pytest.raises(BadRequest):
             SpatialBundleService.process_document_group(docs, blocking=True)
+
+    def test_extra_file_blocking_raises(self):
+        docs = [_doc(f'b.{ext}') for ext in ('shp', 'shx', 'dbf', 'prj', 'pdf')]
+        with pytest.raises(BadRequest, match='non spatial bundle file types'):
+            SpatialBundleService.process_document_group(docs, blocking=True)
+
+    def test_non_spatial_single_file_blocking_raises(self):
+        with pytest.raises(BadRequest, match='non spatial bundle file types'):
+            SpatialBundleService.process_document_group([_doc('report.jpg')], blocking=True)
 
     @patch('app.docman.utils.spatial_bundle_service.GeomarkHelper')
     @patch('app.docman.utils.spatial_bundle_service.DocumentUploadHelper')

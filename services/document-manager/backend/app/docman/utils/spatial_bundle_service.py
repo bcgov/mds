@@ -114,17 +114,20 @@ class SpatialBundleService:
                 'name': names[0],
                 'is_single_file': True,
                 'missing_extensions': [],
+                'extra_extensions': [],
                 'found_extensions': sorted(extensions),
                 'complete': True,
             }
 
         missing = sorted(REQUIRED_SHAPEFILE_EXTENSIONS - extensions)
+        extra = sorted(extensions - ALL_SHAPEFILE_EXTENSIONS)
         return {
             'name': basename,
             'is_single_file': False,
             'missing_extensions': missing,
+            'extra_extensions': extra,
             'found_extensions': sorted(extensions),
-            'complete': len(missing) == 0,
+            'complete': len(missing) == 0 and len(extra) == 0,
         }
 
     @classmethod
@@ -225,11 +228,20 @@ class SpatialBundleService:
         checks = cls._empty_checks(missing_extensions=analysis['missing_extensions'])
 
         if not analysis['complete']:
+            if analysis['extra_extensions']:
+                validation_error = (
+                    'Found non spatial bundle file types in spatial bundle: '
+                    f"{', '.join(analysis['extra_extensions'])}"
+                )
+            else:
+                validation_error = (
+                    f"Missing required file types: {', '.join(analysis['missing_extensions'])}"
+                )
             result = cls._result_dict(
                 bundle_name,
                 document_guids,
                 VALIDATION_STATUS_UNABLE_TO_VALIDATE,
-                f"Missing required file types: {', '.join(analysis['missing_extensions'])}",
+                validation_error,
                 checks,
             )
             if blocking:

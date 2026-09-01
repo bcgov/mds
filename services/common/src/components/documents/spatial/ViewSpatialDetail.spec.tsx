@@ -9,6 +9,7 @@ import {
   groupSpatialBundles,
   spatialDataReducerType,
 } from "@mds/common/redux/slices/spatialDataSlice";
+import { getStore } from "@mds/common/redux/rootState";
 import { MAJOR_MINES_APPLICATION_DOCUMENT_TYPE_CODE } from "@mds/common/constants/strings";
 
 const spatialDocuments = MOCK.PROJECT_SUMMARY.documents.filter(
@@ -47,8 +48,8 @@ describe("ViewSpatialDetail", () => {
     const store = {
       getState: () => initialState,
       subscribe: () => () => undefined,
-      dispatch: jest.fn().mockResolvedValue({
-        type: "spatialData/fetchGeomarkMapData/fulfilled",
+      dispatch: jest.fn().mockReturnValue({
+        unwrap: () => Promise.resolve(MOCK.GEOJSON_FEATURE_DATA),
       }),
     };
 
@@ -71,8 +72,8 @@ describe("ViewSpatialDetail", () => {
         },
       }),
       subscribe: () => () => undefined,
-      dispatch: jest.fn().mockResolvedValue({
-        type: "spatialData/fetchGeomarkMapData/rejected",
+      dispatch: jest.fn().mockReturnValue({
+        unwrap: () => Promise.reject(new Error("GeoMark unavailable")),
       }),
     };
 
@@ -83,5 +84,61 @@ describe("ViewSpatialDetail", () => {
     );
 
     expect(await screen.findByText("Map preview unavailable")).toBeInTheDocument();
+  });
+
+  it("does not request map data when fetching the bundle is rejected", async () => {
+    const stateWithoutSpatialData = {
+      ...getStore(initialState).getState(),
+      [spatialDataReducerType]: {
+        geoJsonData: null,
+        bundle_id: null,
+        spatialBundle: null,
+      },
+    };
+    const store = {
+      getState: () => stateWithoutSpatialData,
+      subscribe: () => () => undefined,
+      dispatch: jest.fn().mockResolvedValue({
+        type: "spatialData/fetchSpatialBundle/rejected",
+      }),
+    };
+
+    render(
+      <Provider store={store as any}>
+        <ViewSpatialDetail spatialDocuments={spatialBundles[0].bundleFiles} />
+      </Provider>
+    );
+
+    await waitFor(() => expect(store.dispatch).toHaveBeenCalledTimes(1));
+  });
+
+  it("loads map data directly when the document already has a GeoMark id", async () => {
+    const stateWithoutBundle = {
+      ...getStore(initialState).getState(),
+      [spatialDataReducerType]: {
+        geoJsonData: null,
+        bundle_id: null,
+        spatialBundle: null,
+      },
+    };
+    const store = {
+      getState: () => stateWithoutBundle,
+      subscribe: () => () => undefined,
+      dispatch: jest.fn().mockResolvedValue({
+        type: "spatialData/fetchGeomarkMapData/fulfilled",
+      }),
+    };
+    const documentsWithGeomark = spatialBundles[0].bundleFiles.map((document) => ({
+      ...document,
+      geomark_id: "gm-existing",
+    }));
+
+    render(
+      <Provider store={store as any}>
+        <ViewSpatialDetail spatialDocuments={documentsWithGeomark} />
+      </Provider>
+    );
+
+    await waitFor(() => expect(store.dispatch).toHaveBeenCalled());
   });
 });

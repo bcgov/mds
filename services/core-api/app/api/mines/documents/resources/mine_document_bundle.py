@@ -36,9 +36,12 @@ def _require_mine(mine_guid):
 
 def _assert_documents_belong_to_mine(documents, mine_guid):
     mine_guid_str = str(mine_guid)
-    for doc in documents or []:
-        if getattr(doc, 'deleted_ind', False):
-            continue
+    active_documents = [
+        doc for doc in (documents or []) if not getattr(doc, 'deleted_ind', False)
+    ]
+    if not active_documents:
+        raise BadRequest('Mine document bundle has no active documents')
+    for doc in active_documents:
         if str(doc.mine_guid) != mine_guid_str:
             raise BadRequest('Mine document not attached to Mine')
 
@@ -95,7 +98,7 @@ class MineDocumentBundleListResource(Resource, UserMixin):
 
 class MineDocumentBundleResource(Resource, UserMixin):
     parser = CustomReqparser()
-    parser.add_argument('purpose_codes', type=list, location='json', required=False)
+    parser.add_argument('purpose_codes', type=list, location='json', required=True, nullable=False)
 
     @api.doc(description='Returns a mine document spatial bundle')
     @api.marshal_with(MINE_DOCUMENT_BUNDLE_MODEL, code=200)
@@ -110,9 +113,6 @@ class MineDocumentBundleResource(Resource, UserMixin):
         mine_document_bundle = _get_bundle_for_mine(mine_guid, mine_document_bundle_id)
 
         data = self.parser.parse_args()
-        if 'purpose_codes' not in data:
-            raise BadRequest('purpose_codes is required')
-
-        mine_document_bundle.set_purpose_codes(data.get('purpose_codes') or [])
+        mine_document_bundle.set_purpose_codes(data['purpose_codes'])
         mine_document_bundle.save()
         return mine_document_bundle.json()

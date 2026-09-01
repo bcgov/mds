@@ -42,6 +42,17 @@ const geoSpatialHandlers = [
   http.get("/%3CAPI_URL%3E/mines/:mineGuid/document-bundle/:bundleId", async () => {
     return HttpResponse.json(GEOMARK_DATA);
   }),
+  http.patch(
+    "/%3CAPI_URL%3E/mines/:mineGuid/document-bundle/:bundleId",
+    async ({ params, request }) => {
+      const body = (await request.json()) as { purpose_codes: string[] };
+      return HttpResponse.json({
+        ...GEOMARK_DATA,
+        bundle_id: params.bundleId,
+        purpose_codes: body.purpose_codes,
+      });
+    }
+  ),
 ];
 
 const projectHandlers = [

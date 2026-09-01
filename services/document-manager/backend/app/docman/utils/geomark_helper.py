@@ -33,6 +33,7 @@ class GeomarkHelper:
         self.GEOMARK_URL_BASE = current_app.config['GEOMARK_URL_BASE']
         self.GEOMARK_SECRET_KEY = current_app.config['GEOMARK_SECRET_KEY']
         self.GEOMARK_PERSIST = current_app.config['GEOMARK_PERSIST']
+        self.GEOMARK_UPLOAD_TIMEOUT = current_app.config.get('GEOMARK_UPLOAD_TIMEOUT', 300)
 
         assert self.GEOMARK_URL_BASE, 'GEOMARK_URL_BASE is not set in the configuration'
 
@@ -102,23 +103,36 @@ class GeomarkHelper:
                 url,
                 data=multipart_data,
                 headers=headers,
-                timeout=60,
+                timeout=self.GEOMARK_UPLOAD_TIMEOUT,
             )
 
-        response_data = response.json() if response.text.strip() else None
+        if response.status_code < 200 or response.status_code >= 300:
+            current_app.logger.error(
+                f'Error uploading spatial file to Geomark: status {response.status_code}')
+            return {'error': f'Geomark service returned status code: {response.status_code}'}
 
-        if response_data:            
-            gemoark_id = response_data.get('id')
+        if not response.text.strip():
+            return None
 
-            if gemoark_id:
-                current_app.logger.info(f"Geomark {gemoark_id} was successfully created")
+        try:
+            response_data = response.json()
+        except ValueError:
+            current_app.logger.error('Error uploading spatial file to Geomark: invalid JSON response')
+            return {'error': 'Geomark service returned an invalid response'}
+
+        if response_data:
+            geomark_id = response_data.get('id')
+
+            if geomark_id:
+                current_app.logger.info(f"Geomark {geomark_id} was successfully created")
         
                 if self.GEOMARK_PERSIST:
-                    self.add_geomark_to_group(gemoark_id, self.GEOMARK_GROUP)
+                    self.add_geomark_to_group(geomark_id, self.GEOMARK_GROUP)
             else:
-                current_app.logger.error('Error uploading spatial file to Geomark: ', response.text)
+                current_app.logger.error(
+                    f'Error uploading spatial file to Geomark: {response.text}')
 
-        return response.json() if response.text.strip() else None
+        return response_data
 
     def fetch_geomark_metadata(self, geomark_id):
         """Fetch the Geomark info resource as returned, without remapping field names."""

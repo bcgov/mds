@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Checkbox, Tag, Typography } from "antd";
 import {
   CheckCircleOutlined,
@@ -28,6 +28,7 @@ import {
   ISpatialBundlePurposeCode,
 } from "@mds/common/interfaces/document/spatialBundle.interface";
 import { IMineDocument } from "@mds/common/interfaces";
+import { useAppDispatch } from "@mds/common/redux/rootState";
 import { getFormattedUserName } from "@mds/common/redux/selectors/authenticationSelectors";
 import moment from "moment";
 import SpatialValidationDetailsDrawer from "./SpatialValidationDetailsDrawer";
@@ -140,7 +141,7 @@ const SpatialDocumentTable: FC<SpatialDocumentTableProps> = ({
   emptyText,
   mineGuid,
 }) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [isCompressionModalVisible, setIsCompressionModalVisible] = useState(false);
   const [compressionFiles, setCompressionFiles] = useState<IMineDocument[] | null>(null);
   const [spatialBundles, setSpatialBundles] = useState<any[]>([]);
@@ -190,13 +191,14 @@ const SpatialDocumentTable: FC<SpatialDocumentTableProps> = ({
       current.delete(purposeCode);
     }
     try {
-      const updated: any = await (dispatch(
+      // An empty list is a valid payload: it clears every purpose on the bundle.
+      const updated = await dispatch(
         updateSpatialBundlePurposes({
           mineGuid: fallbackMineGuid,
           bundle_id: record.bundle_id,
           purpose_codes: Array.from(current),
-        }) as any
-      ) as any).unwrap();
+        })
+      ).unwrap();
       setSpatialBundles((prev) =>
         prev.map((b) =>
           String(b.bundle_id) === String(record.bundle_id)
