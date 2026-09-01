@@ -111,3 +111,54 @@ class TestPutMineIncident:
 
         assert all(x in data['dangerous_occurrence_subparagraph_ids'] for x in put_data['dangerous_occurrence_subparagraph_ids'])
         assert all(x in data['recommendations'] for x in put_data['recommendations'])
+
+    @patch('app.api.incidents.models.mine_incident.MineIncident.send_incidents_email')
+    @patch('app.api.incidents.models.mine_incident.MineIncident.send_awaiting_final_report_email')
+    @patch('app.api.incidents.models.mine_incident.MineIncident.send_final_report_received_email')
+    def test_put_mine_incident_johsc_contact_method_in_person(self, mock_send_final, mock_send_awaiting, mock_send_incidents, test_client, db_session, auth_headers):
+        """Should accept 'INP' (In Person) as a valid johsc contact method and round-trip it"""
+
+        mine_incident = MineIncidentFactory()
+        incident = MineIncidentFactory()
+        data = {
+            'incident_timestamp': '2019-01-01T18:17:12.136000+00:00',
+            'reported_timestamp': '2019-01-01T18:27:12.136000+00:00',
+            'incident_timezone': incident.incident_timezone,
+            'incident_description': incident.incident_description,
+            'incident_location': incident.incident_location,
+            'reported_by_name': incident.reported_by_name,
+            'reported_by_email': incident.reported_by_email,
+            'reported_by_phone_no': incident.reported_by_phone_no,
+            'reported_by_phone_ext': incident.reported_by_phone_ext,
+            'emergency_services_called': incident.emergency_services_called,
+            'number_of_injuries': incident.number_of_injuries,
+            'number_of_fatalities': incident.number_of_fatalities,
+            'reported_to_inspector_party_guid': incident.reported_to_inspector_party_guid,
+            'responsible_inspector_party_guid': incident.responsible_inspector_party_guid,
+            'determination_inspector_party_guid': incident.determination_inspector_party_guid,
+            'proponent_incident_no': incident.proponent_incident_no,
+            'determination_type_code': incident.determination_type_code,
+            'followup_investigation_type_code': incident.followup_investigation_type_code,
+            'followup_inspection': incident.followup_inspection,
+            'followup_inspection_date': '2019-01-01T18:27:12.136000+00:00',
+            'status_code': incident.status_code,
+            'dangerous_occurrence_subparagraph_ids': incident.dangerous_occurrence_subparagraph_ids,
+            'recommendations': incident.recommendations,
+            'immediate_measures_taken': incident.immediate_measures_taken,
+            'injuries_description': incident.injuries_description,
+            'johsc_worker_rep_name': incident.johsc_worker_rep_name,
+            'johsc_worker_rep_contacted': True,
+            'johsc_worker_rep_contact_method': 'INP',
+            'johsc_management_rep_name': incident.johsc_management_rep_name,
+            'johsc_management_rep_contacted': True,
+            'johsc_management_rep_contact_method': 'INP',
+        }
+
+        put_resp = test_client.put(
+            f'/mines/{mine_incident.mine_guid}/incidents/{mine_incident.mine_incident_guid}',
+            headers=auth_headers['full_auth_header'],
+            json=data)
+        put_data = json.loads(put_resp.data.decode())
+        assert put_resp.status_code == 200, put_resp.response
+        assert put_data['johsc_worker_rep_contact_method'] == 'INP'
+        assert put_data['johsc_management_rep_contact_method'] == 'INP'
