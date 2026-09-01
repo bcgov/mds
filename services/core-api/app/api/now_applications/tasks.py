@@ -52,6 +52,9 @@ def poll_update_now_application_document_index_status(now_application_document_i
     if not run:
         raise InternalServerError('NowApplicationDocumentIndexRun not found')
 
+    if run.status != 'running':
+        return run
+
     index_status = NowApplicationSearchService().get_index_status(str(run.now_application_guid))
     status = index_status.get('status')
 
