@@ -95,14 +95,19 @@ class MineDocumentBundle(SoftDeleteMixin, AuditMixin, Base):
             raise BadRequest('purpose_codes must be a list')
         purpose_codes = list(dict.fromkeys(purpose_codes))
 
+        # Mutate the relationship rather than issuing a bulk delete so the
+        # delete-orphan cascade keeps the loaded collection in sync.
+        existing = {xref.spatial_bundle_purpose_code: xref for xref in self.purpose_xrefs}
+
+        # Only newly assigned codes are validated. A code that was deactivated after it was
+        # assigned must not block rewriting the rest of the bundle's purposes.
         for code in purpose_codes:
+            if code in existing:
+                continue
             purpose = SpatialBundlePurposeCode.find_by_code(code)
             if not purpose or not purpose.active_ind:
                 raise BadRequest(f'Invalid spatial bundle purpose code: {code}')
 
-        # Mutate the relationship rather than issuing a bulk delete so the
-        # delete-orphan cascade keeps the loaded collection in sync.
-        existing = {xref.spatial_bundle_purpose_code: xref for xref in self.purpose_xrefs}
         for code, xref in existing.items():
             if code not in purpose_codes:
                 self.purpose_xrefs.remove(xref)
