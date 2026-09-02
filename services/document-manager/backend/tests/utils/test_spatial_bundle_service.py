@@ -279,24 +279,103 @@ class TestSpatialBundleServiceProcess:
         assert result['validation_status'] == VALIDATION_STATUS_INVALID
         assert result['validation_error'] == 'Self-intersection'
 
-    def test_already_bundled_group_is_returned_for_core_sync(self):
+    @staticmethod
+    def _bundled_docs(geomark_id='gm-existing', error=None):
         bundle = SimpleNamespace(
             name='boundary',
-            geomark_id='gm-existing',
-            error=None,
+            geomark_id=geomark_id,
+            error=error,
             bundle_guid='bundle-guid',
+            update_user=None,
         )
         docs = [_doc(f'boundary.{ext}') for ext in ('shp', 'shx', 'dbf', 'prj')]
         for doc in docs:
             doc.document_bundle_guid = bundle.bundle_guid
             doc.document_bundle = bundle
+        return bundle, docs
+
+    @patch('app.docman.utils.spatial_bundle_service.GeomarkHelper')
+    @patch('app.docman.utils.spatial_bundle_service.DocumentUploadHelper')
+    @patch('app.docman.utils.spatial_bundle_service.db')
+    @patch('app.docman.utils.spatial_bundle_service.os.path.exists', return_value=True)
+    @patch('app.docman.utils.spatial_bundle_service.os.path.getsize', return_value=100)
+    @patch('app.docman.utils.spatial_bundle_service.os.makedirs')
+    def test_already_bundled_group_is_revalidated_by_geomark(
+        self, _makedirs, _getsize, _exists, mock_db, mock_upload_helper, mock_geomark
+    ):
+        bundle, docs = self._bundled_docs()
+        mock_geomark.return_value.send_spatial_file_to_geomark.return_value = {'id': 'gm-fresh'}
+        mock_geomark.return_value.fetch_geomark_metadata.return_value = {}
 
         results = SpatialBundleService.process_all_spatial_documents(docs, blocking=False)
 
+        mock_geomark.return_value.send_spatial_file_to_geomark.assert_called_once()
         assert len(results) == 1
-        assert results[0]['geomark_id'] == 'gm-existing'
         assert results[0]['validation_status'] == VALIDATION_STATUS_VALID
+        assert results[0]['geomark_id'] == 'gm-fresh'
+        # The bundle is updated in place rather than duplicated.
         assert results[0]['docman_bundle_guid'] == 'bundle-guid'
+        assert bundle.geomark_id == 'gm-fresh'
+
+    @patch('app.docman.utils.spatial_bundle_service.GeomarkHelper')
+    @patch('app.docman.utils.spatial_bundle_service.DocumentUploadHelper')
+    @patch('app.docman.utils.spatial_bundle_service.db')
+    @patch('app.docman.utils.spatial_bundle_service.os.path.exists', return_value=True)
+    @patch('app.docman.utils.spatial_bundle_service.os.path.getsize', return_value=100)
+    @patch('app.docman.utils.spatial_bundle_service.os.makedirs')
+    def test_failed_revalidation_clears_the_stored_geomark(
+        self, _makedirs, _getsize, _exists, mock_db, mock_upload_helper, mock_geomark
+    ):
+        bundle, docs = self._bundled_docs()
+        mock_geomark.return_value.send_spatial_file_to_geomark.return_value = {
+            'error': 'Geomark must intersect the Province of British Columbia',
+        }
+
+        results = SpatialBundleService.process_all_spatial_documents(docs, blocking=False)
+
+        assert results[0]['validation_status'] == VALIDATION_STATUS_INVALID
+        assert results[0]['geomark_id'] is None
+        assert results[0]['docman_bundle_guid'] == 'bundle-guid'
+        assert bundle.geomark_id is None
+        assert bundle.error == 'Geomark must intersect the Province of British Columbia'
+
+    @pytest.mark.parametrize('geomark_response', [
+        {'id': 'gm-test'},
+        {'error': 'Geomark must intersect the Province of British Columbia'},
+        {},
+        None,
+    ])
+    @patch('app.docman.utils.spatial_bundle_service.GeomarkHelper')
+    @patch('app.docman.utils.spatial_bundle_service.DocumentUploadHelper')
+    @patch('app.docman.utils.spatial_bundle_service.db')
+    @patch('app.docman.utils.spatial_bundle_service.os.path.exists', return_value=True)
+    @patch('app.docman.utils.spatial_bundle_service.os.path.getsize', return_value=100)
+    @patch('app.docman.utils.spatial_bundle_service.os.makedirs')
+    def test_every_outcome_carries_a_validation_status(
+        self, _makedirs, _getsize, _exists, mock_db, mock_upload_helper, mock_geomark,
+        geomark_response
+    ):
+        """Core rejects a bundle POST without one, so no path may leave it unset."""
+        mock_geomark.return_value.send_spatial_file_to_geomark.return_value = geomark_response
+        mock_geomark.return_value.fetch_geomark_metadata.return_value = {}
+        groups = [
+            [_doc(f'complete.{ext}') for ext in ('shp', 'shx', 'dbf', 'prj')],
+            [_doc('incomplete.shp'), _doc('incomplete.shx')],
+            [_doc('area.kml')],
+        ]
+
+        results = SpatialBundleService.process_all_spatial_documents(
+            [doc for group in groups for doc in group], blocking=False)
+
+        assert len(results) == 3
+        assert all(
+            result['validation_status'] in (
+                VALIDATION_STATUS_VALID,
+                VALIDATION_STATUS_INVALID,
+                VALIDATION_STATUS_UNABLE_TO_VALIDATE,
+            ) and result.get('docman_bundle_guid')
+            for result in results
+        )
 
     @patch('app.docman.utils.spatial_bundle_service.GeomarkHelper')
     @patch('app.docman.utils.spatial_bundle_service.DocumentUploadHelper')

@@ -1,3 +1,4 @@
+import json
 from types import SimpleNamespace
 from unittest.mock import patch
 
@@ -9,7 +10,11 @@ from app.docman.utils.spatial_bundle_service import (
     VALIDATION_STATUS_UNABLE_TO_VALIDATE,
     VALIDATION_STATUS_VALID,
 )
-from app.tasks.process_now_spatial_bundles import mine_guid_from_documents, process_spatial_document_guids
+from app.tasks.process_now_spatial_bundles import (
+    mine_guid_from_documents,
+    process_spatial_document_guids,
+    sync_bundle_to_core,
+)
 
 _TASK_PATH = 'app.tasks.process_now_spatial_bundles'
 _SERVICE_PATH = 'app.docman.utils.spatial_bundle_service'
@@ -124,6 +129,26 @@ class TestProcessSpatialDocumentGuids:
         synced_result = mock_sync.call_args[0][0]
         assert synced_result['validation_status'] == VALIDATION_STATUS_UNABLE_TO_VALIDATE
         assert '.prj' in synced_result['validation_error']
+
+    @patch(f'{_TASK_PATH}.requests.post')
+    def test_sync_posts_the_validation_status_core_requires(self, mock_post, app_context):
+        """Core rejects a bundle POST without a validation_status."""
+        mock_post.return_value = SimpleNamespace(status_code=200, json=lambda: {'bundle_id': 9})
+        result = {
+            'name': 'boundary',
+            'docman_bundle_guid': 'bundle-guid',
+            'geomark_id': None,
+            'validation_status': VALIDATION_STATUS_UNABLE_TO_VALIDATE,
+            'validation_error': 'Missing required file types: .prj',
+            'validation_checks': {'missing_extensions': ['.prj']},
+            'document_guids': ['doc-1'],
+        }
+
+        sync_bundle_to_core(result, 'Bearer test', 'mine-guid')
+
+        body = json.loads(mock_post.call_args.kwargs['data'])
+        assert body['validation_status'] == VALIDATION_STATUS_UNABLE_TO_VALIDATE
+        assert body['docman_bundle_guid'] == 'bundle-guid'
 
     @patch(f'{_TASK_PATH}.sync_bundle_to_core', side_effect=Exception('Core unavailable'))
     @patch(f'{_TASK_PATH}.get_core_authorization_token', return_value='Bearer test')

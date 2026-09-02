@@ -180,35 +180,32 @@ class SpatialBundleService:
         }
 
     @classmethod
+    def _existing_bundle(cls, bundle_documents):
+        """The bundle this group already belongs to, if they all agree on one."""
+        bundles = [
+            bundle for bundle in (
+                getattr(doc, 'document_bundle', None) for doc in bundle_documents)
+            if bundle is not None
+        ]
+        if not bundles or any(bundle is not bundles[0] for bundle in bundles):
+            return None
+        return bundles[0]
+
+    @classmethod
     def _attach_bundle(cls, result, bundle_documents, set_upload_completed=False):
-        bundle = cls._new_bundle(result['name'], error=result.get('validation_error'))
-        if result.get('geomark_id'):
-            bundle.geomark_id = result['geomark_id']
+        """Write the result onto the group's bundle, reusing it when reprocessing."""
+        bundle = cls._existing_bundle(bundle_documents)
+        if bundle is None:
+            bundle = cls._new_bundle(result['name'])
+        else:
+            bundle.name = result['name']
+            bundle.update_user = cls._audit_user()
+        # Assigned unconditionally so a failed revalidation drops a stale geomark.
+        bundle.error = result.get('validation_error')
+        bundle.geomark_id = result.get('geomark_id')
         cls._link_documents(bundle, bundle_documents, set_upload_completed=set_upload_completed)
         result['docman_bundle_guid'] = str(bundle.bundle_guid)
         return result
-
-    @classmethod
-    def _result_from_existing_bundle(cls, bundle, documents):
-        """Rebuild a Core-sync payload without calling Geomark again."""
-        document_guids = [str(d.document_guid) for d in documents]
-        if bundle.geomark_id:
-            status = VALIDATION_STATUS_VALID
-        elif bundle.error and str(bundle.error).startswith('Missing required'):
-            status = VALIDATION_STATUS_UNABLE_TO_VALIDATE
-        elif bundle.error:
-            status = VALIDATION_STATUS_INVALID
-        else:
-            status = VALIDATION_STATUS_UNABLE_TO_VALIDATE
-        return cls._result_dict(
-            bundle.name,
-            document_guids,
-            status,
-            bundle.error,
-            None,
-            geomark_id=bundle.geomark_id,
-            docman_bundle_guid=str(bundle.bundle_guid),
-        )
 
     @classmethod
     def process_document_group(cls, bundle_documents, name=None, blocking=True):
@@ -373,16 +370,6 @@ class SpatialBundleService:
         groups = cls.group_documents_by_basename(documents)
         results = []
         for group in groups:
-            if all(getattr(d, 'document_bundle_guid', None) for d in group):
-                bundle_guids = {str(d.document_bundle_guid) for d in group}
-                bundle = getattr(group[0], 'document_bundle', None)
-                if len(bundle_guids) == 1 and bundle:
-                    current_app.logger.info(
-                        f"Re-syncing already-bundled spatial group "
-                        f"{[d.file_display_name for d in group]}"
-                    )
-                    results.append(cls._result_from_existing_bundle(bundle, group))
-                    continue
             try:
                 results.append(cls.process_document_group(group, blocking=blocking))
             except BadRequest as e:

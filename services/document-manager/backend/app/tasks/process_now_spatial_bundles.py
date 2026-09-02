@@ -44,7 +44,6 @@ def sync_bundle_to_core(result, authorization_token, mine_guid):
         'validation_error': result.get('validation_error'),
         'validation_checks': result.get('validation_checks'),
         'document_manager_guids': result.get('document_guids') or [],
-        'preserve_purposes': True,
     }
     resp = requests.post(
         url=f'{Config.CORE_API_URL}/mines/{mine_guid}/document-bundle',

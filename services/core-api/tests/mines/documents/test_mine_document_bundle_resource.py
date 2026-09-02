@@ -157,6 +157,66 @@ class TestMineDocumentBundle():
         assert post_resp.status_code == 200
         assert post_resp.json['name'] == 'boundary'
         assert post_resp.json['validation_status'] == 'VALID'
+        assert post_resp.json['docman_bundle_guid']
+
+    @pytest.mark.parametrize('docman_bundle_guid', [None, 'MISSING'])
+    def test_post_requires_a_docman_bundle_guid(self, test_client, db_session, auth_headers,
+                                                docman_bundle_guid):
+        mine_doc = MineDocumentFactory()
+        payload = {
+            'name': 'boundary',
+            'document_manager_guids': [str(mine_doc.document_manager_guid)],
+            'validation_status': 'VALID',
+        }
+        if docman_bundle_guid != 'MISSING':
+            payload['docman_bundle_guid'] = docman_bundle_guid
+
+        post_resp = test_client.post(
+            f'/mines/{mine_doc.mine_guid}/document-bundle',
+            headers=auth_headers['full_auth_header'],
+            json=payload,
+        )
+
+        assert post_resp.status_code == 400
+
+    @pytest.mark.parametrize('validation_status', [None, 'MISSING'])
+    def test_post_requires_a_validation_status(self, test_client, db_session, auth_headers,
+                                               validation_status):
+        import uuid
+
+        mine_doc = MineDocumentFactory()
+        payload = {
+            'name': 'boundary',
+            'docman_bundle_guid': str(uuid.uuid4()),
+            'document_manager_guids': [str(mine_doc.document_manager_guid)],
+        }
+        if validation_status != 'MISSING':
+            payload['validation_status'] = validation_status
+
+        post_resp = test_client.post(
+            f'/mines/{mine_doc.mine_guid}/document-bundle',
+            headers=auth_headers['full_auth_header'],
+            json=payload,
+        )
+
+        assert post_resp.status_code == 400
+
+    def test_post_rejects_unknown_validation_status(self, test_client, db_session, auth_headers):
+        import uuid
+
+        mine_doc = MineDocumentFactory()
+        post_resp = test_client.post(
+            f'/mines/{mine_doc.mine_guid}/document-bundle',
+            headers=auth_headers['full_auth_header'],
+            json={
+                'name': 'boundary',
+                'docman_bundle_guid': str(uuid.uuid4()),
+                'document_manager_guids': [str(mine_doc.document_manager_guid)],
+                'validation_status': 'NOT_A_STATUS',
+            },
+        )
+
+        assert post_resp.status_code == 400
 
     def test_post_rejects_unknown_document_guids(self, test_client, db_session, auth_headers):
         import uuid
@@ -169,6 +229,7 @@ class TestMineDocumentBundle():
                 'name': 'boundary',
                 'docman_bundle_guid': str(uuid.uuid4()),
                 'document_manager_guids': [str(uuid.uuid4())],
+                'validation_status': 'VALID',
             },
         )
         assert post_resp.status_code == 400
@@ -185,6 +246,7 @@ class TestMineDocumentBundle():
                 'name': 'boundary',
                 'docman_bundle_guid': str(uuid.uuid4()),
                 'document_manager_guids': [str(mine_doc.document_manager_guid)],
+                'validation_status': 'VALID',
             },
         )
         assert post_resp.status_code == 400
@@ -201,6 +263,7 @@ class TestMineDocumentBundle():
                 'name': document_bundle.name,
                 'docman_bundle_guid': str(document_bundle.docman_bundle_guid),
                 'document_manager_guids': [str(mine_doc.document_manager_guid)],
+                'validation_status': 'VALID',
             },
         )
 

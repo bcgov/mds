@@ -60,13 +60,12 @@ class MineDocumentBundleListResource(Resource, UserMixin):
 
     parser = CustomReqparser()
     parser.add_argument('name', type=str, required=True)
-    parser.add_argument('docman_bundle_guid', type=str, required=True)
+    parser.add_argument('docman_bundle_guid', type=str, required=True, nullable=False)
     parser.add_argument('geomark_id', type=str, required=False)
-    parser.add_argument('validation_status', type=str, required=False)
+    parser.add_argument('validation_status', type=str, required=True, nullable=False)
     parser.add_argument('validation_error', type=str, required=False)
     parser.add_argument('validation_checks', type=dict, required=False)
     parser.add_argument('document_manager_guids', type=list, location='json', required=True)
-    parser.add_argument('preserve_purposes', type=bool, required=False, default=True)
 
     @api.doc(description='Create or update a mine document spatial bundle and link documents')
     @api.marshal_with(MINE_DOCUMENT_BUNDLE_MODEL, code=200)
@@ -78,19 +77,18 @@ class MineDocumentBundleListResource(Resource, UserMixin):
         if not document_manager_guids:
             raise BadRequest('document_manager_guids is required')
 
-        validation_status = data.get('validation_status')
-        if validation_status and validation_status not in ALLOWED_VALIDATION_STATUSES:
+        validation_status = data['validation_status']
+        if validation_status not in ALLOWED_VALIDATION_STATUSES:
             raise BadRequest(f'Invalid validation_status: {validation_status}')
 
         bundle = MineDocumentBundle.upsert_from_spatial_result(
             name=data['name'],
-            docman_bundle_guid=data.get('docman_bundle_guid'),
+            docman_bundle_guid=data['docman_bundle_guid'],
             document_manager_guids=document_manager_guids,
             geomark_id=data.get('geomark_id'),
             validation_status=validation_status,
             validation_error=data.get('validation_error'),
             validation_checks=data.get('validation_checks'),
-            preserve_purposes=data.get('preserve_purposes', True),
             mine_guid=mine_guid,
         )
         return bundle.json()

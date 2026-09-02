@@ -64,6 +64,34 @@ def test_set_purpose_codes_rejects_none(db_session):
         bundle.set_purpose_codes(None)
 
 
+def test_set_purpose_codes_rejects_newly_assigned_inactive_code(db_session, mine_boundary_purpose):
+    bundle = MineDocumentBundleFactory()
+    mine_boundary_purpose.active_ind = False
+    mine_boundary_purpose.save()
+
+    with pytest.raises(BadRequest, match='Invalid spatial bundle purpose code: MBD'):
+        bundle.set_purpose_codes(['MBD'])
+
+
+def test_set_purpose_codes_keeps_an_already_assigned_inactive_code(db_session,
+                                                                  mine_boundary_purpose):
+    """Deactivating a code must not lock the bundle's remaining purposes."""
+    bundle = MineDocumentBundleFactory()
+    bundle.set_purpose_codes(['MBD'])
+    bundle.save()
+
+    mine_boundary_purpose.active_ind = False
+    mine_boundary_purpose.save()
+
+    bundle.set_purpose_codes(['MBD'])
+    bundle.save()
+    assert bundle.purpose_codes == ['MBD']
+
+    bundle.set_purpose_codes([])
+    bundle.save()
+    assert bundle.purpose_codes == []
+
+
 def test_upsert_preserves_purposes(db_session, mine_boundary_purpose):
     docman_guid = uuid.uuid4()
     mine_doc = MineDocumentFactory(document_manager_guid=uuid.uuid4())
@@ -86,10 +114,70 @@ def test_upsert_preserves_purposes(db_session, mine_boundary_purpose):
         validation_status='VALID',
         validation_error=None,
         validation_checks={'in_bc': True},
-        preserve_purposes=True,
     )
     assert updated.geomark_id == 'gm-new'
-    assert 'MBD' in updated.purpose_codes
+    assert updated.purpose_codes == ['MBD']
+
+
+def test_upsert_preserves_purposes_after_a_code_is_deactivated(db_session, mine_boundary_purpose):
+    """Revalidation must not re-validate purposes the user is not changing."""
+    docman_guid = uuid.uuid4()
+    mine_doc = MineDocumentFactory(document_manager_guid=uuid.uuid4())
+    bundle = MineDocumentBundle(
+        name='boundary',
+        docman_bundle_guid=docman_guid,
+        validation_status='VALID',
+    )
+    bundle.save()
+    mine_doc.mine_document_bundle_id = bundle.bundle_id
+    mine_doc.save()
+    bundle.set_purpose_codes(['MBD'])
+    bundle.save()
+
+    mine_boundary_purpose.active_ind = False
+    mine_boundary_purpose.save()
+
+    updated = MineDocumentBundle.upsert_from_spatial_result(
+        name='boundary',
+        docman_bundle_guid=docman_guid,
+        document_manager_guids=[str(mine_doc.document_manager_guid)],
+        geomark_id='gm-new',
+        validation_status='VALID',
+    )
+
+    assert updated.purpose_codes == ['MBD']
+
+
+def test_upsert_replaces_the_whole_validation_snapshot(db_session):
+    """A passing revalidation must not leave the previous failure's error or checks behind."""
+    docman_guid = uuid.uuid4()
+    mine_doc = MineDocumentFactory(document_manager_guid=uuid.uuid4())
+    bundle = MineDocumentBundle(
+        name='boundary',
+        docman_bundle_guid=docman_guid,
+        validation_status='UNABLE_TO_VALIDATE',
+        validation_error='Missing required file types: .prj',
+        validation_checks={'in_bc': None, 'missing_extensions': ['.prj']},
+    )
+    bundle.save()
+    mine_doc.mine_document_bundle_id = bundle.bundle_id
+    mine_doc.save()
+
+    updated = MineDocumentBundle.upsert_from_spatial_result(
+        name='boundary',
+        docman_bundle_guid=docman_guid,
+        document_manager_guids=[str(mine_doc.document_manager_guid)],
+        geomark_id='gm-new',
+        validation_status='VALID',
+        validation_error=None,
+        validation_checks=None,
+        mine_guid=mine_doc.mine_guid,
+    )
+
+    assert updated.validation_status == 'VALID'
+    assert updated.validation_error is None
+    assert updated.validation_checks is None
+    assert updated.geomark_id == 'gm-new'
 
 
 def test_upsert_clears_geomark_after_failed_revalidation(db_session):

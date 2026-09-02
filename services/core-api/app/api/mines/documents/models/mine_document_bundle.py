@@ -173,16 +173,11 @@ class MineDocumentBundle(SoftDeleteMixin, AuditMixin, Base):
     def _apply_spatial_result(self, name, docman_bundle_guid, geomark_id, validation_status,
                               validation_error, validation_checks):
         self.name = name
+        self.docman_bundle_guid = docman_bundle_guid
         self.geomark_id = geomark_id
-
-        if docman_bundle_guid:
-            self.docman_bundle_guid = docman_bundle_guid
-        if validation_status is not None:
-            self.validation_status = validation_status
-        if validation_error is not None or validation_status:
-            self.validation_error = validation_error
-        if validation_checks is not None:
-            self.validation_checks = validation_checks
+        self.validation_status = validation_status
+        self.validation_error = validation_error
+        self.validation_checks = validation_checks
 
     @classmethod
     def upsert_from_spatial_result(cls,
@@ -193,13 +188,12 @@ class MineDocumentBundle(SoftDeleteMixin, AuditMixin, Base):
                                    validation_status=None,
                                    validation_error=None,
                                    validation_checks=None,
-                                   preserve_purposes=True,
                                    mine_guid=None):
         """Create or update a Core bundle and link MineDocuments by document_manager_guid."""
         existing = cls._find_bundle_for_spatial_result(name, docman_bundle_guid,
                                                        document_manager_guids)
         docs = cls._resolve_documents_for_spatial_result(document_manager_guids, mine_guid, existing)
-        preserved_purposes = existing.purpose_codes if (existing and preserve_purposes) else []
+        purpose_codes = existing.purpose_codes if existing else []
 
         if existing:
             bundle = existing
@@ -220,8 +214,7 @@ class MineDocumentBundle(SoftDeleteMixin, AuditMixin, Base):
         for doc in docs:
             doc.mine_document_bundle_id = bundle.bundle_id
 
-        if preserved_purposes:
-            bundle.set_purpose_codes(preserved_purposes)
+        bundle.set_purpose_codes(purpose_codes)
 
         db.session.commit()
         return bundle
