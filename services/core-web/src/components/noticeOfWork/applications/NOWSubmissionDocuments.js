@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import moment from "moment";
 import { PropTypes } from "prop-types";
-import { Badge, Tooltip, Button, Popconfirm, Row, Col, Descriptions } from "antd";
+import { Badge, Tooltip, Button, Popconfirm, Row, Col, Typography } from "antd";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { ImportOutlined, ReloadOutlined, FlagOutlined } from "@ant-design/icons";
@@ -33,6 +33,7 @@ import AddButton from "@/components/common/buttons/AddButton";
 import ReferralConsultationPackage from "@/components/noticeOfWork/applications/referals/ReferralConsultationPackage";
 import PermitPackage from "@/components/noticeOfWork/applications/PermitPackage";
 import CoreTable from "@mds/common/components/common/CoreTable";
+import SpatialFilesRowLink from "@mds/common/components/documents/spatial/SpatialFilesRowLink";
 
 const propTypes = {
   openModal: PropTypes.func.isRequired,
@@ -65,6 +66,9 @@ const propTypes = {
   isAdminView: PropTypes.bool,
   isPackageModal: PropTypes.bool,
   lockedRowKeys: PropTypes.arrayOf(PropTypes.string),
+  preTableContent: PropTypes.node,
+  // Only supplied where the Spatial Files panel sits above this table.
+  onSpatialFileLinkClick: PropTypes.func,
 };
 
 const defaultProps = {
@@ -83,6 +87,8 @@ const defaultProps = {
   isAdminView: false,
   isPackageModal: false,
   lockedRowKeys: [],
+  preTableContent: null,
+  onSpatialFileLinkClick: null,
 };
 
 const transformDocuments = (
@@ -231,6 +237,37 @@ export const NOWSubmissionDocuments = (props) => {
     value: item.value,
   }));
 
+  const dataSource = transformDocuments(
+    props.documents,
+    props.importNowSubmissionDocumentsJob,
+    props.now_application_guid,
+    props
+  );
+
+  // Matching on the guids the panel itself lists keeps "tinted here" and "shown in Spatial Files"
+  // the same statement, and works for both imported submissions and documents added in Core.
+  const spatialFileGuids = new Set(
+    (props.noticeOfWork?.spatial_document_bundles || [])
+      .flatMap((bundle) => bundle?.bundle_documents || [])
+      .flatMap((document) => [document?.mine_document_guid, document?.document_manager_guid])
+      .filter(Boolean)
+      .map(String)
+  );
+  const linksToSpatialFiles = (record) =>
+    Boolean(props.onSpatialFileLinkClick) &&
+    [record?.mine_document_guid, record?.document_manager_guid].some(
+      (guid) => guid && spatialFileGuids.has(String(guid))
+    );
+
+  const renderDescriptionCaption = (record) =>
+    props.showDescription &&
+      record.description &&
+      record.description !== Strings.EMPTY_FIELD ? (
+      <Typography.Text type="secondary" style={{ fontSize: 12 }}>
+        {record.description}
+      </Typography.Text>
+    ) : null;
+
   const fileNameColumn = props.selectedRows
     ? {
       title: "File Name",
@@ -251,6 +288,10 @@ export const NOWSubmissionDocuments = (props) => {
             documentName={record.filename}
             truncateDocumentName={false}
           />
+          {linksToSpatialFiles(record) && (
+            <SpatialFilesRowLink onClick={() => props.onSpatialFileLinkClick()} />
+          )}
+          {renderDescriptionCaption(record)}
         </div>
       ),
     };
@@ -517,21 +558,6 @@ export const NOWSubmissionDocuments = (props) => {
     columns = [fileNameColumn, categoryColumn, descriptionColumn, uploadDateColumn];
   }
 
-  const dataSource = transformDocuments(
-    props.documents,
-    props.importNowSubmissionDocumentsJob,
-    props.now_application_guid,
-    props
-  );
-
-  const docDescription = (record) => {
-    return (
-      <Descriptions column={1}>
-        <Descriptions.Item label="Description">{record.description}</Descriptions.Item>
-      </Descriptions>
-    );
-  };
-
   const renderImportJobStatus = () => {
     const importJobExists = !isEmpty(props.importNowSubmissionDocumentsJob);
 
@@ -642,6 +668,7 @@ export const NOWSubmissionDocuments = (props) => {
   return (
     <div>
       {!props.hideJobStatusColumn && !props.isPackageModal && renderImportJobStatus()}
+      {props.preTableContent}
       <Row className="inline-flex between">
         <Col span={16}>{props.displayTableDescription && <p>{props.tableDescription}</p>}</Col>
         <Col span={6}>
@@ -668,12 +695,9 @@ export const NOWSubmissionDocuments = (props) => {
       <CoreTable
         columns={columns}
         dataSource={dataSource}
-        expandProps={{
-          rowKey: (record) => record.key + "description",
-          recordDescription: "document details",
-          expandedRowRender: props.showDescription ? docDescription : undefined,
-          rowExpandable: (record) => props.showDescription && record.description,
-        }}
+        rowClassName={(record) =>
+          linksToSpatialFiles(record) ? "fade-in spatial-file-row" : "fade-in"
+        }
         rowSelection={
           props.selectedRows
             ? {

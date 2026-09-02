@@ -94,7 +94,7 @@ const spatialSlice = createAppSlice({
     fetchGeomarkMapData: create.asyncThunk(
       async (geomark_id: string, thunkAPI) => {
         thunkAPI.dispatch(showLoading());
-        const geomark_link = `${ENVIRONMENT.geoMarkUrl}/geomarks/${geomark_id}`;
+        const geomark_link = `${ENVIRONMENT.geoMarkUrl}/geomarks/${encodeURIComponent(geomark_id)}`;
 
         const suffix = "/feature.geojson";
         const url = `${geomark_link}${suffix}`;
@@ -116,10 +116,16 @@ const spatialSlice = createAppSlice({
       }
     ),
     fetchSpatialBundle: create.asyncThunk(
-      async (mine_document_bundle_id: string, thunkAPI) => {
+      async (
+        payload: { mineGuid: string; mine_document_bundle_id: string | number },
+        thunkAPI
+      ) => {
         thunkAPI.dispatch(showLoading());
         const headers = createRequestHeader();
-        const url = `${ENVIRONMENT.apiUrl}${CORE_API_DOCUMENT_BUNDLE}${mine_document_bundle_id}`;
+        const url = `${ENVIRONMENT.apiUrl}${CORE_API_DOCUMENT_BUNDLE(
+          payload.mineGuid,
+          payload.mine_document_bundle_id
+        )}`;
         const response = await CustomAxios({
           errorToastMessage: "default",
         }).get(url, headers);
@@ -159,6 +165,44 @@ const spatialSlice = createAppSlice({
         },
       }
     ),
+    updateSpatialBundlePurposes: create.asyncThunk(
+      async (
+        payload: {
+          mineGuid: string;
+          bundle_id: string | number;
+          purpose_codes: string[];
+        },
+        thunkAPI
+      ) => {
+        const headers = createRequestHeader();
+        const url = `${ENVIRONMENT.apiUrl}${CORE_API_DOCUMENT_BUNDLE(
+          payload.mineGuid,
+          payload.bundle_id
+        )}`;
+        thunkAPI.dispatch(showLoading());
+        const response = await CustomAxios({
+          errorToastMessage: "default",
+          successToastMessage: "Spatial purpose updated",
+        }).patch(
+          url,
+          {
+            purpose_codes: payload.purpose_codes,
+          },
+          headers
+        );
+        thunkAPI.dispatch(hideLoading());
+        return response.data;
+      },
+      {
+        fulfilled: (state, action) => {
+          state.spatialBundle = action.payload;
+          state.bundle_id = action.payload.bundle_id;
+        },
+        rejected: (_state, action) => {
+          rejectHandler(action);
+        },
+      }
+    ),
   }),
   selectors: {
     getGeomarkMapData: (state: SpatialDataState) => {
@@ -178,6 +222,7 @@ export const {
   fetchGeomarkMapData,
   clearSpatialData,
   fetchSpatialBundle,
+  updateSpatialBundlePurposes,
 } = spatialSlice.actions;
 export const { getGeomarkMapData, getSpatialBundleGuid, getSpatialBundle } = spatialSlice.selectors;
 export const spatialDataReducer = spatialSlice.reducer;

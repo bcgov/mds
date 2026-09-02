@@ -64,6 +64,7 @@ const initialState = {
   noticeOfWorkTierOptions: [],
   noticeOfWorkNationEventOptions: [],
   noticeOfWorkNationStatusOptions: [],
+  spatialBundlePurposeCodes: [],
 };
 
 export const staticContentReducer = (state = initialState, action) => {
@@ -177,9 +178,11 @@ export const getMunicipalityOptions = (state) => state[STATIC_CONTENT].municipal
 export const getNoticeOfWorkTierOptions = (state) => state[STATIC_CONTENT].noticeOfWorkTierOptions;
 export const getNoticeOfWorkNationEventOptions = (state) => state[STATIC_CONTENT].noticeOfWorkNationEventOptions;
 export const getNoticeOfWorkNationStatusOptions = (state) => state[STATIC_CONTENT].noticeOfWorkNationStatusOptions;
+export const getSpatialBundlePurposeCodes = (state) =>
+  state[STATIC_CONTENT].spatialBundlePurposeCodes || [];
 
 const isStaticContentLoaded = (state) => {
-  const staticContentExceptions = [];
+  const staticContentExceptions = ["spatialBundlePurposeCodes"];
   if (!isFeatureEnabled(Feature.NOTICE_OF_WORK_TIER)) {
     staticContentExceptions.push("noticeOfWorkTierOptions");
   }

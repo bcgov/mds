@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { isEmpty } from "lodash";
 import { PropTypes } from "prop-types";
-import { Button, Popconfirm, Tooltip, Row, Col, Descriptions } from "antd";
+import { Button, Popconfirm, Tooltip, Row, Col, Typography } from "antd";
 import moment from "moment";
 import { FlagOutlined, MenuOutlined } from "@ant-design/icons";
 import CustomPropTypes from "@/customPropTypes";
@@ -149,6 +149,15 @@ export class NOWDocuments extends Component {
       });
     }
   };
+
+  renderDescriptionCaption = (record) =>
+    this.props.showDescription &&
+      record.description &&
+      record.description !== Strings.EMPTY_FIELD ? (
+      <Typography.Text type="secondary" style={{ fontSize: 12 }}>
+        {record.description}
+      </Typography.Text>
+    ) : null;
 
   onSortEnd = ({ oldIndex, newIndex }) => {
     if (oldIndex !== newIndex) {
@@ -356,6 +365,7 @@ export class NOWDocuments extends Component {
                 documentName={record.filename}
                 truncateDocumentName={false}
               />
+              {this.renderDescriptionCaption(record)}
             </div>
           );
         },
@@ -637,14 +647,6 @@ export class NOWDocuments extends Component {
     return tableColumns;
   };
 
-  docDescription = (record) => {
-    return (
-      <Descriptions column={1}>
-        <Descriptions.Item label="Description">{record.description}</Descriptions.Item>
-      </Descriptions>
-    );
-  };
-
   render() {
     return (
       <div>
@@ -680,12 +682,6 @@ export class NOWDocuments extends Component {
           )}
           recordType="document description"
           dataSource={this.state.dataSource}
-          expandProps={{
-            rowKey: (record) => record.key + "description",
-            recordDescription: "document details",
-            expandedRowRender: this.props.showDescription ? this.docDescription : undefined,
-            rowExpandable: (record) => this.props.showDescription && record.description,
-          }}
           // The key must be set to "index" to allow the drag-sort to work.
           rowKey={this.props.isSortingAllowed ? "index" : "key"}
           components={{

@@ -22,6 +22,8 @@ export interface LeafletMapProps {
   controls?: boolean;
   geojsonFeature?: IGeoJsonFeature;
   minHeight?: number;
+  /** Leaflet binds to a container by id, so concurrent maps each need their own */
+  mapId?: string;
 }
 
 const LeafletMap: FC<LeafletMapProps> = ({
@@ -30,12 +32,13 @@ const LeafletMap: FC<LeafletMapProps> = ({
   controls = true,
   geojsonFeature,
   minHeight = 200,
+  mapId = "leaflet-map",
 }) => {
   // if mine does not have a location, set a default to center the map
   const hasMineLocation = mine?.mine_location?.latitude && mine?.mine_location?.longitude;
   const latLong = hasMineLocation
     ? // only add mine Pin if location exists
-    [mine.mine_location.latitude, mine.mine_location.longitude]
+      [mine.mine_location.latitude, mine.mine_location.longitude]
     : [Number(Strings.DEFAULT_LAT), Number(Strings.DEFAULT_LONG)];
 
   const [isMapInitialized, setIsMapInitialized] = useState(false);
@@ -102,7 +105,7 @@ const LeafletMap: FC<LeafletMapProps> = ({
   };
 
   const createMap = () => {
-    const newMap = L.map("leaflet-map", { attributionControl: false, zoomControl: controls })
+    const newMap = L.map(mapId, { attributionControl: false, zoomControl: controls })
       .setView(latLong, Strings.DEFAULT_ZOOM)
       .setMaxZoom(10);
 
@@ -166,7 +169,7 @@ const LeafletMap: FC<LeafletMapProps> = ({
     }
   }, [geojsonFeature, isMapInitialized]);
 
-  return <div style={{ height: "100%", width: "100%", zIndex: 0, minHeight }} id="leaflet-map" />;
+  return <div style={{ height: "100%", width: "100%", zIndex: 0, minHeight }} id={mapId} />;
 };
 
 export default LeafletMap;

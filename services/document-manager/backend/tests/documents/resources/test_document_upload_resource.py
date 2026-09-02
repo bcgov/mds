@@ -1,7 +1,14 @@
-import json
 from unittest import mock
 
 from tests.factories import DocumentFactory
+
+VALID_RESULT = {
+    'geomark_id': 'dummy_geomark_id',
+    'docman_bundle_guid': 'bundle-guid',
+    'validation_status': 'VALID',
+    'validation_error': None,
+    'validation_checks': {},
+}
 
 
 def test_complete_bundle_upload_single_kml(test_client, db_session, auth_headers, tmp_path):
@@ -13,11 +20,9 @@ def test_complete_bundle_upload_single_kml(test_client, db_session, auth_headers
         'name': 'test_bundle'
     }
 
-    with mock.patch('app.utils.document_upload_helper.ObjectStoreStorageService.download_file'), \
-            mock.patch(
-                'app.utils.document_upload_helper.DocumentUploadHelper.send_spatial_file_to_geomark') as mock_send_spatial:
-        mock_send_spatial.return_value = {'id': 'dummy_geomark_id'}
-
+    with mock.patch(
+            'app.docman.utils.spatial_bundle_service.SpatialBundleService.process_document_guids',
+            return_value=VALID_RESULT):
         response = test_client.patch('/documents/complete-bundle', json=payload,
                                      headers=auth_headers['full_auth_header'])
 
@@ -32,14 +37,9 @@ def test_complete_bundle_upload_single_kmz(test_client, db_session, auth_headers
         'name': 'test_bundle'
     }
 
-    with mock.patch('app.utils.document_upload_helper.ObjectStoreStorageService.download_file'), \
-            mock.patch(
-                'app.utils.document_upload_helper.DocumentUploadHelper.send_spatial_file_to_geomark') as mock_send_spatial:
-
-        # Assume we will be getting a successful response from 'send_spatial_file_to_geomark'
-        mock_send_spatial.return_value = {'id': 'dummy_geomark_id'}
-
-        # Execute
+    with mock.patch(
+            'app.docman.utils.spatial_bundle_service.SpatialBundleService.process_document_guids',
+            return_value=VALID_RESULT):
         response = test_client.patch('/documents/complete-bundle', json=payload,
                                      headers=auth_headers['full_auth_header'])
 
@@ -55,16 +55,8 @@ def test_complete_bundle_upload_single_invalid(test_client, db_session, auth_hea
         'name': 'test_bundle'
     }
 
-    with mock.patch('app.utils.document_upload_helper.ObjectStoreStorageService.download_file'), \
-            mock.patch(
-                'app.utils.document_upload_helper.DocumentUploadHelper.send_spatial_file_to_geomark') as mock_send_spatial:
-
-        # Assume we will be getting a successful response from 'send_spatial_file_to_geomark'
-        mock_send_spatial.return_value = {'id': 'dummy_geomark_id'}
-
-        # Execute
-        response = test_client.patch('/documents/complete-bundle', json=payload,
-                                     headers=auth_headers['full_auth_header'])
+    response = test_client.patch('/documents/complete-bundle', json=payload,
+                                 headers=auth_headers['full_auth_header'])
 
     # Assert
     assert response.status_code == 400
@@ -79,11 +71,9 @@ def test_complete_bundle_upload_multiple_file_types_valid(test_client, db_sessio
         'name': 'test_bundle'
     }
 
-    with mock.patch('app.utils.document_upload_helper.ObjectStoreStorageService.download_file'), \
-            mock.patch(
-                'app.utils.document_upload_helper.DocumentUploadHelper.send_spatial_file_to_geomark') as mock_send_spatial:
-        mock_send_spatial.return_value = {'id': 'dummy_geomark_id'}
-
+    with mock.patch(
+            'app.docman.utils.spatial_bundle_service.SpatialBundleService.process_document_guids',
+            return_value=VALID_RESULT):
         response = test_client.patch('/documents/complete-bundle', json=payload,
                                      headers=auth_headers['full_auth_header'])
     assert response.status_code == 200
@@ -97,11 +87,23 @@ def test_complete_bundle_upload_multiple_file_types_invalid(test_client, db_sess
         'name': 'test_bundle'
     }
 
-    with mock.patch('app.utils.document_upload_helper.ObjectStoreStorageService.download_file'), \
-            mock.patch(
-                'app.utils.document_upload_helper.DocumentUploadHelper.send_spatial_file_to_geomark') as mock_send_spatial:
-        mock_send_spatial.return_value = {'id': 'dummy_geomark_id'}
+    response = test_client.patch('/documents/complete-bundle', json=payload,
+                                 headers=auth_headers['full_auth_header'])
+    assert response.status_code == 400
 
-        response = test_client.patch('/documents/complete-bundle', json=payload,
-                                     headers=auth_headers['full_auth_header'])
+
+def test_complete_bundle_upload_rejects_extra_file(test_client, db_session, auth_headers,
+                                                   tmp_path):
+    documents = [
+        DocumentFactory(path_root=tmp_path, file_display_name=f'testfile.{ext}')
+        for ext in ('shp', 'shx', 'dbf', 'prj', 'pdf')
+    ]
+    payload = {
+        'bundle_document_guids': [document.document_guid for document in documents],
+        'name': 'test_bundle'
+    }
+
+    response = test_client.patch('/documents/complete-bundle', json=payload,
+                                 headers=auth_headers['full_auth_header'])
+
     assert response.status_code == 400

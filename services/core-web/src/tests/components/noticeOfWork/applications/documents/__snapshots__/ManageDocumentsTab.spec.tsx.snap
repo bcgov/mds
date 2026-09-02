@@ -631,9 +631,6 @@ exports[`ManageDocumentsTab renders properly 1`] = `
                                     style="table-layout: auto;"
                                   >
                                     <colgroup>
-                                      <col
-                                        class="ant-table-expand-icon-col"
-                                      />
                                       <col />
                                       <col />
                                       <col
@@ -653,9 +650,6 @@ exports[`ManageDocumentsTab renders properly 1`] = `
                                       class="ant-table-thead"
                                     >
                                       <tr>
-                                        <th
-                                          class="ant-table-cell ant-table-row-expand-icon-cell"
-                                        />
                                         <th
                                           aria-label="Category"
                                           class="ant-table-cell ant-table-column-has-sorters"
@@ -851,11 +845,6 @@ exports[`ManageDocumentsTab renders properly 1`] = `
                                         class="ant-table-row ant-table-row-level-0 fade-in"
                                       >
                                         <td
-                                          class="ant-table-cell ant-table-row-expand-icon-cell"
-                                        >
-                                          <span />
-                                        </td>
-                                        <td
                                           class="ant-table-cell"
                                         >
                                           <div
@@ -1013,9 +1002,6 @@ exports[`ManageDocumentsTab renders properly 1`] = `
                                     style="table-layout: auto;"
                                   >
                                     <colgroup>
-                                      <col
-                                        class="ant-table-expand-icon-col"
-                                      />
                                       <col />
                                       <col />
                                       <col />
@@ -1036,9 +1022,6 @@ exports[`ManageDocumentsTab renders properly 1`] = `
                                       class="ant-table-thead"
                                     >
                                       <tr>
-                                        <th
-                                          class="ant-table-cell ant-table-row-expand-icon-cell"
-                                        />
                                         <th
                                           aria-label="Category"
                                           class="ant-table-cell ant-table-column-has-sorters"
@@ -1289,7 +1272,7 @@ exports[`ManageDocumentsTab renders properly 1`] = `
                                       <tr>
                                         <td
                                           class="ant-table-cell"
-                                          colspan="8"
+                                          colspan="7"
                                         >
                                           No Data Yet
                                         </td>
@@ -1683,12 +1666,8 @@ exports[`ManageDocumentsTab renders properly 1`] = `
                                         data-row-key="aef-ntr"
                                       >
                                         <td
-                                          class="ant-table-cell ant-table-cell-with-append"
+                                          class="ant-table-cell"
                                         >
-                                          <span
-                                            class="ant-table-row-indent indent-level-0"
-                                            style="padding-left: 0px;"
-                                          />
                                           <div
                                             title="Category"
                                           >
@@ -1752,12 +1731,8 @@ exports[`ManageDocumentsTab renders properly 1`] = `
                                         data-row-key="aef-pmt-draft"
                                       >
                                         <td
-                                          class="ant-table-cell ant-table-cell-with-append"
+                                          class="ant-table-cell"
                                         >
-                                          <span
-                                            class="ant-table-row-indent indent-level-0"
-                                            style="padding-left: 0px;"
-                                          />
                                           <div
                                             title="Category"
                                           >

@@ -437,6 +437,9 @@ class NOWApplication(Base, AuditMixin):
         docs = []
 
         for doc in now_application.imported_submission_documents:
+            mine_document_bundle_id = None
+            if doc.mine_document and doc.mine_document.mine_document_bundle_id:
+                mine_document_bundle_id = doc.mine_document.mine_document_bundle_id
             docs.append({
                 'messageid':
                 doc.messageid,
@@ -464,6 +467,8 @@ class NOWApplication(Base, AuditMixin):
                 doc.now_application_id,
                 'document_manager_guid':
                 doc.document_manager_guid,
+                'mine_document_bundle_id':
+                mine_document_bundle_id,
                 'preamble_title':
                 doc.preamble_title,
                 'preamble_author':
@@ -501,3 +506,19 @@ class NOWApplication(Base, AuditMixin):
                 })
 
         return docs
+    @classmethod
+    def get_spatial_document_bundles(cls, now_application):
+        """Unique MineDocumentBundle records linked to this application's documents.
+
+        Covers both proponent submission imports and documents added manually in Core.
+        """
+        bundles = {}
+        application_documents = list(now_application.imported_submission_documents or []) + list(
+            now_application.documents or [])
+        for doc in application_documents:
+            mine_doc = doc.mine_document
+            if not mine_doc or not mine_doc.mine_document_bundle:
+                continue
+            bundle = mine_doc.mine_document_bundle
+            bundles[bundle.bundle_id] = bundle.json()
+        return list(bundles.values())

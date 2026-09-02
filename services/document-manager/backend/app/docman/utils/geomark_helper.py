@@ -33,6 +33,7 @@ class GeomarkHelper:
         self.GEOMARK_URL_BASE = current_app.config['GEOMARK_URL_BASE']
         self.GEOMARK_SECRET_KEY = current_app.config['GEOMARK_SECRET_KEY']
         self.GEOMARK_PERSIST = current_app.config['GEOMARK_PERSIST']
+        self.GEOMARK_UPLOAD_TIMEOUT = current_app.config.get('GEOMARK_UPLOAD_TIMEOUT', 300)
 
         assert self.GEOMARK_URL_BASE, 'GEOMARK_URL_BASE is not set in the configuration'
 
@@ -54,7 +55,7 @@ class GeomarkHelper:
         encoded_signature = url_encode(signature)
 
         url = f"{self.GEOMARK_URL_BASE}/geomarkGroups/{group_id}/geomarks/add?geomarkId={geomark_id}&signature={encoded_signature}&time={timestamp}"
-        response = requests.post(url, headers = {'Accept': 'application/json'})
+        response = requests.post(url, headers = {'Accept': 'application/json'}, timeout=30)
 
         if response.status_code != 200:
             raise InternalServerError('Error adding geomark to group. Geomark service returned status code: ' + str(response.status_code))
@@ -70,56 +71,81 @@ class GeomarkHelper:
         return resp
 
     def send_spatial_file_to_geomark(self,file_path):
-        try:
-            file_extension = os.path.splitext(file_path)[1].lstrip('.')
+        file_extension = os.path.splitext(file_path)[1].lstrip('.')
 
-            # Ensure the format is one of the allowed ones
-            assert file_extension in ['shpz', 'kml', 'kmz'], "Invalid file format. Must be one of: 'shpz', 'kml', 'kmz'."
+        # Ensure the format is one of the allowed ones
+        assert file_extension in ['shpz', 'kml', 'kmz'], "Invalid file format. Must be one of: 'shpz', 'kml', 'kmz'."
 
-            mime_type = mimetypes.guess_type(file_path)[0]
+        mime_type = mimetypes.guess_type(file_path)[0]
 
-            url = f'{self.GEOMARK_URL_BASE}/geomarks/new'
+        url = f'{self.GEOMARK_URL_BASE}/geomarks/new'
 
-            # https://apps.gov.bc.ca/pub/geomark/docs/coordinateSystems.html
-            accepted_projection = {
-                'shpz': '3005', # BC Albers
-                'kmz': '3005', # BC Albers
-                'kml': '4326', # WGS 84 <-- kml files are always in this projection
-            }
+        # https://apps.gov.bc.ca/pub/geomark/docs/coordinateSystems.html
+        accepted_projection = {
+            'shpz': '3005', # BC Albers
+            'kmz': '3005', # BC Albers
+            'kml': '4326', # WGS 84 <-- kml files are always in this projection
+        }
 
-            with open(file_path, 'rb') as file:
-                multipart_data = MultipartEncoder(
-                    fields={
-                        'body': (os.path.basename(file_path), file, mime_type),
-                        'resultFormat': 'json',
-                        'format': file_extension,
-                        'srid': accepted_projection[file_extension] # Validate that the projection is correct
-                    }
-                )
-                headers = {
-                    'Content-Type': multipart_data.content_type
+        with open(file_path, 'rb') as file:
+            multipart_data = MultipartEncoder(
+                fields={
+                    'body': (os.path.basename(file_path), file, mime_type),
+                    'resultFormat': 'json',
+                    'format': file_extension,
+                    'srid': accepted_projection[file_extension] # Validate that the projection is correct
                 }
-                # Send the request
-                response = requests.post(
-                    url,
-                    data=multipart_data,
-                    headers=headers
-                )
-        finally:
-            # Delete the file
-            os.remove(file_path)
+            )
+            headers = {
+                'Content-Type': multipart_data.content_type
+            }
+            response = requests.post(
+                url,
+                data=multipart_data,
+                headers=headers,
+                timeout=self.GEOMARK_UPLOAD_TIMEOUT,
+            )
 
-        response_data = response.json() if response.text.strip() else None
+        if response.status_code < 200 or response.status_code >= 300:
+            current_app.logger.error(
+                f'Error uploading spatial file to Geomark: status {response.status_code}')
+            return {'error': f'Geomark service returned status code: {response.status_code}'}
 
-        if response_data:            
-            gemoark_id = response_data.get('id')
+        if not response.text.strip():
+            return None
 
-            if gemoark_id:
-                current_app.logger.info(f"Geomark {gemoark_id} was successfully created")
+        try:
+            response_data = response.json()
+        except ValueError:
+            current_app.logger.error('Error uploading spatial file to Geomark: invalid JSON response')
+            return {'error': 'Geomark service returned an invalid response'}
+
+        if response_data:
+            geomark_id = response_data.get('id')
+
+            if geomark_id:
+                current_app.logger.info(f"Geomark {geomark_id} was successfully created")
         
                 if self.GEOMARK_PERSIST:
-                    self.add_geomark_to_group(gemoark_id, self.GEOMARK_GROUP)
+                    self.add_geomark_to_group(geomark_id, self.GEOMARK_GROUP)
             else:
-                current_app.logger.error('Error uploading spatial file to Geomark: ', response.text)
+                current_app.logger.error(
+                    f'Error uploading spatial file to Geomark: {response.text}')
 
-        return response.json() if response.text.strip() else None
+        return response_data
+
+    def fetch_geomark_metadata(self, geomark_id):
+        """Fetch the Geomark info resource as returned, without remapping field names."""
+        if not geomark_id:
+            return None
+
+        encoded_id = urllib.parse.quote(str(geomark_id), safe='')
+        url = f'{self.GEOMARK_URL_BASE}/geomarks/{encoded_id}.json'
+        try:
+            response = requests.get(url, headers={'Accept': 'application/json'}, timeout=30)
+            if response.status_code == 200:
+                return response.json()
+        except Exception as e:
+            current_app.logger.warning(f'Failed to fetch Geomark metadata for {geomark_id}: {e}')
+
+        return None

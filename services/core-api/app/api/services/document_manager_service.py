@@ -179,7 +179,9 @@ class DocumentManagerService():
             'submission_documents':
             marshal(now_application.submission_documents, NOW_SUBMISSION_DOCUMENT),
             'now_application_guid':
-            str(now_application.now_application_guid)
+            str(now_application.now_application_guid),
+            'mine_guid':
+            str(now_application.mine_guid) if now_application.mine_guid else None,
         }
 
         resp = requests.post(
@@ -187,6 +189,30 @@ class DocumentManagerService():
             headers={key: value
                      for (key, value) in request.headers if key != 'Host'},
             data=json.dumps(data))
+
+        return Response(resp.content, resp.status_code, resp.raw.headers.items())
+
+    @classmethod
+    def process_spatial_documents(cls, request, document_manager_guids, mine_guid=None):
+        """Queue non-blocking spatial detection, validation and Geomark registration."""
+        current_app.logger.info('Sending %s document(s) to Document Manager for spatial processing.',
+                                len(document_manager_guids))
+
+        payload = {'document_guids': document_manager_guids}
+        if mine_guid:
+            payload['mine_guid'] = str(mine_guid)
+
+        resp = requests.post(
+            url=f'{Config.DOCUMENT_MANAGER_URL}/documents/spatial-bundles',
+            headers={key: value
+                     for (key, value) in request.headers if key != 'Host'},
+            data=json.dumps(payload),
+            timeout=30)
+
+        if resp.status_code not in (200, 202):
+            raise requests.HTTPError(
+                f'Document Manager spatial processing failed ({resp.status_code}): {resp.content}',
+                response=resp)
 
         return Response(resp.content, resp.status_code, resp.raw.headers.items())
 

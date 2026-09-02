@@ -20,6 +20,7 @@ from app.api.mines.comments.resources.mine_comment import (
 )
 from app.api.mines.compliance.resources.compliance import MineComplianceSummaryResource
 from app.api.mines.documents.resources.mine_document_bundle import (
+    MineDocumentBundleListResource,
     MineDocumentBundleResource,
 )
 from app.api.mines.documents.resources.mine_document_resource import (
@@ -342,7 +343,9 @@ from app.api.utils.access_decorators import (
      (ProjectDecisionPackageResource, 'get', [VIEW_ALL, MINESPACE_PROPONENT]),
      (ProjectDecisionPackageResource, 'put', [MINE_ADMIN, EDIT_PROJECT_DECISION_PACKAGES]),
      (ProjectDecisionPackageListResource, 'post', [MINE_ADMIN, EDIT_PROJECT_DECISION_PACKAGES]),
+     (MineDocumentBundleListResource, 'post', [EDIT_PERMIT]),
      (MineDocumentBundleResource, 'get', [VIEW_ALL, MINESPACE_PROPONENT]),
+     (MineDocumentBundleResource, 'patch', [EDIT_PERMIT, MINESPACE_PROPONENT]),
      (GlobalMineAlertListResource, 'get', [VIEW_ALL]),
      (HelpListResource, 'get', [VIEW_ALL, MINESPACE_PROPONENT]),
      (HelpResource, 'get', [VIEW_ALL, MINESPACE_PROPONENT]),

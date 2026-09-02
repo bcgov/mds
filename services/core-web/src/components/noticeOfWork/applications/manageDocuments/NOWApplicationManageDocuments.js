@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { isEmpty } from "lodash";
 import CustomPropTypes from "@/customPropTypes";
@@ -6,6 +6,7 @@ import FinalPermitDocuments from "@/components/noticeOfWork/applications/FinalPe
 import NOWDocuments from "@/components/noticeOfWork/applications//NOWDocuments";
 import ScrollContentWrapper from "@/components/noticeOfWork/applications/ScrollContentWrapper";
 import NOWSubmissionDocuments from "@/components/noticeOfWork/applications//NOWSubmissionDocuments";
+import NOWSpatialFiles from "@/components/noticeOfWork/applications/NOWSpatialFiles";
 
 /**
  * @class NOWApplicationManageDocuments- contains all information relating to the documents on a Notice of Work Application
@@ -24,6 +25,7 @@ const propTypes = {
 const defaultProps = { importNowSubmissionDocumentsJob: {}, isViewMode: false };
 
 export const NOWApplicationManageDocuments = (props) => {
+  const [spatialScrollRequestId, setSpatialScrollRequestId] = useState(null);
   const isNoWApplication = props.noticeOfWork.application_type_code === "NOW";
   const applicationFilesTypes = ["AAF", "MDO", "SDO"];
   // default to true, as the preferred flow has permit conditions.
@@ -33,6 +35,9 @@ export const NOWApplicationManageDocuments = (props) => {
   const tableDescription = isNoWApplication
     ? "In this table, you can see all documents submitted during initial application, revision and new files requested from the proponent. Documents added in this section will not show up in the permit package unless otherwise specified."
     : "In this table, you can see all documents uploaded to the application, revision and new files requested from the proponent. Documents added in this section will not show up in the permit package unless otherwise specified.";
+
+  const scrollToSpatialFiles = () => setSpatialScrollRequestId(Date.now());
+
   return (
     <div>
       <ScrollContentWrapper id="permit-package" title="Permit Package" isLoaded={props.isLoaded}>
@@ -93,6 +98,15 @@ export const NOWApplicationManageDocuments = (props) => {
           isViewMode={props.isViewMode}
           hideJobStatusColumn={!isNoWApplication}
           hideImportStatusColumn={!isNoWApplication}
+          onSpatialFileLinkClick={scrollToSpatialFiles}
+          preTableContent={
+            <NOWSpatialFiles
+              spatialDocumentBundles={props.noticeOfWork.spatial_document_bundles || []}
+              isViewMode={props.isViewMode}
+              mineGuid={props.noticeOfWork.mine_guid}
+              scrollRequestId={spatialScrollRequestId}
+            />
+          }
         />
       </ScrollContentWrapper>
       <ScrollContentWrapper
