@@ -297,6 +297,7 @@ BEGIN
             public.underground_exploration_type,
             public.unit_type,
             public."user",
+            public.user_version,
             public.variance,
             public.variance_application_status_code,
             public.variance_document_category_code,
