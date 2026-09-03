@@ -418,8 +418,6 @@ const IncidentFormInitialReport: FC<IncidentFormInitialReportProps> = ({
                       component={renderConfig.RADIO}
                       customOptions={INCIDENT_CONTACT_METHOD_OPTIONS.filter((cm) => !cm?.inspectorOnly)}
                       disabled={!isEditMode}
-                      required
-                      validate={[required]}
                     />
                   </Col>
                 )}
@@ -456,8 +454,6 @@ const IncidentFormInitialReport: FC<IncidentFormInitialReportProps> = ({
                       component={renderConfig.RADIO}
                       customOptions={INCIDENT_CONTACT_METHOD_OPTIONS.filter((cm) => !cm?.inspectorOnly)}
                       disabled={!isEditMode}
-                      required
-                      validate={[required]}
                     />
                   </Col>
                 )}
