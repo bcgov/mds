@@ -38,7 +38,7 @@ def test_filter_paragraphs_excludes_header_tagged_with_page_header_role():
         _doc("1. The permittee must do a thing.", None, 1, 0.40, 0.60),
         _doc("Old Co Ltd, Some Mine", "pageHeader", 2, 0.10, 0.20),
         _doc("Permit No. M-1 Page 2 of 2", "pageHeader", 2, 0.20, 0.30),
-        _doc("2. The permittee must do another thing.", None, 2, 0.40, 0.60),
+        _doc("2. The permittee must do another thing.", None, 2, 0.40, 0.60),aaaaaa
     ]
 
     filtered = filter_paragraphs(documents)
