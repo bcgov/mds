@@ -32,4 +32,34 @@ describe("IncidentForm", () => {
     );
     expect(component).toMatchSnapshot();
   });
+
+  it("renders the JOHSC initial contact method fields when reps were contacted", () => {
+    const johscContactedProps = {
+      ...props,
+      incident: {
+        ...MOCK.INCIDENT,
+        johsc_worker_rep_contacted: true,
+        johsc_worker_rep_contact_method: "INP",
+        johsc_management_rep_contacted: true,
+        johsc_management_rep_contact_method: "INP",
+      },
+      initialValues: {
+        ...MOCK.INCIDENT,
+        johsc_worker_rep_contacted: true,
+        johsc_worker_rep_contact_method: "INP",
+        johsc_management_rep_contacted: true,
+        johsc_management_rep_contact_method: "INP",
+      },
+    };
+
+    const { getAllByText } = render(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[`/${mockedMineGuid}/${mockedMineIncidentGuid}`]}>
+          <IncidentForm {...johscContactedProps} />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(getAllByText("In Person").length).toBeGreaterThan(0);
+  });
 });

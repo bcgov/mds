@@ -90,6 +90,7 @@ export const INCIDENT_FOLLOWUP_ACTIONS = {
 export const INCIDENT_CONTACT_METHOD_OPTIONS = [
   { label: "Phone", value: "PHN" },
   { label: "Email", value: "EML" },
+  { label: "In Person", value: "INP" },
   { label: "Direct phone", value: "PHN", inspectorOnly: true },
   { label: "Direct email", value: "EML", inspectorOnly: true },
   { label: "Ministry reporting phone line", value: "MRP", inspectorOnly: true },

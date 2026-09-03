@@ -2,14 +2,15 @@ import json
 import re
 
 import requests
-from celery.utils.log import get_task_logger
-
 from app.config import Config
 from app.docman.models.document import Document
-from app.docman.models.import_now_submission_documents_job import ImportNowSubmissionDocumentsJob
+from app.docman.models.import_now_submission_documents_job import (
+    ImportNowSubmissionDocumentsJob,
+)
 from app.docman.utils.spatial_bundle_service import SpatialBundleService
 from app.tasks.celery import celery
 from app.tasks.import_now_submission_documents import get_core_authorization_token
+from celery.utils.log import get_task_logger
 
 logger = get_task_logger(__name__)
 

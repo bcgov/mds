@@ -149,6 +149,13 @@ class NOWApplicationDocumentIndexStatusResource(Resource, UserMixin):
                 run.error_message = 'Indexing run timed out with no status update from the search service.'
                 run.last_run_end = datetime.utcnow()
                 run.save()
+            elif run.status == 'running' and status.get('status') and status.get('status') != 'running':
+                run.status = status.get('status')
+                run.items_processed = status.get('items_processed') or 0
+                run.error_count = status.get('error_count') or 0
+                run.error_message = status.get('error_message')
+                run.last_run_end = datetime.utcnow()
+                run.save()
 
             status['last_run_start'] = to_utc_isoformat(run.last_run_start)
             status['last_run_end'] = to_utc_isoformat(run.last_run_end)

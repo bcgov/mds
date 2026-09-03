@@ -70,7 +70,7 @@ class TestAnonCredCredentialManager:
         assert attributes["bond_total"] == str(pa.permit.active_bond_total)
 
     def test_produce_untp_cc_map_payload_happy(self, db_session):
-        mine, permit = create_mine_and_permit()
+        mine, permit = create_mine_and_permit(permit_kwargs={"permit_no": "M-1234567"})
         permittee_appt = MinePartyAppointmentFactory(permittee=True, permit_id=permit.permit_id)
 
         print(permit._all_permit_amendments[0].issue_date)
@@ -88,7 +88,7 @@ class TestAnonCredCredentialManager:
         assert str(untp_post_resp["data"]["permittee"]["identifier"]) == str(poe.registration_id)
 
     def test_produce_untp_cc_map_payload_null_if_no_orgbook(self, db_session):
-        mine, permit = create_mine_and_permit()
+        mine, permit = create_mine_and_permit(permit_kwargs={"permit_no": "M-1234567"})
         permittee_appt = MinePartyAppointmentFactory(permittee=True, permit_id=permit.permit_id)
 
         pa_cred, party_guid = UNTPCredentialManager.prepare_permit_amendment_untp_credential_without_id(
