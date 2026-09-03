@@ -32,6 +32,20 @@ def mine_guid_from_documents(documents):
     return None
 
 
+def imported_documents_for_application(now_application_guid):
+    """Every document imported for a NoW, across all of its import jobs.
+
+    An import job only ever contains the documents that still needed importing, so scoping
+    spatial processing to one job would leave previously imported files unvalidated.
+    """
+    documents = {}
+    for job in ImportNowSubmissionDocumentsJob.find_by_now_application_guid(now_application_guid):
+        for import_document in job.import_now_submission_documents:
+            if import_document.document:
+                documents[import_document.document_id] = import_document.document
+    return list(documents.values())
+
+
 def sync_bundle_to_core(result, authorization_token, mine_guid):
     """Persist spatial bundle validation result on Core MineDocumentBundle."""
     if not mine_guid:
@@ -107,11 +121,8 @@ def process_now_spatial_bundles(self, import_now_submission_documents_job_id, mi
         )
         return {'success': False, 'message': 'Import job not found'}
 
-    # Collect imported Document records for this job
-    documents = []
-    for import_doc in import_job.import_now_submission_documents:
-        if import_doc.document_id and import_doc.document:
-            documents.append(import_doc.document)
+    # Bundle and validate every document imported for this NoW, not just this job's.
+    documents = imported_documents_for_application(import_job.now_application_guid)
 
     if not documents:
         logger.info(f'No documents to process for job {import_now_submission_documents_job_id}')
