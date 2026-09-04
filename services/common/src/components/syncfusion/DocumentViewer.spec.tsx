@@ -1,6 +1,6 @@
 import React from "react";
 import DocumentViewer, { PdfViewer } from "@mds/common/components/syncfusion/DocumentViewer";
-import { render } from "@testing-library/react";
+import { act, render } from "@testing-library/react";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 
 jest.mock("@syncfusion/ej2-react-pdfviewer", () => {
@@ -12,16 +12,14 @@ jest.mock("@syncfusion/ej2-react-pdfviewer", () => {
       annotation = { clear: jest.fn(), addAnnotation: jest.fn() };
       navigation = { goToPage: jest.fn() };
 
-      componentDidMount() {
-        this.props.documentLoad?.();
-      }
-
       render() {
         return null;
       }
     },
   };
 });
+
+const loadDocument = (pdfViewer) => act(() => pdfViewer.props.documentLoad());
 
 const props = {
   documentPath: "mock path name",
@@ -49,6 +47,7 @@ describe("PdfViewer", () => {
   it("does not touch annotations when no location is ever given (generic document viewer)", () => {
     let pdfViewer;
     render(<PdfViewer documentPath="doc-a" onInit={(scope) => (pdfViewer = scope)} />);
+    loadDocument(pdfViewer);
 
     expect(pdfViewer.annotation.clear).not.toHaveBeenCalled();
     expect(pdfViewer.annotation.addAnnotation).not.toHaveBeenCalled();
@@ -63,6 +62,7 @@ describe("PdfViewer", () => {
         onInit={(scope) => (pdfViewer = scope)}
       />
     );
+    loadDocument(pdfViewer);
 
     expect(pdfViewer.navigation.goToPage).toHaveBeenCalledWith(1);
     expect(pdfViewer.annotation.addAnnotation).toHaveBeenCalledTimes(1);
@@ -77,14 +77,17 @@ describe("PdfViewer", () => {
         onInit={(scope) => (pdfViewer = scope)}
       />
     );
+    loadDocument(pdfViewer);
 
-    rerender(
-      <PdfViewer
-        documentPath="doc-a"
-        annotationLocation={conditionB}
-        onInit={(scope) => (pdfViewer = scope)}
-      />
-    );
+    act(() => {
+      rerender(
+        <PdfViewer
+          documentPath="doc-a"
+          annotationLocation={conditionB}
+          onInit={(scope) => (pdfViewer = scope)}
+        />
+      );
+    });
 
     expect(pdfViewer.navigation.goToPage).toHaveBeenLastCalledWith(3);
     expect(pdfViewer.annotation.addAnnotation).toHaveBeenCalledTimes(2);
@@ -99,8 +102,11 @@ describe("PdfViewer", () => {
         onInit={(scope) => (pdfViewer = scope)}
       />
     );
+    loadDocument(pdfViewer);
 
-    rerender(<PdfViewer documentPath="doc-a" onInit={(scope) => (pdfViewer = scope)} />);
+    act(() => {
+      rerender(<PdfViewer documentPath="doc-a" onInit={(scope) => (pdfViewer = scope)} />);
+    });
 
     expect(pdfViewer.annotation.addAnnotation).toHaveBeenCalledTimes(1);
     expect(pdfViewer.annotation.clear).toHaveBeenCalledTimes(2);
