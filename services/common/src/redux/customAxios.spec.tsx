@@ -24,6 +24,8 @@ jest.mock("@mds/common/utils", () => ({
   isFeatureEnabled: jest.fn(() => true),
 }));
 
+import axios from "axios";
+import { isFeatureEnabled } from "@mds/common/utils";
 import CustomAxios, { notifymAdmin, openReportErrorModal, MDSError } from "./customAxios";
 
 const mockError = (data: object, status?: number): MDSError =>
@@ -117,25 +119,217 @@ describe("customAxios report-error helpers", () => {
     });
   });
 
-  describe("error response interceptor", () => {
-    const getRejectedHandler = () => {
-      CustomAxios();
-      const [, onRejected] = mockResponseUse.mock.calls[mockResponseUse.mock.calls.length - 1];
-      return onRejected;
+  describe("CustomAxios response interceptor", () => {
+    beforeAll(() => {
+      Object.defineProperty(window.location, "reload", {
+        configurable: true,
+        writable: true,
+        value: jest.fn(),
+      });
+    });
+
+    beforeEach(() => {
+      jest.clearAllMocks();
+    });
+
+    const getHandlers = (options?: any) => {
+      CustomAxios(options);
+      const [onFulfilled, onRejected] =
+        mockResponseUse.mock.calls[mockResponseUse.mock.calls.length - 1];
+      return { onFulfilled, onRejected };
     };
 
-    it("shows a Tell Admin button that opens the report modal", async () => {
-      const user = userEvent.setup();
-      const onRejected = getRejectedHandler();
+    describe("onFulfilled", () => {
+      it("returns the response and does not notify when successToastMessage is undefined", () => {
+        const successSpy = jest.spyOn(notification, "success");
+        const { onFulfilled } = getHandlers();
+        const response = { data: "ok" };
 
-      const error = mockError({ message: "Server exploded", trace_id: "trace-500" }, 500);
+        const result = onFulfilled(response);
 
-      await expect(onRejected(error)).rejects.toBe(error);
+        expect(result).toBe(response);
+        expect(successSpy).not.toHaveBeenCalled();
+        successSpy.mockRestore();
+      });
 
-      const tellAdminButton = await screen.findByRole("button", { name: "Tell Admin" });
-      await user.click(tellAdminButton);
+      it("shows a success notification when successToastMessage is provided", () => {
+        const successSpy = jest.spyOn(notification, "success");
+        const { onFulfilled } = getHandlers({ successToastMessage: "Saved successfully!" });
+        const response = { data: "ok" };
 
-      expect(await screen.findByText("Report an error")).toBeInTheDocument();
+        const result = onFulfilled(response);
+
+        expect(result).toBe(response);
+        expect(successSpy).toHaveBeenCalledWith({
+          message: "Saved successfully!",
+          duration: 10,
+        });
+        successSpy.mockRestore();
+      });
+    });
+
+    describe("onRejected", () => {
+      it("resolves the error message when request is cancelled", async () => {
+        (axios.isCancel as unknown as jest.Mock).mockReturnValueOnce(true);
+        const { onRejected } = getHandlers();
+        const error = { message: "Request cancelled" } as any;
+
+        const result = await onRejected(error);
+
+        expect(result).toBe("Request cancelled");
+      });
+
+      it("reloads the page on 401 UNAUTHORIZED", async () => {
+        const { onRejected } = getHandlers();
+        const error = mockError({}, 401);
+
+        await expect(onRejected(error)).rejects.toBe(error);
+        expect(window.location.reload).toHaveBeenCalledWith(false);
+      });
+
+      it("reloads the page on 503 MAINTENANCE", async () => {
+        const { onRejected } = getHandlers();
+        const error = mockError({}, 503);
+
+        await expect(onRejected(error)).rejects.toBe(error);
+        expect(window.location.reload).toHaveBeenCalledWith(false);
+      });
+
+      it("shows a Tell Admin button that opens the report modal when REPORT_ERROR feature is enabled", async () => {
+        const user = userEvent.setup();
+        const { onRejected } = getHandlers();
+
+        const error = mockError(
+          {
+            message: "Server exploded (psycopg2.OperationalError)",
+            detailed_error: "Some detailed db trace",
+            trace_id: "trace-500",
+          },
+          500
+        );
+
+        await expect(onRejected(error)).rejects.toBe(error);
+
+        expect(await screen.findByText("Some detailed db trace")).toBeInTheDocument();
+        expect(await screen.findByText("Trace Id: trace-500")).toBeInTheDocument();
+
+        const tellAdminButton = await screen.findByRole("button", { name: "Tell Admin" });
+        await user.click(tellAdminButton);
+
+        expect(await screen.findByText("Report an error")).toBeInTheDocument();
+      });
+
+      it("shows standard error notification when REPORT_ERROR feature is disabled", async () => {
+        (isFeatureEnabled as jest.Mock).mockReturnValueOnce(false);
+        const errorSpy = jest.spyOn(notification, "error");
+        const { onRejected } = getHandlers();
+
+        const error = mockError({ message: "Simple failure" }, 500);
+
+        await expect(onRejected(error)).rejects.toBe(error);
+
+        expect(errorSpy).toHaveBeenCalledWith(
+          expect.objectContaining({
+            message: "Simple failure",
+            duration: 10,
+          })
+        );
+        errorSpy.mockRestore();
+      });
+
+      it("shows custom errorToastMessage when provided", async () => {
+        const errorSpy = jest.spyOn(notification, "error");
+        const { onRejected } = getHandlers({ errorToastMessage: "Custom failure message" });
+
+        const error = mockError({ message: "Backend error" }, 500);
+
+        await expect(onRejected(error)).rejects.toBe(error);
+
+        expect(errorSpy).toHaveBeenCalledWith({
+          message: "Custom failure message",
+          duration: 10,
+        });
+        errorSpy.mockRestore();
+      });
+
+      it("suppresses error notification when suppressErrorNotification is true", async () => {
+        const errorSpy = jest.spyOn(notification, "error");
+        const { onRejected } = getHandlers({ suppressErrorNotification: true });
+
+        const error = mockError({ message: "Ignored error" }, 500);
+
+        await expect(onRejected(error)).rejects.toBe(error);
+
+        expect(errorSpy).not.toHaveBeenCalled();
+        errorSpy.mockRestore();
+      });
+
+      it("handles error without response object", async () => {
+        const errorSpy = jest.spyOn(notification, "error");
+        const { onRejected } = getHandlers();
+        const error = new Error("Network offline") as MDSError;
+
+        await expect(onRejected(error)).rejects.toBe(error);
+        expect(errorSpy).toHaveBeenCalled();
+        errorSpy.mockRestore();
+      });
+
+      it("handles errorToastMessage being explicitly undefined", async () => {
+        const errorSpy = jest.spyOn(notification, "error");
+        const { onRejected } = getHandlers({ errorToastMessage: undefined });
+        const error = mockError({ message: "Default fallback error" }, 500);
+
+        await expect(onRejected(error)).rejects.toBe(error);
+        expect(errorSpy).toHaveBeenCalled();
+        errorSpy.mockRestore();
+      });
+
+      it("does not render detailed_error paragraph when detailed_error is 'Not provided'", async () => {
+        const { onRejected } = getHandlers();
+        const error = mockError(
+          {
+            message: "Some error",
+            detailed_error: "Not provided",
+          },
+          500
+        );
+
+        await expect(onRejected(error)).rejects.toBe(error);
+        expect(screen.queryByText("Not provided")).not.toBeInTheDocument();
+      });
+
+      it("rejects error without notification if document is not defined", async () => {
+        const originalDoc = window.document;
+        Object.defineProperty(window, "document", {
+          configurable: true,
+          value: null,
+        });
+        try {
+          const { onRejected } = getHandlers();
+          const error = mockError({}, 500);
+          await expect(onRejected(error)).rejects.toBe(error);
+        } finally {
+          Object.defineProperty(window, "document", {
+            configurable: true,
+            value: originalDoc,
+          });
+        }
+      });
+    });
+
+    describe("adapter configuration", () => {
+      it("configures non-test adapters when NODE_ENV is production", () => {
+        const originalEnv = process.env.NODE_ENV;
+        try {
+          process.env.NODE_ENV = "production";
+          CustomAxios();
+          expect(axios.create).toHaveBeenCalledWith({
+            adapter: ["xhr", "http"],
+          });
+        } finally {
+          process.env.NODE_ENV = originalEnv;
+        }
+      });
     });
   });
 });
