@@ -8,13 +8,17 @@
 {% block content %}
 
 {{ paragraph(info_block("Error", business_error) +
+info_block("Severity", severity) +
 info_block("Environment", environment), margin_top=16, brand=brand) }}
 
 {{ paragraph(info_block("Reported Date", reported_date) +
 info_block("Reporter's Name", reporter.name) +
 info_block("Reporter's Email", reporter.email), margin_top=16, brand=brand) }}
 
+{{ paragraph(info_block("What were you trying to do?", description) +
+info_block("Seen this before?", seen_before), margin_top=16, brand=brand) }}
+
 {{ paragraph(info_block("Trace Id", trace_id) +
-'Click here to see ' + inline_link(kibana_link, 'the error logs', brand=brand) + '.', margin_top=16, brand=brand) }}
+'Click here to see ' + inline_link(observe_logs_link, 'the error logs', brand=brand) + '.', margin_top=16, brand=brand) }}
 
 {% endblock %}

@@ -32,7 +32,10 @@ def test_send_template_email_renders_jinja2_templates_correctly(mock_health_chec
         'environment': 'Test Environment',
         'business_error': 'Database connection timeout',
         'trace_id': 'abc123-def456-ghi789',
-        'kibana_link': 'https://kibana.example.com/trace/abc123'
+        'severity': 'Low',
+        'description': 'I clicked save and this error appeared.',
+        'seen_before': 'Not sure',
+        'observe_logs_link': 'https://console.apps.silver.devops.gov.bc.ca/dev-monitoring/ns/4c2ba9-dev/logs?q=abc123'
     }
     
     # Use template path (simplified EmailService behavior)

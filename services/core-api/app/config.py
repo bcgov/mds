@@ -209,9 +209,11 @@ class Config(object):
     FLAGSMITH_ENABLE_LOCAL_EVALUATION = os.environ.get('FLAGSMITH_ENABLE_LOCAL_EVALUATION',
                                                        'false') == 'true'
 
-    # Kibana
-    KIBANA_BASE_URL = os.environ.get(
-        'KIBANA_BASE_URL', 'https://kibana-openshift-logging.apps.silver.devops.gov.bc.ca')
+    # OpenShift Observe > Logs (LokiStack-backed console log search)
+    OBSERVE_LOGS_BASE_URL = os.environ.get('OBSERVE_LOGS_BASE_URL',
+                                           'https://console.apps.silver.devops.gov.bc.ca')
+    _DEFAULT_NS_ENV = 'dev' if ENVIRONMENT_NAME == 'local' else ENVIRONMENT_NAME
+    OPENSHIFT_NAMESPACE = os.environ.get('OPENSHIFT_NAMESPACE', f'4c2ba9-{_DEFAULT_NS_ENV}')
 
     # NROS
     NROS_CLIENT_SECRET = os.environ.get('NROS_CLIENT_SECRET', None)
