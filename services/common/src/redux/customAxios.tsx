@@ -32,7 +32,11 @@ const formatErrorMessage = (errorMessage: string) => {
   return errorMessage.replace("(psycopg2.", "(DatabaseError.");
 };
 
-let CustomAxios: (options?: CustomAxiosOptions) => AxiosInstance;
+export interface CustomAxiosOptions {
+  errorToastMessage?: string;
+  suppressErrorNotification?: boolean;
+  successToastMessage?: string;
+}
 
 export const notifymAdmin = (
   error: MDSError,
@@ -93,17 +97,11 @@ export const openReportErrorModal = (error: MDSError) => {
   render(true);
 };
 
-interface CustomAxiosOptions {
-  errorToastMessage?: string;
-  suppressErrorNotification?: boolean;
-  successToastMessage?: string;
-}
-
-CustomAxios = ({
+export const CustomAxios = ({
   errorToastMessage = "default",
   suppressErrorNotification = false,
   successToastMessage = undefined,
-}: CustomAxiosOptions = {}) => {
+}: CustomAxiosOptions = {}): AxiosInstance => {
   const instance = axios.create({
     adapter: process.env.NODE_ENV === "test" ? undefined : ['xhr', 'http']
   });
@@ -195,6 +193,6 @@ CustomAxios = ({
   );
 
   return instance;
-};
+}
 
 export default CustomAxios;
