@@ -10,6 +10,7 @@ import requests
 from app.api.constants import DOWNLOAD_TOKEN, TIMEOUT_5_MINUTES
 from app.api.mines.documents.mine_document_search_util import MineDocumentSearchUtil
 from app.api.mines.documents.models.mine_document import MineDocument
+from app.api.now_applications.models.now_application import NOWApplication
 from app.api.now_applications.models.now_application_document_identity_xref import (
     NOWApplicationDocumentIdentityXref,
 )
@@ -178,6 +179,8 @@ class DocumentManagerService():
             now_application.now_application_id,
             'submission_documents':
             marshal(now_application.submission_documents, NOW_SUBMISSION_DOCUMENT),
+            'additional_spatial_validation_document_guids':
+            NOWApplication.get_spatial_validation_document_guids(now_application),
             'now_application_guid':
             str(now_application.now_application_guid),
             'mine_guid':

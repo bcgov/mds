@@ -3,18 +3,20 @@ from types import SimpleNamespace
 from unittest.mock import patch
 
 import pytest
-
 from app import create_app
 from app.config import TestConfig
+from app.docman.models.document_bundle import DocumentBundle
 from app.docman.utils.spatial_bundle_service import (
     VALIDATION_STATUS_UNABLE_TO_VALIDATE,
     VALIDATION_STATUS_VALID,
 )
 from app.tasks.process_now_spatial_bundles import (
+    application_documents_for_spatial_processing,
     mine_guid_from_documents,
     process_spatial_document_guids,
     sync_bundle_to_core,
 )
+from app.utils.include.user_info import User
 
 _TASK_PATH = 'app.tasks.process_now_spatial_bundles'
 _SERVICE_PATH = 'app.docman.utils.spatial_bundle_service'
@@ -172,17 +174,68 @@ class TestMineGuidFromDocuments:
         assert mine_guid_from_documents([_doc('area.kml')]) is None
 
 
+class TestApplicationDocumentsForSpatialProcessing:
+    @patch(f'{_TASK_PATH}.Document')
+    @patch(f'{_TASK_PATH}.ImportNowSubmissionDocumentsJob')
+    def test_includes_imported_and_manually_uploaded_documents(
+            self, mock_import_job, mock_document, app_context):
+        imported = _doc('imported.kml', guid='imported-guid')
+        manually_uploaded = _doc('manual.kml', guid='manual-guid')
+        import_job = SimpleNamespace(
+            import_now_submission_documents=[
+                SimpleNamespace(document_id=1, document=imported)
+            ]
+        )
+        mock_import_job.find_by_now_application_guid.return_value = [import_job]
+        mock_document.query.filter.return_value.all.return_value = [manually_uploaded]
+
+        documents = application_documents_for_spatial_processing(
+            'application-guid', ['imported-guid', 'manual-guid'])
+
+        assert documents == [imported, manually_uploaded]
+        mock_import_job.find_by_now_application_guid.assert_called_once_with('application-guid')
+
+
 class TestAuditUserOutsideRequestContext:
     """Bundles are created on a Celery worker, where the AuditMixin defaults cannot resolve."""
 
+    @patch('app.utils.models_mixins.current_task')
+    def test_updates_existing_bundle_without_a_request_context(self, _current_task, db_session):
+        bundle = DocumentBundle(
+            name='boundary',
+            create_user='mds',
+            update_user='mds',
+        )
+        db_session.add(bundle)
+        db_session.commit()
+
+        original_test_mode = User._test_mode
+        User._test_mode = False
+        try:
+            bundle.geomark_id = 'gm-test'
+            db_session.commit()
+        except Exception:
+            db_session.rollback()
+            raise
+        finally:
+            User._test_mode = original_test_mode
+
+        assert bundle.geomark_id == 'gm-test'
+
     def test_falls_back_to_system_user(self, app_context):
-        from app.docman.utils.spatial_bundle_service import SYSTEM_USER, SpatialBundleService
+        from app.docman.utils.spatial_bundle_service import (
+            SYSTEM_USER,
+            SpatialBundleService,
+        )
 
         assert SpatialBundleService._audit_user() == SYSTEM_USER
 
     @patch(f'{_SERVICE_PATH}.db')
     def test_links_documents_with_an_explicit_update_user(self, _db, app_context):
-        from app.docman.utils.spatial_bundle_service import SYSTEM_USER, SpatialBundleService
+        from app.docman.utils.spatial_bundle_service import (
+            SYSTEM_USER,
+            SpatialBundleService,
+        )
 
         documents = [_doc('boundary.shp'), _doc('boundary.shx'), _doc('boundary.dbf')]
         SpatialBundleService.process_document_group(documents, blocking=False)

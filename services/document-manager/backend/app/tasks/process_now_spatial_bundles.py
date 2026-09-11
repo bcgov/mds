@@ -32,17 +32,19 @@ def mine_guid_from_documents(documents):
     return None
 
 
-def imported_documents_for_application(now_application_guid):
-    """Every document imported for a NoW, across all of its import jobs.
-
-    An import job only ever contains the documents that still needed importing, so scoping
-    spatial processing to one job would leave previously imported files unvalidated.
-    """
+def application_documents_for_spatial_processing(
+    now_application_guid, additional_spatial_validation_document_guids):
+    """Every imported and manually uploaded document for a NoW application."""
     documents = {}
     for job in ImportNowSubmissionDocumentsJob.find_by_now_application_guid(now_application_guid):
         for import_document in job.import_now_submission_documents:
             if import_document.document:
                 documents[import_document.document_id] = import_document.document
+
+    if additional_spatial_validation_document_guids:
+        for document in Document.query.filter(
+                Document.document_guid.in_(additional_spatial_validation_document_guids)).all():
+            documents[document.document_id] = document
     return list(documents.values())
 
 
@@ -109,7 +111,10 @@ def _process_and_sync(documents, token_ref=None, log_context='', mine_guid=None)
     acks_late=True,
     autoretry_for=(Exception,),
 )
-def process_now_spatial_bundles(self, import_now_submission_documents_job_id, mine_guid=None):
+def process_now_spatial_bundles(self,
+                                import_now_submission_documents_job_id,
+                                mine_guid=None,
+                                additional_spatial_validation_document_guids=None):
     """Non-blocking spatial detect/validate after NoW document import."""
     import_job = ImportNowSubmissionDocumentsJob.query.filter_by(
         import_now_submission_documents_job_id=import_now_submission_documents_job_id
@@ -121,8 +126,9 @@ def process_now_spatial_bundles(self, import_now_submission_documents_job_id, mi
         )
         return {'success': False, 'message': 'Import job not found'}
 
-    # Bundle and validate every document imported for this NoW, not just this job's.
-    documents = imported_documents_for_application(import_job.now_application_guid)
+    documents = application_documents_for_spatial_processing(
+        import_job.now_application_guid,
+        additional_spatial_validation_document_guids or [])
 
     if not documents:
         logger.info(f'No documents to process for job {import_now_submission_documents_job_id}')
