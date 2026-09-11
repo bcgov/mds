@@ -56,7 +56,10 @@ def task_result(job_id, task_id, success, message, success_docs, errors, doc_ids
     acks_late=True,
     task_reject_on_worker_lost=True,
     autoretry_for=(Exception, ))
-def import_now_submission_documents(self, import_now_submission_documents_job_id, mine_guid=None):
+def import_now_submission_documents(self,
+                                    import_now_submission_documents_job_id,
+                                    mine_guid=None,
+                                    additional_spatial_validation_document_guids=None):
     result = None
     success = False
     errors = []
@@ -192,7 +195,10 @@ def import_now_submission_documents(self, import_now_submission_documents_job_id
         # Non-blocking spatial detect / validate / Geomark
         try:
             from app.tasks.process_now_spatial_bundles import process_now_spatial_bundles
-            process_now_spatial_bundles.delay(import_now_submission_documents_job_id, mine_guid)
+            process_now_spatial_bundles.delay(
+                import_now_submission_documents_job_id,
+                mine_guid,
+                additional_spatial_validation_document_guids or [])
         except Exception as spatial_err:
             logger.error(f'Failed to enqueue spatial bundle processing: {spatial_err}')
         return result
@@ -204,7 +210,10 @@ def import_now_submission_documents(self, import_now_submission_documents_job_id
         # Still attempt spatial processing for any successfully imported docs
         try:
             from app.tasks.process_now_spatial_bundles import process_now_spatial_bundles
-            process_now_spatial_bundles.delay(import_now_submission_documents_job_id, mine_guid)
+            process_now_spatial_bundles.delay(
+                import_now_submission_documents_job_id,
+                mine_guid,
+                additional_spatial_validation_document_guids or [])
         except Exception as spatial_err:
             logger.error(f'Failed to enqueue spatial bundle processing: {spatial_err}')
     else:
