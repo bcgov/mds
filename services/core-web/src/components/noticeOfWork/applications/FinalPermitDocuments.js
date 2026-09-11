@@ -3,11 +3,16 @@ import PropTypes from "prop-types";
 import { FormSection } from "@mds/common/components/forms/form";
 import { connect } from "react-redux";
 import { getNOWProgress } from "@mds/common/redux/selectors/noticeOfWorkSelectors";
-import { getLockedSystemNtrDoc } from "@mds/common/utils/helpers";
+import { getNowApplicationDocument } from "@mds/common/utils/permitPackageDocuments";
 import CustomPropTypes from "@/customPropTypes";
 import PermitPackage from "@/components/noticeOfWork/applications/PermitPackage";
 import NOWDocuments from "@/components/noticeOfWork/applications/NOWDocuments";
 import NOWSubmissionDocuments from "@/components/noticeOfWork/applications/NOWSubmissionDocuments";
+
+// Re-exported so existing imports of getNowApplicationDocument from this module keep working —
+// the single implementation now lives in permitPackageDocuments.ts, shared with NOWDocuments.js
+// and the Condition Data Variable picker.
+export { getNowApplicationDocument };
 
 /**
  * @class FinalPermitDocuments- call logic surrounding adding or removing documents in the final Permit document list
@@ -34,80 +39,6 @@ const defaultProps = {
   disableCategoryFilter: false,
   showInUnifiedView: false,
   showBCMIWarning: false,
-};
-
-const LOCKED_ROW_BASE = {
-  isLockedApplicationForm: true,
-  now_application_document_type_code: null,
-  is_final_package: true,
-  is_referral_package: false,
-  is_consultation_package: false,
-};
-
-const NA_ROW = {
-  ...LOCKED_ROW_BASE,
-  final_package_order: -1,
-  now_application_document_xref_guid: "application-form-1.1", // synthetic key — no real NTR doc exists yet
-  preamble_title: "N/A",
-  preamble_author: "N/A",
-  preamble_date: null,
-  category: "N/A",
-  description: "N/A",
-  mine_document: {
-    mine_document_guid: null,
-    document_manager_guid: null,
-    document_name: null,
-    upload_date: null,
-  },
-};
-
-const TECHNICAL_REVIEW_NTR_DESCRIPTION =
-  "This document was automatically created when Technical Review was completed.";
-
-export const getNowApplicationDocument = (noticeOfWork, progress) => {
-  const nullResult = { nowApplicationDocument: null, lockedNtrGuid: null };
-
-  if (noticeOfWork.application_type_code !== "NOW") {
-    return nullResult;
-  }
-
-  const hasSystemGeneratedNtr = noticeOfWork.documents.some(
-    (doc) => doc.now_application_document_type_code === "NTR" && doc.is_system_generated
-  );
-  if (!hasSystemGeneratedNtr) {
-    return nullResult;
-  }
-
-  const technicalReviewEverCompleted =
-    !!progress.REV?.end_date ||
-    noticeOfWork.documents.some(
-      (doc) =>
-        doc.now_application_document_type_code === "NTR" &&
-        doc.is_system_generated &&
-        doc.description === TECHNICAL_REVIEW_NTR_DESCRIPTION
-    );
-  if (!technicalReviewEverCompleted) {
-    return nullResult;
-  }
-
-  const latestNtr = getLockedSystemNtrDoc(noticeOfWork.documents, noticeOfWork.locked_ntr_guid);
-  if (!latestNtr) {
-    return { nowApplicationDocument: NA_ROW, lockedNtrGuid: null };
-  }
-
-  return {
-    lockedNtrGuid: latestNtr.now_application_document_xref_guid,
-    nowApplicationDocument: {
-      ...latestNtr,
-      ...LOCKED_ROW_BASE,
-      preamble_title: latestNtr.preamble_title || "Notice of Work Application",
-      preamble_author: latestNtr.preamble_author || "N/A",
-      preamble_date: latestNtr.preamble_date ?? latestNtr.mine_document?.upload_date ?? null,
-      category: "Notice of Work Form",
-      description:
-        "Latest version of the Notice of Work application. Always included and system-managed.",
-    },
-  };
 };
 
 export class FinalPermitDocuments extends Component {

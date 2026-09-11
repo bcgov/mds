@@ -15,11 +15,9 @@ import {
 } from "@mds/common/redux/selectors/permitSelectors";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
-import VariableConditionMenuOld from "@/components/Forms/permits/conditions/VariableConditionMenuOld";
 import ScrollContentWrapper from "@/components/noticeOfWork/applications/ScrollContentWrapper";
 import FinalPermitDocuments from "@/components/noticeOfWork/applications/FinalPermitDocuments";
 import PreviousAmendmentDocuments from "@/components/noticeOfWork/applications/PreviousAmendmentDocuments";
-import Conditions from "@/components/Forms/permits/conditions/Conditions";
 import NOWDocuments from "@/components/noticeOfWork/applications//NOWDocuments";
 import PermitAmendmentTable from "@/components/noticeOfWork/applications/permitGeneration/PermitAmendmentTable";
 import UploadPermitDocument from "@/components/noticeOfWork/applications/permitGeneration/UploadPermitDocument";
@@ -41,8 +39,6 @@ import { storeEditingPreambleFlag } from "@mds/common/redux/actions/permitAction
 import { PermitConditionsProvider } from "@mds/common/components/permits/PermitConditionsContext";
 import PermitConditionViewEdit from "@mds/common/components/permits/PermitConditionViewEdit";
 import { fetchDraftPermitByNOW } from "@mds/common/redux/actionCreators/permitActionCreator";
-import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
-import { Feature } from "@mds/common/utils";
 import { userHasRole } from "@mds/common/redux/selectors/authenticationSelectors";
 import { USER_ROLES } from "@mds/common/constants/environment";
 import VariableConditionMenu from "@mds/common/components/permits/VariableConditionMenu";
@@ -68,8 +64,6 @@ export const GeneratePermitForm: FC<IGeneratedPermitFormProps> = (props) => {
   const formValues = (useAppSelector(getFormValues(FORM.GENERATE_PERMIT)) ??
     {}) as INoWGeneratedPermit;
   const editingPreambleFlag = useAppSelector(getEditingPreambleFlag);
-  const { isFeatureEnabled } = useFeatureFlag();
-  const newEditorEnabled = isFeatureEnabled(Feature.NOW_PERMIT_CONDITIONS_EDITOR);
   const [loading, setLoading] = useState(false);
   const [editingFormName, setEditingFormName] = useState<string>();
   const [addingToCategoryCode, setAddingToCategoryCode] = useState<string>();
@@ -329,7 +323,6 @@ export const GeneratePermitForm: FC<IGeneratedPermitFormProps> = (props) => {
           draftPermit={props.draftPermit}
         />
       </ScrollContentWrapper>
-      {editingPreambleFlag && !newEditorEnabled && <VariableConditionMenuOld />}
       {props.draftPermitAmendment.has_permit_conditions && (
         <ScrollContentWrapper id="preamble" title="Preamble" isLoaded={props.isLoaded}>
           <>
@@ -403,7 +396,7 @@ export const GeneratePermitForm: FC<IGeneratedPermitFormProps> = (props) => {
                   <Row className="ant-form-item-label">
                     <label htmlFor="preamble_text">Preamble Text</label>
                   </Row>
-                  {editingPreambleFlag && newEditorEnabled && (
+                  {editingPreambleFlag && (
                     <VariableConditionMenu
                       conditionForm={FORM.GENERATE_PERMIT}
                       inputRef={preambleInputRef}
@@ -462,27 +455,17 @@ export const GeneratePermitForm: FC<IGeneratedPermitFormProps> = (props) => {
       )}
       {props.draftPermitAmendment.has_permit_conditions && (
         <ScrollContentWrapper id="conditions" title="Conditions" isLoaded={props.isLoaded}>
-          {newEditorEnabled ? (
-            <PermitConditionsProvider value={conditionsProviderValue}>
-              <PermitConditionViewEdit
-                userCanEdit={userCanEdit && !props.isViewMode}
-                formattedCategories={formattedCategories}
-                collapseCategories
-                editingFormName={editingFormName}
-                setEditingFormName={setEditingFormName}
-                addingToCategoryCode={addingToCategoryCode}
-                setAddingToCategoryCode={setAddingToCategoryCode}
-              />
-            </PermitConditionsProvider>
-          ) : (
-            <Conditions
-              mineGuid={props.noticeOfWork.mine_guid}
-              permitGuid={props.draftPermit.permit_guid}
-              isViewMode={props.isViewMode}
-              isSourcePermitGeneratedInCore={props.noticeOfWork.is_source_permit_generated_in_core}
-              isNoWApplication={props.noticeOfWork.application_type_code === "NOW"}
+          <PermitConditionsProvider value={conditionsProviderValue}>
+            <PermitConditionViewEdit
+              userCanEdit={userCanEdit && !props.isViewMode}
+              formattedCategories={formattedCategories}
+              collapseCategories
+              editingFormName={editingFormName}
+              setEditingFormName={setEditingFormName}
+              addingToCategoryCode={addingToCategoryCode}
+              setAddingToCategoryCode={setAddingToCategoryCode}
             />
-          )}
+          </PermitConditionsProvider>
         </ScrollContentWrapper>
       )}
       <ScrollContentWrapper id="maps" title="Maps">

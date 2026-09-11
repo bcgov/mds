@@ -23,8 +23,6 @@
     "permit_conditions_page": true,
     "permit_conditions_pdf_split_view": true,
     "permit_condition_tags": true,
-    "standard_permit_conditions_new_editor": true,
-    "now_permit_conditions_new_editor": true,
     "modify_permit_conditions": true,
     "major_project_refactor": true,
     "help_guide": true,
@@ -35,5 +33,6 @@
     "notice_of_work_tier": true,
     "now_application_document_search": true,
     "notice_of_work_nations": true,
-    "inspector_permit_package_type_selector": true
+    "inspector_permit_package_type_selector": true,
+    "cdv_permit_package_files": true
 }
