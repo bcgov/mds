@@ -34,4 +34,33 @@ describe("DocumentTable", () => {
     fireEvent.click(archiveAction);
     expect(openModalSpy).toHaveBeenCalledTimes(1);
   });
+
+  it("calls onReplaceDocument when replace is submitted", async () => {
+    openModalSpy.mockClear();
+    onReplaceFunc.mockClear();
+
+    const { getAllByText, findByTestId } = render(
+      <ReduxWrapper>
+        <DocumentTable
+          documents={documents}
+          showVersionHistory
+          canReplaceDocuments
+          onReplaceDocument={onReplaceFunc}
+        />
+      </ReduxWrapper>
+    );
+    const actionsButton = getAllByText("Actions")[0];
+    fireEvent.mouseEnter(actionsButton);
+    const replaceAction = await findByTestId("action-button-replace");
+    fireEvent.click(replaceAction);
+    expect(openModalSpy).toHaveBeenCalledTimes(1);
+
+    const modalProps = openModalSpy.mock.calls[0][0].props;
+    const replacementDoc = new MineDocument({
+      ...documents[0],
+      document_name: "Marshmallow.docx",
+    });
+    await modalProps.handleSubmit(replacementDoc);
+    expect(onReplaceFunc).toHaveBeenCalledWith(replacementDoc);
+  });
 });

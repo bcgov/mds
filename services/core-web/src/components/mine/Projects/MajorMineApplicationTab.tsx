@@ -195,6 +195,7 @@ const MajorMineApplicationTab: FC = () => {
                 additionalColumns={additionalColumns}
                 canArchiveDocuments={archiveFeatureEnabled}
                 onArchivedDocuments={fetchData}
+                onReplaceDocument={fetchData}
                 isLoaded={isLoaded}
                 showVersionHistory={true}
                 enableBulkActions={true}
