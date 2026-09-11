@@ -24,6 +24,8 @@ ARG instantclient_version=21_6
 # -y non-interactive : yes
 # --no-install-recommends : Install only dependecies and not all recommended dependency 
 
+RUN deb http://security.debian.org/debian-security/ bullseye-security main contrib non-free
+
 RUN apt-get update && apt-get install -y --no-install-recommends \ 
     build-essential \
     make \

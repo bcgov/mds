@@ -1,26 +1,30 @@
 import uuid
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.schema import FetchedValue
-from sqlalchemy.orm import validates
-from sqlalchemy.ext.associationproxy import association_proxy
-from werkzeug.exceptions import NotFound
-from sqlalchemy.ext.hybrid import hybrid_property
 from datetime import datetime, timezone
 
-from app.api.utils.models_mixins import Base, AuditMixin
-from app.extensions import db
-
-from .now_application_type import NOWApplicationType
-from .now_application_status import NOWApplicationStatus
-from .now_application_identity import NOWApplicationIdentity
 from app.api.constants import *
-from app.api.utils.include.user_info import User
-from app.auth import get_user_is_admin
-
-from app.api.now_submissions.models.document import Document
-from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
 from app.api.mines.mine.models.mine_type import MineType
-from app.api.mines.permits.permit_conditions.models.permit_conditions import PermitConditions
+from app.api.mines.permits.permit_amendment.models.permit_amendment import (
+    PermitAmendment,
+)
+from app.api.mines.permits.permit_conditions.models.permit_conditions import (
+    PermitConditions,
+)
+from app.api.now_submissions.models.document import Document
+from app.api.utils.include.user_info import User
+from app.api.utils.models_mixins import AuditMixin, Base
+from app.auth import get_user_is_admin
+from app.extensions import db
+from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.ext.associationproxy import association_proxy
+from sqlalchemy.ext.hybrid import hybrid_property
+from sqlalchemy.orm import validates
+from sqlalchemy.schema import FetchedValue
+from werkzeug.exceptions import NotFound
+
+from .now_application_identity import NOWApplicationIdentity
+from .now_application_status import NOWApplicationStatus
+from .now_application_type import NOWApplicationType
+
 LOCKED_NTR_FINAL_PACKAGE_ORDER = -1
 
 
@@ -401,10 +405,17 @@ class NOWApplication(Base, AuditMixin):
 
     # Generates a Notice of Work Form (NTR) document and includes it in the final application package while excluding all previous NTR documents.
     def add_now_form_to_fap(self, description):
-        from app.api.now_applications.models.now_application_document_xref import NOWApplicationDocumentXref
-        from app.api.now_applications.resources.now_application_export_resource import NOWApplicationExportResource
-        from app.api.document_generation.resources.now_document_resource import NoticeOfWorkDocumentResource
         from datetime import date
+
+        from app.api.document_generation.resources.now_document_resource import (
+            NoticeOfWorkDocumentResource,
+        )
+        from app.api.now_applications.models.now_application_document_xref import (
+            NOWApplicationDocumentXref,
+        )
+        from app.api.now_applications.resources.now_application_export_resource import (
+            NOWApplicationExportResource,
+        )
 
         # Generate the Notice of Work Form document
         token = NOWApplicationExportResource.get_now_form_generate_token(self.now_application_guid)
@@ -522,3 +533,15 @@ class NOWApplication(Base, AuditMixin):
             bundle = mine_doc.mine_document_bundle
             bundles[bundle.bundle_id] = bundle.json()
         return list(bundles.values())
+
+    @classmethod
+    def get_spatial_validation_document_guids(cls, now_application):
+        """Document Manager GUIDs for imported and manually uploaded application documents."""
+        document_guids = []
+        application_documents = list(now_application.imported_submission_documents or []) + list(
+            now_application.documents or [])
+        for doc in application_documents:
+            mine_doc = doc.mine_document
+            if mine_doc and mine_doc.document_manager_guid:
+                document_guids.append(str(mine_doc.document_manager_guid))
+        return list(dict.fromkeys(document_guids))
