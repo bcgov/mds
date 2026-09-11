@@ -1,16 +1,15 @@
 import React, { FC, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { Row, Col, Typography, Button } from "antd";
-import { LockOutlined, FolderViewOutlined } from "@ant-design/icons";
+import { Button, Col, Row, Typography } from "antd";
+import { FolderViewOutlined, LockOutlined } from "@ant-design/icons";
 import { getFormValues } from "@mds/common/components/forms/form";
 import { getProject } from "@mds/common/redux/selectors/projectSelectors";
-import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
+import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
 import {
-  fetchProjectById,
   createProjectDecisionPackage,
-  updateProjectDecisionPackage,
+  fetchProjectById,
   removeDocumentFromProjectDecisionPackage,
+  updateProjectDecisionPackage,
 } from "@mds/common/redux/actionCreators/projectActionCreator";
 import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import * as routes from "@/constants/routes";
