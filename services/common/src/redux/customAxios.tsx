@@ -1,11 +1,15 @@
-import axios from "axios";
+import axios, { AxiosError, AxiosInstance } from "axios";
 import { notification, Button } from "antd";
 import * as String from "@mds/common/constants/strings";
 import React from "react";
+import ReactDOM from "react-dom";
 import * as API from "@mds/common/constants/API";
 import { ENVIRONMENT } from "@mds/common/constants/environment";
 import { createRequestHeader } from "./utils/RequestHeaders";
 import { Feature, isFeatureEnabled } from "@mds/common/utils";
+import ReportErrorModal, {
+  ReportErrorDetails,
+} from "@mds/common/components/common/ReportErrorModal";
 
 // https://stackoverflow.com/questions/39696007/axios-with-promise-prototype-finally-doesnt-work
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -16,19 +20,37 @@ promiseFinally.shim();
 const UNAUTHORIZED = 401;
 const MAINTENANCE = 503;
 
-const formatErrorMessage = (errorMessage) => {
+export interface MDSErrorResponseData {
+  message?: string;
+  detailed_error?: string;
+  trace_id?: string;
+}
+
+export type MDSError = AxiosError<MDSErrorResponseData>;
+
+const formatErrorMessage = (errorMessage: string) => {
   return errorMessage.replace("(psycopg2.", "(DatabaseError.");
 };
 
-let CustomAxios;
+export interface CustomAxiosOptions {
+  errorToastMessage?: string;
+  suppressErrorNotification?: boolean;
+  successToastMessage?: string;
+}
 
-const notifymAdmin = (error) => {
+export const notifymAdmin = (
+  error: MDSError,
+  { severity, description, seenBefore }: Partial<ReportErrorDetails> = {}
+) => {
   const business_message = error?.response?.data?.message;
   const trace_id = error?.response?.data?.trace_id;
 
   const payload = {
     business_error: business_message,
     trace_id: trace_id,
+    severity,
+    description,
+    seen_before: seenBefore,
   };
 
   CustomAxios()
@@ -41,15 +63,45 @@ const notifymAdmin = (error) => {
       return response;
     })
     .catch((err) => {
-      throw new Error(err);
+      notification.error({
+        message: "Failed to send error report to Admin. Please try again later.",
+        duration: 5,
+      });
+      console.error("Failed to report error:", err);
     });
 };
 
-CustomAxios = ({
+export const openReportErrorModal = (error: MDSError) => {
+  const container = document.createElement("div");
+  document.body.appendChild(container);
+
+  const cleanup = () => {
+    ReactDOM.unmountComponentAtNode(container);
+    container.remove();
+  };
+
+  const render = (open: boolean) => {
+    ReactDOM.render(
+      <ReportErrorModal
+        open={open}
+        onCancel={cleanup}
+        onSubmit={(details) => {
+          notifymAdmin(error, details);
+          cleanup();
+        }}
+      />,
+      container
+    );
+  };
+
+  render(true);
+};
+
+export const CustomAxios = ({
   errorToastMessage = "default",
   suppressErrorNotification = false,
   successToastMessage = undefined,
-} = {}) => {
+}: CustomAxiosOptions = {}): AxiosInstance => {
   const instance = axios.create({
     adapter: process.env.NODE_ENV === "test" ? undefined : ['xhr', 'http']
   });
@@ -64,7 +116,7 @@ CustomAxios = ({
       }
       return response;
     },
-    (error) => {
+    (error: MDSError) => {
       if (axios.isCancel(error)) {
         return Promise.resolve(error.message);
       }
@@ -114,7 +166,7 @@ CustomAxios = ({
                 type="primary"
                 size="small"
                 onClick={() => {
-                  notifymAdmin(error);
+                  openReportErrorModal(error);
                   notification.close(notificationKey);
                 }}
               >
@@ -141,6 +193,6 @@ CustomAxios = ({
   );
 
   return instance;
-};
+}
 
 export default CustomAxios;

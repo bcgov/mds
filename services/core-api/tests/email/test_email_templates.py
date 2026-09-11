@@ -39,7 +39,10 @@ def sample_error_report_data():
             'email': 'john.developer@gov.bc.ca'
         },
         'trace_id': 'abc123-def456-ghi789',
-        'kibana_link': 'https://kibana.example.com/logs/abc123',
+        'severity': 'Low',
+        'description': 'I clicked save and this error appeared.',
+        'seen_before': 'Not sure',
+        'observe_logs_link': 'https://console.apps.silver.devops.gov.bc.ca/dev-monitoring/ns/4c2ba9-dev/logs?q=abc123',
         'minespace_logo': 'https://via.placeholder.com/200x80/003366/ffffff?text=Minespace+Logo'
     }
 
@@ -132,6 +135,10 @@ def test_error_report_email_renders(test_client, template_env, sample_error_repo
     assert 'Error Reported in Development Environment' in rendered_html
     assert 'Database connection timeout' in rendered_html
     assert 'john.developer@gov.bc.ca' in rendered_html
+    assert 'Severity:</b> Low' in rendered_html
+    assert 'What were you trying to do?:</b> I clicked save and this error appeared.' in rendered_html
+    assert 'Seen this before?:</b> Not sure' in rendered_html
+    assert sample_error_report_data['observe_logs_link'] in rendered_html
 
 
 def test_core_error_report_email_renders(test_client, template_env, sample_error_report_data):
@@ -143,6 +150,10 @@ def test_core_error_report_email_renders(test_client, template_env, sample_error
     assert 'Error Reported in Development Environment' in rendered_html
     assert 'Database connection timeout' in rendered_html
     assert 'john.developer@gov.bc.ca' in rendered_html
+    assert 'Severity:</b> Low' in rendered_html
+    assert 'What were you trying to do?:</b> I clicked save and this error appeared.' in rendered_html
+    assert 'Seen this before?:</b> Not sure' in rendered_html
+    assert sample_error_report_data['observe_logs_link'] in rendered_html
     # Check for Core brand color in the page title or text color
     assert CORE_PRIMARY in rendered_html or TEXT_COLOR in rendered_html  # Core primary or text color
 
