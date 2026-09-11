@@ -127,15 +127,32 @@ export const ViewPdf: React.FC<ViewPDFProps> = ({
   onInit = null
 }) => {
   const pdfViewerRef = useRef<any>(null);
+  const [isDocumentLoaded, setIsDocumentLoaded] = useState(false);
+  const hasDrawnAnnotationRef = useRef(false);
+
+  useEffect(() => {
+    setIsDocumentLoaded(false);
+    hasDrawnAnnotationRef.current = false;
+  }, [documentPath]);
+
+  const { pageNumber, boundingBox } = annotationLocation ?? {};
+  const { top, right, bottom, left } = boundingBox ?? {};
+
+  useEffect(() => {
+    if (!isDocumentLoaded || !pdfViewerRef.current) {
+      return;
+    }
+
+    if (annotationLocation) {
+      hasDrawnAnnotationRef.current = true;
+      addAnnotationToPDFViewer(pdfViewerRef.current, pageNumber, boundingBox);
+    } else if (hasDrawnAnnotationRef.current) {
+      pdfViewerRef.current.annotation.clear();
+    }
+  }, [isDocumentLoaded, pageNumber, top, right, bottom, left]);
 
   const handleDocumentLoaded = () => {
-    if (pdfViewerRef.current && annotationLocation) {
-      addAnnotationToPDFViewer(
-        pdfViewerRef.current,
-        annotationLocation.pageNumber,
-        annotationLocation.boundingBox
-      );
-    }
+    setIsDocumentLoaded(true);
   };
 
   return (
