@@ -53,6 +53,7 @@ export const DocumentTable: FC<DocumentTableProps> = ({
   removeDocument,
   replaceAlertMessage = <Typography.Text>The replaced file will <b>not</b> be reviewed as part of the application submission package.
     To ensure successful replacement, the new file must be the <b>same file type</b> as the original. Please verify the file format before proceeding.</Typography.Text>,
+  onReplaceDocument,
   ...props
 }: DocumentTableProps) => {
   // differences from bringing over from CORE (vs the MS version): this file has doc compression & bulk actions
@@ -171,6 +172,9 @@ export const DocumentTable: FC<DocumentTableProps> = ({
               d.mine_document_guid === document.mine_document_guid ? document : d
             );
             setDocuments(newDocuments);
+            if (onReplaceDocument) {
+              await onReplaceDocument(document);
+            }
           },
           document: doc,
           alertMessage: replaceAlertMessage,

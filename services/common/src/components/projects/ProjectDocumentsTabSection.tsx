@@ -11,6 +11,7 @@ interface ProjectDocumentsTabSectionProps {
   titleLevel?: 1 | 2 | 3 | 4 | 5;
   documents: MineDocument[];
   onArchivedDocuments?: () => Promise<void>;
+  onReplaceDocument?: (document: MineDocument) => void | Promise<void>;
   canArchive?: boolean;
   canReplace?: boolean;
   infoText?: string;
@@ -19,6 +20,7 @@ interface ProjectDocumentsTabSectionProps {
 const ProjectDocumentsTabSection: FC<ProjectDocumentsTabSectionProps> = ({
   documents,
   onArchivedDocuments,
+  onReplaceDocument,
   id,
   title,
   titleLevel = 4,
@@ -49,6 +51,7 @@ const ProjectDocumentsTabSection: FC<ProjectDocumentsTabSectionProps> = ({
           canArchiveDocuments={canArchive}
           canReplaceDocuments={canReplace}
           onArchivedDocuments={onArchivedDocuments}
+          onReplaceDocument={onReplaceDocument}
           showVersionHistory={true}
           enableBulkActions={true}
           header={header}

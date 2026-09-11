@@ -64,11 +64,12 @@ const ReplaceDocumentModal: FC<ReplaceDocumentModalProps> = (props) => {
         });
         return resolve(false);
       }
+      const docConstructor = (document as any)?.constructor ?? MineDocument;
       setUpdatedDocument(
-        new MineDocument({
+        new docConstructor({
           ...updatedDocument,
           document_name: file.filename,
-          update_timestamp: formatDate(file.file.lastModified),
+          update_timestamp: new Date().toISOString(),
         })
       );
 
@@ -92,12 +93,16 @@ const ReplaceDocumentModal: FC<ReplaceDocumentModalProps> = (props) => {
       );
 
       if (ConnectedVersion) {
-        const newDocument = new MineDocument({
+        const docConstructor = (document as any)?.constructor ?? MineDocument;
+        const existingVersionsAsc = (document.versions ?? []).slice().reverse();
+        const newVersionsChronological = [...existingVersionsAsc, ConnectedVersion.data as IMineDocumentVersion];
+        const newDocument = new docConstructor({
           ...updatedDocument,
-          versions: [ConnectedVersion.data as IMineDocumentVersion, ...document.versions].reverse(),
+          versions: newVersionsChronological,
         });
 
-        props.handleSubmit(newDocument).then(() => dispatch(closeModal()));
+        await props.handleSubmit(newDocument);
+        dispatch(closeModal());
       }
     }
   };

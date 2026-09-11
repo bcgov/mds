@@ -208,6 +208,7 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
           canArchive={canChangeApplicationAmsFile}
           canReplace={canChangeApplicationAmsFile}
           onArchivedDocuments={refreshAmsApps}
+          onReplaceDocument={refreshAmsApps}
           documents={application.documents.map(
             (d) =>
               new MineDocument({
@@ -250,6 +251,8 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
             key={auth.project_summary_authorization_guid}
             canArchive={canModifySummaryDocs}
             canReplace={canModifySummaryDocs}
+            onArchivedDocuments={refreshData}
+            onReplaceDocument={refreshData}
             documents={auth.amendment_documents.map(
               (d) =>
                 new MineDocument({
@@ -289,6 +292,7 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
             title=""
             documents={pdSupportingDocuments}
             onArchivedDocuments={refreshData}
+            onReplaceDocument={refreshData}
             canReplace={canModifySummaryDocs}
             canArchive={canModifySummaryDocs}
             header={
@@ -345,6 +349,7 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
           id="primary-document"
           key="primary-document"
           onArchivedDocuments={refreshData}
+          onReplaceDocument={refreshData}
           titleLevel={5}
           documents={primaryDocuments}
           canReplace={canModifyMmaDocs}
@@ -362,6 +367,7 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
           documents={mmaAppendixDocuments}
           titleLevel={5}
           onArchivedDocuments={refreshData}
+          onReplaceDocument={refreshData}
           canReplace={canModifyMmaDocs}
           canArchive={canModifyMmaDocs}
         />
@@ -388,6 +394,7 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
           id="supporting-documents"
           key="supporting-documents"
           onArchivedDocuments={refreshData}
+          onReplaceDocument={refreshData}
           titleLevel={5}
           documents={mmaSupportingDocuments}
           canReplace={canModifyMmaDocs}
@@ -418,6 +425,7 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
           id="ministry-decision-documentation"
           key="ministry-decision-documentation"
           onArchivedDocuments={refreshData}
+          onReplaceDocument={refreshData}
           documents={ministryDecisionDocuments}
           canReplace={canModifyMmaDocs}
           canArchive={canModifyMmaDocs}
