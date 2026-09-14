@@ -3,7 +3,10 @@ from app.api.now_applications.models.now_application_document_xref import (
     NOWApplicationDocumentXref,
 )
 from tests.factories import MineDocumentFactory, MineDocumentSpatialFactory
-from tests.now_application_factories import NOWApplicationFactory, NOWApplicationIdentityFactory
+from tests.now_application_factories import (
+    NOWApplicationFactory,
+    NOWApplicationIdentityFactory,
+)
 
 
 def _add_document(db_session, now_application, mine_document):
@@ -52,3 +55,28 @@ class TestGetSpatialDocumentBundles:
 
         assert len(bundles) == 1
         assert len(bundles[0]['bundle_documents']) == 2
+
+
+class TestGetSpatialValidationDocumentGuids:
+    def test_includes_imported_and_manually_added_documents(self, test_client, db_session):
+        identity = NOWApplicationIdentityFactory(now_application=NOWApplicationFactory())
+        now_application = identity.now_application
+        manually_uploaded = MineDocumentFactory(mine=identity.mine)
+        imported = MineDocumentFactory(mine=identity.mine)
+        _add_document(db_session, now_application, manually_uploaded)
+
+        from app.api.now_applications.models.now_application_document_identity_xref import (
+            NOWApplicationDocumentIdentityXref,
+        )
+        now_application.imported_submission_documents.append(
+            NOWApplicationDocumentIdentityXref(
+                filename='submission.kml',
+                messageid=1,
+                documenturl='https://example.com/submission.kml',
+                documenttype='OTH',
+                mine_document=imported))
+
+        assert NOWApplication.get_spatial_validation_document_guids(now_application) == [
+            str(imported.document_manager_guid),
+            str(manually_uploaded.document_manager_guid),
+        ]
