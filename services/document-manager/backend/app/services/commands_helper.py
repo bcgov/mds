@@ -19,6 +19,7 @@ from celery import chord, current_task
 from flask import Response, current_app
 from requests.auth import HTTPBasicAuth
 from sqlalchemy import and_
+from werkzeug.exceptions import InternalServerError
 
 
 def create_transfer_files_job(wait):
@@ -160,9 +161,8 @@ def create_import_now_submission_documents(import_now_submission_documents_job_i
 
         # Create the response message
         message = f'Added an Import Notice of Work Submission Documents job with ID: {import_now_submission_documents_job_id}, TaskID: {result.id} to the task queue: {len(import_job.import_now_submission_documents)} docs will be imported.'
-    except Exception:
-        current_app.logger.exception('Failed to add an Import Notice of Work Submission Documents job to the task queue.')
-        raise
+    except Exception as e:
+        raise InternalServerError('Failed to add an Import Notice of Work Submission Documents job to the task queue.', original_exception=e)
     return message
 
 
