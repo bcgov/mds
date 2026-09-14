@@ -101,8 +101,13 @@ const ReplaceDocumentModal: FC<ReplaceDocumentModalProps> = (props) => {
           versions: newVersionsChronological,
         });
 
-        await props.handleSubmit(newDocument);
-        dispatch(closeModal());
+        try {
+          await props.handleSubmit(newDocument);
+          dispatch(closeModal());
+        } catch (error) {
+          // handleSubmit is responsible for surfacing the error and rolling back
+          // any optimistic updates; keep the modal open so the user can retry.
+        }
       }
     }
   };

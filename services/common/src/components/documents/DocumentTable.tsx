@@ -27,7 +27,7 @@ import FileOutlined from "@ant-design/icons/FileOutlined";
 import InboxOutlined from "@ant-design/icons/InboxOutlined";
 import SyncOutlined from "@ant-design/icons/SyncOutlined";
 import { openDocument } from "@mds/common/components/syncfusion/DocumentViewer";
-import { Button, Col, Row, Tooltip, Typography } from "antd";
+import { Button, Col, Row, Tooltip, Typography, notification } from "antd";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import DocumentTableProps from "@mds/common/interfaces/document/documentTableProps.interface";
 import ArchiveDocumentModal from "./ArchiveDocumentModal";
@@ -168,12 +168,22 @@ export const DocumentTable: FC<DocumentTableProps> = ({
         props: {
           title: `Replace File`,
           handleSubmit: async (document: MineDocument) => {
+            const previousDocuments = documents;
             const newDocuments = documents.map((d) =>
               d.mine_document_guid === document.mine_document_guid ? document : d
             );
             setDocuments(newDocuments);
-            if (onReplaceDocument) {
-              await onReplaceDocument(document);
+            try {
+              if (onReplaceDocument) {
+                await onReplaceDocument(document);
+              }
+            } catch (error) {
+              setDocuments(previousDocuments);
+              notification.error({
+                message: "Failed to replace document. Please try again.",
+                duration: 10,
+              });
+              throw error;
             }
           },
           document: doc,

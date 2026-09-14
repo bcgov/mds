@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Button, Col, Row, Typography } from "antd";
 import { FolderViewOutlined, LockOutlined } from "@ant-design/icons";
@@ -118,6 +118,8 @@ export const DecisionPackageTab: FC<DecisionPackageTabProps> = (props) => {
     }
   };
 
+  const isInitialTabMount = useRef(true);
+
   useEffect(() => {
     handleFetchData();
     window.addEventListener("scroll", handleScroll);
@@ -128,6 +130,10 @@ export const DecisionPackageTab: FC<DecisionPackageTabProps> = (props) => {
   }, []);
 
   useEffect(() => {
+    if (isInitialTabMount.current) {
+      isInitialTabMount.current = false;
+      return;
+    }
     if (tab === "project-decision-package") {
       handleFetchData();
     }
