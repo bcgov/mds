@@ -23,8 +23,8 @@ import AuthorizationWrapper from "@mds/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 
 const PERMIT_PACKAGE_DOCUMENT_TYPE_OPTIONS = [
-  { value: "FIGURE", label: "Figure" },
   { value: "DOCUMENT", label: "Document" },
+  { value: "FIGURE", label: "Figure" },
 ];
 
 export interface EditNoticeOfWorkDocumentFormProps {

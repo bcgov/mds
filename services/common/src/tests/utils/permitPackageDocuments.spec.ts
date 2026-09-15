@@ -3,6 +3,7 @@ import {
   getOrderedPermitPackageDocuments,
   getPermitPackageFilesByType,
   getPermitPackageOrderLabel,
+  resolvePermitPackageFileReference,
 } from "../../utils/permitPackageDocuments";
 
 const makeCoreDoc = (overrides = {}) => ({
@@ -199,5 +200,77 @@ describe("getPermitPackageFilesByType", () => {
     };
 
     expect(getPermitPackageFilesByType(noticeOfWork, {}, "FIGURE")).toEqual([]);
+  });
+});
+
+describe("resolvePermitPackageFileReference", () => {
+  it("resolves a figure's live index and title", () => {
+    const ntr = makeNtrDoc();
+    const figure = makeCoreDoc({
+      now_application_document_xref_guid: "fig-1",
+      final_package_order: 1,
+      permit_package_document_type_code: "FIGURE",
+      preamble_title: "Site Map",
+    });
+    const noticeOfWork = {
+      application_type_code: "NOW",
+      documents: [ntr, figure],
+      locked_ntr_guid: "ntr-guid",
+      filtered_submission_documents: [],
+    };
+
+    expect(resolvePermitPackageFileReference("fig-1", noticeOfWork, {})).toEqual({
+      found: true,
+      label: "1.2 Site Map",
+    });
+  });
+
+  it("resolves a document's live index and title", () => {
+    const document = makeCoreDoc({
+      now_application_document_xref_guid: "doc-1",
+      final_package_order: 1,
+      permit_package_document_type_code: "DOCUMENT",
+      preamble_title: "Application Form",
+    });
+    const noticeOfWork = {
+      application_type_code: "NOW",
+      documents: [document],
+      filtered_submission_documents: [],
+    };
+
+    expect(resolvePermitPackageFileReference("doc-1", noticeOfWork, {})).toEqual({
+      found: true,
+      label: "1.2 Application Form",
+    });
+  });
+
+  it("returns found: false for a guid that no longer matches any permit package file", () => {
+    const document = makeCoreDoc({
+      now_application_document_xref_guid: "doc-1",
+      final_package_order: 1,
+    });
+    const noticeOfWork = {
+      application_type_code: "NOW",
+      documents: [document],
+      filtered_submission_documents: [],
+    };
+
+    expect(resolvePermitPackageFileReference("deleted-guid", noticeOfWork, {})).toEqual({
+      found: false,
+    });
+  });
+
+  it("does not resolve the locked application-form row itself as a reference", () => {
+    const ntr = makeNtrDoc();
+    const noticeOfWork = {
+      application_type_code: "NOW",
+      documents: [ntr],
+      locked_ntr_guid: "ntr-guid",
+      filtered_submission_documents: [],
+    };
+
+    expect(resolvePermitPackageFileReference("ntr-guid", noticeOfWork, {})).toEqual({
+      found: false,
+    });
   });
 });

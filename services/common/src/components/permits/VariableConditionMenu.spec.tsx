@@ -60,4 +60,35 @@ describe("VariableConditionMenu", () => {
   it("builds the permit package file token as {permit_package_file:<guid>}", () => {
     expect(getPermitPackageFileToken("abc-123")).toBe("{permit_package_file:abc-123}");
   });
+
+  it("does not render Permit Package Files for the preamble text editor, even when not in management view", () => {
+    const noticeOfWork = {
+      application_type_code: "NOW",
+      documents: [
+        {
+          now_application_document_xref_guid: "fig-guid",
+          is_final_package: true,
+          final_package_order: 1,
+          permit_package_document_type_code: "FIGURE",
+          preamble_title: "Site Map",
+        },
+      ],
+      filtered_submission_documents: [],
+      application_progress: [],
+    };
+
+    const { container } = render(
+      <ReduxWrapper
+        initialState={{
+          [NOTICE_OF_WORK]: { noticeOfWork },
+          form: { MOCK_CONDITION_FORM: { values: { preamble_text: "Some preamble text" } } },
+        }}
+      >
+        <VariableConditionMenu conditionForm="MOCK_CONDITION_FORM" />
+      </ReduxWrapper>
+    );
+    fireEvent.click(container.querySelector("button"));
+
+    expect(screen.queryByText("Permit Package Files")).not.toBeInTheDocument();
+  });
 });

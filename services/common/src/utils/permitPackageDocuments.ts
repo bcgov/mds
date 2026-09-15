@@ -29,9 +29,8 @@ const NA_ROW = {
 };
 
 /**
- * Determines the locked, system-generated "1.1" Notice of Work Application row for the permit
- * package, if one applies for this application. This is the single source of truth for that
- * determination — NOWDocuments.js, FinalPermitDocuments.js, and the Condition Data Variable
+ * Determines the locked, system-generated "1.1" Notice of Work Application row for the permit package, if one applies for this application.
+ * This is the single source of truth for that determination - NOWDocuments.js, FinalPermitDocuments.js, and the Condition Data Variable
  * picker all resolve it from here so behaviour can't drift between them.
  */
 export const getNowApplicationDocument = (noticeOfWork: any, progress: any) => {
@@ -81,9 +80,8 @@ export const getNowApplicationDocument = (noticeOfWork: any, progress: any) => {
 };
 
 /**
- * Sorts permit package documents into display order: the locked row (if any) always first,
- * then by final_package_order. Shared by the permit package document table and the Condition
- * Data Variable picker so their orderings can't drift apart.
+ * Sorts permit package documents into display order: the locked row (if any) always first, then by final_package_order.
+ * Shared by the permit package document table and the Condition Data Variable picker so their orderings can't drift apart.
  */
 export const comparePermitPackageDocuments = (a: any, b: any): number => {
   if (a.isLockedApplicationForm && b.isLockedApplicationForm) return 0;
@@ -93,9 +91,8 @@ export const comparePermitPackageDocuments = (a: any, b: any): number => {
 };
 
 /**
- * The "1.N" order label shown for a permit package document, matching the numbering rendered
- * in NOWDocuments.js's sortable "Order" column. The locked row (when present) always occupies
- * "1.1"; when it's absent, numbering still starts at "1.2" to preserve that reserved slot.
+ * The "1.N" order label shown for a permit package document, matching the numbering rendered in NOWDocuments.js's sortable "Order" column.
+ * The locked row (when present) always occupies "1.1"; when it's absent, numbering still starts at "1.2" to preserve that reserved slot.
  */
 export const getPermitPackageOrderLabel = (
   index: number,
@@ -104,13 +101,9 @@ export const getPermitPackageOrderLabel = (
 ): string => (isLocked ? "1.1" : `1.${index + (hasLockedRow ? 1 : 2)}`);
 
 /**
- * Returns every document that is part of the permit package (the locked "1.1" NoW Application
- * row, core-uploaded documents, and submission documents), in the same order shown in the
- * permit package document table, each annotated with its display order label (e.g. "1.2").
- *
- * This is the single source of truth for permit package ordering — NOWDocuments.js,
- * FinalPermitDocuments.js, and the Condition Data Variable picker all resolve labels from here
- * so the numbering can never drift between the document table and an inserted CDV reference.
+ * Returns every document that is part of the permit package in the same order shown in the permit package document table, each annotated with its display order label (e.g. "1.2").
+ * This is the source of truth for permit package ordering — NOWDocuments.js, FinalPermitDocuments.js, and the Condition Data Variable picker all resolve labels from here.
+ * This ensures the numbering can never drift between the document table and an inserted CDV reference.
  */
 export const getOrderedPermitPackageDocuments = (noticeOfWork: any, progress: any) => {
   const { nowApplicationDocument, lockedNtrGuid } = getNowApplicationDocument(
@@ -145,9 +138,8 @@ export const getOrderedPermitPackageDocuments = (noticeOfWork: any, progress: an
 };
 
 /**
- * The core-uploaded (non-submission) permit package documents tagged as the given Figure/Document
- * type, each with its live display order label — the data source for the Condition Data Variable
- * picker's "Permit Package Files" menu.
+ * The core-uploaded (non-submission) permit package documents tagged as the given Figure/Document type, each with its live display order label.
+ * This is the data source for the Condition Data Variable picker's "Permit Package Files" menu.
  */
 export const getPermitPackageFilesByType = (
   noticeOfWork: any,
@@ -160,3 +152,29 @@ export const getPermitPackageFilesByType = (
       doc.permit_package_document_type_code === permitPackageDocumentTypeCode &&
       doc.now_application_document_xref_guid
   );
+
+export interface PermitPackageFileReference {
+  found: boolean;
+  label?: string;
+}
+
+/**
+ * Resolves a permit package file's live "1.N Title" label from its xref guid, by guid, across both Figures and Documents.
+ * Used by the Condition Data Variable picker's read view to render an inserted reference's current index/title.
+ * Returns `found: false` when the guid no longer attaches any permit package file (e.g. it was soft-deleted or removed from the package).
+ */
+export const resolvePermitPackageFileReference = (
+  guid: string,
+  noticeOfWork: any,
+  progress: any
+): PermitPackageFileReference => {
+  const match = getOrderedPermitPackageDocuments(noticeOfWork, progress).find(
+    (doc) => !doc.isLockedApplicationForm && doc.now_application_document_xref_guid === guid
+  );
+
+  if (!match) {
+    return { found: false };
+  }
+
+  return { found: true, label: `${match.orderLabel} ${match.preamble_title}` };
+};
