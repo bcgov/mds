@@ -16,6 +16,7 @@ import WorkerInfoEmployee from "@/components/dashboard/mine/overview/WorkerInfoE
 import { getUserInfo } from "@mds/common/redux/selectors/authenticationSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import ContactCard from "@/components/common/ContactCard";
+import PermitteeContactCard from "@/components/common/PermitteeContactCard";
 import MinistryContactItem from "@/components/dashboard/mine/overview/MinistryContactItem";
 import * as Strings from "@/constants/strings";
 import Map from "@/components/common/Map";
@@ -47,6 +48,11 @@ const getMineManager = (partyRelationships) => {
   const mineManager = mineManagers && mineManagers.length > 0 ? mineManagers[0] : null;
   return mineManager;
 };
+
+const getPermitteeRelationships = (partyRelationships = []) =>
+  partyRelationships.filter(
+    (pr) => pr.mine_party_appt_type_code == "PMT" && isPartyRelationshipActive(pr)
+  );
 
 export const Overview = (props) => {
   const { mine } = useContext(SidebarContext);
@@ -126,6 +132,20 @@ export const Overview = (props) => {
                 dateLabel="Mine Manager Since"
               />
             </Col>
+            {getPermitteeRelationships(props.partyRelationships).map((partyRelationship) => (
+              <Col
+                xl={11}
+                xxl={11}
+                md={24}
+                key={`${partyRelationship.party_guid}-${partyRelationship.mine_party_appt_type_code}`}
+              >
+                <PermitteeContactCard
+                  title="Permittee"
+                  partyRelationship={partyRelationship}
+                  dateLabel="Permittee Since"
+                />
+              </Col>
+            ))}
           </Row>
         </Col>
         <Col lg={{ span: 9, offset: 1 }} xl={{ offset: 1, span: 7 }} md={24}>
