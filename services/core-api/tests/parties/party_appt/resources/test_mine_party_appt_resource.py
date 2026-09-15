@@ -1,6 +1,7 @@
 import json, uuid, pytest
-from datetime import datetime
+from datetime import datetime, timedelta
 
+from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment, MinePartyAppointmentStatus
 from tests.factories import MineFactory, PartyFactory, MinePartyAppointmentFactory, MineTailingsStorageFacilityFactory
 
 
@@ -16,6 +17,7 @@ def setup_info(db_session):
     yield dict(
         mine_guid=str(mine.mine_guid),
         eor_party_guid=str(eor.party.party_guid),
+        eor_appt_guid=str(eor.mine_party_appt_guid),
         mine_manager_appt_guid=str(mine_manager.mine_party_appt_guid),
         mine_manager_guid=str(mine_manager.party.party_guid),
         qp_guid=str(qp.party.party_guid),
@@ -205,6 +207,35 @@ def test_post_mine_party_appt_EOR_as_ms_user_success(test_client, db_session, au
     assert post_resp.status_code == 200, str(post_resp.response)
     assert post_data['mine_guid'] == setup_info['mine_guid']
     assert post_data['status'] == 'pending'
+
+def test_post_mine_party_appt_EOR_as_ms_user_ends_current_success(test_client, db_session, auth_headers, setup_info):
+    existing_eor = MinePartyAppointment.find_by_mine_party_appt_guid(setup_info['eor_appt_guid'])
+    existing_eor.status = MinePartyAppointmentStatus.active
+    existing_eor.start_date = datetime.strptime(setup_info['start_date'], '%Y-%m-%d').date() - timedelta(days=10)
+    existing_eor.end_date = None
+    existing_eor.save()
+
+    test_data = {
+        'mine_guid': setup_info['mine_guid'],
+        'party_guid': setup_info['mine_manager_guid'],
+        'mine_party_appt_type_code': 'EOR',
+        'related_guid': setup_info['tsf_guid'],
+        'start_date': setup_info['start_date'],
+        'end_current': True,
+    }
+    post_resp = test_client.post(
+        '/parties/mines', data=test_data, headers=auth_headers['proponent_only_auth_header'])
+    post_data = json.loads(post_resp.data.decode())
+    assert post_resp.status_code == 200, str(post_resp.response)
+    assert post_data['mine_guid'] == setup_info['mine_guid']
+    assert post_data['status'] == 'pending'
+
+    # Verify previous active EOR was ended and marked inactive
+    updated_existing_eor = MinePartyAppointment.find_by_mine_party_appt_guid(setup_info['eor_appt_guid'])
+    assert updated_existing_eor.status == MinePartyAppointmentStatus.inactive
+    expected_end_date = datetime.strptime(setup_info['start_date'], '%Y-%m-%d').date() - timedelta(days=1)
+    assert updated_existing_eor.end_date == expected_end_date
+
 
 def test_post_mine_party_appt_TQP_as_ms_user_success(test_client, db_session, auth_headers, setup_info):
     test_data = {
