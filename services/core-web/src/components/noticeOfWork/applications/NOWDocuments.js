@@ -18,6 +18,10 @@ import {
   getApplicationDelay,
 } from "@mds/common/redux/selectors/noticeOfWorkSelectors";
 import {
+  comparePermitPackageDocuments,
+  getPermitPackageOrderLabel,
+} from "@mds/common/utils/permitPackageDocuments";
+import {
   fetchImportedNoticeOfWorkApplication,
   updateNoticeOfWorkApplication,
   deleteNoticeOfWorkApplicationDocument,
@@ -92,12 +96,7 @@ const transformDocuments = (
 ) =>
   documents &&
   documents
-    .sort((a, b) => {
-      if (a.isLockedApplicationForm && b.isLockedApplicationForm) return 0;
-      if (a.isLockedApplicationForm) return -1;
-      if (b.isLockedApplicationForm) return 1;
-      return a.final_package_order - b.final_package_order;
-    })
+    .sort(comparePermitPackageDocuments)
     .map((document, index) => ({
       key: document.now_application_document_xref_guid,
       now_application_document_xref_guid: document.now_application_document_xref_guid,
@@ -323,19 +322,17 @@ export class NOWDocuments extends Component {
       dataIndex: "index",
       className: "drag-visible",
       render: (text, record) => {
+        const hasLockedRow = this.state.dataSource?.some((d) => d.isLockedApplicationForm);
+        const orderLabel = getPermitPackageOrderLabel(text, hasLockedRow, record.isLockedApplicationForm);
         if (record.isLockedApplicationForm) {
           // The NoW application document (NTR — system-generated Notice of Work Form) is
           // always position 1.1 in the permit; it is locked and cannot be reordered.
-          return <span style={{ paddingLeft: "26px" }}>1.1</span>;
+          return <span style={{ paddingLeft: "26px" }}>{orderLabel}</span>;
         }
-        // Offset is 1 when the locked 1.1 row is present (its index is 0),
-        // or 2 when there is no locked row (preserves numbering
-        // for applications where no system generated NTR doc has been found).
-        const hasLockedRow = this.state.dataSource?.some((d) => d.isLockedApplicationForm);
         return (
           <>
             <DragHandle />
-            &nbsp; 1.{text + (hasLockedRow ? 1 : 2)}
+            &nbsp; {orderLabel}
           </>
         );
       },
