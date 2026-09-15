@@ -164,6 +164,8 @@ export interface PermitPackageFileReference {
  * Returns `found: false` when the guid no longer attaches any permit package file (e.g. it was soft-deleted or removed from the package).
  */
 export const resolvePermitPackageFileReference = (
+  // IMPORTANT: This guid must stay attached to the same xref row for as long as any condition might reference it.
+  // See the comment on now_application_document_xref_guid (now_application_document_xref.py) for more details. 
   guid: string,
   noticeOfWork: any,
   progress: any
