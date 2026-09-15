@@ -127,11 +127,11 @@ export const ViewPdf: React.FC<ViewPDFProps> = ({
   onInit = null
 }) => {
   const pdfViewerRef = useRef<any>(null);
-  const [isDocumentLoaded, setIsDocumentLoaded] = useState(false);
+  const [loadedDocumentPath, setLoadedDocumentPath] = useState<string | null>(null);
   const hasDrawnAnnotationRef = useRef(false);
 
   useEffect(() => {
-    setIsDocumentLoaded(false);
+    setLoadedDocumentPath(null);
     hasDrawnAnnotationRef.current = false;
   }, [documentPath]);
 
@@ -139,7 +139,7 @@ export const ViewPdf: React.FC<ViewPDFProps> = ({
   const { top, right, bottom, left } = boundingBox ?? {};
 
   useEffect(() => {
-    if (!isDocumentLoaded || !pdfViewerRef.current) {
+    if (loadedDocumentPath !== documentPath || !pdfViewerRef.current) {
       return;
     }
 
@@ -149,10 +149,10 @@ export const ViewPdf: React.FC<ViewPDFProps> = ({
     } else if (hasDrawnAnnotationRef.current) {
       pdfViewerRef.current.annotation.clear();
     }
-  }, [isDocumentLoaded, pageNumber, top, right, bottom, left]);
+  }, [loadedDocumentPath, documentPath, pageNumber, top, right, bottom, left]);
 
   const handleDocumentLoaded = () => {
-    setIsDocumentLoaded(true);
+    setLoadedDocumentPath(documentPath);
   };
 
   return (

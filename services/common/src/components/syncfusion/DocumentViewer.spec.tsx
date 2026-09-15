@@ -111,4 +111,34 @@ describe("PdfViewer", () => {
     expect(pdfViewer.annotation.addAnnotation).toHaveBeenCalledTimes(1);
     expect(pdfViewer.annotation.clear).toHaveBeenCalledTimes(2);
   });
+
+  it("does not draw on the old document when documentPath and annotationLocation change together", () => {
+    let pdfViewer;
+    const { rerender } = render(
+      <PdfViewer
+        documentPath="doc-a"
+        annotationLocation={conditionA}
+        onInit={(scope) => (pdfViewer = scope)}
+      />
+    );
+    loadDocument(pdfViewer);
+    expect(pdfViewer.annotation.addAnnotation).toHaveBeenCalledTimes(1);
+
+    act(() => {
+      rerender(
+        <PdfViewer
+          documentPath="doc-b"
+          annotationLocation={conditionB}
+          onInit={(scope) => (pdfViewer = scope)}
+        />
+      );
+    });
+
+    expect(pdfViewer.annotation.addAnnotation).toHaveBeenCalledTimes(1);
+
+    loadDocument(pdfViewer);
+
+    expect(pdfViewer.navigation.goToPage).toHaveBeenLastCalledWith(3);
+    expect(pdfViewer.annotation.addAnnotation).toHaveBeenCalledTimes(2);
+  });
 });

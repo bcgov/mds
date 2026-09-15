@@ -35,6 +35,15 @@ describe("addAnnotationToPDFViewer", () => {
     expect(pdfViewer.navigation.goToPage).not.toHaveBeenCalled();
   });
 
+  it("does not draw an annotation when the page is unknown, even with a bounding box", () => {
+    const pdfViewer = createMockPdfViewer();
+
+    addAnnotationToPDFViewer(pdfViewer, undefined, { top: 1, right: 3, bottom: 2, left: 1 });
+
+    expect(pdfViewer.navigation.goToPage).not.toHaveBeenCalled();
+    expect(pdfViewer.annotation.addAnnotation).not.toHaveBeenCalled();
+  });
+
   it("does not draw an annotation when no bounding box is given", () => {
     const pdfViewer = createMockPdfViewer();
 

@@ -17,11 +17,13 @@ export const addAnnotationToPDFViewer = (
 ) => {
   pdfViewer.annotation.clear();
 
-  if (page) {
-    pdfViewer.navigation.goToPage(page);
+  const resolvedPage = page || 0;
+
+  if (resolvedPage) {
+    pdfViewer.navigation.goToPage(resolvedPage);
   }
 
-  if (boundingBox) {
+  if (boundingBox && resolvedPage) {
     const { top, right, bottom, left } = boundingBox;
     const topPx = top * 96;
     const rightPx = right * 96;
@@ -29,7 +31,7 @@ export const addAnnotationToPDFViewer = (
     const leftPx = left * 96;
     pdfViewer.annotation.addAnnotation("Polygon", {
       offset: { x: 0, y: 0 },
-      pageNumber: page || 0,
+      pageNumber: resolvedPage,
       vertexPoints: [
         { x: leftPx, y: topPx },
         { x: rightPx, y: topPx },
