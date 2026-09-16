@@ -208,7 +208,15 @@ def test_post_mine_party_appt_EOR_as_ms_user_success(test_client, db_session, au
     assert post_data['mine_guid'] == setup_info['mine_guid']
     assert post_data['status'] == 'pending'
 
-def test_post_mine_party_appt_EOR_as_ms_user_ends_current_success(test_client, db_session, auth_headers, setup_info):
+def test_post_mine_party_appt_EOR_as_ms_user_ends_current_success(test_client, db_session, auth_headers, setup_info, monkeypatch):
+    # Mock MineReportDefinition.find_one_by_section to always return a dummy object
+    class DummyDef:
+        mine_report_definition_id = 123
+    monkeypatch.setattr(
+        'app.api.mines.reports.models.mine_report_definition.MineReportDefinition.find_one_by_section',
+        staticmethod(lambda *args, **kwargs: DummyDef())
+    )
+
     existing_eor = MinePartyAppointment.find_by_mine_party_appt_guid(setup_info['eor_appt_guid'])
     existing_eor.status = MinePartyAppointmentStatus.active
     existing_eor.start_date = datetime.strptime(setup_info['start_date'], '%Y-%m-%d').date() - timedelta(days=10)
