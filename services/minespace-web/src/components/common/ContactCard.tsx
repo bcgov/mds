@@ -2,16 +2,9 @@ import React, { FC } from "react";
 import { Row, Col, Card, Typography } from "antd";
 import { formatDate } from "@mds/common/redux/utils/helpers";
 import * as Strings from "@/constants/strings";
-import {
-  CalendarOutlined,
-  InfoCircleOutlined,
-  MailOutlined,
-  PhoneOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
+import { CalendarOutlined, MailOutlined, PhoneOutlined, UserOutlined } from "@ant-design/icons";
 import { AntdIconProps } from "@ant-design/icons/lib/components/AntdIcon";
 import { IPermitPartyRelationship } from "@mds/common/interfaces";
-import { Dictionary } from "lodash";
 
 interface ContactCardRowProps {
   Icon: React.ComponentType<AntdIconProps>;
@@ -39,12 +32,7 @@ interface ContactCardProps {
   partyRelationship?: IPermitPartyRelationship;
 }
 
-export const ContactCard: FC<ContactCardProps> = ({
-  title,
-  dateLabel,
-  partyRelationship,
-  extraValues,
-}) => (
+export const ContactCard: FC<ContactCardProps> = ({ title, dateLabel, partyRelationship }) => (
   <Card title={title} className="contact-card">
     <ContactCardRow
       Icon={UserOutlined}

@@ -27,7 +27,6 @@ import { SidebarContext } from "@mds/common/components/common/SidebarWrapper";
 import { getMineReportStatsByMineGuid } from "@mds/common/redux/slices/mineReportStatsSlice";
 import { useAppSelector } from "@mds/common/redux/rootState";
 import { fetchPermits } from "@mds/common/redux/actionCreators/permitActionCreator";
-import { permit } from "@/customPropTypes/permits";
 
 const propTypes = {
   partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship).isRequired,
@@ -57,7 +56,7 @@ const getMineManager = (partyRelationships) => {
 
 const getPermitteeRelationships = (partyRelationships = []) =>
   partyRelationships.filter(
-    (pr) => pr.mine_party_appt_type_code == "PMT" && isPartyRelationshipActive(pr)
+    (pr) => pr.mine_party_appt_type_code === "PMT" && isPartyRelationshipActive(pr)
   );
 
 export const Overview = (props) => {
@@ -220,7 +219,6 @@ const mapStateToProps = (state) => ({
   MinistryContactTypesHash: getMinistryContactTypesHash(state),
   permits: getPermits(state),
 });
-``;
 const mapDispatchToProps = (dispatch) => bindActionCreators({ fetchPermits }, dispatch);
 
 Overview.propTypes = propTypes;
