@@ -1,3 +1,4 @@
+import Quill from "quill";
 import PermitPackageFileBlot, {
   BROKEN_PERMIT_PACKAGE_FILE_REFERENCE_TOOLTIP,
 } from "@mds/common/components/permits/quill/PermitPackageFileBlot";
@@ -89,5 +90,18 @@ describe("PermitPackageFileBlot", () => {
     expect(node.className).toBe("permit-package-file-blot permit-package-file-reference");
     expect(node.getAttribute("title")).toBeNull();
     expect(node.querySelector("span")?.textContent).toBe("1.2 Site Map");
+  });
+
+  it("does not register under Quill's own generic 'span' tag", () => {
+    // Parchment falls back to matching by bare tagName when a blot registers no static className
+    // (which this blot doesn't) - claiming the same tag Quill's own Inline formatting blot uses
+    // ("span") would silently overwrite that registration, causing Quill's default paste handler
+    // to misidentify *any* plain, unrelated <span> copied from elsewhere on the page as a broken
+    // instance of this blot. See MDS-6987.
+    expect(PermitPackageFileBlot.tagName.toLowerCase()).not.toBe("span");
+
+    const Parchment = Quill.import("parchment") as { query: (node: unknown) => unknown };
+    const plainSpan = document.createElement("span");
+    expect(Parchment.query(plainSpan)).not.toBe(PermitPackageFileBlot);
   });
 });

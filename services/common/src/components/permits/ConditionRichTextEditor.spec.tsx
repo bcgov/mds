@@ -144,4 +144,25 @@ describe("ConditionRichTextEditor", () => {
       label: "1.2 Site Map",
     });
   });
+
+  it("does not misread a plain, unrelated <span> (e.g. copied from elsewhere on the page) as a broken pill reference", () => {
+    const { container } = render(
+      <ReduxWrapper initialState={{ [NOTICE_OF_WORK]: { noticeOfWork } }}>
+        <ConditionRichTextEditor input={{ name: "condition", value: "Start ", onChange: jest.fn() }} />
+      </ReduxWrapper>
+    );
+
+    const quillContainer = container.querySelector(".ql-container") as HTMLElement;
+    const quill = (ReactQuill as any).Quill.find(quillContainer);
+
+    // Mirrors real clipboard HTML captured from pasting page text unrelated to any pill - a bare
+    // <span> with no data-guid, which a prior bug misidentified as this blot purely by tag name.
+    const delta = quill.clipboard.convert("<span>Mine Number  (optional)</span>");
+
+    const embedOp = delta.ops.find((op: any) => typeof op.insert === "object" && op.insert.permitPackageFile);
+    expect(embedOp).toBeUndefined();
+
+    const textOp = delta.ops.find((op: any) => typeof op.insert === "string" && op.insert.includes("Mine Number"));
+    expect(textOp?.insert).toContain("Mine Number");
+  });
 });

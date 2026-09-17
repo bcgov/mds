@@ -30,7 +30,11 @@ export type PermitPackageFileBlotValue = Required<Pick<PermitPackageFileEmbedVal
 class PermitPackageFileBlot extends Embed {
   static blotName = PERMIT_PACKAGE_FILE_BLOT_NAME;
 
-  static tagName = "span";
+  // Bugfix: using a generic "span" tagName here breaks Quill/Parchment's own SPAN registration.
+  // Details: Parchment's registry falls back to matching by bare tagName when no className is registered, and originally our blot did not register className.
+  // This caused Quill's default paste matcher to misidentify any plain, unrelated <span> copied from elsewhere on the page as a broken instance of this blot.
+  // Using a unique custom tag name avoids the collision entirely. 
+  static tagName = "permit-package-file-chip";
 
   static create(value: PermitPackageFileBlotValue) {
     const node: HTMLElement = super.create(value);
