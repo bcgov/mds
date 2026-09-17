@@ -3,6 +3,7 @@ import {
   getOrderedPermitPackageDocuments,
   getPermitPackageFilesByType,
   getPermitPackageOrderLabel,
+  isFileReferencedInConditions,
   resolvePermitPackageFileReference,
 } from "../../utils/permitPackageDocuments";
 
@@ -272,5 +273,51 @@ describe("resolvePermitPackageFileReference", () => {
     expect(resolvePermitPackageFileReference("ntr-guid", noticeOfWork, {})).toEqual({
       found: false,
     });
+  });
+});
+
+describe("isFileReferencedInConditions", () => {
+  const conditionReferencing = (guid: string, overrides = {}) => ({
+    condition: `See {permit_package_file:${guid}} for details.`,
+    sub_conditions: [],
+    ...overrides,
+  });
+
+  it("returns true when a top-level condition references the guid", () => {
+    const conditions = [conditionReferencing("file-guid-1")];
+    expect(isFileReferencedInConditions(conditions as any, "file-guid-1")).toBe(true);
+  });
+
+  it("returns true when only a nested sub-condition references the guid", () => {
+    const conditions = [
+      {
+        condition: "No reference in this top-level condition.",
+        sub_conditions: [conditionReferencing("file-guid-1")],
+      },
+    ];
+    expect(isFileReferencedInConditions(conditions as any, "file-guid-1")).toBe(true);
+  });
+
+  it("returns false when no condition references the guid", () => {
+    const conditions = [conditionReferencing("some-other-guid")];
+    expect(isFileReferencedInConditions(conditions as any, "file-guid-1")).toBe(false);
+  });
+
+  it("returns false for an empty conditions list", () => {
+    expect(isFileReferencedInConditions([], "file-guid-1")).toBe(false);
+  });
+
+  it("returns false when conditions is undefined", () => {
+    expect(isFileReferencedInConditions(undefined as any, "file-guid-1")).toBe(false);
+  });
+
+  it("does not false-positive when the guid is only a prefix of the referenced guid", () => {
+    const conditions = [conditionReferencing("file-guid-1-extra")];
+    expect(isFileReferencedInConditions(conditions as any, "file-guid-1")).toBe(false);
+  });
+
+  it("ignores plain {variable} tokens that aren't permit package file references", () => {
+    const conditions = [{ condition: "{mine_name} has no file reference.", sub_conditions: [] }];
+    expect(isFileReferencedInConditions(conditions as any, "file-guid-1")).toBe(false);
   });
 });

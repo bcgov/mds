@@ -1,10 +1,12 @@
 import React, { useState, useEffect, FC } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Field, change, getFormValues } from "@mds/common/components/forms/form";
+import { Field, change, getFormValues, submit } from "@mds/common/components/forms/form";
 import { Button, Col, Row, Popconfirm } from "antd";
 import { required, maxLength, requiredNewFiles } from "@mds/common/redux/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import { getDropdownNoticeOfWorkApplicationDocumentTypeOptions } from "@mds/common/redux/selectors/staticContentSelectors";
+import { getDraftPermitAmendmentForNOW } from "@mds/common/redux/selectors/permitSelectors";
+import { isFileReferencedInConditions } from "@mds/common/utils/permitPackageDocuments";
 import { NOTICE_OF_WORK_DOCUMENT } from "@mds/common/constants/API";
 import { DOCUMENT, EXCEL, IMAGE, SPATIAL } from "@/constants/fileTypes";
 import * as FORM from "@/constants/forms";
@@ -16,7 +18,7 @@ import RenderCheckbox from "@mds/common/components/forms/RenderCheckbox";
 import RenderField from "@mds/common/components/forms/RenderField";
 import RenderDate from "@mds/common/components/forms/RenderDate";
 import RenderFileUpload from "@mds/common/components/forms/RenderFileUpload";
-import { IMineDocument, INoWDocument } from "@mds/common/interfaces";
+import { IMineDocument, INoWDocument, IPermitAmendment } from "@mds/common/interfaces";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { Feature } from "@mds/common/utils/featureFlag";
 import AuthorizationWrapper from "@mds/common/wrappers/AuthorizationWrapper";
@@ -53,6 +55,14 @@ const EditNoticeOfWorkDocumentForm: FC<EditNoticeOfWorkDocumentFormProps> = ({
   const dropdownNoticeOfWorkApplicationDocumentTypeOptions = useSelector(
     getDropdownNoticeOfWorkApplicationDocumentTypeOptions
   );
+  const draftPermitAmendment = useSelector(getDraftPermitAmendmentForNOW) as IPermitAmendment;
+  const fileGuid = initialValues?.now_application_document_xref_guid;
+  const wasFinalPackage = !!initialValues?.is_final_package;
+  const removingReferencedFile =
+    wasFinalPackage &&
+    !is_final_package &&
+    !!fileGuid &&
+    isFileReferencedInConditions(draftPermitAmendment?.conditions, fileGuid);
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [disabled, setDisabled] = useState(false);
 
@@ -226,9 +236,23 @@ const EditNoticeOfWorkDocumentForm: FC<EditNoticeOfWorkDocumentFormProps> = ({
             Cancel
           </Button>
         </Popconfirm>
-        <Button className="full-mobile" type="primary" htmlType="submit" disabled={disabled}>
-          {title}
-        </Button>
+        {removingReferencedFile ? (
+          <Popconfirm
+            placement="topRight"
+            title="This file is currently being referenced in a permit condition. Removing the file from the permit package will break that reference. Do you wish to continue?"
+            onConfirm={() => dispatch(submit(FORM.EDIT_NOTICE_OF_WORK_DOCUMENT_FORM))}
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button className="full-mobile" type="primary" disabled={disabled}>
+              {title}
+            </Button>
+          </Popconfirm>
+        ) : (
+          <Button className="full-mobile" type="primary" htmlType="submit" disabled={disabled}>
+            {title}
+          </Button>
+        )}
       </div>
     </FormWrapper>
   );

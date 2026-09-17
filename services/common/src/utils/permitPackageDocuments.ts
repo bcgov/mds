@@ -1,4 +1,6 @@
 import { getLockedSystemNtrDoc } from "@mds/common/utils/helpers";
+import { parseConditionText } from "@mds/common/utils/conditionTokenParser";
+import { IPermitCondition } from "@mds/common/interfaces";
 
 const TECHNICAL_REVIEW_NTR_DESCRIPTION =
   "This document was automatically created when Technical Review was completed.";
@@ -153,6 +155,21 @@ export const getPermitPackageFilesByType = (
       doc.now_application_document_xref_guid
   );
 
+/**
+ * True if any condition (including nested sub-conditions) contains a live {permit_package_file:<guid>} reference to this file.
+ * Used to warn before removing a file from the permit package or deleting it, so a broken reference isn't created silently.
+ */
+export const isFileReferencedInConditions = (
+  conditions: IPermitCondition[],
+  guid: string
+): boolean =>
+  (conditions || []).some((condition) => {
+    const referencedHere = parseConditionText(condition.condition || "").some(
+      (token) => token.type === "permitPackageFile" && token.guid === guid
+    );
+    return referencedHere || isFileReferencedInConditions(condition.sub_conditions, guid);
+  });
+
 export interface PermitPackageFileReference {
   found: boolean;
   label?: string;
@@ -164,8 +181,8 @@ export interface PermitPackageFileReference {
  * Returns `found: false` when the guid no longer attaches any permit package file (e.g. it was soft-deleted or removed from the package).
  */
 export const resolvePermitPackageFileReference = (
-  // IMPORTANT: This guid must stay attached to the same xref row for as long as any condition might reference it.
-  // See the comment on now_application_document_xref_guid (now_application_document_xref.py) for more details. 
+  // CRITICAL: This guid must stay attached to the same xref row for as long as any condition might reference it.
+  // See the comment in now_application_document_xref.py for more details - if this is broken, the reference will be too. 
   guid: string,
   noticeOfWork: any,
   progress: any
