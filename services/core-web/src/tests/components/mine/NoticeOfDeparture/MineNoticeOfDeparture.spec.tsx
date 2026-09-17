@@ -3,6 +3,9 @@ import MineNoticeOfDeparture from "@/components/mine/NoticeOfDeparture/MineNotic
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import matchMedia from "@/tests/mocks/matchMedia";
 import { renderWithProvider } from "@/tests/mocks/utils";
+import { store } from "@/App";
+import * as actionTypes from "@mds/common/constants/actionTypes";
+import { MemoryRouter } from "react-router-dom";
 
 const dispatchProps: any = {
   openModal: jest.fn(),
@@ -44,5 +47,24 @@ describe("MineNoticeOfDeparture", () => {
       <MineNoticeOfDeparture {...dispatchProps} {...reducerProps} />
     );
     expect(container.firstChild).toMatchSnapshot();
+  });
+
+  it("renders PageNotFound for a regional mine", () => {
+    const regionalMineGuid = MOCK.MINES.mineIds[0];
+    store.dispatch({
+      type: actionTypes.STORE_MINE,
+      payload: { ...MOCK.MINES.mines[regionalMineGuid], major_mine_ind: false },
+      id: regionalMineGuid,
+    });
+    const { getByText } = renderWithProvider(
+      <MemoryRouter>
+        <MineNoticeOfDeparture
+          {...dispatchProps}
+          {...reducerProps}
+          mineGuid={regionalMineGuid}
+        />
+      </MemoryRouter>
+    );
+    expect(getByText("Uh Oh!")).toBeInTheDocument();
   });
 });

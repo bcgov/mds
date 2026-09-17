@@ -129,11 +129,11 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
   const documentUploadHref =
     !isCore && project?.project_summary?.project_summary_guid
       ? GLOBAL_ROUTES?.EDIT_PROJECT_SUMMARY?.dynamicRoute(
-          project.project_guid,
-          project.project_summary.project_summary_guid,
-          "document-upload",
-          isProjectDescriptionEditableStatus
-        )
+        project.project_guid,
+        project.project_summary.project_summary_guid,
+        "document-upload",
+        isProjectDescriptionEditableStatus
+      )
       : null;
 
   const projectSummaryDocs =
@@ -208,6 +208,7 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
           canArchive={canChangeApplicationAmsFile}
           canReplace={canChangeApplicationAmsFile}
           onArchivedDocuments={refreshAmsApps}
+          onReplaceDocument={refreshAmsApps}
           documents={application.documents.map(
             (d) =>
               new MineDocument({
@@ -250,6 +251,8 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
             key={auth.project_summary_authorization_guid}
             canArchive={canModifySummaryDocs}
             canReplace={canModifySummaryDocs}
+            onArchivedDocuments={refreshData}
+            onReplaceDocument={refreshData}
             documents={auth.amendment_documents.map(
               (d) =>
                 new MineDocument({
@@ -289,6 +292,7 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
             title=""
             documents={pdSupportingDocuments}
             onArchivedDocuments={refreshData}
+            onReplaceDocument={refreshData}
             canReplace={canModifySummaryDocs}
             canArchive={canModifySummaryDocs}
             header={
@@ -327,7 +331,7 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
         <>
           <Typography.Title level={3}>Application</Typography.Title>
           <Typography.Paragraph>
-            Below are the documents submitted as part of the Major Mine Application.
+            Below are the documents submitted as part of the major mine application. Go to the Application stage to add new application documents. This tab supports replacing, archiving and downloading files already submitted.
           </Typography.Paragraph>
         </>
       ),
@@ -345,6 +349,7 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
           id="primary-document"
           key="primary-document"
           onArchivedDocuments={refreshData}
+          onReplaceDocument={refreshData}
           titleLevel={5}
           documents={primaryDocuments}
           canReplace={canModifyMmaDocs}
@@ -362,6 +367,7 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
           documents={mmaAppendixDocuments}
           titleLevel={5}
           onArchivedDocuments={refreshData}
+          onReplaceDocument={refreshData}
           canReplace={canModifyMmaDocs}
           canArchive={canModifyMmaDocs}
         />
@@ -388,6 +394,7 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
           id="supporting-documents"
           key="supporting-documents"
           onArchivedDocuments={refreshData}
+          onReplaceDocument={refreshData}
           titleLevel={5}
           documents={mmaSupportingDocuments}
           canReplace={canModifyMmaDocs}
@@ -396,20 +403,20 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
       ),
     },
     amsSections.length > 1 &&
-      isAmsDocumentsEnabled && {
-        href: "ENV Applications",
-        title: <div className="sub-tab-1">ENV Applications</div>,
-        content: (
-          <>
-            <Typography.Title level={4}>ENV Applications</Typography.Title>
-            <Alert
-              className={isCore ? "ant-alert-grey" : ""}
-              description="Some informative text for ENV Applications"
-              showIcon
-            />
-          </>
-        ),
-      },
+    isAmsDocumentsEnabled && {
+      href: "ENV Applications",
+      title: <div className="sub-tab-1">ENV Applications</div>,
+      content: (
+        <>
+          <Typography.Title level={4}>ENV Applications</Typography.Title>
+          <Alert
+            className={isCore ? "ant-alert-grey" : ""}
+            description="Some informative text for ENV Applications"
+            showIcon
+          />
+        </>
+      ),
+    },
     ...amsSections,
     isCore && {
       href: "ministry-decision-documentation",
@@ -418,6 +425,7 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
           id="ministry-decision-documentation"
           key="ministry-decision-documentation"
           onArchivedDocuments={refreshData}
+          onReplaceDocument={refreshData}
           documents={ministryDecisionDocuments}
           canReplace={canModifyMmaDocs}
           canArchive={canModifyMmaDocs}

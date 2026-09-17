@@ -416,8 +416,13 @@ class NOWApplicationExportResource(Resource, UserMixin):
             included_docs = []
             docs = now_application.get('documents', [])
             submission_docs = now_application.get('imported_submission_documents', [])
+
+            locked_ntr_guid = now_application.get('locked_ntr_guid')
+
             for doc in docs:
                 if doc['now_application_document_type_code'] in EXCLUDED_APPLICATION_DOCUMENT_TYPES:
+                    continue
+                if doc.get('now_application_document_xref_guid') == locked_ntr_guid:
                     continue
 
                 document_type = NOWApplicationDocumentType.query.get(

@@ -271,7 +271,7 @@ class MineIncident(SoftDeleteMixin, AuditMixin, Base):
     @validates('reported_to_inspector_contact_method', 'johsc_worker_rep_contact_method', 'johsc_management_rep_contact_method')
     def validates_contact_method(self, key, value):
         if value:
-            if value not in ['PHN', 'EML', 'MRP', 'MRE']:
+            if value not in ['PHN', 'EML', 'MRP', 'MRE', 'INP']:
                 raise AssertionError(f'{key} must use a valid option')
         return value
 

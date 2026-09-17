@@ -69,6 +69,7 @@ export const {
   getNoticeOfWorkTierOptions,
   getNoticeOfWorkNationEventOptions,
   getNoticeOfWorkNationStatusOptions,
+  getSpatialBundlePurposeCodes,
 } = staticContentReducer;
 
 const getVisibilityFilterOption = (_state, showActiveOnly: boolean | undefined = true) =>

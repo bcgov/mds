@@ -96,3 +96,40 @@ class DocumentBundleUploadResource(Resource):
             raise BadRequest('No documents provided to bundle')
 
         return DocumentUploadHelper().complete_bundle_upload(bundle_document_guids, name)
+
+
+@api.route(f'/documents/spatial-bundles')
+class SpatialBundleProcessingResource(Resource):
+    parser = reqparse.RequestParser(trim=True)
+    parser.add_argument(
+        'document_guids',
+        type=list,
+        required=True,
+        help='List of document guids to detect and validate spatial bundles in.',
+        location='json',
+    )
+    parser.add_argument(
+        'mine_guid',
+        type=str,
+        required=False,
+        help='Mine GUID used when syncing spatial bundles to Core.',
+        location='json',
+    )
+
+    @requires_any_of(DOCUMENT_UPLOAD_ROLES)
+    def post(self):
+        from app.services.commands_helper import create_process_spatial_documents_task
+
+        data = self.parser.parse_args()
+        document_guids = data.get('document_guids')
+
+        if not document_guids:
+            raise BadRequest('No documents provided to process')
+
+        response = create_process_spatial_documents_task(
+            document_guids, mine_guid=data.get('mine_guid'))
+
+        return {
+            'task_id': response.get('task-id'),
+            'message': f'Spatial bundle processing queued for {len(document_guids)} document(s)',
+        }, 202

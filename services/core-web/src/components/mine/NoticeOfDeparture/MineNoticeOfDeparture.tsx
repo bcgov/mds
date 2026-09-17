@@ -16,6 +16,7 @@ import { IMine, INoticeOfDeparture } from "@mds/common/interfaces";
 import { getUserAccessData } from "@mds/common/redux/selectors/authenticationSelectors";
 import { modalConfig } from "@/components/modalContent/config";
 import { MINE_NOTICES_OF_DEPARTURE } from "@/constants/routes";
+import PageNotFound from "@/components/common/PageNotFound";
 import MineNoticeOfDepartureTable from "./MineNoticeOfDepartureTable";
 import * as Permission from "@/constants/permissions";
 import { ActionCreator } from "@mds/common/interfaces/actionCreator";
@@ -105,6 +106,10 @@ export const MineNoticeOfDeparture: React.FC<IMineNoticeOfDepartureProps & Props
       <br />
     </div>
   );
+
+  if (mine && !mine.major_mine_ind) {
+    return <PageNotFound />;
+  }
 
   return (
     <div className="tab__content">

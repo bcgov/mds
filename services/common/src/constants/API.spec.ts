@@ -168,7 +168,9 @@ describe("API", () => {
     expect(API.INCIDENT_DOCUMENT_TYPE).toBe("/incidents/document-types");
     expect(API.INCIDENT_CATEGORY_CODES).toBe("/incidents/category-codes");
     expect(API.COMPLETE_SPATIAL_BUNDLE).toBe("/documents/complete-bundle");
-    expect(API.CORE_API_DOCUMENT_BUNDLE).toBe("/mines/document-bundle/");
+    expect(API.CORE_API_DOCUMENT_BUNDLE("mine-guid", 12)).toBe(
+      "/mines/mine-guid/document-bundle/12"
+    );
   });
 
   it("should have correct values for MINE_PARTY_APPOINTMENT_DOCUMENTS", () => {

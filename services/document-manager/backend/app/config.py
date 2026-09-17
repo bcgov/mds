@@ -146,6 +146,7 @@ class Config(object):
     GEOMARK_SECRET_KEY = os.environ.get('GEOMARK_SECRET_KEY', None)
     GEOMARK_GROUP = os.environ.get('GEOMARK_GROUP', None)
     GEOMARK_PERSIST = os.environ.get('GEOMARK_PERSIST', 'true') == 'true'
+    GEOMARK_UPLOAD_TIMEOUT = int(os.environ.get('GEOMARK_UPLOAD_TIMEOUT', '300'))
 
     LOGGING_DICT_CONFIG = {
         'version': 1,

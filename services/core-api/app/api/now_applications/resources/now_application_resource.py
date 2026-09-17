@@ -29,6 +29,27 @@ from app.api.mines.mine.models.mine_type import MineTypeDetail
 
 
 class NOWApplicationResource(Resource, UserMixin):
+    @staticmethod
+    def _get_spatial_document_guids_to_process(documents):
+        """document_manager_guids to send for spatial processing.
+
+        Nested documents without a xref guid are treated as new by deep_update_from_dict.
+        When any document is new, include every document_manager_guid on the payload so completing
+        a shapefile across saves revalidates the whole group. Document Manager decides which files
+        are spatial.
+        """
+        new_guids = []
+        all_guids = []
+        for document in documents or []:
+            mine_document = document.get('mine_document') or {}
+            document_manager_guid = mine_document.get('document_manager_guid')
+            if not document_manager_guid:
+                continue
+            all_guids.append(document_manager_guid)
+            if not document.get('now_application_document_xref_guid'):
+                new_guids.append(document_manager_guid)
+        return all_guids if new_guids else []
+
     @api.doc(
         description='Get a Notice of Work application.',
         params={
@@ -51,6 +72,8 @@ class NOWApplicationResource(Resource, UserMixin):
             application.imported_to_core = False
 
         application.filtered_submission_documents = NOWApplication.get_filtered_submissions_documents(
+            now_application=application)
+        application.spatial_document_bundles = NOWApplication.get_spatial_document_bundles(
             now_application=application)
 
         applications_view = ApplicationsView.query.filter_by(
@@ -214,7 +237,20 @@ class NOWApplicationResource(Resource, UserMixin):
                 )
                 now_application_identity.now_application.application_tier = new_tier
 
+        new_spatial_document_guids = self._get_spatial_document_guids_to_process(
+            data.get('documents'))
+
         now_application_identity.now_application.deep_update_from_dict(data)
+
+        if new_spatial_document_guids:
+            try:
+                DocumentManagerService.process_spatial_documents(
+                    request,
+                    new_spatial_document_guids,
+                    mine_guid=now_application_identity.mine_guid)
+            except Exception:
+                current_app.logger.exception(
+                    'Failed to queue spatial processing for application %s', application_guid)
 
         if update_fap_document and now_application_identity.application_type_code == 'NOW':
             now_application_identity.now_application.add_now_form_to_fap(
@@ -226,4 +262,9 @@ class NOWApplicationResource(Resource, UserMixin):
             now_application_identity.now_application.status_updated_date.strftime(
                 "%Y-%m-%dT%H:%M:%S"))
 
-        return now_application_identity.now_application
+        application = now_application_identity.now_application
+        application.filtered_submission_documents = NOWApplication.get_filtered_submissions_documents(
+            now_application=application)
+        application.spatial_document_bundles = NOWApplication.get_spatial_document_bundles(
+            now_application=application)
+        return application

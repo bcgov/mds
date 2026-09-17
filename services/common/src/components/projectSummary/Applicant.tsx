@@ -103,7 +103,7 @@ const Applicant: FC<ProjectSummaryFormComponentProps> = ({ fieldsDisabled }) => 
       if (credential_id !== credential.id)
         dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "company_alias", null));
 
-      dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "applicant.credential_id", credential.credential_id));
+      dispatch(change(FORM.ADD_EDIT_PROJECT_SUMMARY, "applicant.credential_id", credential.id));
       const orgBookEntity = {
         registration_id: credential.topic.source_id,
         business_name: credential.topic.local_name.text,

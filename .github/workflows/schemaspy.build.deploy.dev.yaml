@@ -6,7 +6,7 @@ on:
     branches:
       - develop
     paths:
-      - services/schemaspy/**
+      - services/schemaspy/*
       - .github/workflows/schemaspy.build.deploy.dev.yaml
 
 env:

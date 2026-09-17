@@ -12,6 +12,8 @@ from .now_application_status import NOWApplicationStatus
 from .now_application_permit_type import NOWApplicationPermitType
 from .now_application_document_type import NOWApplicationDocumentType
 from .now_application_document_sub_type import NOWApplicationDocumentSubType
+from .now_application_document_index_run import NowApplicationDocumentIndexRun
+from .permit_package_document_type import PermitPackageDocumentType
 from .now_application_review import NOWApplicationReview, NOWApplicationReviewDocumentXref
 from .now_application_review_type import NOWApplicationReviewType
 from .notice_of_work_tier import NoticeOfWorkTier
@@ -42,6 +44,8 @@ model_list = [
     NOWApplicationPermitType,
     NOWApplicationDocumentType,
     NOWApplicationDocumentSubType,
+    NowApplicationDocumentIndexRun,
+    PermitPackageDocumentType,
     NOWApplicationReview,
     NOWApplicationReviewDocumentXref,
     NOWApplicationReviewType,

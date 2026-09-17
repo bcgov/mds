@@ -40,6 +40,7 @@ export enum Feature {
   NOTICE_OF_WORK_TIER = "notice_of_work_tier",
   NOW_APPLICATION_DOCUMENT_SEARCH = "now_application_document_search",
   NOTICE_OF_WORK_NATIONS = 'notice_of_work_nations',
+  INSPECTOR_PERMIT_PACKAGE_TYPE_SELECTOR = "inspector_permit_package_type_selector",
 }
 
 export const initializeFlagsmith = async (flagsmithUrl, flagsmithKey) => {

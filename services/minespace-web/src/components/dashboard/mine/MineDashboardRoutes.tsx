@@ -28,7 +28,11 @@ import {
   faCircleQuestion,
 } from "@fortawesome/pro-light-svg-icons";
 
-export const getMineDashboardRoutes = (showApplications, reportsBadgeCount?: number) =>
+export const getMineDashboardRoutes = (
+  showApplications,
+  reportsBadgeCount?: number,
+  isMajorMine?: boolean
+) =>
   [
     {
       key: "overview",
@@ -75,7 +79,7 @@ export const getMineDashboardRoutes = (showApplications, reportsBadgeCount?: num
       icon: <FontAwesomeIcon icon={faBrakeWarning} style={{ width: "24px" }} />,
       component: Incidents,
     },
-    {
+    isMajorMine && {
       key: "nods",
       label: "Notices of Departure",
       icon: <FontAwesomeIcon icon={faHexagonExclamation} style={{ width: "24px" }} />,

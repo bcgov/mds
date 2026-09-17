@@ -344,9 +344,12 @@ NOW_APPLICATION_DOCUMENT = api.model(
         'now_application_document_sub_type_code': fields.String,
         'description': fields.String,
         'is_final_package': fields.Boolean,
+        'permit_package_document_type_code': fields.String,
+        'is_system_generated': fields.Boolean,
         'final_package_order': fields.Integer,
         'is_referral_package': fields.Boolean,
         'is_consultation_package': fields.Boolean,
+        'create_timestamp': fields.DateTime,
         'preamble_title': fields.String,
         'preamble_author': fields.String,
         'preamble_date': fields.Date,
@@ -414,6 +417,7 @@ IMPORTED_NOW_SUBMISSION_DOCUMENT = api.model(
         'description': fields.String,
         'mine_document_guid': fields.String,
         'document_manager_guid': fields.String,
+        'mine_document_bundle_id': fields.Integer,
         'is_final_package': fields.Boolean,
         'final_package_order': fields.Integer,
         'is_referral_package': fields.Boolean,
@@ -577,6 +581,8 @@ NOW_APPLICATION_MODEL = api.model(
         fields.Nested(NOW_APPLICATION_WATER_SUPPLY, skip_none=True),
         'documents':
         fields.List(fields.Nested(NOW_APPLICATION_DOCUMENT), skip_none=True),
+        'locked_ntr_guid':
+        fields.String,
         'submission_documents':
         fields.List(fields.Nested(NOW_SUBMISSION_DOCUMENT), skip_none=True),
         'contacts':
@@ -609,6 +615,8 @@ NOW_APPLICATION_MODEL = api.model(
         fields.List(fields.Nested(NOW_SUBMISSION_DOCUMENT)),
         'filtered_submission_documents':
         fields.List(fields.Nested(IMPORTED_NOW_SUBMISSION_DOCUMENT)),
+        'spatial_document_bundles':
+        fields.List(fields.Raw),
         'is_pre_launch':
         fields.Boolean,
         'application_type_code':
@@ -738,6 +746,7 @@ NOW_APPLICATION_MODEL_EXPORT = api.model(
         'underground_exploration': fields.Nested(NOW_APPLICATION_UNDERGROUND_EXPLORATION),
         'water_supply': fields.Nested(NOW_APPLICATION_WATER_SUPPLY),
         'documents': fields.List(fields.Nested(NOW_APPLICATION_DOCUMENT)),
+        'locked_ntr_guid': fields.String,
         'submission_documents': fields.List(fields.Nested(IMPORTED_NOW_SUBMISSION_DOCUMENT)),
         'imported_submission_documents': fields.List(
             fields.Nested(IMPORTED_NOW_SUBMISSION_DOCUMENT)),

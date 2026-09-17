@@ -286,7 +286,8 @@ export const INCIDENT_CATEGORY_CODES = `/incidents/category-codes`;
 export const COMPLETE_MULTIPART_UPLOAD = (documentGuid) =>
   `/documents/${documentGuid}/complete-upload`;
 export const COMPLETE_SPATIAL_BUNDLE = "/documents/complete-bundle";
-export const CORE_API_DOCUMENT_BUNDLE = "/mines/document-bundle/";
+export const CORE_API_DOCUMENT_BUNDLE = (mineGuid, bundleId) =>
+  `/mines/${mineGuid}/document-bundle/${bundleId}`;
 
 // Work Information
 export const MINE_WORK_INFORMATIONS = (mineGuid) => `/mines/${mineGuid}/work-information`;

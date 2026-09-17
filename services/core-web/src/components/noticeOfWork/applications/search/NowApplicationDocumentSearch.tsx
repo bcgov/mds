@@ -71,10 +71,8 @@ interface NowApplicationDocumentSearchProps {
  * The isolation guarantee lives in the backend. This component never passes
  * nowApplicationGuid as a filter to the query body — it goes in the URL path only.
  */
-// Poll frequently while indexing so the progress bar moves smoothly.
-// Falls back to a slower rate once indexing settles to reduce server load.
+// Poll frequently while indexing is in progress so the progress bar moves smoothly.
 const STATUS_POLL_INTERVAL_ACTIVE_MS = 2_000;
-const STATUS_POLL_INTERVAL_IDLE_MS = 10_000;
 
 function IndexerStatusBadge({ status }: { status: NowIndexerStatus | null }) {
   if (!status) return null;
@@ -85,22 +83,16 @@ function IndexerStatusBadge({ status }: { status: NowIndexerStatus | null }) {
     success: { color: "success", icon: <CheckCircleOutlined />, label: "Indexed" },
     error: { color: "error", icon: <CloseCircleOutlined />, label: "Index error" },
     transientFailure: { color: "warning", icon: <CloseCircleOutlined />, label: "Index warning" },
+    cancelled: { color: "default", icon: <CloseCircleOutlined />, label: "Index cancelled" },
   };
 
   const cfg = configs[status.status] ?? configs.never_run;
-  const lastRun = status.last_run_end ? new Date(status.last_run_end).toLocaleString() : null;
 
   return (
     <Space size="small" align="center">
       <Tag icon={cfg.icon} color={cfg.color}>
         {cfg.label}
       </Tag>
-      {lastRun && status.status !== "running" && (
-        <Typography.Text type="secondary" style={{ fontSize: 12 }}>
-          Last run: {lastRun}
-          {status.items_processed > 0 && ` · ${status.items_processed.toLocaleString()} chunks`}
-        </Typography.Text>
-      )}
       {status.status === "running" && (
         <Progress
           percent={status.percent ?? 0}
@@ -115,6 +107,20 @@ function IndexerStatusBadge({ status }: { status: NowIndexerStatus | null }) {
         </Typography.Text>
       )}
     </Space>
+  );
+}
+
+function LastIndexedLabel({ status }: { status: NowIndexerStatus | null }) {
+  if (!status || status.status === "running" || !status.last_run_end) return null;
+
+  const lastRun = new Date(status.last_run_end).toLocaleString();
+  const documentCount = status.document_count ?? 0;
+
+  return (
+    <Typography.Text type="secondary" style={{ fontSize: 12 }}>
+      Last indexed: {lastRun}
+      {documentCount > 0 && ` · ${documentCount.toLocaleString()} document${documentCount === 1 ? "" : "s"}`}
+    </Typography.Text>
   );
 }
 
@@ -146,15 +152,13 @@ const NowApplicationDocumentSearch: React.FC<NowApplicationDocumentSearchProps> 
     refreshStatus();
   }, [nowApplicationGuid, indexing]);
 
-  // Auto-poll while the indexer is running; stop once it settles.
-  // Use a fast interval while active so progress bar movement is visible,
-  // and a slow interval otherwise to reduce unnecessary server load.
+  // Auto-poll only while the indexer is actually running, so progress bar
+  // movement is visible. Once it settles into a terminal status, stop —
+  // there's nothing left that will change until the user triggers another run.
   useEffect(() => {
     if (pollRef.current) clearInterval(pollRef.current);
     if (indexerStatus?.status === "running") {
       pollRef.current = setInterval(refreshStatus, STATUS_POLL_INTERVAL_ACTIVE_MS);
-    } else if (indexerStatus?.status) {
-      pollRef.current = setInterval(refreshStatus, STATUS_POLL_INTERVAL_IDLE_MS);
     }
     return () => {
       if (pollRef.current) clearInterval(pollRef.current);
@@ -177,48 +181,51 @@ const NowApplicationDocumentSearch: React.FC<NowApplicationDocumentSearchProps> 
   );
 
   const indexActions = (
-    <Space align="center">
-      <IndexerStatusBadge status={indexerStatus} />
-      {isRunning ? (
-        <Popconfirm
-          title="Cancel indexing? This will stop the current indexing job. You can re-index at any time."
-          okText="Cancel indexing"
-          okButtonProps={{ danger: true }}
-          cancelText="Keep running"
-          onConfirm={() => dispatch(cancelNowIndexing(nowApplicationGuid))}
-        >
-          <Tooltip title="Cancel Indexing">
-            <CoreButton
-              aria-label="Cancel"
-              loading={loading}
-              className={"form-btn margin-none"}
-              type={"primary"}
-              danger
-            >
-              Cancel
-            </CoreButton>
-          </Tooltip>
-        </Popconfirm>
-      ) : (
-        <Space size="middle">
-          {isIndexed ? (
-            <Popconfirm
-              title="Re-index documents? This will re-scan all application documents. It is only necessary if new documents have been added since the last time this was run."
-              onConfirm={() => dispatch(indexNowApplicationDocuments(nowApplicationGuid))}
-              okText="Re-index"
-              cancelText="Cancel"
-            >
-              {indexButton}
-            </Popconfirm>
-          ) : (
-            indexButton
-          )}
-          <CoreTooltip
-            icon="question"
-            title="This process downloads and analyzes all application documents to make their content searchable by the AI. This is only necessary if new documents have been added since the last index."
-          />
-        </Space>
-      )}
+    <Space direction="vertical" align="end" size="small">
+      <Space align="center">
+        <IndexerStatusBadge status={indexerStatus} />
+        {isRunning ? (
+          <Popconfirm
+            title="Cancel indexing? This will stop the current indexing job. You can re-index at any time."
+            okText="Cancel indexing"
+            okButtonProps={{ danger: true }}
+            cancelText="Keep running"
+            onConfirm={() => dispatch(cancelNowIndexing(nowApplicationGuid))}
+          >
+            <Tooltip title="Cancel Indexing">
+              <CoreButton
+                aria-label="Cancel"
+                loading={cancelling}
+                className={"form-btn margin-none"}
+                type={"primary"}
+                danger
+              >
+                Cancel
+              </CoreButton>
+            </Tooltip>
+          </Popconfirm>
+        ) : (
+          <Space size="middle">
+            {isIndexed ? (
+              <Popconfirm
+                title="Re-index documents? This will re-scan all application documents. It is only necessary if new documents have been added since the last time this was run."
+                onConfirm={() => dispatch(indexNowApplicationDocuments(nowApplicationGuid))}
+                okText="Re-index"
+                cancelText="Cancel"
+              >
+                {indexButton}
+              </Popconfirm>
+            ) : (
+              indexButton
+            )}
+            <CoreTooltip
+              icon="question"
+              title="This process downloads and analyzes all application documents to make their content searchable by the AI. This is only necessary if new documents have been added since the last index."
+            />
+          </Space>
+        )}
+      </Space>
+      <LastIndexedLabel status={indexerStatus} />
     </Space>
   );
 

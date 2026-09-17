@@ -1798,347 +1798,366 @@ exports[`IncidentForm renders properly 1`] = `
                   role="separator"
                 />
                 <div
-                  class="ant-col ant-col-xs-24 ant-col-md-12"
+                  class="ant-col ant-col-24"
                   style="padding-left: 8px; padding-right: 8px;"
                 >
                   <div
-                    class="ant-form-item ant-form-item-with-help"
+                    class="ant-row"
+                    style="margin-left: -8px; margin-right: -8px; margin-bottom: 16px;"
                   >
                     <div
-                      class="ant-row ant-form-item-row"
+                      class="ant-col ant-col-xs-24 ant-col-md-12"
+                      style="padding-left: 8px; padding-right: 8px;"
                     >
                       <div
-                        class="ant-col ant-form-item-label"
-                      >
-                        <label
-                          class=""
-                          for="ADD_EDIT_INCIDENT_johsc_worker_rep_name"
-                          title=""
-                        >
-                          <div>
-                            JOHSC/Worker Rep Name
-                             
-                            <span
-                              class="form-item-optional"
-                            >
-                               (optional)
-                            </span>
-                          </div>
-                        </label>
-                      </div>
-                      <div
-                        class="ant-col ant-form-item-control"
+                        class="ant-form-item ant-form-item-with-help"
                       >
                         <div
-                          class="ant-form-item-control-input"
+                          class="ant-row ant-form-item-row"
                         >
                           <div
-                            class="ant-form-item-control-input-content"
+                            class="ant-col ant-form-item-label"
                           >
-                            <input
-                              aria-label="johsc_worker_rep_name"
-                              class="ant-input ant-input-disabled"
-                              data-testid="johsc_worker_rep_name"
-                              disabled=""
-                              id="johsc_worker_rep_name"
-                              name="johsc_worker_rep_name"
-                              placeholder="Enter name of representative..."
-                              type="text"
-                              value=""
-                            />
-                          </div>
-                        </div>
-                        <div
-                          style="display: flex; flex-wrap: nowrap;"
-                        >
-                          <div
-                            class="ant-form-item-explain ant-form-item-explain-connected"
-                            id="ADD_EDIT_INCIDENT_johsc_worker_rep_name_help"
-                            role="alert"
-                          >
-                            <div
+                            <label
                               class=""
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div
-                  class="ant-col ant-col-xs-24 ant-col-md-12"
-                  style="padding-left: 8px; padding-right: 8px;"
-                >
-                  <div
-                    class="ant-form-item ant-form-item-with-help"
-                  >
-                    <div
-                      class="ant-row ant-form-item-row"
-                    >
-                      <div
-                        class="ant-col ant-form-item-label"
-                      >
-                        <label
-                          class=""
-                          for="ADD_EDIT_INCIDENT_johsc_worker_rep_contacted"
-                          title=""
-                        >
-                          <div>
-                            Was this person contacted?
-                             
-                            <span
-                              class="form-item-optional"
+                              for="ADD_EDIT_INCIDENT_johsc_worker_rep_name"
+                              title=""
                             >
-                               (optional)
-                            </span>
+                              <div>
+                                JOHSC/Worker Rep Name
+                                 
+                                <span
+                                  class="form-item-optional"
+                                >
+                                   (optional)
+                                </span>
+                              </div>
+                            </label>
                           </div>
-                        </label>
-                      </div>
-                      <div
-                        class="ant-col ant-form-item-control"
-                      >
-                        <div
-                          class="ant-form-item-control-input"
-                        >
                           <div
-                            class="ant-form-item-control-input-content"
+                            class="ant-col ant-form-item-control"
                           >
                             <div
-                              class="ant-radio-group ant-radio-group-solid"
+                              class="ant-form-item-control-input"
                             >
-                              <label
-                                class="ant-radio-wrapper ant-radio-wrapper-disabled ant-radio-wrapper-in-form-item"
+                              <div
+                                class="ant-form-item-control-input-content"
                               >
-                                <span
-                                  class="ant-radio ant-radio-disabled"
-                                >
-                                  <input
-                                    class="ant-radio-input"
-                                    disabled=""
-                                    name="johsc_worker_rep_contacted"
-                                    type="radio"
-                                    value="true"
-                                  />
-                                  <span
-                                    class="ant-radio-inner"
-                                  />
-                                </span>
-                                <span>
-                                  Yes
-                                </span>
-                              </label>
-                              <label
-                                class="ant-radio-wrapper ant-radio-wrapper-disabled ant-radio-wrapper-in-form-item"
+                                <input
+                                  aria-label="johsc_worker_rep_name"
+                                  class="ant-input ant-input-disabled"
+                                  data-testid="johsc_worker_rep_name"
+                                  disabled=""
+                                  id="johsc_worker_rep_name"
+                                  name="johsc_worker_rep_name"
+                                  placeholder="Enter name of representative..."
+                                  type="text"
+                                  value=""
+                                />
+                              </div>
+                            </div>
+                            <div
+                              style="display: flex; flex-wrap: nowrap;"
+                            >
+                              <div
+                                class="ant-form-item-explain ant-form-item-explain-connected"
+                                id="ADD_EDIT_INCIDENT_johsc_worker_rep_name_help"
+                                role="alert"
                               >
-                                <span
-                                  class="ant-radio ant-radio-disabled"
-                                >
-                                  <input
-                                    class="ant-radio-input"
-                                    disabled=""
-                                    name="johsc_worker_rep_contacted"
-                                    type="radio"
-                                    value="false"
-                                  />
-                                  <span
-                                    class="ant-radio-inner"
-                                  />
-                                </span>
-                                <span>
-                                  No
-                                </span>
-                              </label>
+                                <div
+                                  class=""
+                                />
+                              </div>
                             </div>
                           </div>
                         </div>
-                        <div
-                          style="display: flex; flex-wrap: nowrap;"
-                        >
-                          <div
-                            class="ant-form-item-explain ant-form-item-explain-connected"
-                            id="ADD_EDIT_INCIDENT_johsc_worker_rep_contacted_help"
-                            role="alert"
-                          >
-                            <div
-                              class=""
-                            />
-                          </div>
-                        </div>
                       </div>
                     </div>
-                  </div>
-                </div>
-                <div
-                  class="ant-col ant-col-xs-24 ant-col-md-12"
-                  style="padding-left: 8px; padding-right: 8px;"
-                >
-                  <div
-                    class="ant-form-item ant-form-item-with-help"
-                  >
                     <div
-                      class="ant-row ant-form-item-row"
+                      class="ant-col ant-col-xs-24 ant-col-md-12"
+                      style="padding-left: 8px; padding-right: 8px;"
                     >
                       <div
-                        class="ant-col ant-form-item-label"
-                      >
-                        <label
-                          class=""
-                          for="ADD_EDIT_INCIDENT_johsc_management_rep_name"
-                          title=""
-                        >
-                          <div>
-                            JOHSC/Management Rep Name
-                             
-                            <span
-                              class="form-item-optional"
-                            >
-                               (optional)
-                            </span>
-                          </div>
-                        </label>
-                      </div>
-                      <div
-                        class="ant-col ant-form-item-control"
+                        class="ant-form-item ant-form-item-with-help"
                       >
                         <div
-                          class="ant-form-item-control-input"
+                          class="ant-row ant-form-item-row"
                         >
                           <div
-                            class="ant-form-item-control-input-content"
+                            class="ant-col ant-form-item-label"
                           >
-                            <input
-                              aria-label="johsc_management_rep_name"
-                              class="ant-input ant-input-disabled"
-                              data-testid="johsc_management_rep_name"
-                              disabled=""
-                              id="johsc_management_rep_name"
-                              name="johsc_management_rep_name"
-                              placeholder="Enter name of representative..."
-                              type="text"
-                              value=""
-                            />
-                          </div>
-                        </div>
-                        <div
-                          style="display: flex; flex-wrap: nowrap;"
-                        >
-                          <div
-                            class="ant-form-item-explain ant-form-item-explain-connected"
-                            id="ADD_EDIT_INCIDENT_johsc_management_rep_name_help"
-                            role="alert"
-                          >
-                            <div
+                            <label
                               class=""
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div
-                  class="ant-col ant-col-xs-24 ant-col-md-12"
-                  style="padding-left: 8px; padding-right: 8px;"
-                >
-                  <div
-                    class="ant-form-item ant-form-item-with-help"
-                  >
-                    <div
-                      class="ant-row ant-form-item-row"
-                    >
-                      <div
-                        class="ant-col ant-form-item-label"
-                      >
-                        <label
-                          class=""
-                          for="ADD_EDIT_INCIDENT_johsc_management_rep_contacted"
-                          title=""
-                        >
-                          <div>
-                            Was this person contacted?
-                             
-                            <span
-                              class="form-item-optional"
+                              for="ADD_EDIT_INCIDENT_johsc_worker_rep_contacted"
+                              title=""
                             >
-                               (optional)
-                            </span>
+                              <div>
+                                Was this person contacted?
+                                 
+                                <span
+                                  class="form-item-optional"
+                                >
+                                   (optional)
+                                </span>
+                              </div>
+                            </label>
                           </div>
-                        </label>
-                      </div>
-                      <div
-                        class="ant-col ant-form-item-control"
-                      >
-                        <div
-                          class="ant-form-item-control-input"
-                        >
                           <div
-                            class="ant-form-item-control-input-content"
+                            class="ant-col ant-form-item-control"
                           >
                             <div
-                              class="ant-radio-group ant-radio-group-solid"
+                              class="ant-form-item-control-input"
                             >
-                              <label
-                                class="ant-radio-wrapper ant-radio-wrapper-disabled ant-radio-wrapper-in-form-item"
+                              <div
+                                class="ant-form-item-control-input-content"
                               >
-                                <span
-                                  class="ant-radio ant-radio-disabled"
+                                <div
+                                  class="ant-radio-group ant-radio-group-solid"
                                 >
-                                  <input
-                                    class="ant-radio-input"
-                                    disabled=""
-                                    name="johsc_management_rep_contacted"
-                                    type="radio"
-                                    value="true"
-                                  />
-                                  <span
-                                    class="ant-radio-inner"
-                                  />
-                                </span>
-                                <span>
-                                  Yes
-                                </span>
-                              </label>
-                              <label
-                                class="ant-radio-wrapper ant-radio-wrapper-disabled ant-radio-wrapper-in-form-item"
+                                  <label
+                                    class="ant-radio-wrapper ant-radio-wrapper-disabled ant-radio-wrapper-in-form-item"
+                                  >
+                                    <span
+                                      class="ant-radio ant-radio-disabled"
+                                    >
+                                      <input
+                                        class="ant-radio-input"
+                                        disabled=""
+                                        name="johsc_worker_rep_contacted"
+                                        type="radio"
+                                        value="true"
+                                      />
+                                      <span
+                                        class="ant-radio-inner"
+                                      />
+                                    </span>
+                                    <span>
+                                      Yes
+                                    </span>
+                                  </label>
+                                  <label
+                                    class="ant-radio-wrapper ant-radio-wrapper-disabled ant-radio-wrapper-in-form-item"
+                                  >
+                                    <span
+                                      class="ant-radio ant-radio-disabled"
+                                    >
+                                      <input
+                                        class="ant-radio-input"
+                                        disabled=""
+                                        name="johsc_worker_rep_contacted"
+                                        type="radio"
+                                        value="false"
+                                      />
+                                      <span
+                                        class="ant-radio-inner"
+                                      />
+                                    </span>
+                                    <span>
+                                      No
+                                    </span>
+                                  </label>
+                                </div>
+                              </div>
+                            </div>
+                            <div
+                              style="display: flex; flex-wrap: nowrap;"
+                            >
+                              <div
+                                class="ant-form-item-explain ant-form-item-explain-connected"
+                                id="ADD_EDIT_INCIDENT_johsc_worker_rep_contacted_help"
+                                role="alert"
                               >
-                                <span
-                                  class="ant-radio ant-radio-disabled"
-                                >
-                                  <input
-                                    class="ant-radio-input"
-                                    disabled=""
-                                    name="johsc_management_rep_contacted"
-                                    type="radio"
-                                    value="false"
-                                  />
-                                  <span
-                                    class="ant-radio-inner"
-                                  />
-                                </span>
-                                <span>
-                                  No
-                                </span>
-                              </label>
+                                <div
+                                  class=""
+                                />
+                              </div>
                             </div>
                           </div>
                         </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="ant-col ant-col-24"
+                  style="padding-left: 8px; padding-right: 8px;"
+                >
+                  <div
+                    class="ant-row"
+                    style="margin-left: -8px; margin-right: -8px;"
+                  >
+                    <div
+                      class="ant-col ant-col-xs-24 ant-col-md-12"
+                      style="padding-left: 8px; padding-right: 8px;"
+                    >
+                      <div
+                        class="ant-form-item ant-form-item-with-help"
+                      >
                         <div
-                          style="display: flex; flex-wrap: nowrap;"
+                          class="ant-row ant-form-item-row"
                         >
                           <div
-                            class="ant-form-item-explain ant-form-item-explain-connected"
-                            id="ADD_EDIT_INCIDENT_johsc_management_rep_contacted_help"
-                            role="alert"
+                            class="ant-col ant-form-item-label"
+                          >
+                            <label
+                              class=""
+                              for="ADD_EDIT_INCIDENT_johsc_management_rep_name"
+                              title=""
+                            >
+                              <div>
+                                JOHSC/Management Rep Name
+                                 
+                                <span
+                                  class="form-item-optional"
+                                >
+                                   (optional)
+                                </span>
+                              </div>
+                            </label>
+                          </div>
+                          <div
+                            class="ant-col ant-form-item-control"
                           >
                             <div
+                              class="ant-form-item-control-input"
+                            >
+                              <div
+                                class="ant-form-item-control-input-content"
+                              >
+                                <input
+                                  aria-label="johsc_management_rep_name"
+                                  class="ant-input ant-input-disabled"
+                                  data-testid="johsc_management_rep_name"
+                                  disabled=""
+                                  id="johsc_management_rep_name"
+                                  name="johsc_management_rep_name"
+                                  placeholder="Enter name of representative..."
+                                  type="text"
+                                  value=""
+                                />
+                              </div>
+                            </div>
+                            <div
+                              style="display: flex; flex-wrap: nowrap;"
+                            >
+                              <div
+                                class="ant-form-item-explain ant-form-item-explain-connected"
+                                id="ADD_EDIT_INCIDENT_johsc_management_rep_name_help"
+                                role="alert"
+                              >
+                                <div
+                                  class=""
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="ant-col ant-col-xs-24 ant-col-md-12"
+                      style="padding-left: 8px; padding-right: 8px;"
+                    >
+                      <div
+                        class="ant-form-item ant-form-item-with-help"
+                      >
+                        <div
+                          class="ant-row ant-form-item-row"
+                        >
+                          <div
+                            class="ant-col ant-form-item-label"
+                          >
+                            <label
                               class=""
-                            />
+                              for="ADD_EDIT_INCIDENT_johsc_management_rep_contacted"
+                              title=""
+                            >
+                              <div>
+                                Was this person contacted?
+                                 
+                                <span
+                                  class="form-item-optional"
+                                >
+                                   (optional)
+                                </span>
+                              </div>
+                            </label>
+                          </div>
+                          <div
+                            class="ant-col ant-form-item-control"
+                          >
+                            <div
+                              class="ant-form-item-control-input"
+                            >
+                              <div
+                                class="ant-form-item-control-input-content"
+                              >
+                                <div
+                                  class="ant-radio-group ant-radio-group-solid"
+                                >
+                                  <label
+                                    class="ant-radio-wrapper ant-radio-wrapper-disabled ant-radio-wrapper-in-form-item"
+                                  >
+                                    <span
+                                      class="ant-radio ant-radio-disabled"
+                                    >
+                                      <input
+                                        class="ant-radio-input"
+                                        disabled=""
+                                        name="johsc_management_rep_contacted"
+                                        type="radio"
+                                        value="true"
+                                      />
+                                      <span
+                                        class="ant-radio-inner"
+                                      />
+                                    </span>
+                                    <span>
+                                      Yes
+                                    </span>
+                                  </label>
+                                  <label
+                                    class="ant-radio-wrapper ant-radio-wrapper-disabled ant-radio-wrapper-in-form-item"
+                                  >
+                                    <span
+                                      class="ant-radio ant-radio-disabled"
+                                    >
+                                      <input
+                                        class="ant-radio-input"
+                                        disabled=""
+                                        name="johsc_management_rep_contacted"
+                                        type="radio"
+                                        value="false"
+                                      />
+                                      <span
+                                        class="ant-radio-inner"
+                                      />
+                                    </span>
+                                    <span>
+                                      No
+                                    </span>
+                                  </label>
+                                </div>
+                              </div>
+                            </div>
+                            <div
+                              style="display: flex; flex-wrap: nowrap;"
+                            >
+                              <div
+                                class="ant-form-item-explain ant-form-item-explain-connected"
+                                id="ADD_EDIT_INCIDENT_johsc_management_rep_contacted_help"
+                                role="alert"
+                              >
+                                <div
+                                  class=""
+                                />
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <br />
                 </div>
               </div>
               <br />

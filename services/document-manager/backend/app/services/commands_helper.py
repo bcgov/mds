@@ -1,24 +1,25 @@
-import numpy
-import uuid
-import os
-import requests
 import json
-from requests.auth import HTTPBasicAuth
+import os
+import uuid
 
-from flask import current_app, Response
-from sqlalchemy import and_
-from celery import chord, current_task
-
-from app.docman.models.document import Document
+import numpy
+import requests
 from app.config import Config
-from app.docman.models.import_now_submission_documents_job import ImportNowSubmissionDocumentsJob
-from app.tasks.celery import doc_job_result
+from app.docman.models.document import Document
+from app.docman.models.import_now_submission_documents_job import (
+    ImportNowSubmissionDocumentsJob,
+)
+from app.tasks.celery import celery, doc_job_result
+from app.tasks.create_zip import zip_docs
+from app.tasks.import_now_submission_documents import import_now_submission_documents
+from app.tasks.reorganize import reorganize_docs
 from app.tasks.transfer import transfer_docs
 from app.tasks.verify import verify_docs
-from app.tasks.create_zip import zip_docs
-from app.tasks.reorganize import reorganize_docs
-
-from app.tasks.import_now_submission_documents import import_now_submission_documents
+from celery import chord, current_task
+from flask import Response, current_app
+from requests.auth import HTTPBasicAuth
+from sqlalchemy import and_
+from werkzeug.exceptions import InternalServerError
 
 
 def create_transfer_files_job(wait):
@@ -139,47 +140,55 @@ def start_zip_job(job_type, docs, task, zip_file_name=None):
     response = Response(json.dumps(response_data), content_type='application/json')
     return json.loads(response.data.decode('utf-8'))
 
-def create_import_now_submission_documents(import_now_submission_documents_job_id):
+def create_import_now_submission_documents(import_now_submission_documents_job_id,
+                                           mine_guid=None,
+                                           additional_spatial_validation_document_guids=None):
     """Creates a job that imports a Notice of Work's submission documents to the object store."""
 
-    response = None
     # Get the Import NoW Document Job
     import_job = ImportNowSubmissionDocumentsJob.query.filter_by(
         import_now_submission_documents_job_id=import_now_submission_documents_job_id).one()
 
     # Create the task for this job
     try:
-        data = {"args": [import_job.import_now_submission_documents_job_id]}
-        response = apply_task_async(
-            'app.tasks.import_now_submission_documents.import_now_submission_documents', data)
-        import_job.celery_task_id = response['task-id']
+        result = import_now_submission_documents.delay(
+            import_job.import_now_submission_documents_job_id,
+            mine_guid,
+            additional_spatial_validation_document_guids or [],
+        )
+        import_job.celery_task_id = result.id
         import_job.save()
 
         # Create the response message
-        message = f'Added an Import Notice of Work Submission Documents job with ID: {import_now_submission_documents_job_id}, TaskID: {response["task-id"]} to the task queue: {len(import_job.import_now_submission_documents)} docs will be imported.'
+        message = f'Added an Import Notice of Work Submission Documents job with ID: {import_now_submission_documents_job_id}, TaskID: {result.id} to the task queue: {len(import_job.import_now_submission_documents)} docs will be imported.'
     except Exception as e:
-        message = f'Failed to add an Import Notice of Work Submission Documents job to the task queue: {str(e)}'
-
+        raise InternalServerError('Failed to add an Import Notice of Work Submission Documents job to the task queue.', original_exception=e)
     return message
 
 
-def apply_task_async(task_name, data):
-    current_app.logger.info(f'apply_task_async: {task_name}')
-    response = requests.post(
-        url=f'{Config.CELERY_REST_API_URL}/api/task/async-apply/{task_name}',
-        auth=HTTPBasicAuth(Config.FLOWER_USER, Config.FLOWER_USER_PASSWORD),
-        headers={'Content-Type': 'application/json'},
-        data=json.dumps(data))
+def create_process_spatial_documents_task(document_guids, mine_guid=None):
+    """Creates a job that detects, validates and Geomarks spatial bundles in the given documents."""
+    result = celery.send_task(
+        'app.tasks.process_now_spatial_bundles.process_spatial_document_guids',
+        args=[document_guids, mine_guid],
+    )
 
-    return json.loads(response.content)
+    current_app.logger.info(
+        f'Added a spatial bundle processing job for {len(document_guids)} document(s), '
+        f'TaskID: {result.id}')
+
+    return {'task-id': result.id}
+
 
 def abort_task(task_id):
-    response = requests.post(
-        url=f'{Config.CELERY_REST_API_URL}/api/task/abort/{task_id}',
-        auth=HTTPBasicAuth(Config.FLOWER_USER, Config.FLOWER_USER_PASSWORD),
-        headers={'Content-Type': 'application/json'})
+    if not task_id:
+        return None
 
-    return json.loads(response.content)
+    try:
+        celery.control.revoke(task_id, terminate=True)
+    except Exception:
+        current_app.logger.exception('Unable to abort Celery task %s.', task_id)
+        return None
 
 def create_zip_task(zip_file_name, document_manager_guids):
     """Creates a task that zips documents."""

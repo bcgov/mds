@@ -15,7 +15,7 @@ import RenderSelect from "@mds/common/components/forms/RenderSelect";
 import RenderSubmitButton from "@mds/common/components/forms/RenderSubmitButton";
 import RenderField from "@mds/common/components/forms/RenderField";
 import RenderAutoComplete from "@mds/common/components/forms/RenderAutoComplete";
-import { IOption, IParty } from "@mds/common/interfaces";
+import { IOption, IParty, IPartyFetchParams, ItemMap } from "@mds/common/interfaces";
 import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 
 interface AddContactFormDetailsProps {
@@ -32,9 +32,10 @@ export const AddContactFormDetails: FC<AddContactFormDetailsProps> = (props) => 
   const isFormDirty = useAppSelector(isDirty(formName));
   const formValues = useAppSelector(getFormValues(FORM.ADD_CONTACT)) as IParty;
   const partyRelationshipTypesList = useAppSelector(getPartyRelationshipTypesList);
-  const organizations = useAppSelector(getParties) as IParty[];
+  const organizations = useAppSelector(getParties);
 
-  const handleFetchParties = (...args) => debounce(() => dispatch(fetchParties(...args)), 1000);
+  const handleFetchParties = (params: IPartyFetchParams) =>
+    debounce(() => dispatch(fetchParties(params)), 1000);
 
   const onSubmit = async (values) => {
     const party_type_code = "PER";
@@ -42,16 +43,18 @@ export const AddContactFormDetails: FC<AddContactFormDetailsProps> = (props) => 
 
     if (!values.party_guid) {
       // Party doesn't already exist, create it
-      const { data: party } = await dispatch(createParty(payload));
+      const { payload: party } = await dispatch(createParty(payload));
+
+      if (!party) return;
 
       props.onSubmit(party);
     } else if (isFormDirty) {
       // Selected party has been updated, update it
-      const response = await dispatch(updateParty({ data: payload, partyGuid: values.party_guid }));
+      const { payload: party } = await dispatch(
+        updateParty({ data: payload, partyGuid: values.party_guid })
+      );
 
-      if (!response) return;
-
-      const { data: party } = response;
+      if (!party) return;
 
       props.onSubmit(party);
     } else {
@@ -84,7 +87,7 @@ export const AddContactFormDetails: FC<AddContactFormDetailsProps> = (props) => 
     searchOrganizations("");
   }, []);
 
-  const transformOrganizations = (orgs: IParty[]) =>
+  const transformOrganizations = (orgs: ItemMap<IParty>) =>
     Object.values(orgs).map((org) => ({
       label: org.name,
       value: org.party_guid,
