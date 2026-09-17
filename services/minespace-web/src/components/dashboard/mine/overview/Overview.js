@@ -1,4 +1,5 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
+import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import moment from "moment";
 import PropTypes from "prop-types";
@@ -10,6 +11,7 @@ import {
   getCommodityOptionHash,
   getMinistryContactTypesHash,
 } from "@mds/common/redux/selectors/staticContentSelectors";
+import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 import { getTransformedMineTypes } from "@mds/common/redux/selectors/mineSelectors";
 import { getMinistryContactsByRegion } from "@mds/common/redux/slices/minespaceSlice";
 import WorkerInfoEmployee from "@/components/dashboard/mine/overview/WorkerInfoEmployee";
@@ -24,6 +26,8 @@ import MineWorkInformation from "./MineWorkInformation";
 import { SidebarContext } from "@mds/common/components/common/SidebarWrapper";
 import { getMineReportStatsByMineGuid } from "@mds/common/redux/slices/mineReportStatsSlice";
 import { useAppSelector } from "@mds/common/redux/rootState";
+import { fetchPermits } from "@mds/common/redux/actionCreators/permitActionCreator";
+import { permit } from "@/customPropTypes/permits";
 
 const propTypes = {
   partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship).isRequired,
@@ -33,6 +37,8 @@ const propTypes = {
   transformedMineTypes: CustomPropTypes.transformedMineTypes.isRequired,
   userInfo: PropTypes.shape({ preferred_username: PropTypes.string.isRequired }).isRequired,
   MinistryContactInfo: PropTypes.arrayOf(CustomPropTypes.MinistryContactInfo).isRequired,
+  fetchPermits: PropTypes.func.isRequired,
+  permits: PropTypes.arrayOf(CustomPropTypes.permit),
 };
 
 const isPartyRelationshipActive = (pr) =>
@@ -57,6 +63,11 @@ const getPermitteeRelationships = (partyRelationships = []) =>
 export const Overview = (props) => {
   const { mine } = useContext(SidebarContext);
   const stats = useAppSelector(getMineReportStatsByMineGuid(mine.mine_guid));
+
+  useEffect(() => {
+    props.fetchPermits(mine.mine_guid);
+  }, []);
+
   return (
     <>
       <Row>
@@ -141,8 +152,12 @@ export const Overview = (props) => {
               >
                 <PermitteeContactCard
                   title="Permittee"
+                  permitNumber={
+                    props.permits.find(
+                      (permit) => permit?.permit_guid === partyRelationship.related_guid
+                    )?.permit_no
+                  }
                   partyRelationship={partyRelationship}
-                  dateLabel="Permittee Since"
                 />
               </Col>
             ))}
@@ -203,8 +218,11 @@ const mapStateToProps = (state) => ({
   transformedMineTypes: getTransformedMineTypes(state),
   MinistryContactInfo: getMinistryContactsByRegion(state),
   MinistryContactTypesHash: getMinistryContactTypesHash(state),
+  permits: getPermits(state),
 });
+``;
+const mapDispatchToProps = (dispatch) => bindActionCreators({ fetchPermits }, dispatch);
 
 Overview.propTypes = propTypes;
 
-export default connect(mapStateToProps)(Overview);
+export default connect(mapStateToProps, mapDispatchToProps)(Overview);

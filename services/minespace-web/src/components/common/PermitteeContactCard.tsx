@@ -48,12 +48,16 @@ const PermitteeContactCardRow: FC<PermitteeContactCardRowProps> = ({
 
 interface PermitteeContactCardProps {
   title: string;
+  permitNumber?: string;
   businessName?: string;
   partyRelationship?: IPermitPartyRelationship;
 }
 
-export const PermitteeContactCard: FC<PermitteeContactCardProps> = ({ partyRelationship }) => (
-  <Card title="Permittee" className="contact-card">
+export const PermitteeContactCard: FC<PermitteeContactCardProps> = ({
+  permitNumber,
+  partyRelationship,
+}) => (
+  <Card title={permitNumber ? `Permittee - ${permitNumber}` : "Permittee"} className="contact-card">
     <PermitteeContactCardRow
       Icon={UserOutlined}
       label="Permittee Name"
