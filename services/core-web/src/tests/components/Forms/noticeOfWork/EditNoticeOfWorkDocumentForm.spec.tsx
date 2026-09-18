@@ -11,6 +11,28 @@ jest.mock("@mds/common/providers/featureFlags/useFeatureFlag", () => ({
     useFeatureFlag: jest.fn().mockReturnValue({ isFeatureEnabled: jest.fn().mockReturnValue(true) }),
 }));
 
+// antd's Popconfirm renders its overlay via rc-trigger, which needs real DOM measurement APIs
+// jsdom doesn't provide - it never mounts its popup content in a test environment. This mock
+// keeps the same open/title/onConfirm/onCancel/okText/cancelText contract but renders the
+// overlay as plain DOM whenever `open` is true, so the controlled-visibility behavior under
+// test (rather than antd's own popup positioning) can actually be asserted against.
+jest.mock("antd", () => {
+    const actual = jest.requireActual("antd");
+    const Popconfirm = ({ open, title, onConfirm, onCancel, okText, cancelText, children }: any) => (
+        <>
+            {children}
+            {open && (
+                <div data-testid="popconfirm-mock">
+                    <span>{title}</span>
+                    <button type="button" onClick={onConfirm}>{okText}</button>
+                    <button type="button" onClick={onCancel}>{cancelText}</button>
+                </div>
+            )}
+        </>
+    );
+    return { ...actual, Popconfirm };
+});
+
 const baseProps = {
     onSubmit: jest.fn(),
     title: "Edit Notice of Work document",
@@ -116,36 +138,51 @@ describe("EditNoticeOfWorkDocumentForm - remove-from-package reference warning",
             </ReduxWrapper>
         );
 
-    it("keeps the normal submit button when nothing has been unchecked yet", () => {
+    it("keeps the submit button as a normal submit button regardless of reference state", () => {
         renderReferencedForm(stateWithCondition(true));
         const submitButton = screen.getByRole("button", { name: baseProps.title });
         expect(submitButton).toHaveAttribute("type", "submit");
     });
 
-    it("keeps the normal submit button when unchecking a file that isn't referenced anywhere", async () => {
+    it("unchecks immediately, with no warning, for a file that isn't referenced anywhere", async () => {
         renderReferencedForm(stateWithCondition(false));
         const checkbox = screen.getByRole("checkbox", { name: /Part of permit package/i });
         await userEvent.click(checkbox);
-        const submitButton = screen.getByRole("button", { name: baseProps.title });
-        expect(submitButton).toHaveAttribute("type", "submit");
+        expect(checkbox).not.toBeChecked();
+        expect(
+            screen.queryByText(/This file is currently being referenced in a permit condition/i)
+        ).not.toBeInTheDocument();
     });
 
-    it("swaps in a confirm-guarded button when unchecking a file that is referenced in a condition", async () => {
+    it("shows the reference warning immediately on uncheck, before the box actually changes, for a referenced file", async () => {
         renderReferencedForm(stateWithCondition(true));
         const checkbox = screen.getByRole("checkbox", { name: /Part of permit package/i });
         await userEvent.click(checkbox);
-        const submitButton = screen.getByRole("button", { name: baseProps.title });
-        expect(submitButton).toHaveAttribute("type", "button");
-    });
-
-    it("shows the reference warning when the confirm-guarded button is clicked", async () => {
-        renderReferencedForm(stateWithCondition(true));
-        const checkbox = screen.getByRole("checkbox", { name: /Part of permit package/i });
-        await userEvent.click(checkbox);
-        const submitButton = screen.getByRole("button", { name: baseProps.title });
-        await userEvent.click(submitButton);
         expect(
             screen.getByText(/This file is currently being referenced in a permit condition/i)
         ).toBeInTheDocument();
+        expect(checkbox).toBeChecked();
+    });
+
+    it("leaves the box checked when the user declines the warning", async () => {
+        renderReferencedForm(stateWithCondition(true));
+        const checkbox = screen.getByRole("checkbox", { name: /Part of permit package/i });
+        await userEvent.click(checkbox);
+        await userEvent.click(screen.getByText("No"));
+        expect(checkbox).toBeChecked();
+        expect(
+            screen.queryByText(/This file is currently being referenced in a permit condition/i)
+        ).not.toBeInTheDocument();
+    });
+
+    it("unchecks the box once the user confirms the warning", async () => {
+        renderReferencedForm(stateWithCondition(true));
+        const checkbox = screen.getByRole("checkbox", { name: /Part of permit package/i });
+        await userEvent.click(checkbox);
+        await userEvent.click(screen.getByText("Yes"));
+        expect(checkbox).not.toBeChecked();
+        expect(
+            screen.queryByText(/This file is currently being referenced in a permit condition/i)
+        ).not.toBeInTheDocument();
     });
 });
