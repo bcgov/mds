@@ -1,0 +1,13 @@
+@use "../settings/theme.scss";
+
+.report-error-severity .ant-segmented-thumb {
+  background-color: theme.$primary-color;
+}
+
+.report-error-severity .ant-segmented-item-selected,
+.report-error-severity .ant-segmented-item-selected:hover,
+.report-error-severity .ant-segmented-item-selected:focus {
+  background-color: theme.$primary-color;
+  color: theme.$btn-primary-color;
+  transition: none;
+}
