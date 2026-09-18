@@ -3,11 +3,17 @@ import PropTypes from "prop-types";
 import { FormSection } from "@mds/common/components/forms/form";
 import { connect } from "react-redux";
 import { getNOWProgress } from "@mds/common/redux/selectors/noticeOfWorkSelectors";
+import { userHasRole } from "@mds/common/redux/selectors/authenticationSelectors";
 import { getLockedSystemNtrDoc } from "@mds/common/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";
 import PermitPackage from "@/components/noticeOfWork/applications/PermitPackage";
 import NOWDocuments from "@/components/noticeOfWork/applications/NOWDocuments";
 import NOWSubmissionDocuments from "@/components/noticeOfWork/applications/NOWSubmissionDocuments";
+import withFeatureFlag from "@mds/common/providers/featureFlags/withFeatureFlag";
+import { Feature } from "@mds/common/utils/featureFlag";
+import * as Permission from "@/constants/permissions";
+
+const DECIDED_STATUS_CODES = ["AIA", "WDN", "REJ", "NPR"];
 
 /**
  * @class FinalPermitDocuments- call logic surrounding adding or removing documents in the final Permit document list
@@ -18,12 +24,14 @@ const propTypes = {
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   importNowSubmissionDocumentsJob: PropTypes.objectOf(PropTypes.any),
   progress: PropTypes.objectOf(PropTypes.string).isRequired,
+  userCanEditPermits: PropTypes.bool.isRequired,
   adminView: PropTypes.bool,
   showPreambleFileMetadata: PropTypes.bool,
   editPreambleFileMetadata: PropTypes.bool,
   disableCategoryFilter: PropTypes.bool,
   showInUnifiedView: PropTypes.bool,
   showBCMIWarning: PropTypes.bool,
+  isFeatureEnabled: PropTypes.func,
 };
 
 const defaultProps = {
@@ -34,6 +42,7 @@ const defaultProps = {
   disableCategoryFilter: false,
   showInUnifiedView: false,
   showBCMIWarning: false,
+  isFeatureEnabled: () => false,
 };
 
 const LOCKED_ROW_BASE = {
@@ -156,48 +165,93 @@ export class FinalPermitDocuments extends Component {
       />
     );
 
+    const draftStarted = Boolean(
+      this.props.progress.DFT && this.props.progress.DFT.start_date
+    );
+
     const draftInProgress =
       this.props.progress.DFT &&
       this.props.progress.DFT.start_date &&
       !this.props.progress.DFT.end_date;
 
+    const isInCompleteStatus = DECIDED_STATUS_CODES.includes(
+      this.props.noticeOfWork.now_application_status_code
+    );
+
+    const isNowOrAdministrativeAmendment =
+      this.props.noticeOfWork.application_type_code === "NOW" ||
+      this.props.noticeOfWork.application_type_code === "ADA";
+
+    const shouldSplitFiguresAndDocuments =
+      this.props.isFeatureEnabled(Feature.INSPECTOR_PERMIT_PACKAGE_TYPE_SELECTOR) &&
+      !this.props.adminView &&
+      draftStarted &&
+      !isInCompleteStatus &&
+      isNowOrAdministrativeAmendment;
+
     let unifiedDocumentsView = [];
     if (this.props.showInUnifiedView) {
-      unifiedDocumentsView = (
-        <NOWDocuments
-          now_application_guid={this.props.noticeOfWork.now_application_guid}
-          mine_guid={this.props.mineGuid}
-          documents={
-            (nowApplicationDocument ? [nowApplicationDocument] : [])
-              .concat(
-                permitDocuments.filter(
-                  (doc) => !lockedNtrGuid || doc.now_application_document_xref_guid !== lockedNtrGuid
-                )
-              )
-              .concat(
-                (permitSubmissionDocuments || [])
-                  .map((doc) => ({
-                    ...doc,
-                    now_application_document_type_code: doc.documenttype,
-                    now_application_document_sub_type_code: doc.documenttype,
-                    mine_document: {
-                      document_manager_guid: doc.document_manager_guid,
-                      document_name: doc.filename,
-                      mine_document_guid: doc.mine_document_guid,
-                      mine_guid: this.props.noticeOfWork.mine_guid,
-                    },
-                  }))
-              )
-          }
-          isViewMode
-          disableCategoryFilter={this.props.disableCategoryFilter}
-          showPreambleFileMetadata={this.props.showPreambleFileMetadata}
-          editPreambleFileMetadata={this.props.editPreambleFileMetadata}
-          isFinalPackageTable
-          isAdminView
-          isSortingAllowed={!this.props.adminView && draftInProgress}
-        />
-      );
+      const combinedDocuments = (nowApplicationDocument ? [nowApplicationDocument] : [])
+        .concat(
+          permitDocuments.filter(
+            (doc) => !lockedNtrGuid || doc.now_application_document_xref_guid !== lockedNtrGuid
+          )
+        )
+        .concat(
+          (permitSubmissionDocuments || [])
+            .map((doc) => ({
+              ...doc,
+              now_application_document_type_code: doc.documenttype,
+              now_application_document_sub_type_code: doc.documenttype,
+              mine_document: {
+                document_manager_guid: doc.document_manager_guid,
+                document_name: doc.filename,
+                mine_document_guid: doc.mine_document_guid,
+                mine_guid: this.props.noticeOfWork.mine_guid,
+              },
+            }))
+        );
+
+      const legacyOrderingAllowed =
+        !this.props.adminView && draftInProgress && this.props.userCanEditPermits;
+
+      const orderColumnVisibleOutsideSplit = !this.props.adminView && draftStarted;
+
+      const permitPackageRowEditingLocked = !this.props.adminView && !draftInProgress;
+
+      const sharedNOWDocumentsProps = {
+        now_application_guid: this.props.noticeOfWork.now_application_guid,
+        mine_guid: this.props.mineGuid,
+        isViewMode: permitPackageRowEditingLocked,
+        disableCategoryFilter: this.props.disableCategoryFilter,
+        showPreambleFileMetadata: this.props.showPreambleFileMetadata,
+        editPreambleFileMetadata: this.props.editPreambleFileMetadata,
+        isFinalPackageTable: true,
+        isAdminView: true,
+        isSortingAllowed: legacyOrderingAllowed,
+        showOrderColumn: orderColumnVisibleOutsideSplit,
+      };
+
+      if (shouldSplitFiguresAndDocuments) {
+        const isFigureType = (doc) => doc.permit_package_document_type_code === "FIGURE";
+        const figuresDocuments = combinedDocuments.filter(isFigureType);
+        const documentsOnly = combinedDocuments.filter((doc) => !isFigureType(doc));
+
+        unifiedDocumentsView = (
+          <>
+            <NOWDocuments
+              {...sharedNOWDocumentsProps}
+              documents={figuresDocuments}
+              documentNumberFormat="whole"
+            />
+            <NOWDocuments {...sharedNOWDocumentsProps} documents={documentsOnly} />
+          </>
+        );
+      } else {
+        unifiedDocumentsView = (
+          <NOWDocuments {...sharedNOWDocumentsProps} documents={combinedDocuments} />
+        );
+      }
     }
 
     return (
@@ -255,9 +309,10 @@ export class FinalPermitDocuments extends Component {
 
 const mapStateToProps = (state) => ({
   progress: getNOWProgress(state),
+  userCanEditPermits: userHasRole(Permission.EDIT_PERMITS)(state),
 });
 
 FinalPermitDocuments.propTypes = propTypes;
 FinalPermitDocuments.defaultProps = defaultProps;
 
-export default connect(mapStateToProps)(FinalPermitDocuments);
+export default connect(mapStateToProps)(withFeatureFlag(FinalPermitDocuments));

@@ -262,22 +262,39 @@ class NOWApplication(Base, AuditMixin):
         ]
         return activities
 
-    @hybrid_property
-    def next_document_final_package_order(self):
+    def _next_final_package_order(self, matches=lambda doc: True, exclude=None):
         documents_order = [
-            doc.final_package_order for doc in self.documents if doc.final_package_order is not None
+            doc.final_package_order for doc in self.documents
+            if doc is not exclude
+            and doc.final_package_order is not None
+            and doc.final_package_order != LOCKED_NTR_FINAL_PACKAGE_ORDER
+            and matches(doc)
         ]
         max_documents_order = max(documents_order) if documents_order else 0
 
         imported_submission_documents_order = [
             doc.final_package_order for doc in self.imported_submission_documents
-            if doc.final_package_order is not None
+            if doc is not exclude and doc.final_package_order is not None and matches(doc)
         ]
         max_imported_submission_documents_order = max(
             imported_submission_documents_order) if imported_submission_documents_order else 0
 
         max_order = max(max_documents_order, max_imported_submission_documents_order)
         return max_order + 1
+
+    @hybrid_property
+    def next_document_final_package_order(self):
+        return self._next_final_package_order()
+
+    def next_document_final_package_order_for_type(self, permit_package_document_type_code, exclude=None):
+        # A document with no type is treated as a DOCUMENT type.
+        # Exclude parameter is used to skip the document that is having it's type updated.
+        target_type = permit_package_document_type_code or 'DOCUMENT'
+
+        def matches_target_type(doc):
+            return (doc.permit_package_document_type_code or 'DOCUMENT') == target_type
+
+        return self._next_final_package_order(matches=matches_target_type, exclude=exclude)
 
     @hybrid_property
     def locked_ntr_guid(self):

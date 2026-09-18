@@ -13,6 +13,7 @@ import {
   getEditingPreambleFlag,
   getNowDraftConditionsFormatted,
 } from "@mds/common/redux/selectors/permitSelectors";
+import { getNOWProgress } from "@mds/common/redux/selectors/noticeOfWorkSelectors";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import VariableConditionMenuOld from "@/components/Forms/permits/conditions/VariableConditionMenuOld";
@@ -68,6 +69,8 @@ export const GeneratePermitForm: FC<IGeneratedPermitFormProps> = (props) => {
   const formValues = (useAppSelector(getFormValues(FORM.GENERATE_PERMIT)) ??
     {}) as INoWGeneratedPermit;
   const editingPreambleFlag = useAppSelector(getEditingPreambleFlag);
+  const progress = useAppSelector(getNOWProgress);
+  const isDraftComplete = Boolean(progress.DFT?.start_date && progress.DFT?.end_date);
   const { isFeatureEnabled } = useFeatureFlag();
   const newEditorEnabled = isFeatureEnabled(Feature.NOW_PERMIT_CONDITIONS_EDITOR);
   const [loading, setLoading] = useState(false);
@@ -378,7 +381,7 @@ export const GeneratePermitForm: FC<IGeneratedPermitFormProps> = (props) => {
                 />
               </Col>
             </Row>
-            {!editingPreambleFlag && (
+            {!editingPreambleFlag && !isDraftComplete && (
               <div className="right">
                 <br />
                 <br />
