@@ -166,10 +166,6 @@ class DocumentManagerService():
             data=data,
             cookies=request.cookies)
 
-        if resp.status_code == 201:
-            mine_document.document_name = metadata.get('filename')
-            mine_document.save()
-
         return Response(json.dumps(resp.json()), resp.status_code, resp.raw.headers.items())
 
     @classmethod
@@ -274,6 +270,16 @@ class DocumentManagerService():
     def get_document_version(cls, request, document_manager_guid, document_manager_version_guid):
         resp = requests.get(
             url=f'{Config.DOCUMENT_MANAGER_URL}/documents/{document_manager_guid}/versions/{document_manager_version_guid}',
+            headers={key: value
+                     for (key, value) in request.headers if key != 'Host'},
+        )
+
+        return resp.json()
+
+    @classmethod
+    def get_document(cls, request, document_manager_guid):
+        resp = requests.get(
+            url=f'{cls.document_manager_document_resource_url}/{document_manager_guid}',
             headers={key: value
                      for (key, value) in request.headers if key != 'Host'},
         )
