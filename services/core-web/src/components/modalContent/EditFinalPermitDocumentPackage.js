@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
+import { useSelector } from "react-redux";
 import { Button, Popconfirm } from "antd";
 import { DownloadOutlined } from "@ant-design/icons";
 import CustomPropTypes from "@/customPropTypes";
 import { getLockedSystemNtrDoc } from "@mds/common/utils/helpers";
+import { getDraftPermitAmendmentForNOW } from "@mds/common/redux/selectors/permitSelectors";
+import { isFileReferencedInConditions } from "@mds/common/utils/permitPackageDocuments";
 import NOWDocuments from "../noticeOfWork/applications/NOWDocuments";
 import NOWSubmissionDocuments from "../noticeOfWork/applications/NOWSubmissionDocuments";
 
@@ -63,6 +66,26 @@ export const EditFinalPermitDocumentPackage = (props) => {
       .onSubmit(selectedCoreRows, selectedSubmissionRows)
       .finally(() => setIsSubmitting(false));
   };
+
+  const draftPermitAmendment = useSelector(getDraftPermitAmendmentForNOW);
+
+  const removedCoreGuids = (props.finalDocuments || []).filter(
+    (guid) => !selectedCoreRows.includes(guid)
+  );
+
+  const removedSubmissionXrefGuids = (props.finalSubmissionDocuments || [])
+    .filter((mineDocGuid) => !selectedSubmissionRows.includes(mineDocGuid))
+    .map(
+      (mineDocGuid) =>
+        (props.noticeOfWork.filtered_submission_documents || []).find(
+          (doc) => doc.mine_document_guid === mineDocGuid
+        )?.now_application_document_xref_guid
+    )
+    .filter(Boolean);
+
+  const isRemovingReferencedFile = [...removedCoreGuids, ...removedSubmissionXrefGuids].some((guid) =>
+    isFileReferencedInConditions(draftPermitAmendment?.conditions, guid)
+  );
 
   return (
     <div>
@@ -131,15 +154,31 @@ export const EditFinalPermitDocumentPackage = (props) => {
             Cancel
           </Button>
         </Popconfirm>
-        <Button
-          className="full-mobile"
-          type="primary"
-          onClick={() => handleSubmit()}
-          loading={isSubmitting}
-        >
-          <DownloadOutlined className="padding-sm--right icon-sm" />
-          Save Application Package
-        </Button>
+        {isRemovingReferencedFile ? (
+          <Popconfirm
+            placement="topRight"
+            title="This file is currently being referenced in a permit condition. Removing the file from the permit package will break that reference. Do you wish to continue?"
+            onConfirm={() => handleSubmit()}
+            okText="Yes"
+            cancelText="No"
+            disabled={isSubmitting}
+          >
+            <Button className="full-mobile" type="primary" loading={isSubmitting}>
+              <DownloadOutlined className="padding-sm--right icon-sm" />
+              Save Application Package
+            </Button>
+          </Popconfirm>
+        ) : (
+          <Button
+            className="full-mobile"
+            type="primary"
+            onClick={() => handleSubmit()}
+            loading={isSubmitting}
+          >
+            <DownloadOutlined className="padding-sm--right icon-sm" />
+            Save Application Package
+          </Button>
+        )}
       </div>
     </div>
   );
