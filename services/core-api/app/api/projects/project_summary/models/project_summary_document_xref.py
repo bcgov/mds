@@ -33,6 +33,7 @@ class ProjectSummaryDocumentXref(Base):
     upload_date = association_proxy('mine_document', 'upload_date')
     versions = association_proxy('mine_document', 'versions')
     create_user = association_proxy('mine_document', 'create_user')
+    update_user = association_proxy('mine_document', 'update_user')
     mine_document_bundle_id = association_proxy('mine_document', 'mine_document_bundle_id')
 
     def __repr__(self):

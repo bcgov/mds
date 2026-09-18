@@ -13,22 +13,21 @@ import * as documentActions from "@mds/common/redux/actions/documentActions";
 
 const createRequestHeader = REQUEST_HEADER.createRequestHeader;
 
-export const postNewDocumentVersion = ({
-  mineGuid,
-  mineDocumentGuid,
-  documentManagerVersionGuid,
-}: {
-  mineGuid: string;
-  mineDocumentGuid: string;
-  documentManagerVersionGuid: string;
-}): AppThunk<Promise<AxiosResponse<IMineDocumentVersion>>> => (
-  dispatch
-): Promise<AxiosResponse<IMineDocumentVersion>> => {
+export const postNewDocumentVersion =
+  ({
+    mineGuid,
+    mineDocumentGuid,
+    documentManagerVersionGuid,
+  }: {
+    mineGuid: string;
+    mineDocumentGuid: string;
+    documentManagerVersionGuid: string;
+  }): AppThunk<Promise<AxiosResponse<IMineDocumentVersion> | void>> =>
+  (dispatch): Promise<AxiosResponse<IMineDocumentVersion> | void> => {
     dispatch(request(NetworkReducerTypes.POST_NEW_DOCUMENT_VERSION));
     dispatch(showLoading());
 
     const payload = { document_manager_version_guid: documentManagerVersionGuid };
-
     return CustomAxios()
       .post(
         `${ENVIRONMENT.apiUrl}/mines/${mineGuid}/documents/${mineDocumentGuid}/versions`,
@@ -51,11 +50,9 @@ export const postNewDocumentVersion = ({
       });
   };
 
-export const pollDocumentUploadStatus = (
-  mine_document_guid: string
-): AppThunk<Promise<AxiosResponse<IMineDocumentVersion>>> => (
-  dispatch
-): Promise<AxiosResponse<IMineDocumentVersion>> => {
+export const pollDocumentUploadStatus =
+  (mine_document_guid: string): AppThunk<Promise<AxiosResponse<IMineDocumentVersion> | void>> =>
+  (dispatch): Promise<AxiosResponse<IMineDocumentVersion> | void> => {
     dispatch(request(NetworkReducerTypes.POLL_DOCUMENT_UPLOAD_STATUS));
     dispatch(showLoading());
 

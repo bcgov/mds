@@ -41,6 +41,10 @@ class TestMineDocumentVersionUploadResource:
         responses.add(responses.GET, ver_url, json={
             'file_display_name': 'test.pdf'
         })
+        doc_url = f'{DocumentManagerService.document_manager_document_resource_url}/{document.document_manager_guid}'
+        responses.add(responses.GET, doc_url, json={
+            'file_display_name': 'replacement.pdf'
+        })
 
         post_resp = test_client.post(
             f'/mines/{mine.mine_guid}/documents/{document.mine_document_guid}/versions',

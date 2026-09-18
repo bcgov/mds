@@ -552,7 +552,7 @@ exports[`MajorMineApplicationReviewSubmit renders properly as on MajorMineApplic
                             class="ant-table-cell"
                           >
                             <div
-                              class="create_user-column"
+                              class="update_user-column"
                               title="Created By"
                             >
                               test@bceid
@@ -1010,7 +1010,7 @@ exports[`MajorMineApplicationReviewSubmit renders properly as on MajorMineApplic
                             class="ant-table-cell"
                           >
                             <div
-                              class="create_user-column"
+                              class="update_user-column"
                               title="Created By"
                             >
                               test@bceid
@@ -1118,7 +1118,7 @@ exports[`MajorMineApplicationReviewSubmit renders properly as on MajorMineApplic
                             class="ant-table-cell"
                           >
                             <div
-                              class="create_user-column"
+                              class="update_user-column"
                               title="Created By"
                             >
                               test@bceid
@@ -1226,7 +1226,7 @@ exports[`MajorMineApplicationReviewSubmit renders properly as on MajorMineApplic
                             class="ant-table-cell"
                           >
                             <div
-                              class="create_user-column"
+                              class="update_user-column"
                               title="Created By"
                             >
                               test@bceid
@@ -2127,7 +2127,7 @@ exports[`MajorMineApplicationReviewSubmit renders properly as on MajorMineApplic
                             class="ant-table-cell"
                           >
                             <div
-                              class="create_user-column"
+                              class="update_user-column"
                               title="Created By"
                             >
                               test@bceid
@@ -2235,7 +2235,7 @@ exports[`MajorMineApplicationReviewSubmit renders properly as on MajorMineApplic
                             class="ant-table-cell"
                           >
                             <div
-                              class="create_user-column"
+                              class="update_user-column"
                               title="Created By"
                             >
                               test@bceid
@@ -2343,7 +2343,7 @@ exports[`MajorMineApplicationReviewSubmit renders properly as on MajorMineApplic
                             class="ant-table-cell"
                           >
                             <div
-                              class="create_user-column"
+                              class="update_user-column"
                               title="Created By"
                             >
                               test@bceid
@@ -3385,7 +3385,7 @@ exports[`MajorMineApplicationReviewSubmit renders properly as on ProjectPage 1`]
                             class="ant-table-cell"
                           >
                             <div
-                              class="create_user-column"
+                              class="update_user-column"
                               title="Created By"
                             >
                               test@bceid
@@ -3843,7 +3843,7 @@ exports[`MajorMineApplicationReviewSubmit renders properly as on ProjectPage 1`]
                             class="ant-table-cell"
                           >
                             <div
-                              class="create_user-column"
+                              class="update_user-column"
                               title="Created By"
                             >
                               test@bceid
@@ -3951,7 +3951,7 @@ exports[`MajorMineApplicationReviewSubmit renders properly as on ProjectPage 1`]
                             class="ant-table-cell"
                           >
                             <div
-                              class="create_user-column"
+                              class="update_user-column"
                               title="Created By"
                             >
                               test@bceid
@@ -4059,7 +4059,7 @@ exports[`MajorMineApplicationReviewSubmit renders properly as on ProjectPage 1`]
                             class="ant-table-cell"
                           >
                             <div
-                              class="create_user-column"
+                              class="update_user-column"
                               title="Created By"
                             >
                               test@bceid
@@ -4960,7 +4960,7 @@ exports[`MajorMineApplicationReviewSubmit renders properly as on ProjectPage 1`]
                             class="ant-table-cell"
                           >
                             <div
-                              class="create_user-column"
+                              class="update_user-column"
                               title="Created By"
                             >
                               test@bceid
@@ -5068,7 +5068,7 @@ exports[`MajorMineApplicationReviewSubmit renders properly as on ProjectPage 1`]
                             class="ant-table-cell"
                           >
                             <div
-                              class="create_user-column"
+                              class="update_user-column"
                               title="Created By"
                             >
                               test@bceid
@@ -5176,7 +5176,7 @@ exports[`MajorMineApplicationReviewSubmit renders properly as on ProjectPage 1`]
                             class="ant-table-cell"
                           >
                             <div
-                              class="create_user-column"
+                              class="update_user-column"
                               title="Created By"
                             >
                               test@bceid
