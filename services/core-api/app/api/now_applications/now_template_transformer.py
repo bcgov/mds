@@ -12,6 +12,10 @@ from app.api.utils.helpers import create_image_with_aspect_ratio, format_datetim
 
 SIGNATURE_IMAGE_HEIGHT_INCHES = 0.8
 
+PERMIT_PACKAGE_FILE_TOKEN_PATTERN = re.compile(r'\{permit_package_file:([^{}]+)\}')
+BROKEN_PERMIT_PACKAGE_FILE_REFERENCE_TEXT = 'Reference unavailable'
+LOCKED_PERMIT_PACKAGE_ORDER_LABEL = '1.1'
+
 def get_default_disturbance_or_cost(obj, field, currency=False):
     if obj is not None:
         data = getattr(obj, field)
@@ -61,7 +65,69 @@ def transform_variables_to_data(now_application, permit_amendment, mine, total_l
         'exploration_access.cost': get_default_disturbance_or_cost(now_application.exploration_access, 'reclamation_cost', True),
     }
 
-def replace_condition_value_with_data(condition, condition_var):
+def _ordered_permit_package_documents(now_application):
+    """
+    Mirrors the front-end's getOrderedPermitPackageDocuments (permitPackageDocuments.ts) so a
+    {permit_package_file:<guid>} token resolves to the same "1.N Title" label shown in the
+    Condition Data Variable picker. The locked, system-generated NTR row (final_package_order ==
+    LOCKED_NTR_FINAL_PACKAGE_ORDER) always sorts first and is always "1.1"; every other permit
+    package document (uploaded figures/documents plus submission documents) is numbered starting
+    at "1.2", ordered by final_package_order - the same shared sequence both document sources draw
+    from (see NOWApplication.next_document_final_package_order).
+    """
+    from app.api.now_applications.models.now_application import LOCKED_NTR_FINAL_PACKAGE_ORDER
+
+    locked = None
+    reals = []
+
+    for doc in now_application.documents:
+        if not doc.is_final_package:
+            continue
+        if doc.final_package_order == LOCKED_NTR_FINAL_PACKAGE_ORDER:
+            locked = doc
+        else:
+            reals.append(
+                (doc.final_package_order, str(doc.now_application_document_xref_guid),
+                 doc.preamble_title))
+
+    for doc in now_application.get_filtered_submissions_documents(now_application):
+        if doc.get('is_final_package') and doc.get('now_application_document_xref_guid'):
+            reals.append((doc.get('final_package_order'), doc['now_application_document_xref_guid'],
+                           doc.get('preamble_title')))
+
+    reals.sort(key=lambda entry: entry[0] if entry[0] is not None else 0)
+
+    ordered = []
+    if locked is not None:
+        ordered.append(
+            (LOCKED_PERMIT_PACKAGE_ORDER_LABEL, str(locked.now_application_document_xref_guid),
+             locked.preamble_title or 'Notice of Work Application'))
+    for index, (_, guid, title) in enumerate(reals):
+        ordered.append((f'1.{index + 2}', guid, title))
+
+    return ordered
+
+
+def resolve_permit_package_file_reference(guid, now_application):
+    for label, doc_guid, title in _ordered_permit_package_documents(now_application):
+        if doc_guid == guid:
+            return f'{label} {title}'
+    return None
+
+
+def resolve_permit_package_file_tokens(text, now_application):
+    if not text or not now_application:
+        return text
+
+    def _replace(match):
+        label = resolve_permit_package_file_reference(match.group(1), now_application)
+        return label if label is not None else BROKEN_PERMIT_PACKAGE_FILE_REFERENCE_TEXT
+
+    return PERMIT_PACKAGE_FILE_TOKEN_PATTERN.sub(_replace, text)
+
+
+def replace_condition_value_with_data(condition, condition_var, now_application=None):
+    condition = resolve_permit_package_file_tokens(condition, now_application)
     pattern = r'\b({})\b'.format('|'.join(sorted(re.escape(k) for k in condition_var)))
     return re.sub(
         pattern, lambda m: condition_var.get(m.group(0)), condition,
@@ -88,11 +154,11 @@ def validate_issuing_inspector(now_application):
     if not now_application.issuing_inspector.signature:
         raise Exception('No signature for the Issuing Inspector has been provided')
 
-def replace_nested_conditions(section_data, condition_variables):
+def replace_nested_conditions(section_data, condition_variables, now_application=None):
     for sub_condition in section_data['sub_conditions']:
         sub_condition['condition'] = replace_condition_value_with_data(
-            sub_condition['condition'], condition_variables)
-        replace_nested_conditions(sub_condition, condition_variables)
+            sub_condition['condition'], condition_variables, now_application)
+        replace_nested_conditions(sub_condition, condition_variables, now_application)
 
 # Transform template data for "Working Permit" (PMT) or "Working Permit for Amendment" (PMA)
 def transform_permit(template_data, now_application):
@@ -139,19 +205,19 @@ def transform_permit(template_data, now_application):
                                                         total_liability)
 
     template_data['preamble_text'] = replace_condition_value_with_data(
-        template_data['preamble_text'], condition_variables)
+        template_data['preamble_text'], condition_variables, now_application)
     conditions = permit_amendment.conditions
     conditions_template_data = {}
     for section in conditions:
         # replace section title variables with data
         section.condition = replace_condition_value_with_data(section.condition,
-                                                                condition_variables)
+                                                                condition_variables, now_application)
         category_code = section.condition_category_code
         if not conditions_template_data.get(category_code):
             conditions_template_data[category_code] = []
         section_data = marshal(section, PERMIT_CONDITION_TEMPLATE_MODEL)
 
-        replace_nested_conditions(section_data, condition_variables)
+        replace_nested_conditions(section_data, condition_variables, now_application)
         conditions_template_data[category_code].append(section_data)
     template_data['conditions'] = conditions_template_data
 

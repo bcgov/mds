@@ -177,7 +177,7 @@ class NOWApplicationStatusResource(Resource, UserMixin):
                     def _resolve_condition_variables(condition):
                         if condition.condition:
                             condition.condition = replace_condition_value_with_data(
-                                condition.condition, condition_variables)
+                                condition.condition, condition_variables, now_application)
                         for sub_condition in condition.sub_conditions:
                             _resolve_condition_variables(sub_condition)
 
@@ -186,7 +186,7 @@ class NOWApplicationStatusResource(Resource, UserMixin):
 
                     if permit_amendment.preamble_text:
                         permit_amendment.preamble_text = replace_condition_value_with_data(
-                            permit_amendment.preamble_text, condition_variables)
+                            permit_amendment.preamble_text, condition_variables, now_application)
 
                 # transfer site_properties to permit
                 def get_disturbance_codes(site_property):
