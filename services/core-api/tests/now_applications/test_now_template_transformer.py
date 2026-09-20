@@ -1,3 +1,4 @@
+from datetime import datetime
 import pytest
 from regex import template
 from app.api.now_applications import now_template_transformer as now_template_transformer
@@ -206,9 +207,15 @@ def test_ordered_permit_package_documents_orders_by_final_package_order(db_sessi
 def test_ordered_permit_package_documents_locked_ntr_row_is_always_first_and_1_1(db_session):
     """The locked, system-generated NTR row (final_package_order ==
     LOCKED_NTR_FINAL_PACKAGE_ORDER) always sorts first and is always labelled "1.1", regardless
-    of when it was added relative to other permit package documents."""
+    of when it was added relative to other permit package documents - once this application
+    actually meets the front-end's criteria for that row (NOW type, Technical Review completed).
+    """
     identity = NOWApplicationIdentityFactory(now_application=NOWApplicationFactory())
     now_application = identity.now_application
+    identity.application_type_code = 'NOW'
+    now_application.application_progress[0].end_date = datetime.utcnow()
+    db_session.flush()
+    db_session.expire(now_application, ['now_application_identity'])
 
     _add_permit_package_document(
         db_session, now_application, identity.mine, preamble_title='Real Doc', final_package_order=1)
@@ -221,6 +228,33 @@ def test_ordered_permit_package_documents_locked_ntr_row_is_always_first_and_1_1
     assert ordered[0] == ('1.1', str(locked.now_application_document_xref_guid),
                            'Notice of Work Application')
     assert ordered[1][0] == '1.2'
+
+
+def test_ordered_permit_package_documents_locked_row_not_treated_as_1_1_before_technical_review_completes(db_session):
+    """This is the exact divergence the front-end's technicalReviewEverCompleted gate exists to
+    prevent (e.g. the "NoW Type change" trigger can stamp final_package_order ==
+    LOCKED_NTR_FINAL_PACKAGE_ORDER on a doc before Technical Review has ever completed) - a doc
+    with that sentinel order must NOT be labelled "1.1" until this application actually meets the
+    front-end's full criteria, so the backend can never disagree with the CDV picker on which row
+    (if any) is locked."""
+    identity = NOWApplicationIdentityFactory(now_application=NOWApplicationFactory())
+    now_application = identity.now_application
+    identity.application_type_code = 'NOW'
+    db_session.flush()
+    db_session.expire(now_application, ['now_application_identity'])
+    # application_progress defaults to a REV row with no end_date - Technical Review not yet complete.
+
+    _add_permit_package_document(
+        db_session, now_application, identity.mine, preamble_title='Real Doc', final_package_order=1)
+    not_yet_locked = _add_permit_package_document(
+        db_session, now_application, identity.mine, preamble_title='Notice of Work Application',
+        final_package_order=LOCKED_NTR_FINAL_PACKAGE_ORDER)
+
+    ordered = now_template_transformer._ordered_permit_package_documents(now_application)
+
+    assert ('1.1', str(not_yet_locked.now_application_document_xref_guid),
+            'Notice of Work Application') not in ordered
+    assert [label for label, _, _ in ordered] == ['1.2', '1.3']
 
 
 def test_ordered_permit_package_documents_excludes_documents_not_in_the_package(db_session):
@@ -241,10 +275,11 @@ def test_resolve_permit_package_file_reference_found_and_not_found(db_session):
         db_session, now_application, identity.mine, preamble_title='Site Map', final_package_order=1)
 
     guid = str(doc.now_application_document_xref_guid)
+    label_map = now_template_transformer.build_permit_package_file_label_map(now_application)
     assert now_template_transformer.resolve_permit_package_file_reference(
-        guid, now_application) == '1.2 Site Map'
+        guid, label_map) == '1.2 Site Map'
     assert now_template_transformer.resolve_permit_package_file_reference(
-        '00000000-0000-0000-0000-000000000000', now_application) is None
+        '00000000-0000-0000-0000-000000000000', label_map) is None
 
 
 def test_resolve_permit_package_file_tokens_replaces_valid_and_broken_tokens(db_session):
@@ -253,25 +288,31 @@ def test_resolve_permit_package_file_tokens_replaces_valid_and_broken_tokens(db_
     doc = _add_permit_package_document(
         db_session, now_application, identity.mine, preamble_title='Site Map', final_package_order=1)
     guid = str(doc.now_application_document_xref_guid)
+    label_map = now_template_transformer.build_permit_package_file_label_map(now_application)
 
     text = (f"See {{permit_package_file:{guid}}} and "
             "{permit_package_file:00000000-0000-0000-0000-000000000000}.")
-    result = now_template_transformer.resolve_permit_package_file_tokens(text, now_application)
+    result = now_template_transformer.resolve_permit_package_file_tokens(text, label_map)
 
     assert result == "See 1.2 Site Map and Reference unavailable."
 
 
-def test_resolve_permit_package_file_tokens_noop_without_now_application(db_session):
-    """Legacy/CLI callers that don't have a now_application on hand pass None - this must be a
-    safe no-op rather than an error, leaving the token for the caller's own brace-stripping."""
+def test_resolve_permit_package_file_tokens_noop_without_label_map(db_session):
+    """Legacy/CLI callers that don't have a label_map on hand pass None - this must be a safe
+    no-op rather than an error, leaving the token for the caller's own brace-stripping."""
     text = "See {permit_package_file:abc} for details."
     assert now_template_transformer.resolve_permit_package_file_tokens(text, None) == text
 
 
 def test_resolve_permit_package_file_tokens_noop_for_empty_text(db_session):
-    now_application = NOWApplicationFactory()
-    assert now_template_transformer.resolve_permit_package_file_tokens('', now_application) == ''
-    assert now_template_transformer.resolve_permit_package_file_tokens(None, now_application) is None
+    assert now_template_transformer.resolve_permit_package_file_tokens('', {}) == ''
+    assert now_template_transformer.resolve_permit_package_file_tokens(None, {}) is None
+
+
+def test_build_permit_package_file_label_map_without_now_application(db_session):
+    """Legacy/CLI callers that don't have a now_application on hand pass None - this must be a
+    safe no-op rather than an error."""
+    assert now_template_transformer.build_permit_package_file_label_map(None) == {}
 
 
 def test_replace_condition_value_with_data_resolves_permit_package_file_tokens(db_session):
@@ -288,9 +329,10 @@ def test_replace_condition_value_with_data_resolves_permit_package_file_tokens(d
     # The condition text below avoids using the literal word "mine_no" outside of its {mine_no} placeholder.
     condition = f"Value: {{mine_no}}. See {{permit_package_file:{guid}}} for details."
     condition_var = {"mine_no": "12345"}
+    label_map = now_template_transformer.build_permit_package_file_label_map(now_application)
 
     result = now_template_transformer.replace_condition_value_with_data(
-        condition, condition_var, now_application)
+        condition, condition_var, label_map)
 
     assert result == "Value: 12345. See 1.2 Site Map for details."
     assert '{' not in result and '}' not in result
@@ -299,15 +341,16 @@ def test_replace_condition_value_with_data_resolves_permit_package_file_tokens(d
 def test_replace_condition_value_with_data_broken_permit_package_file_token(db_session):
     identity = NOWApplicationIdentityFactory(now_application=NOWApplicationFactory())
     now_application = identity.now_application
+    label_map = now_template_transformer.build_permit_package_file_label_map(now_application)
 
     condition = "See {permit_package_file:00000000-0000-0000-0000-000000000000} for details."
-    result = now_template_transformer.replace_condition_value_with_data(condition, {}, now_application)
+    result = now_template_transformer.replace_condition_value_with_data(condition, {}, label_map)
 
     assert result == "See Reference unavailable for details."
 
 
-def test_replace_condition_value_with_data_permit_package_file_token_without_now_application(db_session):
-    """Existing callers that don't pass now_application should keep stripping braces exactly as
+def test_replace_condition_value_with_data_permit_package_file_token_without_label_map(db_session):
+    """Existing callers that don't pass a label_map should keep stripping braces exactly as
     before this fix, rather than raising - this documents the intentional backwards-compatible
     fallback in resolve_permit_package_file_tokens."""
     condition = "See {permit_package_file:some-guid} for details."

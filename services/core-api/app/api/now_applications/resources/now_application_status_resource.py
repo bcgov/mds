@@ -21,7 +21,8 @@ from app.api.mines.mine.models.mine_type import MineType
 from app.api.mines.mine.models.mine_type_detail import MineTypeDetail
 from app.api.mines.permits.permit_conditions.tasks import export_and_index_permit_amendments
 from app.api.now_applications.now_template_transformer import (
-    calculate_liability, transform_variables_to_data, replace_condition_value_with_data)
+    calculate_liability, transform_variables_to_data, replace_condition_value_with_data,
+    build_permit_package_file_label_map)
 
 
 class NOWApplicationStatusCodeResource(Resource, UserMixin):
@@ -173,11 +174,12 @@ class NOWApplicationStatusResource(Resource, UserMixin):
                     total_liability = calculate_liability(now_application)
                     condition_variables = transform_variables_to_data(
                         now_application, permit_amendment, mine, total_liability)
+                    label_map = build_permit_package_file_label_map(now_application)
 
                     def _resolve_condition_variables(condition):
                         if condition.condition:
                             condition.condition = replace_condition_value_with_data(
-                                condition.condition, condition_variables, now_application)
+                                condition.condition, condition_variables, label_map)
                         for sub_condition in condition.sub_conditions:
                             _resolve_condition_variables(sub_condition)
 
@@ -186,7 +188,7 @@ class NOWApplicationStatusResource(Resource, UserMixin):
 
                     if permit_amendment.preamble_text:
                         permit_amendment.preamble_text = replace_condition_value_with_data(
-                            permit_amendment.preamble_text, condition_variables, now_application)
+                            permit_amendment.preamble_text, condition_variables, label_map)
 
                 # transfer site_properties to permit
                 def get_disturbance_codes(site_property):
