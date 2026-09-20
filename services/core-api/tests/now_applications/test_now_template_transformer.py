@@ -231,7 +231,7 @@ def test_ordered_permit_package_documents_excludes_documents_not_in_the_package(
         db_session, now_application, identity.mine, preamble_title='Not in package',
         final_package_order=None, is_final_package=False)
 
-    assert now_template_transformer._ordered_permit_package_documents(now_application) == []
+    assert now_template_transformer._ordered_permit_package_documents(now_application) == ()
 
 
 def test_resolve_permit_package_file_reference_found_and_not_found(db_session):

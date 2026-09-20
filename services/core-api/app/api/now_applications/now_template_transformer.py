@@ -1,4 +1,5 @@
 import re
+from functools import lru_cache
 from app.api.mines.response_models import PERMIT_CONDITION_TEMPLATE_MODEL
 from app.api.mines.permits.permit.models.permit import Permit
 from app.api.mines.mine.models.mine import Mine
@@ -65,6 +66,7 @@ def transform_variables_to_data(now_application, permit_amendment, mine, total_l
         'exploration_access.cost': get_default_disturbance_or_cost(now_application.exploration_access, 'reclamation_cost', True),
     }
 
+@lru_cache(maxsize=64)
 def _ordered_permit_package_documents(now_application):
     """
     Mirrors the front-end's getOrderedPermitPackageDocuments (permitPackageDocuments.ts) so a
@@ -74,6 +76,14 @@ def _ordered_permit_package_documents(now_application):
     package document (uploaded figures/documents plus submission documents) is numbered starting
     at "1.2", ordered by final_package_order - the same shared sequence both document sources draw
     from (see NOWApplication.next_document_final_package_order).
+
+    Cached per now_application instance (lru_cache keys on object identity), since this gets
+    called once per {permit_package_file:<guid>} token - a permit condition can easily carry a
+    dozen of them across nested sub-conditions, and rebuilding this list (including a call to
+    get_filtered_submissions_documents) from scratch every time is pure waste within one request.
+    Safe as long as now_application.documents isn't mutated between resolutions in the same
+    request, which holds for every current caller (resolution always happens read-only, after all
+    document changes are already committed).
     """
     from app.api.now_applications.models.now_application import LOCKED_NTR_FINAL_PACKAGE_ORDER
 
@@ -105,7 +115,7 @@ def _ordered_permit_package_documents(now_application):
     for index, (_, guid, title) in enumerate(reals):
         ordered.append((f'1.{index + 2}', guid, title))
 
-    return ordered
+    return tuple(ordered)
 
 
 def resolve_permit_package_file_reference(guid, now_application):

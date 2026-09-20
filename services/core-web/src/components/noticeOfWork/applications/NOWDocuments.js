@@ -17,9 +17,11 @@ import {
   getNoticeOfWork,
   getApplicationDelay,
 } from "@mds/common/redux/selectors/noticeOfWorkSelectors";
+import { getDraftPermitAmendmentForNOW } from "@mds/common/redux/selectors/permitSelectors";
 import {
   comparePermitPackageDocuments,
   getPermitPackageOrderLabel,
+  isFileReferencedInConditions,
 } from "@mds/common/utils/permitPackageDocuments";
 import {
   fetchImportedNoticeOfWorkApplication,
@@ -70,11 +72,13 @@ const propTypes = {
   showDescription: PropTypes.bool,
   lockedRowKeys: PropTypes.arrayOf(PropTypes.string),
   applicationDelay: PropTypes.objectOf(PropTypes.string).isRequired,
+  draftPermitAmendment: PropTypes.objectOf(PropTypes.any),
 };
 
 const defaultProps = {
   selectedRows: null,
   categoriesToShow: [],
+  draftPermitAmendment: null,
   disclaimerText: "",
   isAdminView: false,
   allowAfterProcess: false,
@@ -439,7 +443,14 @@ export class NOWDocuments extends Component {
                 {!this.props.isFinalPackageTable && (
                   <Popconfirm
                     placement="topLeft"
-                    title="Are you sure you want to remove this document?"
+                    title={
+                      isFileReferencedInConditions(
+                        this.props.draftPermitAmendment?.conditions,
+                        record.now_application_document_xref_guid
+                      )
+                        ? "This file is currently being referenced in a permit condition. Deleting it will break that reference. Are you sure you want to delete this document?"
+                        : "Are you sure you want to remove this document?"
+                    }
                     okText="Delete"
                     cancelText="Cancel"
                     onConfirm={() =>
@@ -715,6 +726,7 @@ const mapStateToProps = (state) => ({
   ),
   noticeOfWork: getNoticeOfWork(state),
   applicationDelay: getApplicationDelay(state),
+  draftPermitAmendment: getDraftPermitAmendmentForNOW(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

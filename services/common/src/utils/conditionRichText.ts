@@ -1,5 +1,4 @@
-import { getPermitPackageFileToken } from "@mds/common/components/permits/VariableConditionMenu";
-import { parseConditionText } from "@mds/common/utils/conditionTokenParser";
+import { getPermitPackageFileToken, parseConditionText } from "@mds/common/utils/conditionTokenParser";
 
 export interface PermitPackageFileEmbedValue {
   guid: string;

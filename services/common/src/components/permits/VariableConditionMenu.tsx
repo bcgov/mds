@@ -13,9 +13,9 @@ import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFla
 import { Feature } from "@mds/common/utils/featureFlag";
 import { getPermitPackageFilesByType, resolvePermitPackageFileReference } from "@mds/common/utils/permitPackageDocuments";
 import { insertConditionVariableIntoQuill } from "@mds/common/components/permits/quill/insertConditionVariable";
+import { PERMIT_PACKAGE_FILE_TOKEN_PREFIX, getPermitPackageFileToken } from "@mds/common/utils/conditionTokenParser";
 
-export const PERMIT_PACKAGE_FILE_TOKEN_PREFIX = "permit_package_file";
-export const getPermitPackageFileToken = (guid: string) => `{${PERMIT_PACKAGE_FILE_TOKEN_PREFIX}:${guid}}`;
+export { PERMIT_PACKAGE_FILE_TOKEN_PREFIX, getPermitPackageFileToken };
 
 interface VariableConditionMenuProps {
   isManagementView?: boolean,
@@ -57,7 +57,9 @@ const VariableConditionMenu: FC<VariableConditionMenuProps> = ({
     if (inputRef?.current) {
       inputRef.current.focus();
     }
-    const text = isPreambleText ? conditionFormValues.preamble_text : conditionFormValues.condition ?? "";
+    const text = isPreambleText
+      ? conditionFormValues.preamble_text
+      : (conditionFormValues as IConditionSection).condition ?? "";
     const pos = inputRef?.current?.resizableTextArea?.textArea?.selectionStart ?? text.length;
     const newText = `${text.slice(0, pos)} ${event.key} ${text.slice(pos)}`.replace(/ {2,}/g, ' ');
     await dispatch(change(conditionForm, isPreambleText ? "preamble_text" : "condition", newText));

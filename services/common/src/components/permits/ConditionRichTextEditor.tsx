@@ -70,14 +70,9 @@ const ConditionRichTextEditor: FC<ConditionRichTextEditorProps> = ({
   const resolveReference = (guid: string) =>
     resolvePermitPackageFileReference(guid, noticeOfWork, nowProgress);
 
-  // A stable handle to the latest resolveReference, for the clipboard matcher below - that
-  // matcher is registered once on mount, so it needs a way to reach current NoW/document data on
-  // every paste rather than whatever was in scope the moment it was registered.
   const resolveReferenceRef = useRef(resolveReference);
   resolveReferenceRef.current = resolveReference;
 
-  // Only used for the editor's initial mount content - deliberately not re-run on every
-  // keystroke or Redux update, since ReactQuill's `defaultValue` is uncontrolled.
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const initialDelta = useMemo(() => conditionTextToResolvedQuillDelta(input.value ?? "", resolveReference), []);
 
@@ -138,7 +133,7 @@ const ConditionRichTextEditor: FC<ConditionRichTextEditorProps> = ({
       ref={quillRef}
       readOnly={disabled}
       theme="snow"
-      defaultValue={initialDelta}
+      defaultValue={initialDelta as any}
       onChange={handleChange}
       onBlur={handleBlur}
       modules={{ toolbar: false }}

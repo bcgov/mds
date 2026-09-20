@@ -1,4 +1,5 @@
-import { PERMIT_PACKAGE_FILE_TOKEN_PREFIX } from "@mds/common/components/permits/VariableConditionMenu";
+export const PERMIT_PACKAGE_FILE_TOKEN_PREFIX = "permit_package_file";
+export const getPermitPackageFileToken = (guid: string) => `{${PERMIT_PACKAGE_FILE_TOKEN_PREFIX}:${guid}}`;
 
 export const CONDITION_VARIABLE_REGEX = /{(.*?)}/g;
 
