@@ -1383,7 +1383,7 @@ exports[`ReportDetailsForm renders CRR edit mode properly 1`] = `
                               class="ant-table-cell"
                             >
                               <div
-                                class="update_user-column"
+                                class="create_user-column"
                                 title="Created By"
                               >
                                 test@bceid
@@ -2973,7 +2973,7 @@ exports[`ReportDetailsForm renders PRR edit mode properly 1`] = `
                               class="ant-table-cell"
                             >
                               <div
-                                class="update_user-column"
+                                class="create_user-column"
                                 title="Created By"
                               >
                                 test@bceid
@@ -4696,7 +4696,7 @@ exports[`ReportDetailsForm renders verified PRR edit mode properly 1`] = `
                               class="ant-table-cell"
                             >
                               <div
-                                class="update_user-column"
+                                class="create_user-column"
                                 title="Created By"
                               >
                                 test@bceid

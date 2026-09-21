@@ -1091,7 +1091,7 @@ exports[`ReportPage renders view mode properly 1`] = `
                                   class="ant-table-cell"
                                 >
                                   <div
-                                    class="update_user-column"
+                                    class="create_user-column"
                                     title="Created By"
                                   >
                                     test@bceid

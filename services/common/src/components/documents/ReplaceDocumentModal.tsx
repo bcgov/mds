@@ -129,7 +129,7 @@ const ReplaceDocumentModal: FC<ReplaceDocumentModalProps> = (props) => {
           <Typography.Text>{formatDate(document.upload_date)}</Typography.Text>
         </Col>
         <Col>
-          <Typography.Text>{document.update_user ?? document.create_user}</Typography.Text>
+          <Typography.Text>{document.create_user}</Typography.Text>
         </Col>
       </Row>
 

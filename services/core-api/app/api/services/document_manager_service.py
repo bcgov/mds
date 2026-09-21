@@ -274,6 +274,10 @@ class DocumentManagerService():
                      for (key, value) in request.headers if key != 'Host'},
         )
 
+        if resp.status_code != 200:
+            current_app.logger.error(f'Document manager version lookup failed: {resp.status_code} - {resp.text}')
+            raise Exception(f'Failed to get document version from document manager. {resp.status_code}: {resp.text}')
+
         return resp.json()
 
     @classmethod
@@ -283,6 +287,10 @@ class DocumentManagerService():
             headers={key: value
                      for (key, value) in request.headers if key != 'Host'},
         )
+
+        if resp.status_code != 200:
+            current_app.logger.error(f'Document manager document lookup failed: {resp.status_code} - {resp.text}')
+            raise Exception(f'Failed to get document from document manager. {resp.status_code}: {resp.text}')
 
         return resp.json()
 

@@ -262,7 +262,7 @@ export const DocumentTable: FC<DocumentTableProps> = ({
       ...additionalColumns,
       renderTextColumn("file_type", "File Type", !isMinimalView),
       uploadDateColumn("update_timestamp", "Last Modified"),
-      uploadedByColumn("update_user", "Created By"),
+      uploadedByColumn("create_user", "Created By"),
     ];
     if (actions.length) {
       columns.push(

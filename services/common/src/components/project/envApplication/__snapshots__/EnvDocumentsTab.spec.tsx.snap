@@ -954,10 +954,10 @@ exports[`EnvDocumentsTab renders properly 1`] = `
                               class="ant-table-cell"
                             >
                               <div
-                                class="update_user-column"
+                                class="create_user-column"
                                 title="Created By"
                               >
-                                N/A
+                                user@bceid
                               </div>
                             </td>
                             <td
@@ -1072,10 +1072,10 @@ exports[`EnvDocumentsTab renders properly 1`] = `
                               class="ant-table-cell"
                             >
                               <div
-                                class="update_user-column"
+                                class="create_user-column"
                                 title="Created By"
                               >
-                                N/A
+                                user@bceid
                               </div>
                             </td>
                             <td

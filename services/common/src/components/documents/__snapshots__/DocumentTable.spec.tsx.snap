@@ -334,7 +334,7 @@ exports[`DocumentTable renders properly 1`] = `
                         class="ant-table-cell"
                       >
                         <div
-                          class="update_user-column"
+                          class="create_user-column"
                           title="Created By"
                         >
                           idir\\username
@@ -423,7 +423,7 @@ exports[`DocumentTable renders properly 1`] = `
                         class="ant-table-cell"
                       >
                         <div
-                          class="update_user-column"
+                          class="create_user-column"
                           title="Created By"
                         >
                           idir\\username
@@ -512,7 +512,7 @@ exports[`DocumentTable renders properly 1`] = `
                         class="ant-table-cell"
                       >
                         <div
-                          class="update_user-column"
+                          class="create_user-column"
                           title="Created By"
                         >
                           idir\\username
@@ -601,7 +601,7 @@ exports[`DocumentTable renders properly 1`] = `
                         class="ant-table-cell"
                       >
                         <div
-                          class="update_user-column"
+                          class="create_user-column"
                           title="Created By"
                         >
                           idir\\username
@@ -690,7 +690,7 @@ exports[`DocumentTable renders properly 1`] = `
                         class="ant-table-cell"
                       >
                         <div
-                          class="update_user-column"
+                          class="create_user-column"
                           title="Created By"
                         >
                           idir\\username
@@ -779,7 +779,7 @@ exports[`DocumentTable renders properly 1`] = `
                         class="ant-table-cell"
                       >
                         <div
-                          class="update_user-column"
+                          class="create_user-column"
                           title="Created By"
                         >
                           idir\\username

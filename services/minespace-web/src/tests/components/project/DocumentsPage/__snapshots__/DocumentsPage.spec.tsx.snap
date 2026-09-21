@@ -436,7 +436,7 @@ exports[`DocumentsPage renders properly 1`] = `
                             class="ant-table-cell"
                           >
                             <div
-                              class="update_user-column"
+                              class="create_user-column"
                               title="Created By"
                             >
                               idir\\username
@@ -544,7 +544,7 @@ exports[`DocumentsPage renders properly 1`] = `
                             class="ant-table-cell"
                           >
                             <div
-                              class="update_user-column"
+                              class="create_user-column"
                               title="Created By"
                             >
                               idir\\username
@@ -652,7 +652,7 @@ exports[`DocumentsPage renders properly 1`] = `
                             class="ant-table-cell"
                           >
                             <div
-                              class="update_user-column"
+                              class="create_user-column"
                               title="Created By"
                             >
                               idir\\username
@@ -760,7 +760,7 @@ exports[`DocumentsPage renders properly 1`] = `
                             class="ant-table-cell"
                           >
                             <div
-                              class="update_user-column"
+                              class="create_user-column"
                               title="Created By"
                             >
                               idir\\username
@@ -868,7 +868,7 @@ exports[`DocumentsPage renders properly 1`] = `
                             class="ant-table-cell"
                           >
                             <div
-                              class="update_user-column"
+                              class="create_user-column"
                               title="Created By"
                             >
                               idir\\username
@@ -976,7 +976,7 @@ exports[`DocumentsPage renders properly 1`] = `
                             class="ant-table-cell"
                           >
                             <div
-                              class="update_user-column"
+                              class="create_user-column"
                               title="Created By"
                             >
                               idir\\username
@@ -1084,10 +1084,10 @@ exports[`DocumentsPage renders properly 1`] = `
                             class="ant-table-cell"
                           >
                             <div
-                              class="update_user-column"
+                              class="create_user-column"
                               title="Created By"
                             >
-                              N/A
+                              mining@bceid.com
                             </div>
                           </td>
                           <td
@@ -1192,10 +1192,10 @@ exports[`DocumentsPage renders properly 1`] = `
                             class="ant-table-cell"
                           >
                             <div
-                              class="update_user-column"
+                              class="create_user-column"
                               title="Created By"
                             >
-                              N/A
+                              mining@bceid.com
                             </div>
                           </td>
                           <td
@@ -1300,10 +1300,10 @@ exports[`DocumentsPage renders properly 1`] = `
                             class="ant-table-cell"
                           >
                             <div
-                              class="update_user-column"
+                              class="create_user-column"
                               title="Created By"
                             >
-                              N/A
+                              mining@bceid.com
                             </div>
                           </td>
                           <td
