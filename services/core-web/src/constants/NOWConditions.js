@@ -6,8 +6,8 @@ export const activityConditions = {
   QCA: ["sand-and-gravel"],
   SAG: ["sand-and-gravel"],
   QIM: ["sand-and-gravel"],
-  COL: ["surface-bulk-sample", "cut-lines-polarization-survey", "underground-exploration"],
-  MIN: ["surface-bulk-sample", "cut-lines-polarization-survey", "underground-exploration"],
+  COL: ["surface-bulk-sample", "cut-lines-polarization-survey", "underground-exploration", "tier-category"],
+  MIN: ["surface-bulk-sample", "cut-lines-polarization-survey", "underground-exploration", "tier-category"],
   PLA: ["placer-operation", "cut-lines-polarization-survey", "underground-exploration"],
 };
 
@@ -15,7 +15,16 @@ export const renderActivities = (type, activity) => {
   return activityConditions[type].includes(activity);
 };
 
-export const sideMenuOptions = (tab, hasPermitConditionsFlow = true) => {
+// Legacy fuel fields (has_fuel_stored_in_bulk, has_fuel_stored_in_barrels, volume_fuel_stored) are
+// always null on new applications going forward, but must stay visible for older applications that
+// still have data in them. `camp` may be a redux-form live-values object or a fetched application's
+// `camp` object; both use the same field names.
+export const hasLegacyFuelData = (camp) =>
+  camp?.has_fuel_stored_in_bulk != null ||
+  camp?.has_fuel_stored_in_barrels != null ||
+  camp?.volume_fuel_stored != null;
+
+export const sideMenuOptions = (tab, hasPermitConditionsFlow = true, hasLegacyFuelData = false) => {
   const options = {
     application: [
       {
@@ -69,14 +78,8 @@ export const sideMenuOptions = (tab, hasPermitConditionsFlow = true) => {
         applicationType: ["NOW"],
       },
       {
-        href: "first-nations-engagement",
-        title: "First Nations Engagement",
-        alwaysVisible: true,
-        applicationType: ["NOW"],
-      },
-      {
-        href: "indigenous-engagement",
-        title: "Indigenous Engagement",
+        href: "cultural-heritage-resources",
+        title: "Cultural Heritage Resources",
         alwaysVisible: true,
         applicationType: ["NOW"],
       },
@@ -88,7 +91,9 @@ export const sideMenuOptions = (tab, hasPermitConditionsFlow = true) => {
       },
       {
         href: "camp",
-        title: "Camps, Buildings, Staging Areas, Fuel/Lubricant Storage",
+        title: hasLegacyFuelData
+          ? "Camps, Buildings, Staging Areas, Fuel/Lubricant Storage"
+          : "Camps, Buildings, Staging Areas",
         alwaysVisible: true,
         applicationType: ["NOW"],
       },
@@ -271,30 +276,9 @@ export const sideMenuOptions = (tab, hasPermitConditionsFlow = true) => {
     ],
     administrative: [
       {
-        href: "permit-package",
-        title: "Permit Package",
-        alwaysVisible: true,
-        children: [],
-        applicationType: ["NOW", "ADA"],
-      },
-      {
         href: "reclamation-securities",
         title: "Reclamation Securities",
         alwaysVisible: true,
-        children: [],
-        applicationType: ["NOW", "ADA"],
-      },
-      {
-        href: "government-documents",
-        title: "Government Documents",
-        alwaysVisible: true,
-        children: [],
-        applicationType: ["NOW", "ADA"],
-      },
-      {
-        href: "generated-documents",
-        title: "Application Export Files",
-        alwaysVisible: hasPermitConditionsFlow,
         children: [],
         applicationType: ["NOW", "ADA"],
       },
@@ -304,6 +288,14 @@ export const sideMenuOptions = (tab, hasPermitConditionsFlow = true) => {
         alwaysVisible: true,
         children: [],
         applicationType: ["NOW", "ADA"],
+      },
+      {
+        href: "tier-category",
+        title: "Tier Category",
+        alwaysVisible: false,
+        children: [],
+        applicationType: ["NOW", "ADA"],
+        featureFlag: "NOTICE_OF_WORK_TIER",
       },
       {
         href: "progress-tracking",
@@ -333,6 +325,13 @@ export const sideMenuOptions = (tab, hasPermitConditionsFlow = true) => {
         alwaysVisible: true,
         children: [],
         applicationType: ["NOW", , "ADA"],
+      },
+      {
+        href: "generated-documents",
+        title: "System-generated Documents",
+        alwaysVisible: hasPermitConditionsFlow,
+        children: [],
+        applicationType: ["NOW", "ADA"],
       },
       {
         href: "referral-consultation-public-comment-documents",
@@ -378,7 +377,7 @@ export const TAB_DISCLAIMERS = {
   permit type. You can add, edit or remove any condition.`,
   PRO: "This page allows you to review the progress of the application and record decisions.",
   ADMIN:
-    "This page contains information about securities, inspectors, progress tracking, and any internal files relevant to processing the application.",
+    "This page contains information about securities, inspectors, and progress tracking. All application documents are managed on the Manage Documents tab.",
   MND: "This page allows you to work with all documents related to this application.",
 };
 

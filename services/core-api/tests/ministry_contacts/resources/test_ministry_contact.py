@@ -4,6 +4,8 @@ from datetime import datetime
 from flask_restx import marshal
 from tests.factories import MinistryContactFactory
 from app.api.ministry_contacts.response_models import MINISTRY_CONTACT_MODEL
+from app.api.ministry_contacts.models.distribution_list import DistributionList
+from app.api.ministry_contacts.models.distribution_list_user import DistributionListUser
 
 
 #GET
@@ -16,6 +18,48 @@ def test_get_ministry_contact_not_found(test_client, db_session, auth_headers):
 
     assert get_resp.status_code == 404
     assert 'not found' in get_data['message']
+
+
+def test_put_ministry_contact_with_distribution_list_guids(test_client, db_session, auth_headers):
+    dl = DistributionList.create('Test DL For Contact')
+    db_session.add(dl)
+    db_session.flush()
+
+    contact = MinistryContactFactory()
+    data = marshal(contact, MINISTRY_CONTACT_MODEL)
+    data['first_name'] = 'Updated'
+    data['phone_number'] = '222-333-4444'
+    data['email'] = 'updated@example.com'
+    data['distribution_list_guids'] = [str(dl.distribution_list_guid)]
+
+    put_resp = test_client.put(
+        f'/ministry-contacts/{contact.contact_guid}',
+        json=data,
+        headers=auth_headers['full_auth_header'])
+
+    put_data = json.loads(put_resp.data.decode())
+    assert put_resp.status_code == 200
+    assert put_data['first_name'] == 'Updated'
+    assert str(dl.distribution_list_guid) in put_data.get('distribution_list_guids', [])
+
+
+def test_put_ministry_contact_remove_distribution_list(test_client, db_session, auth_headers):
+    dl = DistributionList.create('Test DL For Removal')
+    db_session.add(dl)
+    db_session.flush()
+
+    contact = MinistryContactFactory()
+    data = marshal(contact, MINISTRY_CONTACT_MODEL)
+    data['phone_number'] = '222-333-4444'
+    data['email'] = contact.email or 'test@example.com'
+    data['distribution_list_guids'] = []
+
+    put_resp = test_client.put(
+        f'/ministry-contacts/{contact.contact_guid}',
+        json=data,
+        headers=auth_headers['full_auth_header'])
+
+    assert put_resp.status_code == 200
 
 
 def test_get_ministry_contact_by_guid(test_client, db_session, auth_headers):
@@ -71,6 +115,25 @@ def test_put_ministry_contact_success(test_client, db_session, auth_headers):
 
 
 #DELETE
+def test_delete_ministry_contact_cascades_to_distribution_list_users(test_client, db_session, auth_headers):
+    dl = DistributionList.create('DL Cascade Delete Test')
+    db_session.add(dl)
+
+    contact = MinistryContactFactory()
+    db_session.flush()
+
+    dlu = DistributionListUser.create(dl.distribution_list_guid, contact.contact_guid)
+    db_session.add(dlu)
+    db_session.commit()
+
+    delete_resp = test_client.delete(
+        f'/ministry-contacts/{contact.contact_guid}', headers=auth_headers['full_auth_header'])
+    assert delete_resp.status_code == 204
+
+    db_session.expire(dlu)
+    assert dlu.deleted_ind is True
+
+
 def test_soft_delete_ministry_contact_by_guid(test_client, db_session, auth_headers):
     contact = MinistryContactFactory()
 
@@ -86,3 +149,101 @@ def test_soft_delete_ministry_contact_by_guid(test_client, db_session, auth_head
 
     assert get_resp.status_code == 404
     assert 'not found' in get_data['message']
+
+
+def test_put_rdc_contact_only_email(test_client, db_session, auth_headers):
+    # RDC only requires email or phone (either or)
+    contact = MinistryContactFactory(emli_contact_type_code='RDC')
+    data = marshal(contact, MINISTRY_CONTACT_MODEL)
+    data['phone_number'] = None
+    data['email'] = 'onlyemail@example.com'
+
+    put_resp = test_client.put(
+        f'/ministry-contacts/{contact.contact_guid}',
+        json=data,
+        headers=auth_headers['full_auth_header'])
+
+    assert put_resp.status_code == 200
+
+
+def test_put_rdc_contact_only_phone(test_client, db_session, auth_headers):
+    # RDC only requires email, so phone only will fail because email is missing
+    contact = MinistryContactFactory(emli_contact_type_code='RDC')
+    data = marshal(contact, MINISTRY_CONTACT_MODEL)
+    data['phone_number'] = '250-111-2222'
+    data['email'] = None
+
+    put_resp = test_client.put(
+        f'/ministry-contacts/{contact.contact_guid}',
+        json=data,
+        headers=auth_headers['full_auth_header'])
+
+    assert put_resp.status_code == 400
+    put_data = json.loads(put_resp.data.decode())
+    assert 'Email is required.' in put_data['message']
+
+
+def test_put_rdc_contact_missing_both(test_client, db_session, auth_headers):
+    # RDC requires email
+    contact = MinistryContactFactory(emli_contact_type_code='RDC')
+    data = marshal(contact, MINISTRY_CONTACT_MODEL)
+    data['email'] = None
+    data['phone_number'] = None
+
+    put_resp = test_client.put(
+        f'/ministry-contacts/{contact.contact_guid}',
+        json=data,
+        headers=auth_headers['full_auth_header'])
+
+    assert put_resp.status_code == 400
+    put_data = json.loads(put_resp.data.decode())
+    assert 'Email is required.' in put_data['message']
+
+
+def test_put_non_rdc_contact_missing_phone(test_client, db_session, auth_headers):
+    # Non-RDC requires phone number
+    contact = MinistryContactFactory(emli_contact_type_code='ROE')
+    data = marshal(contact, MINISTRY_CONTACT_MODEL)
+    data['phone_number'] = None
+    data['email'] = 'test@example.com'
+
+    put_resp = test_client.put(
+        f'/ministry-contacts/{contact.contact_guid}',
+        json=data,
+        headers=auth_headers['full_auth_header'])
+
+    assert put_resp.status_code == 400
+    put_data = json.loads(put_resp.data.decode())
+    assert 'Phone number is required.' in put_data['message']
+
+
+def test_put_non_rdc_contact_missing_email(test_client, db_session, auth_headers):
+    # Non-RDC requires email
+    contact = MinistryContactFactory(emli_contact_type_code='ROE')
+    data = marshal(contact, MINISTRY_CONTACT_MODEL)
+    data['phone_number'] = '250-111-2222'
+    data['email'] = None
+
+    put_resp = test_client.put(
+        f'/ministry-contacts/{contact.contact_guid}',
+        json=data,
+        headers=auth_headers['full_auth_header'])
+
+    assert put_resp.status_code == 400
+    put_data = json.loads(put_resp.data.decode())
+    assert 'Email is required.' in put_data['message']
+
+
+def test_put_general_contact_missing_phone(test_client, db_session, auth_headers):
+    # General contact (non-RDC) does not require phone number
+    contact = MinistryContactFactory(emli_contact_type_code='ROE', is_general_contact=True)
+    data = marshal(contact, MINISTRY_CONTACT_MODEL)
+    data['phone_number'] = None
+    data['email'] = 'test@example.com'
+
+    put_resp = test_client.put(
+        f'/ministry-contacts/{contact.contact_guid}',
+        json=data,
+        headers=auth_headers['full_auth_header'])
+
+    assert put_resp.status_code == 200

@@ -21,6 +21,7 @@ from app.api.mines.reports.models.mine_report_submission_status_code import (
     MineReportSubmissionStatusCode,
 )
 from app.api.services.email_service import EmailService
+from app.api.ministry_contacts.models.distribution_list import DistributionListNames
 from app.api.utils.helpers import (
     format_email_datetime_to_string,
     get_current_core_or_ms_env_url,
@@ -31,12 +32,13 @@ from app.config import Config
 from app.extensions import db
 from flask import current_app
 from pytz import timezone as pytz_timezone
-from sqlalchemy import and_, desc, func, literal, select
+from sqlalchemy import and_, desc, func, literal, select, exists, or_
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import validates
 from sqlalchemy.schema import FetchedValue
+from typing import Self
 
 
 class MineReport(SoftDeleteMixin, AuditMixin, Base):
@@ -135,6 +137,20 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
                 due_dt < as_of_date and
                 due_dt >= april_1_2025 and
                 self.mine_report_status_code == 'NON')
+
+    @is_overdue.expression
+    def is_overdue(cls):
+        from sqlalchemy import case
+        april_1_2025 = date(2025, 4, 1)
+        return case(
+            (and_(
+                cls.due_date.isnot(None),
+                cls.due_date < func.now(),
+                cls.due_date >= april_1_2025,
+                cls.mine_report_status_code == 'NON'
+            ), True),
+            else_=False
+        )
 
     @hybrid_property
     def report_type(self):
@@ -248,13 +264,30 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
             self.mine_report_guid,
             recipients=ActivityRecipients.core_users)
 
+        distribution_list_name = DistributionListNames.REPORT_SUBMISSION_MAJOR_MINES if self.mine.major_mine_ind else DistributionListNames.REPORT_SUBMISSION_REGIONAL_MINES
+
         core_template = "email/report/core_new_report_submitted_email.html"
-        EmailService.send_template_email(
-            subject, core_recipients, core_template, email_context, cc=None)
+        EmailService.send_template_email_async(
+            subject=subject,
+            recipients=core_recipients,
+            template_path=core_template,
+            context=email_context,
+            distribution_list=distribution_list_name,
+            reference_id=str(self.mine_report_guid),
+            reference_table="mine_report",
+            reference_email_type="report_submitted_core"
+        )
 
         ms_template = "email/report/ms_new_report_submitted_email.html"
-        EmailService.send_template_email(
-            subject, ms_recipients, ms_template, email_context, cc=None)
+        EmailService.send_template_email_async(
+            subject=subject,
+            recipients=ms_recipients,
+            template_path=ms_template,
+            context=email_context,
+            reference_id=str(self.mine_report_guid),
+            reference_table="mine_report",
+            reference_email_type="report_submitted_ms"
+        )
 
     def collectRecipients(self, is_proponent):
         core_recipients = [MDS_EMAIL]
@@ -304,9 +337,11 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
         return list(unique_recipients)
 
     def send_crr_report_update_email(self, is_edit):
-        recipients = [self.mine.region.regional_contact_office.email, MDS_EMAIL]
-        if self.mine.major_mine_ind:
-            recipients = [MAJOR_MINES_OFFICE_EMAIL, MDS_EMAIL]
+        distribution_list_name = DistributionListNames.REPORT_SUBMISSION_MAJOR_MINES if self.mine.major_mine_ind else DistributionListNames.REPORT_SUBMISSION_REGIONAL_MINES
+
+        recipients = []
+        if not self.mine.major_mine_ind and getattr(self.mine, 'region', None) and getattr(self.mine.region, 'regional_contact_office', None):
+            recipients.append(self.mine.region.regional_contact_office.email)
 
         subject_verb = 'Updated' if is_edit else 'Submitted'
         subject = f'Code Required Report {subject_verb} for {self.mine.mine_name}'
@@ -316,7 +351,16 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
 
         link = f'{Config.CORE_WEB_URL}/mine-dashboard/{self.mine.mine_guid}/reports/code-required-reports'
         body += f'<p>View updates in Core: <a href="{link}" target="_blank">{link}</a></p>'
-        EmailService.send_email(subject, recipients, body)
+
+        EmailService.send_email_async(
+            subject=subject,
+            recipients=recipients,
+            body=body,
+            distribution_list=distribution_list_name,
+            reference_id=str(self.mine_report_guid),
+            reference_table="mine_report",
+            reference_email_type="crr_report_update"
+        )
 
     def send_report_requested_email(self, report_name, is_crr):
         if self.mine.mine_manager:
@@ -425,6 +469,120 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
             ]
         except ValueError:
             return None
+
+    @classmethod
+    def create_from_permit_report_requirement(cls, requirement, due_date):
+        """
+        Create a MineReport from a MineReportPermitRequirement.
+        This is used for creating recurring reports based on permit requirements.
+        
+        Args:
+            requirement: MineReportPermitRequirement instance
+            due_date: The specific due date for this report instance
+        """
+        # Import here to avoid circular import
+        from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
+        from app.api.mines.mine.models.mine import Mine
+        
+        # Get the permit amendment to find the mine
+        permit_amendment = PermitAmendment.find_by_permit_amendment_id(requirement.permit_amendment_id)
+        if not permit_amendment:
+            raise ValueError(f"Could not find permit amendment with id {requirement.permit_amendment_id} for report requirement '{requirement.report_name}' (ID: {requirement.mine_report_permit_requirement_id})")
+        
+        # Get the mine directly from the permit amendment to avoid _context_mine requirement
+        mine_guid = permit_amendment.mine_guid
+        permit_id = permit_amendment.permit_id
+        
+        mine = Mine.find_by_mine_guid(mine_guid)
+        if not mine:
+            raise ValueError(f"Could not find mine with guid {mine_guid} for permit amendment {requirement.permit_amendment_id}")
+        
+        mine_report = cls.create(
+            mine_report_definition_id=None,  # PRR reports don't use mine_report_definition
+            mine_guid=mine.mine_guid,
+            due_date=due_date,  # Use the passed-in due date
+            received_date=None,  # Not received yet
+            submission_year=None,  # Will be set when submitted
+            description_comment=None,  # Will be set when submitted
+            submitter_name="",  # Will be set when submitted
+            permit_id=permit_id,
+            permit_condition_category_code=None,  # PRR reports don't use this
+            mine_report_permit_requirement_id=requirement.mine_report_permit_requirement_id,
+            submitter_email="",  # Will be set when submitted
+            add_to_session=True,
+            system_created=True
+        )
+        
+        return mine_report
+
+    @classmethod
+    def get_all_recurring_crr_reports(cls):
+        from app.api.mines.reports.models.mine_report_definition import MineReportDefinition
+        from app.api.mines.permits.permit.models.mine_permit_xref import MinePermitXref
+        from app.api.mines.permits.permit.models.permit import Permit
+        from app.api.mines.reports.models.mine_report_category_xref import MineReportCategoryXref
+        from app.api.mines.tailings.models.tailings import MineTailingsStorageFacility
+        from app.api.mines.reports.models.mine_report_definition_compliance_article_xref import \
+            MineReportDefinitionComplianceArticleXref
+
+        # Check to see if mine report's mine has an active permit
+        active_permit_exists = exists().where(
+            and_(
+                MinePermitXref.mine_guid == cls.mine_guid,
+                MinePermitXref.permit_id == Permit.permit_id,
+                Permit.deleted_ind == False,
+            )
+        )
+
+        # Check to see if mine report definition has TSF category
+        definition_has_tsf = exists().where(
+            and_(
+                MineReportCategoryXref.mine_report_definition_id
+                == cls.mine_report_definition_id,
+                MineReportCategoryXref.mine_report_category == "TSF",
+            )
+        )
+
+        # Check to see if mine has a tailings storage facility
+        tsf_exists = exists().where(
+            MineTailingsStorageFacility.mine_guid == cls.mine_guid
+        )
+
+        # Check if mine report definition is linked to at least one non-expired compliance article
+        has_non_expired_compliance_article = exists().where(
+            and_(
+                MineReportDefinitionComplianceArticleXref.mine_report_definition_id
+                == cls.mine_report_definition_id,
+                MineReportDefinitionComplianceArticleXref.compliance_article_id
+                == ComplianceArticle.compliance_article_id,
+                or_(
+                    ComplianceArticle.expiry_date.is_(None),  # treat null expiry as not expired
+                    ComplianceArticle.expiry_date >= datetime.utcnow(),
+                ),
+            )
+        )
+
+
+        return (
+            cls.query
+            .join(
+                MineReportDefinition,
+                cls.mine_report_definition_id
+                == MineReportDefinition.mine_report_definition_id,
+            )
+            .filter(
+                cls.deleted_ind == False,
+                cls.due_date != None,
+                MineReportDefinition.active_ind.is_(True),
+                MineReportDefinition.mine_report_due_date_type.in_(["FIS", "YRL"]),
+                active_permit_exists,
+                or_(
+                    ~definition_has_tsf,
+                    tsf_exists,
+                ),
+                has_non_expired_compliance_article,
+            )
+        )
 
     @validates('mine_report_definition_id')
     def validate_mine_report_definition_id(self, key, mine_report_definition_id):

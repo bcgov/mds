@@ -17,6 +17,8 @@ export const {
   getNoticeOfWorkReviews,
   getDocumentDownloadState,
   getApplicationDelays,
+  getPipConsultationData,
+  getNoticeOfWorkNations,
 } = noticeOfWorkReducer;
 
 export const getNOWReclamationSummary = createSelector(

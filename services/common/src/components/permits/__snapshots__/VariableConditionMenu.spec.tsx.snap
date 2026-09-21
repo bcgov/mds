@@ -5,6 +5,7 @@ exports[`VariableConditionMenu renders correctly and matches the snapshot 1`] = 
   class="ant-row condition-editor-toolbar"
 >
   <button
+    ant-click-animating-without-extra-node="false"
     class="ant-btn ant-btn-default ant-dropdown-trigger ant-dropdown-open"
     type="button"
   >

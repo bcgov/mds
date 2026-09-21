@@ -57,6 +57,8 @@ class EmailTracking(AuditMixin, Base):
     ches_message_id = db.Column(UUID(as_uuid=True))
     ches_transaction_id = db.Column(UUID(as_uuid=True))
 
+    distribution_list_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('distribution_list.distribution_list_guid'), nullable=True)
+
     retry_count = db.Column(db.Integer, default=0)
     max_retries = db.Column(db.Integer, default=3)
 
@@ -71,6 +73,7 @@ class EmailTracking(AuditMixin, Base):
                recipient_name=None,
                recipient_type=RecipientType.primary,
                max_retries=3,
+               distribution_list_guid=None,
                add_to_session=True):
         new_email_tracking = cls(
             reference_id=reference_id,
@@ -82,6 +85,7 @@ class EmailTracking(AuditMixin, Base):
             recipient_name=recipient_name,
             recipient_type=recipient_type,
             max_retries=max_retries,
+            distribution_list_guid=distribution_list_guid,
             email_status=EmailStatus.pending
         )
 

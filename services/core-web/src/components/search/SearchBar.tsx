@@ -1,40 +1,35 @@
 import React, { useState, FC, useRef } from "react";
 
-import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
-import { withRouter, useHistory, RouteComponentProps } from "react-router-dom";
+import { useHistory } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 import { Input, InputProps, Button } from "antd";
 
 import {
   fetchSearchBarResults,
-  clearSearchBarResults,
-} from "@mds/common/redux/actionCreators/searchActionCreator";
+  selectSearchBarResults,
+} from "@mds/common/redux/slices/searchSlice";
 import * as router from "@/constants/routes";
-import { getSearchBarResults } from "@mds/common/redux/reducers/searchReducer";
 
 import { SearchOutlined } from "@ant-design/icons";
 import { useKey } from "@/App";
-import { ISearchResult, ISimpleSearchResult } from "@mds/common/interfaces/search/searchResult.interface";
 import { SearchBarDropdown } from "@/components/search/SearchBarDropdown";
 import { throttle } from "lodash";
-import { ActionCreator } from "@mds/common/interfaces/actionCreator";
 
-// any attribute that can be passed to antd Input can be passed in here without being explicitly named
 interface SearchBarProps extends InputProps {
   iconPlacement: "prefix" | "suffix" | false;
   placeholderText: string;
   showFocusButton: boolean;
-  searchBarResults: ISearchResult<ISimpleSearchResult>[];
-  fetchSearchBarResults: ActionCreator<typeof fetchSearchBarResults>;
 }
 
-const SearchBar: FC<RouteComponentProps & SearchBarProps> = ({
+const SearchBar: FC<SearchBarProps> = ({
   iconPlacement = "suffix",
   placeholderText = "Search...",
   showFocusButton = false,
   ...props
 }) => {
+  const dispatch = useDispatch();
+  const searchBarResults = useSelector(selectSearchBarResults);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchTermHistory, setSearchTermHistory] = useState([]);
   const [isFocussed, setIsFocussed] = useState(false);
@@ -42,7 +37,9 @@ const SearchBar: FC<RouteComponentProps & SearchBarProps> = ({
   const history = useHistory();
   const hotKeyRef = useRef();
 
-  const fetchSearchBarResultsThrottled = throttle(props.fetchSearchBarResults, 2000, {
+  const fetchSearchBarResultsThrottled = throttle((term: string) => {
+    dispatch(fetchSearchBarResults({ searchTerm: term }));
+  }, 2000, {
     leading: true,
     trailing: true,
   });
@@ -106,7 +103,7 @@ const SearchBar: FC<RouteComponentProps & SearchBarProps> = ({
         history={history}
         searchTerm={searchTerm}
         searchTermHistory={searchTermHistory}
-        searchBarResults={props.searchBarResults}
+        searchBarResults={searchBarResults}
       >
         <Input
           value={searchTerm}
@@ -121,26 +118,13 @@ const SearchBar: FC<RouteComponentProps & SearchBarProps> = ({
             setIsFocussed(false);
           }}
           ref={hotKeyRef}
+          {...iconProps}
           {...(showFocusButton ? getFocusButton() : null)}
           {...props}
-          {...iconProps}
         />
       </SearchBarDropdown>
     </div>
   );
 };
 
-const mapStateToProps = (state) => ({
-  searchBarResults: getSearchBarResults(state),
-});
-
-const mapDispatchToProps = (dispatch) =>
-  bindActionCreators(
-    {
-      fetchSearchBarResults,
-      clearSearchBarResults,
-    },
-    dispatch
-  );
-
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(SearchBar));
+export default SearchBar;

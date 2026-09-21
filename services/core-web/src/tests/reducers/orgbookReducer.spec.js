@@ -1,5 +1,5 @@
 import { orgbookReducer } from "@mds/common/redux/reducers/orgbookReducer";
-import { storeSearchOrgBookResults, storeOrgBookCredential } from "@mds/common/redux/actions/orgbookActions";
+import { storeBCRegistrationResults, storeOrgBookCredential } from "@mds/common/redux/actions/orgbookActions";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 
 const baseExpectedValue = {
@@ -23,7 +23,7 @@ describe("orgbookReducer", () => {
 
     const result = orgbookReducer(
       undefined,
-      storeSearchOrgBookResults(MOCK.ORGBOOK_SEARCH_RESULTS)
+      storeBCRegistrationResults(MOCK.ORGBOOK_SEARCH_RESULTS)
     );
     expect(result).toEqual(expectedValue);
   });

@@ -22,7 +22,8 @@ const ProjectContacts: FC<ProjectContactsProps> = ({ title, contacts }) => {
             const isPrimary = c.is_primary;
             const hasJobTitle = c.job_title;
             const isProjectLeadContact = c.is_project_lead_contact;
-            const name = [c?.first_name, c?.last_name].join(" ").trim();
+            const lastName = c?.last_name ?? c?.party_name;
+            const name = [c?.first_name, lastName].join(" ").trim();
             let jobTitle = ministryContactTypesHash[c.emli_contact_type_code];
             const phone = c.phone_no ?? c.phone_number;
 

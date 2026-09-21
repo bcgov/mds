@@ -17,7 +17,7 @@ import RenderGroupedSelect from "./RenderGroupedSelect";
 import RenderHiddenField from "./RenderHiddenField";
 import RenderLargeSelect from "./RenderLargeSelect";
 import RenderMultiSelect from "./RenderMultiSelect";
-import RenderOrgBookSearch from "./RenderOrgBookSearch";
+import RenderBCRegistrationSearch from "./RenderBCRegistrationSearch";
 import RenderRadioButtons from "./RenderRadioButtons";
 import RenderResetButton from "./RenderResetButton";
 import RenderRichTextEditor from "./RenderRichTextEditor";
@@ -229,7 +229,7 @@ describe("ViewForm", () => {
                     <Field
                         name="orgbooksearch"
                         label="Orgbook Search"
-                        component={RenderOrgBookSearch}
+                        component={RenderBCRegistrationSearch}
                         setCredential={jest.fn()}
                         data={[{
                             text: "Orgbook Option Label",

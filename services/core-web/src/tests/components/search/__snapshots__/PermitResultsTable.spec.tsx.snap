@@ -24,12 +24,6 @@ exports[`PermitResultsTable renders properly 1`] = `
           "title": "Permittee",
         },
         Object {
-          "dataIndex": "current_permittee",
-          "key": "current_permittee",
-          "render": [Function],
-          "title": "Permittee",
-        },
-        Object {
           "key": "mine_guid",
           "render": [Function],
           "title": "Mine(s)",

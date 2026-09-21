@@ -592,3 +592,15 @@ export const getHighestConsequence = (tsf) => {
     ? CONSEQUENCE_CLASSIFICATION_CODE_HASH[highestRankedDam.consequence_classification]
     : CONSEQUENCE_CLASSIFICATION_CODE_HASH[tsf.consequence_classification_status_code];
 };
+
+export const getLatestEvent = (events = []) => {
+  if (events.length === 0) {
+    return null;
+  }
+
+  const sortedEvents = [...events].sort(
+    (a, b) => new Date(a?.start_date).getTime() - new Date(b?.start_date).getTime()
+  );
+
+  return sortedEvents[sortedEvents.length - 1];
+};

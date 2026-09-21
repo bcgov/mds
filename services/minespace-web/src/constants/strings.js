@@ -30,3 +30,6 @@ export const EDITABLE_NOTICE_OF_DEPARTURE_STATUS = ["Pending Review", "Informati
 
 export const NOTICE_OF_DEPARTURE_DOWNLOAD_LINK =
   "https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/permitting/mines-act-permits/mines-act-departures-from-approval";
+
+export const NOW_APPLICATION_TIER_EXPLAINATION_LINK =
+  "https://www2.qa.gov.bc.ca/assets/gov/farming-natural-resources-and-industry/mineral-exploration-mining/documents/permitting/mine-exploration-and-discovery/mx_permitting_timelines.pdf?";

@@ -4,7 +4,6 @@ from datetime import datetime, timezone
 from werkzeug.exceptions import BadRequest, NotFound
 
 from app.extensions import api
-from app.api.activity.utils import trigger_notification
 from app.api.utils.access_decorators import MINESPACE_PROPONENT, requires_any_of, VIEW_ALL, MINE_ADMIN, EDIT_PROJECT_SUMMARIES
 from app.api.mines.mine.models.mine import Mine
 from app.api.utils.resources_mixins import UserMixin
@@ -13,9 +12,7 @@ from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.projects.response_models import PROJECT_SUMMARY_MODEL
 from app.api.projects.project_summary.models.project_summary import ProjectSummary
 from app.api.projects.project.models.project import Project
-from app.api.activity.models.activity_notification import ActivityType
 
-from app.api.activity.utils import trigger_notification
 from app.api.projects.project.project_util import notify_file_updates
 from decimal import Decimal
 from app.api.activity.models.activity_notification import ActivityRecipients
@@ -207,7 +204,6 @@ class ProjectSummaryResource(Resource, UserMixin):
         project = Project.find_by_project_guid(project_guid)
         data = self.parser.parse_args()
         is_historic = data.get('is_historic')
-        activity_recipients = ActivityRecipients.all_users
         project_summary_validation = project_summary.validate_project_summary(data, is_historic)
         if any(project_summary_validation[i] != [] for i in project_summary_validation):
             current_app.logger.error(f'Project Summary schema validation failed with errors: {project_summary_validation}')
@@ -272,36 +268,7 @@ class ProjectSummaryResource(Resource, UserMixin):
             data.get('contacts', []))
         project.save()
 
-        # notify of status changes
-        if prev_status != project_summary.status_code:
-            message = ''
-            extra_data = {'project': {'project_guid': str(project.project_guid)}}
-            if prev_status == 'DFT' and project_summary.status_code == 'SUB':
-                message = f'A new major project description for ({project.project_title}) has been submitted for ({project.mine_name})'
-
-            if project_summary.status_code == 'ASG':
-                message = f'{project.project_title} for {project.mine_name} has been assigned'
-                activity_recipients = ActivityRecipients.core_users
-
-            if project_summary.status_code == 'CHR':
-                message = f'Changes have been requested by the ministry for {project.project_title} at {project.mine_name}'
-
-            if project_summary.status_code == 'UNR':
-                message = f'{project.project_title} for {project.mine_name} is now under review'
-
-            if project_summary.status_code == 'OHD':
-                message = f'The project description {project.project_title} for {project.mine_name} has been updated to On Hold'
-
-            if project_summary.status_code == 'WDN':
-                message = f'The project description {project.project_title} for {project.mine_name} has been withdrawn'
-
-            if project_summary.status_code == 'COM':
-                message = f'The status of the project description {project.project_title} for {project.mine_name} has been completed'
-
-            if message != '':
-                project_summary.send_project_summary_email(mine, message)
-                trigger_notification(message, ActivityType.major_mine_desc_submitted, project.mine, 'ProjectSummary',
-                                        project_summary.project_summary_guid, extra_data, None, activity_recipients)
+        project_summary.send_status_notification(prev_status, mine)
         
         # notify on document updates
         if has_new_documents:

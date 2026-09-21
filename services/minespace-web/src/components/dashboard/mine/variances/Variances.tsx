@@ -17,7 +17,7 @@ import {
   getHSRCMComplianceCodesHash,
   getDropdownHSRCMComplianceCodes,
 } from "@mds/common/redux/selectors/staticContentSelectors";
-import { getInspectorsHash } from "@mds/common/redux/selectors/partiesSelectors";
+import { getInspectorsHash } from "@mds/common/redux/slices/partiesSlice";
 import { modalConfig } from "@/components/modalContent/config";
 import VariancesTable from "@/components/dashboard/mine/variances/VariancesTable";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";

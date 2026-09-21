@@ -1,4 +1,4 @@
-FROM python:3.12.11-bookworm
+FROM python:3.12.12-bookworm
 
 ENV LD_LIBRARY_PATH="/opt/oracle/instantclient:${LD_LIBRARY_PATH}" \
     PATH="/opt/oracle/instantclient:${PATH}" \
@@ -32,6 +32,7 @@ RUN chmod 777 /opt/oracle/instantclient/network/admin/sqlnet.ora
 
 # Copy files over and install the requirements
 COPY . .
+ENV PIP_CONSTRAINT=requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Oracle config files
@@ -43,6 +44,8 @@ RUN chmod -R 661 /app/cwallet.sso
 RUN chmod 775 /app/
 
 USER 1001
+
+ENV PYTHONUNBUFFERED=1
 
 # Run the server
 EXPOSE 5500

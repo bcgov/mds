@@ -51,6 +51,7 @@ from app.api.mines.permits.permit_amendment.models.permit_amendment_type_code im
 from app.api.now_applications.models.administrative_amendments.application_reason_code import ApplicationReasonCode
 from app.api.now_applications.models.administrative_amendments.application_source_type_code import ApplicationSourceTypeCode
 from app.api.now_applications.models.application_type_code import ApplicationTypeCode
+from app.api.now_applications.models.notice_of_work_tier import NoticeOfWorkTier
 from app.api.mines.government_agencies.models.government_agency_type import GovernmentAgencyType
 from app.api.mines.tailings.models.tsf_operating_status_code import TSFOperatingStatusCode
 from app.api.mines.tailings.models.consequence_classification_status_code import ConsequenceClassificationStatusCode
@@ -70,6 +71,9 @@ from app.api.projects.major_mine_application.models.major_mine_application_docum
 from app.api.projects.major_mine_application.models.major_mine_application_document_subtype import MajorMineApplicationDocumentSubtype
 from app.api.projects.project_decision_package.models.project_decision_package_status_code import ProjectDecisionPackageStatusCode
 from app.api.projects.project_decision_package.models.project_decision_package_document_type import ProjectDecisionPackageDocumentType
+from app.api.now_applications.models.now_application_nation_event_code import NOWApplicationNationEventCode
+from app.api.now_applications.models.now_application_nation_status import NOWApplicationNationStatus
+from app.api.mines.documents.models.spatial_bundle_purpose_code import SpatialBundlePurposeCode
 
 
 MODELS_GET_ACTIVE = [
@@ -84,11 +88,13 @@ MODELS_GET_ACTIVE = [
     ExemptionFeeStatus, PermitConditionType, PermitConditionCategory, PartyBusinessRoleCode,
     NOWApplicationDelayType, PermitAmendmentTypeCode, ApplicationReasonCode,
     ApplicationSourceTypeCode, ApplicationTypeCode, GovernmentAgencyType, TSFOperatingStatusCode,
+    NoticeOfWorkTier,
     ConsequenceClassificationStatusCode, ITRBExemptionStatusCode, ExplosivesPermitStatus,
     ExplosivesPermitMagazineType, ExplosivesPermitDocumentType, ProjectSummaryDocumentType,
     ProjectSummaryStatusCode, MinistryContactType, ProjectSummaryAuthorizationType,
     ProjectSummaryPermitType, InformationRequirementsTableStatusCode, InformationRequirementsTableDocumentType,
-    MajorMineApplicationStatusCode, MajorMineApplicationDocumentType, MajorMineApplicationDocumentSubtype, ProjectDecisionPackageStatusCode, ProjectDecisionPackageDocumentType, Municipality
+    MajorMineApplicationStatusCode, MajorMineApplicationDocumentType, MajorMineApplicationDocumentSubtype, ProjectDecisionPackageStatusCode, ProjectDecisionPackageDocumentType, Municipality,
+    NOWApplicationNationEventCode, NOWApplicationNationStatus, SpatialBundlePurposeCode
 ]
 
 

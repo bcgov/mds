@@ -2,7 +2,7 @@ import React, { FC, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 import { fetchMinespaceUsersByMine, getMinespaceUsersByMineGuid } from "@mds/common/redux/slices/minespaceSlice";
 import CoreTable from "../common/CoreTable";
-import { renderTextColumn } from "../common/CoreTableCommonColumns";
+import { renderDateColumn, renderTextColumn } from "../common/CoreTableCommonColumns";
 import { Col, Row, Typography } from "antd";
 import { getIsCore } from "@mds/common/redux/reducers/authenticationReducer";
 import { MDS_EMAIL } from "@mds/common/constants/strings";
@@ -24,7 +24,10 @@ const MineUserAccess: FC<MineUserAccessParams> = ({ mineGuid }) => {
     }, []);
 
     const columns = [
-        renderTextColumn("email_or_username", "BCeID/Email", true)
+        renderTextColumn("display_name", "Name", true),
+        renderTextColumn("bceid_username", "BCeID", true),
+        renderTextColumn("email", "Email", true),
+        renderDateColumn("last_logged_in", "Last Login", true),
     ];
 
     return (<Row>

@@ -77,6 +77,7 @@ class Base(db.Model):
     __abstract__ = True
     _edit_groups = []
     _edit_key = None
+    _protected_columns = []  # columns excluded from deep_update_from_dict
     # Set default query_class on base class.
     query_class = UserBoundQuery
 
@@ -133,7 +134,9 @@ class Base(db.Model):
         current_app.logger.debug(depth * '-' + f'updating{self}')
         mapper = inspect(self.__class__)
         editable_columns = [
-            c for c in mapper.columns if c.name not in [pk.name for pk in mapper.primary_key]
+            c for c in mapper.columns
+            if c.name not in [pk.name for pk in mapper.primary_key]
+            and c.name not in self._protected_columns
         ]
         class_relationships = mapper.relationships
 
@@ -491,7 +494,12 @@ class AuditMixin(object):
         db.DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
 
 class HistoryMixin(object):
-    __versioned__ = {}
+    
+    def __init_subclass__(cls, **kwargs):
+        super().__init_subclass__(**kwargs)
+        # Only set default __versioned__ if the model hasn't already defined it
+        if not hasattr(cls, '__versioned__'):
+            cls.__versioned__ = {}
 
     @hybrid_property
     def history(self):
@@ -504,7 +512,7 @@ class HistoryMixin(object):
         if self.versions:
             hs = list(map(lambda version: {
                 'updated_by': version.update_user,
-                'updated_at': version.update_timestamp,
+                'updated_at': dt_to_str(version.update_timestamp),
                 'changeset': list(map(lambda key: json.loads(json.dumps({
                     'field_name': key,
                     'from': dt_to_str(version.changeset[key][0]),
@@ -519,7 +527,7 @@ class HistoryMixin(object):
 class DocumentXrefMixin(object):
     @declared_attr
     def mine_document(cls):
-        return db.relationship('MineDocument', lazy='select')
+        return db.relationship('MineDocument', lazy='select', overlaps=f"{cls.__tablename__}")
     
     @declared_attr
     def mine_document_guid(cls):

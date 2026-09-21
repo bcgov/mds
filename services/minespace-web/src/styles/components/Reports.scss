@@ -57,3 +57,12 @@
   position: sticky;
   top: 100px;
 }
+
+.advanced-search__container {
+  margin-top: $default-padding-lg;
+  width: 100%;
+
+  .ant-btn+.ant-btn {
+    margin-left: 16px;
+  }
+}

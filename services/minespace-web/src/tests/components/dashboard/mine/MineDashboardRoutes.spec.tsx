@@ -22,6 +22,19 @@ describe("MineDashboardRoutes", () => {
     expect(applications).toBeUndefined();
   });
 
+  it("includes Notices of Departure when isMajorMine is true", () => {
+    const routes = getMineDashboardRoutes(true, 0, true);
+    const nods = getRouteByKey(routes, "nods");
+    expect(nods).toBeTruthy();
+    expect(nods.label).toBe("Notices of Departure");
+  });
+
+  it("omits Notices of Departure when isMajorMine is false", () => {
+    const routes = getMineDashboardRoutes(true, 0, false);
+    const nods = getRouteByKey(routes, "nods");
+    expect(nods).toBeUndefined();
+  });
+
   it("wraps Reports icon in a red Badge with the overdue count", () => {
     const overdueCount = 7;
     const routes = getMineDashboardRoutes(true, overdueCount);

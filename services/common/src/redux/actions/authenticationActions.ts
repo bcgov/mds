@@ -25,3 +25,10 @@ export const storeUserAccessData = (roles = {}) => ({
     roles,
   },
 });
+
+export const storeIsProponent = (data: boolean) => ({
+  type: ActionTypes.STORE_IS_PROPONENT,
+  payload: {
+    data,
+  },
+});

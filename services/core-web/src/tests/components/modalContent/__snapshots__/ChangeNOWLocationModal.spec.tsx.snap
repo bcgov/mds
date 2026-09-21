@@ -19,6 +19,7 @@ exports[`ChangeNOWLocationModal renders properly 1`] = `
       Object {
         "application_documents": Array [],
         "application_progress": Array [],
+        "consultation_advisor_party_guid": "f50b004e-a435-4ed8-8b78-243d4699c4c7",
         "imported_to_core": true,
         "is_historic": false,
         "issuing_inspector_name": "Inspector Gadget",

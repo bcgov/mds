@@ -79,6 +79,14 @@ NOW_APPLICATION_BUILDING_DETAIL = api.inherit('NOWApplicationBuildingDetail',
                                                   'purpose': fields.String,
                                                   'structure': fields.String,
                                               })
+NOW_APPLICATION_FUEL_DETAIL = api.inherit('NOWApplicationFuelDetail',
+                                          NOW_APPLICATION_ACTIVITY_DETAIL_BASE, {
+                                              'fuel_type': fields.String,
+                                              'fuel_related_activity': fields.String,
+                                              'estimated_fuel_volume': fields.Fixed(decimals=2),
+                                              'description_of_fuel_related_activity': fields.String,
+                                              'description_of_precautionary_measures': fields.String,
+                                          })
 NOW_APPLICATION_CAMP = api.inherit(
     'NOWApplicationCamp', NOW_APPLICATION_ACTIVITY_SUMMARY_BASE, {
         'health_authority_consent':
@@ -101,6 +109,8 @@ NOW_APPLICATION_CAMP = api.inherit(
         fields.List(fields.Nested(NOW_APPLICATION_BUILDING_DETAIL, skip_none=True)),
         'staging_area_details':
         fields.List(fields.Nested(NOW_APPLICATION_STAGING_AREA_DETAIL, skip_none=True)),
+        'fuel_details':
+        fields.List(fields.Nested(NOW_APPLICATION_FUEL_DETAIL, skip_none=True)),
     })
 
 NOW_APPLICATION_BLASTING_OPERATION = api.inherit(
@@ -139,6 +149,8 @@ NOW_APPLICATION_EXP_SURFACE_DRILL = api.inherit(
         'reclamation_core_storage': fields.String,
         'calculated_total_disturbance': fields.Fixed(decimals=5),
         'drill_program': fields.String,
+        'has_more_than_25_unreclaimed_drill_sites': fields.Boolean,
+        'num_unreclaimed_drill_sites': fields.Integer,
         'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE, skip_none=True))
     })
 
@@ -308,6 +320,7 @@ NOW_APPLICATION_STATE_OF_LAND = api.model(
         'arch_site_protection_plan': fields.String,
         'fn_engagement_activities': fields.String,
         'cultural_heritage_description': fields.String,
+        'protection_of_cultural_heritage_resources': fields.String,
         'has_shared_info_with_fn': fields.Boolean,
         'has_acknowledged_undrip': fields.Boolean,
         'has_fn_cultural_heritage_sites_in_area': fields.Boolean,
@@ -331,9 +344,12 @@ NOW_APPLICATION_DOCUMENT = api.model(
         'now_application_document_sub_type_code': fields.String,
         'description': fields.String,
         'is_final_package': fields.Boolean,
+        'permit_package_document_type_code': fields.String,
+        'is_system_generated': fields.Boolean,
         'final_package_order': fields.Integer,
         'is_referral_package': fields.Boolean,
         'is_consultation_package': fields.Boolean,
+        'create_timestamp': fields.DateTime,
         'preamble_title': fields.String,
         'preamble_author': fields.String,
         'preamble_date': fields.Date,
@@ -401,6 +417,7 @@ IMPORTED_NOW_SUBMISSION_DOCUMENT = api.model(
         'description': fields.String,
         'mine_document_guid': fields.String,
         'document_manager_guid': fields.String,
+        'mine_document_bundle_id': fields.Integer,
         'is_final_package': fields.Boolean,
         'final_package_order': fields.Integer,
         'is_referral_package': fields.Boolean,
@@ -457,6 +474,10 @@ NOW_APPLICATION_MODEL = api.model(
         'issuing_inspector_party_guid':
         fields.String,
         'issuing_inspector':
+        fields.Nested(PARTY),
+        'consultation_advisor_party_guid':
+        fields.String,
+        'consultation_advisor':
         fields.Nested(PARTY),
         'imported_to_core':
         fields.Boolean,
@@ -560,6 +581,8 @@ NOW_APPLICATION_MODEL = api.model(
         fields.Nested(NOW_APPLICATION_WATER_SUPPLY, skip_none=True),
         'documents':
         fields.List(fields.Nested(NOW_APPLICATION_DOCUMENT), skip_none=True),
+        'locked_ntr_guid':
+        fields.String,
         'submission_documents':
         fields.List(fields.Nested(NOW_SUBMISSION_DOCUMENT), skip_none=True),
         'contacts':
@@ -592,6 +615,8 @@ NOW_APPLICATION_MODEL = api.model(
         fields.List(fields.Nested(NOW_SUBMISSION_DOCUMENT)),
         'filtered_submission_documents':
         fields.List(fields.Nested(IMPORTED_NOW_SUBMISSION_DOCUMENT)),
+        'spatial_document_bundles':
+        fields.List(fields.Raw),
         'is_pre_launch':
         fields.Boolean,
         'application_type_code':
@@ -613,6 +638,8 @@ NOW_APPLICATION_MODEL = api.model(
         'is_first_year_of_multi':
         fields.Boolean,
         'mine_purpose':
+        fields.String,
+        'work_year_info':
         fields.String,
         'ats_authorization_number':
         fields.Integer,
@@ -642,6 +669,14 @@ NOW_APPLICATION_MODEL = api.model(
         fields.String,
         'submitted_to_core_date':
         fields.Date,
+        'now_application_tier_code':
+        fields.String,
+        'now_application_tier_description':
+        fields.String,
+        'now_application_tier_created_date':
+        DateTime,
+        'now_application_tier_updated_date':
+        DateTime,
     })
 
 NOW_APPLICATION_MODEL_EXPORT = api.model(
@@ -711,6 +746,7 @@ NOW_APPLICATION_MODEL_EXPORT = api.model(
         'underground_exploration': fields.Nested(NOW_APPLICATION_UNDERGROUND_EXPLORATION),
         'water_supply': fields.Nested(NOW_APPLICATION_WATER_SUPPLY),
         'documents': fields.List(fields.Nested(NOW_APPLICATION_DOCUMENT)),
+        'locked_ntr_guid': fields.String,
         'submission_documents': fields.List(fields.Nested(IMPORTED_NOW_SUBMISSION_DOCUMENT)),
         'imported_submission_documents': fields.List(
             fields.Nested(IMPORTED_NOW_SUBMISSION_DOCUMENT)),
@@ -785,6 +821,10 @@ NOW_VIEW_MODEL = api.model(
         fields.String,
         'issuing_inspector_name':
         fields.String,
+        'consultation_advisor_party_guid':
+        fields.String,
+        'consultation_advisor_name':
+        fields.String,
         'now_application_status_code':
         fields.String,
         'decision_date':
@@ -798,6 +838,10 @@ NOW_VIEW_MODEL = api.model(
         'regional_contact':
         fields.String,
         'mine_purpose':
+        fields.String,
+        'now_application_tier_code':
+        fields.String,
+        'now_application_tier_description':
         fields.String,
     })
 
@@ -823,6 +867,14 @@ NOW_VIEW_MODEL_PROPONENT = api.model(
         fields.List(fields.Nested(IMPORTED_NOW_SUBMISSION_DOCUMENT), skip_none=True),
         'application_progress':
         fields.Nested(NOW_APPLICATION_PROGRESS, skip_none=True),
+        'now_application_tier_code':
+        fields.String,
+        'now_application_tier_description':
+        fields.String,
+        'now_application_tier_created_date':
+        Date,
+        'now_application_tier_updated_date':
+        Date,
     })
 
 PAGINATED_LIST = api.model(
@@ -846,6 +898,13 @@ NOW_ACTIVITY_TYPES = api.model('ActivityType', {
 APPLICATION_TYPE_CODE = api.model('ApplicationTypeCode', {
     'application_type_code': fields.String,
     'description': fields.String,
+    'active_ind': fields.Boolean
+})
+
+NOTICE_OF_WORK_TIER = api.model('NoticeOfWorkTier', {
+    'notice_of_work_tier_code': fields.String,
+    'description': fields.String,
+    'display_order': fields.Integer,
     'active_ind': fields.Boolean
 })
 
@@ -923,3 +982,68 @@ NOW_APPLICATION_DELAY_TYPE = api.model(
         'active_ind': fields.Boolean,
         'display_order': fields.Integer,
     })
+
+NOW_APPLICATION_TIER_HISTORY = api.model('NOWApplicationTierHistory', {
+    'updated_by': fields.String,
+    'updated_at': fields.DateTime,
+    'changeset': fields.List(fields.Nested(api.model('IndividualChange', {
+        'field_name': fields.String,
+        'from': fields.Raw,
+        'to': fields.Raw
+    })))
+})
+
+PIP_CONSULTATION_AREA = api.model('PIPConsultationArea', {
+    'internal_mds_id': fields.Integer,
+    'cnsltn_area_guid': fields.String,
+    'cnsltn_area_name': fields.String,
+    'organization_guid': fields.String,
+    'cnsltn_area_update_date': fields.DateTime,
+    'contact_organization_name': fields.String,
+})
+
+NOW_APPLICATION_NATION_EVENT_CODE = api.model('NOWApplicationNationEventCode', {
+    'now_application_nation_event_code': fields.String,
+    'description': fields.String,
+    'display_order': fields.Integer,
+})
+
+NOW_APPLICATION_NATION_STATUS = api.model('NOWApplicationNationStatus', {
+    'now_application_nation_status_code': fields.String,
+    'description': fields.String,
+    'display_order': fields.Integer
+})
+
+NOW_APPLICATION_NATION_EVENT = api.model('NOWApplicationNationEvent', {
+    'now_application_nation_event_guid': fields.String,
+    'now_application_nation_event_id': fields.Integer,
+    'now_application_nation_guid': fields.String,
+    'event_name': fields.String(attribute='event_code.description'),
+    'event_from': fields.String,
+    'event_to': fields.String,
+    'start_date': fields.Date,
+    'end_date': fields.Date,
+    'update_user': fields.String,
+    'update_timestamp': fields.DateTime,
+    'create_user': fields.String,
+    'create_timestamp': fields.DateTime
+})
+
+NOW_APPLICATION_NATION = api.model('NOWApplicationNation', {
+    'now_application_nation_guid': fields.String,
+    'now_application_nation_id': fields.Integer,
+    'now_application_guid': fields.String,
+    'status': fields.String(attribute='now_application_nation_status.description'),
+    'events': fields.List(fields.Nested(NOW_APPLICATION_NATION_EVENT),attribute='now_application_nation_events'),
+    'consultation_started_by_client': fields.Boolean,
+    'due_date': fields.Date,
+    'contact_organization_name': fields.String,
+    'organization_guid': fields.String,
+    'consultation_area_name': fields.String,
+    'consultation_area_guid': fields.String,
+    'consultation_area_update_date': fields.DateTime,
+    'update_user': fields.String,
+    'update_timestamp': fields.DateTime,
+    'create_user': fields.String,
+    'create_timestamp': fields.DateTime
+})

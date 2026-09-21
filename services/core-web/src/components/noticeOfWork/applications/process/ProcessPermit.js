@@ -396,6 +396,9 @@ export class ProcessPermit extends Component {
     let documents = [];
     let filteredSubmissionDocuments = noticeOfWork?.filtered_submission_documents;
     let requestedDocuments = noticeOfWork?.documents;
+
+    const lockedNtrGuid = noticeOfWork?.locked_ntr_guid || null;
+
     if (!isEmpty(filteredSubmissionDocuments)) {
       filteredSubmissionDocuments = filteredSubmissionDocuments
         ?.filter(({ is_final_package }) => is_final_package)
@@ -407,7 +410,10 @@ export class ProcessPermit extends Component {
     }
     if (!isEmpty(requestedDocuments)) {
       requestedDocuments = requestedDocuments
-        ?.filter(({ is_final_package }) => is_final_package)
+        ?.filter(
+          ({ is_final_package, now_application_document_xref_guid }) =>
+            is_final_package && now_application_document_xref_guid !== lockedNtrGuid
+        )
         .map((doc) => ({
           document_info: getDocumentInfo(doc),
           final_package_order: doc.final_package_order,
@@ -641,27 +647,6 @@ export class ProcessPermit extends Component {
       });
     }
 
-    // Previous permit amendment document titles
-    const previousAmendment = this.createPermitGenObject(
-      this.props.noticeOfWork,
-      this.props.draftPermit,
-      this.props.draftAmendment
-    ).previous_amendment;
-    if (!isEmpty(previousAmendment)) {
-      titlesMissing = previousAmendment.related_documents?.filter(
-        ({ preamble_title }) => !preamble_title
-      ).length;
-      if (titlesMissing !== 0) {
-        validationMessages.push({
-          message: `The previous amendment has ${titlesMissing} documents that require a title.`,
-          route: route.NOTICE_OF_WORK_APPLICATION.dynamicRoute(
-            this.props.noticeOfWork.now_application_guid,
-            "draft-permit/#preamble"
-          ),
-        });
-      }
-    }
-
     // Inspector signature
     const signature = this.props.noticeOfWork?.issuing_inspector?.signature;
     if (!signature) {
@@ -848,7 +833,7 @@ export class ProcessPermit extends Component {
     //   const permittee = this.props.noticeOfWork.contacts.filter(
     //     (contact) => contact.mine_party_appt_type_code === "PMT"
     //   )[0];
-    //   if (isEmpty(permittee.party.party_orgbook_entity)) {
+    //   if (isEmpty(permittee.party.party_bc_registration)) {
     //     validationMessages.push({
     //       message:
     //         "Permittee has not been verified with OrgBook. Update the contact to associate them with an entity on OrgBook.",

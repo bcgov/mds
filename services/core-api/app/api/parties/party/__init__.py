@@ -1,1 +1,1 @@
-from .models.party_orgbook_entity import PartyOrgBookEntity
+from .models.party_bc_registration import PartyBCRegistration

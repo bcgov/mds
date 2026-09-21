@@ -71,7 +71,7 @@ const IncidentFormDocuments: FC<IncidentFormDocumentsProps> = ({
                 id={INITIAL_INCIDENT_DOCUMENTS_FORM_FIELD}
                 name={INITIAL_INCIDENT_DOCUMENTS_FORM_FIELD}
                 labelIdle='<strong>Drag & Drop your files or <span class="filepond--label-action">Browse</span></strong><br>
-              <div>Accepted filetypes: .kmz, .doc, .docx, .xlsx, .pdf, .msg, .png, .jpeg, .tiff, .hiec</div>'
+              <div>Accepted filetypes: .kmz, .doc, .docx, .xlsx, .pdf, .msg, .png, .jpeg, .tiff, .heic</div>'
                 onFileLoad={(document_name, document_manager_guid) =>
                   onFileLoad(
                     document_name,
@@ -107,7 +107,7 @@ const IncidentFormDocuments: FC<IncidentFormDocumentsProps> = ({
                 id={FINAL_REPORT_DOCUMENTS_FORM_FIELD}
                 name={FINAL_REPORT_DOCUMENTS_FORM_FIELD}
                 labelIdle='<strong>Drag & Drop your files or <span class="filepond--label-action">Browse</span></strong><br>
-              <div>Accepted filetypes: .kmz, .doc, .docx, .xlsx, .pdf, .msg, .png, .jpeg, .tiff, .hiec</div>'
+              <div>Accepted filetypes: .kmz, .doc, .docx, .xlsx, .pdf, .msg, .png, .jpeg, .tiff, .heic</div>'
                 onFileLoad={(document_name, document_manager_guid) =>
                   onFileLoad(
                     document_name,

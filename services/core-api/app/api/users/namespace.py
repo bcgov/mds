@@ -5,6 +5,7 @@ from app.api.users.core.resources.core_user import CoreUserListResource, CoreUse
 
 from app.api.users.minespace.resources.minespace_user import MinespaceUserResource, MinespaceUserListResource
 from app.api.users.minespace.resources.minespace_user_mine import MinespaceUserMineResource, MinespaceUserMineListResource
+from app.api.users.minespace.resources.new_minespace_user import NewMinespaceUserDataResource, NewMinespaceUserDocumentResource, NewMinespaceUserResource
 from app.api.users.resources.user_list_resource import UserListResource
 
 api = Namespace('users', description='User related operations')
@@ -13,6 +14,9 @@ api.add_resource(MinespaceUserListResource, '/minespace')
 api.add_resource(MinespaceUserResource, '/minespace/<user_id>')
 api.add_resource(MinespaceUserMineListResource, '/minespace/<user_id>/mines')
 api.add_resource(MinespaceUserMineResource, '/minespace/<user_id>/mines/<string:mine_guid>')
+api.add_resource(NewMinespaceUserDataResource, '/minespace/mines')
+api.add_resource(NewMinespaceUserDocumentResource, '/minespace/documents')
+api.add_resource(NewMinespaceUserResource, '/minespace/access-request')
 api.add_resource(CoreUserListResource, '/core')
 api.add_resource(CoreUserResource, '/core/<core_user_guid>')
 api.add_resource(UserResource, '/profile')

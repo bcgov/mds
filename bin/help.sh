@@ -23,6 +23,7 @@ Usage:\n
 \t    lite: creates a minimum viable setup, use to start working asap\n
 \t    rebuild: rebuilds the containers you currently have in use\n
 \t    full: Stands up ALL services\n
+\t    mailpit: Stands up the optional Mailpit local email testing service\n
 \n
 ... and check the Makefile directly for other commands\n
 \n

@@ -4,8 +4,10 @@ from flask_restx import fields
 
 
 class Date(fields.Raw):
+
     def format(self, value):
         return value.strftime("%Y-%m-%d") if value else None
+
 
 MINE_DOCUMENT = api.model(
     'MineDocument', {
@@ -36,20 +38,33 @@ PARTY_BUSINESS_ROLE = api.model(
 
 MINE_PARTY_APPT = api.model(
     'MinePartyAppointment', {
-        'mine_party_appt_guid': fields.String,
-        'mine_guid': fields.String,
-        'party_guid': fields.String,
-        'related_guid': fields.String,
-        'permit_no': fields.String(attribute='permit.permit_no'),
-        'mine_party_appt_type_code': fields.String,
-        'start_date': fields.Date,
-        'end_date': fields.Date,
-        'documents': fields.Nested(MINE_DOCUMENT),
-        'union_rep_company': fields.String,
-        'status': fields.String(enum=MinePartyAppointmentStatus, attribute='status.name'),
-        'mine_party_acknowledgement_status': fields.String(
+        'mine_party_appt_guid':
+        fields.String,
+        'mine_guid':
+        fields.String,
+        'party_guid':
+        fields.String,
+        'related_guid':
+        fields.String,
+        'permit_no':
+        fields.String(attribute='permit.permit_no'),
+        'mine_party_appt_type_code':
+        fields.String,
+        'start_date':
+        fields.Date,
+        'end_date':
+        fields.Date,
+        'documents':
+        fields.Nested(MINE_DOCUMENT),
+        'union_rep_company':
+        fields.String,
+        'status':
+        fields.String(enum=MinePartyAppointmentStatus, attribute='status.name'),
+        'mine_party_acknowledgement_status':
+        fields.String(
             enum=MinePartyAcknowledgedStatus, attribute='mine_party_acknowledgement_status.name'),
-        'is_draft': fields.Boolean,
+        'is_draft':
+        fields.Boolean,
     })
 
 NOW_APPLICATION_MODEL = api.model('NOWApplication', {
@@ -78,8 +93,8 @@ ADDRESS = api.model(
         'address_type_code': fields.String,
     })
 
-PARTY_ORGBOOK_ENTITY = api.model(
-    'PartyOrgBookEntity', {
+PARTY_BC_REGISTRATION = api.model(
+    'PartyBCRegistration', {
         'party_orgbook_entity_id': fields.Integer,
         'registration_id': fields.String,
         'registration_status': fields.Boolean,
@@ -101,12 +116,10 @@ PARTY_BUSINESS_ROLE_APPT = api.model(
         'end_date': fields.DateTime,
     })
 
-ORGANIZATION = api.model(
-    'Party', {
-        'party_guid': fields.String,
-        'party_name': fields.String,
-    }
-)
+ORGANIZATION = api.model('Party', {
+    'party_guid': fields.String,
+    'party_name': fields.String,
+})
 
 # NOTE: Including the signature could impact performance if it is not required for every party request (and just inspector requests).
 PARTY = api.model(
@@ -130,7 +143,7 @@ PARTY = api.model(
         'job_title_code': fields.String,
         'postnominal_letters': fields.String,
         'idir_username': fields.String,
-        'party_orgbook_entity': fields.Nested(PARTY_ORGBOOK_ENTITY, skip_none=True),
+        'party_bc_registration': fields.Nested(PARTY_BC_REGISTRATION, skip_none=True),
         'business_role_appts': fields.List(fields.Nested(PARTY_BUSINESS_ROLE_APPT, skip_none=True)),
         'signature': fields.String,
         'now_party_appt': fields.Nested(NOW_PARTY_APPOINTMENT),

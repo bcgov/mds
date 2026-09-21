@@ -7,7 +7,7 @@ import { startCase } from "lodash";
 import { Col, Row, Button, Card, Popconfirm } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { FieldArray, Field, change } from "@mds/common/components/forms/form";
-import { getAddPartyFormState } from "@mds/common/redux/selectors/partiesSelectors";
+import { getAddPartyFormState } from "@mds/common/redux/slices/partiesSlice";
 import { getPartyRelationshipTypesList } from "@mds/common/redux/selectors/staticContentSelectors";
 import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
 import { modalConfig } from "@/components/modalContent/config";

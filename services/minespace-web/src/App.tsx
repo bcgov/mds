@@ -1,6 +1,5 @@
 import React, { FC, useEffect, useState } from "react";
-import { compose, bindActionCreators } from "redux";
-import { connect } from "react-redux";
+import { compose } from "redux";
 import { BrowserRouter } from "react-router-dom";
 import { hot } from "react-hot-loader";
 import LoadingOutlined from "@ant-design/icons/LoadingOutlined";
@@ -8,7 +7,10 @@ import { Layout, BackTop, Row, Col, Spin } from "antd";
 import { loadBulkStaticContent } from "@mds/common/redux/actionCreators/staticContentActionCreator";
 import { getStaticContentLoadingIsComplete } from "@mds/common/redux/selectors/staticContentSelectors";
 import MediaQuery from "react-responsive";
-import { isAuthenticated } from "@mds/common/redux/selectors/authenticationSelectors";
+import {
+  isAuthenticated,
+  isNewProponent,
+} from "@mds/common/redux/selectors/authenticationSelectors";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import ModalWrapper from "@/components/common/wrappers/ModalWrapper";
@@ -21,6 +23,8 @@ import configureStore from "./store/configureStore";
 import { storeSystemFlag } from "@mds/common/redux/actions/authenticationActions";
 import { SystemFlagEnum } from "@mds/common/constants/enums";
 import { detectIE } from "@mds/common/utils/environmentUtils";
+import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
+import { fetchUser } from "@mds/common/redux/slices/userSlice";
 
 export const store = configureStore();
 
@@ -29,37 +33,30 @@ export type AppDispatch = typeof store.dispatch;
 
 Spin.setDefaultIndicator(<LoadingOutlined style={{ fontSize: 40 }} />);
 
-interface AppProps {
-  isAuthenticated: boolean;
-  staticContentLoadingIsComplete: boolean;
-  loadBulkStaticContent: () => void;
-  storeSystemFlag: (flag) => void;
-}
-
-const App: FC<AppProps> = (props) => {
+const App: FC = () => {
   const [isIE, setIsIE] = useState(true);
   const [isMobile, setIsMobile] = useState(true);
-
-  const {
-    loadBulkStaticContent,
-    storeSystemFlag,
-    isAuthenticated = false,
-    staticContentLoadingIsComplete = false,
-  } = props;
+  const isUserAuthenticated = useAppSelector(isAuthenticated);
+  const isNewUser = useAppSelector(isNewProponent);
+  const staticContentLoadingIsComplete = useAppSelector(getStaticContentLoadingIsComplete);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (isAuthenticated) {
-      loadBulkStaticContent();
+    if (isUserAuthenticated && !isNewUser) {
+      dispatch(loadBulkStaticContent());
     }
     setIsIE(!!detectIE());
-    storeSystemFlag(SystemFlagEnum.ms);
+    dispatch(storeSystemFlag(SystemFlagEnum.ms));
   }, []);
 
   useEffect(() => {
-    if (isAuthenticated && !staticContentLoadingIsComplete) {
-      loadBulkStaticContent();
+    if (isUserAuthenticated && !isNewUser) {
+      if (!staticContentLoadingIsComplete) {
+        dispatch(loadBulkStaticContent());
+      }
+      dispatch(fetchUser());
     }
-  }, [isAuthenticated]);
+  }, [isUserAuthenticated]);
 
   const handleMobileWarningClose = () => {
     setIsMobile(false);
@@ -78,7 +75,7 @@ const App: FC<AppProps> = (props) => {
       <BrowserRouter basename={process.env.BASE_PATH}>
         <>
           <Layout>
-            <Header xs={xs} lg={lg} xl={xl} xxl={xxl} isAuthenticated={isAuthenticated} />
+            <Header xs={xs} lg={lg} xl={xl} xxl={xxl} isAuthenticated={isUserAuthenticated} />
             <Layout>
               <Layout.Content>
                 {isIE && <WarningBanner type="IE" onClose={handleBannerClose} />}
@@ -101,23 +98,4 @@ const App: FC<AppProps> = (props) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-  isAuthenticated: isAuthenticated(state),
-  staticContentLoadingIsComplete: getStaticContentLoadingIsComplete(state),
-});
-
-const mapDispatchToProps = (dispatch) =>
-  bindActionCreators(
-    {
-      loadBulkStaticContent,
-      storeSystemFlag,
-    },
-    dispatch
-  );
-
-export default compose(
-  hot(module),
-  connect(mapStateToProps, mapDispatchToProps),
-  AuthenticationGuard(true)
-  // @ts-ignore
-)(App);
+export default compose(hot(module), AuthenticationGuard(true))(App);

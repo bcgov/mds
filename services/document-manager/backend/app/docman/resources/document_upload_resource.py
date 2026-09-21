@@ -9,6 +9,7 @@ from flask_restx import Resource, reqparse
 from werkzeug.exceptions import BadRequest, Forbidden, NotFound
 from app.utils.include.user_info import User
 from app.docman.models.document_version import DocumentVersion
+from app.docman.resources.document import check_upload_authorization
 
 CACHE_TIMEOUT = TIMEOUT_24_HOURS
 
@@ -24,14 +25,16 @@ class DocumentUploadResource(Resource):
         'parts', type=list, required=True, help='List of multipart upload parts.', location='json',
     )
 
-    @requires_any_of(DOCUMENT_UPLOAD_ROLES)
     def patch(self, document_guid):
+        check_upload_authorization(document_guid=document_guid)
+        
         data = self.parser.parse_args()
 
-        document = Document.query.filter_by(
-            document_guid=document_guid).one_or_none()
+
+        document = Document.query.filter_by(document_guid=document_guid).one_or_none()
 
         is_bundle = data.get('is_bundle', False)
+        
 
         if not document:
             raise NotFound('Document not found')
@@ -39,7 +42,9 @@ class DocumentUploadResource(Resource):
         if document.status == str(DocumentUploadStatus.SUCCESS) and not data.get('version_guid'):
             raise BadRequest('Forbidden, Document upload has already been completed.')
         
-        if document.create_user != User().get_user_username() and not data.get('version_guid'):
+        # Skip user validation for minespace access requests
+        is_access_request = 'minespace_access_requests' in (document.full_storage_path or '')
+        if not is_access_request and document.create_user != User().get_user_username() and not data.get('version_guid'):
             raise Forbidden("Cannot complete upload of file you did not upload")
 
         version = None
@@ -91,3 +96,40 @@ class DocumentBundleUploadResource(Resource):
             raise BadRequest('No documents provided to bundle')
 
         return DocumentUploadHelper().complete_bundle_upload(bundle_document_guids, name)
+
+
+@api.route(f'/documents/spatial-bundles')
+class SpatialBundleProcessingResource(Resource):
+    parser = reqparse.RequestParser(trim=True)
+    parser.add_argument(
+        'document_guids',
+        type=list,
+        required=True,
+        help='List of document guids to detect and validate spatial bundles in.',
+        location='json',
+    )
+    parser.add_argument(
+        'mine_guid',
+        type=str,
+        required=False,
+        help='Mine GUID used when syncing spatial bundles to Core.',
+        location='json',
+    )
+
+    @requires_any_of(DOCUMENT_UPLOAD_ROLES)
+    def post(self):
+        from app.services.commands_helper import create_process_spatial_documents_task
+
+        data = self.parser.parse_args()
+        document_guids = data.get('document_guids')
+
+        if not document_guids:
+            raise BadRequest('No documents provided to process')
+
+        response = create_process_spatial_documents_task(
+            document_guids, mine_guid=data.get('mine_guid'))
+
+        return {
+            'task_id': response.get('task-id'),
+            'message': f'Spatial bundle processing queued for {len(document_guids)} document(s)',
+        }, 202

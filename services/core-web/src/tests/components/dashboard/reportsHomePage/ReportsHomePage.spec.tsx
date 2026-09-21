@@ -1,14 +1,15 @@
 import React from "react";
 import { render } from "@testing-library/react";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
-import { AUTHENTICATION, MINES, REPORTS, STATIC_CONTENT } from "@mds/common/constants/reducerTypes";
+import { AUTHENTICATION, MINES, STATIC_CONTENT } from "@mds/common/constants/reducerTypes";
 import { BrowserRouter } from "react-router-dom";
 import ReportsHomePage from "@/components/dashboard/reportsHomePage/ReportsHomePage";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
 import { SystemFlagEnum } from "@mds/common/constants/enums";
+import { reportReducerType } from "@mds/common/redux/slices/reportSlice";
 
 const initialState: any = {
-  [REPORTS]: { reports: MOCK.MINE_REPORTS, reportsPageData: MOCK.REPORTS_PAGE_DATA },
+  [reportReducerType]: { reports: MOCK.MINE_REPORTS, reportsPageData: MOCK.REPORTS_PAGE_DATA },
   [MINES]: MOCK.MINES,
   [STATIC_CONTENT]: MOCK.BULK_STATIC_CONTENT_RESPONSE,
   [AUTHENTICATION]: {

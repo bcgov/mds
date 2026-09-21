@@ -3,7 +3,7 @@ import { showLoading, hideLoading } from "react-redux-loading-bar";
 import { ENVIRONMENT } from "@mds/common/constants/environment";
 import { request, success, error } from "../actions/genericActions";
 import { NetworkReducerTypes } from "@mds/common/constants/networkReducerTypes";
-import * as mineReportActions from "../actions/mineReportActions";
+import { storeMineReportComments } from "@mds/common/redux/slices/reportSlice";
 import * as API from "@mds/common/constants/API";
 import { createRequestHeader } from "../utils/RequestHeaders";
 import CustomAxios from "../customAxios";
@@ -18,7 +18,7 @@ export const fetchMineReportComments = (mineGuid, mineReportGuid) => (dispatch) 
     )
     .then((response) => {
       dispatch(success(NetworkReducerTypes.GET_MINE_REPORT_COMMENTS));
-      dispatch(mineReportActions.storeMineReportComments(response.data));
+      dispatch(storeMineReportComments(response.data));
       return response;
     })
     .catch(() => dispatch(error(NetworkReducerTypes.GET_MINE_REPORT_COMMENTS)))

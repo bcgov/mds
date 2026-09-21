@@ -4,7 +4,7 @@ import React, { FC, useEffect, useState } from "react";
 import {
   addPartyRelationship,
   fetchPartyRelationships,
-} from "@mds/common/redux/actionCreators/partiesActionCreator";
+} from "@mds/common/redux/slices/partiesSlice";
 import { fetchMineRecordById } from "@mds/common/redux/actionCreators/mineActionCreator";
 import {
   createTailingsStorageFacility,
@@ -22,7 +22,7 @@ import { getMineById } from "@mds/common/redux/selectors/mineSelectors";
 import EngineerOfRecord from "./EngineerOfRecord";
 import QualifiedPerson from "./QualifiedPerson";
 import AssociatedDams from "./AssociatedDams";
-import { getMatchingPartyRelationships } from "@mds/common/redux/selectors/partiesSelectors";
+import { getMatchingPartyRelationships } from "@mds/common/redux/slices/partiesSlice";
 import {
   ICreateTailingsStorageFacility,
   IMine,
@@ -177,8 +177,8 @@ export const TailingsSummaryPage: FC = () => {
         if (!values[attr].mine_party_appt_guid && values[attr].party_guid) {
           // Only add party relationship if changed
           await dispatch(
-            addPartyRelationship(
-              {
+            addPartyRelationship({
+              data: {
                 mine_guid: mineGuid,
                 party_guid: values[attr].party_guid,
                 mine_party_appt_type_code: apptType,
@@ -188,8 +188,8 @@ export const TailingsSummaryPage: FC = () => {
                 end_current: true,
                 is_draft: tsf.is_draft,
               },
-              successMessage
-            )
+              successMessage,
+            })
           );
 
           await handleFetchData(true);
@@ -284,6 +284,7 @@ export const TailingsSummaryPage: FC = () => {
             enableReinitialize: true,
             destroyOnUnmount: true,
           }}
+          forceRedux={true}
         >
           <Step key="basic-information">
             <BasicInformation

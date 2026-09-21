@@ -74,6 +74,24 @@ def validate_document(document):
                         }
                     }
                 },
+                'project_summary': {
+                    'required': False,
+                    'type': 'dict',
+                    'schema': {
+                        'project_summary_guid': {
+                            'type': 'string'
+                        }
+                    }
+                },
+                'project_summary_authorization': {
+                    'required': False,
+                    'type': 'dict',
+                    'schema': {
+                        'project_summary_authorization_guid': {
+                            'type': 'string'
+                        }
+                    }
+                },
                 'mine_tailings_storage_facility': {
                     'required': False,
                     'type': 'dict',
@@ -115,6 +133,7 @@ class ActivityType(str, Enum):
     project_app_status_updated = 'project_app_status_updated'
     project_app_documents_updated = 'project_app_documents_updated'
     report_requested = 'report_requested'
+    ams_application_updated = 'ams_application_updated'
 
     def __str__(self):
         return self.value
@@ -148,7 +167,7 @@ class ActivityNotification(AuditMixin, Base):
     @classmethod
     def create_many(cls, mine_guid, activity_type, document, idempotency_key=None, commit=True, recipients=ActivityRecipients.all_users, renotify_period_minutes=-1):
         MinespaceUserMineTable = table(MinespaceUserMine.__tablename__, column('mine_guid'), column('user_id'))
-        MinespaceUserTable = table(MinespaceUser.__tablename__, column('email_or_username'), column('user_id'))
+        MinespaceUserTable = table(MinespaceUser.__tablename__, column('bceid_username'), column('user_id'))
         SubscriptionTable = table(Subscription.__tablename__, column('mine_guid'), column('user_name'))
 
         users = []

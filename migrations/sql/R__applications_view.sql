@@ -1,5 +1,5 @@
 
-DROP VIEW IF EXISTS public.applications_view;
+DROP VIEW IF EXISTS public.applications_view CASCADE;
 
 CREATE OR REPLACE VIEW public.applications_view AS
 SELECT nid.now_application_guid,
@@ -14,6 +14,8 @@ SELECT nid.now_application_guid,
     concat_ws(' '::text, p.first_name, p.party_name) AS lead_inspector_name,
     app.issuing_inspector_party_guid,
     concat_ws(' '::text, pis.first_name, pis.party_name) AS issuing_inspector_name,
+    app.consultation_advisor_party_guid,
+    concat_ws(' '::text, pca.first_name, pca.party_name) AS consultation_advisor_name,
     nid.application_type_code,
     nid.source_permit_amendment_id,
     spa.permit_amendment_guid as source_permit_amendment_guid,
@@ -23,6 +25,13 @@ SELECT nid.now_application_guid,
     COALESCE(nowt.description, sub.noticeofworktype, msub.noticeofworktype) AS notice_of_work_type_description,
     atc.description,
     ec.email AS regional_contact,
+    appc.ind_firstname AS applicant_first_name,
+    appc.ind_lastname AS applicant_last_name,
+    appc.ind_phonenumber AS applicant_phone_no,
+    appc.email AS applicant_email,
+    appc.org_legalname AS applicant_org_name,
+    subc.org_contactname AS correspondence_name,
+    subc.email AS correspondence_email,
         CASE
             WHEN nows.description IS NULL THEN
             CASE COALESCE(msub.status, sub.status)
@@ -77,7 +86,10 @@ SELECT nid.now_application_guid,
      LEFT JOIN permit sp ON sp.permit_id = spa.permit_id
      LEFT JOIN application_type_code atc ON atc.application_type_code::text = nid.application_type_code::text
      LEFT JOIN party pis ON app.issuing_inspector_party_guid = pis.party_guid
+     LEFT JOIN party pca ON app.consultation_advisor_party_guid = pca.party_guid
      LEFT JOIN (SELECT *, ROW_NUMBER() OVER (PARTITION BY now_application_id ORDER BY response_date DESC) AS rn FROM now_application_review) nrev
                ON nrev.now_application_id = nid.now_application_id AND nrev.rn = 1 AND nrev.now_application_review_type_code = 'ADV'
      LEFT JOIN emli_contact ec ON m.mine_region = ec.mine_region_code AND ec.emli_contact_type_code = 'ROE'
+     LEFT JOIN now_submissions.client appc ON sub.applicantclientid = appc.clientid
+     LEFT JOIN now_submissions.client subc ON sub.submitterclientid = subc.clientid
      WHERE (nid.messageid IS NOT NULL AND sub.processed::text = 'Y'::text OR nid.messageid IS NULL) AND (sub.originating_system IS NULL OR sub.originating_system IS NOT NULL AND nid.now_number IS NOT NULL);

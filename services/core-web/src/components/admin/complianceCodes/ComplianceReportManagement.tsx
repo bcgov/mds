@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from "react";
-import { Button, Input, Row, Typography } from "antd";
+import { Alert, Button, Input, Row, Typography } from "antd";
 import queryString from "query-string";
 import PlusOutlined from "@ant-design/icons/PlusOutlined";
 import CoreTable from "@mds/common/components/common/CoreTable";
@@ -75,9 +75,9 @@ const ComplianceReportManagement: FC = () => {
 
     const sortParams = order
       ? {
-          sort_dir: order.replace("end", ""),
-          sort_field,
-        }
+        sort_dir: order.replace("end", ""),
+        sort_field,
+      }
       : {};
 
     const newParams = {
@@ -115,7 +115,22 @@ const ComplianceReportManagement: FC = () => {
   };
 
   const openViewModal = (record) => {
-    console.log("record", record);
+    record.compliance_articles = [record.compliance_articles[0]];
+    dispatch(
+      openModal({
+        props: {
+          title: `View Report`,
+          isEditMode: false,
+          initialValues: {
+            ...record,
+            mine_report_due_date_type_code: record.mine_report_due_date_type,
+            mine_report_due_date_months: record.due_date_period_months,
+            report_type: record.is_prr_only ? "PRR" : "CRR",
+          },
+        },
+        content: AddReportDefinitionForm,
+      })
+    );
   };
 
   const actions = [
@@ -172,7 +187,8 @@ const ComplianceReportManagement: FC = () => {
       ...sectionFilter,
     },
     {
-      ...renderTextColumn("is_prr_only", "Report Type"),
+      ...renderTextColumn("report_type_label", "Report Type"),
+      key: "is_prr_only",
       filters: [
         { value: false, text: "Code Required Report" },
         { value: true, text: "Permit Required Report" },
@@ -204,10 +220,10 @@ const ComplianceReportManagement: FC = () => {
   const transformData = (reports: IMineReportDefinition[]) => {
     return reports.map((r) => {
       const formattedComplianceArticle = formatCode(r.compliance_articles[0]);
-      const is_prr_only = r.is_prr_only ? "Permit Required Report" : "Code Required Report";
+      const report_type_label = r.is_prr_only ? "Permit Required Report" : "Code Required Report";
       return {
         ...r,
-        is_prr_only,
+        report_type_label,
         ...formattedComplianceArticle,
       };
     });
@@ -215,10 +231,17 @@ const ComplianceReportManagement: FC = () => {
 
   return (
     <div>
-      <Typography.Text>
-        Manage Code Required Reports that are associated to HSRC. Create a new report before adding
-        it to a code in Health, Safety and Reclamation Code page.
-      </Typography.Text>
+      <Typography.Paragraph>
+        Manage Code Required Reports that are associated to HSRC.
+      </Typography.Paragraph>
+      <Alert
+        message="Important - Create the report before adding a code clause"
+        showIcon
+        type="warning"
+        description="If an HSRC clause requires a report, you must create the report first.
+        Reports created here can then be selected when adding the clause in the Health, Safety and Reclamation Code table."
+      />
+      <br />
       <Row justify="end">
         <Button onClick={() => openAddModal()} type="primary" icon={<PlusOutlined />}>
           Create Report

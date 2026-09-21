@@ -24,6 +24,7 @@ import {
   createPermitAmendmentConditionCategory,
   updatePermitAmendmentConditionCategory,
   deletePermitAmendmentConditionCategory,
+  fetchPermitConditionsData,
 } from "@mds/common/redux/actionCreators/permitActionCreator";
 import * as genericActions from "@mds/common/redux/actions/genericActions";
 import { ENVIRONMENT } from "@mds/common/constants/environment";
@@ -866,4 +867,36 @@ describe("`createPermitCondition` action creator", () => {
     });
   });
 
+});
+
+describe("`fetchPermitConditionsData` action creator", () => {
+  const mineGuid = "12345-6789";
+  const permitGuid = "98765-4321";
+  const permitAmendmentGuid = "24680-1357";
+  const url = `${ENVIRONMENT.apiUrl}${API.PERMIT_CONDITIONS_DATA(mineGuid, permitGuid, permitAmendmentGuid)}`;
+
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockResponse = { data: { permit_amendment_guid: permitAmendmentGuid, conditions: [] } };
+    mockAxios.onGet(url).reply(200, mockResponse);
+
+    return fetchPermitConditionsData(mineGuid, permitGuid, permitAmendmentGuid)(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(requestSpy).toHaveBeenCalledWith("GET_PERMIT_CONDITIONS_DATA");
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledWith("GET_PERMIT_CONDITIONS_DATA");
+      expect(dispatch).toHaveBeenCalledTimes(5);
+    });
+  });
+
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onGet(url).reply(418, MOCK.ERROR);
+
+    return fetchPermitConditionsData(mineGuid, permitGuid, permitAmendmentGuid)(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(requestSpy).toHaveBeenCalledWith("GET_PERMIT_CONDITIONS_DATA");
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledWith("GET_PERMIT_CONDITIONS_DATA");
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
 });

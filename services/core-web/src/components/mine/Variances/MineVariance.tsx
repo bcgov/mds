@@ -27,7 +27,7 @@ import {
 import {
   getDropdownInspectors,
   getInspectorsHash,
-} from "@mds/common/redux/selectors/partiesSelectors";
+} from "@mds/common/redux/slices/partiesSlice";
 import * as Strings from "@mds/common/constants/strings";
 import MineVarianceTable from "./MineVarianceTable";
 import * as ModalContent from "@/constants/modalContent";

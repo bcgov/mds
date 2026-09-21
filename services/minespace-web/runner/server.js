@@ -1,6 +1,6 @@
 const express = require("express");
 const cacheControl = require("express-cache-controller");
-const dotenv = require("dotenv").config("./env");
+const dotenv = require("dotenv").config({ path: "./env" });
 const expressStaticGzip = require("express-static-gzip");
 const helmet = require("helmet");
 

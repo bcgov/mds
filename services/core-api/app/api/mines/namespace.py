@@ -9,6 +9,7 @@ from app.api.mines.comments.resources.mine_comment import (
 )
 from app.api.mines.compliance.resources.compliance import MineComplianceSummaryResource
 from app.api.mines.documents.resources.mine_document_bundle import (
+    MineDocumentBundleListResource,
     MineDocumentBundleResource,
 )
 from app.api.mines.documents.resources.mine_document_resource import (
@@ -86,6 +87,9 @@ from app.api.mines.permits.permit.resources.permit_status_code import (
 from app.api.mines.permits.permit_amendment.resources.permit_amendment import (
     PermitAmendmentListResource,
     PermitAmendmentResource,
+)
+from app.api.mines.permits.permit_amendment.resources.permit_conditions_data import (
+    PermitConditionsDataResource,
 )
 from app.api.mines.permits.permit_amendment.resources.permit_amendment_diff import (
     PermitAmendmentDiffResource,
@@ -233,7 +237,9 @@ api.add_resource(MineDocumentListResource, '/<string:mine_guid>/documents')
 api.add_resource(MineDocumentArchiveResource, '/<string:mine_guid>/documents/archive')
 api.add_resource(MineDocumentVersionUploadResource, '/<string:mine_guid>/documents/<string:mine_document_guid>/versions/upload')
 api.add_resource(MineDocumentVersionListResource, '/<string:mine_guid>/documents/<string:mine_document_guid>/versions')
-api.add_resource(MineDocumentBundleResource, '/document-bundle/<string:mine_document_bundle_id>')
+api.add_resource(MineDocumentBundleListResource, '/<string:mine_guid>/document-bundle')
+api.add_resource(MineDocumentBundleResource,
+                 '/<string:mine_guid>/document-bundle/<string:mine_document_bundle_id>')
 
 api.add_resource(ZipResource, '/<string:mine_guid>/documents/zip')
 api.add_resource(ZipProgressResource, '/documents/zip/<string:task_id>')
@@ -320,6 +326,9 @@ api.add_resource(PermitAmendmentListResource,
 api.add_resource(
     PermitAmendmentResource,
     '/<string:mine_guid>/permits/<string:permit_guid>/amendments/<string:permit_amendment_guid>')
+api.add_resource(
+    PermitConditionsDataResource,
+    '/<string:mine_guid>/permits/<string:permit_guid>/amendments/<string:permit_amendment_guid>/conditions-data')
 
 api.add_resource(
     PermitAmendmentConditionCategoryListResource,

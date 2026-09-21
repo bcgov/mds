@@ -40,6 +40,10 @@ $error-font: $error-color; //#f44336;
   display: none;
 }
 
+.e-pdfviewer-formFields {
+  position: static;
+}
+
 #pdfviewer-container_fileUploadElement,
 #pdfviewer-container_annotationContainer,
 #preview-permit-amendment-pdf_fileUploadElement {

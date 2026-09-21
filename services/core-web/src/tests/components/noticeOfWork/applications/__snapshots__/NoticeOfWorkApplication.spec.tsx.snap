@@ -12,16 +12,12 @@ exports[`NoticeOfWorkApplication renders properly 1`] = `
         Administrative Amendment
         : 
         N/A
-         
         <span>
           <span
             class="ant-tag"
             title="Mine: Unassigned"
           >
-            <a
-              href="/mine-dashboard/20af050d-2a1a-4870-9016-eacabaa68f02/mine-information/general"
-              style="text-decoration: none;"
-            >
+            <span>
               <span
                 aria-label="environment"
                 class="anticon anticon-environment padding-sm--right"
@@ -43,17 +39,13 @@ exports[`NoticeOfWorkApplication renders properly 1`] = `
                 </svg>
               </span>
               Unassigned
-            </a>
+            </span>
           </span>
           <span
             class="ant-tag"
             title="Lead Inspector: Unassigned"
           >
-            <a
-              disabled=""
-              href="/dashboard/undefined/profile"
-              style="text-decoration: none;"
-            >
+            <span>
               <span
                 aria-label="user"
                 class="anticon anticon-user padding-sm--right"
@@ -75,7 +67,7 @@ exports[`NoticeOfWorkApplication renders properly 1`] = `
                 </svg>
               </span>
               Unassigned
-            </a>
+            </span>
           </span>
           <span
             class="ant-tag"
@@ -172,7 +164,9 @@ exports[`NoticeOfWorkApplication renders properly 1`] = `
                 class="ant-tabs-tab-btn"
                 id="rc-tabs-test-tab-application"
                 role="tab"
-              />
+              >
+                Application
+              </div>
             </div>
             <div
               class="ant-tabs-tab ant-tabs-tab-disabled"
@@ -185,7 +179,9 @@ exports[`NoticeOfWorkApplication renders properly 1`] = `
                 class="ant-tabs-tab-btn"
                 id="rc-tabs-test-tab-referral"
                 role="tab"
-              />
+              >
+                Referral
+              </div>
             </div>
             <div
               class="ant-tabs-tab ant-tabs-tab-disabled"
@@ -198,7 +194,9 @@ exports[`NoticeOfWorkApplication renders properly 1`] = `
                 class="ant-tabs-tab-btn"
                 id="rc-tabs-test-tab-consultation"
                 role="tab"
-              />
+              >
+                Consultation
+              </div>
             </div>
             <div
               class="ant-tabs-tab ant-tabs-tab-disabled"
@@ -211,7 +209,9 @@ exports[`NoticeOfWorkApplication renders properly 1`] = `
                 class="ant-tabs-tab-btn"
                 id="rc-tabs-test-tab-public-comment"
                 role="tab"
-              />
+              >
+                Public Comment
+              </div>
             </div>
             <div
               class="ant-tabs-tab ant-tabs-tab-disabled"
@@ -224,7 +224,9 @@ exports[`NoticeOfWorkApplication renders properly 1`] = `
                 class="ant-tabs-tab-btn"
                 id="rc-tabs-test-tab-draft-permit"
                 role="tab"
-              />
+              >
+                Draft
+              </div>
             </div>
             <div
               class="ant-tabs-tab ant-tabs-tab-disabled"
@@ -269,6 +271,21 @@ exports[`NoticeOfWorkApplication renders properly 1`] = `
                 role="tab"
               >
                 Manage Documents
+              </div>
+            </div>
+            <div
+              class="ant-tabs-tab ant-tabs-tab-disabled"
+              data-node-key="search-documents"
+            >
+              <div
+                aria-controls="rc-tabs-test-panel-search-documents"
+                aria-disabled="true"
+                aria-selected="false"
+                class="ant-tabs-tab-btn"
+                id="rc-tabs-test-tab-search-documents"
+                role="tab"
+              >
+                Search Documents
               </div>
             </div>
             <div

@@ -106,7 +106,7 @@ exports[`AuthorizationsInvolved renders properly 1`] = `
                       <h5
                         class="ant-typography"
                       >
-                        Mines Act
+                        Mines Act 
                       </h5>
                       <div>
                         <div
@@ -507,12 +507,12 @@ exports[`AuthorizationsInvolved renders properly 1`] = `
                       <h5
                         class="ant-typography"
                       >
-                        Environmental Management Act
+                        Environmental Management Act (EMA)
                       </h5>
                       <div
                         class="ant-typography"
                       >
-                        For registration under the Municipal Wastewater Regulation and Hazardous Waste Regulation, please refer to the
+                        For Registration and Changes to an Existing Registration under the EMA’s Municipal Wastewater Regulation, Hazardous Waste Regulation or Petroleum Storage and Distribution Facilities Storm Water Regulation: submit an application to the Ministry of Environment and Parks according to the
                          
                         <a
                           href="https://www2.gov.bc.ca/gov/content/environment/waste-management/waste-discharge-authorization/apply"
@@ -527,7 +527,7 @@ exports[`AuthorizationsInvolved renders properly 1`] = `
                           href="https://www2.gov.bc.ca/gov/content/environment/waste-management/waste-discharge-authorization/change"
                           target="_blank"
                         >
-                          authorization amendment
+                          change a waste discharge authorization
                         </a>
                          
                         guideline.
@@ -747,10 +747,29 @@ exports[`AuthorizationsInvolved renders properly 1`] = `
                     <div
                       class="margin-large--bottom"
                     >
+                      <h4
+                        class="ant-typography"
+                      >
+                        Indicate any other required regulatory approvals.
+                      </h4>
+                      <div
+                        class="ant-typography"
+                      >
+                        Note: These related approvals are listed for
+                         
+                        <b>
+                          informational purposes only
+                        </b>
+                         and are 
+                        <b>
+                          not submitted
+                        </b>
+                         through this application. However, by providing details about these applications, you help support a coordinated review process across ministries, which may positively impact review timelines and reduce delays.
+                      </div>
                       <h5
                         class="ant-typography"
                       >
-                        Water Sustainability Act
+                        Water Sustainability Act 
                       </h5>
                       <div>
                         <div
@@ -1095,7 +1114,7 @@ exports[`AuthorizationsInvolved renders properly 1`] = `
                       <h5
                         class="ant-typography"
                       >
-                        Forestry Act
+                        Forestry Act 
                       </h5>
                       <div>
                         <div
@@ -1366,7 +1385,7 @@ exports[`AuthorizationsInvolved renders properly 1`] = `
                       <h5
                         class="ant-typography"
                       >
-                        Other legislation
+                        Other legislation 
                       </h5>
                       <div>
                         <div

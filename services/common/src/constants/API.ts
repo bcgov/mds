@@ -15,7 +15,7 @@ export const MINE_BASIC_INFO_LIST = `/mines/basicinfo`;
 export const PARTY = "/parties";
 export const MANAGER = "/parties/managers";
 export const PARTY_RELATIONSHIP = "/parties/mines";
-export const PARTY_ORGBOOK_ENTITY = (partyGuid) => `/parties/${partyGuid}/orgbook-entity`;
+export const PARTY_BC_REGISTRATION = (partyGuid) => `/parties/${partyGuid}/bc-registration`;
 export const MERGE_PARTIES = () => `/parties/merge`;
 export const PERMITTEE = "/permits/permittees";
 export const MINE_NAME_LIST = (params = {}) => `/mines/search?${queryString.stringify(params)}`;
@@ -43,10 +43,14 @@ export const DOCUMENT_MANAGER_DOCUMENT = (documentManagerGuid) =>
   `/documents/${documentManagerGuid}`;
 export const MINESPACE_USER = (mine_guid?) => `/users/minespace${mine_guid ? `?${queryString.stringify({ mine_guid })}` : ""}`;
 export const UPDATE_MINESPACE_USER = (id) => `/users/minespace/${id}`;
+export const NEW_MINESPACE_USER_MINES = (params = {}) => `/users/minespace/mines?${queryString.stringify(params)}`;
+export const NEW_MINESPACE_USER_DOCUMENTS = `/users/minespace/documents`;
+export const NEW_MINESPACE_USER_ACCESS_REQUEST = `/users/minespace/access-request`;
 export const PROVINCE_CODES = "/parties/sub-division-codes";
 
 // MCM contacts
 export const MINISTRY_CONTACTS = "/ministry-contacts";
+export const DISTRIBUTION_LISTS = "/ministry-contacts/distribution-lists";
 export const MINISTRY_CONTACTS_BY_REGION = (region, isMajorMine) =>
   `/ministry-contacts/${region}/contacts?is_major_mine=${isMajorMine}`;
 export const MINISTRY_CONTACT = (guid) => `/ministry-contacts/${guid}`;
@@ -62,6 +66,8 @@ export const PERMIT_AMENDMENTS = (mineGuid, permitGuid) =>
   `/mines/${mineGuid}/permits/${permitGuid}/amendments`;
 export const PERMIT_AMENDMENT = (mineGuid, permitGuid, permitAmendmentGuid) =>
   `/mines/${mineGuid}/permits/${permitGuid}/amendments/${permitAmendmentGuid}`;
+export const PERMIT_CONDITIONS_DATA = (mineGuid, permitGuid, permitAmendmentGuid) =>
+  `/mines/${mineGuid}/permits/${permitGuid}/amendments/${permitAmendmentGuid}/conditions-data`;
 
 export const PERMIT_AMENDMENT_VC = (mineGuid, permitGuid, permitAmendmentGuid) =>
   `/mines/${mineGuid}/permits/${permitGuid}/amendments/${permitAmendmentGuid}/verifiable-credential`;
@@ -136,11 +142,18 @@ export const REPORT_ERROR = `/report-error`;
 export const EPIC_INFO = (mineGuid) => `/mines/${mineGuid}/epic`;
 
 // Search
-export const SEARCH = (params) => (params ? `/search?${queryString.stringify(params)}` : "/search");
+export const SEARCH = (params) => (params ? `/search?${queryString.stringify(params, { arrayFormat: 'comma' })}` : "/search");
 export const SEARCH_OPTIONS = "/search/options";
 export const SIMPLE_SEARCH = "/search/simple";
 
 export const PERMIT_CONDITION_SEARCH = "/search/permit-conditions";
+
+export const NOW_APPLICATION_DOCUMENT_SEARCH = (nowApplicationGuid: string) =>
+  `/now-applications/${nowApplicationGuid}/document-search`;
+export const NOW_APPLICATION_DOCUMENT_INDEX = (nowApplicationGuid: string) =>
+  `/now-applications/${nowApplicationGuid}/document-search/index`;
+export const NOW_APPLICATION_DOCUMENT_INDEX_STATUS = (nowApplicationGuid: string) =>
+  `/now-applications/${nowApplicationGuid}/document-search/index/status`;
 
 // Reporting
 export const DASHBOARD = (dashboardId, type = "dashboard") => `/reporting/${type}/${dashboardId}`;
@@ -273,7 +286,8 @@ export const INCIDENT_CATEGORY_CODES = `/incidents/category-codes`;
 export const COMPLETE_MULTIPART_UPLOAD = (documentGuid) =>
   `/documents/${documentGuid}/complete-upload`;
 export const COMPLETE_SPATIAL_BUNDLE = "/documents/complete-bundle";
-export const CORE_API_DOCUMENT_BUNDLE = "/mines/document-bundle/";
+export const CORE_API_DOCUMENT_BUNDLE = (mineGuid, bundleId) =>
+  `/mines/${mineGuid}/document-bundle/${bundleId}`;
 
 // Work Information
 export const MINE_WORK_INFORMATIONS = (mineGuid) => `/mines/${mineGuid}/work-information`;
@@ -291,6 +305,8 @@ export const MINE_REPORT_DEFINITION = "/mines/reports/definitions";
 export const MINE_REPORT_DUE_DATE_TYPES = "/mines/reports/due-date-types";
 export const MINE_REPORTS = (mineGuid, params?) =>
   `/mines/${mineGuid}/reports?${queryString.stringify(params)}`;
+export const MINE_UPCOMING_REPORTS = (mineGuid, params?) =>
+  `/mines/${mineGuid}/reports?${queryString.stringify({ ...params, upcoming: true })}`;
 export const MINE_REPORT = (mineGuid, mineReportGuid) =>
   `/mines/${mineGuid}/reports/${mineReportGuid}`;
 export const MINE_REPORT_STATS = (mineGuid: string) => `/mines/${mineGuid}/reports/stats`;
@@ -364,6 +380,19 @@ export const NOTICE_OF_WORK_APPLICATION_DELAY = (applicationGuid, delayGuid?) =>
   delayGuid
     ? `/now-applications/${applicationGuid}/delays/${delayGuid}`
     : `/now-applications/${applicationGuid}/delays`;
+export const NOTICE_OF_WORK_APPLICATION_TIER_HISTORY = (applicationGuid) =>
+  `${NOTICE_OF_WORK_APPLICATION(applicationGuid)}/tier-history`;
+
+// Temporary PIP data
+export const PIP_CONSULTATION_AREA_DATA = `/now-applications/pip-consultation-area`;
+
+// Notice of Work nation consultation
+export const NOTICE_OF_WORK_APPLICATION_NATION = (applicationGuid, nationGuid?) =>
+  nationGuid
+    ? `${NOTICE_OF_WORK_APPLICATION(applicationGuid)}/nation/${nationGuid}`
+    : `${NOTICE_OF_WORK_APPLICATION(applicationGuid)}/nation`;
+export const NOTICE_OF_WORK_APPLICATION_NATION_EVENT = (applicationGuid, nationGuid) =>
+  `${NOTICE_OF_WORK_APPLICATION(applicationGuid)}/nation/${nationGuid}/event`;
 
 // Proponent Notice Of Work
 export const PROPONENT_NOTICE_OF_WORK_APPLICATION_LIST = (mineGuid) =>
@@ -401,9 +430,8 @@ export const MINE_COMMENTS = (mineGuid) => `/mines/${mineGuid}/comments`;
 export const MINE_COMMENT = (mineGuid, commentGuid) => `/mines/${mineGuid}/comments/${commentGuid}`;
 
 // OrgBook
-export const ORGBOOK_SEARCH = (search) => `/orgbook/search?${queryString.stringify({ search })}`;
-export const ORGBOOK_CREDENTIAL = (credentialId) => `/orgbook/credential/${credentialId}`;
-export const ORGBOOK_VERIFY = (credentialId) => `/orgbook/credential/${credentialId}/verify`;
+export const BC_REGISTRATION_SEARCH = (search_name) => `/bc-registration/search?${queryString.stringify({ search_name })}`;
+export const ORGBOOK_CREDENTIAL = (credentialId) => `/bc-registration/orgbook/credential/${credentialId}`;
 
 // Activities
 export const ACTIVITIES = () => "/activities";

@@ -53,7 +53,7 @@ const ProjectLinksTable: React.FC<IProjectLinksTableProps> = ({
     label: "Remove Linked-project",
     icon: <FileOutlined />,
     clickFunction: (_event, record: ILinkedProject) => {
-      deleteConfirmWrapper("Project Link", () => removeProjectLink(record.project_link_guid));
+      deleteConfirmWrapper("Project Link", () => removeProjectLink(record.project_link_guid), false, "Remove Project Link");
     },
   };
   if (hasModifyPermission) {

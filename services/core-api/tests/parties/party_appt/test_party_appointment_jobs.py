@@ -167,7 +167,7 @@ class TestExpiredQP():
 
         idempotency_key = f'tsf_qp_expired_{qp.mine_party_appt_guid}_{qp.end_date.strftime("%Y-%m-%d")}'
 
-        user_name = MinespaceUser.find_by_id(sub.user_id).email_or_username
+        user_name = MinespaceUser.find_by_id(sub.user_id).bceid_username
 
         assert notification.idempotency_key == idempotency_key
         assert notification.activity_type == ActivityType.tsf_qp_expired

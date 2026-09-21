@@ -1,27 +1,31 @@
 import uuid
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.schema import FetchedValue
-from sqlalchemy.orm import validates
-from sqlalchemy.ext.associationproxy import association_proxy
-from werkzeug.exceptions import NotFound
-from sqlalchemy.ext.hybrid import hybrid_property
 from datetime import datetime, timezone
 
-from app.api.utils.models_mixins import Base, AuditMixin
-from app.extensions import db
-
-from .now_application_type import NOWApplicationType
-from .now_application_status import NOWApplicationStatus
-from .now_application_identity import NOWApplicationIdentity
 from app.api.constants import *
-from app.api.utils.include.user_info import User
-from app.auth import get_user_is_admin
-
-from app.api.now_submissions.models.document import Document
-from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
 from app.api.mines.mine.models.mine_type import MineType
-from app.api.mines.permits.permit_conditions.models.permit_conditions import PermitConditions
-from flask import current_app
+from app.api.mines.permits.permit_amendment.models.permit_amendment import (
+    PermitAmendment,
+)
+from app.api.mines.permits.permit_conditions.models.permit_conditions import (
+    PermitConditions,
+)
+from app.api.now_submissions.models.document import Document
+from app.api.utils.include.user_info import User
+from app.api.utils.models_mixins import AuditMixin, Base
+from app.auth import get_user_is_admin
+from app.extensions import db
+from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.ext.associationproxy import association_proxy
+from sqlalchemy.ext.hybrid import hybrid_property
+from sqlalchemy.orm import validates
+from sqlalchemy.schema import FetchedValue
+from werkzeug.exceptions import NotFound
+
+from .now_application_identity import NOWApplicationIdentity
+from .now_application_status import NOWApplicationStatus
+from .now_application_type import NOWApplicationType
+
+LOCKED_NTR_FINAL_PACKAGE_ORDER = -1
 
 
 class NOWApplication(Base, AuditMixin):
@@ -56,12 +60,18 @@ class NOWApplication(Base, AuditMixin):
         lazy='selectin',
         uselist=False,
         primaryjoin='Party.party_guid == NOWApplication.issuing_inspector_party_guid')
-
+    consultation_advisor_party_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'))
+    consultation_advisor = db.relationship(
+        'Party',
+        lazy='selectin',
+        uselist=False,
+        primaryjoin='Party.party_guid == NOWApplication.consultation_advisor_party_guid')
     now_tracking_number = db.Column(db.Integer)
     proponent_submitted_permit_number = db.Column(db.String)
     annual_summary_submitted = db.Column(db.Boolean)
     is_first_year_of_multi = db.Column(db.Boolean)
     mine_purpose = db.Column(db.String)
+    work_year_info = db.Column(db.String)
     ats_authorization_number = db.Column(db.Numeric)
     ats_project_number = db.Column(db.Numeric)
     unreclaimed_disturbance_previous_year = db.Column(db.Numeric)
@@ -159,6 +169,33 @@ class NOWApplication(Base, AuditMixin):
     # Progress
     application_progress = db.relationship('NOWApplicationProgress', lazy='selectin', uselist=True)
 
+    # Tiers
+    application_tier = db.relationship('NOWApplicationTier', lazy='selectin', uselist=False, overlaps='now_application')
+
+    @hybrid_property
+    def now_application_tier_code(self):
+        if self.application_tier:
+            return self.application_tier.notice_of_work_tier_code
+        return None
+
+    @hybrid_property
+    def now_application_tier_description(self):
+        if self.application_tier:
+            return self.application_tier.description
+        return None
+
+    @hybrid_property
+    def now_application_tier_created_date(self):
+        if self.application_tier:
+            return self.application_tier.create_timestamp
+        return None
+
+    @hybrid_property
+    def now_application_tier_updated_date(self):
+        if self.application_tier:
+            return self.application_tier.update_timestamp
+        return None
+
     # Documents that are not associated with a review
     documents = db.relationship(
         'NOWApplicationDocumentXref',
@@ -241,6 +278,22 @@ class NOWApplication(Base, AuditMixin):
 
         max_order = max(max_documents_order, max_imported_submission_documents_order)
         return max_order + 1
+
+    @hybrid_property
+    def locked_ntr_guid(self):
+        qualifying = [
+            doc for doc in self.documents
+            if doc.now_application_document_type_code == 'NTR'
+            and doc.is_system_generated
+            and doc.is_final_package
+            and not doc.deleted_ind
+        ]
+        if not qualifying:
+            return None
+        latest = max(
+            qualifying,
+            key=lambda doc: str(doc.create_timestamp) if doc.create_timestamp else '')
+        return str(latest.now_application_document_xref_guid)
 
     @hybrid_property
     def total_merchantable_timber_volume(self):
@@ -352,17 +405,26 @@ class NOWApplication(Base, AuditMixin):
 
     # Generates a Notice of Work Form (NTR) document and includes it in the final application package while excluding all previous NTR documents.
     def add_now_form_to_fap(self, description):
-        from app.api.now_applications.models.now_application_document_xref import NOWApplicationDocumentXref
-        from app.api.now_applications.resources.now_application_export_resource import NOWApplicationExportResource
-        from app.api.document_generation.resources.now_document_resource import NoticeOfWorkDocumentResource
+        from datetime import date
+
+        from app.api.document_generation.resources.now_document_resource import (
+            NoticeOfWorkDocumentResource,
+        )
+        from app.api.now_applications.models.now_application_document_xref import (
+            NOWApplicationDocumentXref,
+        )
+        from app.api.now_applications.resources.now_application_export_resource import (
+            NOWApplicationExportResource,
+        )
 
         # Generate the Notice of Work Form document
         token = NOWApplicationExportResource.get_now_form_generate_token(self.now_application_guid)
         now_doc_dict = NoticeOfWorkDocumentResource.generate_now_document(token, True)
 
-        # Exclude all previous Notice of Work Form documents from the final application package
+        # Only evict previous system-generated NTRs; user-uploaded NTRs stay in the package.
         now_form_docs = [
-            doc for doc in self.documents if doc.now_application_document_type_code == 'NTR'
+            doc for doc in self.documents
+            if doc.now_application_document_type_code == 'NTR' and doc.is_system_generated
         ]
         for doc in now_form_docs:
             doc.is_final_package = False
@@ -373,8 +435,12 @@ class NOWApplication(Base, AuditMixin):
         now_application_document_xref_guid = now_doc_dict['now_application_document_xref_guid']
         now_doc = NOWApplicationDocumentXref.find_by_guid(now_application_document_xref_guid)
         now_doc.is_final_package = True
-        now_doc.final_package_order = self.next_document_final_package_order
+        now_doc.is_system_generated = True
+        now_doc.final_package_order = LOCKED_NTR_FINAL_PACKAGE_ORDER
         now_doc.description = description
+        now_doc.preamble_title = "Notice of Work Application"
+        now_doc.preamble_author = "N/A"
+        now_doc.preamble_date = date.today()
         now_doc.save()
 
     @classmethod
@@ -382,6 +448,9 @@ class NOWApplication(Base, AuditMixin):
         docs = []
 
         for doc in now_application.imported_submission_documents:
+            mine_document_bundle_id = None
+            if doc.mine_document and doc.mine_document.mine_document_bundle_id:
+                mine_document_bundle_id = doc.mine_document.mine_document_bundle_id
             docs.append({
                 'messageid':
                 doc.messageid,
@@ -409,6 +478,8 @@ class NOWApplication(Base, AuditMixin):
                 doc.now_application_id,
                 'document_manager_guid':
                 doc.document_manager_guid,
+                'mine_document_bundle_id':
+                mine_document_bundle_id,
                 'preamble_title':
                 doc.preamble_title,
                 'preamble_author':
@@ -446,3 +517,31 @@ class NOWApplication(Base, AuditMixin):
                 })
 
         return docs
+    @classmethod
+    def get_spatial_document_bundles(cls, now_application):
+        """Unique MineDocumentBundle records linked to this application's documents.
+
+        Covers both proponent submission imports and documents added manually in Core.
+        """
+        bundles = {}
+        application_documents = list(now_application.imported_submission_documents or []) + list(
+            now_application.documents or [])
+        for doc in application_documents:
+            mine_doc = doc.mine_document
+            if not mine_doc or not mine_doc.mine_document_bundle:
+                continue
+            bundle = mine_doc.mine_document_bundle
+            bundles[bundle.bundle_id] = bundle.json()
+        return list(bundles.values())
+
+    @classmethod
+    def get_spatial_validation_document_guids(cls, now_application):
+        """Document Manager GUIDs for imported and manually uploaded application documents."""
+        document_guids = []
+        application_documents = list(now_application.imported_submission_documents or []) + list(
+            now_application.documents or [])
+        for doc in application_documents:
+            mine_doc = doc.mine_document
+            if mine_doc and mine_doc.document_manager_guid:
+                document_guids.append(str(mine_doc.document_manager_guid))
+        return list(dict.fromkeys(document_guids))

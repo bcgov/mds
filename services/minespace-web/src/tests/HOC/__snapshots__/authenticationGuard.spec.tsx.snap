@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AuthenticationGuard should render the \`NullScreen\` if \`!isAuthenticated\` 1`] = `
+exports[`AuthenticationGuard should render UnauthenticatedNotice if not authenticated 1`] = `
 <div>
   <div
     class="ant-row"
@@ -70,7 +70,7 @@ exports[`AuthenticationGuard should render the \`NullScreen\` if \`!isAuthentica
 </div>
 `;
 
-exports[`AuthenticationGuard should render the \`WrappedComponent\` if \`isAuthenticated\` 1`] = `
+exports[`AuthenticationGuard should render the wrapped component if authenticated 1`] = `
 <div>
   <div>
     Test
@@ -78,7 +78,7 @@ exports[`AuthenticationGuard should render the \`WrappedComponent\` if \`isAuthe
 </div>
 `;
 
-exports[`AuthenticationGuard should render the \`WrappedComponent\` if \`isPublic\` 1`] = `
+exports[`AuthenticationGuard should render the wrapped component if route is public 1`] = `
 <div>
   <div>
     Test

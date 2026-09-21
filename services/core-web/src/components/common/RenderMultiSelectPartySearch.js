@@ -9,7 +9,7 @@ import debounce from "lodash/debounce";
 import {
   fetchSearchResults,
   clearAllSearchResults,
-} from "@mds/common/redux/actionCreators/searchActionCreator";
+} from "@mds/common/redux/slices/searchSlice";
 
 const debouncePropTypes = {
   fetchOptions: PropTypes.func.isRequired,
@@ -64,8 +64,8 @@ const propTypes = {
 };
 
 const defaultProps = {
-  onSearchResultsChanged: () => {},
-  onSearchSubsetResultsChanged: () => {},
+  onSearchResultsChanged: () => { },
+  onSearchSubsetResultsChanged: () => { },
 };
 
 export const RenderMultiSelectPartySearch = (props) => {
@@ -80,8 +80,8 @@ export const RenderMultiSelectPartySearch = (props) => {
   }, [props.triggerSelectReset]);
 
   const getFetchOptions = (value) =>
-    props.fetchSearchResults(value, "party").then((response) => {
-      const results = response?.data?.search_results || [];
+    props.fetchSearchResults({ searchTerm: value, searchTypes: ["party"] }).then((response) => {
+      const results = response?.payload?.search_results || response?.data?.search_results || [];
       props.onSearchResultsChanged(results);
       setSearchResults(results);
       return results?.party
@@ -91,7 +91,7 @@ export const RenderMultiSelectPartySearch = (props) => {
             party.result.mine_party_appt.filter(
               ({ mine_party_appt_type_code }) => mine_party_appt_type_code === "PMT"
             ).length > 0;
-          const isOrgbookEntity = !isEmpty(party.result.party_orgbook_entity);
+          const isOrgbookEntity = !isEmpty(party.result.party_bc_registration);
           const isInspector =
             party.result.business_role_appts.filter(
               ({ party_business_role_code }) => party_business_role_code === "INS"

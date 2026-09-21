@@ -1,0 +1,32 @@
+{% extends "email/_base/email_base.html" %}
+{% from "email/_components/email_macros.html" import paragraph, button_link, info_block, document_list %}
+
+{% set brand = brand_type %}
+{% set page_title = 'Major Mine Application Submitted for ' + project.project_title %}
+
+{% block content %}
+{{ paragraph('The following documents have been submitted with this Major Mine Application:', brand=brand) }}
+
+{% if primary_documents %}
+{{ paragraph('<strong>Primary document(s):</strong>' | safe, margin_bottom=5, brand=brand) }}
+{{ document_list(primary_documents, brand=brand) }}
+{% endif %}
+
+{% if appendix_documents %}
+{{ paragraph('<strong>Appendix document(s):</strong>' | safe, margin_bottom=5, brand=brand) }}
+{{ document_list(appendix_documents, brand=brand) }}
+{% endif %}
+
+{% if spatial_documents %}
+{{ paragraph('<strong>Spatial document(s):</strong>' | safe, margin_bottom=5, brand=brand) }}
+{{ document_list(spatial_documents, brand=brand) }}
+{% endif %}
+
+{% if supporting_documents %}
+{{ paragraph('<strong>Supporting document(s):</strong>' | safe, margin_bottom=5, brand=brand) }}
+{{ document_list(supporting_documents, brand=brand) }}
+{% endif %}
+
+{{ button_link(view_link, button_text, brand=brand, margin_top=32) }}
+
+{% endblock %}

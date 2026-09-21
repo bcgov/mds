@@ -17,11 +17,7 @@ jest.mock("react-redux", () => {
   };
 });
 
-jest.mock("@mds/common/components/documents/DocumentTable", () => (props: any) => (
-  <div>
-    <button onClick={() => props.onArchivedDocuments()}>Archive Documents</button>
-  </div>
-));
+jest.mock("@mds/common/components/documents/DocumentTable", () => () => <div />);
 
 const values = {
   primary_documents: MOCK.PROJECT.major_mine_application.documents.filter(
@@ -51,7 +47,6 @@ const initialState = {
 
 const props = {
   project: MOCK.PROJECT,
-  refreshData: jest.fn(),
 };
 
 const WrappedMajorMineApplicationForm = () => (
@@ -65,7 +60,7 @@ const WrappedMajorMineApplicationForm = () => (
           destroyOnUnmount: true,
         }}
       >
-        <MajorMineApplicationForm project={props.project} refreshData={props.refreshData} />
+        <MajorMineApplicationForm project={props.project} />
       </FormWrapper>
     </MinespaceReduxWrapper>
   </BrowserRouter>
@@ -99,12 +94,5 @@ describe("MajorMineApplicationForm", () => {
     fireEvent.change(fileInput, { target: { files: [file] } });
     fireEvent.click(fileInput);
     expect(mockDispatch).toHaveBeenCalled();
-  });
-
-  it("should call refreshData when documents are archived", () => {
-    const { getAllByText } = render(<WrappedMajorMineApplicationForm />);
-    const archiveButtons = getAllByText("Archive Documents");
-    fireEvent.click(archiveButtons[0]);
-    expect(props.refreshData).toHaveBeenCalled();
   });
 });

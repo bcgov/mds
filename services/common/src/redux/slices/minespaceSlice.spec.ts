@@ -1,3 +1,4 @@
+import { IMinespaceUser } from "@mds/common/interfaces";
 import {
     minespaceReducer,
     createMinespaceUser,
@@ -11,6 +12,8 @@ import {
     createMinistryContact,
     updateMinistryContact,
     deleteMinistryContact,
+    fetchCurrentUserAccessRequest,
+    submitNewUserAccessRequest,
     getMinespaceUsers,
     getMinespaceUsersByMine,
     getMinespaceUsersByMineGuid,
@@ -18,6 +21,7 @@ import {
     getMinistryContacts,
     getMinistryContactsByRegion,
     getMinespaceUserEmailHash,
+    fetchDistributionLists,
 } from "./minespaceSlice";
 import CustomAxios from "@mds/common/redux/customAxios";
 import { configureStore } from "@reduxjs/toolkit";
@@ -40,11 +44,17 @@ jest.mock("antd", () => ({
 describe("minespaceSlice", () => {
     let store;
 
-    const mockMinespaceUser = {
+    const mockMinespaceUser: IMinespaceUser = {
         user_id: 1,
-        email_or_username: "test@example.com",
-        keycloak_guid: "123-456-789",
+        bceid_username: "test@example.com",
         mines: ["mine-guid-1", "mine-guid-2"],
+        sub: "sub-guid-string@bceidboth",
+        email: "email@email.com",
+        given_name: "Given",
+        family_name: "Family",
+        display_name: "Given Family",
+        identity_provider: "bceidboth",
+        last_logged_in: "2025-10-31 22:39:29.200932+00"
     };
 
     const mockMinespaceUserMine = {
@@ -97,7 +107,9 @@ describe("minespaceSlice", () => {
                 minespaceUsersByMine: {},
                 minespaceUserMines: [],
                 MinistryContacts: [],
+                DistributionLists: { records: [], current_page: 1, total: 0, total_pages: 0, items_per_page: 25 },
                 MinistryContactsByRegion: [],
+                currentUserAccessRequest: undefined,
             });
         });
     });
@@ -113,7 +125,7 @@ describe("minespaceSlice", () => {
             }));
 
             const payload = {
-                email_or_username: "test@example.com",
+                bceid_username: "test@example.com",
                 mine_guids: ["mine-guid-1"],
             };
 
@@ -144,7 +156,7 @@ describe("minespaceSlice", () => {
             }));
 
             const payload = {
-                email_or_username: "test@example.com",
+                bceid_username: "test@example.com",
                 mine_guids: ["mine-guid-1"],
             };
 
@@ -156,9 +168,7 @@ describe("minespaceSlice", () => {
 
     describe("updateMinespaceUserMines", () => {
         const mockResponse = {
-            data: {
-                records: { ...mockMinespaceUser, mines: ["updated-mine-guid"] }
-            },
+            data: { ...mockMinespaceUser, mines: ["updated-mine-guid"] },
         };
 
         it("should successfully update a minespace user's mines and update state", async () => {
@@ -597,6 +607,7 @@ describe("minespaceSlice", () => {
                 minespaceUserMines: [mockMinespaceUserMine],
                 MinistryContacts: [mockMinistryContact],
                 MinistryContactsByRegion: [mockMinistryContact],
+                currentUserAccessRequest: undefined,
             },
         };
 
@@ -642,6 +653,164 @@ describe("minespaceSlice", () => {
             expect(result).toEqual({
                 "test@example.com": mockMinespaceUser,
             });
+        });
+    });
+
+    describe("fetchCurrentUserAccessRequest", () => {
+        const mockAccessRequest = {
+            email_address: "test@example.com",
+            proponent_name: "Test Proponent",
+            authorization_letter: "auth-doc-guid",
+            status: "PEN",
+        };
+
+        const mockResponse = {
+            data: mockAccessRequest,
+        };
+
+        it("should successfully fetch current user access request", async () => {
+            (CustomAxios as jest.Mock).mockImplementation(() => ({
+                get: jest.fn().mockResolvedValue(mockResponse),
+            }));
+
+            await store.dispatch(fetchCurrentUserAccessRequest());
+
+            // Verify loading state management
+            expect(showLoadingMock).toHaveBeenCalledTimes(1);
+            expect(hideLoadingMock).toHaveBeenCalledTimes(1);
+
+            // Verify state update
+            const state = store.getState();
+            expect(state.minespace.currentUserAccessRequest).toEqual({
+                access_request: mockAccessRequest,
+            });
+        });
+
+        it("should handle 404 error (no existing request) gracefully", async () => {
+            const error = {
+                response: { status: 404 },
+            };
+            (CustomAxios as jest.Mock).mockImplementation(() => ({
+                get: jest.fn().mockRejectedValue(error),
+            }));
+
+            await store.dispatch(fetchCurrentUserAccessRequest());
+
+            // Verify loading state management
+            expect(showLoadingMock).toHaveBeenCalledTimes(1);
+            expect(hideLoadingMock).toHaveBeenCalledTimes(1);
+
+            // State should be null for 404
+            const state = store.getState();
+            expect(state.minespace.currentUserAccessRequest).toBeNull();
+        });
+
+        it("should handle non-404 API errors", async () => {
+            const error = new Error("API Error");
+            (CustomAxios as jest.Mock).mockImplementation(() => ({
+                get: jest.fn().mockRejectedValue(error),
+            }));
+
+            await store.dispatch(fetchCurrentUserAccessRequest());
+
+            expect(showLoadingMock).toHaveBeenCalledTimes(1);
+            expect(hideLoadingMock).toHaveBeenCalledTimes(1);
+        });
+    });
+
+    describe("submitNewUserAccessRequest", () => {
+        const mockAccessRequest = {
+            email_address: "test@example.com",
+            proponent_name: "Test Proponent",
+            authorization_letter: "auth-doc-guid",
+            role_requested: "PMT"
+        };
+
+        const mockFormData: IMinespaceUser = {
+            user_id: 0,
+            bceid_username: "test@example.com",
+            mines: ["mine-guid-1"],
+            documents: [{ document_name: "doc-1", document_manager_guid: "doc-guid-1" }],
+            access_request: mockAccessRequest,
+            sub: "sub-guid-string@bceidboth",
+            email: "test@example.com",
+            given_name: "Test",
+            family_name: "User",
+            display_name: "Test User",
+            identity_provider: "bceidboth",
+            last_logged_in: "2025-10-31 22:39:29.200932+00",
+        };
+
+        const mockResponse = {
+            data: mockAccessRequest,
+        };
+
+        it("should successfully submit new user access request", async () => {
+            (CustomAxios as jest.Mock).mockImplementation(() => ({
+                post: jest.fn().mockResolvedValue(mockResponse),
+            }));
+
+            await store.dispatch(submitNewUserAccessRequest(mockFormData));
+
+            // Verify loading state management
+            expect(showLoadingMock).toHaveBeenCalledTimes(1);
+            expect(hideLoadingMock).toHaveBeenCalledTimes(1);
+
+            // Verify state update
+            const state = store.getState();
+            expect(state.minespace.currentUserAccessRequest).toEqual({
+                access_request: mockAccessRequest,
+            });
+        });
+
+        it("should handle API error when submitting access request", async () => {
+            const error = new Error("API Error");
+            (CustomAxios as jest.Mock).mockImplementation(() => ({
+                post: jest.fn().mockRejectedValue(error),
+            }));
+
+            await store.dispatch(submitNewUserAccessRequest(mockFormData));
+
+            expect(showLoadingMock).toHaveBeenCalledTimes(1);
+            expect(hideLoadingMock).toHaveBeenCalledTimes(1);
+        });
+    });
+
+    describe("fetchDistributionLists", () => {
+        const mockResponse = {
+            data: {
+                records: [{ distribution_list_guid: "123", distribution_list_name: "Test List" }],
+                current_page: 1,
+                total: 1,
+                total_pages: 1,
+                items_per_page: 25,
+            },
+        };
+
+        it("should successfully fetch distribution lists and update state", async () => {
+            (CustomAxios as jest.Mock).mockImplementation(() => ({
+                get: jest.fn().mockResolvedValue(mockResponse),
+            }));
+
+            await store.dispatch(fetchDistributionLists());
+
+            expect(showLoadingMock).toHaveBeenCalledTimes(1);
+            expect(hideLoadingMock).toHaveBeenCalledTimes(1);
+
+            const state = store.getState();
+            expect(state.minespace.DistributionLists).toEqual(mockResponse.data);
+        });
+
+        it("should handle API error when fetching distribution lists", async () => {
+            const error = new Error("API Error");
+            (CustomAxios as jest.Mock).mockImplementation(() => ({
+                get: jest.fn().mockRejectedValue(error),
+            }));
+
+            await store.dispatch(fetchDistributionLists());
+
+            expect(showLoadingMock).toHaveBeenCalledTimes(1);
+            expect(hideLoadingMock).toHaveBeenCalledTimes(1);
         });
     });
 });

@@ -29,5 +29,11 @@
     "major_project_refactor": true,
     "help_guide": true,
     "PERMIT_CONDITION_SEARCH": true,
-    "report_management_v2": true
+    "report_management_v2": true,
+    "minespace_signup": true,
+    "global_search_v2": true,
+    "notice_of_work_tier": true,
+    "now_application_document_search": true,
+    "notice_of_work_nations": true,
+    "inspector_permit_package_type_selector": true
 }

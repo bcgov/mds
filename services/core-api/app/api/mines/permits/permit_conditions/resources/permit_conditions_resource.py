@@ -179,6 +179,26 @@ class PermitConditionsResource(Resource, UserMixin):
         permit_condition.deleted_ind = True
         permit_condition.save(commit=False)
 
+        all_sub_conditions = []
+        stack = [permit_condition]
+        visited = set()
+        while stack:
+            current = stack.pop()
+            if current.permit_condition_id in visited:
+                continue
+            visited.add(current.permit_condition_id)
+            all_sub_conditions.append(current)
+            stack.extend(current.sub_conditions)
+
+        if all_sub_conditions:
+            for sub_condition in all_sub_conditions:
+                mine_report_permit_requirements = sub_condition.mine_report_permit_requirements
+                if mine_report_permit_requirements:
+                    for mine_report_permit_requirement in mine_report_permit_requirements:
+                       mine_report_permit_requirement.delete()
+                       current_app.logger.info(
+                           f'Deleting {mine_report_permit_requirement} as part of the deletion of permit condition {permit_condition}'
+                           )
         conditions = []
         if permit_condition.parent_permit_condition_id is not None:
             conditions = permit_condition.parent.sub_conditions

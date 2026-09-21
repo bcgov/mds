@@ -1,6 +1,6 @@
 import { IParty } from "@mds/common/interfaces";
 
-export interface IPartyOrgBookEntity {
+export interface IPartyBCRegistration {
   party_orgbook_entity_id: string;
   registration_id: string;
   registration_status: boolean;

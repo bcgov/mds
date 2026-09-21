@@ -188,3 +188,45 @@ def test_base_class_compatibility(azure_search_store):
     docs = azure_search_store.filter_documents(filter_query)
     assert isinstance(docs, list)
     assert all(isinstance(doc, Document) for doc in docs)
+
+def test_hybrid_retrieval_validation_errors(azure_search_store):
+    with pytest.raises(ValueError, match="query must not be None"):
+        azure_search_store._hybrid_retrieval(query=None, query_embedding=[0.1], top_k=1)
+    
+    with pytest.raises(ValueError, match="query_embedding must be a non-empty list of floats"):
+        azure_search_store._hybrid_retrieval(query="test", query_embedding=[], top_k=1)
+
+def test_hybrid_retrieval_facets_attribute_error(azure_search_store, mock_search_client):
+    # Mock result that raises AttributeError on get_facets
+    class BuggyResult:
+        def __iter__(self):
+            return iter([])
+        def get_facets(self):
+            raise AttributeError("no facets")
+            
+    mock_search_client.search.return_value = BuggyResult()
+    
+    results = azure_search_store._hybrid_retrieval(query="test", query_embedding=[0.1], top_k=1)
+    assert results == []
+
+def test_collection_field_registration():
+    field = MagicMock()
+    field.name = "tags"
+    field.type = "Collection(Edm.String)"
+    
+    with patch("haystack_integrations.document_stores.azure_ai_search.document_store.SearchClient"), \
+         patch("haystack_integrations.document_stores.azure_ai_search.document_store.SearchIndexClient"), \
+         patch("haystack_integrations.document_stores.azure_ai_search.document_store.AzureKeyCredential"):
+             
+        store = AzureSearchDocumentStore(
+            azure_endpoint=Secret.from_token("https://test.search.windows.net"),
+            api_key=Secret.from_token("test-key"),
+            index_name="test-index",
+            index_fields=[field]
+        )
+        
+        from haystack_integrations.document_stores.azure_ai_search import filters
+        # The operator should have been rebuilt
+        res = filters.COMPARISON_OPERATORS["=="]("tags", "value")
+        assert "tags/any(tags: " in res
+

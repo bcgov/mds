@@ -44,6 +44,8 @@ class NOWApplicationImportResource(Resource, UserMixin):
         help='Latitude point for the Notice of Work.',
         location='json')
     parser.add_argument('contacts', type=list, location='json', store_missing=False)
+    parser.add_argument('now_application_tier_code', type=str, location='json')
+    parser.add_argument('now_application_tier_description', type=str, location='json')
 
     @requires_role_edit_permit
     @api.expect(parser)
@@ -53,6 +55,8 @@ class NOWApplicationImportResource(Resource, UserMixin):
         latitude = data.get('latitude')
         longitude = data.get('longitude')
         contacts = data.get('contacts', [])
+        now_application_tier_code = data.get('now_application_tier_code')
+        now_application_tier_description = data.get('now_application_tier_description')
 
         mine = Mine.find_by_mine_guid(mine_guid)
         if not mine:
@@ -95,6 +99,14 @@ class NOWApplicationImportResource(Resource, UserMixin):
         db.session.refresh(now_application_identity)
         if now_application_identity.now_application_id is not None:
             raise BadRequest('This record has already been imported.')
+
+        if now_application_tier_code:
+            from app.api.now_applications.models.now_application_tier import NOWApplicationTier
+            new_tier = NOWApplicationTier(
+                notice_of_work_tier_code=now_application_tier_code,
+                description=now_application_tier_description
+            )
+            application.application_tier = new_tier
 
         application.save_import_meta()
         application.save()

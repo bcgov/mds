@@ -105,7 +105,9 @@ exports[`Tailings ContactDetails renders properly 1`] = `
         <br />
         <span
           class="ant-typography"
-        />
+        >
+          mock@example.com
+        </span>
       </div>
     </div>
     <div
@@ -124,7 +126,9 @@ exports[`Tailings ContactDetails renders properly 1`] = `
         <br />
         <span
           class="ant-typography"
-        />
+        >
+          123-456-7890
+        </span>
       </div>
     </div>
     <div
@@ -165,7 +169,7 @@ exports[`Tailings ContactDetails renders properly 1`] = `
         <span
           class="ant-typography"
         >
-          
+          N/A
         </span>
       </div>
     </div>

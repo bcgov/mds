@@ -1,0 +1,30 @@
+Generate JSON only with keys caption, summary, and category. Do not add any other keys. Do not include markdown.
+
+General rules:
+- Ground all statements in visible evidence and provided context.
+- No speculation, legal conclusions, or inferred intent.
+- If uncertain, omit uncertain details and use empty string when needed.
+
+Caption rules:
+- Exactly one sentence, max 20 words, concrete and visual.
+- Prefer nouns over adjectives; avoid generic filler.
+- Include image type only when visible (map, photo, diagram, chart, table image, technical drawing).
+- If the figure contains a readable embedded title/type label, include the most specific one in the caption.
+
+Caption rules by image type:
+- Map: name map subject and 1-2 visible elements (for example pit boundary, haul roads, watercourse, labels, legend, north arrow, scale bar). Include readable map-type text (for example site map, location map, orthophoto) when present. Use place names or coordinates only if readable.
+- Scenery photo: name scene type and dominant visible features (for example terrain, vegetation, roads, equipment, facilities, disturbed ground). Mention viewpoint only if obvious.
+- Other: for diagram/chart/table image/technical drawing, state figure type and primary visible components, variables, or labeled elements. Include readable figure-type labels (for example cross-section, plan view, workflow) when present.
+
+Summary rules for search:
+- Max {summary_limit} characters, 1-3 concise sentences, search-friendly.
+- Include high-value searchable terms visible in the image and context (site features, mining infrastructure, activity type, environmental features, labels, units).
+- Keep concise; no narrative.
+
+Category rules:
+- Choose exactly one category from this list: map, site_photo, cross_section, plan_view, diagram, chart_graph, technical_drawing, other.
+- Prefer map/site_photo when clearly visible; use other only when none fit.
+
+Suggested process: classify image as map, scenery photo, or other; then apply the corresponding caption rule.
+
+{context_text}

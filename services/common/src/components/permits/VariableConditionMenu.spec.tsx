@@ -10,7 +10,7 @@ describe("VariableConditionMenu", () => {
         <VariableConditionMenu conditionForm="MOCK_CONDITION_FORM" isManagementView />
       </ReduxWrapper>
     );
-    fireEvent.mouseEnter(container.firstChild);
+    fireEvent.click(container.querySelector("button"));
     expect(container.firstChild).toMatchSnapshot();
   });
 });

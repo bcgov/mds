@@ -28,7 +28,7 @@ const initialState = {
   },
   [AUTHENTICATION]: {
     systemFlag: SystemFlagEnum.core,
-    userAccessData: [USER_ROLES.role_admin, USER_ROLES.role_edit_template_conditions],
+    userAccessData: [USER_ROLES.role_admin, USER_ROLES.role_edit_permits, USER_ROLES.role_edit_template_conditions],
   },
 };
 
@@ -62,6 +62,25 @@ const noPermissionState = {
   ...unassignedState,
   [AUTHENTICATION]: {
     userAccessData: [USER_ROLES.role_view],
+  },
+};
+
+// viewing from MineSpace, but the account carries Core roles (e.g. a shared/composite account).
+// MineSpace only shows the Conditions tab once the review is complete, so mark it complete here.
+const minespaceState = {
+  ...initialState,
+  [PERMITS]: {
+    ...initialState[PERMITS],
+    latestPermitAmendments: {
+      [MOCK.PERMITS[0].permit_guid]: {
+        ...MOCK.PERMITS[0].permit_amendments[0],
+        conditions_review_completed: true,
+      },
+    },
+  },
+  [AUTHENTICATION]: {
+    systemFlag: SystemFlagEnum.ms,
+    userAccessData: [USER_ROLES.role_admin, USER_ROLES.role_edit_permits, USER_ROLES.role_edit_template_conditions],
   },
 };
 
@@ -185,7 +204,7 @@ describe("PermitConditions", () => {
 
     editCondition.click();
     await waitFor(() => {
-      const addReport = queryByText("Add Report Requirement");
+      const addReport = queryByText("Report Added");
       expect(addReport).toBeInTheDocument();
       // NO: list item, condition editor
       const addListItem = queryByText("List Item");
@@ -207,6 +226,19 @@ describe("PermitConditions", () => {
     expect(editCategory).not.toBeInTheDocument();
     const templateBtn = queryByText("Insert Template Conditions");
     expect(templateBtn).not.toBeInTheDocument();
+  });
+
+  it("never shows the assigned reviewer field in MineSpace, even for an account with Core edit roles", async () => {
+    const { container } = render(
+      <ReduxWrapper initialState={minespaceState}>
+        <BrowserRouter>
+          <ViewPermit />
+        </BrowserRouter>
+      </ReduxWrapper>
+    );
+
+    const assignReviewer = container.querySelectorAll('[data-cy="assigned_review_user"]');
+    expect(Array.from(assignReviewer)).toEqual([]);
   });
 
   it("does not allow editing without being assigned to the category", async () => {
@@ -303,7 +335,7 @@ describe("PermitConditions", () => {
     )[0];
     editCondition.click();
     await waitFor(() => {
-      const addReport = screen.queryByText("Add Report Requirement");
+      const addReport = screen.queryByText("Report Added");
       expect(addReport).toBeInTheDocument();
       const addListItem = screen.queryByText("Condition");
       expect(addListItem).toBeInTheDocument();

@@ -1,5 +1,6 @@
 import pytest
 import json
+from unittest.mock import patch
 from datetime import datetime, timedelta
 from app.extensions import db
 from app.api.incidents.models.mine_incident import MineIncident
@@ -32,7 +33,8 @@ def test_get_mine_incidents_by_guid(test_client, db_session, auth_headers):
 
 
 # POST
-def test_post_mine_incidents_happy(test_client, db_session, auth_headers):
+@patch('app.api.incidents.models.mine_incident.MineIncident.send_incidents_email')
+def test_post_mine_incidents_happy(mock_send, test_client, db_session, auth_headers):
     test_mine_guid = MineFactory().mine_guid
 
     now_time = datetime.now()
@@ -63,7 +65,8 @@ def test_post_mine_incidents_happy(test_client, db_session, auth_headers):
     assert post_data['incident_description'] == data['incident_description']
 
 
-def test_post_mine_incidents_including_optional_fields(test_client, db_session, auth_headers):
+@patch('app.api.incidents.models.mine_incident.MineIncident.send_incidents_email')
+def test_post_mine_incidents_including_optional_fields(mock_send, test_client, db_session, auth_headers):
     test_mine_guid = MineFactory().mine_guid
 
     now_time = datetime.now()
@@ -95,7 +98,8 @@ def test_post_mine_incidents_including_optional_fields(test_client, db_session, 
         'mine_determination_representative']
 
 
-def test_post_mine_incidents_dangerous_occurrence_happy(test_client, db_session, auth_headers):
+@patch('app.api.incidents.models.mine_incident.MineIncident.send_incidents_email')
+def test_post_mine_incidents_dangerous_occurrence_happy(mock_send, test_client, db_session, auth_headers):
     test_mine_guid = MineFactory().mine_guid
 
     do_subparagraph_count = 2
@@ -150,7 +154,8 @@ def test_post_mine_incidents_dangerous_occurrence_no_subs(test_client, db_sessio
 
 
 # PUT
-def test_put_mine_incidents_happy(test_client, db_session, auth_headers):
+@patch('app.api.incidents.models.mine_incident.MineIncident.send_incidents_email')
+def test_put_mine_incidents_happy(mock_send, test_client, db_session, auth_headers):
     test_mine = MineFactory()
     test_guid = test_mine.mine_incidents[0].mine_incident_guid
 
@@ -174,7 +179,8 @@ def test_put_mine_incidents_happy(test_client, db_session, auth_headers):
     assert put_data['incident_description'] == data['incident_description']
 
 
-def test_put_mine_incidents_including_optional_fields(test_client, db_session, auth_headers):
+@patch('app.api.incidents.models.mine_incident.MineIncident.send_incidents_email')
+def test_put_mine_incidents_including_optional_fields(mock_send, test_client, db_session, auth_headers):
     test_mine = MineFactory()
     test_guid = test_mine.mine_incidents[0].mine_incident_guid
 
@@ -204,7 +210,8 @@ def test_put_mine_incidents_including_optional_fields(test_client, db_session, a
         'mine_determination_representative']
 
 
-def test_put_mine_incidents_dangerous_occurrence_happy(test_client, db_session, auth_headers):
+@patch('app.api.incidents.models.mine_incident.MineIncident.send_incidents_email')
+def test_put_mine_incidents_dangerous_occurrence_happy(mock_send, test_client, db_session, auth_headers):
     test_mine = MineFactory()
     existing_incident_guid = test_mine.mine_incidents[0].mine_incident_guid
 

@@ -19,6 +19,7 @@ EDIT_DO = "core_edit_do"
 EDIT_VARIANCE = "core_edit_variances"
 EDIT_SECURITIES = "core_edit_securities"
 MINESPACE_PROPONENT = "mds_minespace_proponents"
+MINESPACE_PROPONENT_COMPOSITE_ROLE = "c_mds_minespace_proponent"
 MDS_ADMINISTRATIVE_USERS = "mds_administrative_users"
 EDIT_SUBMISSIONS = "core_edit_submissions"
 EDIT_HISTORICAL_PERMIT_AMENDMENTS = "core_edit_historical_amendments"
@@ -33,6 +34,7 @@ EDIT_INCIDENTS = "core_edit_incidents"
 EDIT_TSF = "core_edit_tsf"
 EDIT_PROJECT_DECISION_PACKAGES = "core_edit_project_decision_packages"
 EDIT_HELPDESK = "core_helpdesk"
+MANAGE_CONSULTATION_ADVISORS = "core_manage_consultation_advisor"
 
 def require_auth():
     return getJwtManager()._require_auth_validation()
@@ -129,6 +131,10 @@ def requires_role_edit_tsf(func):
 
 def requires_role_edit_requirements(func):
     return _inner_wrapper(func, EDIT_REQUIREMENTS)
+
+def requires_role_manage_consultation_advisors(func):
+    return _inner_wrapper(func, MANAGE_CONSULTATION_ADVISORS)
+
 
 
 def public_endpoint(func):

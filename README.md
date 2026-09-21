@@ -35,12 +35,19 @@ Mines Digital Services build features with these principles in mind:
   - Celery (Scheduled CRON jobs)
 - [Database](services/database/README.md)
   - [Flyway](migrations/README.md) (Database Migrations)
+  - CrunchyDB (Postgres image build, `services/crunchydb`)
 - [Document Manager](services/document-manager/backend/README.md)
   - [Document Manager Migrations](services/document-manager/backend/migrations/README.md)
 - [Fider](services/fider/README.md)
 - [Filesystem Provider](services/filesystem-provider/ej2-amazon-s3-aspcore-file-provider/README.md)
 - [NRIS](services/nris-api/backend/README.md)
 - [Permits](services/permits/README.md)
+- [PGSync](services/pgsync/README.md)
+- [SchemaSpy](services/schemaspy/README.md)
+
+## Architecture
+
+- [Architecture diagrams](docs/architecture) — overall system diagram, Azure Landing Zone target-state diagram, and feature-specific diagrams (permit search, NOW document search)
 
 ## Operations
 

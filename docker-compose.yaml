@@ -2,7 +2,6 @@ version: "3"
 include:
   - ./services/permits/docker-compose.yaml
 services:
-
   ####################### Keycloak for Cypress #######################
   keycloak:
     build:
@@ -66,14 +65,44 @@ services:
       - ./services/postgres/postgresql.conf:/config/postgresql.conf
       - ./services/postgres/pg_hba.conf:/config/pg_hba.conf
       - postgres_data:/var/lib/postgresql/data
-    command:
-      postgres -c 'config_file=/config/postgresql.conf' -c 'hba_file=/config/pg_hba.conf'
+    command: postgres -c 'config_file=/config/postgresql.conf' -c 'hba_file=/config/pg_hba.conf'
     healthcheck:
       test: [ "CMD", "pg_isready" ]
       interval: 5s
       timeout: 5s
       retries: 5
-  
+  pgsync:
+    build:
+      context: services/pgsync
+    container_name: mds_pgsync
+    platform: linux/amd64
+    environment:
+      - PG_HOST=postgres
+      - PG_PORT=5432
+      - PG_USER=mds
+      - PG_PASSWORD=test
+      - PG_DATABASE=mds
+      - ELASTICSEARCH_HOST=elasticsearch
+      - ELASTICSEARCH_PORT=9200
+      - ELASTICSEARCH_SCHEME=https
+      - ELASTICSEARCH_USER=elastic
+      - ELASTICSEARCH_PASSWORD=elastic
+      - ELASTICSEARCH_VERIFY_CERTS=false
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_DB=0
+      - REDIS_AUTH=redis-password
+      - REDIS_CHECKPOINT=true
+      - CONSOLE_LOGGING_HANDLER_MIN_LEVEL=DEBUG
+    volumes:
+      - ./services/pgsync:/config
+    depends_on:
+      postgres:
+        condition: service_healthy
+      elasticsearch:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
   postgres_update:
     container_name: mds_postgres_update
     user: postgres
@@ -81,12 +110,12 @@ services:
       context: services/postgres
       dockerfile: Dockerfile_update
     environment:
-    - PGUSER=mds
-    - POSTGRES_PASSWORD=test
-    - POSTGRES_INITDB_ARGS=-U mds
+      - PGUSER=mds
+      - POSTGRES_PASSWORD=test
+      - POSTGRES_INITDB_ARGS=-U mds
     volumes:
-    - postgres_data_bkp:/var/lib/postgresql/13/data
-    - postgres_data:/var/lib/postgresql/16/data
+      - postgres_data_bkp:/var/lib/postgresql/13/data
+      - postgres_data:/var/lib/postgresql/16/data
 
   ####################### Flyway Migration Definition #######################
   flyway:
@@ -142,6 +171,7 @@ services:
       - otelcollector
       - keycloak
       - core_api_celery
+      - pgsync
     healthcheck:
       test: [ "CMD", "curl", "localhost:5000/health" ]
       interval: 5s
@@ -192,7 +222,6 @@ services:
     ports:
       - 3000:3000
     env_file: ./services/core-web/.env
-    network_mode: "host"
     healthcheck:
       test: [ "CMD", "curl", "localhost:3000/health" ]
       interval: 15s
@@ -270,6 +299,7 @@ services:
   ####################### Syncfusion Filesystem Provider Definition #######################
   filesystem_provider:
     container_name: filesystem_provider
+    platform: linux/amd64
     build:
       context: services/filesystem-provider
     ports:
@@ -277,6 +307,7 @@ services:
     env_file: ./services/filesystem-provider/.env
 
   ####################### DOCUMENT_MANAGER_BACKEND Definition #######################
+
   document_manager_backend:
     restart: always
     container_name: document_manager_backend
@@ -295,19 +326,33 @@ services:
       - tusd
     env_file: ./services/document-manager/backend/.env
 
+  flower:
+    restart: always
+    container_name: flower
+    build:
+      context: services/document-manager/backend
+    entrypoint: celery -A app.tasks.celery flower --basic_auth=flower:flower
+    ports:
+      - 5555:5555
+    volumes:
+      - ./services/document-manager/backend:/app
+    depends_on:
+      - postgres
+      - redis
+    env_file: ./services/document-manager/backend/.env
+
   document_manager_celery:
     restart: always
     container_name: document_manager_celery
     build:
       context: services/document-manager/backend
-    entrypoint: ./celery.sh
-    ports:
-      - 5555:5555
+    entrypoint: celery -A app.tasks.celery worker --loglevel=info --pidfile=/tmp/celery/celery.pid --concurrency=3 -n document_manager_service@%h
     volumes:
       - ./services/document-manager/backend:/app
       - document_manager_logs:/var/log/document-manager
     depends_on:
       - postgres
+      - flower
       - redis
       - tusd
     env_file: ./services/document-manager/backend/.env

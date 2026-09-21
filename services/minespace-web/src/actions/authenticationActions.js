@@ -11,6 +11,13 @@ export const logoutUser = () => ({
   type: ActionTypes.LOGOUT,
 });
 
+export const storeUserAccessData = (roles = []) => ({
+  type: ActionTypes.STORE_USER_ACCESS_DATA,
+  payload: {
+    roles,
+  },
+});
+
 export const storeIsProponent = (isProponent) => {
   return {
     type: ActionTypes.STORE_IS_PROPONENT,

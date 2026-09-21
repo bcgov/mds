@@ -1,4 +1,4 @@
-import json, pytest
+import json, pytest, copy
 
 from tests.factories import NOWSubmissionFactory, MineFactory, NOWApplicationIdentityFactory
 from app.api.now_applications.resources.now_application_list_resource import PAGE_DEFAULT, PER_PAGE_DEFAULT
@@ -733,16 +733,22 @@ class TestGetApplicationListResource:
         """Should return a new NoW Application"""
 
         mine = MineFactory()
-        NOW_APPLICATION_DATA["minenumber"] = mine.mine_no
+        test_data = copy.deepcopy(NOW_APPLICATION_DATA)
+        test_data["minenumber"] = mine.mine_no
+        # Derive unique IDs from the fresh mine GUID to avoid PK conflicts with stale test DB data
+        unique_base = mine.mine_guid.int % 2_000_000_000
+        test_data["messageid"] = unique_base
+        test_data["applicant"]["clientid"] = unique_base + 1
+        test_data["submitter"]["clientid"] = unique_base + 2
 
         post_resp = test_client.post(
             "/now-submissions/applications",
-            json=NOW_APPLICATION_DATA,
+            json=test_data,
             headers=auth_headers["nros_vfcbc_auth_header"])
         post_data = json.loads(post_resp.data.decode())
 
         assert post_resp.status_code == 200 or post_resp.status_code == 201, post_resp.response
-        assert post_data["messageid"] == NOW_APPLICATION_DATA["messageid"]
+        assert post_data["messageid"] == test_data["messageid"]
         assert post_data["application_guid"] is not None
         assert post_data["mine_guid"] == str(mine.mine_guid)
 
@@ -751,24 +757,26 @@ class TestGetApplicationListResource:
 
         mine = MineFactory()
         application = NOWSubmissionFactory(mine=mine)
-        NOW_APPLICATION_DATA["minenumber"] = mine.mine_no
-        NOW_APPLICATION_DATA["messageid"] = application.messageid
+        test_data = copy.deepcopy(NOW_APPLICATION_DATA)
+        test_data["minenumber"] = mine.mine_no
+        test_data["messageid"] = application.messageid
 
         post_resp = test_client.post(
             "/now-submissions/applications",
-            json=NOW_APPLICATION_DATA,
+            json=test_data,
             headers=auth_headers["nros_vfcbc_auth_header"])
 
         assert post_resp.status_code == 400, post_resp.response
 
     def test_post_now_application_no_mine_found(self, test_client, db_session, auth_headers):
-        """Should return a 400 messageid in use"""
+        """Should return a 400 mine not found"""
 
-        NOW_APPLICATION_DATA["minenumber"] = "1234567"
+        test_data = copy.deepcopy(NOW_APPLICATION_DATA)
+        test_data["minenumber"] = "1234567"
 
         post_resp = test_client.post(
             "/now-submissions/applications",
-            json=NOW_APPLICATION_DATA,
+            json=test_data,
             headers=auth_headers["nros_vfcbc_auth_header"])
 
         assert post_resp.status_code == 400, post_resp.response

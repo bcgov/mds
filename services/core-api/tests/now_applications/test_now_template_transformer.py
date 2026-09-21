@@ -4,8 +4,9 @@ from app.api.now_applications import now_template_transformer as now_template_tr
 from werkzeug.exceptions import NotFound
 
 from app.api.utils.helpers import format_currency
-from tests.factories import PartyFactory, PermitAmendmentFactory, PermitFactory, create_mine_and_permit
+from tests.factories import PartyFactory, PermitAmendmentFactory, PermitConditionsFactory, PermitFactory, create_mine_and_permit
 from tests.now_application_factories import NOWApplicationFactory, NOWApplicationIdentityFactory
+from app.extensions import db
 
 def test_get_default_disturbance_or_cost_field_none(db_session):
     now_application = NOWApplicationFactory()
@@ -110,3 +111,54 @@ def test_transform_template_data_permit(db_session):
     assert 'security_adjustment' in template_data
     assert 'conditions' in template_data
     assert template_data['is_draft'] == False
+
+def test_replace_condition_value_with_data_on_nested_permit_conditions(db_session):
+    """The recursive resolution pattern used at issuance should substitute tokens
+    in both parent and child PermitConditions rows."""
+    mine, permit = create_mine_and_permit()
+    amendment = PermitAmendmentFactory(mine=mine, permit=permit, conditions=0)
+
+    parent = PermitConditionsFactory(permit_amendment=amendment, condition='{mine_name} permit condition.')
+    child = PermitConditionsFactory(permit_amendment=amendment, condition='Sub-condition for {mine_no}.')
+    child.parent_permit_condition_id = parent.permit_condition_id
+    db.session.flush()
+
+    condition_variables = {'mine_name': 'Red Mountain Mine', 'mine_no': 'M-123'}
+
+    def _resolve(condition):
+        if condition.condition:
+            condition.condition = now_template_transformer.replace_condition_value_with_data(
+                condition.condition, condition_variables)
+        for sub in condition.sub_conditions:
+            _resolve(sub)
+
+    _resolve(parent)
+
+    assert parent.condition == 'Red Mountain Mine permit condition.'
+    assert child.condition == 'Sub-condition for M-123.'
+    assert '{' not in parent.condition
+    assert '{' not in child.condition
+
+
+def test_replace_condition_value_with_data_preamble(db_session):
+    """preamble_text tokens should be substituted just like condition text."""
+    mine, permit = create_mine_and_permit()
+    amendment = PermitAmendmentFactory(mine=mine, permit=permit, conditions=0)
+    amendment.preamble_text = 'This permit is issued for {mine_name} (No. {mine_no}).'
+
+    now_application = NOWApplicationFactory()
+    now_application_identity = NOWApplicationIdentityFactory(now_application=now_application, mine=mine)
+    amendment.now_application_guid = now_application_identity.now_application_guid
+    now_application.now_application_identity = now_application_identity
+
+    total_liability = now_template_transformer.calculate_liability(now_application)
+    condition_variables = now_template_transformer.transform_variables_to_data(
+        now_application, amendment, mine, total_liability)
+
+    amendment.preamble_text = now_template_transformer.replace_condition_value_with_data(
+        amendment.preamble_text, condition_variables)
+
+    assert mine.mine_name in amendment.preamble_text
+    assert mine.mine_no in amendment.preamble_text
+    assert '{' not in amendment.preamble_text
+    assert '}' not in amendment.preamble_text

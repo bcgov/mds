@@ -7,11 +7,11 @@ import {
   fetchParties,
   fetchPartyRelationships,
   updatePartyRelationship,
-} from "@mds/common/redux/actionCreators/partiesActionCreator";
+} from "@mds/common/redux/slices/partiesSlice";
 import { fetchPermits } from "@mds/common/redux/actionCreators/permitActionCreator";
 import { fetchMineRecordById } from "@mds/common/redux/actionCreators/mineActionCreator";
 import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
-import { getPartyRelationships } from "@mds/common/redux/selectors/partiesSelectors";
+import { getPartyRelationships } from "@mds/common/redux/slices/partiesSlice";
 import { getPartyRelationshipTypesList } from "@mds/common/redux/selectors/staticContentSelectors";
 
 import { getMineById } from "@mds/common/redux/selectors/mineSelectors";
@@ -46,13 +46,13 @@ interface ITransformedValues {
   startDate: string;
 }
 
-const mapPermitGuidToNumber = (permits) =>
+const mapPermitGuidToNumber = (permits: IPermit[]) =>
   permits.reduce((acc, { permit_guid, permit_no }) => {
     acc[permit_guid] = permit_no;
     return acc;
   }, {});
 
-const mapTSFGuidToName = (tailings) =>
+const mapTSFGuidToName = (tailings: ITailingsStorageFacility[]) =>
   tailings.reduce(
     (acc, { mine_tailings_storage_facility_guid, mine_tailings_storage_facility_name }) => {
       acc[mine_tailings_storage_facility_guid] = mine_tailings_storage_facility_name;
@@ -61,7 +61,7 @@ const mapTSFGuidToName = (tailings) =>
     {}
   );
 
-const getPartyRelationshipTitle = (partyRelationshipTypes, typeCode) => {
+const getPartyRelationshipTitle = (partyRelationshipTypes: IOption[], typeCode: string) => {
   const partyRelationshipType = partyRelationshipTypes.find(({ value }) => value === typeCode);
   return (partyRelationshipType && partyRelationshipType.label) || String.EMPTY;
 };
@@ -137,9 +137,11 @@ export const RelationshipProfile: FC = () => {
   };
 
   const onSubmitEditPartyRelationship = async (values: IPartyAppt) => {
-    let payload = partyRelationships.find(
-      (relationship) => relationship.mine_party_appt_guid === values.mine_party_appt_guid
-    );
+    let payload = {
+      ...partyRelationships.find(
+        (relationship) => relationship.mine_party_appt_guid === values.mine_party_appt_guid
+      )
+    };
 
     payload.start_date = values.start_date;
     payload.end_date = values.end_date;
@@ -148,7 +150,7 @@ export const RelationshipProfile: FC = () => {
 
     payload = formatValuesEndCurrent(payload);
 
-    await dispatch(updatePartyRelationship(payload));
+    await dispatch(updatePartyRelationship({ data: payload }));
     dispatch(
       fetchPartyRelationships({
         mine_guid: mine.mine_guid,
@@ -156,7 +158,7 @@ export const RelationshipProfile: FC = () => {
         include_permit_contacts: "true",
       })
     );
-    dispatch(closeModal);
+    dispatch(closeModal());
   };
 
   const handleOpenEditPartyRelationshipModal = (record: ITransformedValues) => {
@@ -240,7 +242,7 @@ export const RelationshipProfile: FC = () => {
       };
     });
 
-  const filteredRelationships: IPartyAppt[] = partyRelationships
+  const filteredRelationships: IPartyAppt[] = [...partyRelationships]
     .sort((a, b) =>
       moment(a.start_date, "YYYY-MM-DD") >= moment(b.start_date, "YYYY-MM-DD") ? -1 : 1
     )

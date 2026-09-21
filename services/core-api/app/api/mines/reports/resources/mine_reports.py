@@ -1,5 +1,5 @@
 import uuid
-from datetime import datetime
+from datetime import datetime, date, timedelta
 
 from app.api.activity.models.activity_notification import (
     ActivityRecipients,
@@ -71,7 +71,7 @@ class MineReportListResource(Resource, UserMixin):
     parser.add_argument('mine_report_contacts', type=list, location='json')
 
     @api.marshal_with(PAGINATED_REPORT_LIST, code=200)
-    @api.doc(description='returns the reports for a given mine.',
+    @api.doc(description='returns the reports for a given mine (supports upcoming filter).',
     params={
         'page': f'The page number of paginated records to return. Default: {PAGE_DEFAULT}',
         'per_page': f'The number of records to return per page. Default: {PER_PAGE_DEFAULT}',
@@ -89,6 +89,10 @@ class MineReportListResource(Resource, UserMixin):
         'requested_by': 'A substring to match in the name of the user who requested the report',
         'major': 'Whether or not the report is for a major or regional mine',
         'region': 'Regions the mines associated with the report are located in',
+        'mine_reports_type': "Report type filter(s). Can repeat to include multiple.",
+        'upcoming': "If 'true', restrict to upcoming reports (due after today) and apply 'time_range' window.",
+        'time_range': "Upcoming window from today when 'upcoming' is true: one of '90d', '6m', '1y'. Default: '1y'",
+        'permit_guid': "The permit number",
     })
     @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
     def get(self, mine_guid):
@@ -110,18 +114,52 @@ class MineReportListResource(Resource, UserMixin):
             'status': request.args.getlist('status', type=str),
             'major': request.args.get('major', type=str),
             'region': request.args.getlist('region', type=str),
+            'permit_guid': request.args.get('permit_guid', type=str),
+            'sort_overdue': request.args.get('sort_overdue', type=str) == "true",
         }
 
         mrd_category = request.args.get('mine_report_definition_category')
+
         if mrd_category:
             return MineReport.find_by_mine_guid_and_category(mine_guid, mrd_category)
 
         # Support multiple report types via repeated mine_reports_type query params
         requested_types = set(request.args.getlist('mine_reports_type', type=str) or [])
 
+        if not args['sort_field']:
+            args['sort_field'] = 'due_date'
+        if not args['sort_dir']:
+            args['sort_dir'] = 'asc'
+
+        # Optional "upcoming" mode mirrors MineUpcomingReportListResource behavior
+        upcoming = (request.args.get('upcoming', type=str) or '').lower() == 'true'
+        if upcoming:
+            # time_range: one of '90d', '6m', '1y' (default '1y')
+            time_range = request.args.get('time_range', '1y', type=str)
+            if time_range not in {'90d', '6m', '1y'}:
+                time_range = '90d'
+
+            if time_range == '90d':
+                end_date = date.today() + timedelta(days=90)
+            elif time_range == '6m':
+                end_date = date.today() + timedelta(days=182)
+            else:
+                end_date = date.today() + timedelta(days=365)
+
+            # Set an explicit upcoming view flag for report_helpers to process
+            args['is_upcoming_view'] = True
+            args['upcoming_window_end'] = end_date
+
+            # If no explicit report types provided, default to CRR + PRR for upcoming
+            if not requested_types:
+                requested_types = {
+                    MINE_REPORT_TYPE['CODE REQUIRED REPORTS'],
+                    MINE_REPORT_TYPE['PERMIT REQUIRED REPORTS'],
+                }
+
         # Base query; ordering is applied via ReportFilterHelper
         query = MineReport.query.filter_by(mine_guid=mine_guid, deleted_ind=False)
-
+        
         if requested_types:
             conditions = []
 
@@ -156,7 +194,7 @@ class MineReportListResource(Resource, UserMixin):
 
         if not records:
             raise BadRequest('Unable to fetch reports')
-
+        
         return {
             'records': records.all(),
             'current_page': pagination_details.page_number,

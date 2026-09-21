@@ -1,9 +1,11 @@
-from app.auth import get_user_username
 from sqlalchemy_continuum import make_versioned
 from .sqlalchemy_continuum_userprovider import MDSSqlAlchemyContinuumPlugin
 
 
 def register_sqlalchemy_continuum():
+    # Import after registration to avoid circular import timing issues
+    from app.auth import get_user_username
+    
     # Register the sqlalchemy-continuum extension.
     # Any models with the __versioned__ attribute will be versioned automatically on
     # inserts, updates, and deletes.

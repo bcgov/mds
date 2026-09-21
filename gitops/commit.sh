@@ -5,6 +5,7 @@ TARGET_APP=${1?"Enter App Name !"}
 SOURCE_ENV=${2?"Enter Source Env Name !"}
 TARGET_ENV=${3?"Enter Target Env Name !"}
 ACTOR_NAME=${4?"Enter Actor Name !"}
+GITOPS_APP_DIR=${5:-}
 
 MDS_GIT_HASH=$(git rev-parse --verify HEAD)
 REPO_URL="https://github.com/bcgov/mds/commit"
@@ -35,6 +36,25 @@ function commit() {
     fi
 }
 
+function get_overlay_dir() {
+    local env=$1
+    if [ -n "$GITOPS_APP_DIR" ]; then
+        echo "$GITOPS_APP_DIR/overlays/$env/$TARGET_APP"
+    else
+        echo "$TARGET_APP/overlays/$env"
+    fi
+}
+
+function validate_patch_path() {
+    local path_pattern=$1
+    local matches
+    matches=$(ls $path_pattern 2>/dev/null)
+    if [ -z "$matches" ]; then
+        echo "ERROR: No deployment patch file found matching: $path_pattern" >&2
+        exit 1
+    fi
+}
+
 if [ ! -d $REPO_LOCATION/gitops/tenant-gitops-4c2ba9 ]; then
     git clone git@github.com:bcgov-c/tenant-gitops-4c2ba9.git $REPO_LOCATION/gitops/tenant-gitops-4c2ba9
 fi
@@ -47,17 +67,23 @@ cd $REPO_LOCATION/gitops/tenant-gitops-4c2ba9
 if [ $TARGET_ENV == 'dev' ]; then
     echo "$TARGET_ENV Environment, updating git hash in deployment env vars"
 
+    TARGET_PATCH="$(get_overlay_dir $TARGET_ENV)/*deployment.patch.yaml"
+    validate_patch_path "$TARGET_PATCH"
     # Replace the commit sha in env vars in overlay patch
-    sed -i "s^git-commit.*^git-commit-$MDS_GIT_HASH^" $TARGET_APP/overlays/$TARGET_ENV/*deployment.patch.yaml
+    sed -i "s^git-commit.*^git-commit-$MDS_GIT_HASH^" $TARGET_PATCH
     commit "[$TARGET_APP] Pushed to $TARGET_ENV by $ACTOR_NAME - $REPO_URL/$MDS_GIT_HASH"
 else
     echo "$TARGET_ENV Environment, Trigger deployment by promoting image from $SOURCE_ENV env"
     # copy git has from dev into test / prod overlay patch!
     # promotion of images are based off the same git hash!
-    MDS_GIT_HASH=$(cat $TARGET_APP/overlays/$SOURCE_ENV/*deployment.patch.yaml | grep git-commit -m1 | cut -f2 -d ":" | xargs | cut -d "-" -f 3)
+    SOURCE_PATCH="$(get_overlay_dir $SOURCE_ENV)/*deployment.patch.yaml"
+    TARGET_PATCH="$(get_overlay_dir $TARGET_ENV)/*deployment.patch.yaml"
+    validate_patch_path "$SOURCE_PATCH"
+    validate_patch_path "$TARGET_PATCH"
+    MDS_GIT_HASH=$(cat $SOURCE_PATCH | grep git-commit -m1 | cut -f2 -d ":" | xargs | cut -d "-" -f 3)
     echo
     # Replace the commit sha in env vars in overlay patch
-    sed -i "s^git-commit.*^git-commit-$MDS_GIT_HASH^" $TARGET_APP/overlays/$TARGET_ENV/*deployment.patch.yaml
+    sed -i "s^git-commit.*^git-commit-$MDS_GIT_HASH^" $TARGET_PATCH
     commit "[$TARGET_APP] Pushed from $SOURCE_ENV to $TARGET_ENV by $ACTOR_NAME - $REPO_URL/$MDS_GIT_HASH"
 
 fi

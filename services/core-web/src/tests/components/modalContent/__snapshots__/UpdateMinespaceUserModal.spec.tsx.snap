@@ -31,11 +31,11 @@ exports[`UpdateMinespaceUserModal renders properly 1`] = `
                   >
                     <label
                       class=""
-                      for="EDIT_MINESPACE_USER_email_or_username"
+                      for="EDIT_MINESPACE_USER_bceid_username"
                       title=""
                     >
                       <div>
-                        Email/BCeID username
+                        BCeID username
                          
                         <span
                           class="form-item-optional"
@@ -58,12 +58,12 @@ exports[`UpdateMinespaceUserModal renders properly 1`] = `
                           class="ant-input-affix-wrapper"
                         >
                           <input
-                            aria-label="email_or_username"
+                            aria-label="bceid_username"
                             class="ant-input"
-                            data-testid="email_or_username"
-                            id="email_or_username"
-                            name="email_or_username"
-                            placeholder="Please enter a bceid in the format of user@bceid or a valid email address"
+                            data-testid="bceid_username"
+                            id="bceid_username"
+                            name="bceid_username"
+                            placeholder="Please enter a bceid in the format of user@bceid"
                             type="text"
                             value=""
                           />
@@ -105,7 +105,7 @@ exports[`UpdateMinespaceUserModal renders properly 1`] = `
                     >
                       <div
                         class="ant-form-item-explain ant-form-item-explain-connected"
-                        id="EDIT_MINESPACE_USER_email_or_username_help"
+                        id="EDIT_MINESPACE_USER_bceid_username_help"
                         role="alert"
                       >
                         <div

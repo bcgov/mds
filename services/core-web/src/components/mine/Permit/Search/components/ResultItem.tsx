@@ -16,6 +16,7 @@ import {
     faChevronUp
 } from '@fortawesome/pro-solid-svg-icons';
 import PermitAmendmentPreviewModal from './PermitAmendmentPreviewModal';
+import PermitDocumentsModal from './PermitDocumentsModal';
 import DocumentLink from '@mds/common/components/documents/DocumentLink';
 import { ActionMenuButton } from '@mds/common/components/common/ActionMenu';
 import { WarningOutlined } from '@ant-design/icons';
@@ -56,6 +57,19 @@ const ResultItem: React.FC<ResultItemProps> = ({ result, onFilterClick }) => {
             },
             width: '90%',
             content: PermitAmendmentPreviewModal,
+        }));
+    };
+
+    const handleViewPermitDocuments = () => {
+        dispatch(openModal({
+            props: {
+                title: 'Permit Documents',
+                permitAmendmentGuid: meta.permit_amendment_guid,
+                mineGuid: meta.mine_guid,
+                permitGuid: meta.permit_guid,
+            },
+            width: '50%',
+            content: PermitDocumentsModal,
         }));
     };
 
@@ -315,12 +329,18 @@ const ResultItem: React.FC<ResultItemProps> = ({ result, onFilterClick }) => {
                         <Row gutter={16} align="middle">
                             <Col>
                                 <Typography.Text type="secondary" className="permit-search__document-info">
-                                    <DocumentLink
-                                        unstyled={true}
-                                        documentManagerGuid={meta.document_manager_guid}
-                                        documentName={meta.document_name}
-                                        truncateDocumentName={false}
-                                    />
+                                    {meta.permit_type === 'Notice of Work' ? (
+                                        <Button type="link" onClick={handleViewPermitDocuments} style={{ padding: 0, height: 'auto' }}>
+                                            View Permit
+                                        </Button>
+                                    ) : (
+                                        <DocumentLink
+                                            unstyled={true}
+                                            documentManagerGuid={meta.document_manager_guid}
+                                            documentName={meta.document_name}
+                                            truncateDocumentName={false}
+                                        />
+                                    )}
                                 </Typography.Text>
                             </Col>
                             <Col>

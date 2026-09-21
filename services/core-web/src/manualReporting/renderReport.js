@@ -69,7 +69,7 @@ const simpleRender = () => {
       job_title: null,
       postnominal_letters: null,
       idir_username: null,
-      party_orgbook_entity: {},
+      party_bc_registration: {},
       business_role_appts: [
         {
           party_business_role_appt_id: 3,

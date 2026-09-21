@@ -60,6 +60,7 @@ from app.api.mines.comments.resources.mine_comment import (
 )
 from app.api.mines.compliance.resources.compliance import MineComplianceSummaryResource
 from app.api.mines.documents.resources.mine_document_bundle import (
+    MineDocumentBundleListResource,
     MineDocumentBundleResource,
 )
 from app.api.mines.documents.resources.mine_document_resource import (
@@ -305,6 +306,18 @@ from app.api.now_applications.resources.now_application_list_proponent_resource 
 from app.api.now_applications.resources.now_application_list_resource import (
     NOWApplicationListResource,
 )
+from app.api.now_applications.resources.now_application_nation_event_code_resource import (
+    NOWApplicationNationEventCodeResource,
+)
+from app.api.now_applications.resources.now_application_nation_event_resource import (
+    NOWApplicationNationEventResource,
+)
+from app.api.now_applications.resources.now_application_nation_resource import (
+    NOWApplicationNationResource,
+)
+from app.api.now_applications.resources.now_application_nation_status_resource import (
+    NOWApplicationNationStatusResource,
+)
 from app.api.now_applications.resources.now_application_now_numbers_list_resource import (
     NOWApplicationNOWNumbersListResource,
 )
@@ -336,6 +349,9 @@ from app.api.now_applications.resources.now_application_status_resource import (
 )
 from app.api.now_applications.resources.now_application_type_resource import (
     NOWApplicationTypeResource,
+)
+from app.api.now_applications.resources.pip_consultation_areas_resource import (
+    PIPConsultationAreaResource,
 )
 from app.api.now_applications.resources.underground_exploration_type_resource import (
     UndergroundExplorationTypeResource,
@@ -531,6 +547,7 @@ from app.api.utils.access_decorators import (
     EDIT_VARIANCE,
     GIS,
     MDS_ADMINISTRATIVE_USERS,
+    MANAGE_CONSULTATION_ADVISORS,
     MANAGE_ORGBOOK,
     MINE_ADMIN,
     MINE_EDIT,
@@ -666,7 +683,9 @@ EXPECTED_AUTH_TABLE = [
         (MineComplianceSummaryResource, "get", [VIEW_ALL]),
         (MineDisturbanceCodeResource, "get", [VIEW_ALL]),
         (MineDocumentArchiveResource, 'patch', [MINE_ADMIN, EDIT_MAJOR_MINE_APPLICATIONS, MINESPACE_PROPONENT]),
+        (MineDocumentBundleListResource, 'post', [EDIT_PERMIT]),
         (MineDocumentBundleResource, 'get', [VIEW_ALL, MINESPACE_PROPONENT]),
+        (MineDocumentBundleResource, 'patch', [EDIT_PERMIT, MINESPACE_PROPONENT]),
         (MineDocumentListResource, "get", [VIEW_ALL, MINESPACE_PROPONENT]),
         (MineDocumentListResource, "get", [VIEW_ALL, MINESPACE_PROPONENT]),
         (MineDocumentVersionListResource, "post", [MINE_ADMIN, EDIT_MAJOR_MINE_APPLICATIONS, EDIT_PROJECT_DECISION_PACKAGES, MINESPACE_PROPONENT, EDIT_PROJECT_SUMMARIES, EDIT_INFORMATION_REQUIREMENTS_TABLE]),
@@ -786,6 +805,12 @@ EXPECTED_AUTH_TABLE = [
         (NOWApplicationListResource, 'get', [VIEW_ALL, GIS]),
         (NOWApplicationListResource, 'post', [EDIT_PERMIT]),
         (NOWApplicationNOWNumbersListResource, 'post', [VIEW_ALL, GIS]),
+        (NOWApplicationNationEventCodeResource, 'get', [VIEW_ALL]),
+        (NOWApplicationNationEventResource, 'post', [MANAGE_CONSULTATION_ADVISORS]),
+        (NOWApplicationNationResource, 'delete', [MANAGE_CONSULTATION_ADVISORS]),
+        (NOWApplicationNationResource, 'get', [VIEW_ALL]),
+        (NOWApplicationNationResource, 'post', [MANAGE_CONSULTATION_ADVISORS]),
+        (NOWApplicationNationStatusResource, 'get', [VIEW_ALL]),
         (NOWApplicationPermitTypeResource, 'get', [VIEW_ALL]),
         (NOWApplicationProgressResource, 'post', [EDIT_PERMIT]),
         (NOWApplicationProgressResource, 'put', [EDIT_PERMIT]),
@@ -802,6 +827,7 @@ EXPECTED_AUTH_TABLE = [
         (NOWApplicationStatusResource, 'put', [EDIT_PERMIT]),
         (NOWApplicationTypeResource, 'get', [VIEW_ALL]),
         (OrgbookPublisherConnectionResource, 'post', [VIEW_ALL]),
+        (PIPConsultationAreaResource, 'get', [VIEW_ALL]),
         (PartyListResource, "get", [VIEW_ALL, MINESPACE_PROPONENT]),
         (PartyListResource, "post", [EDIT_PARTY, MINESPACE_PROPONENT]), (PartyResource, "get", [VIEW_ALL]),
         (PartyOrgBookEntityListResource, 'delete', [MINE_ADMIN]),
@@ -885,7 +911,7 @@ EXPECTED_AUTH_TABLE = [
         (RequirementsResource, 'put', [MINESPACE_PROPONENT, EDIT_REQUIREMENTS]),
         (SearchResource, "get", [VIEW_ALL]), (SearchOptionsResource, "get", [VIEW_ALL]),
         (SimpleSearchResource, "get", [VIEW_ALL]), (MinespaceUserListResource, 'get', [MINE_ADMIN]),
-        (StandardPermitConditionsListResource, 'get', [EDIT_STANDARD_PERMIT_CONDITIONS]),
+        (StandardPermitConditionsListResource, 'get', [EDIT_PERMIT]),
         (StandardPermitConditionsListResource, 'post', [EDIT_STANDARD_PERMIT_CONDITIONS]),
         (StandardPermitConditionsResource, 'delete', [EDIT_STANDARD_PERMIT_CONDITIONS]),
         (StandardPermitConditionsResource, 'put', [EDIT_STANDARD_PERMIT_CONDITIONS]),
@@ -898,7 +924,7 @@ EXPECTED_AUTH_TABLE = [
         (UndergroundExplorationTypeResource, 'get', [VIEW_ALL]),
         (UnitTypeResource, 'get', [VIEW_ALL]),
         (UserListResource, 'get', [VIEW_ALL]),
-        (UserResource, 'get', [VIEW_ALL]),
+        (UserResource, 'get', [VIEW_ALL, MINESPACE_PROPONENT]),
         (VarianceApplicationStatusCodeResource, 'get', [VIEW_ALL, EDIT_VARIANCE, MINESPACE_PROPONENT]),
         (VarianceDocumentCategoryCodeResource, 'get', [VIEW_ALL]),
         (VarianceResource, 'get', [VIEW_ALL]),

@@ -4,7 +4,7 @@ import React, { FC, useContext } from "react";
 import { closeModal, openModal } from "@mds/common/redux/actions/modalActions";
 import { IMine, IMinePartyAppt, ITailingsStorageFacilityForm } from "@mds/common/interfaces";
 import { TailingsContext } from "./TailingsContext";
-import { getPartyRelationships } from "@mds/common/redux/selectors/partiesSelectors";
+import { getPartyRelationships } from "@mds/common/redux/slices/partiesSlice";
 import {
   dateInFuture,
   dateNotInFuture,
@@ -45,7 +45,7 @@ export const EngineerOfRecord: FC<EngineerOfRecordProps> = (props) => {
 
   const { addContactModalConfig } = useContext(TailingsContext);
   const tsfFormName = FORM.ADD_TAILINGS_STORAGE_FACILITY;
-  const partyRelationships: IMinePartyAppt[] = useAppSelector(getPartyRelationships);
+  const partyRelationships = useAppSelector(getPartyRelationships) as unknown as IMinePartyAppt[];
   const mine: IMine = useAppSelector(getMineById(mineGuid));
 
   const formValues = useAppSelector(getFormValues(tsfFormName)) as ITailingsStorageFacilityForm;

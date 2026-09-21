@@ -1,0 +1,27 @@
+@use "@/styles/base.scss" as *;
+
+.empty-search-state {
+  &__container {
+    width: 100%;
+    padding: 32px;
+  }
+  
+  &__icon {
+    font-size: 48px;
+    color: #d9d9d9;
+  }
+
+  &__quick-actions {
+    width: 100%;
+    padding: 16px 20px;
+  }
+
+  &__action-btn {
+    height: auto;
+    padding: 12px 8px;
+  }
+  
+  &__action-label {
+    font-size: 12px;
+  }
+}

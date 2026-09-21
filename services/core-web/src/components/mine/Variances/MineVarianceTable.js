@@ -8,7 +8,7 @@ import {
   getVarianceStatusOptionsHash,
   getHSRCMComplianceCodesHash,
 } from "@mds/common/redux/selectors/staticContentSelectors";
-import { getInspectorsHash } from "@mds/common/redux/selectors/partiesSelectors";
+import { getInspectorsHash } from "@mds/common/redux/slices/partiesSlice";
 import { formatDate } from "@common/utils/helpers";
 import * as Strings from "@mds/common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";

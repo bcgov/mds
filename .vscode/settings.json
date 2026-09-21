@@ -23,6 +23,8 @@
   "python.testing.unittestEnabled": false,
   "python.testing.pytestEnabled": true,
   "python.analysis.typeCheckingMode": "basic",
+  "python.defaultInterpreterPath": "services/core-api/.venv/bin/python",
+  "python.analysis.useNearestConfiguration": true,
   "yapf.args": [
     "--style={column_limit:100, spaces_before_comment:'15,30,50', SPLIT_BEFORE_EXPRESSION_AFTER_OPENING_PAREN:TRUE}"
   ]

@@ -48,10 +48,10 @@ export const ReportEditForm = (props: ReportEditProps) => {
   const renderReports = ({ fields }) => (
     <Row style={{ width: "100%" }}>
       {fields.map((report, index) => {
-        const reportData = formValues.reports && formValues.reports[index];
+        const reportData = formValues?.reports && formValues?.reports[index];
         const reportDefinition =
           mineReportDefinitionOptions?.find(
-            (d) => d?.mine_report_definition_guid === reportData.mine_report_definition_guid
+            (d) => d?.mine_report_definition_guid === reportData?.mine_report_definition_guid
           ) || {} as IMineReportDefinition;
         const reportWCompliance = {
           ...reportDefinition,

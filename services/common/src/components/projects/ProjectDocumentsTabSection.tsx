@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, ReactNode } from "react";
 import { Row, Col, Typography } from "antd";
 import DocumentTable from "../documents/DocumentTable";
 import { MineDocument } from "@mds/common/models/documents/document";
@@ -11,19 +11,23 @@ interface ProjectDocumentsTabSectionProps {
   titleLevel?: 1 | 2 | 3 | 4 | 5;
   documents: MineDocument[];
   onArchivedDocuments?: () => Promise<void>;
+  onReplaceDocument?: (document: MineDocument) => void | Promise<void>;
   canArchive?: boolean;
   canReplace?: boolean;
   infoText?: string;
+  header?: ReactNode;
 }
 const ProjectDocumentsTabSection: FC<ProjectDocumentsTabSectionProps> = ({
   documents,
   onArchivedDocuments,
+  onReplaceDocument,
   id,
   title,
   titleLevel = 4,
   canArchive = true,
   canReplace = true,
   infoText = null,
+  header = null,
 }) => {
   const sectionTitle = title ?? formatUrlToUpperCaseString(id);
 
@@ -47,8 +51,10 @@ const ProjectDocumentsTabSection: FC<ProjectDocumentsTabSectionProps> = ({
           canArchiveDocuments={canArchive}
           canReplaceDocuments={canReplace}
           onArchivedDocuments={onArchivedDocuments}
+          onReplaceDocument={onReplaceDocument}
           showVersionHistory={true}
           enableBulkActions={true}
+          header={header}
         />
       </Col>
     </Row>

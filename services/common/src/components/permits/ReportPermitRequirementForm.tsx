@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 import {
   IMineReportPermitRequirement,
   IPermitCondition,
+  IStandardPermitCondition,
 } from "@mds/common/interfaces";
 import { required, requiredRadioButton, maxLength, requiredList, notInList } from "@mds/common/redux/utils/Validate";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
@@ -40,6 +41,8 @@ interface ReportPermitRequirementProps {
   mineReportPermitRequirement?: IMineReportPermitRequirement;
   canEditPermitConditions: boolean;
   refreshData: (closeForm?: boolean) => Promise<void>;
+  conditionId?: number;
+  conditionFamilyLoading?: boolean;
 }
 
 export const ReportPermitRequirementForm: FC<ReportPermitRequirementProps> = ({
@@ -48,22 +51,38 @@ export const ReportPermitRequirementForm: FC<ReportPermitRequirementProps> = ({
   mineReportPermitRequirement,
   canEditPermitConditions,
   refreshData,
+  conditionId,
+  conditionFamilyLoading = false,
 }) => {
   const formName = `${FORM.ADD_REPORT_TO_PERMIT_CONDITION}-${condition?.permit_condition_id ?? mineReportPermitRequirement?.mine_report_permit_requirement_id}`;
 
-  const { loading, currentAmendment, permitGuid, mineGuid, isNowEditor, isStandardConditionEditor } = usePermitConditions();
+  const { currentAmendment,
+    permitGuid,
+    mineGuid,
+    isNowEditor,
+    isStandardConditionEditor,
+    setActiveConditionId,
+    clearActiveConditionId,
+    setLoading,
+    addSubmittingCondition,
+    removeSubmittingCondition
+  } = usePermitConditions();
   const [selectedRequirement, setSelectedRequirement] = useState(mineReportPermitRequirement);
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (
+      !selectedRequirement ||
+      selectedRequirement.mine_report_permit_requirement_id === mineReportPermitRequirement?.mine_report_permit_requirement_id
+    ) {
+      setSelectedRequirement(mineReportPermitRequirement);
+    }
+  }, [mineReportPermitRequirement]);
   const [isEditMode, setIsEditMode] = useState(isModal && canEditPermitConditions);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const standardRequirements = useAppSelector(getStandardReportRequirements);
   const permitRequirements = useAppSelector(getMineReportPermitRequirementsByAmendment(permitGuid, currentAmendment?.permit_amendment_guid, isNowEditor));
-  const existingRequirements = isStandardConditionEditor ? standardRequirements : permitRequirements;
-
-  const hasExistingRequirements = existingRequirements?.length > 0;
-  const existingRequirementsOptions = existingRequirements.map((r) => { return { label: r.report_name, value: r.mine_report_permit_requirement_id } });
-  const disableFields = mineReportPermitRequirement?.mine_report_permit_requirement_id !== selectedRequirement?.mine_report_permit_requirement_id;
-  const multipleConditions = selectedRequirement?.permit_condition_ids.length > 1;
 
   const nowConditions = useAppSelector(getNowDraftConditionsFormatted);
   const permitConditions = useAppSelector(getPermitConditionCategories(permitGuid, currentAmendment?.permit_amendment_guid));
@@ -75,6 +94,34 @@ export const ReportPermitRequirementForm: FC<ReportPermitRequirementProps> = ({
 
   const { conditionMap, categoriesWithConditions } = conditions;
 
+  // Standard report requirements aren't filtered by template on the GET endpoint, so
+  // filter to only those requirements matching the notice_of_work_type (template)
+  // as the condition currently being edited.
+  const currentTemplateCondition = condition as unknown as IStandardPermitCondition;
+  const targetNowType =
+    currentTemplateCondition?.notice_of_work_type ||
+    selectedRequirement?.notice_of_work_type ||
+    (selectedRequirement?.permit_condition_ids?.[0]
+      ? (conditionMap[selectedRequirement.permit_condition_ids[0]] as unknown as IStandardPermitCondition)?.notice_of_work_type
+      : undefined);
+
+  const standardRequirementsForTemplate =
+    isStandardConditionEditor && targetNowType
+      ? standardRequirements.filter((r) => {
+          const nowType =
+            r.notice_of_work_type ||
+            (conditionMap[r.permit_condition_ids?.[0]] as unknown as IStandardPermitCondition)?.notice_of_work_type;
+          return nowType === targetNowType;
+        })
+      : standardRequirements;
+
+
+  const existingRequirements = isStandardConditionEditor ? standardRequirementsForTemplate : permitRequirements;
+
+  const hasExistingRequirements = existingRequirements?.length > 0;
+  const existingRequirementsOptions = existingRequirements.map((r) => { return { label: r.report_name, value: r.mine_report_permit_requirement_id } });
+  const disableFields = mineReportPermitRequirement?.mine_report_permit_requirement_id !== selectedRequirement?.mine_report_permit_requirement_id;
+  const multipleConditions = selectedRequirement?.permit_condition_ids.length > 1;
 
   const getLinkedConditionList = () => {
     if (!hasExistingRequirements || !selectedRequirement) {
@@ -99,18 +146,30 @@ export const ReportPermitRequirementForm: FC<ReportPermitRequirementProps> = ({
   useEffect(() => {
     if (!canEditPermitConditions) {
       setIsEditMode(false);
+      if (!isModal && conditionId) {
+        setActiveConditionId(null);
+      }
     }
   }, [canEditPermitConditions]);
 
   const handleDeleteReportRequirement = async ({ mine_report_permit_requirement_id, permit_condition_ids }) => {
     const updateData = async () => {
-      await refreshData();
+      await refreshData(false);
       setIsEditMode(false);
+      if (conditionId !== undefined) {
+        clearActiveConditionId(conditionId);
+      }
     };
 
     const deleteFunction = async () => {
+      setIsSubmitting(true);
+      setLoading(true);
+      permit_condition_ids.forEach((id) => addSubmittingCondition(id));
       await dispatch(deleteMineReportPermitRequirement({ mineGuid, mine_report_permit_requirement_id }));
-      updateData();
+      await updateData();
+      permit_condition_ids.forEach((id) => removeSubmittingCondition(id));
+      setLoading(false);
+      setIsSubmitting(false);
     };
 
     if (permit_condition_ids.length > 1) {
@@ -129,6 +188,10 @@ export const ReportPermitRequirementForm: FC<ReportPermitRequirementProps> = ({
 
 
   const handleEditReportRequirement = async (values) => {
+    const conditionIds: number[] = values.permit_condition_ids ?? [];
+    setIsSubmitting(true);
+    setLoading(true);
+    conditionIds.forEach((id) => addSubmittingCondition(id));
     let resp;
     if (values.mine_report_permit_requirement_id) {
       resp = await dispatch(updateMineReportPermitRequirement({ mineGuid, values }));
@@ -136,7 +199,11 @@ export const ReportPermitRequirementForm: FC<ReportPermitRequirementProps> = ({
       resp = await dispatch(createMineReportPermitRequirement({ mineGuid, values }));
     }
     if (resp.payload) {
-      await refreshData(false);
+      setSelectedRequirement(resp.payload);
+      await refreshData();
+      if (conditionId !== undefined) {
+        clearActiveConditionId(conditionId);
+      }
       // this is for an edge case where an existing report is edited and so it has a form on the page
       // and it was not getting updated so not showing the correct conditions there.
       if (condition && values.mine_report_permit_requirement_id) {
@@ -149,6 +216,9 @@ export const ReportPermitRequirementForm: FC<ReportPermitRequirementProps> = ({
         setIsEditMode(false);
       }
     }
+    conditionIds.forEach((id) => removeSubmittingCondition(id));
+    setLoading(false);
+    setIsSubmitting(false);
   };
 
   const handleSelectReportRequirement = (requirement_id: number) => {
@@ -202,6 +272,7 @@ export const ReportPermitRequirementForm: FC<ReportPermitRequirementProps> = ({
     if (selectedRequirement) {
       return ({
         ...selectedRequirement,
+        cim_or_cpo: selectedRequirement.cim_or_cpo ?? "NONE",
         ...initialValues
       });
     }
@@ -249,7 +320,7 @@ export const ReportPermitRequirementForm: FC<ReportPermitRequirementProps> = ({
               type="warning"
             />
           </Col>}
-          {!loading && <Col span={24}>
+          {!isSubmitting && <Col span={24}>
             <Field
               name="permit_condition_ids"
               label="Condition(s)"
@@ -271,7 +342,7 @@ export const ReportPermitRequirementForm: FC<ReportPermitRequirementProps> = ({
                 "Report Name already exists for this permit. Please select from the Existing Report selector or create a new Report Name.")
               ]}
               component={RenderField}
-              disabled={loading || disableFields}
+              disabled={isSubmitting || disableFields}
             />
           </Col>
           <Col span={isStandardConditionEditor ? 24 : 12}>
@@ -287,7 +358,7 @@ export const ReportPermitRequirementForm: FC<ReportPermitRequirementProps> = ({
                   label: key,
                 };
               })}
-              disabled={loading || disableFields}
+              disabled={isSubmitting || disableFields}
             />
           </Col>
           {!isStandardConditionEditor &&
@@ -298,7 +369,7 @@ export const ReportPermitRequirementForm: FC<ReportPermitRequirementProps> = ({
                 placeholder="Select date"
                 formatViewDate
                 component={RenderDate}
-                disabled={loading || disableFields}
+                disabled={isSubmitting || disableFields}
               />
             </Col>}
           <Col md={12} sm={24}>
@@ -328,7 +399,7 @@ export const ReportPermitRequirementForm: FC<ReportPermitRequirementProps> = ({
                 isVertical
                 validate={[requiredRadioButton]}
                 component={RenderRadioButtons}
-                disabled={loading || disableFields}
+                disabled={isSubmitting || disableFields}
               />
             )}
           </Col>
@@ -358,7 +429,7 @@ export const ReportPermitRequirementForm: FC<ReportPermitRequirementProps> = ({
                     label: REPORT_MINISTRY_RECIPIENT_HASH[key],
                   };
                 })}
-                disabled={loading || disableFields}
+                disabled={isSubmitting || disableFields}
               />
             )}
           </Col>
@@ -367,7 +438,7 @@ export const ReportPermitRequirementForm: FC<ReportPermitRequirementProps> = ({
           {isEditMode && mineReportPermitRequirement && (
             <Col>
               <CoreButton
-                disabled={loading}
+                disabled={isSubmitting}
                 type="primary"
                 danger
                 className="form-btn"
@@ -380,20 +451,21 @@ export const ReportPermitRequirementForm: FC<ReportPermitRequirementProps> = ({
           {isEditMode ? (
             <div>
               <RenderCancelButton
-                loading={loading}
+                loading={isSubmitting}
                 resetForm
                 cancelFunction={!isModal ? () => setIsEditMode(false) : undefined}
               />
               <RenderSubmitButton
-                loading={loading}
+                loading={isSubmitting}
                 disableOnClean={false}
                 buttonText={`${mineReportPermitRequirement ? "Update" : "Add"} Report`}
               />
             </div>
           ) : (canEditPermitConditions &&
             <Button
-              loading={loading}
+              loading={isSubmitting}
               type="primary"
+              disabled={conditionFamilyLoading}
               onClick={(event) => {
                 event.preventDefault();
                 setIsEditMode(true);

@@ -17,6 +17,7 @@ describe("DeleteConditionModal", () => {
                 <DeleteConditionModal
                     title="Delete Condition"
                     onSubmit={jest.fn()}
+                    onCancel={jest.fn()}
                     condition={condition}
                 />
             </ReduxWrapper>

@@ -44,7 +44,7 @@ import { USER_ROLES } from "@mds/common/constants/environment";
 import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 import { closeModal } from "@mds/common/redux/actions/modalActions";
 import { getNoticeOfDeparture } from "@mds/common/redux/selectors/noticeOfDepartureSelectors";
-import { getMatchingPartyRelationships } from "@mds/common/redux/selectors/partiesSelectors";
+import { getMatchingPartyRelationships } from "@mds/common/redux/slices/partiesSlice";
 import { MinePartyAppointmentTypeCodeEnum } from "@mds/common/constants/enums";
 
 

@@ -1,0 +1,1 @@
+ALTER TYPE contact_method ADD VALUE IF NOT EXISTS 'INP';

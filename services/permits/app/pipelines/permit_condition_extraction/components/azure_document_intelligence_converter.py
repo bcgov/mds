@@ -83,12 +83,20 @@ class AzureDocumentIntelligenceConverter:
         paragraph_id = fle.hexdigest()[:7]
 
         # Transform bounding box coordinates from a polygon to a rectangle,
-        # and add it to the documents metadata
-        [x1, y1, x2, y2, x3, y3, x4, y4] = p.bounding_regions[0].polygon
-        x = [x1, x2, x3, x4]
-        y = [y1, y2, y3, y4]
-
-        top, right, bottom, left = min(y), max(x), max(y), min(x)
+        # and add it to the documents metadata.
+        # bounding_regions or polygon can be None/empty for some formats (e.g. xlsx).
+        polygon = (
+            p.bounding_regions[0].polygon
+            if p.bounding_regions and p.bounding_regions[0].polygon
+            else None
+        )
+        if polygon:
+            [x1, y1, x2, y2, x3, y3, x4, y4] = polygon
+            x = [x1, x2, x3, x4]
+            y = [y1, y2, y3, y4]
+            top, right, bottom, left = min(y), max(x), max(y), min(x)
+        else:
+            top, right, bottom, left = 0, 0, 0, 0
 
         content = {
             "id": paragraph_id,
@@ -105,7 +113,7 @@ class AzureDocumentIntelligenceConverter:
                 "left": left,
             },
             "role": p.role,
-            "page": p.bounding_regions[0].page_number,
+            "page": p.bounding_regions[0].page_number if p.bounding_regions else None,
         }
 
         return Document(

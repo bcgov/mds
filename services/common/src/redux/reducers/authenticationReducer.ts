@@ -4,6 +4,7 @@ import { IUserInfo } from "@mds/common/interfaces";
 import { SystemFlagEnum } from "@mds/common/constants/enums";
 import { RootState } from "@mds/common/redux/rootState";
 import * as ReducerTypes from "@mds/common/constants/reducerTypes";
+import { Feature, isFeatureEnabled } from "@mds/common/utils/featureFlag";
 
 interface IAuthenticationReducerState {
   isAuthenticated: boolean;
@@ -53,9 +54,14 @@ export const authenticationReducer = (state = initialState, action) => {
         redirect: GLOBAL_ROUTES?.MINES?.route,
       };
     case ActionTypes.STORE_USER_ACCESS_DATA:
+      // keycloak roles
+      const roles = action.payload.roles;
+      const hasRoles = roles?.length > 0;
+      const msNewLoginEnabled = isFeatureEnabled(Feature.MINESPACE_SIGNUP);
       return {
         ...state,
-        userAccessData: action.payload.roles,
+        userAccessData: roles ?? [],
+        redirect: hasRoles || !msNewLoginEnabled ? state.redirect : GLOBAL_ROUTES?.NEW_USER?.route,
       };
     case ActionTypes.STORE_IS_PROPONENT:
       return {

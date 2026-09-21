@@ -109,6 +109,7 @@ NOW_APPLICATION_GIS_EXPORT = "mds:now_application:gis-export"
 # Redis Cache Keys
 GET_ALL_INSPECTORS_KEY = "mds:parties:all_inspectors"
 GET_ALL_PROJECT_LEADS_KEY = "mds:parties:all_project_leads"
+GET_ALL_CONSULTATION_ADVISORS_KEY = "mds:parties:all_consultation_advisors"
 STATIC_CONTENT_KEY = "mds:core:all_static_content"
 NROS_NOW_TOKEN = "mds:nros:token"
 
@@ -179,6 +180,11 @@ INCIDENTS_EMAIL = 'mineincidents@gov.bc.ca'
 PROJECT_SUMMARY_EMAILS = [
     MAJOR_MINES_OFFICE_EMAIL, MDS_EMAIL,'Magda.Kingsley@gov.bc.ca', 
     'Kelsey.Norlund@gov.bc.ca', 'Kristy.Emery@gov.bc.ca', 'Samuel.Barnes@gov.bc.ca'
+]
+PROJECT_EMA_EMAILS = [
+    "ENV.MiningAuthorizations@gov.bc.ca",
+    "ENVSECoal@gov.bc.ca",
+    "PermitAdministration.VictoriaEPD@gov.bc.ca"
 ]
 
 PERM_RECL_EMAIL = 'permrecl@gov.bc.ca'

@@ -1,15 +1,14 @@
 import React, { FC, useState } from "react";
 import { Button, Col, Row } from "antd";
 import { BookOutlined, CheckCircleOutlined } from "@ant-design/icons";
-import { isEmpty } from "lodash";
 import { useDispatch } from "react-redux";
 import {
   createPartyOrgBookEntity,
   deletePartyOrgBookEntity,
   fetchPartyById,
-} from "@mds/common/redux/actionCreators/partiesActionCreator";
+} from "@mds/common/redux/slices/partiesSlice";
 import { ORGBOOK_ENTITY_URL } from "@/constants/routes";
-import { IOrgbookCredential, IParty } from "@mds/common/interfaces";
+import { IParty } from "@mds/common/interfaces";
 import OrgBookSearch from "@mds/common/components/parties/OrgBookSearch";
 import { useAppSelector } from "@mds/common/redux/rootState";
 import { userHasRole } from "@mds/common/redux/selectors/authenticationSelectors";
@@ -22,17 +21,24 @@ interface PartyOrgBookFormProps {
 export const PartyOrgBookForm: FC<PartyOrgBookFormProps> = ({ party }) => {
   const [isAssociating, setIsAssociating] = useState(false);
   const dispatch = useDispatch();
-  const [credential, setCredential] = useState<IOrgbookCredential>(null);
-  const [currentParty, setCurrentParty] = useState(party.party_orgbook_entity.name_text);
-  const [isAssociated, setIsAssociated] = useState(!!party.party_orgbook_entity.name_text);
+  const [registrationId, setRegistrationId] = useState<string | null>(
+    party.party_bc_registration?.registration_id ?? null
+  );
+  const [businessName, setBusinessName] = useState(null);
+  const [currentParty, setCurrentParty] = useState(party.party_bc_registration?.name_text);
+  const [isAssociated, setIsAssociated] = useState(!!party.party_bc_registration?.name_text);
 
   const canManageOrgbook = useAppSelector(userHasRole(USER_ROLES.role_manage_orgbook));
 
   const handleAssociateButtonClick = async () => {
     setIsAssociating(true);
     await dispatch(
-      createPartyOrgBookEntity(party.party_guid, {
-        credential_id: credential.id.toString(),
+      createPartyOrgBookEntity({
+        partyGuid: party.party_guid,
+        data: {
+          registration_id: registrationId,
+          business_name: businessName
+        },
       })
     );
     await dispatch(fetchPartyById(party.party_guid));
@@ -51,23 +57,23 @@ export const PartyOrgBookForm: FC<PartyOrgBookFormProps> = ({ party }) => {
     setIsAssociated(false);
   };
 
-  const hasOrgBookCredential = !isEmpty(credential);
 
   return (
     <Row>
       <Col span={24}>
         <OrgBookSearch
           isDisabled={isAssociated}
-          setCredential={setCredential}
+          setRegistrationId={setRegistrationId}
+          setBusinessName={setBusinessName}
           current_party={currentParty}
         />
       </Col>
       <Col span={24}>
         <Button
           className="full-mobile"
-          href={hasOrgBookCredential ? ORGBOOK_ENTITY_URL(credential.topic.source_id) : null}
+          href={ORGBOOK_ENTITY_URL(registrationId)}
+          disabled={!registrationId}
           target="_blank"
-          disabled={!hasOrgBookCredential}
         >
           <span>
             <BookOutlined className="padding-sm--right" />
@@ -78,7 +84,7 @@ export const PartyOrgBookForm: FC<PartyOrgBookFormProps> = ({ party }) => {
           <Button
             type="primary"
             className="full-mobile"
-            disabled={!isAssociated ? !hasOrgBookCredential : false} //Admin is allowed to disassociate
+            disabled={!registrationId}
             onClick={!isAssociated ? handleAssociateButtonClick : handleDisassociateButtonClick}
             loading={isAssociating}
             danger={isAssociated}
@@ -90,7 +96,7 @@ export const PartyOrgBookForm: FC<PartyOrgBookFormProps> = ({ party }) => {
           </Button>
         )}
       </Col>
-    </Row>
+    </Row >
   );
 };
 

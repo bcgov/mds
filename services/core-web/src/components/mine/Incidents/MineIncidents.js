@@ -21,7 +21,7 @@ import {
   getDropdownIncidentStatusCodeOptions,
   getIncidentFollowupActionOptions,
 } from "@mds/common/redux/selectors/staticContentSelectors";
-import { getDropdownInspectors } from "@mds/common/redux/selectors/partiesSelectors";
+import { getDropdownInspectors } from "@mds/common/redux/slices/partiesSlice";
 import * as ROUTES from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
 import * as Permission from "@/constants/permissions";

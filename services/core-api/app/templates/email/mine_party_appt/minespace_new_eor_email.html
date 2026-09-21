@@ -2,7 +2,7 @@
 {% from "email/_components/email_macros.html" import paragraph, button_link, inline_link, info_block %}
 
 {% set brand = 'minespace' %}
-{% set title = 'New Engineer of Record for ' + tsf_name + ' at ' + mine.mine_name + ' has been assigned.' %}
+{% set page_title = 'New Engineer of Record for ' + tsf_name + ' at ' + mine.mine_name + ' has been assigned.' %}
 
 {% block content %}
 {{ paragraph('As of ' + start_date + ', a new Engineer of Record, ' + party.first_name + ' ' + party.last_name + ', has

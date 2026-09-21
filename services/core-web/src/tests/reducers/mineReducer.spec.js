@@ -12,6 +12,7 @@ const baseExpectedValue = {
   mines: {},
   mineIds: [],
   mineNameList: [],
+  mineSearchResultsForNewUser: [],
   minesPageData: {},
   mineGuid: "",
   mineBasicInfoList: [],

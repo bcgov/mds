@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Camps renders properly 1`] = `
+exports[`Camps renders both the legacy fuel fields and the Fuel Transportation and Storage table when legacy fuel data is present 1`] = `
 <div>
   <form
     class="ant-form ant-form-vertical common-form common-form-formName form-edit"
@@ -833,6 +833,1495 @@ exports[`Camps renders properly 1`] = `
                     </div>
                   </div>
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br />
+      <h4>
+        Fuel Transportation and Storage
+      </h4>
+      <div>
+        <div>
+          <div
+            class="ant-table-wrapper"
+            style="position: relative; z-index: 5;"
+          >
+            <div
+              class="ant-table ant-table-empty"
+            >
+              <div
+                class="ant-table-content"
+              >
+                <table
+                  style="table-layout: auto;"
+                >
+                  <thead
+                    class="ant-table-thead"
+                  >
+                    <tr>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Fuel Type
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Fuel Related Activity
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Estimated Fuel Volume (litres)
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Description of Fuel Related Activity
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Description of Precautionary Measures
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      />
+                    </tr>
+                  </thead>
+                  <tbody
+                    class="ant-table-tbody"
+                  >
+                    <tr
+                      class="ant-table-placeholder"
+                    >
+                      <td
+                        class="ant-table-cell"
+                        colspan="100%"
+                        style="color: rgb(191, 191, 191);"
+                      >
+                        No Data Yet
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br />
+      <h4>
+        Reclamation Program
+      </h4>
+      <div
+        class="ant-row"
+        style="margin-left: -8px; margin-right: -8px;"
+      >
+        <div
+          class="ant-col ant-col-sm-24 ant-col-md-12"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="field-title"
+          >
+            Proposed reclamation and timing for this specific activity
+            <span
+              class="violet position-right"
+            >
+              Edited
+            </span>
+          </div>
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <textarea
+                      class="ant-input ant-input-disabled"
+                      disabled=""
+                      id="reclamation_description"
+                      name="reclamation_description"
+                      style="height: 0px; resize: none; min-height: -12px;"
+                    />
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="formName_reclamation_description_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-sm-24 ant-col-md-12"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="field-title"
+          >
+            Estimated Cost of reclamation activities described above
+            <span
+              class="violet position-right"
+            >
+              Edited
+            </span>
+          </div>
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <input
+                      aria-label="reclamation_cost"
+                      class="ant-input ant-input-disabled"
+                      data-testid="reclamation_cost"
+                      disabled=""
+                      id="reclamation_cost"
+                      name="reclamation_cost"
+                      type="text"
+                      value=""
+                    />
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="formName_reclamation_cost_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+`;
+
+exports[`Camps renders properly 1`] = `
+<div>
+  <form
+    class="ant-form ant-form-vertical common-form common-form-formName form-edit"
+    id="formName"
+  >
+    <div>
+      <h4>
+        Camps
+      </h4>
+      <div>
+        <div>
+          <div
+            class="ant-table-wrapper"
+            style="position: relative; z-index: 5;"
+          >
+            <div
+              class="ant-table ant-table-empty"
+            >
+              <div
+                class="ant-table-content"
+              >
+                <table
+                  style="table-layout: auto;"
+                >
+                  <thead
+                    class="ant-table-thead"
+                  >
+                    <tr>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Name
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        People in Camp
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Number of Structures
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Description of Structures
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Waste Disposal
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Sanitary Facilities
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Water Supply
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Quantity of Water
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Disturbed Area (ha)
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Merchantable timber volume (m³)
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      />
+                    </tr>
+                  </thead>
+                  <tbody
+                    class="ant-table-tbody"
+                  >
+                    <tr
+                      class="ant-table-placeholder"
+                    >
+                      <td
+                        class="ant-table-cell"
+                        colspan="100%"
+                        style="color: rgb(191, 191, 191);"
+                      >
+                        No Data Yet
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br />
+      <div
+        class="ant-row"
+        style="margin-left: -8px; margin-right: -8px;"
+      >
+        <div
+          class="ant-col ant-col-md-24"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="field-title"
+          >
+            Notified the local Health Authority as you have a camp for more than 5 people planned?
+            <span
+              class="violet"
+              style="margin-left: 5px;"
+            >
+              Edited
+            </span>
+          </div>
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <div
+                      class="ant-radio-group ant-radio-group-solid"
+                    >
+                      <label
+                        class="ant-radio-wrapper ant-radio-wrapper-disabled ant-radio-wrapper-in-form-item"
+                      >
+                        <span
+                          class="ant-radio ant-radio-disabled"
+                        >
+                          <input
+                            class="ant-radio-input"
+                            disabled=""
+                            name="health_authority_notified"
+                            type="radio"
+                            value="true"
+                          />
+                          <span
+                            class="ant-radio-inner"
+                          />
+                        </span>
+                        <span>
+                          Yes
+                        </span>
+                      </label>
+                      <label
+                        class="ant-radio-wrapper ant-radio-wrapper-disabled ant-radio-wrapper-in-form-item"
+                      >
+                        <span
+                          class="ant-radio ant-radio-disabled"
+                        >
+                          <input
+                            class="ant-radio-input"
+                            disabled=""
+                            name="health_authority_notified"
+                            type="radio"
+                            value="false"
+                          />
+                          <span
+                            class="ant-radio-inner"
+                          />
+                        </span>
+                        <span>
+                          No
+                        </span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="formName_health_authority_notified_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-md-24"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="field-title"
+          >
+            Consent given to share name, address and contact information with the local Health Authority?
+            <span
+              class="violet"
+              style="margin-left: 5px;"
+            >
+              Edited
+            </span>
+          </div>
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <div
+                      class="ant-radio-group ant-radio-group-solid"
+                    >
+                      <label
+                        class="ant-radio-wrapper ant-radio-wrapper-disabled ant-radio-wrapper-in-form-item"
+                      >
+                        <span
+                          class="ant-radio ant-radio-disabled"
+                        >
+                          <input
+                            class="ant-radio-input"
+                            disabled=""
+                            name="health_authority_consent"
+                            type="radio"
+                            value="true"
+                          />
+                          <span
+                            class="ant-radio-inner"
+                          />
+                        </span>
+                        <span>
+                          Yes
+                        </span>
+                      </label>
+                      <label
+                        class="ant-radio-wrapper ant-radio-wrapper-disabled ant-radio-wrapper-in-form-item"
+                      >
+                        <span
+                          class="ant-radio ant-radio-disabled"
+                        >
+                          <input
+                            class="ant-radio-input"
+                            disabled=""
+                            name="health_authority_consent"
+                            type="radio"
+                            value="false"
+                          />
+                          <span
+                            class="ant-radio-inner"
+                          />
+                        </span>
+                        <span>
+                          No
+                        </span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="formName_health_authority_consent_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br />
+      <h4>
+        Buildings
+      </h4>
+      <div>
+        <div>
+          <div
+            class="ant-table-wrapper"
+            style="position: relative; z-index: 5;"
+          >
+            <div
+              class="ant-table ant-table-empty"
+            >
+              <div
+                class="ant-table-content"
+              >
+                <table
+                  style="table-layout: auto;"
+                >
+                  <thead
+                    class="ant-table-thead"
+                  >
+                    <tr>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Name
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Purpose
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Structure
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Disturbed Area (ha)
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Merchantable timber volume (m³)
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      />
+                    </tr>
+                  </thead>
+                  <tbody
+                    class="ant-table-tbody"
+                  >
+                    <tr
+                      class="ant-table-placeholder"
+                    >
+                      <td
+                        class="ant-table-cell"
+                        colspan="100%"
+                        style="color: rgb(191, 191, 191);"
+                      >
+                        No Data Yet
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br />
+      <h4>
+        Staging Areas
+      </h4>
+      <div>
+        <div>
+          <div
+            class="ant-table-wrapper"
+            style="position: relative; z-index: 5;"
+          >
+            <div
+              class="ant-table ant-table-empty"
+            >
+              <div
+                class="ant-table-content"
+              >
+                <table
+                  style="table-layout: auto;"
+                >
+                  <thead
+                    class="ant-table-thead"
+                  >
+                    <tr>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Name
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Disturbed Area (ha)
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Merchantable timber volume (m³)
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      />
+                    </tr>
+                  </thead>
+                  <tbody
+                    class="ant-table-tbody"
+                  >
+                    <tr
+                      class="ant-table-placeholder"
+                    >
+                      <td
+                        class="ant-table-cell"
+                        colspan="100%"
+                        style="color: rgb(191, 191, 191);"
+                      >
+                        No Data Yet
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br />
+      <h4>
+        Fuel / Lubricant Storage
+      </h4>
+      <div
+        class="ant-row"
+        style="margin-left: -8px; margin-right: -8px;"
+      >
+        <div
+          class="ant-col ant-col-sm-24 ant-col-md-12"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="field-title"
+          >
+            Do you propose to store fuel?
+            <span
+              class="violet"
+              style="margin-left: 5%;"
+            >
+              Edited
+            </span>
+          </div>
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <div
+                      class="ant-radio-group ant-radio-group-solid"
+                    >
+                      <label
+                        class="ant-radio-wrapper ant-radio-wrapper-disabled ant-radio-wrapper-in-form-item"
+                      >
+                        <span
+                          class="ant-radio ant-radio-disabled"
+                        >
+                          <input
+                            class="ant-radio-input"
+                            disabled=""
+                            name="has_fuel_stored"
+                            type="radio"
+                            value="true"
+                          />
+                          <span
+                            class="ant-radio-inner"
+                          />
+                        </span>
+                        <span>
+                          Yes
+                        </span>
+                      </label>
+                      <label
+                        class="ant-radio-wrapper ant-radio-wrapper-disabled ant-radio-wrapper-in-form-item"
+                      >
+                        <span
+                          class="ant-radio ant-radio-disabled"
+                        >
+                          <input
+                            class="ant-radio-input"
+                            disabled=""
+                            name="has_fuel_stored"
+                            type="radio"
+                            value="false"
+                          />
+                          <span
+                            class="ant-radio-inner"
+                          />
+                        </span>
+                        <span>
+                          No
+                        </span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="formName_has_fuel_stored_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br />
+      <br />
+      <h4>
+        Reclamation Program
+      </h4>
+      <div
+        class="ant-row"
+        style="margin-left: -8px; margin-right: -8px;"
+      >
+        <div
+          class="ant-col ant-col-sm-24 ant-col-md-12"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="field-title"
+          >
+            Proposed reclamation and timing for this specific activity
+            <span
+              class="violet position-right"
+            >
+              Edited
+            </span>
+          </div>
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <textarea
+                      class="ant-input ant-input-disabled"
+                      disabled=""
+                      id="reclamation_description"
+                      name="reclamation_description"
+                      style="height: 0px; resize: none; min-height: -12px;"
+                    />
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="formName_reclamation_description_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-sm-24 ant-col-md-12"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="field-title"
+          >
+            Estimated Cost of reclamation activities described above
+            <span
+              class="violet position-right"
+            >
+              Edited
+            </span>
+          </div>
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <input
+                      aria-label="reclamation_cost"
+                      class="ant-input ant-input-disabled"
+                      data-testid="reclamation_cost"
+                      disabled=""
+                      id="reclamation_cost"
+                      name="reclamation_cost"
+                      type="text"
+                      value=""
+                    />
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="formName_reclamation_cost_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+`;
+
+exports[`Camps renders the Fuel Transportation and Storage table when has_fuel_stored is true, without legacy fuel fields 1`] = `
+<div>
+  <form
+    class="ant-form ant-form-vertical common-form common-form-formName form-edit"
+    id="formName"
+  >
+    <div>
+      <h4>
+        Camps
+      </h4>
+      <div>
+        <div>
+          <div
+            class="ant-table-wrapper"
+            style="position: relative; z-index: 5;"
+          >
+            <div
+              class="ant-table ant-table-empty"
+            >
+              <div
+                class="ant-table-content"
+              >
+                <table
+                  style="table-layout: auto;"
+                >
+                  <thead
+                    class="ant-table-thead"
+                  >
+                    <tr>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Name
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        People in Camp
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Number of Structures
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Description of Structures
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Waste Disposal
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Sanitary Facilities
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Water Supply
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Quantity of Water
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Disturbed Area (ha)
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Merchantable timber volume (m³)
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      />
+                    </tr>
+                  </thead>
+                  <tbody
+                    class="ant-table-tbody"
+                  >
+                    <tr
+                      class="ant-table-placeholder"
+                    >
+                      <td
+                        class="ant-table-cell"
+                        colspan="100%"
+                        style="color: rgb(191, 191, 191);"
+                      >
+                        No Data Yet
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br />
+      <div
+        class="ant-row"
+        style="margin-left: -8px; margin-right: -8px;"
+      >
+        <div
+          class="ant-col ant-col-md-24"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="field-title"
+          >
+            Notified the local Health Authority as you have a camp for more than 5 people planned?
+            <span
+              class="violet"
+              style="margin-left: 5px;"
+            >
+              Edited
+            </span>
+          </div>
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <div
+                      class="ant-radio-group ant-radio-group-solid"
+                    >
+                      <label
+                        class="ant-radio-wrapper ant-radio-wrapper-disabled ant-radio-wrapper-in-form-item"
+                      >
+                        <span
+                          class="ant-radio ant-radio-disabled"
+                        >
+                          <input
+                            class="ant-radio-input"
+                            disabled=""
+                            name="health_authority_notified"
+                            type="radio"
+                            value="true"
+                          />
+                          <span
+                            class="ant-radio-inner"
+                          />
+                        </span>
+                        <span>
+                          Yes
+                        </span>
+                      </label>
+                      <label
+                        class="ant-radio-wrapper ant-radio-wrapper-disabled ant-radio-wrapper-in-form-item"
+                      >
+                        <span
+                          class="ant-radio ant-radio-disabled"
+                        >
+                          <input
+                            class="ant-radio-input"
+                            disabled=""
+                            name="health_authority_notified"
+                            type="radio"
+                            value="false"
+                          />
+                          <span
+                            class="ant-radio-inner"
+                          />
+                        </span>
+                        <span>
+                          No
+                        </span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="formName_health_authority_notified_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-md-24"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="field-title"
+          >
+            Consent given to share name, address and contact information with the local Health Authority?
+            <span
+              class="violet"
+              style="margin-left: 5px;"
+            >
+              Edited
+            </span>
+          </div>
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <div
+                      class="ant-radio-group ant-radio-group-solid"
+                    >
+                      <label
+                        class="ant-radio-wrapper ant-radio-wrapper-disabled ant-radio-wrapper-in-form-item"
+                      >
+                        <span
+                          class="ant-radio ant-radio-disabled"
+                        >
+                          <input
+                            class="ant-radio-input"
+                            disabled=""
+                            name="health_authority_consent"
+                            type="radio"
+                            value="true"
+                          />
+                          <span
+                            class="ant-radio-inner"
+                          />
+                        </span>
+                        <span>
+                          Yes
+                        </span>
+                      </label>
+                      <label
+                        class="ant-radio-wrapper ant-radio-wrapper-disabled ant-radio-wrapper-in-form-item"
+                      >
+                        <span
+                          class="ant-radio ant-radio-disabled"
+                        >
+                          <input
+                            class="ant-radio-input"
+                            disabled=""
+                            name="health_authority_consent"
+                            type="radio"
+                            value="false"
+                          />
+                          <span
+                            class="ant-radio-inner"
+                          />
+                        </span>
+                        <span>
+                          No
+                        </span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="formName_health_authority_consent_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br />
+      <h4>
+        Buildings
+      </h4>
+      <div>
+        <div>
+          <div
+            class="ant-table-wrapper"
+            style="position: relative; z-index: 5;"
+          >
+            <div
+              class="ant-table ant-table-empty"
+            >
+              <div
+                class="ant-table-content"
+              >
+                <table
+                  style="table-layout: auto;"
+                >
+                  <thead
+                    class="ant-table-thead"
+                  >
+                    <tr>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Name
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Purpose
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Structure
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Disturbed Area (ha)
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Merchantable timber volume (m³)
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      />
+                    </tr>
+                  </thead>
+                  <tbody
+                    class="ant-table-tbody"
+                  >
+                    <tr
+                      class="ant-table-placeholder"
+                    >
+                      <td
+                        class="ant-table-cell"
+                        colspan="100%"
+                        style="color: rgb(191, 191, 191);"
+                      >
+                        No Data Yet
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br />
+      <h4>
+        Staging Areas
+      </h4>
+      <div>
+        <div>
+          <div
+            class="ant-table-wrapper"
+            style="position: relative; z-index: 5;"
+          >
+            <div
+              class="ant-table ant-table-empty"
+            >
+              <div
+                class="ant-table-content"
+              >
+                <table
+                  style="table-layout: auto;"
+                >
+                  <thead
+                    class="ant-table-thead"
+                  >
+                    <tr>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Name
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Disturbed Area (ha)
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Merchantable timber volume (m³)
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      />
+                    </tr>
+                  </thead>
+                  <tbody
+                    class="ant-table-tbody"
+                  >
+                    <tr
+                      class="ant-table-placeholder"
+                    >
+                      <td
+                        class="ant-table-cell"
+                        colspan="100%"
+                        style="color: rgb(191, 191, 191);"
+                      >
+                        No Data Yet
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br />
+      <h4>
+        Fuel / Lubricant Storage
+      </h4>
+      <div
+        class="ant-row"
+        style="margin-left: -8px; margin-right: -8px;"
+      >
+        <div
+          class="ant-col ant-col-sm-24 ant-col-md-12"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="field-title"
+          >
+            Do you propose to store fuel?
+            <span
+              class="violet"
+              style="margin-left: 5%;"
+            >
+              Edited
+            </span>
+          </div>
+          <div
+            class="ant-form-item ant-form-item-with-help"
+          >
+            <div
+              class="ant-row ant-form-item-row"
+            >
+              <div
+                class="ant-col ant-form-item-control"
+              >
+                <div
+                  class="ant-form-item-control-input"
+                >
+                  <div
+                    class="ant-form-item-control-input-content"
+                  >
+                    <div
+                      class="ant-radio-group ant-radio-group-solid"
+                    >
+                      <label
+                        class="ant-radio-wrapper ant-radio-wrapper-disabled ant-radio-wrapper-in-form-item"
+                      >
+                        <span
+                          class="ant-radio ant-radio-disabled"
+                        >
+                          <input
+                            class="ant-radio-input"
+                            disabled=""
+                            name="has_fuel_stored"
+                            type="radio"
+                            value="true"
+                          />
+                          <span
+                            class="ant-radio-inner"
+                          />
+                        </span>
+                        <span>
+                          Yes
+                        </span>
+                      </label>
+                      <label
+                        class="ant-radio-wrapper ant-radio-wrapper-disabled ant-radio-wrapper-in-form-item"
+                      >
+                        <span
+                          class="ant-radio ant-radio-disabled"
+                        >
+                          <input
+                            class="ant-radio-input"
+                            disabled=""
+                            name="has_fuel_stored"
+                            type="radio"
+                            value="false"
+                          />
+                          <span
+                            class="ant-radio-inner"
+                          />
+                        </span>
+                        <span>
+                          No
+                        </span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  style="display: flex; flex-wrap: nowrap;"
+                >
+                  <div
+                    class="ant-form-item-explain ant-form-item-explain-connected"
+                    id="formName_has_fuel_stored_help"
+                    role="alert"
+                  >
+                    <div
+                      class=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br />
+      <h4>
+        Fuel Transportation and Storage
+      </h4>
+      <div>
+        <div>
+          <div
+            class="ant-table-wrapper"
+            style="position: relative; z-index: 5;"
+          >
+            <div
+              class="ant-table ant-table-empty"
+            >
+              <div
+                class="ant-table-content"
+              >
+                <table
+                  style="table-layout: auto;"
+                >
+                  <thead
+                    class="ant-table-thead"
+                  >
+                    <tr>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Fuel Type
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Fuel Related Activity
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Estimated Fuel Volume (litres)
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Description of Fuel Related Activity
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Description of Precautionary Measures
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      />
+                    </tr>
+                  </thead>
+                  <tbody
+                    class="ant-table-tbody"
+                  >
+                    <tr
+                      class="ant-table-placeholder"
+                    >
+                      <td
+                        class="ant-table-cell"
+                        colspan="100%"
+                        style="color: rgb(191, 191, 191);"
+                      >
+                        No Data Yet
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>

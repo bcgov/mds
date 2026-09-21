@@ -114,6 +114,7 @@ def _transmogrify_now_details(now_app, now_sub, mms_now_sub):
     now_app.relationship_to_applicant = now_sub.applicantrelationship
     now_app.term_of_application = now_sub.termofapplication
     now_app.mine_purpose = now_sub.minepurpose
+    now_app.work_year_info = now_sub.yearroundseasonal
     now_app.has_req_access_authorizations = get_boolean_value(now_sub.hasaccessauthorizations)
     now_app.req_access_authorization_numbers = now_sub.accessauthorizationsdetails
     now_app.has_key_for_inspector = get_boolean_value(now_sub.accessauthorizationskeyprovided)
@@ -158,6 +159,7 @@ def _transmogrify_state_of_land(now_app, now_sub, mms_now_sub):
     has_fn_cultural_heritage_sites_in_area = get_boolean_value(now_sub.hasculturalheritageresources)
     fn_engagement_activities = now_sub.firstnationsactivities
     cultural_heritage_description = now_sub.curturalheritageresources
+    protection_of_cultural_heritage_resources = now_sub.protectionofculturalheritageresources
     havelicenceofoccupation = now_sub.havelicenceofoccupation
     appliedforlicenceofoccupation = now_sub.appliedforlicenceofoccupation
     authorizationdetail = now_sub.authorizationdetail
@@ -166,7 +168,7 @@ def _transmogrify_state_of_land(now_app, now_sub, mms_now_sub):
     file_number_of_app = now_sub.filenumberofappl
     landlegaldesc = now_sub.landlegaldesc
 
-    if landcommunitywatershed or archsitesaffected or present_land_condition_description or means_of_access_description or physiography_description or old_equipment_description or type_of_vegetation_description or recreational_trail_use_description or has_activity_in_park or has_auth_lieutenant_gov_council or arch_site_protection_plan or has_shared_info_with_fn or has_acknowledged_undrip or has_fn_cultural_heritage_sites_in_area or fn_engagement_activities or cultural_heritage_description or is_on_private_land:
+    if landcommunitywatershed or archsitesaffected or present_land_condition_description or means_of_access_description or physiography_description or old_equipment_description or type_of_vegetation_description or recreational_trail_use_description or has_activity_in_park or has_auth_lieutenant_gov_council or arch_site_protection_plan or has_shared_info_with_fn or has_acknowledged_undrip or has_fn_cultural_heritage_sites_in_area or fn_engagement_activities or cultural_heritage_description or protection_of_cultural_heritage_resources or is_on_private_land:
         now_app.state_of_land = app_models.StateOfLand(
             has_community_water_shed=get_boolean_value(landcommunitywatershed),
             has_archaeology_sites_affected=get_boolean_value(archsitesaffected),
@@ -186,6 +188,7 @@ def _transmogrify_state_of_land(now_app, now_sub, mms_now_sub):
             has_fn_cultural_heritage_sites_in_area=has_fn_cultural_heritage_sites_in_area,
             fn_engagement_activities=fn_engagement_activities,
             cultural_heritage_description=cultural_heritage_description,
+            protection_of_cultural_heritage_resources=protection_of_cultural_heritage_resources,
             authorization_details=authorizationdetail,
             has_licence_of_occupation=get_boolean_value(havelicenceofoccupation),
             licence_of_occupation=licenceofoccupation,
@@ -324,7 +327,7 @@ def _transmogrify_camp_activities(now_app, now_sub, mms_now_sub):
     camphealthconsent = now_sub.camphealthconsent
 
     fuellubstoreonsite = mms_now_sub.fuellubstoreonsite or now_sub.fuellubstoreonsite
-    if cbsfreclamation or cbsfreclamationcost or campbuildstgetotaldistarea or fuellubstoreonsite:
+    if cbsfreclamation or cbsfreclamationcost or campbuildstgetotaldistarea or fuellubstoreonsite or now_sub.fuel:
 
         camp = app_models.Camp(
             reclamation_description=cbsfreclamation,
@@ -333,7 +336,7 @@ def _transmogrify_camp_activities(now_app, now_sub, mms_now_sub):
             total_disturbed_area_unit_type_code='HA',
             health_authority_consent=get_boolean_value(camphealthconsent),
             health_authority_notified=get_boolean_value(camphealthauthority),
-            has_fuel_stored=get_boolean_value(fuellubstoreonsite),
+            has_fuel_stored=get_boolean_value(fuellubstoreonsite) or bool(now_sub.fuel),
             has_fuel_stored_in_bulk=get_boolean_value(fuellubstoremethodbulk),
             volume_fuel_stored=fuellubstored,
             has_fuel_stored_in_barrels=get_boolean_value(fuellubstoremethodbarrel))
@@ -374,6 +377,15 @@ def _transmogrify_camp_activities(now_app, now_sub, mms_now_sub):
                 timber_volume=detail.timbervolume)
             camp.staging_area_details.append(staging_area_detail)
 
+        for detail in now_sub.fuel:
+            fuel_detail = app_models.FuelDetail(
+                fuel_type=detail.fueltype,
+                fuel_related_activity=detail.fuelrelatedactivity,
+                estimated_fuel_volume=detail.estimatedfuelvolume,
+                description_of_fuel_related_activity=detail.descriptionoffuelrelatedactivity,
+                description_of_precautionary_measures=detail.descriptionofprecautionarymeasures)
+            camp.fuel_details.append(fuel_detail)
+
         now_app.camp = camp
 
     return
@@ -412,13 +424,17 @@ def _transmogrify_exploration_surface_drilling(now_app, now_sub, mms_now_sub):
     expsurfacedrillreclamationcost = mms_now_sub.expsurfacedrillreclamationcost or now_sub.expsurfacedrillreclamationcost
     expsurfacedrilltotaldistarea = now_sub.expsurfacedrilltotaldistarea
     expsurfacedrillprogam = now_sub.expsurfacedrillprogam
-    if expsurfacedrillreclcorestorage or expsurfacedrillreclamation or expsurfacedrillreclamationcost or expsurfacedrilltotaldistarea:
+    nowmorethan25drillsites = now_sub.nowmorethan25drillsites
+    nowexplnumprpsdunrecldrillsite = now_sub.nowexplnumprpsdunrecldrillsite
+    if expsurfacedrillreclcorestorage or expsurfacedrillreclamation or expsurfacedrillreclamationcost or expsurfacedrilltotaldistarea or nowmorethan25drillsites or nowexplnumprpsdunrecldrillsite:
         esd = app_models.ExplorationSurfaceDrilling(
             reclamation_description=expsurfacedrillreclamation,
             reclamation_cost=expsurfacedrillreclamationcost,
             total_disturbed_area=expsurfacedrilltotaldistarea,
             reclamation_core_storage=expsurfacedrillreclcorestorage,
             drill_program=expsurfacedrillprogam,
+            has_more_than_25_unreclaimed_drill_sites=get_boolean_value(nowmorethan25drillsites),
+            num_unreclaimed_drill_sites=nowexplnumprpsdunrecldrillsite,
             total_disturbed_area_unit_type_code='HA')
 
         if (len(mms_now_sub.exp_surface_drill_activity) > 0):

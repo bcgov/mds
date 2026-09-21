@@ -90,6 +90,7 @@ const ComplianceCodeViewEditForm: FC<{
         onSubmit={handleSubmit}
         isEditMode={isEditMode}
         isModal={true}
+        forceRedux={true}
       >
         <Steps current={currentStep}>
           {steps.map((step) => (

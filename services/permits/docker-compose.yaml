@@ -26,6 +26,8 @@ services:
       - FILE_UPLOAD_PATH=/file-uploads
       - HAYSTACK_TELEMETRY_ENABLED=False
       - ELASTICSEARCH_CA_CERT=/permitsdata/certs/ca/ca.crt
+    env_file:
+      - .env
     depends_on:
       elasticsearch:
         condition: service_healthy
@@ -67,7 +69,7 @@ services:
   create_certs:
     tty: true
     container_name: create_certs
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.12.1
+    image: elasticsearch:8.12.1
     command: >
       bash -c '
       ### 1. Create CA and certificates for elasticsearch.
@@ -113,7 +115,7 @@ services:
       retries: 120
 
   elasticsearch:
-    image: "docker.elastic.co/elasticsearch/elasticsearch:8.12.1"
+    image: "elasticsearch:8.12.1"
     container_name: elasticsearch
     ports:
       - 9200:9200

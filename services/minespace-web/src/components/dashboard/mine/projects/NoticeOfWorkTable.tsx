@@ -35,6 +35,10 @@ const transformRowData = (applications: INoticeOfWork[]) =>
     document:
       application.application_documents?.length > 0 ? application.application_documents[0] : {},
     application_progress: application.application_progress,
+    now_application_tier_code: application.now_application_tier_code,
+    now_application_tier_description: application.now_application_tier_description,
+    now_application_tier_created_date: application.now_application_tier_created_date,
+    now_application_tier_updated_date: application.now_application_tier_updated_date,
     mine_guid: application.mine_guid,
     review_started:
       formatDate(
@@ -48,6 +52,11 @@ const transformRowData = (applications: INoticeOfWork[]) =>
 
 export const NoticeOfWorkTable: FC<NoticeOfWorkTableProps> = ({ isLoaded, applications }) => {
   const { isFeatureEnabled } = useFeatureFlag();
+  const hasTypeMineralOrCoal = applications.some(
+    (app) =>
+      app.notice_of_work_type_description === "Mineral" ||
+      app.notice_of_work_type_description === "Coal"
+  );
   const columns = [
     {
       title: "Number",
@@ -64,6 +73,41 @@ export const NoticeOfWorkTable: FC<NoticeOfWorkTableProps> = ({ isLoaded, applic
         a.notice_of_work_type_description > b.notice_of_work_type_description ? -1 : 1,
       render: (text) => <div title="Type">{text}</div>,
     },
+    ...(isFeatureEnabled(Feature.NOTICE_OF_WORK_TIER) && hasTypeMineralOrCoal
+      ? [
+          {
+            title: (
+              <div>
+                Tier
+                <Tooltip
+                  overlayClassName="minespace-tooltip"
+                  title="Tier applies only to mineral and coal exploration applications. It indicates 
+                the assigned review tier based on the application details"
+                >
+                  {" "}
+                  <InfoCircleOutlined className="info-tooltip icon-sm" />
+                </Tooltip>
+              </div>
+            ),
+            key: "now_application_tier_code",
+            dataIndex: "now_application_tier_code",
+            width: "120px",
+            sorter: (a, b) => (a.now_application_tier_code > b.now_application_tier_code ? -1 : 1),
+            defaultSortOrder: "descend" as SortOrder,
+            render: (text, record) => {
+              const isExploration =
+                record?.notice_of_work_type_description === "Mineral" ||
+                record?.notice_of_work_type_description === "Coal";
+              const now_application_tier_code = record.now_application_tier_code;
+              return !isEmpty(now_application_tier_code) && isExploration ? (
+                <div title="Tier">{now_application_tier_code}</div>
+              ) : (
+                Strings.EMPTY_FIELD
+              );
+            },
+          },
+        ]
+      : []),
     {
       title: "Status",
       key: "now_application_status_description",

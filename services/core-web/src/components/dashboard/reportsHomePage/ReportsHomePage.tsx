@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import queryString from "query-string";
 import * as Strings from "@mds/common/constants/strings";
-import {
-  deleteMineReport,
-  fetchReports,
-} from "@mds/common/redux/actionCreators/reportActionCreator";
 import { getReports, getReportsPageData } from "@mds/common/redux/selectors/reportSelectors";
 import { PageTracker } from "@common/utils/trackers";
 import * as routes from "@/constants/routes";
@@ -13,6 +9,8 @@ import ReportsTable from "@/components/dashboard/reportsHomePage/ReportsTable";
 import ReportsSearch from "@/components/dashboard/reportsHomePage/ReportsSearch";
 import { useHistory, useLocation } from "react-router-dom";
 import { MineReportParams } from "@mds/common/interfaces";
+import { deleteMineReport, fetchReports } from "@mds/common/redux/slices/reportSlice";
+import { useAppDispatch } from "@mds/common/redux/rootState";
 
 const defaultParams: MineReportParams = {
   page: Strings.DEFAULT_PAGE,
@@ -33,7 +31,7 @@ const defaultParams: MineReportParams = {
 };
 
 export const ReportsHomePage = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const location = useLocation();
   const history = useHistory();
   const [isLoaded, setIsLoaded] = useState(false);
@@ -83,7 +81,9 @@ export const ReportsHomePage = () => {
   };
 
   const handleRemoveReport = async (report) => {
-    await dispatch(deleteMineReport(report.mine_guid, report.mine_report_guid));
+    await dispatch(
+      deleteMineReport({ mineGuid: report.mine_guid, mineReportGuid: report.mine_report_guid })
+    );
   };
 
   return (

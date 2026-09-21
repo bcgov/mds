@@ -1,0 +1,14 @@
+@use "../base.scss" as *;
+@use "../settings/variables.scss";
+
+.report-error-severity .ant-segmented-thumb {
+  background-color: $primary-color;
+}
+
+.report-error-severity .ant-segmented-item-selected,
+.report-error-severity .ant-segmented-item-selected:hover,
+.report-error-severity .ant-segmented-item-selected:focus {
+  background-color: $primary-color;
+  color: variables.$pure-white;
+  transition: none;
+}

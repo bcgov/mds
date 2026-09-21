@@ -26,12 +26,26 @@ jest.mock("@/components/Forms/noticeOfWork/EditNOWMineAndLocation", () => () => 
 jest.mock("@/components/Forms/noticeOfWork/VerifyNoWContacts", () => () => (
   <div data-testid="verify-contacts" />
 ));
+
+jest.mock("@mds/common/components/forms/form", () => {
+  const actual = jest.requireActual("@mds/common/components/forms/form");
+  return {
+    ...actual,
+    Field: ({ id, name }: any) => <div data-testid={`mock-field-${id || name}`} />,
+  };
+});
+
 jest.mock("@mds/common/components/forms/FormWrapper", () => ({ children }: any) => (
   <form data-testid="form-wrapper">{children}</form>
 ));
 jest.mock("@/components/common/wrappers/AuthorizationWrapper", () => ({ children }: any) => (
   <>{children}</>
 ));
+
+jest.mock("@mds/common/providers/featureFlags/useFeatureFlag", () => ({
+  useFeatureFlag: () => ({ isFeatureEnabled: () => true }),
+}));
+
 
 const dispatchProps = {
   onSubmit: jest.fn(),
@@ -60,6 +74,9 @@ describe("VerifyApplicationInformationForm", () => {
         },
       },
     },
+    staticContent: {
+      noticeOfWorkTierOptions: [],
+    },
   } as any;
 
   it("renders core text and snapshot (smoke)", () => {
@@ -74,6 +91,49 @@ describe("VerifyApplicationInformationForm", () => {
     );
     expect(screen.getByText(/Verify Mine/i)).toBeInTheDocument();
     expect(asFragment()).toMatchSnapshot();
+    expect(screen.queryByTestId("mock-field-now_application_tier_code")).not.toBeInTheDocument();
+  });
+
+  it("renders Tier Category for MIN type applications", () => {
+    const explorationReducerProps = {
+      ...reducerProps,
+      noticeOfWork: {
+        ...reducerProps.noticeOfWork,
+        notice_of_work_type_code: "MIN",
+      },
+    };
+    render(
+      <ReduxWrapper initialState={baseInitialFormState}>
+        <VerifyApplicationInformationForm
+          {...dispatchProps}
+          {...explorationReducerProps}
+          isImporting={false}
+        />
+      </ReduxWrapper>
+    );
+    expect(screen.getByTestId("mock-field-now_application_tier_code")).toBeInTheDocument();
+  });
+
+  it("renders (initial intake) label when created and updated dates are equal", () => {
+    const initialIntakeReducerProps = {
+      ...reducerProps,
+      noticeOfWork: {
+        ...reducerProps.noticeOfWork,
+        notice_of_work_type_code: "MIN",
+        now_application_tier_created_date: "2023-01-01",
+        now_application_tier_updated_date: "2023-01-01",
+      },
+    };
+    render(
+      <ReduxWrapper initialState={baseInitialFormState}>
+        <VerifyApplicationInformationForm
+          {...dispatchProps}
+          {...initialIntakeReducerProps}
+          isImporting={false}
+        />
+      </ReduxWrapper>
+    );
+    expect(screen.getByText(/initial intake/i)).toBeInTheDocument();
   });
 
   it("shows confirmed contacts count and disables submit until all contacts have party and mine is selected", async () => {

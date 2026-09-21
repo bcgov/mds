@@ -1,6 +1,6 @@
 import json
 
-from tests.factories import BondFactory, PartyFactory, MinePartyAppointmentFactory, PartyOrgBookEntityFactory, create_mine_and_permit
+from tests.factories import BondFactory, PartyFactory, MinePartyAppointmentFactory, PartyBCRegistrationFactory, create_mine_and_permit
 from tests.now_application_factories import NOWApplicationFactory
 from app.api.parties.party.models.party import Party
 from app.api.securities.models.bond import Bond
@@ -185,7 +185,7 @@ def test_merge_failure_signature(test_client, db_session, auth_headers):
 def test_merge_failure_orgbook_linked(test_client, db_session, auth_headers):
     batch_size = 5
     parties = PartyFactory.create_batch(size=batch_size, person=True)
-    orgbook_entity = PartyOrgBookEntityFactory()
+    orgbook_entity = PartyBCRegistrationFactory()
     parties.append(orgbook_entity.party)
     party_guids = [str(party.party_guid) for party in parties]
     party = PARTY

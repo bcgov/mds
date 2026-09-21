@@ -12,7 +12,7 @@ import {
   getPartyRelationshipTypeHash,
   getPartyRelationshipTypesList,
 } from "@mds/common/redux/selectors/staticContentSelectors";
-import { mergeParties } from "@mds/common/redux/actionCreators/partiesActionCreator";
+import { mergeParties } from "@mds/common/redux/slices/partiesSlice";
 import Address from "@/components/common/Address";
 import * as Strings from "@mds/common/constants/strings";
 import * as routes from "@/constants/routes";
@@ -253,12 +253,16 @@ export class MergeContactsDashboard extends Component {
                       <Col span={24} className="grid padding-sm">
                         <h6>Address</h6>
                         <Radio.Group
-                          name={data.address[0]}
-                          onChange={(event) => this.handleContactSelect(event, "address")}
+                          onChange={() =>
+                            this.setState((prevState) => ({
+                              values: { ...prevState.values, address: data?.address?.[0] },
+                              valuesSelected: { ...prevState.valuesSelected, address: `address${i}` },
+                            }))
+                          }
                           value={this.state.valuesSelected.address}
                         >
-                          <Radio value={data.address[0]} disabled={isEmpty(data.address[0])}>
-                            <Address address={data.address[0] || {}} showIcon={false} />
+                          <Radio value={`address${i}`} disabled={isEmpty(data?.address?.[0])}>
+                            <Address address={data?.address?.[0] || {}} showIcon={false} />
                           </Radio>
                         </Radio.Group>
                       </Col>

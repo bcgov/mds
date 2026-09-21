@@ -18,6 +18,8 @@ class ExplorationSurfaceDrilling(ActivitySummaryBase):
         db.Integer, db.ForeignKey('activity_summary.activity_summary_id'), primary_key=True)
     reclamation_core_storage = db.Column(db.String)
     drill_program = db.Column(db.String)
+    has_more_than_25_unreclaimed_drill_sites = db.Column(db.Boolean)
+    num_unreclaimed_drill_sites = db.Column(db.Integer)
 
     details = db.relationship(
         'ExplorationSurfaceDrillingDetail',

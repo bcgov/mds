@@ -3,6 +3,7 @@ from sqlalchemy.dialects.postgresql import UUID
 from app.api.utils.models_mixins import Base, AuditMixin
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy import and_
+from sqlalchemy.ext.hybrid import hybrid_property
 from app.api.utils.models_mixins import SoftDeleteMixin
 
 
@@ -29,6 +30,12 @@ class MinistryContact(SoftDeleteMixin, AuditMixin, Base):
         backref='emli_contact',
         order_by='asc(MinistryContactType.display_order)',
         lazy='joined')
+
+    @hybrid_property
+    def distribution_list_guids(self):
+        from app.api.ministry_contacts.models.distribution_list_user import DistributionListUser
+        dlu_records = DistributionListUser.find_by_contact_guid(self.contact_guid)
+        return [str(dlu.distribution_list_guid) for dlu in dlu_records]
 
     @classmethod
     def create(cls,
@@ -88,7 +95,8 @@ class MinistryContact(SoftDeleteMixin, AuditMixin, Base):
         if is_major_mine == True:
             return cls.query.filter_by(
                 mine_region_code=mine_region_code,
-                is_major_mine=is_major_mine).filter_by(deleted_ind=False).union(mmo_contact).all()
+                is_major_mine=is_major_mine,
+                is_general_contact=True).filter_by(deleted_ind=False).union(mmo_contact).all()
         elif is_major_mine == False:
             return cls.query.filter_by(
                 mine_region_code=mine_region_code, is_major_mine=is_major_mine).filter_by(
@@ -96,12 +104,12 @@ class MinistryContact(SoftDeleteMixin, AuditMixin, Base):
 
     @classmethod
     def find_ministry_general_contacts(cls):
-        return cls.query.filter_by(is_general_contact=True).filter_by(deleted_ind=False)
+        return cls.query.filter_by(is_general_contact=True, mine_region_code=None).filter_by(deleted_ind=False)
 
     @classmethod
     def find_major_mine_office(cls):
         return cls.query.filter_by(
-            is_major_mine=True, mine_region_code=None).filter_by(deleted_ind=False)
+            is_major_mine=True, mine_region_code=None, is_general_contact=True).filter_by(deleted_ind=False)
 
     @classmethod
     def get_all(cls, is_major_mine=None):

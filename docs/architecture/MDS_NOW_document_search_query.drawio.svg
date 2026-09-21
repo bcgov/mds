@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="520" viewBox="0 0 1500 520" role="img" aria-labelledby="title desc" content="&lt;mxfile host=&quot;app.diagrams.net&quot;&gt;&lt;diagram name=&quot;NoW document search query&quot;&gt;&lt;mxGraphModel grid=&quot;1&quot; gridSize=&quot;10&quot;&gt;&lt;root&gt;&lt;mxCell id=&quot;0&quot;/&gt;&lt;mxCell id=&quot;1&quot; parent=&quot;0&quot;/&gt;&lt;/root&gt;&lt;/mxGraphModel&gt;&lt;/diagram&gt;&lt;/mxfile&gt;">
+  <title id="title">NoW Document Search Query Flow</title>
+  <desc id="desc">Light theme diagram showing what happens during a Notice of Work document search.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#334155"/>
+    </marker>
+    <style>
+      .page { fill: #ffffff; }
+      .zone { fill: #f8fafc; stroke: #94a3b8; stroke-width: 1.6; rx: 8; }
+      .azure { fill: #f0f7ff; stroke: #60a5fa; stroke-width: 1.6; rx: 8; }
+      .title { font: 700 24px Arial, Helvetica, sans-serif; fill: #0f172a; }
+      .zone-title { font: 700 14px Arial, Helvetica, sans-serif; fill: #334155; }
+      .label { font: 700 15px Arial, Helvetica, sans-serif; fill: #0f172a; }
+      .small { font: 400 12px Arial, Helvetica, sans-serif; fill: #334155; }
+      .step { fill: #dbeafe; stroke: #2563eb; stroke-width: 1.6; rx: 8; }
+      .service { fill: #ffffff; stroke: #334155; stroke-width: 1.8; rx: 8; }
+      .store { fill: #ecfdf5; stroke: #15803d; stroke-width: 1.8; rx: 8; }
+      .ai { fill: #f5f3ff; stroke: #7c3aed; stroke-width: 1.8; rx: 8; }
+      .wrap { fill: #ffffff; stroke: #64748b; stroke-width: 1.5; stroke-dasharray: 7 5; rx: 20; }
+      .arrow { stroke: #334155; stroke-width: 2.1; fill: none; marker-end: url(#arrow); }
+      .dash { stroke: #64748b; stroke-width: 1.8; fill: none; stroke-dasharray: 6 5; marker-end: url(#arrow); }
+      .event { stroke: #b91c1c; stroke-width: 1.9; fill: none; stroke-dasharray: 5 5; marker-end: url(#arrow); }
+      .doc-page { fill: #ffffff; stroke: #334155; stroke-width: 2; }
+      .doc-fold { fill: #e2e8f0; stroke: #334155; stroke-width: 1.4; }
+      .doc-line { stroke: #2563eb; stroke-width: 3; }
+      .doc-accent { fill: #16a34a; }
+      .icon-label { font: 700 13px Arial, Helvetica, sans-serif; fill: #0f172a; }
+    </style>
+  </defs>
+  <rect class="page" width="1500" height="520"/>
+  <text x="50" y="50" class="title">NoW document search</text>
+
+  <rect x="50" y="85" width="900" height="330" class="zone"/>
+  <text x="70" y="112" class="zone-title">BCGov OpenShift Silver Cluster</text>
+  <rect x="1030" y="85" width="360" height="330" class="azure"/>
+  <text x="1050" y="112" class="zone-title">Azure Tenant</text>
+
+  <g transform="translate(80 195)">
+    <path class="doc-page" d="M0 0 h54 l28 28 v92 h-82 z"/>
+    <path class="doc-fold" d="M54 0 v28 h28 z"/>
+    <line class="doc-line" x1="15" y1="33" x2="52" y2="33"/>
+    <path class="doc-accent" d="M15 96 l21-25 l15 15 l12-18 l19 28 z"/>
+    <text x="41" y="148" text-anchor="middle" class="icon-label">Core Web</text>
+  </g>
+
+  <rect x="210" y="225" width="130" height="70" class="service"/>
+  <text x="275" y="254" text-anchor="middle" class="label">Core API</text>
+  <text x="275" y="276" text-anchor="middle" class="small">SSE proxy</text>
+
+  <rect x="420" y="145" width="440" height="230" class="wrap"/>
+  <text x="640" y="398" text-anchor="middle" class="zone-title">Permits Service</text>
+
+  <rect x="480" y="170" width="130" height="56" class="step"/>
+  <text x="545" y="193" text-anchor="middle" class="label">Scope Filter</text>
+  <text x="545" y="212" text-anchor="middle" class="small">NoW GUID</text>
+
+  <rect x="650" y="170" width="130" height="56" class="step"/>
+  <text x="715" y="193" text-anchor="middle" class="label">Hybrid</text>
+  <text x="715" y="212" text-anchor="middle" class="small">retrieval</text>
+
+  <rect x="565" y="280" width="130" height="56" class="step"/>
+  <text x="630" y="303" text-anchor="middle" class="label">Build Prompt</text>
+  <text x="630" y="322" text-anchor="middle" class="small">with chunks</text>
+
+  <rect x="1070" y="145" width="150" height="70" class="store"/>
+  <text x="1145" y="173" text-anchor="middle" class="label">Azure AI</text>
+  <text x="1145" y="194" text-anchor="middle" class="label">Search Index</text>
+
+  <rect x="1070" y="295" width="150" height="70" class="ai"/>
+  <text x="1145" y="323" text-anchor="middle" class="label">Azure OpenAI</text>
+  <text x="1145" y="344" text-anchor="middle" class="small">answer generation</text>
+
+  <rect x="1280" y="230" width="150" height="82" class="service"/>
+  <text x="1355" y="258" text-anchor="middle" class="label">Results</text>
+  <text x="1355" y="280" text-anchor="middle" class="small">documents + facets</text>
+  <text x="1355" y="300" text-anchor="middle" class="small">AI answer</text>
+
+  <path class="arrow" d="M162 260 L210 260"/>
+  <text x="165" y="245" class="small">1. Query</text>
+  <path class="arrow" d="M340 260 L480 198"/>
+  <text x="365" y="222" class="small">2. Search request</text>
+  <path class="arrow" d="M610 198 L650 198"/>
+  <text x="614" y="186" class="small">AND</text>
+  <path class="arrow" d="M780 198 L1070 180"/>
+  <text x="850" y="175" class="small">3. Hybrid search</text>
+  <path class="dash" d="M1070 198 L780 214"/>
+  <text x="850" y="220" class="small">4. Relevant chunks</text>
+  <path class="arrow" d="M715 226 L630 280"/>
+  <path class="arrow" d="M695 308 L1070 330"/>
+  <text x="790" y="302" class="small">5. Prompt + chunks</text>
+  <path class="dash" d="M1070 348 L695 324"/>
+  <text x="790" y="350" class="small">6. LLM response</text>
+  <path class="event" d="M565 322 L340 290"/>
+  <path class="event" d="M210 290 L162 290"/>
+  <text x="235" y="326" class="small">7. SSE events back to web</text>
+  <path class="arrow" d="M1220 180 L1280 250"/>
+  <path class="arrow" d="M1220 330 L1280 292"/>
+</svg>

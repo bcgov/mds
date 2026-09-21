@@ -28,5 +28,3 @@ class PermitConditionTemplateResource(Resource, UserMixin):
             201,
             {'Location': str(permit_amendment.permit_amendment_id)},
         )
-
-

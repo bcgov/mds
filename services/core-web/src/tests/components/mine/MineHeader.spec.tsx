@@ -1,30 +1,35 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { MineHeader } from "@/components/mine/MineHeader";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
+import { BrowserRouter } from "react-router-dom";
+import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
+import { MINES, AUTHENTICATION } from "@mds/common/constants/reducerTypes";
 
-const dispatchProps = {
-  updateMineRecord: jest.fn(),
-  fetchMineRecordById: jest.fn(),
-  removeMineType: jest.fn(),
-  createTailingsStorageFacility: jest.fn(),
-  closeModal: jest.fn(),
-  openModal: jest.fn(),
-};
+// Mock the MineHeaderMapLeaflet component
+jest.mock("@/components/maps/MineHeaderMapLeaflet", () => {
+  return {
+    __esModule: true,
+    default: () => <div data-testid="mock-mine-header-map">Mock Map</div>,
+  };
+});
 
-const props = {
-  mine: MOCK.MINES.mines[MOCK.MINES.mineIds[0]],
-  mineStatusOptions: MOCK.STATUS_OPTIONS.records,
-  mineRegionOptions: MOCK.REGION_DROPDOWN_OPTIONS,
-  mineRegionHash: MOCK.REGION_HASH,
-  mineTenureTypes: MOCK.TENURE_TYPES_DROPDOWN_OPTIONS,
-  mineTenureHash: MOCK.TENURE_HASH,
-  transformedMineTypes: MOCK.MINE_TYPES[0],
+const mine = MOCK.MINES.mines[MOCK.MINES.mineIds[0]];
+
+const initialState = {
+  [MINES]: { ...MOCK.MINES, mineGuid: mine.mine_guid },
+  [AUTHENTICATION]: { userAccessData: [], userInfo: {}, isAuthenticated: false },
 };
 
 describe("MineHeader", () => {
-  it("renders dispatchProperly", () => {
-    const component = shallow(<MineHeader {...dispatchProps} {...props} />);
-    expect(component).toMatchSnapshot();
+  it("renders properly", () => {
+    const { container } = render(
+      <ReduxWrapper initialState={initialState}>
+        <BrowserRouter>
+          <MineHeader mine={mine} />
+        </BrowserRouter>
+      </ReduxWrapper>
+    );
+    expect(container).toMatchSnapshot();
   });
 });

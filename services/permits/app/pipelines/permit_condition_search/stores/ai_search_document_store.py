@@ -1,11 +1,10 @@
 import logging
 from typing import Any, Dict, List, Optional
 
-from app.pipelines.permit_condition_search.search_index_fields import fields
 from azure.search.documents.models import (
     QueryCaptionType,
     QueryType,
-    VectorizableTextQuery,
+    VectorizedQuery,
 )
 from haystack import Document
 from haystack_integrations.document_stores.azure_ai_search import (
@@ -17,7 +16,7 @@ logger = logging.getLogger(__name__)
 
 # There's a bug in the Haystack Azure AI Search integration where it doesn't handle collection index field types correctly.
 # Issue: Filters on a field of the type Collection(...) fails with an error (it works for single fields).
-# Expected Odata filter syntax for a collection field is: 
+# Expected Odata filter syntax for a collection field is:
 # `field/any(field: <filter>)` where `field` is the name of the field and `value` is the value to filter on. The haystack integration spits out just the <filter> part.
 # Example: `search.in(field, 'value1,value2', ',')` should be `field/any(field: search.in(field, 'value1,value2', ','))`
 #
@@ -27,21 +26,50 @@ logger = logging.getLogger(__name__)
 
 # Reference: https://learn.microsoft.com/en-us/azure/search/search-query-odata-filter
 
-fields_dict = {field.name: field for field in fields}
-og_fltr = fltrs.COMPARISON_OPERATORS
 
-def override_comparison_operators(op, func):
-    def handle_collection_index_field_type(field, value, **kwargs):
-        res = func(field, value, **kwargs)
+# Module-level registry of all Collection(Edm.String) fields across every store that
+# has been initialised. Keyed by field name so later registrations can overwrite without
+# duplicating. The global COMPARISON_OPERATORS is rebuilt from this merged dict each time
+# a new store registers fields, so no store's __init__ can silently wipe another schema's
+# collection-wrapping rules.
+_registered_collection_fields: dict = {}
 
-        if fields_dict.get(field) and fields_dict[field].type.startswith("Collection("):
-            # If the field is a collection, we need to format the value as a list
-            res = f"{field}/any({field}: {res})"
-        return res
-    return handle_collection_index_field_type
 
-new_comparison_operators = {op: override_comparison_operators(op, func) for op, func in og_fltr.items()}
-fltrs.COMPARISON_OPERATORS = new_comparison_operators
+def _rebuild_collection_aware_operators() -> None:
+    """Rebuilds fltrs.COMPARISON_OPERATORS from the current merged field registry."""
+    if not _registered_collection_fields:
+        return
+
+    og_fltr = fltrs._ORIGINAL_COMPARISON_OPERATORS
+
+    def override_comparison_operators(op, func):
+        def handle_collection_index_field_type(field, value, **kwargs):
+            res = func(field, value, **kwargs)
+            if field in _registered_collection_fields:
+                res = f"{field}/any({field}: {res})"
+            return res
+        return handle_collection_index_field_type
+
+    fltrs.COMPARISON_OPERATORS = {
+        op: override_comparison_operators(op, func) for op, func in og_fltr.items()
+    }
+
+
+def _register_store_fields(fields_list) -> None:
+    """
+    Merges the provided field list into the global registry and rebuilds the operators.
+    Only Collection(Edm.String) fields need special OData wrapping; others are ignored.
+    """
+    for field in fields_list:
+        if field.type.startswith("Collection(Edm.String)"):
+            _registered_collection_fields[field.name] = field
+    _rebuild_collection_aware_operators()
+
+
+# Preserve the original operators once so rebuilds always start from a clean baseline.
+if not hasattr(fltrs, "_ORIGINAL_COMPARISON_OPERATORS"):
+    fltrs._ORIGINAL_COMPARISON_OPERATORS = dict(fltrs.COMPARISON_OPERATORS)
+
 
 # This class is used to configure additional search parameters for the Azure AI Search Document Store that are not part of the standard Haystack configuration.
 # It allows for highlighting fields and customizing highlight tags.
@@ -74,10 +102,14 @@ class AzureSearchDocumentStore(AzureAISearchDocumentStore):
     The AzureSearchDocumentStore extends the AzureAISearchDocumentStore
     to add support for facets, highlights, in the search results and additional configuration that haystack
     does not support out of the box.
+
+    Pass the index ``fields`` list so Collection(Edm.String) filter handling is scoped
+    to the correct schema — allowing multiple stores with different schemas to coexist.
     """
 
     def __init__(
         self,
+        index_fields: Optional[list] = None,
         search_config: Optional[AdditionalAISearchConfig] = None,
         semantic_configuration_name=None,
         **kwargs,
@@ -85,6 +117,10 @@ class AzureSearchDocumentStore(AzureAISearchDocumentStore):
         super(AzureSearchDocumentStore, self).__init__(**kwargs)
         self.search_config = search_config or AdditionalAISearchConfig()
         self.semantic_configuration_name = semantic_configuration_name
+
+        # Merge this store's fields into the global registry and rebuild the operators.
+        if index_fields:
+            _register_store_fields(index_fields)
 
     def _convert_search_result_to_documents(
         self, azure_docs: List[Dict[str, Any]]
@@ -130,8 +166,8 @@ class AzureSearchDocumentStore(AzureAISearchDocumentStore):
             msg = "query_embedding must be a non-empty list of floats"
             raise ValueError(msg)
 
-        vector_query = VectorizableTextQuery(
-            text=query, k_nearest_neighbors=top_k, fields="embedding", exhaustive=True
+        vector_query = VectorizedQuery(
+            vector=query_embedding, k_nearest_neighbors=top_k, fields="embedding", exhaustive=True
         )
 
         result = self.client.search(

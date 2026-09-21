@@ -1,12 +1,28 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import MarkdownViewer from './MarkdownViewer';
 
-// Mock ReactMarkdown component to make testing easier
+// Mock ReactMarkdown component to render actual links for testing
 jest.mock('react-markdown', () => {
-    return ({ children }: { children: string }) => (
-        <div data-testid="mocked-markdown">{children}</div>
-    );
+    return ({ children }: { children: string }) => {
+        // Basic parser for the links we generate: [[1]](#condition-abc123)
+        const parts = children.split(/(\[\[\d+\]\]\(#condition-[a-f0-9-]+\))/);
+        return (
+            <div data-testid="mocked-markdown">
+                {parts.map((part, i) => {
+                    const match = part.match(/\[\[(\d+)\]\]\((#condition-([a-f0-9-]+))\)/);
+                    if (match) {
+                        return (
+                            <a key={i} href={match[2]} data-testid={`link-${match[3]}`}>
+                                {`[${match[1]}]`}
+                            </a>
+                        );
+                    }
+                    return part;
+                })}
+            </div>
+        );
+    };
 });
 
 describe('MarkdownViewer', () => {
@@ -42,14 +58,12 @@ describe('MarkdownViewer', () => {
 
     test('processes single reference correctly', () => {
         const mockMarkdown = 'Check this [doc:abc123] reference';
-        const { container } = render(<MarkdownViewer markdown={mockMarkdown} />);
+        render(<MarkdownViewer markdown={mockMarkdown} />);
 
         const mockedMarkdown = screen.getByTestId('mocked-markdown');
         expect(mockedMarkdown).toHaveTextContent('Check this');
-        expect(mockedMarkdown).toHaveTextContent('[[1]](#condition-abc123)');
+        expect(screen.getByTestId('link-abc123')).toBeInTheDocument();
         expect(mockedMarkdown).toHaveTextContent('reference');
-
-        expect(container).toMatchSnapshot();
     });
 
     test('processes multiple references correctly', () => {
@@ -58,8 +72,8 @@ describe('MarkdownViewer', () => {
 
         const mockedMarkdown = screen.getByTestId('mocked-markdown');
         expect(mockedMarkdown).toHaveTextContent('Check these references');
-        expect(mockedMarkdown).toHaveTextContent('[[1]](#condition-abc123)');
-        expect(mockedMarkdown).toHaveTextContent('[[2]](#condition-def456)');
+        expect(screen.getByTestId('link-abc123')).toBeInTheDocument();
+        expect(screen.getByTestId('link-def456')).toBeInTheDocument();
     });
 
     test('processes double bracket reference correctly', () => {
@@ -68,29 +82,72 @@ describe('MarkdownViewer', () => {
 
         const mockedMarkdown = screen.getByTestId('mocked-markdown');
         expect(mockedMarkdown).toHaveTextContent('Check this');
-        expect(mockedMarkdown).toHaveTextContent('[[1]](#condition-abc123)');
+        expect(screen.getByTestId('link-abc123')).toBeInTheDocument();
         expect(mockedMarkdown).toHaveTextContent('reference');
     });
 
 
     test('handles click on non-reference link', () => {
         const mockMarkdown = 'Check this [regular link](https://example.com)';
-        const { container } = render(<MarkdownViewer markdown={mockMarkdown} />);
+        render(<MarkdownViewer markdown={mockMarkdown} />);
 
-        const markdownDiv: any = container.querySelector('.permit-search__markdown');
-        expect(markdownDiv).not.toBeNull();
+        // For non-reference links, they are not transformed by our mock
+        // So we can manually trigger the click on the container with a mock target
+        const markdownDiv = screen.getByTestId('markdown-content').parentElement;
+        
+        const preventDefault = jest.fn();
+        // Use Object.defineProperty to bypass read-only tagName
+        const event = new MouseEvent('click', { bubbles: true, cancelable: true });
+        Object.defineProperty(event, 'target', {
+            value: { tagName: 'A', href: 'https://example.com' },
+            enumerable: true
+        });
+        Object.defineProperty(event, 'preventDefault', { value: preventDefault });
 
-        const mockEvent = {
-            preventDefault: jest.fn(),
-            target: {
-                tagName: 'A',
-                href: 'https://example.com'
-            }
-        };
+        fireEvent(markdownDiv!, event);
 
-        markdownDiv!.onclick!(mockEvent as any);
+        expect(preventDefault).not.toHaveBeenCalled();
+        expect(mockScrollIntoView).not.toHaveBeenCalled();
+    });
 
-        expect(mockEvent.preventDefault).not.toHaveBeenCalled();
+    test('handles click on reference link with element found', () => {
+        const mockMarkdown = 'Check this [doc:abc123]';
+        render(<MarkdownViewer markdown={mockMarkdown} />);
+
+        const mockElement = document.createElement('div');
+        mockElement.id = 'condition-abc123';
+        document.body.appendChild(mockElement);
+
+        const link = screen.getByTestId('link-abc123');
+        
+        // We need to verify preventDefault was called. 
+        // We'll dispatch a real event and mock preventDefault on it.
+        const event = new MouseEvent('click', { bubbles: true, cancelable: true });
+        const preventDefault = jest.fn();
+        Object.defineProperty(event, 'preventDefault', { value: preventDefault });
+        
+        fireEvent(link, event);
+
+        expect(preventDefault).toHaveBeenCalled();
+        expect(mockScrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth' });
+        expect(window.location.hash).toContain('condition-abc123');
+
+        document.body.removeChild(mockElement);
+    });
+
+    test('handles click on reference link with element not found', () => {
+        const mockMarkdown = 'Check this [doc:def456]'; // use valid hex
+        render(<MarkdownViewer markdown={mockMarkdown} />);
+
+        const link = screen.getByTestId('link-def456');
+        
+        const event = new MouseEvent('click', { bubbles: true, cancelable: true });
+        const preventDefault = jest.fn();
+        Object.defineProperty(event, 'preventDefault', { value: preventDefault });
+        
+        fireEvent(link, event);
+
+        expect(preventDefault).toHaveBeenCalled();
         expect(mockScrollIntoView).not.toHaveBeenCalled();
     });
 });

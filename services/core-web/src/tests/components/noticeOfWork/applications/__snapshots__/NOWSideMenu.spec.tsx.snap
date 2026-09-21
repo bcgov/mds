@@ -132,21 +132,10 @@ exports[`NOWSideMenu renders properly 1`] = `
         >
           <a
             class="ant-anchor-link-title"
-            href="#first-nations-engagement"
-            title="First Nations Engagement"
+            href="#cultural-heritage-resources"
+            title="Cultural Heritage Resources"
           >
-            First Nations Engagement
-          </a>
-        </div>
-        <div
-          class="ant-anchor-link now-menu-link"
-        >
-          <a
-            class="ant-anchor-link-title"
-            href="#indigenous-engagement"
-            title="Indigenous Engagement"
-          >
-            Indigenous Engagement
+            Cultural Heritage Resources
           </a>
         </div>
         <div
@@ -166,9 +155,9 @@ exports[`NOWSideMenu renders properly 1`] = `
           <a
             class="ant-anchor-link-title"
             href="#camp"
-            title="Camps, Buildings, Staging Areas, Fuel/Lubricant Storage"
+            title="Camps, Buildings, Staging Areas"
           >
-            Camps, Buildings, Staging Areas, Fuel/Lubricant Storage
+            Camps, Buildings, Staging Areas
           </a>
         </div>
         <div

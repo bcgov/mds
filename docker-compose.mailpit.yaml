@@ -1,0 +1,16 @@
+version: "3"
+services:
+  mailpit:
+    image: axllent/mailpit
+    container_name: mds_mailpit
+    restart: always
+    ports:
+      - 8025:8025
+      - 1025:1025
+    networks:
+      - default
+
+networks:
+  default:
+    name: mds_default
+    external: true

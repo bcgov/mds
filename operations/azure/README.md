@@ -1,10 +1,27 @@
-# Setup
+# Azure Landing Zone
+
+MDS runs workloads in a **BC Gov Azure Landing Zone** (MDS Resource Group, license plate `c5fc58`), connected to the OCP Silver cluster over Express Route via private endpoints. It hosts the Permit Service's Azure AI integrations:
+
+- Azure AI Foundry (project scope) with Azure OpenAI (GPT-4o) and Azure AI Search
+- Azure AI Document Intelligence
+- Azure Blob Storage and Key Vault, each behind a private endpoint
+- Auth via BCGov Entra ID
+
+See [`docs/architecture/azure-architecture.drawio.svg`](../../docs/architecture/azure-architecture.drawio.svg) for the target-state diagram. The Terraform/IaC for this environment is managed outside this repo (gitops), not in `operations/azure/` below.
+
+---
+
+# Legacy: Azure Postgres setup
+
+The content below describes an older, separate Azure setup (Postgres-on-Azure for PowerBI, `test`/`live` resource groups) dating to 2022. It is not referenced by any current CI/CD workflow and is likely no longer needed, but is kept for historical reference. 
+
+## Setup
 
 1. Install the [az CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli-linux?pivots=apt)
 2. Request access to resource groups from admins (PO or tech lead)
 3. Install [terraform CLI](https://www.terraform.io/downloads)
 
-# Azure Status
+## Azure Status
 
 Azure provides us with 2 resource groups per project:
 
@@ -12,7 +29,7 @@ Azure provides us with 2 resource groups per project:
 2. A non-prod final environment for the live app
    - Azure is not in `prod` status so officially we have to call this non-prod for live apps
 
-# Interacting with Infrastructure
+## Interacting with Infrastructure
 
 - Ensure the setup/ terraform was initialized correctly
 - `az login`
@@ -23,7 +40,7 @@ Azure provides us with 2 resource groups per project:
 - `terraform plan` does a diff between the `remote state` vs `your local tf code`
 - `terraform apply` applies the detected diff of `plan` but note that a successful plan does not guarantee a successful apply - runtime errors can occur!
 
-# First Time Deployment
+## First Time Deployment
 
 - First, ensure the remote tf state storage has been correctly deployed in the resource group so that infra changes are correctly tracked - refer to [Azure Setup](./setup/README.md)
 - After following the above terraform instructions: in order for the `openshift cronjob` to succeed with its restore process we need to manually seed some data into the deployed azure databases
@@ -32,7 +49,7 @@ Azure provides us with 2 resource groups per project:
 - With the `required roles` seeded, the `silver ip address allowed`, the restore process in the cronjob can now succeed
 - The above steps are stored in an `azure-reporting` secret in the namespace for manual purposes
 
-# Infrastructure as Code
+## Infrastructure as Code
 
 > If infrastructure is not version controlled as code then it does not exist.
 

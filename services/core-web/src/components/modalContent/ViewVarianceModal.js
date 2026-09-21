@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Button } from "antd";
-import { getInspectorsHash } from "@mds/common/redux/selectors/partiesSelectors";
+import { getInspectorsHash } from "@mds/common/redux/slices/partiesSlice";
 import {
   getVarianceStatusOptionsHash,
   getHSRCMComplianceCodesHash,

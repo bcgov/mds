@@ -24,7 +24,7 @@ import {
 import {
   fetchPartyRelationships,
   fetchAllPartyRelationships,
-} from "@mds/common/redux/actionCreators/partiesActionCreator";
+} from "@mds/common/redux/slices/partiesSlice";
 import { fetchVariancesByMine } from "@mds/common/redux/actionCreators/varianceActionCreator";
 import { fetchNoticesOfDeparture } from "@mds/common/redux/actionCreators/noticeOfDepartureActionCreator";
 import { fetchMineComplianceInfo } from "@mds/common/redux/actionCreators/complianceActionCreator";
@@ -37,7 +37,7 @@ import { storeMine } from "@mds/common/redux/actions/mineActions";
 import * as Strings from "@mds/common/constants/strings";
 import { fetchMineNoticeOfWorkApplications } from "@mds/common/redux/actionCreators/noticeOfWorkActionCreator";
 import { fetchExplosivesPermits } from "@mds/common/redux/actionCreators/explosivesPermitActionCreator";
-import { getPartyRelationships } from "@mds/common/redux/selectors/partiesSelectors";
+import { getPartyRelationships } from "@mds/common/redux/slices/partiesSlice";
 import MineNavigation from "@/components/mine/MineNavigation";
 import Loading from "@/components/common/Loading";
 import CustomPropTypes from "@/customPropTypes";

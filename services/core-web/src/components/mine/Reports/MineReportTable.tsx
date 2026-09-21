@@ -2,10 +2,10 @@ import React, { FC, useState } from "react";
 import { useSelector } from "react-redux";
 import * as Strings from "@mds/common/constants/strings";
 import {
-  formatDate,
   dateSorter,
-  nullableStringSorter,
   formatComplianceCodeValueOrLabel,
+  formatDate,
+  nullableStringSorter,
 } from "@common/utils/helpers";
 import {
   getMineReportCategoryOptionsHash,
@@ -24,7 +24,7 @@ import EyeOutlined from "@ant-design/icons/EyeOutlined";
 import { deleteConfirmWrapper } from "@mds/common/components/common/ActionMenu";
 import { userHasRole } from "@mds/common/redux/selectors/authenticationSelectors";
 import { USER_ROLES } from "@mds/common/constants/environment";
-import { IMineReport, IMineReportDefinition } from "@mds/common/interfaces";
+import { IMineReport } from "@mds/common/interfaces";
 import { TablePaginationConfig } from "antd/es/table";
 import DocumentCompression from "@mds/common/components/documents/DocumentCompression";
 import { MineDocument } from "@mds/common/models/documents/document";
@@ -51,7 +51,7 @@ export const MineReportTable: FC<MineReportTableProps> = ({
   handleRemoveReport,
   isLoaded,
   mineReportType,
-  handleTableChange = () => { },
+  handleTableChange = () => {},
   filters = {},
   sortField = undefined,
   sortDir = undefined,
@@ -69,9 +69,7 @@ export const MineReportTable: FC<MineReportTableProps> = ({
 
   const hideColumn = (condition) => (condition ? "column-hide" : "");
 
-  const userIsCoreEditReports = useSelector(
-    userHasRole(USER_ROLES.role_edit_reports)
-  );
+  const userIsCoreEditReports = useSelector(userHasRole(USER_ROLES.role_edit_reports));
   const history = useHistory();
 
   const openReportPage = (mineReport) => {
@@ -81,7 +79,7 @@ export const MineReportTable: FC<MineReportTableProps> = ({
   };
 
   const handleDownloadAll = (mineReport) => {
-    const mineDocuments = (mineReport.documents).map((doc) => new MineDocument(doc));
+    const mineDocuments = mineReport.documents.map((doc) => new MineDocument(doc));
     setDocumentsToDownload(mineDocuments);
     setIsCompressionModalVisible(true);
   };
@@ -121,9 +119,9 @@ export const MineReportTable: FC<MineReportTableProps> = ({
   const getComplianceCodeValue = (guid) => {
     return mineReportDefinitionHash && mineReportDefinitionHash[guid]
       ? formatComplianceCodeValueOrLabel(
-        mineReportDefinitionHash[guid].compliance_articles[0],
-        false
-      )
+          mineReportDefinitionHash[guid].compliance_articles[0],
+          false
+        )
       : null;
   };
 
@@ -168,12 +166,16 @@ export const MineReportTable: FC<MineReportTableProps> = ({
       sorter: isDashboardView || nullableStringSorter("mine_report_status"),
       render: (text, record) => (
         <div title="Status">
-          {record?.report?.is_overdue && showOverdueLabel ? <Badge status="error" text="Overdue" /> : <Badge
-            status={getReportSubmissionBadgeStatusType(text) as PresetStatusColorType}
-            text={text || Strings.EMPTY_FIELD}
-          />}
+          {record?.report?.is_overdue && showOverdueLabel ? (
+            <Badge status="error" text="Overdue" />
+          ) : (
+            <Badge
+              status={getReportSubmissionBadgeStatusType(text) as PresetStatusColorType}
+              text={text || Strings.EMPTY_FIELD}
+            />
+          )}
         </div>
-      )
+      ),
     },
     {
       title: "Due",
@@ -196,8 +198,7 @@ export const MineReportTable: FC<MineReportTableProps> = ({
       dataIndex: "created_by_idir",
       key: "created_by_idir",
       sortField: "created_by_idir",
-      sorter:
-        isDashboardView || ((a, b) => a.created_by_idir.localeCompare(b.created_by_idir)),
+      sorter: isDashboardView || ((a, b) => a.created_by_idir.localeCompare(b.created_by_idir)),
       className: hideColumn(isDashboardView),
       render: (text) => (
         <div title="Requested By" className={hideColumn(isDashboardView)}>
@@ -240,8 +241,7 @@ export const MineReportTable: FC<MineReportTableProps> = ({
     key: "code_section",
     render: (record) => (
       <div title="Code Section">{getComplianceCodeValue(record.mine_report_definition_guid)}</div>
-    )
-    ,
+    ),
   };
 
   const permitColumn = {
@@ -266,7 +266,7 @@ export const MineReportTable: FC<MineReportTableProps> = ({
   }
 
   const transformRowData = (reports) =>
-    reports.map((report) => ({
+    reports?.map((report) => ({
       key: report.mine_report_guid,
       mine_report_id: Number(report.mine_report_id),
       permit_number: report.permit_number,
@@ -291,7 +291,7 @@ export const MineReportTable: FC<MineReportTableProps> = ({
       mine_guid: report.mine_guid,
       mine_name: report.mine_name,
       report,
-    }));
+    })) ?? [];
 
   const applySortIndicator = (_columns, field, dir) =>
     _columns.map((column) => ({
@@ -299,14 +299,15 @@ export const MineReportTable: FC<MineReportTableProps> = ({
       sortOrder: dir && column.sortField === field ? dir.concat("end") : false,
     }));
 
-  const mineReportHandleTableChange = (updateReportList, tableFilters) => (pagination, filters, sorter) => {
-    const params = {
-      ...tableFilters,
-      sort_field: sorter.order ? sorter.field : undefined,
-      sort_dir: sorter.order ? sorter.order.replace("end", "") : undefined,
+  const mineReportHandleTableChange =
+    (updateReportList, tableFilters) => (pagination, filters, sorter) => {
+      const params = {
+        ...tableFilters,
+        sort_field: sorter.order ? sorter.field : undefined,
+        sort_dir: sorter.order ? sorter.order.replace("end", "") : undefined,
+      };
+      updateReportList(params);
     };
-    updateReportList(params);
-  };
 
   return (
     <div>

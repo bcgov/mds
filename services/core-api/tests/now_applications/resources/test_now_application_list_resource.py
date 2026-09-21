@@ -1,7 +1,8 @@
-import json, pytest
+import json
 
-from tests.now_application_factories import NOWApplicationIdentityFactory
+import pytest
 from tests.factories import MineFactory
+from tests.now_application_factories import NOWApplicationIdentityFactory
 
 
 class TestApplicationResource:

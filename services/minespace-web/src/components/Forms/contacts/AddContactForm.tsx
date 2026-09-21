@@ -1,6 +1,6 @@
 import React, { FC, useState } from "react";
 import { uniqBy } from "lodash";
-import { getPartyRelationships } from "@mds/common/redux/selectors/partiesSelectors";
+import { getPartyRelationships } from "@mds/common/redux/slices/partiesSlice";
 import AddContactFormDetails from "./AddContactFormDetails";
 import { MinePartyAppointmentTypeCodeEnum } from "@mds/common/constants/enums";
 import { useAppSelector } from "@mds/common/redux/rootState";

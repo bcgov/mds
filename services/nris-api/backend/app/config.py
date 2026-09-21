@@ -16,7 +16,7 @@ class Config(object):
         'version': 1,
         'formatters': {
             'default': {
-                'format': '%(asctime)s %(levelname)s [%(name)s] [%(filename)s:%(lineno)d]',
+                'format': '%(asctime)s %(levelname)s [%(name)s] [%(filename)s:%(lineno)d] %(message)s',
             }
         },
         'handlers': {

@@ -3,6 +3,7 @@ import { removeNullValuesRecursive } from "@mds/common/constants/utils";
 import { AMS_AUTHORIZATION_TYPES } from "@mds/common/constants/enums";
 import { IPermitCondition } from "@mds/common/interfaces/permits/permitCondition.interface";
 import { IMineReportPermitRequirement } from "../interfaces/permits";
+import { INoWApplicationForm } from "../interfaces/noticeOfWork.interface";
 import { REPORT_FREQUENCY_HASH, REPORT_MINISTRY_RECIPIENT_HASH, REPORT_REGULATORY_AUTHORITY_CODES_HASH } from "../constants/strings";
 
 
@@ -120,6 +121,13 @@ export const findCondition = (permit_condition: string | number, conditions: IPe
   return null;
 }
 
+export const containsConditionId = (conditions: IPermitCondition[], targetId: number | null): boolean => {
+  if (!targetId || !conditions?.length) return false;
+  return conditions.some(
+    (c) => c.permit_condition_id === targetId || containsConditionId(c.sub_conditions ?? [], targetId)
+  );
+};
+
 /** IMineReportPermitRequirement transformer */
 /** Logic from ReportPermitRequirementForm TODO use this transformer too? */
 
@@ -158,4 +166,12 @@ export const inspectionOrderNumberSorter = (a, b, dataIndex) => {
 
   if (mainA !== mainB) return mainA - mainB;
   return subA - subB;
+};
+
+export const getLockedSystemNtrDoc = (
+  documents: INoWApplicationForm["documents"],
+  lockedNtrGuid: string | null | undefined
+) => {
+  if (!lockedNtrGuid) return null;
+  return (documents || []).find((doc) => doc.now_application_document_xref_guid === lockedNtrGuid) || null;
 };

@@ -140,7 +140,7 @@ const RenderContacts = ({ fields, isDisabled }) => {
                   disabled={isDisabled}
                   name={`${field}.phone_number`}
                   id={`${field}.phone_number`}
-                  label="Contact Number"
+                  label="Phone Number"
                   required
                   component={RenderField}
                   validate={[phoneNumber, maxLength(12), required]}
@@ -162,7 +162,7 @@ const RenderContacts = ({ fields, isDisabled }) => {
                   disabled={isDisabled}
                   name={`${field}.email`}
                   id={`${field}.email`}
-                  label="Email"
+                  label="Email Address"
                   required
                   component={RenderField}
                   validate={[required, email, maxLength(60)]}

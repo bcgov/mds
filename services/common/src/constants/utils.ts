@@ -1,5 +1,3 @@
-import { SystemFlagEnum } from "./enums";
-
 export const serverSidePaginationOptions = (pageData) => {
   return {
     defaultCurrent: 1,
@@ -28,8 +26,9 @@ export const parseServerSideSearchOptions = (pagination, filters, sorter) => {
 };
 
 export const removeNullValues = (obj) => {
-  Object.keys(obj).forEach((key) => obj[key] === null && delete obj[key]);
-  return obj;
+  const next = { ...obj };
+  Object.keys(next).forEach((key) => next[key] === null && delete next[key]);
+  return next;
 };
 
 export const removeNullValuesRecursive = (values: any) => {

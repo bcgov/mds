@@ -1,4 +1,4 @@
-FROM postgis/postgis:16-3.5
+FROM postgres:16-bookworm
 
 # The Git ref (branch/tag) specifying the version of oracle-fdw to use
 # This is referencing a specific revision (master as of 2021.06.01)
@@ -10,29 +10,34 @@ ARG oracle_fdw_version=2_6_0
 ARG instantclient_version=21_6
 
 # =================================== # 
-# Packages for installing oracle FDW
+# Packages for PostGIS and Oracle FDW
 # =================================== # 
 
+# postgresql-16-postgis-3: spatial database extender for PostgreSQL
+# postgresql-16-postgis-3-scripts: sql scripts for postgis extension
 # build-essential: meta-packages necessary for compiling software
 # make: to run fdw installation make commands
 # unzip: to extract packages
 # wget: to download packages
 # ca-certificates: for wget to connect securely 
-# postgresql-server-dev-13: for oracle_fdw make command to work
-# libaio1 libaio-dev: is need for oracle_fdw.so binary to work
+# postgresql-server-dev-16: for oracle_fdw make command to work
+# libaio1 libaio-dev: needed for oracle_fdw.so binary to work
 
 # -y non-interactive : yes
-# --no-install-recommends : Install only dependecies and not all recommended dependency 
+# --no-install-recommends : Install only dependencies and not all recommended dependencies
 
-RUN apt-get update && apt-get install -y --no-install-recommends \ 
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    postgresql-16-postgis-3 \
+    postgresql-16-postgis-3-scripts \
     build-essential \
     make \
     unzip \
-    wget \ 
-    ca-certificates \ 
-    postgresql-server-dev-16 \ 
+    wget \
+    ca-certificates \
+    postgresql-server-dev-16 \
     libaio1 \
-    libaio-dev
+    libaio-dev \
+    && rm -rf /var/lib/apt/lists/*
 
 # =================================== # 
 # Download and Extract Oracle Client
@@ -47,8 +52,8 @@ RUN mkdir -p /pgexts/oraclelibs && cd /pgexts/oraclelibs && \
 # Set Paths for FDW to find oracle libraries
 # =================================== # 
 
-ENV ORACLE_HOME /pgexts/oraclelibs/instantclient_${instantclient_version}
-ENV LD_LIBRARY_PATH /pgexts/oraclelibs/instantclient_${instantclient_version}
+ENV ORACLE_HOME=/pgexts/oraclelibs/instantclient_${instantclient_version}
+ENV LD_LIBRARY_PATH=/pgexts/oraclelibs/instantclient_${instantclient_version}
 
 # =================================== # 
 # Install Oracle FDW

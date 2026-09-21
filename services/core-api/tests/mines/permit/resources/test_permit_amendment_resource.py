@@ -148,6 +148,7 @@ def test_delete_draft_permit_amendment(test_client, db_session, auth_headers):
     assert PermitAmendment.find_by_permit_amendment_guid(
         str(permit_amendment.permit_amendment_guid)) is None
 
+
 def test_delete_permit_amendment_without_conditions(test_client, db_session, auth_headers):
     mine, permit = create_mine_and_permit()
     permit_amendment = permit.permit_amendments[0]
@@ -197,9 +198,9 @@ def test_post__historical_permit_amendment(test_client, db_session, auth_headers
     }
 
     with current_app.test_request_context() as a, patch(
-        "app.api.verifiable_credentials.manager.offer_newest_amendment_to_current_permittee.apply_async"
+            "app.api.verifiable_credentials.anoncred_manager.offer_newest_amendment_to_current_permittee.apply_async"
     ) as mock_offer_job, patch(
-        "app.api.verifiable_credentials.manager.revoke_all_credentials_for_permit.apply_async"
+            "app.api.verifiable_credentials.anoncred_manager.revoke_all_credentials_for_permit.apply_async"
     ) as mock_revoke_job:
 
         post_resp = test_client.post(

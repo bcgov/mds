@@ -1,3 +1,4 @@
+from enum import Enum
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy.ext.hybrid import hybrid_property
@@ -8,6 +9,18 @@ from app.api.utils.models_mixins import HistoryMixin, SoftDeleteMixin, AuditMixi
 from app.api.projects.ams_final_application.models.ams_final_application_document_type import AmsFinalApplicationDocumentType
 from app.api.projects.ams_final_application.models.ams_final_application_document_xref import AmsFinalApplicationDocumentXref
 from app.api.mines.documents.models.mine_document import MineDocument
+from app.api.constants import PROJECT_EMA_EMAILS
+from app.api.activity.utils import trigger_notification
+from app.api.activity.models.activity_notification import ActivityType
+from app.api.services.email_service import EmailService
+from app.config import Config
+from app.api.utils.helpers import format_datetime_to_string
+
+class AmsAppNotificationEvent(Enum):
+    SUBMIT = "SUBMIT"
+    EDIT_OFF = "EDIT_OFF"
+    EDIT_ON = "EDIT_ON"
+    RESUBMIT = "RESUBMIT"
 
 class AmsFinalApplication(HistoryMixin, SoftDeleteMixin, DraftMixin, AuditMixin, Base):
     __tablename__ = "ams_final_application"
@@ -90,16 +103,213 @@ class AmsFinalApplication(HistoryMixin, SoftDeleteMixin, DraftMixin, AuditMixin,
         self._update_documents(documents)
 
         if is_submitting:
+            is_resubmitting = self.submitted_timestamp is not None
+            event = AmsAppNotificationEvent.RESUBMIT if is_resubmitting else AmsAppNotificationEvent.SUBMIT
             self.submitted_timestamp = self.submitted_timestamp or datetime.now(timezone.utc)
             self.submit()
+            self.send_notifications(event)
         else:
             self.save_draft()
         return self
     
     def update_edit_toggle(self, editable= True):
-        self.editable = editable
-        self.save()
+        changed = self.editable != editable
+
+        self.editable = editable        
+        self.save()        
+        if changed:
+            event = AmsAppNotificationEvent.EDIT_ON if editable else AmsAppNotificationEvent.EDIT_OFF
+            self.send_notifications(event)
         return self
+    
+
+    def send_notifications(self, event: AmsAppNotificationEvent):
+        project_summary = self.project_summary_authorization.project_summary
+        project = project_summary.project
+        project_contacts = [contact.email for contact in project.contacts]
+        
+        core_recipients = PROJECT_EMA_EMAILS if event in [AmsAppNotificationEvent.SUBMIT, AmsAppNotificationEvent.RESUBMIT] else []
+        minespace_recipients = project_contacts
+
+        if event == AmsAppNotificationEvent.SUBMIT:
+            self._send_submit_email(core_recipients, minespace_recipients)
+        elif event == AmsAppNotificationEvent.RESUBMIT:
+            self._send_resubmit_email(core_recipients, minespace_recipients)
+        elif event in [AmsAppNotificationEvent.EDIT_ON, AmsAppNotificationEvent.EDIT_OFF]:
+            self._send_edit_toggle_email(minespace_recipients, event)
+
+    def _send_submit_email(self, core_recipients, minespace_recipients):
+        project_summary = self.project_summary_authorization.project_summary
+        project = project_summary.project
+        authorization = self.project_summary_authorization
+        mine = project.mine
+        
+        # Dynamically group documents by type code and get descriptions
+        document_types = AmsFinalApplicationDocumentType.get_all()
+        document_groups = []
+        
+        for doc_type in document_types:
+            docs = [doc_xref.document_name for doc_xref in self.documents 
+                    if doc_xref.ams_final_application_document_type_code == doc_type.ams_final_application_document_type_code]
+            if docs:  # Only include document types that have documents
+                document_groups.append({
+                    'type_description': doc_type.description,
+                    'documents': docs
+                })
+        
+        subject = f'AMS Final Application Submitted for {project.project_title}'
+        # Base context shared by both emails
+        base_context = {
+            'mine': {
+                'mine_name': mine.mine_name,
+                'mine_no': mine.mine_no
+            },
+            'project': {
+                'project_title': project.project_title
+            },
+            'authorization': {
+                'authorization_type': authorization.authorization_type.description if authorization.authorization_type else 'N/A',
+                'auth_no': authorization.existing_permits_authorizations[0] if authorization.existing_permits_authorizations else 'N/A'
+            },
+            'submitted_date': format_datetime_to_string(self.submitted_timestamp),
+            'document_groups': document_groups
+        }
+        
+        # Send to CORE users
+        if core_recipients:
+            core_context = {
+                **base_context,
+                'view_link': f'{Config.CORE_WEB_URL}/pre-applications/{project.project_guid}/ams',
+                'button_text': 'View AMS Application in CORE',
+                'brand_type': 'core'
+            }
+            
+            EmailService.send_template_email(
+                subject,
+                core_recipients,
+                'email/projects/ams_app_submit_email.html',
+                core_context,
+                reference_id=self.ams_final_application_guid,
+                reference_table='ams_final_application',
+                reference_email_type='ams_app_submit_email_core'
+            )
+        
+        # Send to MineSpace users
+        if minespace_recipients:
+            minespace_context = {
+                **base_context,
+                'view_link': f'{Config.MINESPACE_PROD_URL}/projects/{project.project_guid}/authorizations',
+                'button_text': 'View AMS Application in MineSpace',
+                'brand_type': 'minespace'
+            }
+            
+            EmailService.send_template_email(
+                subject,
+                minespace_recipients,
+                'email/projects/ams_app_submit_email.html',
+                minespace_context,
+                reference_id=self.ams_final_application_guid,
+                reference_table='ams_final_application',
+                reference_email_type='ams_app_submit_email_minespace'
+            )
+
+    def _send_edit_toggle_email(self, recipients, event: AmsAppNotificationEvent):
+        if not recipients:
+            return
+            
+        project_summary = self.project_summary_authorization.project_summary
+        project = project_summary.project
+        mine = project.mine
+        
+        if event == AmsAppNotificationEvent.EDIT_OFF:
+            message = f'Your final application for {project.project_title} is locked for editing for {mine.mine_name}'
+            subject = f'AMS Final Application Locked - {project.project_title}'
+        else:  # EDIT_ON
+            message = f'Your final application for {project.project_title} is available for edits for {mine.mine_name}'
+            subject = f'AMS Final Application Available for Editing - {project.project_title}'
+        
+        context = {
+            'message': message,
+            'project': {
+                'mine_name': mine.mine_name,
+                'mine_no': mine.mine_no,
+                'project_title': project.project_title,
+                'submitted': format_datetime_to_string(self.submitted_timestamp)
+            },
+            'project_section': 'AMS Final Application',
+            'minespace_link': f'{Config.MINESPACE_PROD_URL}/projects/{project.project_guid}/ema-applications'
+        }
+        
+        EmailService.send_template_email(
+            subject,
+            recipients,
+            'email/projects/minespace_project_section_email.html',
+            context,
+            reference_id=self.ams_final_application_guid,
+            reference_table='ams_final_application',
+            reference_email_type=f'ams_app_{event.value.lower()}_email'
+        )
+
+    def _send_resubmit_email(self, core_recipients, minespace_recipients):
+        project_summary = self.project_summary_authorization.project_summary
+        project = project_summary.project
+        mine = project.mine
+        
+        message = f'Updates to EMA major project final application for {project.project_title} have been submitted for {mine.mine_name}'
+        subject = f'AMS Final Application Updated - {project.project_title}'
+        
+        extra_data = {
+            'project': {'project_guid': str(project.project_guid)},
+            'project_summary': {'project_summary_guid': str(project_summary.project_summary_guid)},
+            'project_summary_authorization': {'project_summary_authorization_guid': str(self.project_summary_authorization_guid)}
+        }
+
+        trigger_notification(message, ActivityType.ams_application_updated, mine,
+                             'AMSApplication', self.ams_final_application_guid, extra_data)
+        base_context = {
+            'message': message,
+            'project': {
+                'mine_name': mine.mine_name,
+                'mine_no': mine.mine_no,
+                'project_title': project.project_title,
+                'submitted': format_datetime_to_string(self.submitted_timestamp)
+            },
+            'project_section': 'AMS Final Application'
+        }
+        
+        # Send to CORE users
+        if core_recipients:
+            core_context = {
+                **base_context,
+                'core_link': f'{Config.CORE_WEB_URL}/pre-applications/{project.project_guid}/ema-applications'
+            }
+            
+            EmailService.send_template_email(
+                subject,
+                core_recipients,
+                'email/projects/ministry_project_section_email.html',
+                core_context,
+                reference_id=self.ams_final_application_guid,
+                reference_table='ams_final_application',
+                reference_email_type='ams_app_resubmit_email_core'
+            )
+        
+        # Send to MineSpace users
+        if minespace_recipients:
+            minespace_context = {
+                **base_context,
+                'minespace_link': f'{Config.MINESPACE_PROD_URL}/projects/{project.project_guid}/ema-applications'
+            }
+            
+            EmailService.send_template_email(
+                subject,
+                minespace_recipients,
+                'email/projects/minespace_project_section_email.html',
+                minespace_context,
+                reference_id=self.ams_final_application_guid,
+                reference_table='ams_final_application',
+                reference_email_type='ams_app_resubmit_email_minespace'
+            )
 
     def _update_documents(self, documents):  
         # Delete removed

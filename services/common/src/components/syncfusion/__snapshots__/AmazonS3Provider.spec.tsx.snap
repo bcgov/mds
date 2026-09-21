@@ -32,6 +32,7 @@ exports[`AmazonS3Provider renders properly 1`] = `
           >
             <div
               class="e-toolbar-left"
+              role="group"
             >
               <div
                 class="e-toolbar-item e-hidden"
@@ -114,9 +115,11 @@ exports[`AmazonS3Provider renders properly 1`] = `
             </div>
             <div
               class="e-toolbar-center"
+              role="group"
             />
             <div
               class="e-toolbar-right"
+              role="group"
             >
               <div
                 class="e-toolbar-item e-overflow-show e-hidden"

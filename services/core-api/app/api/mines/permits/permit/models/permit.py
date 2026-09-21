@@ -38,12 +38,12 @@ class Permit(SoftDeleteMixin, AuditMixin, Base):
 
     _all_permit_amendments = db.relationship(
         'PermitAmendment',
-        backref='permit',
+        backref=db.backref('permit', overlaps='permit,permittee_appointments'),
         primaryjoin=
         'and_(PermitAmendment.permit_id == Permit.permit_id, PermitAmendment.deleted_ind==False)',
         order_by='desc(PermitAmendment.issue_date), desc(PermitAmendment.permit_amendment_id)',
         lazy='select',
-        overlaps='permittee_appointments'
+        overlaps='permit,permittee_appointments'
     )
 
     _all_mines = db.relationship(

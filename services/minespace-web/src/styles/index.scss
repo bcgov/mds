@@ -6,6 +6,7 @@
 
 // COMPONENTS - specific UI components.
 @use "./components/Header.scss";
+@use "./components/ReportErrorModal.scss";
 @use "./components/Footer.scss";
 @use "./components/Loading.scss";
 @use "./components/Tables.scss";
@@ -36,6 +37,7 @@
 @use "./components/Button.scss";
 @use "./components/Tag.scss";
 @use "./components/Project.scss";
+@use "./components/MinespaceAccessRequest.scss";
 
 // UTILITIES - utilities and helper classes. This layer has the highest specificity.
 @use "./generic/helpers.scss";

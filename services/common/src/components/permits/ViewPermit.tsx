@@ -79,9 +79,7 @@ const ViewPermit: FC = () => {
     ) + 1 || -1;
   const previousAmendment =
     previousAmendmentIndex > 0 ? permit.permit_amendments[previousAmendmentIndex] : null;
-  const userCanEditConditions = useAppSelector(
-    userHasRole(USER_ROLES.role_edit_template_conditions)
-  );
+  const userCanEditConditions = useAppSelector(userHasRole(USER_ROLES.role_edit_permits));
   const documents = latestAmendment?.related_documents ?? [];
 
   const [activeTab, setActiveTab] = useState(tab ?? tabs[0]);
@@ -305,8 +303,12 @@ const ViewPermit: FC = () => {
     <ActionMenuButton actions={headerActions} />
   ) : null;
 
+  // Core only: filter out the mine already shown in the primary CoreTag (the one from the URL context)
+  // MineSpace users should not see additional mine associations
+  const additionalMines = isCore ? (permit?.mine?.filter((m) => m.mine_guid !== id) ?? []) : [];
+
   return (
-    <div className="fixed-tabs-container">
+    <div className="fixed-tabs-container permit-tabs-container">
       <CommonPageHeader
         entityLabel={permit?.permit_no ?? ""}
         entityType="Permit"
@@ -314,6 +316,7 @@ const ViewPermit: FC = () => {
         current_permittee={permit?.current_permittee ?? ""}
         breadCrumbs={[{ route: GLOBAL_ROUTES.MINE_PERMITS.dynamicRoute(id), text: "All Permits" }]}
         extraElement={headerActionComponent}
+        additionalMines={additionalMines}
         tabProps={{
           items: tabItems,
           defaultActiveKey: activeTab,

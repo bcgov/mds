@@ -110,7 +110,7 @@ export const GeneratePermitForm: FC<IGeneratedPermitFormProps> = (props) => {
         onSubmitSuccess: resetForm(FORM.GENERATE_PERMIT),
         enableReinitialize: true,
       }}
-      onSubmit={() => {}}
+      onSubmit={() => { }}
     >
       {!props.draftPermitAmendment.has_permit_conditions && (
         <ScrollContentWrapper id="permit" title="Permit" isLoaded={props.isLoaded}>
@@ -449,6 +449,7 @@ export const GeneratePermitForm: FC<IGeneratedPermitFormProps> = (props) => {
               editPreambleFileMetadata={!props.isViewMode}
               initialValues={props.initialValues}
               showInUnifiedView
+              showBCMIWarning={true}
             />
             {props.previousAmendmentDocuments && (
               <PreviousAmendmentDocuments

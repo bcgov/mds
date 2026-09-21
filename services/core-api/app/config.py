@@ -2,11 +2,11 @@ import logging
 import os
 import traceback
 
-from dotenv import load_dotenv, find_dotenv
+import requests
 from celery.schedules import crontab
+from dotenv import find_dotenv, load_dotenv
 from flask import current_app, has_app_context, has_request_context
 from opentelemetry import trace
-import requests
 
 ENV_FILE = find_dotenv()
 if ENV_FILE:
@@ -72,6 +72,12 @@ class Config(object):
     WERKZEUG_LOGGING_LEVEL = os.environ.get('WERKZEUG_LOGGING_LEVEL',
                                             'CRITICAL')               # ['DEBUG','INFO','WARN','ERROR','CRITICAL']
     DISPLAY_WERKZEUG_LOG = os.environ.get('DISPLAY_WERKZEUG_LOG', True)
+
+    ELASTICSEARCH_URL = os.environ.get('ELASTICSEARCH_URL', 'https://elasticsearch:9200')
+    ELASTICSEARCH_USERNAME = os.environ.get('ELASTICSEARCH_USERNAME', 'elastic')
+    ELASTICSEARCH_PASSWORD = os.environ.get('ELASTICSEARCH_PASSWORD', 'changeme')
+    ELASTICSEARCH_CA_CERTS = os.environ.get('ELASTICSEARCH_CA_CERTS',
+                                            '/usr/share/elasticsearch/config/certs/ca/ca.crt')
 
     LOGGING_DICT_CONFIG = {
         'version': 1,
@@ -141,7 +147,7 @@ class Config(object):
     # SqlAlchemy config
     SQLALCHEMY_DATABASE_URI = DB_URL
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    SQLALCHEMY_ENGINE_OPTIONS = {"pool_pre_ping": True}
+    SQLALCHEMY_WARN_20 = True
 
     JWT_OIDC_WELL_KNOWN_CONFIG = os.environ.get(
         'JWT_OIDC_WELL_KNOWN_CONFIG',
@@ -192,7 +198,7 @@ class Config(object):
     RESTPLUS_JSON = {'indent': None, 'separators': (',', ':')}
     COMPRESS_LEVEL = 9
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    SQLALCHEMY_ENGINE_OPTIONS = {'pool_timeout': 300, 'max_overflow': 20}
+    SQLALCHEMY_ENGINE_OPTIONS = {'pool_timeout': 300, 'max_overflow': 20, 'pool_pre_ping': True}
 
     # Flagsmith
     FLAGSMITH_URL = os.environ.get('FLAGSMITH_URL',
@@ -201,11 +207,13 @@ class Config(object):
 
     # Enable flag caching and evalutation. If set to True, FLAGSMITH_KEY must be set to a server side FLAGSMITH_KEY
     FLAGSMITH_ENABLE_LOCAL_EVALUATION = os.environ.get('FLAGSMITH_ENABLE_LOCAL_EVALUATION',
-                                                      'false') == 'true'
+                                                       'false') == 'true'
 
-    # Kibana
-    KIBANA_BASE_URL = os.environ.get(
-        'KIBANA_BASE_URL', 'https://kibana-openshift-logging.apps.silver.devops.gov.bc.ca')
+    # OpenShift Observe > Logs (LokiStack-backed console log search)
+    OBSERVE_LOGS_BASE_URL = os.environ.get('OBSERVE_LOGS_BASE_URL',
+                                           'https://console.apps.silver.devops.gov.bc.ca')
+    _DEFAULT_NS_ENV = 'dev' if ENVIRONMENT_NAME == 'local' else ENVIRONMENT_NAME
+    OPENSHIFT_NAMESPACE = os.environ.get('OPENSHIFT_NAMESPACE', f'4c2ba9-{_DEFAULT_NS_ENV}')
 
     # NROS
     NROS_CLIENT_SECRET = os.environ.get('NROS_CLIENT_SECRET', None)
@@ -222,7 +230,12 @@ class Config(object):
     NRIS_REMOTE_TOKEN_URL = os.environ.get('NRIS_REMOTE_TOKEN_URL', None)
 
     # OrgBook
-    ORGBOOK_API_URL = os.environ.get('ORGBOOK_API_URL', 'https://orgbook.gov.bc.ca/api/v2/')
+    ORGBOOK_API_URL = os.environ.get('ORGBOOK_API_URL', 'https://orgbook.gov.bc.ca/api')
+
+    # BC Registries
+    BC_REGISTRIES_API_URL = os.environ.get('BC_REGISTRIES_API_URL',
+                                           'https://sandbox.api.connect.gov.bc.ca/registry-search')
+    BC_REGISTRIES_SECRET_TOKEN = os.environ.get('BC_REGISTRIES_SECRET_TOKEN', None)
 
     # NRPTI
     NRPTI_API_URL = os.environ.get(
@@ -250,6 +263,9 @@ class Config(object):
     COMMON_SERVICES_EMAIL_HOST = os.environ.get('COMMON_SERVICES_EMAIL_HOST')
     EMAIL_ENABLED = os.environ.get('EMAIL_ENABLED', False)
     EMAIL_RECIPIENT_OVERRIDE = os.environ.get('EMAIL_RECIPIENT_OVERRIDE')
+    USE_LOCAL_MAILPIT = os.environ.get('USE_LOCAL_MAILPIT', 'false').lower() == 'true'
+    MAILPIT_HOST = os.environ.get('MAILPIT_HOST', 'mailpit')
+    MAILPIT_PORT = int(os.environ.get('MAILPIT_PORT', 1025))
 
     # AMS API Services
     AMS_BEARER_TOKEN = os.environ.get('AMS_BEARER_TOKEN')
@@ -282,8 +298,16 @@ class Config(object):
             'task': 'app.api.parties.party_appt.tasks.notify_and_update_expired_party_appointments',
             'schedule': crontab(minute="*/15"),
         },
+        'create_new_recurring_report_requests': {
+            'task': 'app.api.mines.reports.tasks.create_new_recurring_report_requests',
+            'schedule': crontab(hour="10", minute="0"),                                              # Run daily at 2am (10am UTC)
+        },
+        'create_new_recurring_crr_report_requests': {
+            'task': 'app.api.mines.reports.tasks.create_new_recurring_crr_report_requests',
+            'schedule': crontab(hour="11", minute="0"),                                              # Run daily at 3am (11am UTC)
+        },
         'push_untp_map_data_to_publisher': {
-            'task': 'app.api.verifiable_credentials.manager.push_untp_map_data_to_publisher',
+            'task': 'app.api.verifiable_credentials.untp_manager.push_untp_map_data_to_publisher',
             'schedule': crontab(day_of_week="1", hour="16", minute="0"),                             #Run 8am Mondays
         },
     }
@@ -311,10 +335,10 @@ class Config(object):
     UNTP_BC_MINES_ACT_PERMIT_CONTEXT = os.environ.get("UNTP_BC_MINES_ACT_PERMIT_CONTEXT",
                                                       "UNTP_BC_MINES_ACT_PERMIT_CONTEXT")
 
-    ORGBOOK_PUBLISHER_BASE_URL = os.environ.get("ORGBOOK_PUBLISHER_BASE_URL",
-                                                "https://dev.orgbook.traceability.site")
-    ORGBOOK_PUBLISHER_CLIENT_SECRET = os.environ.get("ORGBOOK_PUBLISHER_CLIENT_SECRET",
-                                                     "ORGBOOK_PUBLISHER_CLIENT_SECRET")
+    UNTP_PUBLISHER_BASE_URL = os.environ.get(
+        "UNTP_PUBLISHER_BASE_URL", "https://untp-publisher-api-dev.apps.gold.devops.gov.bc.ca")
+    UNTP_PUBLISHER_CLIENT_SECRET = os.environ.get("UNTP_PUBLISHER_CLIENT_SECRET",
+                                                  "UNTP_PUBLISHER_CLIENT_SECRET")
 
 
 class TestConfig(Config):

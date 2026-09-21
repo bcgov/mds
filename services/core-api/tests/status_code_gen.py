@@ -36,6 +36,7 @@ from app.api.now_applications.models.unit_type import UnitType
 from app.api.now_applications.models.activity_detail.underground_exploration_type import UndergroundExplorationType
 from app.api.now_applications.models.now_application_progress_status import NOWApplicationProgressStatus
 from app.api.now_applications.models.now_application_review_type import NOWApplicationReviewType
+from app.api.now_applications.models.notice_of_work_tier import NoticeOfWorkTier
 from app.api.now_applications.models.application_type_code import ApplicationTypeCode
 from app.api.projects.information_requirements_table.models.information_requirements_table_document_type import InformationRequirementsTableDocumentType
 from app.api.projects.project_decision_package.models.project_decision_package_document_type import ProjectDecisionPackageDocumentType
@@ -247,3 +248,7 @@ def RandomApplicationType():
 def RandomApplicationTypeCode():
     return random.choice(
         [x.application_type_code for x in db.session.query(ApplicationTypeCode).all()])
+
+def RandomNoticeOfWorkTierCode():
+    return random.choice(
+        [x.notice_of_work_tier_code for x in NoticeOfWorkTier.get_all()])

@@ -5,12 +5,13 @@ import { Reports } from "@/components/dashboard/mine/reports/Reports";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 import { SidebarProvider } from "@mds/common/components/common/SidebarWrapper";
-import { REPORTS, AUTHENTICATION } from "@mds/common/constants/reducerTypes";
+import { AUTHENTICATION } from "@mds/common/constants/reducerTypes";
 import {
   complianceReportReducerType,
   reportParamsGetAll,
 } from "@mds/common/redux/slices/complianceReportsSlice";
 import { Feature } from "@mds/common/utils/featureFlag";
+import { reportReducerType } from "@mds/common/redux/slices/reportSlice";
 
 // Force the legacy reports UI by turning off the v2 feature flag for this test suite
 jest.mock("@mds/common/providers/featureFlags/useFeatureFlag", () => ({
@@ -25,7 +26,7 @@ jest.mock("@mds/common/providers/featureFlags/useFeatureFlag", () => ({
 }));
 
 const initialState = {
-  [REPORTS]: { mineReports: MOCK.MINE_REPORTS, reportsPageData: MOCK.PAGE_DATA },
+  [reportReducerType]: { mineReports: MOCK.MINE_REPORTS, reportsPageData: MOCK.PAGE_DATA },
   [complianceReportReducerType]: {
     reportPageData: {
       records: MOCK.MINE_REPORT_DEFINITION_OPTIONS,
@@ -90,12 +91,10 @@ describe("Reports", () => {
     ).toBeInTheDocument();
 
     // Table headers present (two tables render the same headers)
-    expect(screen.getAllByText(/report name/i).length).toBeGreaterThan(0);
-    expect(screen.getAllByText(/code section/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText("Report Name/Permit Condition").length).toBeGreaterThan(0);
     expect(screen.getAllByText(/compliance year/i).length).toBeGreaterThan(0);
     expect(screen.getAllByText(/^due$/i).length).toBeGreaterThan(0);
-    expect(screen.getAllByText(/submitted on/i).length).toBeGreaterThan(0);
-    expect(screen.getAllByText(/requested by/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/submitted/i).length).toBeGreaterThan(0);
     expect(screen.getAllByText(/^status$/i).length).toBeGreaterThan(0);
   });
 });

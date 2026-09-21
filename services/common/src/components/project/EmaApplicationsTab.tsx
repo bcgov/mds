@@ -22,13 +22,14 @@ import Loading from "@mds/common/components/common/Loading";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { Feature } from "@mds/common/utils";
 import ProjectContacts from "../projects/ProjectContacts";
-import { getProjectLeads } from "@mds/common/redux/selectors/partiesSelectors";
+import { getProjectLeads } from "@mds/common/redux/slices/partiesSlice";
 import { getMinistryContactsByRegion } from "@mds/common/redux/slices/minespaceSlice";
 import { fetchAmsFinalAppsByProjectSummary, updateAmsFinalAppMineSpaceEditability } from "@mds/common/redux/slices/amsFinalApplicationSlice";
 import { USER_ROLES } from "@mds/common/constants/environment";
 import CheckCircleOutlined from "@ant-design/icons/CheckCircleOutlined";
 import { COLOR } from "@mds/common/constants/styles";
 const { Paragraph } = Typography;
+import { ProjectLeadContactType } from "@mds/common/interfaces";
 
 const EmaApplicationsTab = () => {
     const dispatch = useAppDispatch();
@@ -46,14 +47,22 @@ const EmaApplicationsTab = () => {
     const hasMinesActApp = authorizations?.some(auth => auth.project_summary_authorization_type === "MINES_ACT_PERMIT");
     const canEditMajorMineApplications = useAppSelector(userHasRole(USER_ROLES.role_edit_major_mine_applications));
     const [editToggleLoading, setEditToggleLoading] = useState(false);
+    const project_lead_contact: ProjectLeadContactType[] = [];
+    const matches =
+        projectLeads?.filter((lead) =>
+            lead.party_guid.includes(project.project_lead_party_guid)
+        ) ?? [];
 
-    const project_lead_contact =
-        projectLeads?.filter((lead) => lead.party_guid.includes(project.project_lead_party_guid)) ?? [];
-
-    if (project_lead_contact?.length > 0) {
-        project_lead_contact[0].is_project_lead_contact = true;
+    if (matches?.length > 0) {
+        project_lead_contact.push({
+            ...matches[0],
+            is_project_lead_contact: true
+        });
     } else {
-        project_lead_contact.push({ is_project_lead_contact: true, project_contact_guid: "n/a" });
+        project_lead_contact.push({
+            is_project_lead_contact: true,
+            project_contact_guid: "n/a"
+        });
     }
 
     const contactsAndProjectLead = [...project.contacts, project_lead_contact[0]];

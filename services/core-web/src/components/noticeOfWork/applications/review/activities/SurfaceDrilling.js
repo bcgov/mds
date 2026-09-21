@@ -89,6 +89,55 @@ export const SurfaceDrilling = (props) => {
       <Row gutter={16}>
         <Col md={12} sm={24}>
           <div className="field-title">
+            Do you propose to have more than 25 drill sites unreclaimed at any given time?
+            <NOWOriginalValueTooltip
+              originalValue={
+                props.renderOriginalValues(
+                  "exploration_surface_drilling.has_more_than_25_unreclaimed_drill_sites"
+                ).value
+              }
+              isVisible={
+                props.renderOriginalValues(
+                  "exploration_surface_drilling.has_more_than_25_unreclaimed_drill_sites"
+                ).edited
+              }
+            />
+          </div>
+          <Field
+            id="has_more_than_25_unreclaimed_drill_sites"
+            name="has_more_than_25_unreclaimed_drill_sites"
+            component={RenderRadioButtons}
+            disabled={props.isViewMode}
+          />
+        </Col>
+        <Col md={12} sm={24}>
+          <div className="field-title">
+            Number of drill sites proposed to be unreclaimed at any given time
+            <NOWOriginalValueTooltip
+              originalValue={
+                props.renderOriginalValues(
+                  "exploration_surface_drilling.num_unreclaimed_drill_sites"
+                ).value
+              }
+              isVisible={
+                props.renderOriginalValues(
+                  "exploration_surface_drilling.num_unreclaimed_drill_sites"
+                ).edited
+              }
+            />
+          </div>
+          <Field
+            id="num_unreclaimed_drill_sites"
+            name="num_unreclaimed_drill_sites"
+            component={RenderField}
+            disabled={props.isViewMode}
+            validate={[number]}
+          />
+        </Col>
+      </Row>
+      <Row gutter={16}>
+        <Col md={12} sm={24}>
+          <div className="field-title">
             Describe the location of the Core Storage
             <NOWOriginalValueTooltip
               originalValue={

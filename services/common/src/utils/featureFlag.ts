@@ -35,6 +35,12 @@ export enum Feature {
   STANDARD_PERMIT_CONDITIONS_EDITOR = "standard_permit_conditions_new_editor",
   NOW_PERMIT_CONDITIONS_EDITOR = "now_permit_conditions_new_editor",
   REPORT_MANAGEMENT_V2 = "report_management_v2",
+  MINESPACE_SIGNUP = "minespace_signup",
+  GLOBAL_SEARCH_V2 = "global_search_v2",
+  NOTICE_OF_WORK_TIER = "notice_of_work_tier",
+  NOW_APPLICATION_DOCUMENT_SEARCH = "now_application_document_search",
+  NOTICE_OF_WORK_NATIONS = 'notice_of_work_nations',
+  INSPECTOR_PERMIT_PACKAGE_TYPE_SELECTOR = "inspector_permit_package_type_selector",
 }
 
 export const initializeFlagsmith = async (flagsmithUrl, flagsmithKey) => {

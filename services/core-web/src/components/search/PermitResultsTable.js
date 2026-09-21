@@ -6,8 +6,7 @@ import { Link } from "react-router-dom";
 import * as router from "@/constants/routes";
 import CoreTable from "@mds/common/components/common/CoreTable";
 import {
-  renderHighlightedTextColumn,
-  renderTextColumn,
+  renderHighlightedTextColumn
 } from "@mds/common/components/common/CoreTableCommonColumns";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { Feature } from "@mds/common/utils/featureFlag";
@@ -32,7 +31,8 @@ export const PermitResultsTable = (props) => {
       title: "Permit No.",
       key: "permit_no",
       render: (record) => {
-        if (isFeatureEnabled(Feature.DIGITIZED_PERMITS)) {
+        const hasMine = record.mine && record.mine.length > 0 && record.mine[0]?.mine_guid;
+        if (isFeatureEnabled(Feature.DIGITIZED_PERMITS) && hasMine) {
           return (
             <Link
               to={router.VIEW_MINE_PERMIT.dynamicRoute(
@@ -49,18 +49,20 @@ export const PermitResultsTable = (props) => {
       },
     },
     renderHighlightedTextColumn("current_permittee", "Permittee", props.highlightRegex),
-    renderTextColumn("current_permittee", "Permittee"),
     {
       title: "Mine(s)",
       key: "mine_guid",
       render: (record) => {
-        return record.mine.map((mine) => (
-          <Link
-            to={router.MINE_PERMITS.dynamicRoute(mine.mine_guid)}
-            key={"mine-link-" + mine.mine_guid}
-          >
-            <Highlight search={props.highlightRegex}>{mine.mine_name}</Highlight>
-          </Link>
+        if (!record.mine || record.mine.length === 0) {
+          return "-";
+        }
+        return record.mine.map((mine, index) => (
+          <React.Fragment key={"mine-link-" + mine.mine_guid}>
+            {index > 0 && ", "}
+            <Link to={router.MINE_PERMITS.dynamicRoute(mine.mine_guid)}>
+              <Highlight search={props.highlightRegex}>{mine.mine_name || mine.mine_guid}</Highlight>
+            </Link>
+          </React.Fragment>
         ));
       },
     },

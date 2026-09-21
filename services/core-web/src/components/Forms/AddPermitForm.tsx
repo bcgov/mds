@@ -334,6 +334,11 @@ export const AddPermitForm: FC<AddPermitFormProps> = (props) => {
             validate={[maxLength(300)]}
           />
           <Divider />
+          <p>
+            <b>Warning</b>: Files uploaded here will be visible to the proponent and may be publicly posted on external websites
+            including BC Mines Information Website without further review. Please ensure all attachments comply with
+            FOIPPA (Freedom of Information and Protection of Privacy Act) requirements and do not include personal or sensitive information.
+          </p>
           <Field
             id="PermitDocumentFileUpload"
             name="PermitDocumentFileUpload"

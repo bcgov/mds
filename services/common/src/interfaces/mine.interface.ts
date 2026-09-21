@@ -15,6 +15,9 @@ export interface IMine {
   ohsc_ind: boolean;
   union_ind: boolean;
   major_mine_ind: boolean;
+  government_agency_type_code?: string;
+  exemption_fee_status_code?: string;
+  exemption_fee_status_note?: string;
   // mine_location seems to be missing from BE response but necessary for map
   mine_location?: { latitude: number; longitude: number };
   mine_permit_numbers: string[];
@@ -28,4 +31,12 @@ export interface IMine {
   mine_work_information: IMineWorkInformation[];
   latest_mine_status: IMineStatus;
   mine_status: IMineStatus[];
+}
+
+export interface IMineName {
+  mine_guid: string;
+  mine_name: string;
+  mine_no: string;
+  latitude?: string;
+  longitude?: string;
 }

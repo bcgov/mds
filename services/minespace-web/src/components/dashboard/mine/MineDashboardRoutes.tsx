@@ -11,6 +11,7 @@ import Variances from "./variances/Variances";
 import Incidents from "./incidents/Incidents";
 import NoticesOfDeparture from "@/components/dashboard/mine/noticeOfDeparture/NoticeOfDeparture";
 import MineUserAccessPage from "./users/MineUserAccessPage";
+import { MINESPACE_USER_GUIDE } from "@/constants/assets";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faHouse,
@@ -24,9 +25,14 @@ import {
   faHouseWater,
   faUserMagnifyingGlass,
   faUsers,
+  faCircleQuestion,
 } from "@fortawesome/pro-light-svg-icons";
 
-export const getMineDashboardRoutes = (showApplications, overdueReportsCount?: number) =>
+export const getMineDashboardRoutes = (
+  showApplications,
+  reportsBadgeCount?: number,
+  isMajorMine?: boolean
+) =>
   [
     {
       key: "overview",
@@ -57,7 +63,7 @@ export const getMineDashboardRoutes = (showApplications, overdueReportsCount?: n
       label: "Reports",
       icon: (
         <Badge
-          count={overdueReportsCount}
+          count={reportsBadgeCount}
           overflowCount={99}
           showZero={false}
           style={{ backgroundColor: "#d9363e" }}
@@ -73,7 +79,7 @@ export const getMineDashboardRoutes = (showApplications, overdueReportsCount?: n
       icon: <FontAwesomeIcon icon={faBrakeWarning} style={{ width: "24px" }} />,
       component: Incidents,
     },
-    {
+    isMajorMine && {
       key: "nods",
       label: "Notices of Departure",
       icon: <FontAwesomeIcon icon={faHexagonExclamation} style={{ width: "24px" }} />,
@@ -96,6 +102,12 @@ export const getMineDashboardRoutes = (showApplications, overdueReportsCount?: n
       label: "Tailings & Dams",
       icon: <FontAwesomeIcon icon={faHouseWater} style={{ width: "24px" }} />,
       component: Tailings,
+    },
+    {
+      key: "help-guide",
+      label: "How to use MineSpace",
+      icon: <FontAwesomeIcon icon={faCircleQuestion} style={{ width: "24px" }} />,
+      onClick: () => window.open(MINESPACE_USER_GUIDE, "_blank"),
     },
     {
       key: "user-access",

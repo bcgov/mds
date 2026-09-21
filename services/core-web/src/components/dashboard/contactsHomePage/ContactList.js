@@ -41,15 +41,14 @@ const columns = [
       return (
         <Link title="Name" to={router.PARTY_PROFILE.dynamicRoute(record.key)}>
           {`${lastName}${comma}${firstName}`}
-          {!isEmpty(record.party_orgbook_entity) && (
+          {!isEmpty(record.party_bc_registration) && (
             <img
               alt="Verified"
               className="padding-sm"
               src={SUCCESS_CHECKMARK}
               width="25"
-              title={`Party verified by ${
-                record.party_orgbook_entity.association_user
-              } on ${formatDate(record.party_orgbook_entity.association_timestamp)}`}
+              title={`Party verified by ${record.party_bc_registration.association_user
+                } on ${formatDate(record.party_bc_registration.association_timestamp)}`}
             />
           )}
         </Link>
@@ -82,19 +81,19 @@ const transformRowData = (parties, relationshipTypeHash) =>
       party.mine_party_appt.length > 0
         ? uniqueRolesString(party.mine_party_appt, relationshipTypeHash)
         : Strings.EMPTY_FIELD,
-    party_orgbook_entity: party.party_orgbook_entity,
+    party_bc_registration: party.party_bc_registration,
   }));
 
 const handleTableChange = (updateContactList) => (pagination, filters, sorter) => {
   const params = isEmpty(sorter)
     ? {
-        sort_field: undefined,
-        sort_dir: undefined,
-      }
+      sort_field: undefined,
+      sort_dir: undefined,
+    }
     : {
-        sort_field: sorter.column.sortField,
-        sort_dir: sorter.order.replace("end", ""),
-      };
+      sort_field: sorter.column.sortField,
+      sort_dir: sorter.order.replace("end", ""),
+    };
   updateContactList(params);
 };
 

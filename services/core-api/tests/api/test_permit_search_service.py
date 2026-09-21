@@ -19,6 +19,16 @@ def mock_oauth_session():
         session_instance.fetch_token.return_value = {'access_token': 'test_token'}
         yield session_instance
 
+
+@pytest.fixture(autouse=True)
+def mock_oidc_configuration():
+    with patch('app.api.search.search.permit_search_service.requests.get') as mock_get:
+        response = MagicMock()
+        response.raise_for_status.return_value = None
+        response.json.return_value = {'token_endpoint': 'https://example.com/token'}
+        mock_get.return_value = response
+        yield mock_get
+
 def test_permit_search_success(mock_oauth_session):
     search_term = {'query': 'test', 'filters': {'type': 'permit'}}
     expected_response = {'total': 1, 'results': [{'id': '1'}]}

@@ -18,6 +18,8 @@ import RenderGroupCheckbox, { normalizeGroupCheckBox } from "../../forms/RenderG
 import { deleteConfirmWrapper } from "../../common/ActionMenu";
 import { IAmsFinalApplication } from "@mds/common/interfaces/projects/amsFinalApplication.interface";
 import { AMS_FINAL_APPLICATION_DOCUMENT_TYPES } from "@mds/common/constants/enums";
+import ProjectDocumentsTabSection from "../../projects/ProjectDocumentsTabSection";
+import { MineDocument } from "@mds/common/models/documents/document";
 
 const formName = FORM.ADD_EDIT_AMS_FINAL_APPLICATION;
 const documentTypeOptions = Object.entries(AMS_FINAL_APPLICATION_DOCUMENT_TYPES).map(([type, description]) => {
@@ -108,17 +110,32 @@ const EnvDocumentsTab = () => {
     const onRemoveFile = (_error, file) => {
         const document_manager_guid = file?.serverId;
         const docIndex = formValues.documents.findIndex((d) => d.document_manager_guid === document_manager_guid);
-        if (docIndex) {
+        if (docIndex !== -1) {
             dispatch(arrayRemove(formName, "documents", docIndex));
         }
     };
 
+    const savedDocuments = formValues?.documents
+        ?.filter((d) => d.mine_document_guid)
+        .map((d) => new MineDocument(d)) ?? [];
+
     return (
         <>
             <Typography.Title level={3}>Documents</Typography.Title>
+            <Typography.Paragraph>
+                Please upload your Environmental Management Act waste discharge final application for screening.
+                The application must include all documents and information as listed in the Application Instruction Document (AID)
+                and Information Requirements Table (IRT) issued for this application. Incomplete submissions may lead to delays or rejection of your application.
+            </Typography.Paragraph>
+            <Typography.Paragraph>
+                If you did not receive an AID or IRT it is recommended that you consult with Ministry staff to confirm information requirements prior to submission.
+            </Typography.Paragraph>
+            <Typography.Paragraph>
+                When uploading your application files, you will be required to <b>tag each file by type</b>, which supports efficient screening and review.
+            </Typography.Paragraph>
             <Field
                 name="pre_submitted_files"
-                label="Check those that were submitted as part of the Project Description"
+                label="Please check any of the following forms that were submitted as during the Project Description phase of this application"
                 component={RenderGroupCheckbox}
                 options={preSubmittedOptions}
                 normalize={normalizeGroupCheckBox}
@@ -138,6 +155,16 @@ const EnvDocumentsTab = () => {
                 onFileLoad={onFileLoad}
                 onRemoveFile={onRemoveFile}
             />
+            {savedDocuments.length > 0 && (
+                <ProjectDocumentsTabSection
+                    id="env-uploaded-documents"
+                    title="Uploaded Documents"
+                    titleLevel={4}
+                    documents={savedDocuments}
+                    canArchive={false}
+                    canReplace={false}
+                />
+            )}
         </>)
 };
 

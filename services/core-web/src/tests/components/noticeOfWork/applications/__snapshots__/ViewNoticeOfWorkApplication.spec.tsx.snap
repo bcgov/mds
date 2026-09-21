@@ -4,7 +4,7 @@ exports[`ViewNoticeOfWorkApplication renders properly 1`] = `
 <div
   className="page"
 >
-  <Connect(NoticeOfWorkPageHeader)
+  <NoticeOfWorkPageHeader
     applicationPageFromRoute="mock/url"
     fixedTop={false}
     noticeOfWork={
@@ -423,7 +423,7 @@ exports[`ViewNoticeOfWorkApplication renders properly 1`] = `
       key="application"
       tab="Application"
     >
-      <withRouter(Connect(ApplicationTab))
+      <ApplicationTab
         fixedTop={false}
         showActionsAndProgress={false}
       />

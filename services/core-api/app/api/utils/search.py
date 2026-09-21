@@ -1,16 +1,19 @@
 import json
 
 from app.api.mines.documents.models.mine_document import MineDocument
+from app.api.mines.explosives_permit.models.explosives_permit import ExplosivesPermit
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.permits.permit.models.permit import Permit
 from app.api.mines.permits.permit_amendment.models.permit_amendment_document import (
     PermitAmendmentDocument,
 )
+from app.api.notice_of_departure.models.notice_of_departure import NoticeOfDeparture
+from app.api.now_applications.models.now_application_identity import (
+    NOWApplicationIdentity,
+)
 from app.api.parties.party.models.party import Party
-from app.api.search.search.permit_search_service import PermitSearchService
-from app.api.utils.feature_flag import Feature, is_feature_enabled
 from app.extensions import db
-from sqlalchemy import desc, func, or_
+from sqlalchemy import desc, func
 
 common_search_targets = {
     'mine': {
@@ -58,6 +61,39 @@ simple_additional_search_targets = {
         'id_field': 'permit_guid',
         'value_field': 'permit_no',
         'score_multiplier': 1000
+    },
+    'notice_of_departure': {
+        'model': NoticeOfDeparture,
+        'primary_column': NoticeOfDeparture.nod_guid,
+        'description': 'Notices of Departure',
+        'entities_to_return': [NoticeOfDeparture.nod_guid, NoticeOfDeparture.nod_no, NoticeOfDeparture.nod_title],
+        'columns_to_search': [NoticeOfDeparture.nod_no, NoticeOfDeparture.nod_title],
+        'has_deleted_ind': True,
+        'id_field': 'nod_guid',
+        'value_field': 'nod_title',
+        'score_multiplier': 500
+    },
+    'explosives_permit': {
+        'model': ExplosivesPermit,
+        'primary_column': ExplosivesPermit.explosives_permit_guid,
+        'description': 'Explosives Permits',
+        'entities_to_return': [ExplosivesPermit.explosives_permit_guid, ExplosivesPermit.permit_number],
+        'columns_to_search': [ExplosivesPermit.permit_number, ExplosivesPermit.application_number],
+        'has_deleted_ind': True,
+        'id_field': 'explosives_permit_guid',
+        'value_field': 'permit_number',
+        'score_multiplier': 500
+    },
+    'now_application': {
+        'model': NOWApplicationIdentity,
+        'primary_column': NOWApplicationIdentity.now_application_guid,
+        'description': 'Notice of Work Applications',
+        'entities_to_return': [NOWApplicationIdentity.now_application_guid, NOWApplicationIdentity.now_number],
+        'columns_to_search': [NOWApplicationIdentity.now_number],
+        'has_deleted_ind': False,
+        'id_field': 'now_application_guid',
+        'value_field': 'now_number',
+        'score_multiplier': 500
     }
 }
 
@@ -104,6 +140,52 @@ full_additional_search_targets = {
         'document_name',
         'score_multiplier':
         250
+    },
+    'notice_of_departure': {
+        'model': NoticeOfDeparture,
+        'primary_column': NoticeOfDeparture.nod_guid,
+        'description': 'Notices of Departure',
+        'entities_to_return': [
+            NoticeOfDeparture.nod_guid,
+            NoticeOfDeparture.nod_no,
+            NoticeOfDeparture.nod_title,
+            NoticeOfDeparture.nod_status,
+            NoticeOfDeparture.nod_type
+        ],
+        'columns_to_search': [NoticeOfDeparture.nod_no, NoticeOfDeparture.nod_title, NoticeOfDeparture.nod_description],
+        'has_deleted_ind': True,
+        'id_field': 'nod_guid',
+        'value_field': 'nod_title',
+        'score_multiplier': 500
+    },
+    'explosives_permit': {
+        'model': ExplosivesPermit,
+        'primary_column': ExplosivesPermit.explosives_permit_guid,
+        'description': 'Explosives Permits',
+        'entities_to_return': [
+            ExplosivesPermit.explosives_permit_guid,
+            ExplosivesPermit.permit_number,
+            ExplosivesPermit.application_number,
+            ExplosivesPermit.description,
+            ExplosivesPermit.application_status,
+            ExplosivesPermit.is_closed
+        ],
+        'columns_to_search': [ExplosivesPermit.permit_number, ExplosivesPermit.application_number, ExplosivesPermit.description],
+        'has_deleted_ind': True,
+        'id_field': 'explosives_permit_guid',
+        'value_field': 'permit_number',
+        'score_multiplier': 500
+    },
+    'now_application': {
+        'model': NOWApplicationIdentity,
+        'primary_column': NOWApplicationIdentity.now_application_guid,
+        'description': 'Notice of Work Applications',
+        'entities_to_return': [NOWApplicationIdentity.now_application_guid, NOWApplicationIdentity.now_number],
+        'columns_to_search': [NOWApplicationIdentity.now_number],
+        'has_deleted_ind': False,
+        'id_field': 'now_application_guid',
+        'value_field': 'now_number',
+        'score_multiplier': 500
     }
 }
 

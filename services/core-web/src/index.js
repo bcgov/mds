@@ -15,7 +15,7 @@ import "antd/dist/antd.less";
 import "./styles/index.scss";
 import fetchEnv from "./fetchEnv";
 import FeatureFlagProvider from "@mds/common/providers/featureFlags/featureFlag.provider";
-import { registerLicense } from "@syncfusion/ej2-base";
+import { registerLicense, validateLicense } from "@syncfusion/ej2-base";
 import { ENVIRONMENT } from "@mds/common/constants/environment";
 
 const idleTimeout = 5 * 60_000;
@@ -32,6 +32,8 @@ export const Index = (props) => {
     fetchEnv().then(() => {
       setEnvironment(true);
       registerLicense(ENVIRONMENT.syncfusionLicense);
+      const isValidLicense = validateLicense(ENVIRONMENT.syncfusionLicense);
+      console.log('syncfusionLicense is valid: ', isValidLicense)
     });
   }
 

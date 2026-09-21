@@ -1,60 +1,73 @@
 import React from "react";
 import { render } from "@testing-library/react";
+import { Provider } from "react-redux";
 import { AuthenticationGuard } from "@/HOC/AuthenticationGuard";
+import { AUTHENTICATION } from "@mds/common/constants/reducerTypes";
 
-jest.mock("react", () => ({
-  ...jest.requireActual("react"),
-  useEffect: (cb) => cb(), // Run useEffect hooks manually as they do not work with shallow enzyme rendering
-}));
+const mockStore = (isAuthenticated = true) => ({
+  getState: () => ({
+    [AUTHENTICATION]: {
+      isAuthenticated,
+      userInfo: {},
+      userAccessData: [],
+    },
+  }),
+  subscribe: jest.fn(),
+  dispatch: jest.fn(),
+});
 
 jest.mock("@react-keycloak/web", () => ({
   useKeycloak: () => ({
     keycloak: {
       authenticated: false,
+      didInitialize: true,
+      tokenParsed: null,
     },
     initialized: true,
   }),
 }));
 
-const Component = AuthenticationGuard()(() => <div>Test</div>);
-const dispatchProps = {
-  getUserInfoFromToken: jest.fn(() => Promise.resolve()),
-  authenticateUser: jest.fn(() => Promise.resolve()),
-};
-const props = {
-  isAuthenticated: true,
-  fromCore: false,
-};
+jest.mock("@/actionCreators/authenticationActionCreator", () => ({
+  authenticateUser: jest.fn(() => ({ type: "MOCK_AUTHENTICATE" })),
+}));
 
-describe("AuthenticationGuard", (isPublic = false) => {
-  it("should render the `WrappedComponent` if `isAuthenticated`", () => {
-    const { container: component } = render(
-      <Component.WrappedComponent {...dispatchProps} {...props} />
+jest.mock("@mds/common/redux/actions/authenticationActions", () => ({
+  storeUserAccessData: jest.fn(() => ({ type: "MOCK_STORE_ACCESS" })),
+}));
+
+const TestComponent = () => <div>Test</div>;
+
+describe("AuthenticationGuard", () => {
+  it("should render the wrapped component if authenticated", () => {
+    const Component = AuthenticationGuard()(TestComponent);
+    const store = mockStore(true);
+    const { container } = render(
+      <Provider store={store as any}>
+        <Component />
+      </Provider>
     );
-    expect(component).toMatchSnapshot();
+    expect(container).toMatchSnapshot();
   });
 
-  it("should render the `WrappedComponent` if `isPublic`", () => {
-    isPublic = true;
-    const { container: component } = render(
-      <Component.WrappedComponent {...dispatchProps} {...props} />
+  it("should render the wrapped component if route is public", () => {
+    const Component = AuthenticationGuard(true)(TestComponent);
+    const store = mockStore(false);
+    const { container } = render(
+      <Provider store={store as any}>
+        <Component />
+      </Provider>
     );
-    expect(component).toMatchSnapshot();
+    expect(container).toMatchSnapshot();
   });
 
-  it("should render the `NullScreen` if `!isAuthenticated`", () => {
-    props.isAuthenticated = false;
-    const { container: component } = render(
-      <Component.WrappedComponent {...dispatchProps} {...props} />
+  it("should render UnauthenticatedNotice if not authenticated", () => {
+    const Component = AuthenticationGuard()(TestComponent);
+    const store = mockStore(false);
+    const { container } = render(
+      <Provider store={store as any}>
+        <Component />
+      </Provider>
     );
-    expect(component).toMatchSnapshot();
-  });
-
-  describe("lifecycle methods", () => {
-    it("componentDidMount", () => {
-      const authenticate = jest.fn();
-      authenticate();
-      expect(authenticate).toHaveBeenCalled();
-    });
+    expect(container).toMatchSnapshot();
   });
 });

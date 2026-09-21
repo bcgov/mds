@@ -8,6 +8,7 @@ from app.api.utils.access_decorators import requires_role_edit_ministry_contacts
 from app.api.ministry_contacts.response_models import MINISTRY_CONTACT_MODEL
 from app.api.ministry_contacts.models.ministry_contact import MinistryContact
 from app.api.ministry_contacts.models.ministry_contact_type import MinistryContactType
+from app.api.ministry_contacts.models.distribution_list_user import DistributionListUser
 
 
 class MinistryContactResource(Resource, UserMixin):
@@ -18,7 +19,7 @@ class MinistryContactResource(Resource, UserMixin):
     parser.add_argument(
         'is_general_contact', type=bool, help='is is_general_contact? true/false', location='json')
     parser.add_argument(
-        'phone_number', type=str, help='MCM phone number', required=True, location='json')
+        'phone_number', type=str, help='MCM phone number', required=False, location='json')
     parser.add_argument(
         'fax_number', type=str, help='MCM Regional Office fax number', location='json')
     parser.add_argument(
@@ -31,6 +32,10 @@ class MinistryContactResource(Resource, UserMixin):
         type=str,
         help='MCM Regional Office mailing address line 2',
         location='json')
+    parser.add_argument(
+        'mine_region_code', type=str, trim=True, help='Mine region code', location='json')
+    parser.add_argument(
+        'distribution_list_guids', type=list, location='json', default=[])
 
     @api.doc(description='Update an existing MCM contact.')
     @api.marshal_with(MINISTRY_CONTACT_MODEL)
@@ -42,8 +47,39 @@ class MinistryContactResource(Resource, UserMixin):
 
         data = self.parser.parse_args()
 
+        if not data.get('email'):
+            raise BadRequest('Email is required.')
+
+        if contact.emli_contact_type_code != 'RDC' and not data.get('is_general_contact'):
+            if not data.get('phone_number'):
+                raise BadRequest('Phone number is required.')
+
+        distribution_list_guids = data.pop('distribution_list_guids', [])
+        
+        new_region_code = data.get('mine_region_code')
+        if new_region_code and new_region_code != contact.mine_region_code:
+            if contact.emli_contact_type_code == 'ROE':
+                existing_roe = MinistryContact.find_ministry_contact('ROE', new_region_code)
+                if existing_roe and existing_roe.contact_guid != contact.contact_guid:
+                    raise BadRequest('Error: Restricted to one Regional Office contact by mine region.')
+
         for key, value in data.items():
+            if key == 'mine_region_code' and 'mine_region_code' not in (request.json or {}):
+                continue
             setattr(contact, key, value)
+
+        # Soft delete existing records
+        existing_dlu = DistributionListUser.find_by_contact_guid(contact.contact_guid)
+        for dlu in existing_dlu:
+            if str(dlu.distribution_list_guid) not in distribution_list_guids:
+                dlu.deleted_ind = True
+                dlu.save(commit=False)
+                
+        # Add new records
+        existing_guids = [str(dlu.distribution_list_guid) for dlu in existing_dlu if not dlu.deleted_ind]
+        for guid in distribution_list_guids:
+            if guid not in existing_guids:
+                DistributionListUser.create(guid, contact.contact_guid, add_to_session=True)
 
         contact.save()
 
@@ -59,6 +95,9 @@ class MinistryContactResource(Resource, UserMixin):
 
         contact.deleted_ind = True
         current_app.logger.info(f'Deleting {contact}')
+
+        for dlu in DistributionListUser.find_by_contact_guid(contact_guid):
+            dlu.deleted_ind = True
 
         contact.save()
 

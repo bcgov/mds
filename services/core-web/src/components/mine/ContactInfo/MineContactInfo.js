@@ -5,7 +5,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { debounce } from "lodash";
 import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
-import { createParty, fetchParties } from "@mds/common/redux/actionCreators/partiesActionCreator";
+import { createParty, fetchParties } from "@mds/common/redux/slices/partiesSlice";
 import { fetchMineRecordById } from "@mds/common/redux/actionCreators/mineActionCreator";
 import { getMines, getMineGuid } from "@mds/common/redux/selectors/mineSelectors";
 import CustomPropTypes from "@/customPropTypes";

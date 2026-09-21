@@ -1,6 +1,6 @@
 {
   "name": "mds",
-  "packageManager": "yarn@3.2.4",
+  "packageManager": "yarn@3.8.7",
   "private": true,
   "description": "Mines Digital Services Packages",
   "engines": {
@@ -35,7 +35,10 @@
     "@types/react": "16.9.49",
     "@types/react-dom": "16.9.8",
     "@types/react-router-dom": "5.3.3",
-    "cheerio": "1.0.0-rc.3"
+    "cheerio": "1.0.0-rc.3",
+    "@syncfusion/ej2-base": "31.2.5",
+    "@syncfusion/ej2-react-pdfviewer": "31.2.5",
+    "@syncfusion/ej2-pdfviewer": "31.2.5"
   },
   "scripts": {
     "postinstall": "husky install"
@@ -55,8 +58,9 @@
     }
   },
   "dependencies": {
-    "dompurify": "^3.2.6",
-    "html-react-parser": "^5.2.6",
+    "dompurify": "^3.2.7",
+    "html-react-parser": "^5.2.7",
+    "node-gyp": "^12.1.0",
     "react-quill": "^2.0.0"
   }
 }

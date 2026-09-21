@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { Col, Divider, Row, Skeleton, Table, Typography } from "antd";
+import { Alert, Col, Divider, Row, Skeleton, Table, Typography } from "antd";
 import {
   IExemptionFeeStatusOption,
   IMine,
@@ -29,6 +29,7 @@ import {
   getPermitStatusOptions,
 } from "@mds/common/redux/selectors/staticContentSelectors";
 import { getPermitAmendmentTypeOptions } from "@mds/common/redux/reducers/staticContentReducer";
+import { getIsCore } from "@mds/common/redux/reducers/authenticationReducer";
 import {
   renderDocumentLinkColumn,
   uploadedByColumn,
@@ -55,6 +56,7 @@ const ViewPermitOverview: FC<ViewPermitOverviewProps> = ({ latestAmendment }) =>
   const { id, permitGuid } = useParams<{ id: string; permitGuid: string }>();
   const permit: IPermit = useSelector(getPermitByGuid(permitGuid));
   const mine: IMine = useSelector(getMineById(id));
+  const isCore = useSelector(getIsCore);
 
   const documentColumns: ColumnsType<IPermitAmendmentDocument> = [
     renderDocumentLinkColumn("document_name", "File Name", true),
@@ -66,7 +68,7 @@ const ViewPermitOverview: FC<ViewPermitOverviewProps> = ({ latestAmendment }) =>
     <div className="view-permits-content">
       <Row justify="space-between" align="middle">
         <Col>
-          <Title className="margin-none padding-lg--top padding-lg--bottom" level={2}>
+          <Title className="margin-none padding-md--top padding-md--bottom" level={2}>
             Permit Overview
           </Title>
         </Col>
@@ -77,6 +79,14 @@ const ViewPermitOverview: FC<ViewPermitOverviewProps> = ({ latestAmendment }) =>
       {permit && mine ? (
         <Row>
           <Col span={12} className="view-permits-detail-section">
+            {isCore && permit.mine?.length > 1 && (
+              <Alert
+                className="margin-medium--bottom permit-multi-mine-alert"
+                message="This permit is associated with multiple mines, please review the associated mine list for more details"
+                type="warning"
+                showIcon
+              />
+            )}
             <Title level={4}>Permit Details</Title>
             <Row>
               <Col span={12}>

@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { getFormValues, submit, reset, change } from "@mds/common/components/forms/form";
 import { Row, Col, Steps, Button, Popconfirm } from "antd";
-import { createParty, addPartyRelationship } from "@mds/common/redux/actionCreators/partiesActionCreator";
+import { createParty, addPartyRelationship } from "@mds/common/redux/slices/partiesSlice";
 import { fetchMineNameList } from "@mds/common/redux/actionCreators/mineActionCreator";
 import { getMineNames } from "@mds/common/redux/selectors/mineSelectors";
 import CustomPropTypes from "@/customPropTypes";

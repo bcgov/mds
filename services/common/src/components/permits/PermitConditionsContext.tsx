@@ -10,9 +10,16 @@ interface PermitConditionsContextType {
   standardConditionType?: string;
   isStandardConditionEditor?: boolean;
   isNowEditor?: boolean;
+  isCore?: boolean;
   loading: boolean;
   setLoading: (loading: boolean) => void;
   refreshData: () => Promise<any>;
+  activeConditionId: number | null;
+  setActiveConditionId: (id: number | null) => void;
+  clearActiveConditionId: (id: number) => void;
+  submittingConditionIds: Record<number, number>;
+  addSubmittingCondition: (id: number) => void;
+  removeSubmittingCondition: (id: number) => void;
 }
 
 const PermitConditionsContext = React.createContext<PermitConditionsContextType | undefined>(
@@ -27,14 +34,28 @@ export const usePermitConditions = () => {
   return context;
 };
 
+export type PermitConditionsProviderInput =
+  Partial<Omit<PermitConditionsContextType, "loading" | "setLoading" | "refreshData">> & {
+    loading: boolean;
+    setLoading: (loading: boolean) => void;
+    refreshData: () => Promise<any>;
+  };
+
 export const PermitConditionsProvider: FC<{
   children: React.ReactNode;
-  value: PermitConditionsContextType;
+  value: PermitConditionsProviderInput;
 }> = ({ children, value }) => {
   // undefined default value causes problems in permit condition form
   const defaultValue = {
     isNowEditor: false,
     isStandardConditionEditor: false,
+    isCore: false,
+    activeConditionId: null,
+    setActiveConditionId: () => { },
+    clearActiveConditionId: () => { },
+    submittingConditionIds: {},
+    addSubmittingCondition: () => { },
+    removeSubmittingCondition: () => { },
   };
 
   const contextValue = useMemo(() => {

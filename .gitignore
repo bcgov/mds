@@ -1,4 +1,5 @@
 .env
+.npmrc
 .venv/
 node_modules/
 .DS_Store
@@ -6,6 +7,7 @@ node_modules/
 pipeline/build/
 coverage/
 .idea/
+.agents/
 migrations/sql/afterMigrate__88__create_schema_users.sql
 __pycache__
 *.pytest_cache
@@ -60,3 +62,6 @@ services/document-manager/document-manager.iml
 /services/core-api/core-api.iml
 openshift-client-linux-*.tar.gz*
 kubectl
+/services/nris-api/nris-api.iml
+/.claude/
+.junie

@@ -45,4 +45,27 @@ describe("Project Management", () => {
 
     expect(container).toMatchSnapshot();
   });
+
+  it("renders properly when system is minespace and files can be added", async () => {
+    const { container } = render(
+      <ReduxWrapper initialState={{
+        ...initialState,
+        [AUTHENTICATION]: {
+          ...initialState[AUTHENTICATION],
+          userInfo: { preferred_username: "USERNAME" },
+          systemFlag: SystemFlagEnum.ms,
+        }
+      }}>
+        <ProjectSummaryForm
+          initialValues={initialState.form[FORM.ADD_EDIT_PROJECT_SUMMARY].values}
+          isEditMode={false}
+          handleSaveData={asyncSave}
+          handleTabChange={() => { }}
+          activeTab={"document-upload"}
+        />
+      </ReduxWrapper>
+    );
+
+    expect(container).toMatchSnapshot();
+  });
 });

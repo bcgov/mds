@@ -1,7 +1,5 @@
 import logging
 import os
-from datetime import datetime
-from typing import List
 
 import yaml
 from app.pipelines.permit_condition_search.components.azure_blob_upload import (
@@ -21,12 +19,11 @@ from app.pipelines.permit_condition_search.stores.ai_search_document_store impor
 )
 from azure.search.documents.indexes.models import VectorSearch
 from haystack import AsyncPipeline, Pipeline
-from haystack.components.builders import ChatPromptBuilder, PromptBuilder
+from haystack.components.builders import ChatPromptBuilder
 from haystack.components.embedders import AzureOpenAITextEmbedder
 from haystack.components.extractors.llm_metadata_extractor import (
     AzureOpenAIChatGenerator,
 )
-from haystack.components.generators import AzureOpenAIGenerator
 from haystack.dataclasses import ChatMessage
 from haystack_integrations.components.retrievers.azure_ai_search import (
     AzureAISearchHybridRetriever,
@@ -50,6 +47,7 @@ vector_search_config = VectorSearch()
 
 def create_azure_search_document_store():
     return AzureSearchDocumentStore(
+        index_fields=fields,
         api_key=config.search.api_key,
         azure_endpoint=config.search.endpoint,
         index_name=config.search.index_name.resolve_value(),
@@ -62,6 +60,7 @@ def create_azure_search_document_store():
             highlight_pre_tag="**",
             highlight_post_tag="**",
         ),
+        headers={"Authorization": f"Bearer {config.search.api_key.resolve_value()}"},
     )
 
 
@@ -85,15 +84,19 @@ def create_permit_condition_search_indexing_pipeline():
     blob_uploader = AzureBlobUploader(
         connection_string=config.storage.connection_string,
         container_name=config.storage.container_name,
+        blob_service_endpoint=config.storage.blob_service_endpoint,
+        folder_name="indexing/permit",
     )
 
     api_key = config.search.api_key.resolve_value()
-
     assert api_key is not None, "API key must be provided to create the indexer"
+    search_endpoint = config.search.endpoint.resolve_value()
+    assert search_endpoint is not None, "Search endpoint must be provided to create the indexer"
 
     indexer_runner = IndexerRunner(
-        search_endpoint=config.search.endpoint.resolve_value(),
+        search_endpoint=search_endpoint,
         search_api_key=api_key,
+        indexer_name=config.search.indexer_name.resolve_value(),
     )
 
     index_pipeline.add_component("blob_uploader", blob_uploader)
@@ -112,6 +115,8 @@ def create_blob_uploader_pipeline():
     blob_uploader = AzureBlobUploader(
         connection_string=config.storage.connection_string,
         container_name=config.storage.container_name,
+        blob_service_endpoint=config.storage.blob_service_endpoint,
+        folder_name="indexing/permit",
     )
 
     blob_uploader_pipeline.add_component("blob_uploader", blob_uploader)
@@ -136,6 +141,7 @@ def create_permit_condition_search_retrieval_pipeline():
         azure_endpoint=config.openai.endpoint.resolve_value(),
         azure_deployment=config.openai.embedding_model,
         api_key=config.openai.api_key,
+        default_headers={"Authorization": f"Bearer {config.openai.api_key.resolve_value()}"},
     )
 
     retriever = AzureAISearchHybridRetriever(
@@ -168,6 +174,7 @@ def create_permit_condition_search_retrieval_pipeline():
         api_key=config.openai.api_key,
         api_version=config.openai.api_version,
         generation_kwargs={"temperature": 0, "max_tokens": 16384, "n": 1},
+        default_headers={"Authorization": f"Bearer {config.openai.api_key.resolve_value()}"},
     )
 
     retrieval_pipeline.add_component("text_embedder", text_embedder)

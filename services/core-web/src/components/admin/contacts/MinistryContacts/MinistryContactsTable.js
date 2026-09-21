@@ -13,6 +13,7 @@ import { renderTextColumn } from "@mds/common/components/common/CoreTableCommonC
 const propTypes = {
   isLoaded: PropTypes.bool.isRequired,
   isOffice: PropTypes.bool,
+  hideDelete: PropTypes.bool,
   openEditModal: PropTypes.func.isRequired,
   handleDeleteContact: PropTypes.func.isRequired,
   mineRegionHash: PropTypes.objectOf(PropTypes.string).isRequired,
@@ -20,7 +21,7 @@ const propTypes = {
   contacts: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
 };
 
-const defaultProps = { isOffice: false };
+const defaultProps = { isOffice: false, hideDelete: false };
 
 const hideColumn = (condition) => (condition ? "column-hide" : "");
 const columns = (
@@ -28,6 +29,7 @@ const columns = (
   openEditModal,
   handleDeleteContact,
   isOffice,
+  hideDelete,
   MinistryContactTypesHash
 ) => [
     {
@@ -106,7 +108,7 @@ const columns = (
               <img alt="pencil" src={EDIT_OUTLINE_VIOLET} />
             </Button>
           </AuthorizationWrapper>
-          {!isOffice && (
+          {!isOffice && !hideDelete && (
             <AuthorizationWrapper permission={Permission.ADMIN}>
               <Popconfirm
                 placement="topRight"
@@ -143,6 +145,7 @@ export const MinistryContactsTable = (props) => {
         props.openEditModal,
         props.handleDeleteContact,
         props.isOffice,
+        props.hideDelete,
         props.MinistryContactTypesHash
       )}
       dataSource={transformRowData(props.contacts)}

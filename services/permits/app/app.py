@@ -12,6 +12,9 @@ from .pipelines.permit_condition_extraction.resources.permit_condition_resource 
 from .pipelines.permit_condition_search.resources.permit_condition_search_resource import (
     router as permit_condition_search_router,
 )
+from .pipelines.document_search.resources.document_search_resource import (
+    router as document_search_router,
+)
 
 DEBUG_MODE = os.environ.get("DEBUG_MODE", "False").lower() == "true"
 
@@ -28,6 +31,7 @@ logging.basicConfig(
 mds = FastAPI()
 mds.include_router(permit_condition_router)
 mds.include_router(permit_condition_search_router)
+mds.include_router(document_search_router)
 
 if DEBUG_MODE:
     if not os.path.exists("debug"):

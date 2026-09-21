@@ -424,7 +424,7 @@ export const NOTICE_OF_WORK_APP_FORM: INoWApplicationForm = {
         postnominal_letters: null,
         idir_username: null,
         // @ts-ignore
-        party_orgbook_entity: {},
+        party_bc_registration: {},
         business_role_appts: [],
         signature: null,
         now_party_appt: [],
@@ -457,7 +457,7 @@ export const NOTICE_OF_WORK_APP_FORM: INoWApplicationForm = {
         postnominal_letters: null,
         idir_username: null,
         // @ts-ignore
-        party_orgbook_entity: {},
+        party_bc_registration: {},
         business_role_appts: [],
         signature: null,
         now_party_appt: [],
@@ -486,6 +486,8 @@ export const NOTICE_OF_WORK_APP_FORM: INoWApplicationForm = {
     regional_contact: "SouthwestMinesDivision@gov.bc.ca",
     submitted_to_core_date: "2025-04-25",
     last_updated_date: "2025-07-28T17:55:33.060133+00:00",
+    now_application_tier_created_date: "2025-04-25 10:00",
+    now_application_tier_updated_date: "2025-04-25 10:00",
     filtered_submission_documents: [],
     // --- IimportedNOWApplication fields ---
     now_application_guid: "0f9718ad-f955-4f33-a126-8874456f6518",
@@ -725,7 +727,9 @@ export const IMPORTED_NOTICE_OF_WORK = {
     filtered_submission_documents: [],
     application_documents: [],
     lead_inspector: {},
-    application_progress: []
+    application_progress: [],
+    now_application_tier_created_date: "2025-04-25 10:00",
+    now_application_tier_updated_date: "2025-04-25 10:00",
 };
 
 export const NOTICE_OF_WORK_ACTIVITY_TYPES = {
@@ -2934,3 +2938,53 @@ export const NOW_APPLICATION_DELAY = [
         end_date: "2021-10-26T18:05:56.475794+00:00",
     },
 ];
+
+export const PIP_CONSULTATION_AREA_RESPONSE = {
+    records: [
+        {
+            internal_mds_id: 1,
+            cnsltn_area_guid: "123e4567-e89b-12d3-a456-426614174000",
+            cnsltn_area_name: "Consultation Area 1",
+            organization_guid: "123e4567-e89b-12d3-a456-426614174001",
+            cnsltn_area_update_date: "2021-10-26T18:05:56.475794+00:00",
+            contact_organization_name: "Organization 1",
+        }
+    ]
+}
+
+export const NOW_APPLICATION_NATION_RESPONSE = {
+    records: [{
+        now_application_nation_guid: "123e4567-e89b-12d3-a456-426614174002",
+        now_application_nation_id: 1,
+        now_application_guid: "123e4567-e89b-12d3-a456-426614174003",
+        status: "Consultation",
+        events: [
+            {
+                now_application_nation_event_guid: "123e4567-e89b-12d3-a456-426614174004",
+                now_application_nation_event_id: 1,
+                now_application_nation_guid: "123e4567-e89b-12d3-a456-426614174002",
+                event_name: "Begin Consultation Request",
+                event_from: "2021-10-26T18:05:56.475794+00:00",
+                event_to: "2021-10-27T18:05:56.475794+00:00",
+                start_date: "2021-10-26T18:05:56.475794+00:00",
+                end_date: "2021-10-27T18:05:56.475794+00:00",
+                update_user: "test_user",
+                update_timestamp: "2021-10-26T18:05:56.475794+00:00",
+                create_user: "test_user",
+                create_timestamp: "2021-10-26T18:05:56.475794+00:00",
+            },
+        ],
+        consultation_started_by_client: true,
+        due_date: "2021-11-26T18:05:56.475794+00:00",
+        contact_organization_name: "Organization 1",
+        organization_guid: "123e4567-e89b-12d3-a456-426614174001",
+        consultation_area_name: "Consultation Area 1",
+        consultation_area_guid: "123e4567-e89b-12d3-a456-426614174000",
+        consultation_area_update_date: "2021-10-26T18:05:56.475794+00:00",
+        update_user: "test_user",
+        update_timestamp: "2021-10-26T18:05:56.475794+00:00",
+        create_user: "test_user",
+        create_timestamp: "2021-10-26T18:05:56.475794+00:00",
+    }
+    ]
+}

@@ -22,6 +22,7 @@ export interface HaystackDocumentMeta {
     }
     tenure: string[];
     verification_status: string;
+    artifact_presigned_url: string
 }
 
 export interface ContextItem {
@@ -44,6 +45,39 @@ export interface HaystackDocumentSearchResult {
     id: string;
     content: string;
     meta: HaystackDocumentMeta;
+    score: number;
+}
+
+export interface NowDocumentMeta {
+    now_application_guid: string;
+    mine_guid: string;
+    document_manager_guid: string;
+    document_name: string;
+    document_type: string;
+    artifact_type?: string;
+    artifact_category?: string;
+    artifact_id?: string;
+    artifact_page_number?: number;
+    artifact_bounding_box_left?: number;
+    artifact_bounding_box_top?: number;
+    artifact_bounding_box_right?: number;
+    artifact_bounding_box_bottom?: number;
+    artifact_table_markdown?: string;
+    artifact_presigned_url?: string;
+    artifact_caption?: string;
+    artifact_summary?: string;
+    caption_source?: "di" | "generated";
+    summary_source?: "generated";
+    submitted_date: string | null;
+    highlights?: {
+        content?: string[];
+    };
+}
+
+export interface NowDocumentSearchResult {
+    id: string;
+    content: string;
+    meta: NowDocumentMeta;
     score: number;
 }
 
@@ -105,6 +139,7 @@ export interface SearchResultsProps {
 export interface Facet {
     value: string;
     count: number;
+    meta?: any;
 }
 
 export interface FacetGroup {

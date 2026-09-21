@@ -2,7 +2,7 @@ import { PartyTypeCodeEnum } from "@mds/common/constants/enums";
 import {
   IMinePartyAppt,
   IPartyAddress,
-  IPartyOrgBookEntity,
+  IPartyBCRegistration,
 } from "@mds/common/interfaces";
 
 export interface IParty {
@@ -30,7 +30,7 @@ export interface IParty {
   party_guid: string;
   /** party_name: if the party is ORG, the company name, if it's PER, then last_name */
   party_name: string;
-  party_orgbook_entity: IPartyOrgBookEntity;
+  party_bc_registration: IPartyBCRegistration;
   party_type_code: PartyTypeCodeEnum;
   phone_ext?: string;
   phone_no: string;
@@ -40,4 +40,6 @@ export interface IParty {
   phone_ter_ext?: string;
   postnominal_letters?: string;
   signature?: string;
+  is_project_lead_contact?: boolean;
+  project_contact_guid?: string;
 }

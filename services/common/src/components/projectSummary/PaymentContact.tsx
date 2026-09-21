@@ -53,7 +53,7 @@ export const PaymentContact = ({ isDisabled }) => {
     <div style={{ paddingTop: 12 }}>
       <Title level={4}>Contact for Payment</Title>
       <Paragraph>
-        Provide contact information for the responsible person for application payments.
+        Provide contact information for the person responsible for application payments.
       </Paragraph>
       <Row gutter={16}>
         <Col md={12} sm={24}>

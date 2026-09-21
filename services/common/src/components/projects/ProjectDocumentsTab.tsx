@@ -1,4 +1,5 @@
 import React, { FC, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 import ScrollSidePageWrapper from "../common/ScrollSidePageWrapper";
 import { ScrollSideMenuProps } from "../common/ScrollSideMenu";
@@ -41,6 +42,10 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
   const isCore = systemFlag === SystemFlagEnum.core;
   const [isLoaded, setIsLoaded] = useState(true);
   const canManageAmsFiles = canEditMajorMineApplications || isUserProponent;
+  const userRoles = [
+    canEditMajorMineApplications && USER_ROLES.role_edit_major_mine_applications,
+    isUserProponent && USER_ROLES.role_minespace_proponent,
+  ].filter(Boolean) as string[];
 
 
   const authsWithDocs =
@@ -72,9 +77,9 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
 
   const refreshAmsApps = async () => {
     setIsLoaded(false);
-    dispatch(
+    await dispatch(
       fetchAmsFinalAppsByProjectSummary(project.project_summary.project_summary_guid)
-    ).then(() => setIsLoaded(true));
+    );
     setIsLoaded(true);
   };
 
@@ -116,6 +121,21 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
   const canModifySummaryDocs = !areDocumentFieldsDisabled(systemFlag, project?.project_summary?.status_code);
   const canModifyMmaDocs = !areDocumentFieldsDisabled(systemFlag, project?.major_mine_application?.status_code);
 
+  // New supporting/spatial documents can only be added from the Project Description
+  // Document Upload step, not from this tab, which only supports managing existing files.
+  const isProjectDescriptionEditableStatus = !["DFT", "CHR"].includes(
+    project?.project_summary?.status_code
+  );
+  const documentUploadHref =
+    !isCore && project?.project_summary?.project_summary_guid
+      ? GLOBAL_ROUTES?.EDIT_PROJECT_SUMMARY?.dynamicRoute(
+        project.project_guid,
+        project.project_summary.project_summary_guid,
+        "document-upload",
+        isProjectDescriptionEditableStatus
+      )
+      : null;
+
   const projectSummaryDocs =
     project?.project_summary?.documents?.map(
       (d) =>
@@ -138,6 +158,7 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
         new MajorMineApplicationDocument({
           ...d,
           category: CATEGORY_CODE[d.major_mine_application_document_type_code],
+          user_roles: userRoles,
         })
     ) ?? [];
 
@@ -187,6 +208,7 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
           canArchive={canChangeApplicationAmsFile}
           canReplace={canChangeApplicationAmsFile}
           onArchivedDocuments={refreshAmsApps}
+          onReplaceDocument={refreshAmsApps}
           documents={application.documents.map(
             (d) =>
               new MineDocument({
@@ -227,8 +249,10 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
             id={href}
             title={titleText}
             key={auth.project_summary_authorization_guid}
-            canArchive={false}
+            canArchive={canModifySummaryDocs}
             canReplace={canModifySummaryDocs}
+            onArchivedDocuments={refreshData}
+            onReplaceDocument={refreshData}
             documents={auth.amendment_documents.map(
               (d) =>
                 new MineDocument({
@@ -246,6 +270,13 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
       content: (
         <>
           <Typography.Title level={4}>Spatial Components</Typography.Title>
+          {documentUploadHref && canModifySummaryDocs && (
+            <Typography.Paragraph className="margin-small--bottom">
+              To add new spatial files, go to{" "}
+              <Link to={documentUploadHref}>Project Description &gt; Document Upload</Link>. This
+              tab supports downloading and viewing the details of files already submitted.
+            </Typography.Paragraph>
+          )}
           <SpatialDocumentTable documents={pdSpatialDocuments} categoryText={spatialCategoryText} />
         </>
       ),
@@ -254,14 +285,29 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
       href: "pd-supporting-documents",
       title: <div className="sub-tab-1">Supporting Documents</div>,
       content: (
-        <ProjectDocumentsTabSection
-          id="pd-supporting-documents"
-          title="Supporting Documents"
-          documents={pdSupportingDocuments}
-          onArchivedDocuments={refreshData}
-          canReplace={canModifySummaryDocs}
-          canArchive={canModifySummaryDocs}
-        />
+        <>
+          <Typography.Title level={4}>Supporting Documents</Typography.Title>
+          <ProjectDocumentsTabSection
+            id="pd-supporting-documents"
+            title=""
+            documents={pdSupportingDocuments}
+            onArchivedDocuments={refreshData}
+            onReplaceDocument={refreshData}
+            canReplace={canModifySummaryDocs}
+            canArchive={canModifySummaryDocs}
+            header={
+              documentUploadHref &&
+              canModifySummaryDocs && (
+                <Typography.Text>
+                  To add new supporting documents, go to{" "}
+                  <Link to={documentUploadHref}>Project Description &gt; Document Upload</Link>.
+                  This tab supports replacing, archiving, and downloading files already
+                  submitted.
+                </Typography.Text>
+              )
+            }
+          />
+        </>
       ),
     },
     {
@@ -284,16 +330,16 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
       content: (
         <>
           <Typography.Title level={3}>Application</Typography.Title>
-          <Typography.Paragraph>Below are the documents submitted as part of the Major Mine Application.</Typography.Paragraph>
+          <Typography.Paragraph>
+            Below are the documents submitted as part of the major mine application. Go to the Application stage to add new application documents. This tab supports replacing, archiving and downloading files already submitted.
+          </Typography.Paragraph>
         </>
-      )
+      ),
     },
     {
       href: "mines-act",
       title: <div className="sub-tab-1">Mines Act</div>,
-      content: (
-        <Typography.Title level={4}>Mines Act</Typography.Title>
-      )
+      content: <Typography.Title level={4}>Mines Act</Typography.Title>,
     },
     {
       href: "mma-primary-document",
@@ -303,6 +349,7 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
           id="primary-document"
           key="primary-document"
           onArchivedDocuments={refreshData}
+          onReplaceDocument={refreshData}
           titleLevel={5}
           documents={primaryDocuments}
           canReplace={canModifyMmaDocs}
@@ -320,6 +367,7 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
           documents={mmaAppendixDocuments}
           titleLevel={5}
           onArchivedDocuments={refreshData}
+          onReplaceDocument={refreshData}
           canReplace={canModifyMmaDocs}
           canArchive={canModifyMmaDocs}
         />
@@ -346,6 +394,7 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
           id="supporting-documents"
           key="supporting-documents"
           onArchivedDocuments={refreshData}
+          onReplaceDocument={refreshData}
           titleLevel={5}
           documents={mmaSupportingDocuments}
           canReplace={canModifyMmaDocs}
@@ -353,7 +402,8 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
         />
       ),
     },
-    amsSections.length > 1 && isAmsDocumentsEnabled && {
+    amsSections.length > 1 &&
+    isAmsDocumentsEnabled && {
       href: "ENV Applications",
       title: <div className="sub-tab-1">ENV Applications</div>,
       content: (
@@ -375,6 +425,7 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
           id="ministry-decision-documentation"
           key="ministry-decision-documentation"
           onArchivedDocuments={refreshData}
+          onReplaceDocument={refreshData}
           documents={ministryDecisionDocuments}
           canReplace={canModifyMmaDocs}
           canArchive={canModifyMmaDocs}
@@ -383,12 +434,7 @@ const ProjectDocumentsTab: FC<ProjectDocumentsTabProps> = ({ project }) => {
     },
     isFeatureEnabled(Feature.MAJOR_PROJECT_ARCHIVE_FILE) && {
       href: "archived-documents",
-      content: (
-        <ArchivedDocumentsSection
-          documents={archivedDocs}
-          showCategory={false}
-        />
-      ),
+      content: <ArchivedDocumentsSection documents={archivedDocs} showCategory={false} />,
     },
   ].filter(Boolean);
 

@@ -1,7 +1,10 @@
 import json
 
 from app.api.mines.permits.permit_conditions.models.permit_conditions import PermitConditions
-from tests.factories import create_mine_and_permit
+from app.api.mines.reports.models.mine_report_permit_requirement import (
+    MineReportPermitRequirement,
+)
+from tests.factories import create_mine_and_permit, MineReportPermitRequirementFactory, MineReportReqPermitConditionXrefFactory
 
 # POST
 def test_get_permit_conditions_by_permit_amendment_by_guid(test_client, db_session, auth_headers):
@@ -32,6 +35,17 @@ def test_delete_permit_condition(test_client, db_session, auth_headers):
     permit_amendment = permit.permit_amendments[0]
     condition = permit_amendment.conditions[0]
 
+    requirement = MineReportPermitRequirementFactory(
+        permit_amendment=permit_amendment
+    )
+
+    MineReportReqPermitConditionXrefFactory(
+        permit_condition=condition,
+        mine_report_permit_requirement=requirement
+    )
+
+    db_session.commit()
+
     delete_resp = test_client.delete(
         f'/mines/{permit_amendment.mine_guid}/permits/{permit_amendment.permit_guid}/amendments/{permit_amendment.permit_amendment_guid}/conditions/{condition.permit_condition_guid}',
         headers=auth_headers['full_auth_header'])
@@ -42,6 +56,11 @@ def test_delete_permit_condition(test_client, db_session, auth_headers):
     assert permit_amendment.conditions[0].permit_condition_guid != condition.permit_condition_guid
     # deleted items should be filtered out
     assert permit_amendment.conditions[0].deleted_ind != True
+    # the report permit requirement should be deleted
+    mine_report_permit_requirement = MineReportPermitRequirement.query.get(
+        requirement.mine_report_permit_requirement_id
+    )
+    assert mine_report_permit_requirement.deleted_ind != False
 
 
 # PUT

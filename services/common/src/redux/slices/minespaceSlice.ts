@@ -7,7 +7,8 @@ import * as API from "@mds/common/constants/API";
 import * as String from "@mds/common/constants/strings";
 import { notification } from "antd";
 import { createSelector } from "reselect";
-import { IMinistryContact, IMinespaceUser, IMinespaceUserMine } from "@mds/common/interfaces";
+import { IMinistryContact, IMinespaceUser, IMinespaceUserMine, IDistributionList } from "@mds/common/interfaces";
+import { IPageData } from "@mds/common/interfaces/common/pageData.interface";
 
 export const minespaceReducerType = "minespace";
 
@@ -16,7 +17,9 @@ interface MinespaceState {
     minespaceUsersByMine: { [mine_guid: string]: IMinespaceUser[] };
     minespaceUserMines: IMinespaceUserMine[];
     MinistryContacts: IMinistryContact[];
+    DistributionLists: IPageData<IDistributionList>;
     MinistryContactsByRegion: IMinistryContact[];
+    currentUserAccessRequest: IMinespaceUser | null | undefined;
 }
 
 const initialState: MinespaceState = {
@@ -24,7 +27,9 @@ const initialState: MinespaceState = {
     minespaceUsersByMine: {},
     minespaceUserMines: [],
     MinistryContacts: [],
+    DistributionLists: { records: [], current_page: 1, total: 0, total_pages: 0, items_per_page: 25 },
     MinistryContactsByRegion: [],
+    currentUserAccessRequest: undefined,
 };
 
 const minespaceSlice = createAppSlice({
@@ -72,7 +77,7 @@ const minespaceSlice = createAppSlice({
                 );
 
                 thunkApi.dispatch(hideLoading("modal"));
-                return response.data.records;
+                return response.data;
             },
             {
                 fulfilled: (state: MinespaceState, action) => {
@@ -90,14 +95,15 @@ const minespaceSlice = createAppSlice({
             }
         ),
         fetchMinespaceUsers: create.asyncThunk(
-            async (_: undefined, thunkApi) => {
+            async (includeRejected: boolean | void = false, thunkApi) => {
                 const headers = createRequestHeader();
                 thunkApi.dispatch(showLoading());
 
                 try {
+                    const params = includeRejected ? { include_rejected: 'true' } : {};
                     const response = await CustomAxios().get(
                         `${ENVIRONMENT.apiUrl}${API.MINESPACE_USER()}`,
-                        headers
+                        { ...headers, params }
                     );
                     return response.data;
                 } finally {
@@ -207,6 +213,30 @@ const minespaceSlice = createAppSlice({
             {
                 fulfilled: (state: MinespaceState, action) => {
                     state.MinistryContacts = action.payload.records;
+                },
+                rejected: (state: MinespaceState, action) => {
+                    rejectHandler(action);
+                },
+            }
+        ),
+        fetchDistributionLists: create.asyncThunk(
+            async (params: { page?: number; per_page?: number } = {}, thunkApi) => {
+                const headers = createRequestHeader();
+                thunkApi.dispatch(showLoading());
+
+                try {
+                    const response = await CustomAxios().get(
+                        `${ENVIRONMENT.apiUrl}${API.DISTRIBUTION_LISTS}`,
+                        { ...headers, params }
+                    );
+                    return response.data;
+                } finally {
+                    thunkApi.dispatch(hideLoading());
+                }
+            },
+            {
+                fulfilled: (state: MinespaceState, action) => {
+                    state.DistributionLists = action.payload;
                 },
                 rejected: (state: MinespaceState, action) => {
                     rejectHandler(action);
@@ -341,13 +371,79 @@ const minespaceSlice = createAppSlice({
                 },
             }
         ),
+        fetchCurrentUserAccessRequest: create.asyncThunk(
+            async (_: void, thunkApi) => {
+                const headers = createRequestHeader();
+                thunkApi.dispatch(showLoading());
+
+                try {
+                    const response = await CustomAxios().get(
+                        `${ENVIRONMENT.apiUrl}${API.NEW_MINESPACE_USER_ACCESS_REQUEST}`,
+                        headers
+                    );
+
+                    thunkApi.dispatch(hideLoading());
+                    return response.data;
+                } catch (error) {
+                    thunkApi.dispatch(hideLoading());
+                    // Return null if request doesn't exist yet (404) - this is expected for new users
+                    if (error.response?.status === 404) {
+                        return null;
+                    }
+                    throw error;
+                }
+            },
+            {
+                fulfilled: (state: MinespaceState, action) => {
+                    state.currentUserAccessRequest = (action.payload ? { access_request: action.payload } : null) as IMinespaceUser;
+                },
+                rejected: (state: MinespaceState, action) => {
+                    // Handle actual errors (non-404)
+                    rejectHandler(action);
+                },
+            }
+        ),
+        submitNewUserAccessRequest: create.asyncThunk(
+            async (formData: IMinespaceUser, thunkApi) => {
+                const headers = createRequestHeader();
+                thunkApi.dispatch(showLoading());
+
+                try {
+                    const requestData = {
+                        ...formData.access_request,
+                        mines: formData.mines,
+                        documents: formData.documents,
+                        is_submitting: true
+                    };
+
+                    const response = await CustomAxios({
+                        errorToastMessage: "Failed to submit access request",
+                        successToastMessage: "Access request submitted successfully"
+                    }).post(`${ENVIRONMENT.apiUrl}${API.NEW_MINESPACE_USER_ACCESS_REQUEST}`, requestData, headers);
+
+                    return response.data;
+                } finally {
+                    thunkApi.dispatch(hideLoading());
+                }
+            },
+            {
+                fulfilled: (state: MinespaceState, action) => {
+                    state.currentUserAccessRequest = { access_request: action.payload } as IMinespaceUser;
+                },
+                rejected: (state: MinespaceState, action) => {
+                    rejectHandler(action);
+                },
+            }
+        ),
     }),
     selectors: {
         getMinespaceUsers: (state) => state.minespaceUsers,
         getMinespaceUsersByMine: (state) => state.minespaceUsersByMine,
         getMinespaceUserMines: (state) => state.minespaceUserMines,
         getMinistryContacts: (state) => state.MinistryContacts,
+        getDistributionLists: (state) => state.DistributionLists,
         getMinistryContactsByRegion: (state) => state.MinistryContactsByRegion,
+        getCurrentUserAccessRequest: (state) => state.currentUserAccessRequest,
     },
 });
 
@@ -356,7 +452,9 @@ export const {
     getMinespaceUsersByMine,
     getMinespaceUserMines,
     getMinistryContacts,
+    getDistributionLists,
     getMinistryContactsByRegion,
+    getCurrentUserAccessRequest,
 } = minespaceSlice.selectors;
 
 export const getMinespaceUserEmailHash = createSelector(
@@ -364,7 +462,7 @@ export const getMinespaceUserEmailHash = createSelector(
     (users) =>
         users.reduce(
             (map, fields) => ({
-                [fields.email_or_username]: fields,
+                [fields.bceid_username]: fields,
                 ...map,
             }),
             {}
@@ -384,10 +482,13 @@ export const {
     fetchMinespaceUserMines,
     deleteMinespaceUser,
     fetchMinistryContacts,
+    fetchDistributionLists,
     fetchMinistryContactsByRegion,
     createMinistryContact,
     updateMinistryContact,
     deleteMinistryContact,
+    fetchCurrentUserAccessRequest,
+    submitNewUserAccessRequest,
 } = minespaceSlice.actions; export const minespaceReducer = minespaceSlice.reducer;
 
 export default minespaceReducer;

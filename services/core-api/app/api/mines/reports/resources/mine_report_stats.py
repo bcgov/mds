@@ -1,6 +1,7 @@
 from datetime import date, datetime, timedelta
 
 from app.api.mines.mine.models.mine import Mine
+from app.api.mines.reports.report_helpers import ReportFilterHelper
 from app.api.mines.reports.models.mine_report import MineReport
 from app.api.mines.response_models import MINE_REPORT_STATS_MODEL
 from app.api.utils.access_decorators import (
@@ -14,13 +15,12 @@ from flask_restx import Resource
 from pytz import timezone
 from werkzeug.exceptions import NotFound
 
-
 class MineReportStatsResource(Resource, UserMixin):
     @api.marshal_with(MINE_REPORT_STATS_MODEL, code=200)
     @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
     def get(self, mine_guid):
         """Return stats for the given mine:
-        - active_permits: count of non-draft permits associated with the mine
+        - active_permits: count of non-draft, non-closed status permits associated with the mine
         - overdue_reports: due_date before today AND on/after 2025-04-01 (this is when report submissions became mandatory through Minespace) AND not yet submitted
         - due_next_90_days: due_date within [today, today+90] AND not yet submitted
         """
@@ -29,7 +29,7 @@ class MineReportStatsResource(Resource, UserMixin):
             raise NotFound('Mine not found')
 
         # Active permits are those surfaced by Mine.mine_permit (excludes drafts)
-        active_permits = len(mine.mine_permit_numbers)
+        active_permits = len([permit for permit in mine.mine_permit if permit.permit_status_code != 'C'])
 
         # Compute 'today' in Pacific Time to evaluate overdue and upcoming windows
         today = datetime.now(timezone('US/Pacific')).date()
@@ -37,11 +37,16 @@ class MineReportStatsResource(Resource, UserMixin):
         in_90_days = today + timedelta(days=90)
 
         # Overdue = due_date < today, due_date >= 2025-04-01, and status is NON (no latest submission)
-        overdue_reports = (
-            MineReport.query
-            .filter(
+        base_query = ReportFilterHelper._filter_latest_permit_amendment_prr(
+            MineReport.query.filter(
                 MineReport.mine_guid == mine_guid,
                 MineReport.deleted_ind == False,
+            )
+        )
+
+        overdue_reports = (
+            base_query
+            .filter(
                 MineReport.due_date != None,
                 MineReport.due_date >= april_1_2025,
                 MineReport.due_date < today,
@@ -52,10 +57,8 @@ class MineReportStatsResource(Resource, UserMixin):
 
         # Due in next 90 days = due_date between today and +90, and not yet submitted
         due_next_90_days = (
-            MineReport.query
+            base_query
             .filter(
-                MineReport.mine_guid == mine_guid,
-                MineReport.deleted_ind == False,
                 MineReport.due_date != None,
                 MineReport.due_date >= today,
                 MineReport.due_date <= in_90_days,

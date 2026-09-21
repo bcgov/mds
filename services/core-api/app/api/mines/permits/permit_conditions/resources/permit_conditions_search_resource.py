@@ -20,6 +20,7 @@ class PermitConditionsSearchResource(Resource, UserMixin):
             mimetype="text/event-stream",
             headers={
                 "Cache-Control": "no-cache",
+                "X-Accel-Buffering": "no",
                 "Connection": "keep-alive",
             },
         )

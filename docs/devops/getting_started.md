@@ -4,6 +4,8 @@ MDS Project runs on [Redhat Open Shift 4](https://www.redhat.com/en/technologies
 
 The BC Gov Platform Services Team hosts the OCP container and manages the operations, maintains uptime. The cluster health can be monitored [here](https://status.developer.gov.bc.ca/)
 
+MDS also runs workloads in a **BC Gov Azure Landing Zone** (MDS Resource Group, license plate `c5fc58`), connected to the OCP Silver cluster over Express Route. It hosts the Permit Service's Azure AI integrations (AI Foundry, AI Search, Document Intelligence, Azure OpenAI) and related private-endpoint networking. See [Azure Operations](../../operations/azure/README.md) and the [architecture diagrams](../architecture) for details, this doc otherwise focuses on the OCP/gitops side.
+
 More details on platform services, updates on activities on the cluster and disucssions on topics can be done via [Rocket chat](https://chat.developer.gov.bc.ca/home)
 
 #### Tools Used:

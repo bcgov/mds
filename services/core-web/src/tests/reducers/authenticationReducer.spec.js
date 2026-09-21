@@ -3,7 +3,10 @@ import {
   authenticateUser,
   logoutUser,
   storeUserAccessData,
+  storeSystemFlag,
+  storeIsProponent,
 } from "@mds/common/redux/actions/authenticationActions";
+import { SystemFlagEnum } from "@mds/common/constants/enums";
 import * as ROUTES from "../../constants/routes";
 
 const baseExpectedValue = {
@@ -12,12 +15,15 @@ const baseExpectedValue = {
   userInfo: {},
   isProponent: undefined,
   redirect: false,
+  systemFlag: undefined,
 };
 
 const baseAuthenticatedExpectedValue = {
   isAuthenticated: true,
   userAccessData: [],
   userInfo: {},
+  isProponent: undefined,
+  systemFlag: undefined,
 };
 
 // Creates deep copy of javascript object instead of setting a reference
@@ -53,6 +59,20 @@ describe("authReducer", () => {
     const expectedValue = getBaseAuthenticatedExpectedValue();
     expectedValue.isAuthenticated = false;
     const result = authenticationReducer(undefined, logoutUser());
+    expect(result).toEqual(expectedValue);
+  });
+
+  it("receives STORE_SYSTEM_FLAG", () => {
+    const expectedValue = getBaseExpectedValue();
+    expectedValue.systemFlag = SystemFlagEnum.core;
+    const result = authenticationReducer(undefined, storeSystemFlag(SystemFlagEnum.core));
+    expect(result).toEqual(expectedValue);
+  });
+
+  it("receives STORE_IS_PROPONENT", () => {
+    const expectedValue = getBaseExpectedValue();
+    expectedValue.isProponent = true;
+    const result = authenticationReducer(undefined, storeIsProponent(true));
     expect(result).toEqual(expectedValue);
   });
 });

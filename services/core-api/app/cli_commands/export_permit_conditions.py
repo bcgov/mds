@@ -7,7 +7,11 @@ from app.api.mines.permits.permit_amendment.models.permit_amendment import (
 from app.api.mines.permits.permit_conditions.models.permit_conditions import (
     PermitConditions,
 )
-from app.api.now_applications.now_template_transformer import calculate_liability, replace_condition_value_with_data, transform_variables_to_data
+from app.api.now_applications.now_template_transformer import (
+    calculate_liability,
+    replace_condition_value_with_data,
+    transform_variables_to_data,
+)
 
 headers = [
     'step', 'category', 'status', 'display_order', 'issue_date',
@@ -16,6 +20,40 @@ headers = [
     'mine_guid', 'permit_amendment_guid', 'permit_condition_guid',
     'step_path', 'parent_ids', 'sibling_ids', 'child_ids', 'report_name', 'permit_type', 'tenure', 'verification_status'
 ]
+
+
+def get_final_issued_permit_document(amendment):
+    if not amendment.now_application_identity or not amendment.now_application_identity.now_application:
+        return None
+        
+    now_application = amendment.now_application_identity.now_application
+    
+    # Get all PMT/PMA documents from NoW
+    now_permit_docs = [
+        doc for doc in now_application.documents 
+        if doc.now_application_document_type_code in ['PMT', 'PMA']
+    ]
+    
+    if not now_permit_docs:
+        return None
+
+    # If amendment has related documents, try to find a match
+    if amendment.related_documents:
+        related_guids = {doc.document_manager_guid for doc in amendment.related_documents}
+        
+        # Find NoW docs that are also in related_documents
+        issued_docs = [
+            doc for doc in now_permit_docs 
+            if doc.mine_document.document_manager_guid in related_guids
+        ]
+        
+        if issued_docs:
+            # Return the latest one
+            issued_docs.sort(key=lambda x: x.create_timestamp, reverse=True)
+            return issued_docs[0]
+    
+    return None
+            
 
 
 def export_permit_conditions(permit_amendment_guid, csv_writer=None):
@@ -55,10 +93,12 @@ def export_permit_conditions(permit_amendment_guid, csv_writer=None):
     document_name = ''
     document_guid = ''
 
-    if is_now and amendment.now_application_documents:
-        doc = amendment.now_application_documents[0].mine_document
-        document_name = doc.document_name
-        document_guid = doc.document_manager_guid
+    if is_now and amendment.now_application_identity and amendment.now_application_identity.now_application:
+        now_permit_doc = get_final_issued_permit_document(amendment)
+        
+        if now_permit_doc:
+            document_name = now_permit_doc.mine_document.document_name
+            document_guid = now_permit_doc.mine_document.document_manager_guid
 
     elif latest_task and latest_task.permit_amendment_document:
         doc = latest_task.permit_amendment_document

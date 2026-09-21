@@ -2,35 +2,356 @@
 
 exports[`ViewPartyRelationships renders properly 1`] = `
 <div>
-  <div
-    id="loading-screen"
-  >
+  <div>
     <div
-      aria-busy="true"
-      aria-live="polite"
-      class="ant-spin ant-spin-spinning"
+      class="inline-flex between"
     >
-      <span
-        aria-label="loading"
-        class="anticon anticon-loading loader loader-color ant-spin-dot"
-        role="img"
-        style="font-size: 170px; margin-top: 70px;"
+      <div />
+      <div
+        class="inline-flex between"
       >
-        <svg
-          aria-hidden="true"
-          class="anticon-spin"
-          data-icon="loading"
-          fill="currentColor"
-          focusable="false"
-          height="1em"
-          viewBox="0 0 1024 1024"
-          width="1em"
+        <button
+          style="width: 1px; height: 1px;"
+          type="button"
+        />
+      </div>
+    </div>
+    <div>
+      <div
+        class="ant-row"
+        style="margin-left: -8px; margin-right: -8px;"
+      >
+        <div
+          class="ant-col ant-col-24"
+          style="padding-left: 8px; padding-right: 8px;"
         >
-          <path
-            d="M988 548c-19.9 0-36-16.1-36-36 0-59.4-11.6-117-34.6-171.3a440.45 440.45 0 00-94.3-139.9 437.71 437.71 0 00-139.9-94.3C629 83.6 571.4 72 512 72c-19.9 0-36-16.1-36-36s16.1-36 36-36c69.1 0 136.2 13.5 199.3 40.3C772.3 66 827 103 874 150c47 47 83.9 101.8 109.7 162.7 26.7 63.1 40.2 130.2 40.2 199.3.1 19.9-16 36-35.9 36z"
+          <h4>
+            EXPIRED CONTACTS
+          </h4>
+          <div
+            class="ant-divider ant-divider-horizontal"
+            role="separator"
           />
-        </svg>
-      </span>
+        </div>
+      </div>
+      <div
+        class="ant-row"
+        style="margin-left: -8px; margin-right: -8px;"
+      >
+        <div
+          class="ant-col ant-col-xs-24 ant-col-sm-24 ant-col-md-12 ant-col-lg-12 ant-col-xl-8 ant-col-xxl-6"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="ant-card"
+          >
+            <div
+              class="ant-card-head"
+              style="min-height: 0px;"
+            >
+              <div
+                class="ant-card-head-wrapper"
+              >
+                <div
+                  class="ant-card-head-title"
+                >
+                  <div>
+                    <div
+                      class="flex flex-between"
+                    >
+                      <div
+                        class="flex items-center"
+                      >
+                        <h4
+                          class="margin-large--right"
+                        >
+                          Permittee
+                        </h4>
+                        <p>
+                          (
+                          No permit assigned
+                          )
+                        </p>
+                      </div>
+                    </div>
+                    <div
+                      class="padding-md--top"
+                    >
+                      <a
+                        href="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/history/PMT"
+                      >
+                        <button
+                          class="ant-btn ant-btn-default margin-none"
+                          type="button"
+                        >
+                          <span>
+                            See History
+                          </span>
+                        </button>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="ant-card-body"
+            >
+              <div
+                class="default-contact"
+              >
+                <a
+                  href="/dashboard/43f513af-1142-443b-a1e6-f14ef857f4ea/profile"
+                >
+                  <h4
+                    class="link-colour"
+                  >
+                    test company 2 
+                  </h4>
+                </a>
+                <div>
+                  <h6>
+                    Email Address
+                  </h6>
+                  <a
+                    href="mailto:test@test.test"
+                  >
+                    test@test.test
+                  </a>
+                </div>
+                <div>
+                  <h6>
+                    Phone Number
+                  </h6>
+                  <p>
+                    123-123-1234
+                  </p>
+                </div>
+                <div>
+                  <h6>
+                    Permittee
+                     Since
+                  </h6>
+                  <span>
+                    Jan 01 2019
+                  </span>
+                </div>
+              </div>
+              <div
+                class="right"
+              />
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-xs-24 ant-col-sm-24 ant-col-md-12 ant-col-lg-12 ant-col-xl-8 ant-col-xxl-6"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="ant-card"
+          >
+            <div
+              class="ant-card-head"
+              style="min-height: 0px;"
+            >
+              <div
+                class="ant-card-head-wrapper"
+              >
+                <div
+                  class="ant-card-head-title"
+                >
+                  <div>
+                    <div
+                      class="flex flex-between"
+                    >
+                      <div
+                        class="flex items-center"
+                      >
+                        <h4
+                          class="margin-large--right"
+                        />
+                        <p>
+                          (
+                          undefined
+                          )
+                        </p>
+                      </div>
+                    </div>
+                    <div
+                      class="padding-md--top"
+                    >
+                      <a
+                        href="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/history/EOR"
+                      >
+                        <button
+                          class="ant-btn ant-btn-default margin-none"
+                          type="button"
+                        >
+                          <span>
+                            See History
+                          </span>
+                        </button>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="ant-card-body"
+            >
+              <div
+                class="default-contact"
+              >
+                <a
+                  href="/dashboard/43f513af-1142-443b-a1e6-f14ef857f4ea/profile"
+                >
+                  <h4
+                    class="link-colour"
+                  >
+                    test company 2 
+                  </h4>
+                </a>
+                <div>
+                  <h6>
+                    Email Address
+                  </h6>
+                  <a
+                    href="mailto:test@test.test"
+                  >
+                    test@test.test
+                  </a>
+                </div>
+                <div>
+                  <h6>
+                    Phone Number
+                  </h6>
+                  <p>
+                    123-123-1234
+                  </p>
+                </div>
+                <div>
+                  <h6>
+                    
+                     Since
+                  </h6>
+                  <span>
+                    Jan 01 2019
+                  </span>
+                </div>
+              </div>
+              <div
+                class="right"
+              />
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-col ant-col-xs-24 ant-col-sm-24 ant-col-md-12 ant-col-lg-12 ant-col-xl-8 ant-col-xxl-6"
+          style="padding-left: 8px; padding-right: 8px;"
+        >
+          <div
+            class="ant-card"
+          >
+            <div
+              class="ant-card-head"
+              style="min-height: 0px;"
+            >
+              <div
+                class="ant-card-head-wrapper"
+              >
+                <div
+                  class="ant-card-head-title"
+                >
+                  <div>
+                    <div
+                      class="flex flex-between"
+                    >
+                      <div
+                        class="flex items-center"
+                      >
+                        <h4
+                          class="margin-large--right"
+                        >
+                          Mine Manager
+                        </h4>
+                        
+                      </div>
+                    </div>
+                    <div
+                      class="padding-md--top"
+                    >
+                      <a
+                        href="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/history/MMG"
+                      >
+                        <button
+                          class="ant-btn ant-btn-default margin-none"
+                          type="button"
+                        >
+                          <span>
+                            See History
+                          </span>
+                        </button>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="ant-card-body"
+            >
+              <div
+                class="default-contact"
+              >
+                <a
+                  href="/dashboard/97b59b9c-8576-47cb-9a04-d7d0340730d5/profile"
+                >
+                  <h4
+                    class="link-colour"
+                  >
+                    test dude 1 
+                  </h4>
+                </a>
+                <div>
+                  <h6>
+                    Email Address
+                  </h6>
+                  <a
+                    href="mailto:test@test.test"
+                  >
+                    test@test.test
+                  </a>
+                </div>
+                <div>
+                  <h6>
+                    Phone Number
+                  </h6>
+                  <p>
+                    123-123-1234
+                  </p>
+                </div>
+                <div>
+                  <h6>
+                    Mine Manager
+                     Since
+                  </h6>
+                  <span>
+                    Jan 01 2019
+                  </span>
+                </div>
+              </div>
+              <div
+                class="right"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <br />
+        <br />
+      </div>
     </div>
   </div>
 </div>

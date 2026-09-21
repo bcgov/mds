@@ -148,7 +148,7 @@ exports[`MajorMineApplicationReviewSubmit renders properly as on MajorMineApplic
       <div>
         <div />
         <div
-          class="ant-row ant-row-space-between ant-row-bottom document-table-header"
+          class="ant-row ant-row-space-between ant-row-middle document-table-header"
         >
           <div
             class="ant-col"
@@ -162,15 +162,17 @@ exports[`MajorMineApplicationReviewSubmit renders properly as on MajorMineApplic
           <div
             class="ant-col document-table-actions"
           >
-            <button
-              class="ant-btn ant-btn-primary"
-              disabled=""
-              type="button"
-            >
-              <div>
-                Download
-              </div>
-            </button>
+            <span>
+              <button
+                class="ant-btn ant-btn-primary"
+                disabled=""
+                type="button"
+              >
+                <div>
+                  Download
+                </div>
+              </button>
+            </span>
           </div>
         </div>
         <div
@@ -604,7 +606,7 @@ exports[`MajorMineApplicationReviewSubmit renders properly as on MajorMineApplic
       <div>
         <div />
         <div
-          class="ant-row ant-row-space-between ant-row-bottom document-table-header"
+          class="ant-row ant-row-space-between ant-row-middle document-table-header"
         >
           <div
             class="ant-col"
@@ -618,15 +620,17 @@ exports[`MajorMineApplicationReviewSubmit renders properly as on MajorMineApplic
           <div
             class="ant-col document-table-actions"
           >
-            <button
-              class="ant-btn ant-btn-primary"
-              disabled=""
-              type="button"
-            >
-              <div>
-                Download
-              </div>
-            </button>
+            <span>
+              <button
+                class="ant-btn ant-btn-primary"
+                disabled=""
+                type="button"
+              >
+                <div>
+                  Download
+                </div>
+              </button>
+            </span>
           </div>
         </div>
         <div
@@ -1719,7 +1723,7 @@ exports[`MajorMineApplicationReviewSubmit renders properly as on MajorMineApplic
       <div>
         <div />
         <div
-          class="ant-row ant-row-space-between ant-row-bottom document-table-header"
+          class="ant-row ant-row-space-between ant-row-middle document-table-header"
         >
           <div
             class="ant-col"
@@ -1733,15 +1737,17 @@ exports[`MajorMineApplicationReviewSubmit renders properly as on MajorMineApplic
           <div
             class="ant-col document-table-actions"
           >
-            <button
-              class="ant-btn ant-btn-primary"
-              disabled=""
-              type="button"
-            >
-              <div>
-                Download
-              </div>
-            </button>
+            <span>
+              <button
+                class="ant-btn ant-btn-primary"
+                disabled=""
+                type="button"
+              >
+                <div>
+                  Download
+                </div>
+              </button>
+            </span>
           </div>
         </div>
         <div
@@ -2975,7 +2981,7 @@ exports[`MajorMineApplicationReviewSubmit renders properly as on ProjectPage 1`]
       <div>
         <div />
         <div
-          class="ant-row ant-row-space-between ant-row-bottom document-table-header"
+          class="ant-row ant-row-space-between ant-row-middle document-table-header"
         >
           <div
             class="ant-col"
@@ -2989,15 +2995,17 @@ exports[`MajorMineApplicationReviewSubmit renders properly as on ProjectPage 1`]
           <div
             class="ant-col document-table-actions"
           >
-            <button
-              class="ant-btn ant-btn-primary"
-              disabled=""
-              type="button"
-            >
-              <div>
-                Download
-              </div>
-            </button>
+            <span>
+              <button
+                class="ant-btn ant-btn-primary"
+                disabled=""
+                type="button"
+              >
+                <div>
+                  Download
+                </div>
+              </button>
+            </span>
           </div>
         </div>
         <div
@@ -3431,7 +3439,7 @@ exports[`MajorMineApplicationReviewSubmit renders properly as on ProjectPage 1`]
       <div>
         <div />
         <div
-          class="ant-row ant-row-space-between ant-row-bottom document-table-header"
+          class="ant-row ant-row-space-between ant-row-middle document-table-header"
         >
           <div
             class="ant-col"
@@ -3445,15 +3453,17 @@ exports[`MajorMineApplicationReviewSubmit renders properly as on ProjectPage 1`]
           <div
             class="ant-col document-table-actions"
           >
-            <button
-              class="ant-btn ant-btn-primary"
-              disabled=""
-              type="button"
-            >
-              <div>
-                Download
-              </div>
-            </button>
+            <span>
+              <button
+                class="ant-btn ant-btn-primary"
+                disabled=""
+                type="button"
+              >
+                <div>
+                  Download
+                </div>
+              </button>
+            </span>
           </div>
         </div>
         <div
@@ -4546,7 +4556,7 @@ exports[`MajorMineApplicationReviewSubmit renders properly as on ProjectPage 1`]
       <div>
         <div />
         <div
-          class="ant-row ant-row-space-between ant-row-bottom document-table-header"
+          class="ant-row ant-row-space-between ant-row-middle document-table-header"
         >
           <div
             class="ant-col"
@@ -4560,15 +4570,17 @@ exports[`MajorMineApplicationReviewSubmit renders properly as on ProjectPage 1`]
           <div
             class="ant-col document-table-actions"
           >
-            <button
-              class="ant-btn ant-btn-primary"
-              disabled=""
-              type="button"
-            >
-              <div>
-                Download
-              </div>
-            </button>
+            <span>
+              <button
+                class="ant-btn ant-btn-primary"
+                disabled=""
+                type="button"
+              >
+                <div>
+                  Download
+                </div>
+              </button>
+            </span>
           </div>
         </div>
         <div

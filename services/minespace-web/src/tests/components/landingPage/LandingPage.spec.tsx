@@ -1,13 +1,22 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import { LandingPage } from "@/components/pages/LandingPage";
 
-const props = { isAuthenticated: false };
+jest.mock("@react-keycloak/web", () => ({
+  useKeycloak: () => ({
+    keycloak: {
+      authenticated: false,
+      didInitialize: true,
+      tokenParsed: null,
+      login: jest.fn(),
+    },
+    initialized: true,
+  }),
+}));
 
-//  TypeError: authClient.init is not a function
 describe("LandingPage", () => {
   it("renders properly", () => {
-    const component = shallow(<LandingPage {...props} />);
-    expect(component).toMatchSnapshot();
+    const { container } = render(<LandingPage />);
+    expect(container).toMatchSnapshot();
   });
 });

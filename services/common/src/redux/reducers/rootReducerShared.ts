@@ -16,17 +16,16 @@ import {
   noticeOfDepartureReducer,
   noticeOfWorkReducer,
   orgbookReducer,
-  partiesReducer,
   permitReducer,
   projectReducer,
-  reportReducer,
-  searchReducer,
   securitiesReducer,
   staticContentReducer,
   varianceReducer,
   verifiableCredentialReducer,
   workInformationReducer,
 } from "../reducers";
+import partiesReducer, { partiesReducerType } from "@mds/common/redux/slices/partiesSlice";
+import searchReducer, { searchReducerType } from "../slices/searchSlice";
 import reportSubmissionReducer from "@mds/common/components/reports/reportSubmissionSlice";
 import verifiableCredentialsReducer from "@mds/common/redux/slices/verifiableCredentialsSlice";
 
@@ -45,10 +44,12 @@ import permitConditionTagReducer, { permitConditionTagReducerType } from "@mds/c
 import mineReportPermitRequirementReducer, { mineReportPermitRequirementReducerType } from "../slices/mineReportPermitRequirementSlice";
 import permitConditionDiffReducer, { permitConditionDiffReducerType } from "../slices/permitConditionDiffSlice";
 import permitSearchReducer, { permitSearchReducerType } from "../slices/permitSearchSlice";
+import nowApplicationSearchReducer, { nowApplicationSearchReducerType } from "../slices/nowApplicationSearchSlice";
 import damReducer, { damReducerType } from "../slices/damSlice";
 import tailingsReducer, { tsfReducerType } from "../slices/tailingsSlice";
 import amsFinalAppReducer, { amsAppReducerType } from "../slices/amsFinalApplicationSlice";
 import mineReportStatsReducer, { mineReportStatsReducerType } from "../slices/mineReportStatsSlice";
+import reportReducer, { reportReducerType } from "@mds/common/redux/slices/reportSlice";
 
 const networkReducers = Object.fromEntries(Object.entries(NetworkReducerTypes).map(([key, value]) =>
   [NetworkReducerTypes[key], createReducer(networkReducer, value)]
@@ -67,16 +68,13 @@ export const sharedReducer = {
   ...noticeOfDepartureReducer,
   ...noticeOfWorkReducer,
   ...orgbookReducer,
-  ...partiesReducer,
-  ...permitReducer,
-  ...projectReducer,
-  ...reportReducer,
-  ...searchReducer,
-  ...securitiesReducer,
-  ...staticContentReducer,
   ...varianceReducer,
   ...verifiableCredentialReducer,
   ...workInformationReducer,
+  ...permitReducer,
+  ...projectReducer,
+  ...securitiesReducer,
+  ...staticContentReducer,
   form: formReducer,
   loadingBar: loadingBarReducer,
   reportSubmission: reportSubmissionReducer,
@@ -94,9 +92,13 @@ export const sharedReducer = {
   [mineReportPermitRequirementReducerType]: mineReportPermitRequirementReducer,
   [permitConditionDiffReducerType]: permitConditionDiffReducer,
   [permitSearchReducerType]: permitSearchReducer,
+  [nowApplicationSearchReducerType]: nowApplicationSearchReducer,
   [permitConditionTagReducerType]: permitConditionTagReducer,
   [amsAppReducerType]: amsFinalAppReducer,
   [mineReportStatsReducerType]: mineReportStatsReducer,
   [minespaceReducerType]: minespaceReducer,
+  [reportReducerType]: reportReducer,
+  [partiesReducerType]: partiesReducer,
+  [searchReducerType]: searchReducer,
   ...networkReducers
 };

@@ -55,6 +55,8 @@ class NOWApplicationDocumentSortResource(Resource, UserMixin):
 
         data = self.parser.parse_args()
 
+        locked_ntr_guid = now_application_identity.now_application.locked_ntr_guid
+
         sorted_documents = data.get('sorted_documents', [])
         for doc in sorted_documents:
             mine_document_guid = doc.get('mine_document_guid')
@@ -66,6 +68,10 @@ class NOWApplicationDocumentSortResource(Resource, UserMixin):
                 xref = mine_document.now_application_document_xref
             if mine_document.now_application_document_identity_xref:
                 xref = mine_document.now_application_document_identity_xref
+
+            now_app_xref = mine_document.now_application_document_xref
+            if now_app_xref and locked_ntr_guid and str(now_app_xref.now_application_document_xref_guid) == locked_ntr_guid:
+                continue
 
             final_package_order = doc.get('final_package_order')
             xref.final_package_order = final_package_order
@@ -80,6 +86,7 @@ class NOWApplicationDocumentResource(Resource, UserMixin):
     parser.add_argument('preamble_author', type=str, required=False)
     parser.add_argument('preamble_date', type=str, required=False)
     parser.add_argument('is_final_package', type=bool, required=False)
+    parser.add_argument('permit_package_document_type_code', type=str, required=False)
     parser.add_argument('final_package_order', type=int, required=False)
     parser.add_argument('description', type=str, required=False)
 
@@ -140,6 +147,12 @@ class NOWApplicationDocumentResource(Resource, UserMixin):
         if mine_document.now_application_document_identity_xref:
             xref = mine_document.now_application_document_identity_xref
 
+        now_app_xref = mine_document.now_application_document_xref
+        if now_app_xref:
+            locked_ntr_guid = now_app_xref.now_application.locked_ntr_guid
+            if locked_ntr_guid and str(now_app_xref.now_application_document_xref_guid) == locked_ntr_guid:
+                raise BadRequest('Cannot modify the active system-generated document.')
+
         if new_description:
             xref.description = new_description
 
@@ -150,6 +163,9 @@ class NOWApplicationDocumentResource(Resource, UserMixin):
             xref.preamble_title = data.get('preamble_title')
             xref.preamble_author = data.get('preamble_author')
             xref.preamble_date = data.get('preamble_date')
+            permit_package_document_type_code = data.get('permit_package_document_type_code')
+            if permit_package_document_type_code is not None:
+                xref.permit_package_document_type_code = permit_package_document_type_code
 
             now_application = NOWApplication.find_by_application_guid(application_guid)
             if not now_application:
@@ -161,6 +177,7 @@ class NOWApplicationDocumentResource(Resource, UserMixin):
             xref.final_package_order = final_package_order
         else:
             xref.final_package_order = None
+            xref.permit_package_document_type_code = None
 
         xref.save()
         mine_document.save()

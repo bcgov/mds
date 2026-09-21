@@ -15,7 +15,7 @@ class MinistryContactType(AuditMixin, Base):
 
     @classmethod
     def get_all(cls):
-        return cls.query.filter_by(active_ind=True).all()
+        return cls.query.all()
 
     @classmethod
     def get_active(cls):

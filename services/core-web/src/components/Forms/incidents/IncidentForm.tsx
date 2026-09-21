@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { change, getFormValues, isPristine } from "@mds/common/components/forms/form";
 import { Col, Row } from "antd";
 import { IMineIncident } from "@mds/common/interfaces";
-import { getDropdownInspectors } from "@mds/common/redux/selectors/partiesSelectors";
+import { getDropdownInspectors } from "@mds/common/redux/slices/partiesSlice";
 import {
   getDangerousOccurrenceSubparagraphOptions,
   getDropdownIncidentDeterminationOptions,

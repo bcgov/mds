@@ -22,10 +22,10 @@ import {
   fetchPartyById,
   updateParty,
   deleteParty,
-} from "@mds/common/redux/actionCreators/partiesActionCreator";
+} from "@mds/common/redux/slices/partiesSlice";
 import { fetchMineBasicInfoList } from "@mds/common/redux/actionCreators/mineActionCreator";
 import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
-import { getParties } from "@mds/common/redux/selectors/partiesSelectors";
+import { getParties } from "@mds/common/redux/slices/partiesSlice";
 import { getMineBasicInfoListHash } from "@mds/common/redux/selectors/mineSelectors";
 import {
   getDropdownProvinceOptions,
@@ -110,7 +110,7 @@ export class PartyProfile extends Component {
 
   editParty = (values) => {
     const { id } = this.props.match.params;
-    return this.props.updateParty(values, id).then(() => {
+    return this.props.updateParty({ data: values, partyGuid: id }).then(() => {
       this.props.fetchPartyById(id);
       this.props.closeModal();
     });
@@ -156,6 +156,9 @@ export class PartyProfile extends Component {
             return "N/A";
           }
           if (record.relationship.party_business_role_code === "PRL") {
+            return "N/A";
+          }
+          if (record.relationship.party_business_role_code === "CNA") {
             return "N/A";
           }
           if (record.relationship.mine_party_appt_type_code === "AGT") {
@@ -316,13 +319,13 @@ export class PartyProfile extends Component {
                 </div>
               </Col>
               <Col md={8} xs={12}>
-                {!isEmpty(party.party_orgbook_entity) && (
+                {!isEmpty(party.party_bc_registration) && (
                   <div className="light-grey-background padding-md">
                     <Typography.Title level={4}>
                       <CheckCircleOutlined style={{ paddingRight: 5 }} />
                       OrgBook Registration Information{" "}
                       <a
-                        href={routes.ORGBOOK_ENTITY_URL(party.party_orgbook_entity.registration_id)}
+                        href={routes.ORGBOOK_ENTITY_URL(party.party_bc_registration.registration_id)}
                         target="_blank"
                         rel="noopener noreferrer"
                       >
@@ -332,11 +335,11 @@ export class PartyProfile extends Component {
                     <br />
                     <FontAwesomeIcon className="fa-fw" icon={faHashtag} />
                     <span className="padding-left">
-                      {party.party_orgbook_entity.registration_id}
+                      {party.party_bc_registration.registration_id}
                     </span>
                     <br />
                     <FontAwesomeIcon className="fa-fw" icon={faFileSignature} />
-                    <span className="padding-left">{party.party_orgbook_entity.name_text}</span>
+                    <span className="padding-left">{party.party_bc_registration.name_text}</span>
                   </div>
                 )}
               </Col>

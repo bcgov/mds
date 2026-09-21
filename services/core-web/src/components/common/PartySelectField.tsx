@@ -8,9 +8,8 @@ import { Divider } from "antd";
 import { MailOutlined, PhoneOutlined, PlusOutlined } from "@ant-design/icons";
 import { change, Field } from "@mds/common/components/forms/form";
 import { getSearchResults } from "@mds/common/redux/selectors/searchSelectors";
-import { getLastCreatedParty } from "@mds/common/redux/selectors/partiesSelectors";
-import { fetchSearchResults } from "@mds/common/redux/actionCreators/searchActionCreator";
-import { setAddPartyFormState } from "@mds/common/redux/actionCreators/partiesActionCreator";
+import { getLastCreatedParty, setAddPartyFormState } from "@mds/common/redux/slices/partiesSlice";
+import { fetchSearchResults } from "@mds/common/redux/slices/searchSlice";
 import { createItemMap } from "@common/utils/helpers";
 import { Validate } from "@mds/common/redux/utils/Validate";
 import LinkButton from "@mds/common/components/common/LinkButton";
@@ -21,7 +20,7 @@ import { FormContext } from "@mds/common/components/forms/FormWrapper";
 interface IPartySelectOption {
   value: string | undefined,
   originalValue?: IParty,
-  label: JSX.Element
+  label: React.ReactNode
 };
 
 const renderAddPartyFooter = (showAddParty, partyLabel) => (
@@ -48,7 +47,7 @@ const transformData = (options: ItemMap<IParty>, header: JSX.Element) => {
             <div className="padding-right">
               <FontAwesomeIcon icon={faHashtag} />
             </div>
-            <span>{party.party_orgbook_entity?.registration_id}</span>
+            <span>{party.party_bc_registration?.registration_id}</span>
           </div>
           <div className="inline-flex">
             <div className="padding-right">
@@ -121,7 +120,7 @@ export const PartySelectField: FC<PartySelectFieldProps> = ({
   const handleFetchSearchResults = useCallback(
     (searchTerm: string, searchType: string) => {
       setSearching(true);
-      dispatch(fetchSearchResults(searchTerm, searchType));
+      dispatch(fetchSearchResults({ searchTerm, searchTypes: [searchType] }));
     },
     [dispatch]
   );

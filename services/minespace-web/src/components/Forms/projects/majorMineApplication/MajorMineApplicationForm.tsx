@@ -24,13 +24,10 @@ import { required } from "@mds/common/redux/utils/Validate";
 import { IMajorMinesApplication, IProject } from "@mds/common/interfaces/projects";
 import { FORM } from "@mds/common/constants/forms";
 import { DOCUMENT, MODERN_EXCEL, SPATIAL } from "@mds/common/constants/fileTypes";
-import { SystemFlagEnum } from "@mds/common/constants/enums";
-import { areDocumentFieldsDisabled } from "@mds/common/components/projects/projectUtils";
 import RenderSelect from "@mds/common/components/forms/RenderSelect";
 
 interface MajorMineApplicationFormProps {
   project: IProject;
-  refreshData: () => void | Promise<void>;
 }
 
 const DocumentCategoryForm = ({ fields, typeCode }) => {
@@ -78,20 +75,12 @@ const DocumentCategoryForm = ({ fields, typeCode }) => {
   );
 };
 
-const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({
-  project,
-  refreshData,
-}) => {
+const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({ project }) => {
   const dispatch = useDispatch();
 
   const formValues = useSelector(getFormValues(FORM.ADD_MINE_MAJOR_APPLICATION)) ?? {};
   const { primary_documents, appendix_documents, spatial_documents, supporting_documents } =
     formValues as IMajorMinesApplication;
-  const canModifyMmaDocs = !areDocumentFieldsDisabled(
-    SystemFlagEnum.ms,
-    project?.major_mine_application?.status_code
-  );
-
   const mineDocuments = useSelector(getMineDocuments);
   const [uploadedFiles, setUploadedFiles] = useState<any[]>([]);
 
@@ -235,8 +224,9 @@ const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({
       <Typography.Title level={4}>Application Files</Typography.Title>
       <Typography.Title level={5}>Upload primary application document</Typography.Title>
       <Typography.Paragraph>
-        Please upload the main document for the submission. If your single document contains all
-        supporting information you may not need to include separate supporting documentation.
+        Please upload the main document for the submission. If your document contains all required
+        information you may not need to include separate supporting documentation under the headings
+        below.
       </Typography.Paragraph>
       <Field
         id={MAJOR_MINES_APPLICATION_DOCUMENT_TYPE.PRIMARY}
@@ -270,9 +260,8 @@ const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({
         <DocumentTable
           documents={primaryDocument}
           documentParent="Major Mine Application"
-          canArchiveDocuments={canModifyMmaDocs}
-          canReplaceDocuments={canModifyMmaDocs}
-          onArchivedDocuments={refreshData}
+          canArchiveDocuments={false}
+          canReplaceDocuments={false}
           enableBulkActions={true}
           showVersionHistory={true}
         />
@@ -282,8 +271,16 @@ const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({
       <Typography.Title level={5}>Upload Appendix Documents</Typography.Title>
       <Typography.Paragraph>
         Appendix documents must be uploaded as separate files and assigned one of the provided
-        document labels. Using the correct label ensures accurate categorization and can
+        documents labels. Using the correct label ensures accurate categorization and can
         significantly improve review time.
+      </Typography.Paragraph>
+      <Typography.Paragraph>
+        Document Labels:
+        <br />
+        Indigenous Nations Engagement, Baseline Information, Mine Plan, Reclamation and Closure
+        Plan, Water Quality Mitigation and Water Modeling, Effluent Discharges to the Environment,
+        Environmental Effects Assessment, Environmental Monitoring, Management Plans, Reclamation
+        Liability Cost Estimate
       </Typography.Paragraph>
 
       <FieldArray
@@ -321,9 +318,8 @@ const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({
         <DocumentTable
           documents={appendix_documents}
           documentParent="Major Mine Application"
-          canArchiveDocuments={canModifyMmaDocs}
-          canReplaceDocuments={canModifyMmaDocs}
-          onArchivedDocuments={refreshData}
+          canArchiveDocuments={false}
+          canReplaceDocuments={false}
           enableBulkActions={true}
           showVersionHistory={true}
         />
@@ -361,7 +357,14 @@ const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({
       <br />
       <Typography.Title level={5}>Supporting Documents</Typography.Title>
       <Typography.Paragraph>
-        Additional documentation that supports your application can be uploaded here.
+        Additional documentation that supports your application can be uploaded here and assigned
+        one of the provided documents labels.
+      </Typography.Paragraph>
+      <Typography.Paragraph>
+        Document Labels:
+        <br />
+        Qualified Professional Declaration Form, Information Requirements Table of Concordance,
+        Supporting Document, Confidential Information.
       </Typography.Paragraph>
 
       <FieldArray
@@ -399,9 +402,8 @@ const MajorMineApplicationForm: React.FC<MajorMineApplicationFormProps> = ({
         <DocumentTable
           documents={supportDocuments}
           documentParent="Major Mine Application"
-          canArchiveDocuments={canModifyMmaDocs}
-          canReplaceDocuments={canModifyMmaDocs}
-          onArchivedDocuments={refreshData}
+          canArchiveDocuments={false}
+          canReplaceDocuments={false}
           enableBulkActions={true}
           showVersionHistory={true}
         />

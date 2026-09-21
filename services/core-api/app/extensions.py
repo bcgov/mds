@@ -92,7 +92,15 @@ api = Api(
     prefix='{}'.format(Config.BASE_PATH),
     doc='{}/'.format(Config.BASE_PATH),
     default='mds',
-    default_label='MDS related operations')
+    default_label='MDS related operations',
+    authorizations={
+        'BearerAuth': {
+            'type': 'apiKey',
+            'in': 'header',
+            'name': 'Authorization',
+        }
+    },
+    security='BearerAuth')
 
 
 if Config.FLASK_LOGGING_LEVEL == 'DEBUG':

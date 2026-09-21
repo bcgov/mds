@@ -5,7 +5,7 @@ import DownOutlined from "@ant-design/icons/DownOutlined";
 import EllipsisOutlined from "@ant-design/icons/EllipsisOutlined";
 import { ITableAction } from "@mds/common/components/common/CoreTableCommonColumns";
 
-export const deleteConfirmWrapper = (recordDescription: string, onOk: () => void, plural = false) => {
+export const deleteConfirmWrapper = (recordDescription: string, onOk: () => void, plural = false, okText = "Delete") => {
   const title = `Confirm Deletion`;
   const article = plural ? "these" : "this"
   const content = `Are you sure you want to delete ${article} ${recordDescription}?`;
@@ -13,7 +13,7 @@ export const deleteConfirmWrapper = (recordDescription: string, onOk: () => void
     title,
     content,
     onOk,
-    okText: "Delete",
+    okText: okText,
   };
   return Modal.confirm(modalContent);
 };
@@ -40,7 +40,7 @@ export const generateActionMenuItems = (actionItems: ITableAction[], record) => 
 
 export interface IHeaderAction {
   key: string;
-  label: string;
+  label: string | ReactNode;
   icon?: ReactNode;
   clickFunction: () => void | Promise<void>;
 }
@@ -52,6 +52,7 @@ export const ActionMenuButton: FC<{
   buttonProps?: ButtonProps;
   useEllipsis?: boolean; // View as ellipsis instead of a button
   dataTestId?: string;
+  dropdownIcon?: ReactNode; // Optional custom icon for the dropdown
 }> = ({
   actions,
   buttonText = "Action",
@@ -59,6 +60,7 @@ export const ActionMenuButton: FC<{
   disabled = false,
   useEllipsis = false,
   dataTestId = "",
+  dropdownIcon,
 }) => {
     const items = generateActionMenuItems((actions as unknown) as ITableAction[], null);
 
@@ -79,7 +81,7 @@ export const ActionMenuButton: FC<{
       <Dropdown menu={{ items }} placement="bottomLeft" disabled={disabled}>
         <Button {...mergedButtonProps} data-testid={dataTestId}>
           {!useEllipsis && buttonText}
-          {!useEllipsis && <DownOutlined />}
+          {!useEllipsis && (dropdownIcon || <DownOutlined />)}
         </Button>
       </Dropdown>
     );

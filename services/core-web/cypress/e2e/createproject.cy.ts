@@ -75,7 +75,7 @@ describe("Major Projects", () => {
     cy.contains("Save & Continue").click({ force: true });
     cy.contains("Applicant Information", { timeout: 10000 });
 
-    cy.contains("Individual").click({ force: true });
+    cy.contains("Person").click({ force: true });
     cy.get(`[name="applicant.first_name"]`).type("Cypress", { force: true });
     cy.get(`[name="applicant.party_name"]`).type("Test", { force: true });
     cy.get(`[name="applicant.phone_no"]`).type("1231231234", { force: true });

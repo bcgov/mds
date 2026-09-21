@@ -693,7 +693,15 @@ VALUES
 ON CONFLICT DO NOTHING;
 
 
--- Mine Report Definitions have been managed by sequential migrations. 
+INSERT INTO permit_package_document_type
+(permit_package_document_type_code, description, active_ind, create_user, update_user)
+VALUES
+    ('FIGURE', 'Figure', true, 'system-mds', 'system-mds'),
+    ('DOCUMENT', 'Document', true, 'system-mds', 'system-mds')
+ON CONFLICT DO NOTHING;
+
+
+-- Mine Report Definitions have been managed by sequential migrations.
 -- V2019.07.05.15.01
 -- V2019.07.09.16.01
 -- V2019.09.28.14.16

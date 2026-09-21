@@ -1,4 +1,4 @@
-import { ICreatePermitSiteProperties, IimportedNOWApplication, IMineDocument, INoticeOfWorkApplicationProgress, IParty } from "@mds/common/interfaces";
+import { ICreatePermitSiteProperties, IimportedNOWApplication, IMineDocument, INoticeOfWorkApplicationProgress, INoWDocument, IParty } from "@mds/common/interfaces";
 
 export interface INoticeOfWorkContact {
   type: string;
@@ -35,10 +35,13 @@ export interface INoticeOfWork {
   lead_inspector_name: string;
   issuing_inspector_name: string;
   issuing_inspector_party_guid: string;
+  consultation_advisor_party_guid: string;
   now_application_status_description: string;
   received_date: string;
   originating_system: string;
   application_documents: IMineDocument[];
+  documents?: INoWDocument[];
+  issuing_inspector?: IParty;
   is_historic: boolean;
   imported_to_core: boolean;
   now_application_guid: string;
@@ -52,6 +55,12 @@ export interface INoticeOfWork {
   latitude?: string;
   contacts?: INoticeOfWorkContact[];
   application_progress?: INoticeOfWorkApplicationProgress[];
+  now_application_tier_code?: string;
+  now_application_tier_description?: string;
+  now_application_tier_created_date?: string;
+  now_application_tier_updated_date?: string;
+  application_type_code?: string;
+  now_application_status_code?: string;
 }
 
 export interface IConditionSection {
@@ -131,7 +140,16 @@ export interface INoWApplicationForm extends Omit<IimportedNOWApplication, "docu
     preamble_author?: string;
     preamble_date?: string;
     now_application_document_sub_type_code?: string;
+    now_application_document_type_code?: string;
+    now_application_document_xref_guid?: string;
+    is_system_generated?: boolean;
+    deleted_ind?: boolean;
+    create_timestamp?: string;
+    mine_document?: {
+      upload_date?: string;
+    };
   }>;
+  locked_ntr_guid?: string | null;
   regional_contact: string;
   submitted_to_core_date: string;
   last_updated_date: string;

@@ -6,7 +6,7 @@ from pytz import timezone
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy.ext.hybrid import hybrid_property
-from sqlalchemy import or_, cast, Integer, nullsfirst, nullslast, and_
+from sqlalchemy import or_, cast, Integer, nullsfirst, nullslast, and_, exists
 from sqlalchemy_filters import apply_pagination
 from werkzeug.exceptions import BadRequest
 
@@ -16,6 +16,7 @@ from app.api.utils.models_mixins import Base, AuditMixin
 from app.api.mines.reports.models.mine_report_definition_compliance_article_xref import \
     MineReportDefinitionComplianceArticleXref
 from app.api.mines.reports.models.mine_report_due_date_type import MineReportDueDateType
+from app.api.mines.reports.models.mine_report import MineReport
 from app.api.compliance.models.compliance_article import ComplianceArticle
 from app.extensions import db
 
@@ -202,6 +203,19 @@ class MineReportDefinition(Base, AuditMixin):
                     )
                 )
             )
+
+        # Filter out MineReportDefinitions that are not active and does not have a associated mine report that was previously requested or submitted
+        disabled_filter = or_(
+            MineReportDefinition.active_ind.is_(True),
+            exists().where(
+                and_(
+                    MineReport.mine_report_definition_id == MineReportDefinition.mine_report_definition_id,
+                    MineReport.deleted_ind == False
+                )
+            )
+        )
+
+        filters.append(disabled_filter)
 
         return query.filter(*filters)
 

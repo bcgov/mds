@@ -27,7 +27,7 @@ import FileOutlined from "@ant-design/icons/FileOutlined";
 import InboxOutlined from "@ant-design/icons/InboxOutlined";
 import SyncOutlined from "@ant-design/icons/SyncOutlined";
 import { openDocument } from "@mds/common/components/syncfusion/DocumentViewer";
-import { Button, Col, Row } from "antd";
+import { Button, Col, Row, Tooltip, Typography, notification } from "antd";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import DocumentTableProps from "@mds/common/interfaces/document/documentTableProps.interface";
 import ArchiveDocumentModal from "./ArchiveDocumentModal";
@@ -51,7 +51,9 @@ export const DocumentTable: FC<DocumentTableProps> = ({
   canArchiveDocuments = false,
   canReplaceDocuments = true,
   removeDocument,
-  replaceAlertMessage = "The replaced file will not reviewed as part of the submission.  The new file should be in the same format as the original file.",
+  replaceAlertMessage = <Typography.Text>The replaced file will <b>not</b> be reviewed as part of the application submission package.
+    To ensure successful replacement, the new file must be the <b>same file type</b> as the original. Please verify the file format before proceeding.</Typography.Text>,
+  onReplaceDocument,
   ...props
 }: DocumentTableProps) => {
   // differences from bringing over from CORE (vs the MS version): this file has doc compression & bulk actions
@@ -100,6 +102,22 @@ export const DocumentTable: FC<DocumentTableProps> = ({
   useEffect(() => {
     setDocuments(parseDocuments(props.documents ?? []));
   }, [props.documents]);
+
+  const normalizeSelectedRows = (selectedRows: MineDocument[]) => {
+    const latestByDocManager = new Map<string, MineDocument>();
+    documents.forEach((doc) => {
+      latestByDocManager.set(doc.document_manager_guid, doc);
+    });
+
+    const seen = new Set<string>();
+    return selectedRows
+      .map((row) => latestByDocManager.get(row.document_manager_guid) ?? row)
+      .filter((row) => {
+        if (seen.has(row.document_manager_guid)) return false;
+        seen.add(row.document_manager_guid);
+        return true;
+      });
+  };
 
   const openArchiveModal = (docs: MineDocument[]) => {
     const mineGuid = docs[0].mine_guid;
@@ -150,10 +168,23 @@ export const DocumentTable: FC<DocumentTableProps> = ({
         props: {
           title: `Replace File`,
           handleSubmit: async (document: MineDocument) => {
+            const previousDocuments = documents;
             const newDocuments = documents.map((d) =>
               d.mine_document_guid === document.mine_document_guid ? document : d
             );
             setDocuments(newDocuments);
+            try {
+              if (onReplaceDocument) {
+                await onReplaceDocument(document);
+              }
+            } catch (error) {
+              setDocuments(previousDocuments);
+              notification.error({
+                message: "Failed to replace document. Please try again.",
+                duration: 10,
+              });
+              throw error;
+            }
           },
           document: doc,
           alertMessage: replaceAlertMessage,
@@ -282,6 +313,10 @@ export const DocumentTable: FC<DocumentTableProps> = ({
     }
   ].filter((a) => allowedTableActions[a.key]);
 
+  const bulkActionsTooltipText = documentsCanBulkDropDown
+    ? "Select one or more files below using the checkboxes to download or archive them."
+    : "Select one or more files below using the checkboxes to download them.";
+
   const renderBulkActions = () => {
     let element = (
       <Button
@@ -303,16 +338,25 @@ export const DocumentTable: FC<DocumentTableProps> = ({
       );
     }
 
+    // wrap in a span: antd disables pointer events on disabled buttons, which
+    // would otherwise prevent the tooltip from showing on hover
+    element = (
+      <Tooltip title={bulkActionsTooltipText}>
+        <span>{element}</span>
+      </Tooltip>
+    );
+
     const hasHeader = Boolean(props.header);
 
-    return (enableBulkActions || hasHeader) && <Row justify={hasHeader ? "space-between" : "end"} align="bottom" className="document-table-header">
+    return (enableBulkActions || hasHeader) && <Row justify={hasHeader ? "space-between" : "end"} align="middle" className="document-table-header">
       {hasHeader && <Col>{props.header}</Col>}
       {enableBulkActions && <Col className="document-table-actions">{element}</Col>}
     </Row>;
   };
 
-  const handleRowSelectionChange = (value) => {
-    setRowSelection(value);
+  const handleRowSelectionChange = (selectedRows) => {
+    const normalized = normalizeSelectedRows(selectedRows);
+    setRowSelection(normalized);
   };
 
   const rowSelectionObject: any = {
@@ -342,7 +386,7 @@ export const DocumentTable: FC<DocumentTableProps> = ({
     : {};
 
   const coreTableProps = {
-    rowKey: "document_manager_guid",
+    rowKey: (record: any) => record.mine_document_version_guid ?? record.document_manager_guid,
     condition: isLoaded,
     dataSource: documents,
     columns: columns,

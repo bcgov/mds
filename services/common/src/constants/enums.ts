@@ -300,11 +300,11 @@ export enum AMS_FORESTRY_ACT_TYPE {
 
 export enum AMS_FINAL_APPLICATION_DOCUMENT_TYPES {
   AID = "Application Instruction Document",
-  CLF = "Clause Form",
+  CLF = "Clause Amendment Form",
   DFF = "Discharge Factor Form",
-  IRT = "Information Requirements Table",
+  IRT = "Information Requirements Table of Concordance",
   LOC = "Location Map",
-  NEN = "Notification and Engagement",
+  NEN = "Notification and Engagement Report",
   QPD = "Qualified Professional Declaration Form",
   SIT = "Site Plan",
   SPR = "Supporting Documents",
@@ -320,3 +320,29 @@ export enum PERMIT_CONDITION_STATUS_CODE {
   INP = "INP",
   NST = "NST"
 }
+
+export enum NOW_APPLICATION_NATION_STATUS_CODE {
+  NOS = "NOS",
+  COM = "COM",
+  IPG = "IPG",
+  IRV = "IRV",
+  OHD = "OHD",
+}
+
+export enum NOW_APPLICATION_NATION_EVENT_PARTY_OPTIONS {
+  nation = "Nation",
+  consultation_advisor = "Consultation Advisor",
+  permitting_inspector = "Permitting Inspector",
+  proponent = "Proponent",
+}
+
+export enum MinistryContactTypeCodes {
+  ROE = "ROE",
+  MMO = "MMO",
+  CHP = "CHP",
+  CHI = "CHI",
+  RDC = "RDC",
+  GEN = "GEN",
+}
+
+export const officeContactTypeCodes = [MinistryContactTypeCodes.ROE, MinistryContactTypeCodes.MMO];

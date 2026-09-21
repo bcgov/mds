@@ -1,0 +1,408 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NOWConsultationNationsTable renders properly 1`] = `
+<div>
+  <div>
+    <div
+      class="ant-table-wrapper permits-table core-table"
+    >
+      <div
+        class="ant-spin-nested-loading"
+      >
+        <div
+          class="ant-spin-container"
+        >
+          <div
+            class="ant-table ant-table-has-fix-right"
+          >
+            <div
+              class="ant-table-container"
+            >
+              <div
+                class="ant-table-content"
+              >
+                <table
+                  style="table-layout: auto;"
+                >
+                  <colgroup>
+                    <col
+                      class="ant-table-expand-icon-col"
+                    />
+                    <col
+                      style="width: 160px;"
+                    />
+                    <col
+                      style="width: 160px;"
+                    />
+                    <col
+                      style="width: 120px;"
+                    />
+                    <col
+                      style="width: 140px;"
+                    />
+                    <col
+                      style="width: 140px;"
+                    />
+                    <col
+                      style="width: 180px;"
+                    />
+                    <col
+                      style="width: 90px;"
+                    />
+                  </colgroup>
+                  <thead
+                    class="ant-table-thead"
+                  >
+                    <tr>
+                      <th
+                        class="ant-table-cell ant-table-row-expand-icon-cell"
+                      />
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Nation/Consultation Stream
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Consultation Started By Client
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Due Date
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Status
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        With
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Days Elapsed Since Consultation Start
+                      </th>
+                      <th
+                        class="ant-table-cell actions-column ant-table-cell-fix-right ant-table-cell-fix-right-first"
+                        style="position: sticky; right: 0px;"
+                      />
+                    </tr>
+                  </thead>
+                  <tbody
+                    class="ant-table-tbody"
+                  >
+                    <tr
+                      class="ant-table-row ant-table-row-level-0 fade-in"
+                      data-row-key="123e4567-e89b-12d3-a456-426614174002"
+                    >
+                      <td
+                        class="ant-table-cell ant-table-row-expand-icon-cell"
+                      >
+                        <span>
+                          <a
+                            class="expand-row-icon"
+                            role="link"
+                            style="cursor: pointer;"
+                            tabindex="0"
+                          >
+                            <span
+                              aria-label="plus-square"
+                              class="anticon anticon-plus-square icon-lg--lightgrey"
+                              role="img"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                class=""
+                                data-icon="plus-square"
+                                fill="currentColor"
+                                focusable="false"
+                                height="1em"
+                                viewBox="64 64 896 896"
+                                width="1em"
+                              >
+                                <path
+                                  d="M880 112H144c-17.7 0-32 14.3-32 32v736c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V144c0-17.7-14.3-32-32-32zM704 536c0 4.4-3.6 8-8 8H544v152c0 4.4-3.6 8-8 8h-48c-4.4 0-8-3.6-8-8V544H328c-4.4 0-8-3.6-8-8v-48c0-4.4 3.6-8 8-8h152V328c0-4.4 3.6-8 8-8h48c4.4 0 8 3.6 8 8v152h152c4.4 0 8 3.6 8 8v48z"
+                                />
+                              </svg>
+                            </span>
+                          </a>
+                        </span>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <div
+                          title="Nation/Consultation Stream"
+                        >
+                          Organization 1
+                        </div>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <div
+                          class="consultationStartedByClient-column"
+                          title="Consultation Started By Client"
+                        >
+                          Yes
+                        </div>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <div
+                          class="dueDate-column"
+                          title="Due Date"
+                        >
+                          Nov 26 2021
+                        </div>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <div
+                          class="status-column"
+                          title="Status"
+                        >
+                          Consultation
+                        </div>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <div
+                          class="with-column"
+                          title="With"
+                        >
+                          2021-10-27T18:05:56.475794+00:00
+                        </div>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <div
+                          class="daysElapsed-column"
+                          title="Days Elapsed Since Consultation Start"
+                        >
+                          0
+                        </div>
+                      </td>
+                      <td
+                        class="ant-table-cell actions-column ant-table-cell-fix-right ant-table-cell-fix-right-first"
+                        style="position: sticky; right: 0px;"
+                      />
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`NOWConsultationNationsTable renders properly without manage consultation advisor permission 1`] = `
+<div>
+  <div>
+    <div
+      class="ant-table-wrapper permits-table core-table"
+    >
+      <div
+        class="ant-spin-nested-loading"
+      >
+        <div
+          class="ant-spin-container"
+        >
+          <div
+            class="ant-table"
+          >
+            <div
+              class="ant-table-container"
+            >
+              <div
+                class="ant-table-content"
+              >
+                <table
+                  style="table-layout: auto;"
+                >
+                  <colgroup>
+                    <col
+                      class="ant-table-expand-icon-col"
+                    />
+                    <col
+                      style="width: 160px;"
+                    />
+                    <col
+                      style="width: 160px;"
+                    />
+                    <col
+                      style="width: 120px;"
+                    />
+                    <col
+                      style="width: 140px;"
+                    />
+                    <col
+                      style="width: 140px;"
+                    />
+                    <col
+                      style="width: 180px;"
+                    />
+                  </colgroup>
+                  <thead
+                    class="ant-table-thead"
+                  >
+                    <tr>
+                      <th
+                        class="ant-table-cell ant-table-row-expand-icon-cell"
+                      />
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Nation/Consultation Stream
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Consultation Started By Client
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Due Date
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Status
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        With
+                      </th>
+                      <th
+                        class="ant-table-cell"
+                      >
+                        Days Elapsed Since Consultation Start
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody
+                    class="ant-table-tbody"
+                  >
+                    <tr
+                      class="ant-table-row ant-table-row-level-0 fade-in"
+                      data-row-key="123e4567-e89b-12d3-a456-426614174002"
+                    >
+                      <td
+                        class="ant-table-cell ant-table-row-expand-icon-cell"
+                      >
+                        <span>
+                          <a
+                            class="expand-row-icon"
+                            role="link"
+                            style="cursor: pointer;"
+                            tabindex="0"
+                          >
+                            <span
+                              aria-label="plus-square"
+                              class="anticon anticon-plus-square icon-lg--lightgrey"
+                              role="img"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                class=""
+                                data-icon="plus-square"
+                                fill="currentColor"
+                                focusable="false"
+                                height="1em"
+                                viewBox="64 64 896 896"
+                                width="1em"
+                              >
+                                <path
+                                  d="M880 112H144c-17.7 0-32 14.3-32 32v736c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V144c0-17.7-14.3-32-32-32zM704 536c0 4.4-3.6 8-8 8H544v152c0 4.4-3.6 8-8 8h-48c-4.4 0-8-3.6-8-8V544H328c-4.4 0-8-3.6-8-8v-48c0-4.4 3.6-8 8-8h152V328c0-4.4 3.6-8 8-8h48c4.4 0 8 3.6 8 8v152h152c4.4 0 8 3.6 8 8v48z"
+                                />
+                              </svg>
+                            </span>
+                          </a>
+                        </span>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <div
+                          title="Nation/Consultation Stream"
+                        >
+                          Organization 1
+                        </div>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <div
+                          class="consultationStartedByClient-column"
+                          title="Consultation Started By Client"
+                        >
+                          Yes
+                        </div>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <div
+                          class="dueDate-column"
+                          title="Due Date"
+                        >
+                          Nov 26 2021
+                        </div>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <div
+                          class="status-column"
+                          title="Status"
+                        >
+                          Consultation
+                        </div>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <div
+                          class="with-column"
+                          title="With"
+                        >
+                          2021-10-27T18:05:56.475794+00:00
+                        </div>
+                      </td>
+                      <td
+                        class="ant-table-cell"
+                      >
+                        <div
+                          class="daysElapsed-column"
+                          title="Days Elapsed Since Consultation Start"
+                        >
+                          0
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

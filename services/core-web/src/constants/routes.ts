@@ -62,6 +62,7 @@ import { getEnvironment } from "@mds/common/utils/environmentUtils";
 import ViewPermitRedirect from "@/components/mine/Permit/ViewPermitRedirect";
 import TagManagement from "@/components/admin/permitConditions/TagManagement";
 import MineUserAccessPage from "@/components/mine/Users/MineUserAccessPage";
+import EmaApplicationSuccessPage from "@mds/common/components/project/EmaApplicationSuccessPage";
 
 const withoutDefaultParams = (params, defaults) => {
   const newParams = JSON.parse(JSON.stringify(params));
@@ -287,6 +288,14 @@ export const EDIT_PROJECT = {
   component: Project,
   helpKey: "Edit-Project",
 };
+
+export const ENVIRONMENTAL_MANAGEMENT_ACT_FINAL_APPLICATION_SUCCESS = {
+  route: "/projects/:projectGuid/ema-application/success",
+  dynamicRoute: (projectGuid) =>
+    `/projects/${projectGuid}/ema-application/success`,
+  component: EmaApplicationSuccessPage,
+  helpKey: "Ema-Final-Application-Submitted",
+}
 
 export const AMS_FINAL_APPLICATION = {
   route: "/projects/:projectGuid/project-summary/:projectSummaryGuid/application/:projectSummaryAuthorizationGuid/:tab",
@@ -558,7 +567,7 @@ export const ADMIN_PERMIT_CONDITION_TAG_MANAGEMENT = {
 
 export const SEARCH_RESULTS = {
   route: "/search",
-  dynamicRoute: ({ q, t = null }) => (t ? `/search?q=${q}&t=${t}` : `/search?q=${q}`),
+  dynamicRoute: ({ q, t = null }: Record<string, string | null>) => (t ? `/search?q=${q}&t=${t}` : `/search?q=${q}`),
   component: SearchResults,
   helpKey: "Search-Results",
 };

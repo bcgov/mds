@@ -1,588 +1,287 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`MineHeader renders dispatchProperly 1`] = `
-<div
-  className="dashboard__header--card"
->
+exports[`MineHeader renders properly 1`] = `
+<div>
   <div
-    className="dashboard__header--card__content"
+    class="dashboard__header--card"
   >
-    <MineAlert
-      mine={
-        Object {
-          "latest_mine_status": Object {
-            "effective_date": "2024-03-07T15:49:45.989485+00:00",
-            "expiry_date": null,
-            "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-            "mine_status_guid": "aac99c4d-9d96-4f5a-ab6c-cc816c64ca93",
-            "mine_status_xref_guid": "4924b221-f895-479d-ad0d-7fde81795813",
-            "status_date": null,
-            "status_description": "This mine operates seasonally. Dates shown are from the most recently approved NoW application. Confirm operating dates with operator or permittee before visiting.",
-            "status_labels": Array [
-              "Operating",
-              "Seasonal",
-            ],
-            "status_values": Array [
-              "OP",
-              "SEA",
-            ],
-          },
-          "major_mine_ind": true,
-          "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-          "mine_location": Object {
-            "latitude": null,
-            "longitude": null,
-          },
-          "mine_name": "mine3",
-          "mine_no": "BLAH9091",
-          "mine_permit_numbers": Array [],
-          "mine_region": "NE",
-          "mine_status": Array [
-            Object {
-              "effective_date": "2024-03-07T15:49:45.989485+00:00",
-              "expiry_date": null,
-              "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-              "mine_status_guid": "aac99c4d-9d96-4f5a-ab6c-cc816c64ca93",
-              "mine_status_xref_guid": "4924b221-f895-479d-ad0d-7fde81795813",
-              "status_date": null,
-              "status_description": "This mine operates seasonally. Dates shown are from the most recently approved NoW application. Confirm operating dates with operator or permittee before visiting.",
-              "status_labels": Array [
-                "Operating",
-                "Seasonal",
-              ],
-              "status_values": Array [
-                "OP",
-                "SEA",
-              ],
-            },
-          ],
-          "mine_tailings_storage_facilities": Array [
-            Object {
-              "consequence_classification_status_code": "LOW",
-              "dams": Array [
-                Object {
-                  "consequence_classification": "LOW",
-                  "current_dam_height": 2,
-                  "current_elevation": 3,
-                  "dam_guid": "123",
-                  "dam_name": "Dam Name",
-                  "dam_type": "dam",
-                  "latitude": 48,
-                  "longitude": -127.3,
-                  "max_pond_elevation": 15,
-                  "min_freeboard_required": 16,
-                  "mine_tailings_storage_facility_guid": "abcde-12345",
-                  "operating_status": "care_and_maintenance",
-                  "permitted_dam_crest_elevation": 35,
-                  "update_timestamp": "2019-04-05 21:05:40.123456+00:00",
-                  "update_user": "update-user",
-                },
-              ],
-              "engineer_of_record": Object {
-                "end_date": null,
-                "is_draft": false,
-                "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                "mine_party_acknowledgement_status": "acknowledged",
-                "mine_party_appt_guid": "mine-party-appt-guid",
-                "mine_party_appt_type_code": "EOR",
-                "party": Object {
-                  "address": undefined,
-                  "business_role_appts": Array [],
-                  "email": "",
-                  "first_name": "Egbert",
-                  "mine_party_appt": Array [],
-                  "name": "Egbert O'Reilly",
-                  "now_party_appt": Array [],
-                  "organization": undefined,
-                  "organization_guid": "",
-                  "party_guid": "party-guid-eor",
-                  "party_name": "O'Reilly",
-                  "party_orgbook_entity": undefined,
-                  "party_type_code": "PER",
-                  "phone_no": "123-123-1234",
-                },
-                "party_guid": "party-guid-eor",
-                "related_guid": "e2629897-053e-4218-9299-479375e47f78",
-                "start_date": "2025-03-30",
-              },
-              "facility_type": "tailings_storage_facility",
-              "is_draft": false,
-              "itrb_exemption_status_code": "YES",
-              "latitude": null,
-              "longitude": null,
-              "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-              "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
-              "mine_tailings_storage_facility_name": "MockTSF",
-              "mines_act_permit_no": "P-123",
-              "qualified_person": Object {
-                "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                "mine_party_acknowledgement_status": "pending",
-                "mine_party_appt_guid": "qp-appt-guid",
-                "mine_party_appt_type_code": "TQP",
-                "party": Object {
-                  "address": undefined,
-                  "business_role_appts": Array [],
-                  "email": "",
-                  "first_name": "Quintessa",
-                  "mine_party_appt": Array [],
-                  "name": "Quintessa Petersen",
-                  "now_party_appt": Array [],
-                  "organization": undefined,
-                  "organization_guid": "",
-                  "party_guid": "party-guid-qp",
-                  "party_name": "Petersen",
-                  "party_orgbook_entity": undefined,
-                  "party_type_code": "PER",
-                  "phone_no": "123-123-1234",
-                },
-                "party_guid": "party-guid-qp",
-                "related_guid": "e2629897-053e-4218-9299-479375e47f78",
-                "start_date": "2025-03-30",
-              },
-              "storage_location": "above_ground",
-              "tailings_storage_facility_type": "conventional",
-              "tsf_operating_status_code": "OPT",
-              "update_timestamp": "2019-04-05 21:05:40.123456+00:00",
-              "update_user": "test@bceid",
-            },
-          ],
-          "mine_type": Array [
-            Object {
-              "mine_tenure_type_code": "PLR",
-              "mine_type_detail": Array [],
-            },
-            Object {
-              "mine_tenure_type_code": "MIN",
-              "mine_type_detail": Array [],
-            },
-          ],
-          "verified_status": Object {
-            "healthy_ind": null,
-            "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-            "mine_name": null,
-            "verifying_timestamp": null,
-            "verifying_user": null,
-          },
-        }
-      }
-    />
-    <br />
     <div
-      className="inline-flex between horizontal-center"
+      class="dashboard__header--card__content"
     >
-      <h4>
-        Mine Details
-      </h4>
+      <div />
+      <br />
+      <div
+        class="inline-flex between horizontal-center"
+      >
+        <h4>
+          Mine Details
+        </h4>
+        <div />
+      </div>
+      <div
+        class="ant-divider ant-divider-horizontal"
+        role="separator"
+        style="margin: 0px;"
+      />
       <div>
-        <AuthorizationWrapper
-          permission="role_edit_mines"
+        <div
+          class="inline-flex padding-sm"
         >
-          <Dropdown
-            className="full-height"
-            overlay={
-              <Menu>
-                <MenuItem>
-                  <button
-                    className="full"
-                    id="updateMine"
-                    onClick={[Function]}
-                    type="button"
-                  >
-                    <img
-                      alt="pencil"
-                      className="padding-sm"
-                      src={
-                        Object {
-                          "process": [Function],
-                        }
-                      }
-                    />
-                    Update Mine Record
-                  </button>
-                </MenuItem>
-              </Menu>
-            }
-            placement="bottomLeft"
+          <p
+            class="field-title"
           >
-            <Button
-              type="primary"
+            Operating Status 
+          </p>
+          <p>
+            Operating, Seasonal
+          </p>
+          <span
+            aria-label="info-circle"
+            class="anticon anticon-info-circle info-tooltip icon-sm"
+            role="img"
+            style="color: rgb(94, 70, 161);"
+          >
+            <svg
+              aria-hidden="true"
+              class=""
+              data-icon="info-circle"
+              fill="currentColor"
+              focusable="false"
+              height="1em"
+              viewBox="64 64 896 896"
+              width="1em"
             >
-              <div
-                className="padding-sm"
-              >
-                <img
-                  alt="Add/Edit"
-                  className="padding-sm--right"
-                  src={
-                    Object {
-                      "process": [Function],
-                    }
-                  }
-                />
-                Add/Edit
-              </div>
-            </Button>
-          </Dropdown>
-        </AuthorizationWrapper>
-      </div>
-    </div>
-    <Divider
-      style={
-        Object {
-          "margin": "0",
-        }
-      }
-    />
-    <div>
-      <div
-        className="inline-flex padding-sm"
-      >
-        <p
-          className="field-title"
+              <path
+                d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
+              />
+              <path
+                d="M464 336a48 48 0 1096 0 48 48 0 10-96 0zm72 112h-48c-4.4 0-8 3.6-8 8v272c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8V456c0-4.4-3.6-8-8-8z"
+              />
+            </svg>
+          </span>
+        </div>
+        <div
+          class="inline-flex padding-sm"
         >
-          Operating Status 
-        </p>
-        <p>
-          Operating, Seasonal
-        </p>
-        <CoreTooltip
-          title="This mine operates seasonally. Dates shown are from the most recently approved NoW application. Confirm operating dates with operator or permittee before visiting."
-        />
+          <p
+            class="field-title"
+          >
+            Status Since 
+          </p>
+          <p>
+            N/A
+          </p>
+        </div>
       </div>
       <div
-        className="inline-flex padding-sm"
+        class="inline-flex padding-sm"
       >
         <p
-          className="field-title"
+          class="field-title"
         >
-          Status Since 
+          Mine Class 
         </p>
         <p>
-          N/A
+          Major mine
         </p>
       </div>
-    </div>
-    <div
-      className="inline-flex padding-sm"
-    >
-      <p
-        className="field-title"
+      <div
+        class="inline-flex padding-sm"
       >
-        Mine Class 
-      </p>
-      <p>
-        Major mine
-      </p>
-    </div>
-    <div
-      className="inline-flex padding-sm"
-    >
-      <p
-        className="field-title"
+        <p
+          class="field-title"
+        >
+          Tenure
+        </p>
+        <div>
+          <p>
+            Placer, Mineral
+          </p>
+        </div>
+      </div>
+      <div
+        class="inline-flex padding-sm wrap"
       >
-        Tenure
-      </p>
-      <div>
+        <p
+          class="field-title"
+        >
+          Commodity
+        </p>
         <p>
           N/A
         </p>
       </div>
-    </div>
-    <div
-      className="inline-flex padding-sm wrap"
-    >
-      <p
-        className="field-title"
+      <div
+        class="inline-flex padding-sm wrap"
       >
-        Commodity
-      </p>
-      <p>
-        N/A
-      </p>
-    </div>
-    <div
-      className="inline-flex padding-sm wrap"
-    >
-      <p
-        className="field-title"
-      >
-        Disturbance
-      </p>
-      <p>
-        N/A
-      </p>
-    </div>
-    <div
-      className="inline-flex padding-sm"
-    >
-      <p
-        className="field-title"
-      >
-        TSF
-      </p>
-      <p>
-        <Link
-          to="/mine-dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/permits-and-approvals/tailings"
+        <p
+          class="field-title"
         >
-          1
-        </Link>
-      </p>
-    </div>
-    <div
-      className="inline-flex padding-sm wrap"
-    >
-      <p
-        className="field-title"
-      >
-        Notes
-      </p>
-      <div>
+          Disturbance
+        </p>
         <p>
           N/A
         </p>
       </div>
-    </div>
-    <div
-      className="inline-flex padding-sm wrap"
-    >
-      <p
-        className="field-title"
-      >
-        Legacy Alias
-      </p>
-      <p>
-        N/A
-      </p>
-    </div>
-    <div
-      className="inline-flex padding-sm wrap"
-    >
       <div
-        className="field-title"
-      >
-        Number of Mine Employees
-      </div>
-      <div>
-        N/A
-      </div>
-      <CoreTooltip
-        title="Approximate number of mine employees on site"
-      />
-    </div>
-    <div
-      className="inline-flex padding-sm wrap"
-    >
-      <div
-        className="field-title"
-      >
-        Number of Contractors
-      </div>
-      <div>
-        N/A
-      </div>
-      <CoreTooltip
-        title="Approximate number of contractors on site"
-      />
-    </div>
-  </div>
-  <div
-    className="dashboard__header--card__map"
-  >
-    <MineHeaderMapLeaflet
-      additionalPin={Array []}
-      mine={
-        Object {
-          "latest_mine_status": Object {
-            "effective_date": "2024-03-07T15:49:45.989485+00:00",
-            "expiry_date": null,
-            "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-            "mine_status_guid": "aac99c4d-9d96-4f5a-ab6c-cc816c64ca93",
-            "mine_status_xref_guid": "4924b221-f895-479d-ad0d-7fde81795813",
-            "status_date": null,
-            "status_description": "This mine operates seasonally. Dates shown are from the most recently approved NoW application. Confirm operating dates with operator or permittee before visiting.",
-            "status_labels": Array [
-              "Operating",
-              "Seasonal",
-            ],
-            "status_values": Array [
-              "OP",
-              "SEA",
-            ],
-          },
-          "major_mine_ind": true,
-          "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-          "mine_location": Object {
-            "latitude": null,
-            "longitude": null,
-          },
-          "mine_name": "mine3",
-          "mine_no": "BLAH9091",
-          "mine_permit_numbers": Array [],
-          "mine_region": "NE",
-          "mine_status": Array [
-            Object {
-              "effective_date": "2024-03-07T15:49:45.989485+00:00",
-              "expiry_date": null,
-              "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-              "mine_status_guid": "aac99c4d-9d96-4f5a-ab6c-cc816c64ca93",
-              "mine_status_xref_guid": "4924b221-f895-479d-ad0d-7fde81795813",
-              "status_date": null,
-              "status_description": "This mine operates seasonally. Dates shown are from the most recently approved NoW application. Confirm operating dates with operator or permittee before visiting.",
-              "status_labels": Array [
-                "Operating",
-                "Seasonal",
-              ],
-              "status_values": Array [
-                "OP",
-                "SEA",
-              ],
-            },
-          ],
-          "mine_tailings_storage_facilities": Array [
-            Object {
-              "consequence_classification_status_code": "LOW",
-              "dams": Array [
-                Object {
-                  "consequence_classification": "LOW",
-                  "current_dam_height": 2,
-                  "current_elevation": 3,
-                  "dam_guid": "123",
-                  "dam_name": "Dam Name",
-                  "dam_type": "dam",
-                  "latitude": 48,
-                  "longitude": -127.3,
-                  "max_pond_elevation": 15,
-                  "min_freeboard_required": 16,
-                  "mine_tailings_storage_facility_guid": "abcde-12345",
-                  "operating_status": "care_and_maintenance",
-                  "permitted_dam_crest_elevation": 35,
-                  "update_timestamp": "2019-04-05 21:05:40.123456+00:00",
-                  "update_user": "update-user",
-                },
-              ],
-              "engineer_of_record": Object {
-                "end_date": null,
-                "is_draft": false,
-                "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                "mine_party_acknowledgement_status": "acknowledged",
-                "mine_party_appt_guid": "mine-party-appt-guid",
-                "mine_party_appt_type_code": "EOR",
-                "party": Object {
-                  "address": undefined,
-                  "business_role_appts": Array [],
-                  "email": "",
-                  "first_name": "Egbert",
-                  "mine_party_appt": Array [],
-                  "name": "Egbert O'Reilly",
-                  "now_party_appt": Array [],
-                  "organization": undefined,
-                  "organization_guid": "",
-                  "party_guid": "party-guid-eor",
-                  "party_name": "O'Reilly",
-                  "party_orgbook_entity": undefined,
-                  "party_type_code": "PER",
-                  "phone_no": "123-123-1234",
-                },
-                "party_guid": "party-guid-eor",
-                "related_guid": "e2629897-053e-4218-9299-479375e47f78",
-                "start_date": "2025-03-30",
-              },
-              "facility_type": "tailings_storage_facility",
-              "is_draft": false,
-              "itrb_exemption_status_code": "YES",
-              "latitude": null,
-              "longitude": null,
-              "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-              "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
-              "mine_tailings_storage_facility_name": "MockTSF",
-              "mines_act_permit_no": "P-123",
-              "qualified_person": Object {
-                "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                "mine_party_acknowledgement_status": "pending",
-                "mine_party_appt_guid": "qp-appt-guid",
-                "mine_party_appt_type_code": "TQP",
-                "party": Object {
-                  "address": undefined,
-                  "business_role_appts": Array [],
-                  "email": "",
-                  "first_name": "Quintessa",
-                  "mine_party_appt": Array [],
-                  "name": "Quintessa Petersen",
-                  "now_party_appt": Array [],
-                  "organization": undefined,
-                  "organization_guid": "",
-                  "party_guid": "party-guid-qp",
-                  "party_name": "Petersen",
-                  "party_orgbook_entity": undefined,
-                  "party_type_code": "PER",
-                  "phone_no": "123-123-1234",
-                },
-                "party_guid": "party-guid-qp",
-                "related_guid": "e2629897-053e-4218-9299-479375e47f78",
-                "start_date": "2025-03-30",
-              },
-              "storage_location": "above_ground",
-              "tailings_storage_facility_type": "conventional",
-              "tsf_operating_status_code": "OPT",
-              "update_timestamp": "2019-04-05 21:05:40.123456+00:00",
-              "update_user": "test@bceid",
-            },
-          ],
-          "mine_type": Array [
-            Object {
-              "mine_tenure_type_code": "PLR",
-              "mine_type_detail": Array [],
-            },
-            Object {
-              "mine_tenure_type_code": "MIN",
-              "mine_type_detail": Array [],
-            },
-          ],
-          "verified_status": Object {
-            "healthy_ind": null,
-            "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-            "mine_name": null,
-            "verifying_timestamp": null,
-            "verifying_user": null,
-          },
-        }
-      }
-    />
-    <div
-      className="dashboard__header--card__map--footer"
-    >
-      <div
-        className="inline-flex between"
+        class="inline-flex padding-sm"
       >
         <p
-          className="p-white"
+          class="field-title"
         >
-          Lat: 
-          N/A
+          TSF
         </p>
+        <p>
+          <a
+            href="/mine-dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/permits-and-approvals/tailings"
+          >
+            1
+          </a>
+        </p>
+      </div>
+      <div
+        class="inline-flex padding-sm wrap"
+      >
         <p
-          className="p-white"
+          class="field-title"
         >
-          Long: 
+          Notes
+        </p>
+        <div>
+          <p>
+            N/A
+          </p>
+        </div>
+      </div>
+      <div
+        class="inline-flex padding-sm wrap"
+      >
+        <p
+          class="field-title"
+        >
+          Legacy Alias
+        </p>
+        <p>
           N/A
         </p>
       </div>
       <div
-        className="inline-flex between"
+        class="inline-flex padding-sm wrap"
       >
-        <p
-          className="p-white"
+        <div
+          class="field-title"
         >
-          Region: 
-          North East
-        </p>
-        <Link
-          className="link-on-dark"
-          target="_blank"
-          to="/dashboard/mines?map=true&lat&long&zoom=14&mineName=mine3"
+          Number of Mine Employees
+        </div>
+        <div>
+          N/A
+        </div>
+        <span
+          aria-label="info-circle"
+          class="anticon anticon-info-circle info-tooltip icon-sm"
+          role="img"
+          style="color: rgb(94, 70, 161);"
         >
-          View In Full Map
-        </Link>
+          <svg
+            aria-hidden="true"
+            class=""
+            data-icon="info-circle"
+            fill="currentColor"
+            focusable="false"
+            height="1em"
+            viewBox="64 64 896 896"
+            width="1em"
+          >
+            <path
+              d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
+            />
+            <path
+              d="M464 336a48 48 0 1096 0 48 48 0 10-96 0zm72 112h-48c-4.4 0-8 3.6-8 8v272c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8V456c0-4.4-3.6-8-8-8z"
+            />
+          </svg>
+        </span>
+      </div>
+      <div
+        class="inline-flex padding-sm wrap"
+      >
+        <div
+          class="field-title"
+        >
+          Number of Contractors
+        </div>
+        <div>
+          N/A
+        </div>
+        <span
+          aria-label="info-circle"
+          class="anticon anticon-info-circle info-tooltip icon-sm"
+          role="img"
+          style="color: rgb(94, 70, 161);"
+        >
+          <svg
+            aria-hidden="true"
+            class=""
+            data-icon="info-circle"
+            fill="currentColor"
+            focusable="false"
+            height="1em"
+            viewBox="64 64 896 896"
+            width="1em"
+          >
+            <path
+              d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
+            />
+            <path
+              d="M464 336a48 48 0 1096 0 48 48 0 10-96 0zm72 112h-48c-4.4 0-8 3.6-8 8v272c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8V456c0-4.4-3.6-8-8-8z"
+            />
+          </svg>
+        </span>
+      </div>
+    </div>
+    <div
+      class="dashboard__header--card__map"
+    >
+      <div
+        data-testid="mock-mine-header-map"
+      >
+        Mock Map
+      </div>
+      <div
+        class="dashboard__header--card__map--footer"
+      >
+        <div
+          class="inline-flex between"
+        >
+          <p
+            class="p-white"
+          >
+            Lat: 
+            N/A
+          </p>
+          <p
+            class="p-white"
+          >
+            Long: 
+            N/A
+          </p>
+        </div>
+        <div
+          class="inline-flex between"
+        >
+          <p
+            class="p-white"
+          >
+            Region: 
+            North East
+          </p>
+          <a
+            class="link-on-dark"
+            href="/dashboard/mines?map=true&lat&long&zoom=14&mineName=mine3"
+            target="_blank"
+          >
+            View In Full Map
+          </a>
+        </div>
       </div>
     </div>
   </div>

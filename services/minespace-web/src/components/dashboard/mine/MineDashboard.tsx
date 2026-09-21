@@ -9,14 +9,14 @@ import { getMineDashboardRoutes } from "./MineDashboardRoutes";
 import SidebarWrapper, { SidebarNavigation } from "@mds/common/components/common/SidebarWrapper";
 import Loading from "@/components/common/Loading";
 import { fetchMinistryContactsByRegion } from "@mds/common/redux/slices/minespaceSlice";
-import { fetchPartyRelationships } from "@mds/common/redux/actionCreators/partiesActionCreator";
+import { fetchPartyRelationships } from "@mds/common/redux/slices/partiesSlice";
 import NotFoundNotice from "@/components/common/NotFoundNotice";
 import { useAppDispatch } from "@mds/common/redux/rootState";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { Feature } from "@mds/common/utils";
 import {
   fetchMineReportStats,
-  getOverdueReportsCountByMineGuid,
+  getMineReportStatsByMineGuid,
 } from "@mds/common/redux/slices/mineReportStatsSlice";
 
 const MineDashboard: FC = () => {
@@ -58,7 +58,11 @@ const MineDashboard: FC = () => {
     }
   }, [id]);
 
-  const overdueReports = useSelector(getOverdueReportsCountByMineGuid(mine?.mine_guid));
+  const stats = useSelector(getMineReportStatsByMineGuid(mine?.mine_guid));
+  const overdueReports = stats?.overdue_reports ?? 0;
+  const dueNext90 = stats?.due_next_90_days ?? 0;
+  const reportsBadgeCount = Number(overdueReports) + Number(dueNext90);
+
   useEffect(() => {
     if (mine?.mine_guid && showReportStats) {
       dispatch(fetchMineReportStats(mine.mine_guid));
@@ -68,7 +72,11 @@ const MineDashboard: FC = () => {
   const dynamicRoute = (key: string) => {
     return MINE_DASHBOARD.dynamicRoute(mine?.mine_guid, key, "");
   };
-  const items = getMineDashboardRoutes(showApplications, overdueReports).map((item) => ({
+  const items = getMineDashboardRoutes(
+    showApplications,
+    reportsBadgeCount,
+    mine?.major_mine_ind
+  ).map((item) => ({
     ...item,
     path: dynamicRoute(item.key),
   }));

@@ -93,7 +93,15 @@ export const PermitsTable: FC<PermitsTableProps> = (props) => {
       amendment?.imported_now_application_documents?.length > 0
         ? amendment.imported_now_application_documents.filter((doc) => doc.is_final_package)
         : [];
-    return finalAppPackageCore.concat(finalAppPackageImported);
+    return finalAppPackageCore.concat(finalAppPackageImported).sort((a, b) => {
+      if (a.is_system_generated && b.is_system_generated) {
+        // Among system-generated NTRs, newest create_timestamp first (1.1 = locked row)
+        return (b.create_timestamp ?? "") > (a.create_timestamp ?? "") ? 1 : -1;
+      }
+      if (a.is_system_generated) return -1;
+      if (b.is_system_generated) return 1;
+      return (a.final_package_order ?? 0) - (b.final_package_order ?? 0);
+    });
   };
 
   const transformExpandedPermitRowData = (amendment: IPermitAmendment, amendmentNumber) => ({
@@ -180,6 +188,44 @@ export const PermitsTable: FC<PermitsTableProps> = (props) => {
     rowData = permitRowData;
   }
 
+  const hasCredentialLinks = rowData.some((record) =>
+    record.permit_amendments?.some((amendment) =>
+      Boolean(amendment.active_orgbook_publish_status?.orgbook_credential_id)
+    )
+  );
+
+  const credentialColumn = {
+    title: "UNTP CC",
+    dataIndex: "active_orgbook_publish_status",
+    key: "untp_conformity_credential",
+    render: (status) => {
+      const credentialUrl = status?.orgbook_credential_id;
+
+      if (!credentialUrl) {
+        return Strings.EMPTY_FIELD;
+      }
+
+      try {
+        const publisherUrl = new URL(credentialUrl);
+        const linkUrl = new URL("/view", publisherUrl.origin);
+        linkUrl.searchParams.set("url", publisherUrl.toString());
+
+        return (
+          <a
+            href={linkUrl.toString()}
+            target="_blank"
+            rel="noopener noreferrer"
+            title={linkUrl.toString()}
+          >
+            View
+          </a>
+        );
+      } catch {
+        return Strings.EMPTY_FIELD;
+      }
+    },
+  };
+
   const expandedColumns = [
     renderTextColumn("amendmentNumber", "Amendment No."),
     renderDateColumn("issue_date", "Date Issued"),
@@ -227,6 +273,7 @@ export const PermitsTable: FC<PermitsTableProps> = (props) => {
         </div>
       ),
     },
+    ...(hasCredentialLinks ? [credentialColumn] : []),
   ];
 
   return (

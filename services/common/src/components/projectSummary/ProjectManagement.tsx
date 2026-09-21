@@ -10,7 +10,7 @@ import RenderSelect from "../forms/RenderSelect";
 import { FORM } from "@mds/common/constants/forms";
 import { getDropdownProjectSummaryStatusCodes } from "@mds/common/redux/selectors/staticContentSelectors";
 
-import { getDropdownProjectLeads } from "@mds/common/redux/selectors/partiesSelectors";
+import { getDropdownProjectLeads } from "@mds/common/redux/slices/partiesSlice";
 import {
   clearProjectSummaryMinistryComments,
   createProjectSummaryMinistryComment,

@@ -65,7 +65,7 @@ class OrgBookIssuerService():
             current_app.logger.warning(
                 'Issuer Controller liveness check failed on init, this call did nothing')
         permittee_orgbook_entity = permit_amendment.permit.permittee_appointments[
-            0].party.party_orgbook_entity
+            0].party.party_bc_registration
         if not permittee_orgbook_entity:
             current_app.logger.warning(
                 'skipping issue_permit_amendment_vc, permittee not link to orgbook business')

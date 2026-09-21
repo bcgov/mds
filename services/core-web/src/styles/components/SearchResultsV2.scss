@@ -1,0 +1,81 @@
+@use "@/styles/base.scss" as *;
+
+.search-results-v2 {
+  
+  &__loading {
+    text-align: center;
+    padding: 48px;
+
+    &-text {
+      margin-top: 16px;
+    }
+  }
+
+  &__filters-card {
+    margin-bottom: 16px;
+
+    &-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    &-icon {
+      margin-right: 8px;
+    }
+
+    &-tags {
+      margin-bottom: 12px;
+    }
+    
+    &-tag {
+      margin: 0;
+    }
+
+    &-group {
+      margin-bottom: 8px;
+    }
+    
+    &-label {
+      font-size: 12px;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    &-list {
+      max-height: 200px;
+      overflow-y: auto;
+      padding-left: 8px;
+    }
+
+    &-item {
+      margin-bottom: 4px;
+      
+      &-text {
+        font-size: 13px;
+      }
+      
+      &-count {
+        font-size: 11px;
+      }
+    }
+
+    &-empty {
+      font-size: 12px;
+    }
+  }
+  
+  &__empty-state {
+    padding: 40px 0;
+  }
+  
+  &__header-search {
+    margin-top: 16px; 
+    max-width: 600px;
+  }
+  
+  &__result-count {
+    margin-bottom: 16px;
+  }
+}

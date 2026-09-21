@@ -1,3 +1,7 @@
 from contextvars import ContextVar
 
-context = ContextVar("permit_conditions_context")
+class SafeContext:
+    def update_state(self, *args, **kwargs):
+        pass
+
+context = ContextVar("permit_conditions_context", default=SafeContext())

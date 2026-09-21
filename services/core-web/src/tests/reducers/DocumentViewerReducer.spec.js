@@ -8,6 +8,7 @@ import {
 const baseExpectedValue = {
   isDocumentViewerOpen: false,
   props: { title: "Document Viewer" },
+  location: null,
 };
 
 // Creates deep copy of javascript object instead of setting a reference
@@ -34,7 +35,13 @@ describe("documentViewerReducer", () => {
     expectedValue.props = {};
     expectedValue.documentPath = "mock path";
     expectedValue.documentName = "mock name";
-    const payload = { props: {}, documentPath: "mock path", documentName: "mock name" };
+    expectedValue.location = { pageNumber: 3 };
+    const payload = {
+      props: {},
+      documentPath: "mock path",
+      documentName: "mock name",
+      location: { pageNumber: 3 },
+    };
     const result = documentViewerReducer(undefined, openDocumentViewer(payload));
     expect(result).toEqual(expectedValue);
   });

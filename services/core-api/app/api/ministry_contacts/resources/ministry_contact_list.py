@@ -1,12 +1,13 @@
 from flask_restx import Resource
 from werkzeug.exceptions import BadRequest
-from app.extensions import api
+from app.extensions import api, db
 from flask import request
 from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.utils.access_decorators import requires_role_edit_ministry_contacts, requires_any_of, VIEW_ALL, MINESPACE_PROPONENT
 from app.api.utils.resources_mixins import UserMixin
 from app.api.ministry_contacts.models.ministry_contact import MinistryContact
 from app.api.ministry_contacts.models.ministry_contact_type import MinistryContactType
+from app.api.ministry_contacts.models.distribution_list_user import DistributionListUser
 from app.api.ministry_contacts.response_models import MINISTRY_CONTACT_MODEL
 
 
@@ -24,7 +25,7 @@ class MinistryContactListResource(Resource, UserMixin):
     parser.add_argument('last_name', type=str, trim=True, help='MCM Last name.', location='json')
     parser.add_argument('email', type=str, help='MCM email.', required=True, location='json')
     parser.add_argument(
-        'phone_number', type=str, help='MCM phone number', required=True, location='json')
+        'phone_number', type=str, help='MCM phone number', required=False, location='json')
     parser.add_argument(
         'fax_number', type=str, help='MCM Regional Office fax number', location='json')
     parser.add_argument(
@@ -43,6 +44,8 @@ class MinistryContactListResource(Resource, UserMixin):
         'is_general_contact', type=bool, help='is is_general_contact? true/false', location='json')
     parser.add_argument(
         'deleted_ind', type=bool, help='Deleted indicator: true/false', location='json')
+    parser.add_argument(
+        'distribution_list_guids', type=list, location='json', default=[])
 
     @api.doc(
         params={'is_major_mine': 'MCM user is related to a major mine? true/false'},
@@ -65,8 +68,14 @@ class MinistryContactListResource(Resource, UserMixin):
         data = self.parser.parse_args()
 
         contact_type = data.get('emli_contact_type_code', None)
-        is_major_mine = data.get('is_major_mine', None)
-        is_general_contact = data.get('is_general_contact', None)
+
+        if not data.get('email'):
+            raise BadRequest('Email is required.')
+
+        if contact_type != 'RDC' and not data.get('is_general_contact'):
+            if not data.get('phone_number'):
+                raise BadRequest('Phone number is required.')
+
         contact_desc = MinistryContactType.find_contact_type(contact_type)
 
         mmo_contact = MinistryContact.find_ministry_contact('MMO')
@@ -88,9 +97,6 @@ class MinistryContactListResource(Resource, UserMixin):
         elif unique_global and contact_type in unique_global:
             raise BadRequest(f'Error: Restricted to one {contact_desc[0].description} contact.')
 
-        elif is_major_mine == False and is_general_contact == True:
-            raise BadRequest(f'Error: General contacts must be a major mine contact.')
-
         contact = MinistryContact.create(
             emli_contact_type_code=contact_type,
             mine_region_code=data.get('mine_region_code'),
@@ -103,11 +109,19 @@ class MinistryContactListResource(Resource, UserMixin):
             mailing_address_line_2=data.get('mailing_address_line_2', None),
             is_major_mine=data.get('is_major_mine', False),
             is_general_contact=data.get('is_general_contact', False),
-            deleted_ind=data.get('deleted_ind', False))
+            deleted_ind=data.get('deleted_ind', False),
+            add_to_session=False)
 
         if not contact:
             raise BadRequest('Error: Failed to create MCM contact.')
 
+        contact.save(commit=False)
+        db.session.flush()
+
+        distribution_list_guids = data.get('distribution_list_guids', [])
+        for guid in distribution_list_guids:
+            DistributionListUser.create(guid, contact.contact_guid, add_to_session=True)
+            
         contact.save()
 
         return contact

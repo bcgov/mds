@@ -8,6 +8,7 @@ import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
 import FormWrapper from "@mds/common/components/forms/FormWrapper";
+import { resetForm } from "@mds/common/redux/utils/helpers";
 
 const propTypes = {
   mines: CustomPropTypes.options.isRequired,
@@ -30,16 +31,17 @@ export const AddMinespaceUser = (props) => {
       initialValues={{ proponent_mine_access: [] }}
       reduxFormConfig={{
         touchOnBlur: false,
+        onSubmitSuccess: resetForm(FORM.ADD_MINESPACE_USER)
       }}
     >
       <Col span={24}>
         <Row>
           <Col span={24}>
             <Field
-              id="email_or_username"
-              name="email_or_username"
-              label="Email/BCeID username"
-              placeholder="Please enter a bceid in the format of user@bceid or a valid email address"
+              id="bceid_username"
+              name="bceid_username"
+              label="BCeID username"
+              placeholder="Please enter a bceid in the format of user@bceid"
               component={RenderField}
               required
               validate={[required, minespaceUserNotExists]}

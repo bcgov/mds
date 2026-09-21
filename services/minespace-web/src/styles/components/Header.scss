@@ -11,6 +11,7 @@
 .header-logo {
   float: left;
   margin-right: 32px;
+  line-height: $layout-header-height;
 
   @include screen-md {
     padding-left: $padding-sm;
@@ -26,10 +27,7 @@
 }
 
 #dropdown-menu-mobile-trigger {
-  @include screen-md {
-    padding-left: 0;
-    padding-right: $padding-sm;
-  }
+  margin-right: $padding-sm;
 }
 
 .login-btn {
@@ -44,7 +42,7 @@
 
 .header-link {
   color: $white;
-  padding: 29px $padding-md 29px $padding-md;
+  padding: $padding-md;
 
   &:hover,
   &.active {
@@ -63,35 +61,19 @@
 }
 
 .ant-btn.header-dropdown-button {
-  color: $gov-yellow;
-  border: none;
-  background-color: transparent !important;
-  font-weight: bold;
+  font-weight: normal;
+  height: 40px;
+  border-width: 1px;
 
   span {
-    font-size: 16px !important;
+    font-size: 16px;
   }
 
   &:active,
   &:focus,
   &:hover {
     color: $gov-yellow;
-  }
-}
-
-.header-dropdown-item-button {
-  border: none !important;
-  background-color: transparent !important;
-  box-shadow: none !important;
-  font-weight: bold !important;
-  margin-bottom: 0 !important;
-
-  span {
-    font-size: 16px !important;
-  }
-
-  & a {
-    text-decoration: none;
+    border-color: $gov-yellow;
   }
 }
 

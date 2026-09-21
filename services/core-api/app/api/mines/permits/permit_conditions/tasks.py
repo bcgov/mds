@@ -2,10 +2,11 @@ import csv
 import datetime
 import io
 
-from app.api.tasks.celery_task_base import TaskBase
-from app.cli_commands.export_permit_conditions import headers, export_permit_conditions
 from app.api.search.search.permit_search_service import PermitSearchService
+from app.api.tasks.celery_task_base import TaskBase
+from app.cli_commands.export_permit_conditions import export_permit_conditions, headers
 from app.tasks.celery import celery
+
 
 @celery.task(base=TaskBase)
 def export_and_index_permit_amendments(permit_amendment_guids, is_manual=False):
