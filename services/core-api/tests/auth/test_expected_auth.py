@@ -67,7 +67,6 @@ from app.api.mines.documents.resources.mine_document_bundle import (
     MineDocumentBundleResource,
 )
 from app.api.mines.documents.resources.mine_document_resource import (
-    DocumentUploadStatusResource,
     MineDocumentArchiveResource,
     MineDocumentListResource,
     ZipProgressResource,
@@ -536,9 +535,15 @@ from app.api.users.minespace.resources.minespace_user_mine import (
     MinespaceUserMineListResource,
     MinespaceUserMineResource,
 )
+from app.api.users.minespace.resources.new_minespace_user import (
+    NewMinespaceUserDataResource,
+    NewMinespaceUserDocumentResource,
+    NewMinespaceUserResource,
+)
 from app.api.users.resources.user_list_resource import UserListResource
 from app.api.users.resources.user_resource import UserResource
 from app.api.utils.access_decorators import (
+    AUTHENTICATED,
     EDIT_CODE,
     EDIT_DO,
     EDIT_EXPLOSIVES_PERMIT,
@@ -647,7 +652,6 @@ EXPECTED_AUTH_TABLE = [
         (DamResource, 'get', [EDIT_TSF, MINESPACE_PROPONENT]),
         (DamResource, 'patch', [EDIT_TSF, MINESPACE_PROPONENT]),
         (DistributionListListResource, 'get', [VIEW_ALL, MINESPACE_PROPONENT]),
-        (DocumentUploadStatusResource, 'get', [VIEW_ALL, MINESPACE_PROPONENT]),
         (DownloadTokenResource, "get", [VIEW_ALL, MINESPACE_PROPONENT, GIS]),
         (EPICResource, 'get', [VIEW_ALL, MINESPACE_PROPONENT]),
         (EmailPreviewListResource, 'get', [MINE_ADMIN]),
@@ -801,6 +805,10 @@ EXPECTED_AUTH_TABLE = [
         (NOWApplicationDocumentIndexStatusResource, 'get', [VIEW_ALL]),
         (NOWApplicationDocumentSearchResource, 'post', [VIEW_ALL]),
         (NOWApplicationTierHistoryResource, 'get', [VIEW_ALL]),
+        (NewMinespaceUserDataResource, 'get', [AUTHENTICATED]),
+        (NewMinespaceUserDocumentResource, 'post', [AUTHENTICATED]),
+        (NewMinespaceUserResource, 'get', [AUTHENTICATED]),
+        (NewMinespaceUserResource, 'post', [AUTHENTICATED]),
         (NoticeOfDepartureListResource, 'get', [VIEW_ALL, MINESPACE_PROPONENT]),
         (NoticeOfDepartureListResource, 'post', [EDIT_DO, MINESPACE_PROPONENT]),
         (NoticeOfDepartureResource, 'delete', [EDIT_PERMIT, MINESPACE_PROPONENT]),
