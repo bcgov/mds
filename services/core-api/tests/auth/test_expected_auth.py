@@ -152,6 +152,9 @@ from app.api.mines.permits.permit_amendment.resources.permit_amendment_document 
 from app.api.mines.permits.permit_amendment.resources.permit_amendment_vc import (
     PermitAmendmentVCResource,
 )
+from app.api.mines.permits.permit_amendment.resources.permit_conditions_data import (
+    PermitConditionsDataResource,
+)
 from app.api.mines.permits.permit_conditions.resources.permit_amendment_condition_category_list_resource import (
     PermitAmendmentConditionCategoryListResource,
 )
@@ -257,6 +260,9 @@ from app.api.mines.work_information.resources.work_information import (
 from app.api.mines.work_information.resources.work_information_list import (
     MineWorkInformationListResource,
 )
+from app.api.ministry_contacts.resources.distribution_list_list import (
+    DistributionListListResource,
+)
 from app.api.ministry_contacts.resources.ministry_contact import MinistryContactResource
 from app.api.ministry_contacts.resources.ministry_contact_list import (
     MinistryContactListResource,
@@ -288,6 +294,11 @@ from app.api.now_applications.resources.now_application_document_resource import
     NOWApplicationDocumentResource,
     NOWApplicationDocumentSortResource,
     NOWApplicationDocumentUploadResource,
+)
+from app.api.now_applications.resources.now_application_document_search_resource import (
+    NOWApplicationDocumentIndexResource,
+    NOWApplicationDocumentIndexStatusResource,
+    NOWApplicationDocumentSearchResource,
 )
 from app.api.now_applications.resources.now_application_document_type_resource import (
     NOWApplicationDocumentGenerateResource,
@@ -350,6 +361,9 @@ from app.api.now_applications.resources.now_application_status_resource import (
     NOWApplicationStatusCodeResource,
     NOWApplicationStatusResource,
 )
+from app.api.now_applications.resources.now_application_tier_history_resource import (
+    NOWApplicationTierHistoryResource,
+)
 from app.api.now_applications.resources.now_application_type_resource import (
     NOWApplicationTypeResource,
 )
@@ -382,6 +396,9 @@ from app.api.now_submissions.resources.application_status_resource import (
     ApplicationStatusResource,
 )
 from app.api.parties.party.resources.merge_resource import MergeResource
+from app.api.parties.party.resources.party_bc_registration_list_resource import (
+    PartyBCRegistrationListResource,
+)
 from app.api.parties.party.resources.party_list_resource import PartyListResource
 from app.api.parties.party.resources.party_resource import PartyResource
 from app.api.parties.party.resources.sub_division_code_resource import (
@@ -629,9 +646,12 @@ EXPECTED_AUTH_TABLE = [
         (DamListResource, 'post', [EDIT_DO, MINESPACE_PROPONENT]),
         (DamResource, 'get', [EDIT_TSF, MINESPACE_PROPONENT]),
         (DamResource, 'patch', [EDIT_TSF, MINESPACE_PROPONENT]),
+        (DistributionListListResource, 'get', [VIEW_ALL, MINESPACE_PROPONENT]),
         (DocumentUploadStatusResource, 'get', [VIEW_ALL, MINESPACE_PROPONENT]),
         (DownloadTokenResource, "get", [VIEW_ALL, MINESPACE_PROPONENT, GIS]),
         (EPICResource, 'get', [VIEW_ALL, MINESPACE_PROPONENT]),
+        (EmailPreviewListResource, 'get', [MINE_ADMIN]),
+        (EmailPreviewResource, 'get', [MINE_ADMIN]),
         (ExplosivesPermitAmendmentListResource, 'post', [EDIT_EXPLOSIVES_PERMIT]),
         (ExplosivesPermitAmendmentResource, 'delete', [MINE_ADMIN]),
         (ExplosivesPermitAmendmentResource, 'get', [VIEW_ALL, MINESPACE_PROPONENT]),
@@ -735,6 +755,7 @@ EXPECTED_AUTH_TABLE = [
         (MineReportResource, 'delete', [EDIT_REPORT]),
         (MineReportResource, "get", [VIEW_ALL, MINESPACE_PROPONENT]),
         (MineReportResource, "put", [EDIT_REPORT, MINESPACE_PROPONENT]),
+        (MineReportStatsResource, 'get', [VIEW_ALL, MINESPACE_PROPONENT]),
         (MineReportSubmissionStatusResource, 'get', [VIEW_ALL]),
         (MineResource, "get", [VIEW_ALL, MINESPACE_PROPONENT]),
         (MineResource, "put", [MINE_EDIT, MINESPACE_PROPONENT]),
@@ -775,6 +796,11 @@ EXPECTED_AUTH_TABLE = [
         (MinistryContactResource, 'delete', [MINE_ADMIN]),
         (MinistryContactResource, 'get', [VIEW_ALL, MINESPACE_PROPONENT]),
         (MinistryContactResource, 'put', [EDIT_MINISTRY_CONTACTS]),
+        (NOWApplicationDocumentIndexResource, 'delete', [VIEW_ALL]),
+        (NOWApplicationDocumentIndexResource, 'post', [VIEW_ALL]),
+        (NOWApplicationDocumentIndexStatusResource, 'get', [VIEW_ALL]),
+        (NOWApplicationDocumentSearchResource, 'post', [VIEW_ALL]),
+        (NOWApplicationTierHistoryResource, 'get', [VIEW_ALL]),
         (NoticeOfDepartureListResource, 'get', [VIEW_ALL, MINESPACE_PROPONENT]),
         (NoticeOfDepartureListResource, 'post', [EDIT_DO, MINESPACE_PROPONENT]),
         (NoticeOfDepartureResource, 'delete', [EDIT_PERMIT, MINESPACE_PROPONENT]),
@@ -824,9 +850,11 @@ EXPECTED_AUTH_TABLE = [
         (NOWApplicationTypeResource, 'get', [VIEW_ALL]),
         (OrgbookPublisherConnectionResource, 'post', [VIEW_ALL]),
         (PIPConsultationAreaResource, 'get', [VIEW_ALL]),
+        (PartyBCRegistrationListResource, 'delete', [MANAGE_ORGBOOK]),
+        (PartyBCRegistrationListResource, 'post', [MANAGE_ORGBOOK]),
         (PartyListResource, "get", [VIEW_ALL, MINESPACE_PROPONENT]),
         (PartyListResource, "post", [EDIT_PARTY, MINESPACE_PROPONENT]), (PartyResource, "get", [VIEW_ALL]),
-        (PartyResource, "put", [EDIT_PARTY, MINESPACE_PROPONENT]), (PartyResource, "delete", [MINE_ADMIN]),
+        (PartyResource, "put", [EDIT_PARTY, MINESPACE_PROPONENT, MANAGE_ORGBOOK]), (PartyResource, "delete", [MINE_ADMIN]),
         (PermitAmendmentConditionCategoryListResource, 'get', [VIEW_ALL]),
         (PermitAmendmentConditionCategoryListResource, 'post', [VIEW_ALL]),
         (PermitAmendmentConditionCategoryResource, 'delete', [VIEW_ALL]),
@@ -844,6 +872,7 @@ EXPECTED_AUTH_TABLE = [
         (PermitConditionExtractionResource, 'delete', [EDIT_STANDARD_PERMIT_CONDITIONS]),
         (PermitConditionExtractionResource, 'get', [VIEW_ALL]),
         (PermitConditionExtractionResource, 'post', [EDIT_STANDARD_PERMIT_CONDITIONS]),
+        (PermitConditionsDataResource, 'get', [VIEW_ALL]),
         (PermitConditionsListResource, 'get', [EDIT_PERMIT]),
         (PermitConditionsListResource, 'post', [EDIT_PERMIT]),
         (PermitConditionsResource, 'delete', [EDIT_PERMIT]),
@@ -904,7 +933,7 @@ EXPECTED_AUTH_TABLE = [
         (RequirementsResource, 'get', [VIEW_ALL, MINESPACE_PROPONENT]),
         (RequirementsResource, 'put', [MINESPACE_PROPONENT, EDIT_REQUIREMENTS]),
         (SearchResource, "get", [VIEW_ALL]), (SearchOptionsResource, "get", [VIEW_ALL]),
-        (SimpleSearchResource, "get", [VIEW_ALL]), (MinespaceUserListResource, 'get', [MINE_ADMIN]),
+        (SimpleSearchResource, "get", [VIEW_ALL]), (MinespaceUserListResource, 'get', [VIEW_ALL, MINESPACE_PROPONENT]),
         (StandardPermitConditionsListResource, 'get', [EDIT_PERMIT]),
         (StandardPermitConditionsListResource, 'post', [EDIT_STANDARD_PERMIT_CONDITIONS]),
         (StandardPermitConditionsResource, 'delete', [EDIT_STANDARD_PERMIT_CONDITIONS]),
