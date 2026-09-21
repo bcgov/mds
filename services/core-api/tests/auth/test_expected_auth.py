@@ -1,6 +1,9 @@
 import pytest
 from app.api.activity.resource.activities_mark_as_read import ActivityMarkAsReadResource
 from app.api.activity.resource.activity_list import ActivityListResource
+from app.api.bc_registration.resources.bc_registration_resources import (
+    CredentialResource,
+)
 from app.api.compliance.resources.compliance_article import ComplianceArticleResource
 from app.api.compliance.resources.compliance_article_create_resource import (
     ComplianceArticleCreateResource,
@@ -378,15 +381,8 @@ from app.api.now_submissions.resources.application_status_resource import (
     ApplicationStatusListResource,
     ApplicationStatusResource,
 )
-from app.api.orgbook.resources.orgbook_resources import (
-    CredentialResource,
-    VerifyResource,
-)
 from app.api.parties.party.resources.merge_resource import MergeResource
 from app.api.parties.party.resources.party_list_resource import PartyListResource
-from app.api.parties.party.resources.party_orgbook_entity_list_resource import (
-    PartyOrgBookEntityListResource,
-)
 from app.api.parties.party.resources.party_resource import PartyResource
 from app.api.parties.party.resources.sub_division_code_resource import (
     SubDivisionCodeResource,
@@ -830,8 +826,6 @@ EXPECTED_AUTH_TABLE = [
         (PIPConsultationAreaResource, 'get', [VIEW_ALL]),
         (PartyListResource, "get", [VIEW_ALL, MINESPACE_PROPONENT]),
         (PartyListResource, "post", [EDIT_PARTY, MINESPACE_PROPONENT]), (PartyResource, "get", [VIEW_ALL]),
-        (PartyOrgBookEntityListResource, 'delete', [MINE_ADMIN]),
-        (PartyOrgBookEntityListResource, 'post', [EDIT_PARTY]),
         (PartyResource, "put", [EDIT_PARTY, MINESPACE_PROPONENT]), (PartyResource, "delete", [MINE_ADMIN]),
         (PermitAmendmentConditionCategoryListResource, 'get', [VIEW_ALL]),
         (PermitAmendmentConditionCategoryListResource, 'post', [VIEW_ALL]),
@@ -939,7 +933,6 @@ EXPECTED_AUTH_TABLE = [
         (VerifyMineNOWResource, 'get', [VIEW_ALL]),
         (VerifyPermitMineResource, 'get', [VIEW_ALL]),
         (VerifyPermitNOWResource, 'get', [VIEW_ALL]),
-        (VerifyResource, 'get', [VIEW_ALL]),
         (W3CCredentialResource, 'get', [VIEW_ALL]),
         (W3CCredentialIssueResource, 'post', [EDIT_PARTY, MINESPACE_PROPONENT]),
         (W3CCredentialIssueResource, 'get', [EDIT_PARTY, MINESPACE_PROPONENT]),
