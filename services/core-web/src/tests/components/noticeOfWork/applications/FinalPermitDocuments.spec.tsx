@@ -156,4 +156,103 @@ describe("FinalPermitDocuments", () => {
       expect(result.nowApplicationDocument.now_application_document_xref_guid).toBe("ntr-xref-new");
     });
   });
+
+  describe("permit package figures and documents table", () => {
+    const finalPackageDocument = {
+      now_application_document_xref_guid: "final-doc-1",
+      final_package_order: 1,
+      is_final_package: true,
+      is_referral_package: false,
+      is_consultation_package: false,
+      permit_package_document_type_code: "DOCUMENT",
+      description: "A final package document",
+      now_application_document_type_code: "OTH",
+      mine_document: {
+        mine_document_guid: "mine-doc-1",
+        document_manager_guid: "doc-mgr-1",
+        document_name: "final-doc.pdf",
+        upload_date: "2025-01-15",
+      },
+    };
+
+    const renderUnified = (overrides: Record<string, unknown> = {}) =>
+      render(
+        <BrowserRouter>
+          <ReduxWrapper initialState={initialState}>
+            <FinalPermitDocuments
+              {...dispatchProps}
+              {...baseProps}
+              noticeOfWork={{ ...IMPORTED_NOTICE_OF_WORK, documents: [finalPackageDocument] }}
+              showInUnifiedView
+              isFeatureEnabled={() => true}
+              adminView={false}
+              progress={{ DFT: { start_date: "2025-01-01" } }}
+              userCanEditPermits
+              {...overrides}
+            />
+          </ReduxWrapper>
+        </BrowserRouter>
+      );
+
+    it("splits into separate Figure and Document tables when every split condition is met", () => {
+      const { container } = renderUnified();
+      expect(container.querySelectorAll(".ant-table")).toHaveLength(2);
+    });
+
+    it("keeps a single combined table when the type-selector feature flag is off", () => {
+      const { container } = renderUnified({ isFeatureEnabled: () => false });
+      expect(container.querySelectorAll(".ant-table")).toHaveLength(1);
+    });
+
+    it("keeps a single combined table in admin view", () => {
+      const { container } = renderUnified({ adminView: true });
+      expect(container.querySelectorAll(".ant-table")).toHaveLength(1);
+    });
+
+    it("keeps a single combined table before the draft has started", () => {
+      const { container } = renderUnified({ progress: {} });
+      expect(container.querySelectorAll(".ant-table")).toHaveLength(1);
+    });
+
+    it("keeps a single combined table once the application is in a decided/complete status", () => {
+      const { container } = renderUnified({
+        noticeOfWork: {
+          ...IMPORTED_NOTICE_OF_WORK,
+          documents: [finalPackageDocument],
+          now_application_status_code: "AIA",
+        },
+      });
+      expect(container.querySelectorAll(".ant-table")).toHaveLength(1);
+    });
+
+    it("shows the Order column once the draft has started, even before it's in progress", () => {
+      const { getByText } = renderUnified({
+        isFeatureEnabled: () => false,
+        progress: { DFT: { start_date: "2025-01-01", end_date: "2025-02-01" } },
+      });
+      expect(getByText("Order")).toBeInTheDocument();
+    });
+
+    it("allows dragging when not admin view, the draft is in progress, and the user can edit permits", () => {
+      const { container } = renderUnified({ isFeatureEnabled: () => false });
+      expect(container.querySelector(".anticon-menu")).not.toBeNull();
+    });
+
+    it("disallows dragging when the user cannot edit permits, even while the draft is in progress", () => {
+      const { container } = renderUnified({
+        isFeatureEnabled: () => false,
+        userCanEditPermits: false,
+      });
+      expect(container.querySelector(".anticon-menu")).toBeNull();
+    });
+
+    it("disallows dragging once the draft is completed, even though the Order column stays visible", () => {
+      const { container, getByText } = renderUnified({
+        isFeatureEnabled: () => false,
+        progress: { DFT: { start_date: "2025-01-01", end_date: "2025-02-01" } },
+      });
+      expect(getByText("Order")).toBeInTheDocument();
+      expect(container.querySelector(".anticon-menu")).toBeNull();
+    });
+  });
 });
