@@ -90,11 +90,12 @@ def _ordered_permit_package_documents(now_application):
     """
     Mirrors the front-end's getOrderedPermitPackageDocuments (permitPackageDocuments.ts) so a
     {permit_package_file:<guid>} token resolves to the same "1.N Title" label shown in the
-    Condition Data Variable picker. The locked, system-generated NTR row (final_package_order ==
-    LOCKED_NTR_FINAL_PACKAGE_ORDER) always sorts first and is always "1.1" - but only once the
+    Condition Data Variable picker. The locked, system-generated NTR row (identified by
+    now_application.locked_ntr_guid, the same lookup the front-end uses via
+    getLockedSystemNtrDoc) always sorts first and is always "1.1" - but only once the
     front-end's own criteria for that row are met (application_type_code == 'NOW' and Technical
     Review has completed at least once - see _technical_review_ever_completed); otherwise a doc
-    with that sentinel order is numbered like any other document, matching getNowApplicationDocument
+    is numbered like any other document until eligible, matching getNowApplicationDocument
     exactly, so the two implementations can't disagree on which row (if any) is "1.1". Every other
     permit package document (uploaded figures/documents plus submission documents) is numbered
     starting at "1.2", ordered by final_package_order - the same shared sequence both document
@@ -105,11 +106,10 @@ def _ordered_permit_package_documents(now_application):
     this once via build_permit_package_file_label_map and reuse the result, rather than calling it
     per token.
     """
-    from app.api.now_applications.models.now_application import LOCKED_NTR_FINAL_PACKAGE_ORDER
-
     is_locked_row_eligible = (
         now_application.application_type_code == 'NOW'
         and _technical_review_ever_completed(now_application))
+    locked_ntr_guid = now_application.locked_ntr_guid if is_locked_row_eligible else None
 
     locked = None
     reals = []
@@ -117,7 +117,7 @@ def _ordered_permit_package_documents(now_application):
     for doc in now_application.documents:
         if not doc.is_final_package:
             continue
-        if is_locked_row_eligible and doc.final_package_order == LOCKED_NTR_FINAL_PACKAGE_ORDER:
+        if locked_ntr_guid and str(doc.now_application_document_xref_guid) == locked_ntr_guid:
             locked = doc
         else:
             reals.append(
@@ -174,14 +174,15 @@ def resolve_permit_package_file_tokens(text, label_map):
 
 
 def replace_condition_value_with_data(condition, condition_var, label_map=None):
-    condition = resolve_permit_package_file_tokens(condition, label_map)
     pattern = r'\b({})\b'.format('|'.join(sorted(re.escape(k) for k in condition_var)))
-    return re.sub(
+    condition = re.sub(
         pattern, lambda m: condition_var.get(m.group(0)), condition,
-        flags=re.IGNORECASE).translate({
-            ord('{'): None,
-            ord('}'): None
-        })
+        flags=re.IGNORECASE)
+    condition = resolve_permit_package_file_tokens(condition, label_map)
+    return condition.translate({
+        ord('{'): None,
+        ord('}'): None
+    })
 
 def calculate_liability(now_application):
     # If amendment, get sum total security adjustment

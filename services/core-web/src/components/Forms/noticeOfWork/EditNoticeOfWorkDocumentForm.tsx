@@ -103,7 +103,7 @@ const EditNoticeOfWorkDocumentForm: FC<EditNoticeOfWorkDocumentFormProps> = ({
   };
 
   // If a user unchecks the "part of permit package" checkbox for a file that's being referenced in a permit condition, it triggers a warning popup.
-  // This prevents a user from accidentally removing a referenced permit pacakge file, which breaks the reference.
+  // This prevents a user from accidentally removing a referenced permit package file, which breaks the reference.
   const handleFinalPackageChange = (event, newValue, previousValue) => {
     if (previousValue && !newValue && isReferencedInConditions) {
       setConfirmUncheckOpen(true);

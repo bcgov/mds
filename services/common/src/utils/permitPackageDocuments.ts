@@ -2,6 +2,42 @@ import { getLockedSystemNtrDoc } from "@mds/common/utils/helpers";
 import { parseConditionText } from "@mds/common/utils/conditionTokenParser";
 import { IPermitCondition } from "@mds/common/interfaces";
 
+export interface PermitPackageDocumentRow {
+  now_application_document_type_code?: string | null;
+  now_application_document_xref_guid?: string;
+  final_package_order?: number | null;
+  is_final_package?: boolean;
+  is_referral_package?: boolean;
+  is_consultation_package?: boolean;
+  is_system_generated?: boolean;
+  deleted_ind?: boolean;
+  create_timestamp?: string;
+  preamble_title?: string;
+  preamble_author?: string;
+  preamble_date?: string | null;
+  category?: string;
+  description?: string;
+  permit_package_document_type_code?: "FIGURE" | "DOCUMENT";
+  isLockedApplicationForm?: boolean;
+  mine_document?: {
+    mine_document_guid?: string | null;
+    document_manager_guid?: string | null;
+    document_name?: string | null;
+    upload_date?: string | null;
+  };
+}
+
+export interface PermitPackageNoticeOfWork {
+  application_type_code?: string;
+  documents: PermitPackageDocumentRow[];
+  filtered_submission_documents?: PermitPackageDocumentRow[];
+  locked_ntr_guid?: string | null;
+}
+
+export interface PermitPackageNowProgress {
+  REV?: { end_date?: string | null };
+}
+
 const TECHNICAL_REVIEW_NTR_DESCRIPTION =
   "This document was automatically created when Technical Review was completed.";
 
@@ -35,7 +71,10 @@ const NA_ROW = {
  * This is the single source of truth for that determination - NOWDocuments.js, FinalPermitDocuments.js, and the Condition Data Variable
  * picker all resolve it from here so behaviour can't drift between them.
  */
-export const getNowApplicationDocument = (noticeOfWork: any, progress: any) => {
+export const getNowApplicationDocument = (
+  noticeOfWork: PermitPackageNoticeOfWork,
+  progress: PermitPackageNowProgress
+) => {
   const nullResult = { nowApplicationDocument: null, lockedNtrGuid: null };
 
   if (noticeOfWork.application_type_code !== "NOW") {
@@ -85,7 +124,10 @@ export const getNowApplicationDocument = (noticeOfWork: any, progress: any) => {
  * Sorts permit package documents into display order: the locked row (if any) always first, then by final_package_order.
  * Shared by the permit package document table and the Condition Data Variable picker so their orderings can't drift apart.
  */
-export const comparePermitPackageDocuments = (a: any, b: any): number => {
+export const comparePermitPackageDocuments = (
+  a: PermitPackageDocumentRow,
+  b: PermitPackageDocumentRow
+): number => {
   if (a.isLockedApplicationForm && b.isLockedApplicationForm) return 0;
   if (a.isLockedApplicationForm) return -1;
   if (b.isLockedApplicationForm) return 1;
@@ -107,7 +149,10 @@ export const getPermitPackageOrderLabel = (
  * This is the source of truth for permit package ordering — NOWDocuments.js, FinalPermitDocuments.js, and the Condition Data Variable picker all resolve labels from here.
  * This ensures the numbering can never drift between the document table and an inserted CDV reference.
  */
-export const getOrderedPermitPackageDocuments = (noticeOfWork: any, progress: any) => {
+export const getOrderedPermitPackageDocuments = (
+  noticeOfWork: PermitPackageNoticeOfWork,
+  progress: PermitPackageNowProgress
+) => {
   const { nowApplicationDocument, lockedNtrGuid } = getNowApplicationDocument(
     noticeOfWork,
     progress
@@ -144,8 +189,8 @@ export const getOrderedPermitPackageDocuments = (noticeOfWork: any, progress: an
  * This is the data source for the Condition Data Variable picker's "Permit Package Files" menu.
  */
 export const getPermitPackageFilesByType = (
-  noticeOfWork: any,
-  progress: any,
+  noticeOfWork: PermitPackageNoticeOfWork,
+  progress: PermitPackageNowProgress,
   permitPackageDocumentTypeCode: "FIGURE" | "DOCUMENT"
 ) =>
   getOrderedPermitPackageDocuments(noticeOfWork, progress).filter(
@@ -184,8 +229,8 @@ export const resolvePermitPackageFileReference = (
   // CRITICAL: This guid must stay attached to the same xref row for as long as any condition might reference it.
   // See the comment in now_application_document_xref.py for more details - if this is broken, the reference will be too. 
   guid: string,
-  noticeOfWork: any,
-  progress: any
+  noticeOfWork: PermitPackageNoticeOfWork,
+  progress: PermitPackageNowProgress
 ): PermitPackageFileReference => {
   const match = getOrderedPermitPackageDocuments(noticeOfWork, progress).find(
     (doc) => !doc.isLockedApplicationForm && doc.now_application_document_xref_guid === guid

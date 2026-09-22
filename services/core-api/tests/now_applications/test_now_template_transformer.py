@@ -2,7 +2,6 @@ from datetime import datetime
 import pytest
 from regex import template
 from app.api.now_applications import now_template_transformer as now_template_transformer
-from app.api.now_applications.models.now_application import LOCKED_NTR_FINAL_PACKAGE_ORDER
 from app.api.now_applications.models.now_application_document_xref import NOWApplicationDocumentXref
 from werkzeug.exceptions import NotFound
 
@@ -13,15 +12,17 @@ from app.extensions import db
 
 
 def _add_permit_package_document(db_session, now_application, mine, *, preamble_title, final_package_order,
-                                  is_final_package=True):
+                                  is_final_package=True, now_application_document_type_code='OTH',
+                                  is_system_generated=False):
     # Setting now_application_id AND appending to now_application.documents both populate the same row.
     #  Since `documents` has no back_populates, doing both makes the row appear twice in the in-memory collection.
     # Set the FK only, then expire the cached collection so the next access re-queries it cleanly.
     xref = NOWApplicationDocumentXref(
         now_application_id=now_application.now_application_id,
-        now_application_document_type_code='OTH',
+        now_application_document_type_code=now_application_document_type_code,
         mine_document=MineDocumentFactory(mine=mine),
         is_final_package=is_final_package,
+        is_system_generated=is_system_generated,
         final_package_order=final_package_order,
         preamble_title=preamble_title)
     db_session.add(xref)
@@ -205,10 +206,10 @@ def test_ordered_permit_package_documents_orders_by_final_package_order(db_sessi
 
 
 def test_ordered_permit_package_documents_locked_ntr_row_is_always_first_and_1_1(db_session):
-    """The locked, system-generated NTR row (final_package_order ==
-    LOCKED_NTR_FINAL_PACKAGE_ORDER) always sorts first and is always labelled "1.1", regardless
-    of when it was added relative to other permit package documents - once this application
-    actually meets the front-end's criteria for that row (NOW type, Technical Review completed).
+    """The locked, system-generated NTR row (identified by now_application.locked_ntr_guid)
+    always sorts first and is always labelled "1.1", regardless of when it was added relative to
+    other permit package documents - once this application actually meets the front-end's
+    criteria for that row (NOW type, Technical Review completed).
     """
     identity = NOWApplicationIdentityFactory(now_application=NOWApplicationFactory())
     now_application = identity.now_application
@@ -221,7 +222,7 @@ def test_ordered_permit_package_documents_locked_ntr_row_is_always_first_and_1_1
         db_session, now_application, identity.mine, preamble_title='Real Doc', final_package_order=1)
     locked = _add_permit_package_document(
         db_session, now_application, identity.mine, preamble_title='Notice of Work Application',
-        final_package_order=LOCKED_NTR_FINAL_PACKAGE_ORDER)
+        final_package_order=2, now_application_document_type_code='NTR', is_system_generated=True)
 
     ordered = now_template_transformer._ordered_permit_package_documents(now_application)
 
@@ -232,11 +233,10 @@ def test_ordered_permit_package_documents_locked_ntr_row_is_always_first_and_1_1
 
 def test_ordered_permit_package_documents_locked_row_not_treated_as_1_1_before_technical_review_completes(db_session):
     """This is the exact divergence the front-end's technicalReviewEverCompleted gate exists to
-    prevent (e.g. the "NoW Type change" trigger can stamp final_package_order ==
-    LOCKED_NTR_FINAL_PACKAGE_ORDER on a doc before Technical Review has ever completed) - a doc
-    with that sentinel order must NOT be labelled "1.1" until this application actually meets the
-    front-end's full criteria, so the backend can never disagree with the CDV picker on which row
-    (if any) is locked."""
+    prevent (e.g. Technical Review being reset/redone can leave a system-generated NTR doc in
+    place before review has ever actually completed) - that doc must NOT be labelled "1.1" until
+    this application actually meets the front-end's full criteria, so the backend can never
+    disagree with the CDV picker on which row (if any) is locked."""
     identity = NOWApplicationIdentityFactory(now_application=NOWApplicationFactory())
     now_application = identity.now_application
     identity.application_type_code = 'NOW'
@@ -248,7 +248,7 @@ def test_ordered_permit_package_documents_locked_row_not_treated_as_1_1_before_t
         db_session, now_application, identity.mine, preamble_title='Real Doc', final_package_order=1)
     not_yet_locked = _add_permit_package_document(
         db_session, now_application, identity.mine, preamble_title='Notice of Work Application',
-        final_package_order=LOCKED_NTR_FINAL_PACKAGE_ORDER)
+        final_package_order=2, now_application_document_type_code='NTR', is_system_generated=True)
 
     ordered = now_template_transformer._ordered_permit_package_documents(now_application)
 
