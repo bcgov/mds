@@ -18,6 +18,7 @@ def setup_info(db_session):
     )
 
     document = MineDocumentFactory(mine=mine)
+    db_session.refresh(document)
 
     yield dict(
         mine=mine,
@@ -70,6 +71,7 @@ class TestMineDocumentVersionUploadResource:
 
         mine = setup_info['mine']
         document = setup_info['document']
+        db_session.refresh(document)
         original_uploader = document.create_user
         original_upload_date = document.upload_date
         doc_url = f'{DocumentManagerService.document_manager_document_resource_url}/{document.document_manager_guid}'
@@ -91,14 +93,14 @@ class TestMineDocumentVersionUploadResource:
             if len(versions) == 1:
                 db_session.refresh(document)
                 first_replacer = document.create_user
-                first_replace_date = document.create_timestamp.date()
+                first_replace_upload_date = document.upload_date
 
         # the first archived file was uploaded by the original uploader on the original date
         assert versions[0]['create_user'] == original_uploader
         assert versions[0]['upload_date'] == str(original_upload_date)
         # the second archived file is the one the first replace uploaded
         assert versions[1]['create_user'] == first_replacer
-        assert versions[1]['upload_date'] == str(first_replace_date)
+        assert versions[1]['upload_date'] == str(first_replace_upload_date)
 
     @responses.activate
     def test_create_docman_failure_does_not_commit(self, test_client, db_session, auth_headers, setup_info):
