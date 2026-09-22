@@ -382,7 +382,7 @@ const ReportDetailsForm: FC<ReportDetailsFormProps> = ({
 
   const notes = useSelector(getMineReportComments);
 
-  const comments = notes
+  const comments = [...(notes ?? [])]
     .sort(
       (first, second) =>
         new Date(second.comment_datetime).getTime() - new Date(first.comment_datetime).getTime()

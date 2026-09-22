@@ -64,7 +64,7 @@ const ReplaceDocumentModal: FC<ReplaceDocumentModalProps> = (props) => {
         });
         return resolve(false);
       }
-      const docConstructor = (document as any)?.constructor ?? MineDocument;
+      const docConstructor = document instanceof MineDocument ? (document as any).constructor : MineDocument;
       setUpdatedDocument(
         new docConstructor({
           ...updatedDocument,
@@ -93,7 +93,7 @@ const ReplaceDocumentModal: FC<ReplaceDocumentModalProps> = (props) => {
       );
 
       if (ConnectedVersion) {
-        const docConstructor = (document as any)?.constructor ?? MineDocument;
+        const docConstructor = document instanceof MineDocument ? (document as any).constructor : MineDocument;
         const existingVersionsAsc = (document.versions ?? []).slice().reverse();
         const newVersionsChronological = [...existingVersionsAsc, ConnectedVersion.data as IMineDocumentVersion];
         const newDocument = new docConstructor({
@@ -129,7 +129,7 @@ const ReplaceDocumentModal: FC<ReplaceDocumentModalProps> = (props) => {
           <Typography.Text>{formatDate(document.upload_date)}</Typography.Text>
         </Col>
         <Col>
-          <Typography.Text>{document.update_user ?? document.create_user}</Typography.Text>
+          <Typography.Text>{document.create_user}</Typography.Text>
         </Col>
       </Row>
 
