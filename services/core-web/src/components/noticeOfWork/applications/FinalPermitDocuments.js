@@ -13,6 +13,9 @@ import PermitPackage from "@/components/noticeOfWork/applications/PermitPackage"
 import NOWDocuments from "@/components/noticeOfWork/applications/NOWDocuments";
 import NOWSubmissionDocuments from "@/components/noticeOfWork/applications/NOWSubmissionDocuments";
 
+// Re-exported so existing imports of getNowApplicationDocument from this module keep working —
+// the single implementation now lives in permitPackageDocuments.ts, shared with NOWDocuments.js
+// and the Condition Data Variable picker.
 export { getNowApplicationDocument };
 
 /**
