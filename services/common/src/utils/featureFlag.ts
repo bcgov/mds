@@ -32,8 +32,6 @@ export enum Feature {
   MAJOR_PROJECT_REFACTOR = "major_project_refactor",
   HELP_GUIDE = "help_guide",
   PERMIT_CONDITION_SEARCH = "PERMIT_CONDITION_SEARCH",
-  STANDARD_PERMIT_CONDITIONS_EDITOR = "standard_permit_conditions_new_editor",
-  NOW_PERMIT_CONDITIONS_EDITOR = "now_permit_conditions_new_editor",
   REPORT_MANAGEMENT_V2 = "report_management_v2",
   MINESPACE_SIGNUP = "minespace_signup",
   GLOBAL_SEARCH_V2 = "global_search_v2",
@@ -41,6 +39,7 @@ export enum Feature {
   NOW_APPLICATION_DOCUMENT_SEARCH = "now_application_document_search",
   NOTICE_OF_WORK_NATIONS = 'notice_of_work_nations',
   INSPECTOR_PERMIT_PACKAGE_TYPE_SELECTOR = "inspector_permit_package_type_selector",
+  CDV_PERMIT_PACKAGE_FILES = "cdv_permit_package_files",
 }
 
 export const initializeFlagsmith = async (flagsmithUrl, flagsmithKey) => {

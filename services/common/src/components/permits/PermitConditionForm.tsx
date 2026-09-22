@@ -2,6 +2,7 @@ import React, { FC, useEffect, useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 import { change, Field, isDirty, reset } from "@mds/common/components/forms/form";
 import { Row, Col, Button, Typography, Modal, Tag } from "antd";
+import Quill from "quill";
 import {
     faArrowDown,
     faArrowUp,
@@ -39,8 +40,8 @@ import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFla
 import { Feature } from "@mds/common/utils";
 import { getPermitConditionTags } from "@mds/common/redux/slices/permitConditionTagSlice";
 import VariableConditionMenu from "./VariableConditionMenu";
-import Highlight from "react-highlighter";
-import { highlightPermitConditionVariables } from "@mds/common/redux/utils/helpers";
+import ConditionVariableText from "./ConditionVariableText";
+import ConditionRichTextEditor from "./ConditionRichTextEditor";
 import { TextAreaRef } from "antd/lib/input/TextArea";
 
 interface PermitConditionFormProps {
@@ -109,7 +110,9 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
     const stepEditDisabled = isStandardConditionEditor || isNowEditor;
     const showVariableConditionMenu = stepEditDisabled;
     const enablePermitConditionTags = isFeatureEnabled(Feature.PERMIT_CONDITION_TAGS);
+    const richTextConditionEditorEnabled = isFeatureEnabled(Feature.CDV_PERMIT_PACKAGE_FILES);
     const conditionInputRef = useRef<TextAreaRef | null>(null);
+    const conditionQuillRef = useRef<Quill | null>(null);
 
     const editingFormNameRef = useRef(editingFormName);
     useEffect(() => {
@@ -323,9 +326,9 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
                 </Col>
                 <Col className="condition-column" {...editableProps}>
                     <Typography.Paragraph className="view-item-value">
-                        <Highlight className="injectable-string" search={highlightPermitConditionVariables()}>
-                            {condition.condition}
-                        </Highlight>
+                        <span className="injectable-string">
+                            <ConditionVariableText text={condition.condition} />
+                        </span>
                     </Typography.Paragraph>
                 </Col>
             </Row>
@@ -391,13 +394,29 @@ const PermitConditionForm: FC<PermitConditionFormProps> = ({
                 </Col>
                 <Col className="condition-column" {...editableProps}>
                     <Col className="condition-editor">
-                        {showVariableConditionMenu && <VariableConditionMenu inputRef={conditionInputRef} isManagementView={isStandardConditionEditor} conditionForm={editingFormName} />}
-                        <Field
-                            name="condition"
-                            component={RenderAutoSizeField}
-                            disabled={isAddingListItem || isSubmitting || isSubmittingConditionFamily}
-                            inputRef={conditionInputRef}
-                        />
+                        {showVariableConditionMenu && (
+                            <VariableConditionMenu
+                                inputRef={richTextConditionEditorEnabled ? undefined : conditionInputRef}
+                                quillRef={richTextConditionEditorEnabled ? conditionQuillRef : undefined}
+                                isManagementView={isStandardConditionEditor}
+                                conditionForm={editingFormName}
+                            />
+                        )}
+                        {richTextConditionEditorEnabled ? (
+                            <Field
+                                name="condition"
+                                component={ConditionRichTextEditor}
+                                disabled={isAddingListItem || isSubmitting || isSubmittingConditionFamily}
+                                quillEditorRef={conditionQuillRef}
+                            />
+                        ) : (
+                            <Field
+                                name="condition"
+                                component={RenderAutoSizeField}
+                                disabled={isAddingListItem || isSubmitting || isSubmittingConditionFamily}
+                                inputRef={conditionInputRef}
+                            />
+                        )}
                     </Col>
                     {isEditMode && !isAddingListItem && (
                         <Row justify="space-between" align="top" wrap={false}>

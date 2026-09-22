@@ -24,11 +24,12 @@ class BCRegistriesService():
                 "identifier": "",
                 "bn": ""
             },
-            "legalType": ["[\"BC\", \"BEN\", \"CP\"]"],
             "status": ["[\"ACTIVE\"]"],
-            "categories": {},
-            "rows": 1,
-            "start": 1
+            "categories": {
+                "legalType": []
+            },
+            "rows": 10,
+            "start": 0
         }
 
         url = f'{BC_REGISTRIES_API_URL}/api/v2/search/businesses'
@@ -50,7 +51,6 @@ class BCRegistriesService():
             response: BulkBusinessSearchResponse = resp.json()["searchResults"]
         except (ValueError, TypeError) as e:
             raise BadGateway('BC Registries API responded with unexpected data.') from e
-
         return [{
             "registration_id": r["identifier"],
             "text": r["name"],

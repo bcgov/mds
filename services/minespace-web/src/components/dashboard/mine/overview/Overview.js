@@ -1,4 +1,5 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
+import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import moment from "moment";
 import PropTypes from "prop-types";
@@ -10,12 +11,14 @@ import {
   getCommodityOptionHash,
   getMinistryContactTypesHash,
 } from "@mds/common/redux/selectors/staticContentSelectors";
+import { getPermits } from "@mds/common/redux/selectors/permitSelectors";
 import { getTransformedMineTypes } from "@mds/common/redux/selectors/mineSelectors";
 import { getMinistryContactsByRegion } from "@mds/common/redux/slices/minespaceSlice";
 import WorkerInfoEmployee from "@/components/dashboard/mine/overview/WorkerInfoEmployee";
 import { getUserInfo } from "@mds/common/redux/selectors/authenticationSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import ContactCard from "@/components/common/ContactCard";
+import PermitteeContactCard from "@/components/common/PermitteeContactCard";
 import MinistryContactItem from "@/components/dashboard/mine/overview/MinistryContactItem";
 import * as Strings from "@/constants/strings";
 import Map from "@/components/common/Map";
@@ -23,6 +26,7 @@ import MineWorkInformation from "./MineWorkInformation";
 import { SidebarContext } from "@mds/common/components/common/SidebarWrapper";
 import { getMineReportStatsByMineGuid } from "@mds/common/redux/slices/mineReportStatsSlice";
 import { useAppSelector } from "@mds/common/redux/rootState";
+import { fetchPermits } from "@mds/common/redux/actionCreators/permitActionCreator";
 
 const propTypes = {
   partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship).isRequired,
@@ -32,6 +36,8 @@ const propTypes = {
   transformedMineTypes: CustomPropTypes.transformedMineTypes.isRequired,
   userInfo: PropTypes.shape({ preferred_username: PropTypes.string.isRequired }).isRequired,
   MinistryContactInfo: PropTypes.arrayOf(CustomPropTypes.MinistryContactInfo).isRequired,
+  fetchPermits: PropTypes.func.isRequired,
+  permits: PropTypes.arrayOf(CustomPropTypes.permit),
 };
 
 const isPartyRelationshipActive = (pr) =>
@@ -48,9 +54,19 @@ const getMineManager = (partyRelationships) => {
   return mineManager;
 };
 
+const getPermitteeRelationships = (partyRelationships = []) =>
+  partyRelationships.filter(
+    (pr) => pr.mine_party_appt_type_code === "PMT" && isPartyRelationshipActive(pr)
+  );
+
 export const Overview = (props) => {
   const { mine } = useContext(SidebarContext);
   const stats = useAppSelector(getMineReportStatsByMineGuid(mine.mine_guid));
+
+  useEffect(() => {
+    props.fetchPermits(mine.mine_guid);
+  }, []);
+
   return (
     <>
       <Row>
@@ -126,6 +142,24 @@ export const Overview = (props) => {
                 dateLabel="Mine Manager Since"
               />
             </Col>
+            {getPermitteeRelationships(props.partyRelationships).map((partyRelationship) => (
+              <Col
+                xl={11}
+                xxl={11}
+                md={24}
+                key={`${partyRelationship.party_guid}-${partyRelationship.mine_party_appt_type_code}`}
+              >
+                <PermitteeContactCard
+                  title="Permittee"
+                  permitNumber={
+                    props.permits.find(
+                      (permit) => permit?.permit_guid === partyRelationship.related_guid
+                    )?.permit_no
+                  }
+                  partyRelationship={partyRelationship}
+                />
+              </Col>
+            ))}
           </Row>
         </Col>
         <Col lg={{ span: 9, offset: 1 }} xl={{ offset: 1, span: 7 }} md={24}>
@@ -183,8 +217,10 @@ const mapStateToProps = (state) => ({
   transformedMineTypes: getTransformedMineTypes(state),
   MinistryContactInfo: getMinistryContactsByRegion(state),
   MinistryContactTypesHash: getMinistryContactTypesHash(state),
+  permits: getPermits(state),
 });
+const mapDispatchToProps = (dispatch) => bindActionCreators({ fetchPermits }, dispatch);
 
 Overview.propTypes = propTypes;
 
-export default connect(mapStateToProps)(Overview);
+export default connect(mapStateToProps, mapDispatchToProps)(Overview);

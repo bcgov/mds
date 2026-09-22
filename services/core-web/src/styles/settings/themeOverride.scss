@@ -560,6 +560,65 @@
   background-color: yellow;
 }
 
+// Updated to meet BC Gov WCAG AA's 4.5:1 rule for text this size
+$permit-package-file-reference-text-color: color.adjust(variables.$ok-green, $lightness: -10%);
+
+.permit-package-file-reference {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 1px 8px;
+  border-radius: 12px;
+  background-color: color.adjust(variables.$ok-green, $lightness: 50%);
+  font-weight: 800;
+  color: $permit-package-file-reference-text-color;
+}
+
+.permit-package-file-reference-icon {
+  color: $permit-package-file-reference-text-color;
+}
+
+.permit-package-file-reference-broken {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 1px 8px;
+  border-radius: 12px;
+  background-color: variables.$error-light;
+  font-weight: 800;
+  color: variables.$error-dark;
+  cursor: default;
+
+  // Add focus indicator to meet BC GOV WCAG rules
+  &:focus {
+    outline: 2px solid variables.$error-dark;
+    outline-offset: 2px;
+  }
+}
+
+.permit-package-file-reference-broken-icon {
+  color: variables.$error-dark;
+}
+
+// Updated for BC GOV WCAG rules - visually hidden but still readable by screen readersß
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+// The Quill embed's it's own guard/contentNode wrapper (added by Quill's Embed base class).
+// This forces the icon and label to be adjacent with no gap.
+.permit-package-file-blot svg {
+  margin-right: 4px;
+}
+
 .carousel .slide {
   background: white;
   text-align: left;
