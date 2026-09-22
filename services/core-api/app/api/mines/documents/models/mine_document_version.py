@@ -52,7 +52,7 @@ class MineDocumentVersion(SoftDeleteMixin, AuditMixin, Base):
             mine_document_guid=mine_document.mine_document_guid,
             document_manager_version_guid=document_manager_version_guid,
             document_name=docman_version.get('file_display_name'),
-            upload_date=mine_document.create_timestamp.date(),
+            upload_date=mine_document.upload_date,
         )
         new_version.create_user = mine_document.create_user
         new_version.create_timestamp = mine_document.create_timestamp
@@ -68,9 +68,10 @@ class MineDocumentVersion(SoftDeleteMixin, AuditMixin, Base):
         new_filename = docman_document.get('file_display_name')
         if new_filename:
             mine_document.document_name = new_filename
-        # create_user/create_timestamp track who uploaded the file the document currently points to, and when
+        # create_user/create_timestamp/upload_date track who uploaded the file the document currently points to, and when
         mine_document.create_user = User().get_user_username()
         mine_document.create_timestamp = datetime.utcnow()
+        mine_document.upload_date = mine_document.create_timestamp
         mine_document.save(commit=commit)
 
         return new_version.json(mine_document.mine_guid, mine_document.document_manager_guid)
