@@ -6922,6 +6922,8 @@ export const INCIDENT: IMineIncident = {
   ],
   verbal_notification_provided: false,
   emergency_services_called: false,
+  johsc_worker_rep_contacted: false,
+  johsc_management_rep_contacted: false,
   followup_inspection: false,
   followup_inspection_date: null,
   followup_investigation_type_code: "NO",
