@@ -48,11 +48,18 @@ class MineDocumentVersion(SoftDeleteMixin, AuditMixin, Base):
             document_manager_version_guid=document_manager_version_guid,
         )
 
+        # upload_date is a timestamptz column, so a value round-tripped through the database comes
+        # back tz-aware while a freshly-assigned datetime.utcnow() does not; normalize to naive UTC
+        # so upload_date is comparable/consistent regardless of where the mine_document came from.
+        previous_upload_date = mine_document.upload_date
+        if previous_upload_date and previous_upload_date.tzinfo:
+            previous_upload_date = previous_upload_date.replace(tzinfo=None)
+
         new_version = MineDocumentVersion(
             mine_document_guid=mine_document.mine_document_guid,
             document_manager_version_guid=document_manager_version_guid,
             document_name=docman_version.get('file_display_name'),
-            upload_date=mine_document.upload_date,
+            upload_date=previous_upload_date,
         )
         new_version.create_user = mine_document.create_user
         new_version.create_timestamp = mine_document.create_timestamp
