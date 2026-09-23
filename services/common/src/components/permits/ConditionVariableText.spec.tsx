@@ -32,7 +32,7 @@ describe("ConditionVariableText", () => {
 
     const label = container.querySelector(".permit-package-file-reference");
     expect(label).not.toBeNull();
-    expect(label?.textContent).toBe("1.2 Site Map");
+    expect(label?.textContent).toBe("1 Site Map");
     expect(label?.querySelector("svg.permit-package-file-reference-icon")).not.toBeNull();
     expect(container.querySelector("mark.highlight")).toBeNull();
   });
@@ -92,7 +92,7 @@ describe("ConditionVariableText", () => {
 
     expect(container.querySelectorAll("mark.highlight")).toHaveLength(2);
     expect(container.querySelector(".permit-package-file-reference")?.textContent).toBe(
-      "1.2 Site Map"
+      "1 Site Map"
     );
   });
 });

@@ -178,9 +178,6 @@ class Base(db.Model):
                         f'session objects marked as deleted: {db.session.deleted}')
 
             if isinstance(v, list):
-                if k not in [r for r, x in class_relationships.items()]:
-                    current_app.logger.debug(f'key <{k}> is not a relationship, skipping')
-                    continue
                 rel = getattr(self.__class__, k) #SA.relationship definition
                 obj_list = getattr(self, k)
                 obj_list_class = rel.property.entity.class_
