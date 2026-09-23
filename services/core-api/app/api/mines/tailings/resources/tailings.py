@@ -127,7 +127,7 @@ class MineTailingsStorageFacilityResource(Resource, UserMixin):
 
         is_submitting = data.get('is_submitting')
         eor_party_guid = data.get('eor_party_guid')
-        has_new_eor = eor_party_guid != None and (mine_tsf.engineer_of_record is None or eor_party_guid != mine_tsf.engineer_of_record.party_guid)
+        has_new_eor = eor_party_guid != None and (mine_tsf.engineer_of_record is None or eor_party_guid != str(mine_tsf.engineer_of_record.mine_party_appt_guid))
         if has_new_eor:
             if mine_tsf.engineer_of_record:
                 mine_tsf.engineer_of_record.end_date = datetime.now(tz=timezone.utc)
@@ -181,7 +181,7 @@ class MineTailingsStorageFacilityResource(Resource, UserMixin):
 
         if is_feature_enabled(Feature.TSF_V2):
             tqp_party_guid = data.get('tqp_party_guid')
-            has_new_qp = tqp_party_guid != None and (mine_tsf.qualified_person is None or tqp_party_guid != mine_tsf.qualified_person.party_guid)
+            has_new_qp = tqp_party_guid != None and (mine_tsf.qualified_person is None or tqp_party_guid != str(mine_tsf.qualified_person.mine_party_appt_guid))
             if has_new_qp:
 
                 if is_minespace_user() and is_submitting:
