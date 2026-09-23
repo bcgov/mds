@@ -542,6 +542,7 @@ class DocumentXrefMixin(object):
     document_name = association_proxy('mine_document', 'document_name')
     upload_date = association_proxy('mine_document', 'upload_date')
     create_user = association_proxy('mine_document', 'create_user')
+    update_user = association_proxy('mine_document', 'update_user')
     versions = association_proxy('mine_document', 'versions')
     update_timestamp = association_proxy('mine_document', 'update_timestamp')
     mine_document_bundle_id = association_proxy('mine_document', 'mine_document_bundle_id')

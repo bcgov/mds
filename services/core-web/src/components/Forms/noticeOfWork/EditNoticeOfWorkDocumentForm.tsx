@@ -5,6 +5,8 @@ import { Button, Col, Row, Popconfirm } from "antd";
 import { required, maxLength, requiredNewFiles } from "@mds/common/redux/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import { getDropdownNoticeOfWorkApplicationDocumentTypeOptions } from "@mds/common/redux/selectors/staticContentSelectors";
+import { getDraftPermitAmendmentForNOW } from "@mds/common/redux/selectors/permitSelectors";
+import { isFileReferencedInConditions } from "@mds/common/utils/permitPackageDocuments";
 import { NOTICE_OF_WORK_DOCUMENT } from "@mds/common/constants/API";
 import { DOCUMENT, EXCEL, IMAGE, SPATIAL } from "@/constants/fileTypes";
 import * as FORM from "@/constants/forms";
@@ -16,15 +18,15 @@ import RenderCheckbox from "@mds/common/components/forms/RenderCheckbox";
 import RenderField from "@mds/common/components/forms/RenderField";
 import RenderDate from "@mds/common/components/forms/RenderDate";
 import RenderFileUpload from "@mds/common/components/forms/RenderFileUpload";
-import { IMineDocument, INoWDocument } from "@mds/common/interfaces";
+import { IMineDocument, INoWDocument, IPermitAmendment } from "@mds/common/interfaces";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { Feature } from "@mds/common/utils/featureFlag";
 import AuthorizationWrapper from "@mds/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 
 const PERMIT_PACKAGE_DOCUMENT_TYPE_OPTIONS = [
-  { value: "FIGURE", label: "Figure" },
   { value: "DOCUMENT", label: "Document" },
+  { value: "FIGURE", label: "Figure" },
 ];
 
 export interface EditNoticeOfWorkDocumentFormProps {
@@ -48,13 +50,18 @@ const EditNoticeOfWorkDocumentForm: FC<EditNoticeOfWorkDocumentFormProps> = ({
 }) => {
   const dispatch = useDispatch();
   const { isFeatureEnabled } = useFeatureFlag();
-  const formValues = useSelector(getFormValues(FORM.EDIT_NOTICE_OF_WORK_DOCUMENT_FORM)) as INoWDocument ?? { is_final_package: false};
+  const formValues = useSelector(getFormValues(FORM.EDIT_NOTICE_OF_WORK_DOCUMENT_FORM)) as INoWDocument ?? { is_final_package: false };
   const { is_final_package } = formValues;
   const dropdownNoticeOfWorkApplicationDocumentTypeOptions = useSelector(
     getDropdownNoticeOfWorkApplicationDocumentTypeOptions
   );
+  const draftPermitAmendment = useSelector(getDraftPermitAmendmentForNOW) as IPermitAmendment;
+  const fileGuid = initialValues?.now_application_document_xref_guid;
+  const isReferencedInConditions =
+    !!fileGuid && isFileReferencedInConditions(draftPermitAmendment?.conditions, fileGuid);
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [disabled, setDisabled] = useState(false);
+  const [confirmUncheckOpen, setConfirmUncheckOpen] = useState(false);
 
   const filteredDropDownOptions = dropdownNoticeOfWorkApplicationDocumentTypeOptions.filter(
     ({ subType, value }) => {
@@ -95,6 +102,23 @@ const EditNoticeOfWorkDocumentForm: FC<EditNoticeOfWorkDocumentFormProps> = ({
     setUploadedFiles(remainingFiles);
   };
 
+  // If a user unchecks the "part of permit package" checkbox for a file that's being referenced in a permit condition, it triggers a warning popup.
+  // This prevents a user from accidentally removing a referenced permit package file, which breaks the reference.
+  const handleFinalPackageChange = (event, newValue, previousValue) => {
+    if (previousValue && !newValue && isReferencedInConditions) {
+      setConfirmUncheckOpen(true);
+      return true;
+    }
+    return false;
+  };
+
+  const confirmUncheckFinalPackage = () => {
+    dispatch(change(FORM.EDIT_NOTICE_OF_WORK_DOCUMENT_FORM, "is_final_package", false));
+    setConfirmUncheckOpen(false);
+  };
+
+  const cancelUncheckFinalPackage = () => setConfirmUncheckOpen(false);
+
   return (
     <FormWrapper
       name={FORM.EDIT_NOTICE_OF_WORK_DOCUMENT_FORM}
@@ -129,15 +153,27 @@ const EditNoticeOfWorkDocumentForm: FC<EditNoticeOfWorkDocumentFormProps> = ({
           />
           <Row gutter={16} align="middle">
             {!isInCompleteStatus && (
-              <Col md={12} xs={24}>
-                <Field
-                  id="is_final_package"
-                  name="is_final_package"
-                  label="Part of permit package"
-                  type="checkbox"
-                  component={RenderCheckbox}
-                />
-              </Col>
+              <Popconfirm
+                placement="topRight"
+                title="This file is currently being referenced in a permit condition. Removing the file from the permit package will break that reference. Do you wish to continue?"
+                open={confirmUncheckOpen}
+                onConfirm={confirmUncheckFinalPackage}
+                onCancel={cancelUncheckFinalPackage}
+                okText="Yes"
+                cancelText="No"
+                trigger={[]}
+              >
+                <Col md={12} xs={24}>
+                  <Field
+                    id="is_final_package"
+                    name="is_final_package"
+                    label="Part of permit package"
+                    type="checkbox"
+                    component={RenderCheckbox}
+                    onChange={handleFinalPackageChange}
+                  />
+                </Col>
+              </Popconfirm>
             )}
             {is_final_package && isFeatureEnabled(Feature.INSPECTOR_PERMIT_PACKAGE_TYPE_SELECTOR) && (
               <Col md={isInCompleteStatus ? 24 : 12} xs={24}>

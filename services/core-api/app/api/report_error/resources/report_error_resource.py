@@ -22,10 +22,7 @@ SEEN_BEFORE_LABELS = {
 
 
 def _build_observe_logs_link(trace_id):
-    log_query = (
-        '{ kubernetes_namespace_name="' + Config.OPENSHIFT_NAMESPACE + '", '
-        'kubernetes_labels_app="core-api", kubernetes_container_name="app" }'
-    )
+    log_query = '{ kubernetes_namespace_name="' + Config.OPENSHIFT_NAMESPACE + '" }'
     if trace_id:
         log_query += f' |= "trace_id={trace_id}"'
     log_query += ' | json'

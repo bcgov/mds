@@ -10,6 +10,10 @@ export interface IMineDocumentVersion {
   document_name: string;
   upload_date: string;
   create_user: string;
+  update_user?: string;
   update_timestamp: string;
   allowed_actions?: FileOperations[];
+  category?: string;
+  category_code?: string;
+  file_type?: string;
 }

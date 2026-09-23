@@ -1936,12 +1936,13 @@ exports[`IncidentForm renders properly 1`] = `
                                     </span>
                                   </label>
                                   <label
-                                    class="ant-radio-wrapper ant-radio-wrapper-disabled ant-radio-wrapper-in-form-item"
+                                    class="ant-radio-wrapper ant-radio-wrapper-checked ant-radio-wrapper-disabled ant-radio-wrapper-in-form-item"
                                   >
                                     <span
-                                      class="ant-radio ant-radio-disabled"
+                                      class="ant-radio ant-radio-checked ant-radio-disabled"
                                     >
                                       <input
+                                        checked=""
                                         class="ant-radio-input"
                                         disabled=""
                                         name="johsc_worker_rep_contacted"
@@ -2117,12 +2118,13 @@ exports[`IncidentForm renders properly 1`] = `
                                     </span>
                                   </label>
                                   <label
-                                    class="ant-radio-wrapper ant-radio-wrapper-disabled ant-radio-wrapper-in-form-item"
+                                    class="ant-radio-wrapper ant-radio-wrapper-checked ant-radio-wrapper-disabled ant-radio-wrapper-in-form-item"
                                   >
                                     <span
-                                      class="ant-radio ant-radio-disabled"
+                                      class="ant-radio ant-radio-checked ant-radio-disabled"
                                     >
                                       <input
+                                        checked=""
                                         class="ant-radio-input"
                                         disabled=""
                                         name="johsc_management_rep_contacted"

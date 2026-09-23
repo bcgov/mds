@@ -34,6 +34,7 @@ class ProjectDecisionPackageDocumentXref(Base):
     update_timestamp = association_proxy('mine_document', 'update_timestamp')
     upload_date = association_proxy('mine_document', 'upload_date')
     create_user = association_proxy('mine_document', 'create_user')
+    update_user = association_proxy('mine_document', 'update_user')
     versions = association_proxy('mine_document', 'versions')
 
     def __repr__(self):

@@ -166,10 +166,6 @@ class DocumentManagerService():
             data=data,
             cookies=request.cookies)
 
-        if resp.status_code == 201:
-            mine_document.document_name = metadata.get('filename')
-            mine_document.save()
-
         return Response(json.dumps(resp.json()), resp.status_code, resp.raw.headers.items())
 
     @classmethod
@@ -277,6 +273,24 @@ class DocumentManagerService():
             headers={key: value
                      for (key, value) in request.headers if key != 'Host'},
         )
+
+        if resp.status_code != 200:
+            current_app.logger.error(f'Document manager version lookup failed: {resp.status_code} - {resp.text}')
+            raise Exception(f'Failed to get document version from document manager. {resp.status_code}: {resp.text}')
+
+        return resp.json()
+
+    @classmethod
+    def get_document(cls, request, document_manager_guid):
+        resp = requests.get(
+            url=f'{cls.document_manager_document_resource_url}/{document_manager_guid}',
+            headers={key: value
+                     for (key, value) in request.headers if key != 'Host'},
+        )
+
+        if resp.status_code != 200:
+            current_app.logger.error(f'Document manager document lookup failed: {resp.status_code} - {resp.text}')
+            raise Exception(f'Failed to get document from document manager. {resp.status_code}: {resp.text}')
 
         return resp.json()
 

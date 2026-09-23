@@ -141,7 +141,7 @@ export const ExplosivesPermitViewModal: FC<ExplosivesPermitViewModalProps> = (pr
   const transformPermitHistoryData = () => {
     const permitHistory: any[] = [
       permitAmendmentLike(parentPermit),
-      ...parentPermit?.explosives_permit_amendments?.sort(
+      ...[...(parentPermit?.explosives_permit_amendments ?? [])].sort(
         (a, b) => a.explosives_permit_amendment_id - b.explosives_permit_amendment_id
       ),
     ];
