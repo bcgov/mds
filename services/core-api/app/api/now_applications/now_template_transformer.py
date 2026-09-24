@@ -89,17 +89,17 @@ def transform_variables_to_data(now_application, permit_amendment, mine, total_l
 def _ordered_permit_package_documents(now_application):
     """
     Mirrors the front-end's getOrderedPermitPackageDocuments (permitPackageDocuments.ts) so a
-    {permit_package_file:<guid>} token resolves to the same "1.N Title" label shown in the
-    Condition Data Variable picker. The locked, system-generated NTR row (identified by
+    {permit_package_file:<guid>} token resolves to the same label shown in the Condition Data
+    Variable picker. The locked, system-generated NTR row (identified by
     now_application.locked_ntr_guid, the same lookup the front-end uses via
     getLockedSystemNtrDoc) always sorts first and is always "1.1" - but only once the
     front-end's own criteria for that row are met (application_type_code == 'NOW' and Technical
     Review has completed at least once - see _technical_review_ever_completed); otherwise a doc
     is numbered like any other document until eligible, matching getNowApplicationDocument
-    exactly, so the two implementations can't disagree on which row (if any) is "1.1". Every other
-    permit package document (uploaded figures/documents plus submission documents) is numbered
-    starting at "1.2", ordered by final_package_order - the same shared sequence both document
-    sources draw from (see NOWApplication.next_document_final_package_order).
+    exactly, so the two implementations can't disagree on which row (if any) is "1.1".
+
+    Figures and Documents are numbered as two independent sequences, not one combined list:
+    final_package_order is scoped per type.
 
     Callers that resolve more than one token for the same now_application (nearly all of them -
     a permit condition can easily carry a dozen tokens across nested sub-conditions) should call
@@ -112,32 +112,40 @@ def _ordered_permit_package_documents(now_application):
     locked_ntr_guid = now_application.locked_ntr_guid if is_locked_row_eligible else None
 
     locked = None
-    reals = []
+    figures = []
+    documents = []
+
+    def _bucket_for(type_code):
+        return figures if type_code == 'FIGURE' else documents
 
     for doc in now_application.documents:
         if not doc.is_final_package:
             continue
         if locked_ntr_guid and str(doc.now_application_document_xref_guid) == locked_ntr_guid:
             locked = doc
-        else:
-            reals.append(
-                (doc.final_package_order, str(doc.now_application_document_xref_guid),
-                 doc.preamble_title))
+            continue
+        _bucket_for(doc.permit_package_document_type_code).append(
+            (doc.final_package_order, str(doc.now_application_document_xref_guid),
+             doc.preamble_title))
 
     for doc in now_application.get_filtered_submissions_documents(now_application):
         if doc.get('is_final_package') and doc.get('now_application_document_xref_guid'):
-            reals.append((doc.get('final_package_order'), doc['now_application_document_xref_guid'],
-                           doc.get('preamble_title')))
+            _bucket_for(doc.get('permit_package_document_type_code')).append(
+                (doc.get('final_package_order'), doc['now_application_document_xref_guid'],
+                 doc.get('preamble_title')))
 
-    reals.sort(key=lambda entry: entry[0] if entry[0] is not None else 0)
+    figures.sort(key=lambda entry: entry[0] if entry[0] is not None else 0)
+    documents.sort(key=lambda entry: entry[0] if entry[0] is not None else 0)
 
     ordered = []
     if locked is not None:
         ordered.append(
             (LOCKED_PERMIT_PACKAGE_ORDER_LABEL, str(locked.now_application_document_xref_guid),
              locked.preamble_title or 'Notice of Work Application'))
-    for index, (_, guid, title) in enumerate(reals):
+    for index, (_, guid, title) in enumerate(documents):
         ordered.append((f'1.{index + 2}', guid, title))
+    for index, (_, guid, title) in enumerate(figures):
+        ordered.append((str(index + 1), guid, title))
 
     return tuple(ordered)
 

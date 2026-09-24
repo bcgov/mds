@@ -73,6 +73,8 @@ const propTypes = {
   lockedRowKeys: PropTypes.arrayOf(PropTypes.string),
   applicationDelay: PropTypes.objectOf(PropTypes.string).isRequired,
   draftPermitAmendment: PropTypes.objectOf(PropTypes.any),
+  showOrderColumn: PropTypes.bool,
+  documentNumberFormat: PropTypes.oneOf(["decimal", "whole"]),
 };
 
 const defaultProps = {
@@ -90,6 +92,8 @@ const defaultProps = {
   isSortingAllowed: false,
   showDescription: false,
   lockedRowKeys: [],
+  documentNumberFormat: "decimal",
+  showOrderColumn: false,
 };
 
 const transformDocuments = (
@@ -193,7 +197,15 @@ export class NOWDocuments extends Component {
       this.state.dataSource &&
       this.state.dataSource.findIndex((x) => x.index === restProps["data-row-key"]);
     const isLockedRow = this.state.dataSource?.[index]?.isLockedApplicationForm;
-    return <SortableItem index={index} disabled={isLockedRow} {...restProps} />;
+    // Order column can now be visible without dragging being allowed —
+    // disable the actual drag capability whenever isSortingAllowed is false.
+    return (
+      <SortableItem
+        index={index}
+        disabled={isLockedRow || !this.props.isSortingAllowed}
+        {...restProps}
+      />
+    );
   };
 
   isInCompleteStatus = () =>
@@ -327,16 +339,34 @@ export class NOWDocuments extends Component {
       className: "drag-visible",
       render: (text, record) => {
         const hasLockedRow = this.state.dataSource?.some((d) => d.isLockedApplicationForm);
-        const orderLabel = getPermitPackageOrderLabel(text, hasLockedRow, record.isLockedApplicationForm);
         if (record.isLockedApplicationForm) {
           // The NoW application document (NTR — system-generated Notice of Work Form) is
           // always position 1.1 in the permit; it is locked and cannot be reordered.
-          return <span style={{ paddingLeft: "26px" }}>{orderLabel}</span>;
+          return (
+            <span style={{ paddingLeft: "26px" }}>
+              {getPermitPackageOrderLabel(text, hasLockedRow, true)}
+            </span>
+          );
+        }
+        // Order column can now be visible without dragging being allowed —
+        // hide the drag handle itself whenever isSortingAllowed is false.
+        const dragHandle = this.props.isSortingAllowed ? (
+          <DragHandle />
+        ) : (
+          <span style={{ display: "inline-block", width: 14 }} />
+        );
+        if (this.props.documentNumberFormat === "whole") {
+          return (
+            <>
+              {dragHandle}
+              &nbsp; {text + 1}
+            </>
+          );
         }
         return (
           <>
-            <DragHandle />
-            &nbsp; {orderLabel}
+            {dragHandle}
+            &nbsp; {getPermitPackageOrderLabel(text, hasLockedRow, false)}
           </>
         );
       },
@@ -430,6 +460,9 @@ export class NOWDocuments extends Component {
       width: 170,
       render: (isModificationAllowed, record) => {
         if (record.isLockedApplicationForm) {
+          return <div />;
+        }
+        if (this.props.isFinalPackageTable && this.props.isViewMode) {
           return <div />;
         }
         if (!this.isInCompleteStatus()) {
@@ -625,7 +658,7 @@ export class NOWDocuments extends Component {
         descriptionColumn,
         deleteAndEditButtonColumn,
       ];
-      if (this.props.isSortingAllowed) {
+      if (this.props.showOrderColumn) {
         tableColumns = [sortColumn, ...tableColumns];
       }
     } else if (this.props.isStandardDocuments) {
@@ -663,23 +696,26 @@ export class NOWDocuments extends Component {
             <p>{this.props.disclaimerText}</p>
           </Col>
           <Col span={6}>
-            {!this.props.selectedRows && !this.props.isViewMode && !this.props.isRefConDocuments && (
-              <NOWActionWrapper
-                permission={Permission.EDIT_PERMITS}
-                tab={this.props.isAdminView ? "" : "REV"}
-                allowAfterProcess={this.props.allowAfterProcess}
-                ignoreDelay
-              >
-                <AddButton
-                  className="position-right"
-                  disabled={this.props.isViewMode}
-                  style={this.props.isAdminView ? { marginRight: "100px" } : {}}
-                  onClick={this.openAddDocumentModal}
+            {!this.props.selectedRows &&
+              !this.props.isViewMode &&
+              !this.props.isRefConDocuments &&
+              !this.props.isFinalPackageTable && (
+                <NOWActionWrapper
+                  permission={Permission.EDIT_PERMITS}
+                  tab={this.props.isAdminView ? "" : "REV"}
+                  allowAfterProcess={this.props.allowAfterProcess}
+                  ignoreDelay
                 >
-                  Add Document
-                </AddButton>
-              </NOWActionWrapper>
-            )}
+                  <AddButton
+                    className="position-right"
+                    disabled={this.props.isViewMode}
+                    style={this.props.isAdminView ? { marginRight: "100px" } : {}}
+                    onClick={this.openAddDocumentModal}
+                  >
+                    Add Document
+                  </AddButton>
+                </NOWActionWrapper>
+              )}
           </Col>
         </Row>
         <br />

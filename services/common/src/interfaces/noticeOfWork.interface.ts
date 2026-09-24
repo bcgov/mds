@@ -148,6 +148,7 @@ export interface INoWApplicationForm extends Omit<IimportedNOWApplication, "docu
     mine_document?: {
       upload_date?: string;
     };
+    permit_package_document_type_code?: string;
   }>;
   locked_ntr_guid?: string | null;
   regional_contact: string;
@@ -165,5 +166,6 @@ export interface INoWApplicationForm extends Omit<IimportedNOWApplication, "docu
     is_final_package?: boolean;
     final_package_order: number;
     is_referral_package?: boolean;
+    permit_package_document_type_code?: string;
   }>;
 }
