@@ -163,18 +163,28 @@ class NOWApplicationDocumentResource(Resource, UserMixin):
             xref.preamble_title = data.get('preamble_title')
             xref.preamble_author = data.get('preamble_author')
             xref.preamble_date = data.get('preamble_date')
+            previous_permit_package_document_type_code = xref.permit_package_document_type_code
             permit_package_document_type_code = data.get('permit_package_document_type_code')
             if permit_package_document_type_code is not None:
                 xref.permit_package_document_type_code = permit_package_document_type_code
+            type_changed = (
+                permit_package_document_type_code is not None
+                and permit_package_document_type_code != previous_permit_package_document_type_code
+            )
 
             now_application = NOWApplication.find_by_application_guid(application_guid)
             if not now_application:
                 raise NotFound('Notice of Work not found.')
 
-            final_package_order = data.get('final_package_order')
-            if final_package_order is None:
-                final_package_order = now_application.next_document_final_package_order
-            xref.final_package_order = final_package_order
+            if xref.final_package_order is None:
+                final_package_order = data.get('final_package_order')
+                if final_package_order is None:
+                    final_package_order = now_application.next_document_final_package_order_for_type(
+                        permit_package_document_type_code)
+                xref.final_package_order = final_package_order
+            elif type_changed:
+                xref.final_package_order = now_application.next_document_final_package_order_for_type(
+                    permit_package_document_type_code, exclude=xref)
         else:
             xref.final_package_order = None
             xref.permit_package_document_type_code = None

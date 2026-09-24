@@ -174,7 +174,7 @@ describe("getPermitPackageFilesByType", () => {
     expect(figures).toHaveLength(1);
     expect(figures[0]).toMatchObject({
       now_application_document_xref_guid: "fig-1",
-      orderLabel: "1.2",
+      orderLabel: "1",
       preamble_title: "Site Map",
     });
 
@@ -182,9 +182,48 @@ describe("getPermitPackageFilesByType", () => {
     expect(documents).toHaveLength(1);
     expect(documents[0]).toMatchObject({
       now_application_document_xref_guid: "doc-1",
-      orderLabel: "1.3",
+      orderLabel: "1.2",
       preamble_title: "Application Form",
     });
+  });
+
+  it("numbers Figures and Documents independently even when they share the same final_package_order", () => {
+    const figureA = makeCoreDoc({
+      now_application_document_xref_guid: "fig-a",
+      final_package_order: 0,
+      permit_package_document_type_code: "FIGURE",
+      preamble_title: "Site Map",
+    });
+    const figureB = makeCoreDoc({
+      now_application_document_xref_guid: "fig-b",
+      final_package_order: 1,
+      permit_package_document_type_code: "FIGURE",
+      preamble_title: "Wildlife Management Plan",
+    });
+    const documentA = makeCoreDoc({
+      now_application_document_xref_guid: "doc-a",
+      final_package_order: 0,
+      permit_package_document_type_code: "DOCUMENT",
+      preamble_title: "Application Form",
+    });
+    const noticeOfWork = {
+      application_type_code: "AMD",
+      documents: [figureA, documentA, figureB],
+      filtered_submission_documents: [],
+    };
+
+    const figures = getPermitPackageFilesByType(noticeOfWork, {}, "FIGURE");
+    expect(figures.map((f) => [f.now_application_document_xref_guid, f.orderLabel])).toEqual([
+      ["fig-a", "1"],
+      ["fig-b", "2"],
+    ]);
+
+    const documents = getPermitPackageFilesByType(noticeOfWork, {}, "DOCUMENT");
+    // No locked row (application_type_code isn't "NOW"), so Document numbering starts at "1.2",
+    // unaffected by there being two Figures ahead of it in insertion order.
+    expect(documents.map((d) => [d.now_application_document_xref_guid, d.orderLabel])).toEqual([
+      ["doc-a", "1.2"],
+    ]);
   });
 
   it("excludes submission documents even if they were somehow tagged with a type code", () => {
@@ -222,7 +261,7 @@ describe("resolvePermitPackageFileReference", () => {
 
     expect(resolvePermitPackageFileReference("fig-1", noticeOfWork, {})).toEqual({
       found: true,
-      label: "1.2 Site Map",
+      label: "1 Site Map",
     });
   });
 

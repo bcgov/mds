@@ -145,9 +145,15 @@ export const getPermitPackageOrderLabel = (
 ): string => (isLocked ? "1.1" : `1.${index + (hasLockedRow ? 1 : 2)}`);
 
 /**
- * Returns every document that is part of the permit package in the same order shown in the permit package document table, each annotated with its display order label (e.g. "1.2").
- * This is the source of truth for permit package ordering — NOWDocuments.js, FinalPermitDocuments.js, and the Condition Data Variable picker all resolve labels from here.
- * This ensures the numbering can never drift between the document table and an inserted CDV reference.
+ * Returns every document that is part of the permit package, each annotated with its display
+ * order label (e.g. "1.2" for a Document, "2" for a Figure) — matching what's actually shown in
+ * NOWDocuments.js's Documents and Figures tables. This is the source of truth for permit package
+ * ordering — NOWDocuments.js, FinalPermitDocuments.js, and the Condition Data Variable picker all
+ * resolve labels from here, so the numbering can never drift between the document tables and an
+ * inserted CDV reference.
+ *
+ * Figures and Documents are numbered as two independent sequences, not one combined list:
+ * final_package_order is scoped per type (i.e., Figures and Documents have separate sequences).
  */
 export const getOrderedPermitPackageDocuments = (
   noticeOfWork: PermitPackageNoticeOfWork,
@@ -168,20 +174,30 @@ export const getOrderedPermitPackageDocuments = (
     (doc) => doc.is_final_package
   );
 
-  const combined = [
+  const nonLockedDocuments = [...permitDocuments, ...permitSubmissionDocuments];
+  const isFigure = (doc: PermitPackageDocumentRow) => doc.permit_package_document_type_code === "FIGURE";
+
+  const documentsGroup = [
     ...(nowApplicationDocument ? [nowApplicationDocument] : []),
-    ...permitDocuments,
-    ...permitSubmissionDocuments,
-  ];
+    ...nonLockedDocuments.filter((doc) => !isFigure(doc)),
+  ].sort(comparePermitPackageDocuments);
 
-  const sorted = [...combined].sort(comparePermitPackageDocuments);
+  const hasLockedRow = documentsGroup.some((doc) => doc.isLockedApplicationForm);
 
-  const hasLockedRow = sorted.some((doc) => doc.isLockedApplicationForm);
-
-  return sorted.map((doc, index) => ({
+  const labelledDocuments = documentsGroup.map((doc, index) => ({
     ...doc,
     orderLabel: getPermitPackageOrderLabel(index, hasLockedRow, !!doc.isLockedApplicationForm),
   }));
+
+  const labelledFigures = nonLockedDocuments
+    .filter(isFigure)
+    .sort(comparePermitPackageDocuments)
+    .map((doc, index) => ({
+      ...doc,
+      orderLabel: String(index + 1),
+    }));
+
+  return [...labelledDocuments, ...labelledFigures];
 };
 
 /**

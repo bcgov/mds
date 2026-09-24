@@ -13,6 +13,7 @@ import {
   getEditingPreambleFlag,
   getNowDraftConditionsFormatted,
 } from "@mds/common/redux/selectors/permitSelectors";
+import { getNOWProgress } from "@mds/common/redux/selectors/noticeOfWorkSelectors";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import ScrollContentWrapper from "@/components/noticeOfWork/applications/ScrollContentWrapper";
@@ -70,6 +71,8 @@ export const GeneratePermitForm: FC<IGeneratedPermitFormProps> = (props) => {
   const { categoriesWithConditions } = useAppSelector(getNowDraftConditionsFormatted);
   const userCanEdit = useAppSelector(userHasRole(USER_ROLES.role_edit_permits));
   const preambleInputRef = useRef<TextAreaRef | null>(null);
+  const progress = useAppSelector(getNOWProgress);
+  const isDraftComplete = Boolean(progress.DFT?.start_date && progress.DFT?.end_date);
 
   const formattedCategories: IFormattedConditionCategory[] = categoriesWithConditions.map((cat) => {
     return {
@@ -371,7 +374,7 @@ export const GeneratePermitForm: FC<IGeneratedPermitFormProps> = (props) => {
                 />
               </Col>
             </Row>
-            {!editingPreambleFlag && (
+            {!editingPreambleFlag && !isDraftComplete && (
               <div className="right">
                 <br />
                 <br />

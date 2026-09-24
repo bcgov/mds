@@ -37,6 +37,8 @@ import NOWTabHeader from "@/components/noticeOfWork/applications/NOWTabHeader";
 import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 import { INoWApplicationForm, INoWDocumentType, INoWGeneratedPermit, IPermit, IPermitAmendment } from "@mds/common/interfaces";
 import DeleteDraftPermitModal from "@/components/modalContent/DeleteDraftPermitModal";
+import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
+import { splitFinalApplicationPackageByType } from "@mds/common/utils/helpers";
 
 /**
  * @const NOWPermitGeneration - contains the form and information to generate a permit document form a Notice of Work
@@ -94,6 +96,7 @@ export const NOWPermitGeneration: FC<NOWPermitGenerationProps> = ({
   isNoticeOfWorkTypeDisabled = true,
 }) => {
   const dispatch = useAppDispatch();
+  const { isFeatureEnabled } = useFeatureFlag();
   const appOptions = useAppSelector(getNoticeOfWorkApplicationTypeOptions);
   const formValues = useAppSelector(getFormValues(FORM.GENERATE_PERMIT)) as INoWGeneratedPermit;
   const submitting = useAppSelector(isSubmitting(FORM.GENERATE_PERMIT));
@@ -256,6 +259,7 @@ export const NOWPermitGeneration: FC<NOWPermitGenerationProps> = ({
         .map((doc) => ({
           document_info: getDocumentInfo(doc),
           final_package_order: doc.final_package_order,
+          permit_package_document_type_code: doc.permit_package_document_type_code,
         }));
       documents = filteredSubmissionDocuments;
     }
@@ -269,12 +273,14 @@ export const NOWPermitGeneration: FC<NOWPermitGenerationProps> = ({
         .map((doc) => ({
           document_info: getDocumentInfo(doc),
           final_package_order: doc.final_package_order,
+          permit_package_document_type_code: doc.permit_package_document_type_code,
         }));
       documents = [...documents, ...requestedDocuments];
     }
 
     documents.sort((a, b) => a.final_package_order - b.final_package_order);
-    return documents;
+
+    return splitFinalApplicationPackageByType(documents, isFeatureEnabled);
   };
 
   const handlePermitGenSubmit = () => {
@@ -294,7 +300,7 @@ export const NOWPermitGeneration: FC<NOWPermitGenerationProps> = ({
       ...newValues,
       auth_end_date: formatDate(formValues?.auth_end_date),
       application_dated: formatDate(newValues.application_date),
-      final_application_package: getFinalApplicationPackage(),
+      ...getFinalApplicationPackage(),
     }).finally(() => setDownloadingDraft(false));
   };
 

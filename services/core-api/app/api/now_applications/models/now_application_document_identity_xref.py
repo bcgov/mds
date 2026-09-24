@@ -26,6 +26,9 @@ class NOWApplicationDocumentIdentityXref(SoftDeleteMixin, AuditMixin, Base):
 
     is_final_package = db.Column(db.Boolean, server_default=FetchedValue())
     final_package_order = db.Column(db.Integer)
+    permit_package_document_type_code = db.Column(
+        db.String,
+        db.ForeignKey('permit_package_document_type.permit_package_document_type_code'))
     is_referral_package = db.Column(db.Boolean, server_default=FetchedValue())
     is_consultation_package = db.Column(db.Boolean, server_default=FetchedValue())
 

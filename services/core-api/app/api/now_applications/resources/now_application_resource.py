@@ -240,6 +240,22 @@ class NOWApplicationResource(Resource, UserMixin):
         new_spatial_document_guids = self._get_spatial_document_guids_to_process(
             data.get('documents'))
 
+        new_documents = data.get('documents')
+        if new_documents:
+            next_order_by_type = {}
+            for doc in new_documents:
+                if doc.get('is_final_package') and doc.get('final_package_order') is None:
+                    doc_type = doc.get('permit_package_document_type_code') or 'DOCUMENT'
+                    if doc_type not in next_order_by_type:
+                        next_order_by_type[doc_type] = (
+                            now_application_identity.now_application
+                            .next_document_final_package_order_for_type(doc_type))
+                    doc['final_package_order'] = next_order_by_type[doc_type]
+                    next_order_by_type[doc_type] += 1
+                elif not doc.get('is_final_package'):
+                    doc['final_package_order'] = None
+                    doc['permit_package_document_type_code'] = None
+
         now_application_identity.now_application.deep_update_from_dict(data)
 
         if new_spatial_document_guids:

@@ -60,7 +60,7 @@ describe("ConditionRichTextEditor", () => {
     const chip = container.querySelector(".permit-package-file-reference");
     expect(chip).not.toBeNull();
     // Quill's Embed base class wraps every embed in zero-width guard characters (﻿).
-    expect(chip?.textContent?.replace(/﻿/g, "")).toBe("1.2 Site Map");
+    expect(chip?.textContent?.replace(/﻿/g, "")).toBe("1 Site Map");
   });
 
   it("renders an unresolved permit package file reference as a red pill chip", () => {
@@ -118,7 +118,7 @@ describe("ConditionRichTextEditor", () => {
 
     expect(container.textContent).not.toContain("Original text");
     const chip = container.querySelector(".permit-package-file-reference");
-    expect(chip?.textContent?.replace(/﻿/g, "")).toBe("1.2 Site Map");
+    expect(chip?.textContent?.replace(/﻿/g, "")).toBe("1 Site Map");
   });
 
   it("rebuilds a pasted permit package file chip as a clean embed, re-resolved against this editor's own data", () => {
@@ -141,7 +141,7 @@ describe("ConditionRichTextEditor", () => {
     expect(embedOp.insert.permitPackageFile).toEqual({
       guid: "fig-guid",
       found: true,
-      label: "1.2 Site Map",
+      label: "1 Site Map",
     });
   });
 
