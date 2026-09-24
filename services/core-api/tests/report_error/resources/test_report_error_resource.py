@@ -113,7 +113,8 @@ def test_post_report_error_builds_observe_logs_link(mock_send_template_email, te
 
     assert observe_logs_link.startswith(Config.OBSERVE_LOGS_BASE_URL)
     assert f'/ns/{Config.OPENSHIFT_NAMESPACE}/logs' in observe_logs_link
-    assert 'trace_id%3Dtrace-abc' in observe_logs_link
+    assert 'trace-abc' in observe_logs_link
+    assert 'trace_id%3D' not in observe_logs_link
     assert Config.OPENSHIFT_NAMESPACE in observe_logs_link
 
 
