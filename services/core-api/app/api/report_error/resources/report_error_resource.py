@@ -24,7 +24,7 @@ SEEN_BEFORE_LABELS = {
 def _build_observe_logs_link(trace_id):
     log_query = '{ kubernetes_namespace_name="' + Config.OPENSHIFT_NAMESPACE + '" }'
     if trace_id:
-        log_query += f' |= "trace_id={trace_id}"'
+        log_query += f' |= {trace_id}'
     log_query += ' | json'
     return (f'{Config.OBSERVE_LOGS_BASE_URL}/dev-monitoring/ns/{Config.OPENSHIFT_NAMESPACE}/logs'
             f'?q={quote(log_query)}&showResources=0')
