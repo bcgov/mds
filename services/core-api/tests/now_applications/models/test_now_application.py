@@ -299,3 +299,85 @@ class TestNextDocumentFinalPackageOrderForType:
             NOWApplication, documents=documents, imported_submission_documents=imported)
         assert instance.next_document_final_package_order_for_type('DOCUMENT') == 10
         assert instance.next_document_final_package_order_for_type('FIGURE') == 21
+
+
+def _make_imported_submission_doc(
+    permit_package_document_type_code=None,
+    messageid='msg-1',
+    xref_guid='xref-guid-1',
+    mine_document_guid='mine-doc-guid-1',
+    documenturl='http://example.com/doc',
+    documenttype='OTH',
+    is_final_package=True,
+):
+    """A submission document that has already been imported into the permit package."""
+    doc = MagicMock()
+    doc.messageid = messageid
+    doc.now_application_document_xref_guid = xref_guid
+    doc.mine_document_guid = mine_document_guid
+    doc.documenturl = documenturl
+    doc.documenttype = documenttype
+    doc.description = 'Test description'
+    doc.is_final_package = is_final_package
+    doc.final_package_order = 1
+    doc.is_consultation_package = False
+    doc.is_referral_package = False
+    doc.filename = 'test-file.pdf'
+    doc.now_application_id = 1
+    doc.document_manager_guid = 'doc-manager-guid'
+    doc.mine_document.mine_document_bundle_id = None
+    doc.preamble_title = 'Test Title'
+    doc.preamble_author = 'Test Author'
+    doc.preamble_date = None
+    doc.update_timestamp = None
+    doc.permit_package_document_type_code = permit_package_document_type_code
+    return doc
+
+class TestGetFilteredSubmissionsDocuments:
+    """NOWApplication.get_filtered_submissions_documents
+
+    Tests to ensure that the get_filtered_submissions_documents method correctly 
+    surfaces the permit package document type for imported submission documents.
+    """
+
+    def _make_now_application(self, imported=None, submission=None):
+        instance = MagicMock()
+        instance.imported_submission_documents = imported or []
+        instance.submission_documents = submission or []
+        return instance
+
+    def test_includes_saved_type_for_a_figure_already_in_the_package(self, app):
+        from app.api.now_applications.models.now_application import NOWApplication
+        figure_doc = _make_imported_submission_doc(permit_package_document_type_code='FIGURE')
+        now_application = self._make_now_application(imported=[figure_doc])
+
+        docs = NOWApplication.get_filtered_submissions_documents(now_application)
+
+        assert len(docs) == 1
+        assert docs[0]['permit_package_document_type_code'] == 'FIGURE'
+
+    def test_includes_saved_type_for_a_document_already_in_the_package(self, app):
+        from app.api.now_applications.models.now_application import NOWApplication
+        document_doc = _make_imported_submission_doc(permit_package_document_type_code='DOCUMENT')
+        now_application = self._make_now_application(imported=[document_doc])
+
+        docs = NOWApplication.get_filtered_submissions_documents(now_application)
+
+        assert docs[0]['permit_package_document_type_code'] == 'DOCUMENT'
+
+    def test_distinguishes_figures_from_documents_across_the_full_list(self, app):
+        """The actual bug report scenario: a mix of Figures and Documents already in
+        the package must each keep their own correct, distinct type so each one can be
+        routed to the right table instead of everything defaulting to Document."""
+        from app.api.now_applications.models.now_application import NOWApplication
+        figure_doc = _make_imported_submission_doc(
+            permit_package_document_type_code='FIGURE', messageid='msg-fig', xref_guid='xref-fig')
+        document_doc = _make_imported_submission_doc(
+            permit_package_document_type_code='DOCUMENT', messageid='msg-doc', xref_guid='xref-doc')
+        now_application = self._make_now_application(imported=[figure_doc, document_doc])
+
+        docs = NOWApplication.get_filtered_submissions_documents(now_application)
+
+        by_guid = {doc['now_application_document_xref_guid']: doc for doc in docs}
+        assert by_guid['xref-fig']['permit_package_document_type_code'] == 'FIGURE'
+        assert by_guid['xref-doc']['permit_package_document_type_code'] == 'DOCUMENT'

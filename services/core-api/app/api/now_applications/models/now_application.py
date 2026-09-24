@@ -485,6 +485,8 @@ class NOWApplication(Base, AuditMixin):
                 doc.is_final_package,
                 'final_package_order':
                 doc.final_package_order,
+                'permit_package_document_type_code':
+                doc.permit_package_document_type_code,
                 'is_consultation_package':
                 doc.is_consultation_package,
                 'is_referral_package':
@@ -526,6 +528,7 @@ class NOWApplication(Base, AuditMixin):
                     'description': doc.description,
                     'is_final_package': False,
                     'final_package_order': None,
+                    'permit_package_document_type_code': None,
                     'is_referral_package': False,
                     'is_consultation_package': False,
                     'filename': doc.filename,
