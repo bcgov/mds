@@ -356,6 +356,47 @@ def test_submit_tsf(test_client, db_session, auth_headers):
     assert put_data['engineer_of_record']['is_draft'] == False
     assert put_data['qualified_person']['is_draft'] == False
 
+def test_put_tsf_does_not_overwrite_end_date_of_already_current_eor_and_qp(
+        test_client, db_session, auth_headers):
+    # Simulates the final "Save & Continue" submission after an EOR/QP has already been
+    # assigned via the mine party appointment resource, whose mine_party_appt_guid is what
+    # the frontend now sends as eor_party_guid/tqp_party_guid.
+    tsf = MineTailingsStorageFacilityFactory()
+
+    eor = MinePartyAppointmentFactory(
+        mine=tsf.mine, mine_party_appt_type_code='EOR', mine_tailings_storage_facility=tsf,
+        end_date=None)
+    qp = MinePartyAppointmentFactory(
+        mine=tsf.mine, mine_party_appt_type_code='TQP', mine_tailings_storage_facility=tsf,
+        end_date=None)
+
+    data = {
+        'mine_tailings_storage_facility_name': tsf.mine_tailings_storage_facility_name,
+        'latitude': tsf.latitude,
+        'longitude': tsf.longitude,
+        'consequence_classification_status_code':
+            tsf.consequence_classification_status_code,
+        'tsf_operating_status_code': tsf.tsf_operating_status_code,
+        'itrb_exemption_status_code': tsf.itrb_exemption_status_code,
+        'storage_location': 'above_ground',
+        'facility_type': 'tailings_storage_facility',
+        'tailings_storage_facility_type': 'pit',
+        'mines_act_permit_no': 'xxx',
+        'eor_party_guid': str(eor.mine_party_appt_guid),
+        'tqp_party_guid': str(qp.mine_party_appt_guid),
+    }
+
+    put_resp = test_client.put(
+        f'/mines/{tsf.mine.mine_guid}/tailings/{tsf.mine_tailings_storage_facility_guid}',
+        data=data,
+        headers=auth_headers['full_auth_header'])
+
+    put_data = json.loads(put_resp.data.decode())
+
+    assert put_resp.status_code == 200, str(put_resp.response)
+    assert put_data['engineer_of_record']['end_date'] is None
+    assert put_data['qualified_person']['end_date'] is None
+
 def test_tsf_basic_information_missing_required_fields(test_client, db_session, auth_headers):
     mine = MineFactory(minimal=True)
 
