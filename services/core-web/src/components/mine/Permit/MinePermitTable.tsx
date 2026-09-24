@@ -384,10 +384,23 @@ export const MinePermitTable: React.FC<MinePermitTableProps> = ({
     },
     userIsAdmin && {
       key: "verify",
-      label: "Verify",
+      label: "Publish as UNTP CC",
       clickFunction: (event, record) => {
         return Modal.confirm({
-          title: `Are you sure you want to Issue this permit as a Verifiable Credential to OrgBook entity: ${record.permit.current_permittee}?`,
+          title: `Issue {record.permit_no} as a UNTP Conformity Credential.`,
+          content: (
+            <div>
+              <p><strong>Amendment Issue Date</strong> {record.issue_date.split("T")[0]}</p>
+              to:
+              <p>
+                <strong> Business Name: </strong> {record.permit.current_permittee}
+              </p>
+              <p>
+                <strong> BC Registries ID: </strong>{record.active_orgbook_publish_status.orgbook_entity_id}?,
+              </p>
+            </div>
+          ),
+
           okText: "Issue",
           cancelText: "Cancel",
           onOk: () => handlePermitAmendmentIssueVC(event, record, record.permit),

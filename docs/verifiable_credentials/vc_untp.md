@@ -50,13 +50,13 @@ The order that context files are important, as a later file can override a type 
 
 ### AnonCreds vs VCDM
 
-| Feature              | [AnonCreds](https://hyperledger.github.io/anoncreds-spec/) | VCDM2.0 w/ Data Intergrity Proof |
+| Feature              | [AnonCreds](https://hyperledger.github.io/anoncreds-spec/) | VCDM2.0 w/ Data Integrity Proof |
 | -------------------- | ---------------------------------------------------------- | -------------------------------- |
 | Data Structure       | Flat                                                       | JSON                             |
 | Issued               | Directly to Holder and bound                               | Published to be Discovered       |
 | Selective Disclosure | Supported                                                  | Not Supported                    |
 | Zero Knowledge Proof | Supported                                                  | Not Supported                    |
-| DID Methods          | did:indy                                                   | did:web, did:tdw                 |
+| DID Methods          | did:indy                                                   | did:web, did:webvh (previously did:tdw)                |
 | Artifact hosting     | Hyperledger Indy                                           | Hosted by each participant       |
 
 #### Relevant Context Files (IN ORDER)
@@ -69,7 +69,10 @@ The order that context files are important, as a later file can override a type 
 
 The top level of the credential produced is currently typed with all three because, and because all the attributes in all the context files are `protected` no attributes can conflict. AKA. Context files can add attributes to protected types, but cannot redefine an existing term.
 
-## Orgbook Publication Architecture Architechture
+## DEPRECATED -Orgbook Publication Architecture Architechture
+
+**DEPRECATED** Orgbook is being sunset (eventually??). 
+**Verifying** that a business claim is a real business relys on the [**BC Registries API**](https://www.bcregistry.gov.bc.ca/en-CA/), intgrated Aug 2026. and **Issuing** credentials for UNTP is no longer going to Orgbook, they are going to the standalone [**UNTP Publisher**](https://untp-publisher-api-dev.apps.gold.devops.gov.bc.ca/discovery)
 
 ![https://lucid.app/lucidspark/a72aa903-a3b6-48fa-a531-d00072f3e32f/edit?view_items=CIknlZqzm_3b&invitationId=inv_588317cd-af32-46ec-9297-bb2ce5c57502](untp_arch_diagram.png)
 
@@ -83,13 +86,21 @@ The top level of the credential produced is currently typed with all three becau
 
 NOTE: This service is also responsible for maintaining the whitelist [files](https://github.com/bcgov/digital-trust-toolkit/tree/main/related_resources/registrations/issuers) that Orgbook leverages to control what did's are allowed to issue.
 
-### Orgbook Publisher
+### ~~Orgbook Publisher~~ (REPLACED WITH UNTP PUBLISHER)
 
 **General Purpose:** To support publishing of Government data as JSON-LD Credentials to Orgbook for BC Businesses (including did's)
 
-### DID:TDW Server
+### UNTP Publisher
 
-**General Purpose:** To host did's for BC government entities, specifically did:web and did:tdw
+General Purpose: to accept business context data and produce UNTP conformant verifiable credentials.
+
+Specific Features: core-api pushes permit-amendment data weekly to be processed, signed, and served as UNTP Conformity Credentials, these credentials prove that a BC Business has a valid mine permit.
+
+### DID:WEBVH Server
+
+**General Purpose:** To host did's for BC government entities, specifically did:web and did:webvh
+
+(did:webvh used to be called did:tdw). 
 
 ### Aries VCR VC API
 
@@ -99,13 +110,13 @@ NOTE: This service is also responsible for maintaining the whitelist [files](htt
 
 **General Purpose:** To hold verifiable data about BC Businesses.
 
-## Who to call
+As of Aug 2026, being sunset eventually.
 
 ### Energy and Mines Digital Trust
 
 Key Contacts:
 
-- Jason Syrotuck, jason.syrotuck@nttdata.com, Developer
+- Jason Syrotuck, jason.syrotuck@quartech.com, Developer
 - Nancy Norris, nancy.norris@gov.bc.ca, Senior Director
 - Bree Blazicevic, bree-ana.blazicevic@gov.bc.ca, Senior Policy Analyst
 - Patrick St-louis, patrick.st-louis@opsecid.ca, Developer
@@ -126,16 +137,19 @@ Oversees Deployments of:
 
 - [Traction](https://github.com/bcgov/traction)
   - Deployed [here](https://traction-tenant-ui-prod.apps.silver.devops.gov.bc.ca/) with [API](https://traction-tenant-proxy-prod.apps.silver.devops.gov.bc.ca/api/doc)
-- [Orgbook Publisher](https://github.com/OpSecId/orgbook-publisher/)
+- [UNTP Publisher](https://github.com/bcgov/untp-publisher-service)
   - Deployed at:
-    - [DEV](https://publisher-dev.orgbook.gov.bc.ca/)
-    - [TEST](https://publisher-test.orgbook.gov.bc.ca/)
+    - [DEV](https://untp-publisher-api-dev.apps.gold.devops.gov.bc.ca/)
+    - [TEST](https://untp-publisher-api-test.apps.gold.devops.gov.bc.ca/)
     - [PROD](https://publisher.orgbook.gov.bc.ca/)
-- [Aries-VCR-VC-Service](https://github.com/bcgov/aries-vcr-vc-service)
-  - Deployed [here], trying to find
+  - PROVINCIAL ELECTION PAUSED VANITY URL ROLLOUT.
+  - TODO: UPdate this with vanity urls once published.
+- ~~[Aries-VCR-VC-Service](https://github.com/bcgov/aries-vcr-vc-service)~~
+  - DEPRECATED w/ transition to UNTP Publisher 
 - [Aries-VCR](https://github.com/bcgov/aries-vcr)
   - Deployed as Orgbook [here](https://orgbook.gov.bc.ca/search) and [API](https://orgbook.gov.bc.ca/api/v2)
-- [TDW Server](https://github.com/decentralized-identity/trustdidweb-server-py)
+  - To be sunset... eventually? (Aug 2026)
+- [did:webvh Server](https://github.com/decentralized-identity/didwebvh-server-py)
   - Deployed at :
     - [DEV](https://registry-dev.digitaltrust.gov.bc.ca/)
     - [TEST](https://registry-test.digitaltrust.gov.bc.ca/)
@@ -143,18 +157,8 @@ Oversees Deployments of:
 
 # Future Work
 
-### If you want to update to a new UNTP spec version
-
-- If the same data structured can be used, then the provider just needs to update it's transformation
-- If not, the CDT team or maintainer of the publisher will reach out with the required changes.
-- We should not remove or revoke previously issued credentials
-
-### If you want to add new attributes to the BCMines extension
-
-- Make a new context file (v-n+1).
-- create new credential type that references new context file
-- update job to send expanded data to publisher
-- we should not remove or revoke previously issued credentials.
+### UNTP Spec changes
+- UNTP Publisher handles those things more than before, may require no changes unless additional data points are required.
 
 ### What if data is updated in CORE
 
