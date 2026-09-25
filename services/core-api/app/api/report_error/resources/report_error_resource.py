@@ -3,6 +3,7 @@ from flask_restx import Resource
 from flask import request
 from markupsafe import Markup, escape
 from urllib.parse import quote
+import json
 
 from app.api.utils.access_decorators import (requires_any_of, VIEW_ALL)
 from app.api.utils.resources_mixins import UserMixin
@@ -24,7 +25,7 @@ SEEN_BEFORE_LABELS = {
 def _build_observe_logs_link(trace_id):
     log_query = '{ kubernetes_namespace_name="' + Config.OPENSHIFT_NAMESPACE + '" }'
     if trace_id:
-        log_query += f' |= {trace_id}'
+        log_query += f' |= {json.dumps(trace_id)}'
     log_query += ' | json'
     return (f'{Config.OBSERVE_LOGS_BASE_URL}/dev-monitoring/ns/{Config.OPENSHIFT_NAMESPACE}/logs'
             f'?q={quote(log_query)}&showResources=0')
