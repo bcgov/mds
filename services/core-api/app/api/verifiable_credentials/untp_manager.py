@@ -31,7 +31,7 @@ from app.api.verifiable_credentials.models.credentials import PartyVerifiableCre
 from app.api.verifiable_credentials.models.connection import PartyVerifiableCredentialConnection
 from app.api.verifiable_credentials.models.orgbook_publish_status import PermitAmendmentOrgBookPublish
 from app.api.services.traction_service import TractionService
-from app.api.services.untp_publisher import UNTPPublisherService
+from app.api.services.untp_publisher import UNTPPublisherService, CredentialPublishRequest, CredentialRevokeRequest
 
 from untp_models import codes, base, conformity_credential as cc
 
@@ -135,7 +135,7 @@ def push_untp_map_data_to_publisher():
 class UNTPCredentialManager():
 
     def __init__(self):
-        pass
+        self.publisher_service = UNTPPublisherService()
 
     @classmethod
     def push_permit_amendment_to_untp_publisher(
@@ -185,6 +185,7 @@ class UNTPCredentialManager():
         current_app.logger.debug(f"payload hash={payload_hash}")
 
         publish_payload["credentialId"] = str(uuid4())
+        publication_request = CredentialPublishRequest.model_validate(publish_payload)
         publisher_service = publisher_service or UNTPPublisherService()
         existing = PermitAmendmentOrgBookPublish.find_by_unsigned_payload_hash(
             payload_hash) is not None
@@ -204,7 +205,7 @@ class UNTPCredentialManager():
             publish_record.save()
             current_app.logger.debug('pushing payload to publisher...')
 
-            post_resp = publisher_service.publish_cred(publish_payload)
+            post_resp = publisher_service.publish_cred(publication_request)
 
             publish_record.publish_state = post_resp.ok
             publish_record.error_msg = post_resp.text if not post_resp.ok else None
@@ -252,7 +253,7 @@ class UNTPCredentialManager():
                 "response": post_resp.json() if post_resp is not None else None,
                 "error_msg": None,
             }
-
+        # TODO: FETCH CREDENTIAL TO BE SURE AND DECORE CREDENTIAL STATUS LIST INDEX NOW AND SAVE IN DB
         return {
             "status": "skipped",
             "hash": payload_hash,
@@ -261,6 +262,48 @@ class UNTPCredentialManager():
             "response": post_resp.json() if post_resp is not None else None,
             "error_msg": None,
         }
+
+    def revoke_published_untp_credential(self, credential_id: str, party_guid: str) -> bool:
+        credential_guid = credential_id.rsplit("/", 1)[-1]
+
+        current_app.logger.info(
+            f"revoking published untp credential with credential_id={credential_id}")
+        publish_status = PermitAmendmentOrgBookPublish.find_by_credential_id_and_party_guid(
+            credential_id,
+            party_guid,
+        )
+        if not publish_status or not publish_status.publish_state:
+            current_app.logger.warning(
+                f"no published untp credential found for credential_id={credential_id} party_guid={party_guid}"
+            )
+            return False
+
+        #fetch status list credential for revocation
+
+        credential = self.publisher_service.get_cred_contents(credential_id)
+
+        current_app.logger.info(
+            f"fetched credential for revocation with credential_id={credential_id}")
+        current_app.logger.info("decoded credential:\n%s", pprint.pformat(credential))
+        status_list_index = credential.get("credentialStatus", {}).get("statusListIndex")
+        status_list_cred = credential.get("credentialStatus", {}).get("statusListCredential")
+
+        current_app.logger.info("status list index for revocation: %s", status_list_index)
+
+        revoke_resp = self.publisher_service.revoke_cred(
+            CredentialRevokeRequest(
+                id=credential_guid,
+                type="BitstringStatusListEntry",
+                statusPurpose="revocation",
+                statusListIndex=str(status_list_index),
+                statusListCredential=status_list_cred,
+            ))
+        current_app.logger.info("revocation response status code: %s", revoke_resp.status_code)
+        current_app.logger.info("revocation response body: %s", revoke_resp.text)
+
+        # # Implement the actual revocation logic here
+        # # Return True if revocation was successful, False otherwise
+        return False
 
     @classmethod
     def prepare_permit_amendment_untp_credential_without_id(

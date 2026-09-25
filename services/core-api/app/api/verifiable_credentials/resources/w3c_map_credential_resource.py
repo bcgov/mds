@@ -102,3 +102,44 @@ class W3CCredentialIssueResource(Resource, UserMixin):
             payload_hash) is not None
 
         return {"hash": payload_hash, "existing": existing, "payload": payload}
+
+
+class W3CCredentialRevokeResource(Resource, UserMixin):
+    parser = reqparse.RequestParser(trim=True)
+    parser.add_argument(
+        'permit_amendment_guid',
+        type=str,
+        help='GUID of the permit amendment.',
+        location='json',
+        required=True)
+
+    @api.expect(parser)
+    @api.doc(description="revokes a w3c credential from the untp publisher")
+    @requires_any_of([EDIT_PARTY, MINESPACE_PROPONENT])
+    def post(self):
+        if not is_feature_enabled(Feature.VC_W3C):
+            raise ServiceUnavailable("This feature is not enabled.")
+
+        data = self.parser.parse_args()
+        permit_amendment_guid = data["permit_amendment_guid"]
+        permit_amendment = PermitAmendment.find_by_permit_amendment_guid(
+            permit_amendment_guid, unsafe=True)
+        if not permit_amendment:
+            raise BadRequest(
+                f"permit_amendment could not be found for permit_amendment_guid={permit_amendment_guid}"
+            )
+
+        publish_status = permit_amendment.active_orgbook_publish_status
+        if not publish_status or not publish_status.publish_state or not publish_status.orgbook_credential_id:
+            raise BadRequest(
+                f"no published credential found for permit_amendment_guid={permit_amendment_guid}")
+        revoked = UNTPCredentialManager().revoke_published_untp_credential(
+            publish_status.orgbook_credential_id,
+            str(publish_status.party_guid),
+        )
+        if not revoked:
+            raise BadRequest(
+                f"credential could not be revoked for permit_amendment_guid={permit_amendment_guid}"
+            )
+
+        return {"revoked": True}, 200

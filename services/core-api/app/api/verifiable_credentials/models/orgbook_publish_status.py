@@ -37,6 +37,19 @@ class PermitAmendmentOrgBookPublish(AuditMixin, Base):
         return query.filter_by(unsigned_payload_hash=unsigned_payload_hash).one_or_none()
 
     @classmethod
+    def find_by_credential_id_and_party_guid(
+            cls,
+            credential_id: str,
+            party_guid: str,
+            *,
+            unsafe: bool = False) -> "PermitAmendmentOrgBookPublish":
+        query = cls.query.unbound_unsafe() if unsafe else cls.query
+        return query.filter_by(
+            orgbook_credential_id=credential_id,
+            party_guid=party_guid,
+        ).one_or_none()
+
+    @classmethod
     def find_all_unpublished(cls, *, unsafe: bool = False) -> List["PermitAmendmentOrgBookPublish"]:
         query = cls.query.unbound_unsafe() if unsafe else cls.query
         results = query.filter(cls.publish_state != True).all()
