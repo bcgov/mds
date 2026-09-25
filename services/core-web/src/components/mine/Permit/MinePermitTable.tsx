@@ -37,6 +37,7 @@ import { USER_ROLES } from "@mds/common/constants/environment";
 import { Feature } from "@mds/common/utils/featureFlag";
 import DocumentCompression from "@mds/common/components/documents/DocumentCompression";
 import { MineDocument } from "@mds/common/models/documents/document";
+import { getPartyRelationships } from "@mds/common/redux/slices/partiesSlice";
 
 /**
  * @class  MinePermitTable - displays a table of permits and permit amendments
@@ -57,6 +58,7 @@ interface MinePermitTableProps {
   handleDeletePermit: (arg1: string) => any;
   handleDeletePermitAmendment: (arg1: any) => any;
   handlePermitAmendmentIssueVC: (arg1: any, arg2: IPermitAmendment, arg3: IPermit) => any;
+  handlePermitAmendmentRevokeUNTPCredential: (arg1: any, arg2: IPermitAmendment) => any;
   openEditSitePropertiesModal: (arg1: any, arg2: IPermit) => any;
   openViewConditionModal: (arg1: any, arg2: any, arg3: any, arg4: string) => any;
 }
@@ -100,10 +102,22 @@ const renderPermitNo = (permit) => {
     : permit.permit_no;
 };
 
+const getUNTPCredentialViewUrl = (credentialUrl: string) => {
+  try {
+    const publisherUrl = new URL(credentialUrl);
+    const viewUrl = new URL("/view", publisherUrl.origin);
+    viewUrl.searchParams.set("url", publisherUrl.toString());
+    return viewUrl.toString();
+  } catch {
+    return null;
+  }
+};
+
 export const MinePermitTable: React.FC<MinePermitTableProps> = ({
   openEditAmendmentModal,
   handleDeletePermitAmendment,
   handlePermitAmendmentIssueVC,
+  handlePermitAmendmentRevokeUNTPCredential,
   openViewConditionModal,
   openEditPermitModal,
   openAddPermitAmendmentModal,
@@ -124,6 +138,7 @@ export const MinePermitTable: React.FC<MinePermitTableProps> = ({
 
   const permitStatusOptionsHash = useSelector(getDropdownPermitStatusOptionsHash);
   const permitAmendmentTypeOptionsHash = useSelector(getPermitAmendmentTypeOptionsHash);
+  const partyRelationships = useSelector(getPartyRelationships);
 
   const userCanEditPermits = useSelector(
     userHasRole(USER_ROLES.role_edit_permits)
@@ -385,18 +400,26 @@ export const MinePermitTable: React.FC<MinePermitTableProps> = ({
     userIsAdmin && {
       key: "verify",
       label: "Publish as UNTP CC",
+      className: "vc-action",
       clickFunction: (event, record) => {
+        const permittee = partyRelationships.find(
+          (appointment) =>
+            appointment.mine_party_appt_type_code === "PMT" &&
+            appointment.related_guid === record.permit.permit_guid
+        );
         return Modal.confirm({
-          title: `Issue {record.permit_no} as a UNTP Conformity Credential.`,
+          title: `Issue UNTP Conformity Credential?`,
           content: (
             <div>
-              <p><strong>Amendment Issue Date</strong> {record.issue_date.split("T")[0]}</p>
-              to:
+              <p><strong>Amendment Issue Date:</strong> {record.issue_date.split("T")[0]}</p>
+              <br />
               <p>
-                <strong> Business Name: </strong> {record.permit.current_permittee}
+                <strong> BC Registries Name: </strong>
+                {permittee?.party.party_bc_registration_name || Strings.EMPTY_FIELD}
               </p>
               <p>
-                <strong> BC Registries ID: </strong>{record.active_orgbook_publish_status.orgbook_entity_id}?,
+                <strong> BC Registries ID: </strong>
+                {permittee?.party.party_bc_registration_id || Strings.EMPTY_FIELD}
               </p>
             </div>
           ),
@@ -408,10 +431,48 @@ export const MinePermitTable: React.FC<MinePermitTableProps> = ({
       },
       icon: <SafetyCertificateOutlined />,
     },
+    userIsAdmin && {
+      key: "view-untp-cc",
+      label: "View UNTP CC",
+      className: "vc-action",
+      clickFunction: (_, record) => {
+        const credentialUrl = getUNTPCredentialViewUrl(
+          record.active_orgbook_publish_status?.orgbook_credential_id
+        );
+        if (credentialUrl) {
+          window.open(credentialUrl, "_blank", "noopener,noreferrer");
+        }
+      },
+      icon: <EyeOutlined />,
+    },
+    userIsAdmin && {
+      key: "revoke-untp-cc",
+      label: "Revoke UNTP CC",
+      className: "vc-action",
+      clickFunction: (event, record) =>
+        Modal.confirm({
+          title: "Revoke UNTP Conformity Credential?",
+          content: "This action cannot be undone.",
+          okText: "Revoke",
+          cancelText: "Cancel",
+          onOk: () => handlePermitAmendmentRevokeUNTPCredential(event, record),
+        }),
+      icon: <DeleteOutlined />,
+    },
   ].filter(Boolean);
 
   const childActionsFilter = (record, actionItems) => {
     let filtered = actionItems;
+    const hasPublishedUNTPCredential = Boolean(
+      record.active_orgbook_publish_status?.orgbook_credential_id
+    );
+
+    filtered = filtered.filter((action) =>
+      hasPublishedUNTPCredential
+        ? action.key !== "verify"
+        : !["view-untp-cc", "revoke-untp-cc"].includes(action.key)
+    );
+
     if (record.amendmentType === PERMIT_AMENDMENT_TYPES.original) {
       filtered = filtered.filter((a) => a.key !== "delete");
     }

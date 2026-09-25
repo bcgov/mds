@@ -5,7 +5,8 @@ export interface IPermitParty {
   phone_ext: string;
   email: string;
   party_name: string;
-  party_orgbook_registration_id: string;
+  party_bc_registration_id: string;
+  party_bc_registration_name: string;
   name: string;
   first_name: string;
   state_modified: string;

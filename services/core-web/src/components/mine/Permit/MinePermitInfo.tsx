@@ -6,11 +6,14 @@ import {
   updatePermit,
   updatePermitAmendment,
   createPermitAmendment,
-  createPermitAmendmentVC,
   removePermitAmendmentDocument,
   deletePermit,
   deletePermitAmendment,
 } from "@mds/common/redux/actionCreators/permitActionCreator";
+import {
+  issueUNTPCredentialForPermitAmendment,
+  revokeUNTPCredentialForPermitAmendment,
+} from "@mds/common/redux/actionCreators/verifiableCredentialActionCreator";
 import { fetchPartyRelationships } from "@mds/common/redux/slices/partiesSlice";
 import {
   fetchMineRecordById,
@@ -131,13 +134,14 @@ export const MinePermitInfo: FC = () => {
       .then(closePermitModal);
   };
 
-  const handlePermitAmendmentIssueVC = (event, permit_amendment, permit) => {
+  const handlePermitAmendmentIssueVC = (event, permit_amendment) => {
     event.preventDefault();
-    return dispatch(createPermitAmendmentVC(
-      mineGuid,
-      permit.permitGuid,
-      permit_amendment.permit_amendment_guid
-    ));
+    return dispatch(issueUNTPCredentialForPermitAmendment(permit_amendment.permit_amendment_guid));
+  };
+
+  const handlePermitAmendmentRevokeUNTPCredential = (event, permitAmendment) => {
+    event.preventDefault();
+    return dispatch(revokeUNTPCredentialForPermitAmendment(permitAmendment.permit_amendment_guid));
   };
 
   const handleRemovePermitAmendmentDocument = (permitGuid, permitAmendmentGuid, documentGuid) =>
@@ -395,6 +399,7 @@ export const MinePermitInfo: FC = () => {
           openAddPermitHistoricalAmendmentModal={openAddPermitHistoricalAmendmentModal}
           openAddAmalgamatedPermitModal={openAddAmalgamatedPermitModal}
           handlePermitAmendmentIssueVC={handlePermitAmendmentIssueVC}
+          handlePermitAmendmentRevokeUNTPCredential={handlePermitAmendmentRevokeUNTPCredential}
           expandedRowKeys={expandedRowKeys}
           onExpand={onExpand}
           handleDeletePermit={handleDeletePermit}

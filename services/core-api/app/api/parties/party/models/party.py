@@ -159,8 +159,10 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
             str(self.party_guid),
             'party_type_code':
             self.party_type_code,
-            'party_orgbook_registration_id':
+            'party_bc_registration_id':
             self.party_bc_registration.registration_id if self.party_bc_registration else None,
+            'party_bc_registration_name':
+            self.party_bc_registration.name_text if self.party_bc_registration else None,
             'phone_no':
             self.phone_no,
             'phone_ext':
