@@ -1,14 +1,13 @@
 import uuid
-from flask import request
-from flask_restx import Resource, fields
-from werkzeug.exceptions import NotFound, InternalServerError, BadRequest
 
 from app.api.constants import TIMEOUT_5_MINUTES
-from app.extensions import api, cache
-from app.api.utils.access_decorators import requires_role_view_all
-from app.api.utils.resources_mixins import UserMixin
-
 from app.api.services.nris_download_service import NRISDownloadService
+from app.api.utils.access_decorators import public_endpoint, requires_role_view_all
+from app.api.utils.resources_mixins import UserMixin
+from app.extensions import api, cache
+from flask import request
+from flask_restx import Resource, fields
+from werkzeug.exceptions import BadRequest, InternalServerError, NotFound
 
 DOWNLOAD_TOKEN_MODEL = api.model('DownloadToken', {'token_guid': fields.String})
 
@@ -40,6 +39,7 @@ class ComplianceDocumentResource(Resource, UserMixin):
     @api.doc(
         description='Fetch an compliance document by id',
         params={'token': 'A one-time token issued for downloading the file.'})
+    @public_endpoint
     def get(self, inspection_id, attachment_id):
         token_guid = request.args.get('token', '')
         document_info = cache.get(DOWNLOAD_TOKEN(token_guid))

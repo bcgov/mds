@@ -1,19 +1,24 @@
 from datetime import datetime
-from flask import current_app, request
-from werkzeug.exceptions import Forbidden
-from flask_restx import Resource
-from sqlalchemy import and_
-
-from app.config import Config
-from app.extensions import api
-
-from app.api.utils.resources_mixins import UserMixin
-
-from app.api.verifiable_credentials.models.connection import PartyVerifiableCredentialConnection
-from app.api.verifiable_credentials.models.credentials import PartyVerifiableCredentialMinesActPermit
-from app.api.verifiable_credentials.aries_constants import DIDExchangeRequesterState, IssueCredentialIssuerState
 
 from app.api.services.traction_service import TractionService
+from app.api.utils.access_decorators import public_endpoint
+from app.api.utils.resources_mixins import UserMixin
+from app.api.verifiable_credentials.aries_constants import (
+    DIDExchangeRequesterState,
+    IssueCredentialIssuerState,
+)
+from app.api.verifiable_credentials.models.connection import (
+    PartyVerifiableCredentialConnection,
+)
+from app.api.verifiable_credentials.models.credentials import (
+    PartyVerifiableCredentialMinesActPermit,
+)
+from app.config import Config
+from app.extensions import api
+from flask import current_app, request
+from flask_restx import Resource
+from sqlalchemy import and_
+from werkzeug.exceptions import Forbidden
 
 PRESENT_PROOF = "present_proof"
 CONNECTIONS = "connections"
@@ -27,6 +32,7 @@ ISSUER_CREDENTIAL_REVOCATION = "issuer_cred_rev"
 class TractionWebhookResource(Resource, UserMixin):
 
     @api.doc(description='Endpoint to recieve webhooks from Traction.', params={})
+    @public_endpoint
     def post(self, topic):
         #custom auth for traction
         if request.headers.get("x-api-key") != Config.TRACTION_WEBHOOK_X_API_KEY:

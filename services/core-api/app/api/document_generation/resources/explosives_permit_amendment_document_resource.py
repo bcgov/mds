@@ -1,21 +1,27 @@
 import requests
-from flask import request, Response, stream_with_context, current_app
-from flask_restx import Resource, marshal
-from werkzeug.exceptions import BadRequest, InternalServerError, BadGateway
-from app.extensions import api, cache
-
-from app.api.utils.resources_mixins import UserMixin
 from app.api.constants import EXPLOSIVES_PERMIT_DOCUMENT_DOWNLOAD_TOKEN
-from app.config import Config
-
 from app.api.mines.documents.models.mine_document import MineDocument
-from app.api.mines.explosives_permit_amendment.models.explosives_permit_amendment import ExplosivesPermitAmendment
-from app.api.mines.explosives_permit.models.explosives_permit_document_type import ExplosivesPermitDocumentType
-from app.api.mines.explosives_permit_amendment.models.explosives_permit_amendment_document_xref import ExplosivesPermitAmendmentDocumentXref
-
+from app.api.mines.explosives_permit.models.explosives_permit_document_type import (
+    ExplosivesPermitDocumentType,
+)
+from app.api.mines.explosives_permit_amendment.models.explosives_permit_amendment import (
+    ExplosivesPermitAmendment,
+)
+from app.api.mines.explosives_permit_amendment.models.explosives_permit_amendment_document_xref import (
+    ExplosivesPermitAmendmentDocumentXref,
+)
+from app.api.mines.explosives_permit_amendment.response_models import (
+    EXPLOSIVES_PERMIT_AMENDMENT_DOCUMENT_MODEL,
+)
 from app.api.services.document_generator_service import DocumentGeneratorService
 from app.api.services.document_manager_service import DocumentManagerService
-from app.api.mines.explosives_permit_amendment.response_models import EXPLOSIVES_PERMIT_AMENDMENT_DOCUMENT_MODEL
+from app.api.utils.access_decorators import public_endpoint
+from app.api.utils.resources_mixins import UserMixin
+from app.config import Config
+from app.extensions import api, cache
+from flask import Response, current_app, request, stream_with_context
+from flask_restx import Resource, marshal
+from werkzeug.exceptions import BadGateway, BadRequest, InternalServerError
 
 
 class ExplosivesPermitAmendmentDocumentResource(Resource, UserMixin):
@@ -30,6 +36,7 @@ class ExplosivesPermitAmendmentDocumentResource(Resource, UserMixin):
             'is_preview':
                 'If true, returns the generated document without creating the document record.'
         })
+    @public_endpoint
     def get(self):
         token = request.args.get('token', '')
         return_record = request.args.get('return_record') == 'true'
