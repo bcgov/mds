@@ -1,4 +1,6 @@
+from datetime import datetime, timezone
 from unittest.mock import patch
+from urllib.parse import parse_qs, urlparse
 
 from app.config import Config
 
@@ -103,7 +105,7 @@ def test_post_report_error_builds_observe_logs_link(mock_send_template_email, te
                                                      db_session, auth_headers):
     data = {
         'business_error': 'Some error',
-        'trace_id': 'trace-abc',
+        'trace_id': '217622167434772050873857961915720626125',
     }
 
     test_client.post(ENDPOINT, headers=auth_headers['full_auth_header'], json=data)
@@ -113,11 +115,45 @@ def test_post_report_error_builds_observe_logs_link(mock_send_template_email, te
 
     assert observe_logs_link.startswith(Config.OBSERVE_LOGS_BASE_URL)
     assert f'/ns/{Config.OPENSHIFT_NAMESPACE}/logs' in observe_logs_link
-    # Raw trace id, quoted (required for valid LogQL syntax) but without the
-    # "trace_id=" label prefix.
-    assert '%22trace-abc%22' in observe_logs_link
-    assert 'trace_id%3D' not in observe_logs_link
+    # Backtick-quoted: the OpenShift console's log viewer mis-parses double-quoted
+    # or bare line filters.
+    query = parse_qs(urlparse(observe_logs_link).query)['q'][0]
+    assert '|= `217622167434772050873857961915720626125`' in query
+    assert '"217622167434772050873857961915720626125"' not in query
     assert Config.OPENSHIFT_NAMESPACE in observe_logs_link
+
+
+@patch('app.api.services.email_service.EmailService.send_template_email')
+def test_post_report_error_observe_logs_link_has_time_window(mock_send_template_email,
+                                                              test_client, db_session,
+                                                              auth_headers):
+    data = {'business_error': 'Some error', 'trace_id': '12345'}
+
+    before_ms = int(datetime.now(timezone.utc).timestamp() * 1000)
+    test_client.post(ENDPOINT, headers=auth_headers['full_auth_header'], json=data)
+    after_ms = int(datetime.now(timezone.utc).timestamp() * 1000)
+
+    _subject, _recipients, _template_path, context = _call_args(mock_send_template_email)
+    params = parse_qs(urlparse(context['observe_logs_link']).query)
+    start_ms, end_ms = int(params['start'][0]), int(params['end'][0])
+
+    # 1 hour before the report to 5 minutes after, as absolute times
+    assert end_ms - start_ms == 65 * 60 * 1000
+    assert before_ms - 60 * 60 * 1000 - 1000 <= start_ms <= after_ms - 60 * 60 * 1000
+    assert before_ms + 5 * 60 * 1000 - 1000 <= end_ms <= after_ms + 5 * 60 * 1000
+
+
+@patch('app.api.services.email_service.EmailService.send_template_email')
+def test_post_report_error_observe_logs_link_drops_unsafe_trace_id(mock_send_template_email,
+                                                                    test_client, db_session,
+                                                                    auth_headers):
+    data = {'business_error': 'Some error', 'trace_id': '123` } |= `x'}
+
+    test_client.post(ENDPOINT, headers=auth_headers['full_auth_header'], json=data)
+
+    _subject, _recipients, _template_path, context = _call_args(mock_send_template_email)
+    query = parse_qs(urlparse(context['observe_logs_link']).query)['q'][0]
+    assert query == f'{{ kubernetes_namespace_name="{Config.OPENSHIFT_NAMESPACE}" }} | json'
 
 
 @patch('app.api.services.email_service.EmailService.send_template_email')

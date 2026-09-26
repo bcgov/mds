@@ -3,13 +3,13 @@ from flask_restx import Resource
 from flask import request
 from markupsafe import Markup, escape
 from urllib.parse import quote
-import json
+import re
 
 from app.api.utils.access_decorators import (requires_any_of, VIEW_ALL)
 from app.api.utils.resources_mixins import UserMixin
 from app.api.exception.mds_core_api_exceptions import MDSCoreAPIException
 from app.config import Config
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 from app.api.utils.include.user_info import User
 from app.api.constants import MDS_EMAIL
 from flask.globals import current_app
@@ -21,14 +21,26 @@ SEEN_BEFORE_LABELS = {
     None: "Not sure",
 }
 
+# The logs link covers a fixed window around when the report was sent, so it still
+# works whenever the email is opened.
+LOGS_LINK_LOOKBACK = timedelta(hours=1)
+LOGS_LINK_LOOKAHEAD = timedelta(minutes=5)
 
-def _build_observe_logs_link(trace_id):
+# trace_id comes from the client; only put it in the query if it can't break out of
+# the backtick-quoted filter.
+SAFE_TRACE_ID = re.compile(r'^[A-Za-z0-9-]+$')
+
+
+def _build_observe_logs_link(trace_id, reported_at):
     log_query = '{ kubernetes_namespace_name="' + Config.OPENSHIFT_NAMESPACE + '" }'
-    if trace_id:
-        log_query += f' |= {json.dumps(trace_id)}'
+    # The OpenShift console's log viewer only parses backtick-quoted line filters.
+    if trace_id and SAFE_TRACE_ID.match(trace_id):
+        log_query += f' |= `{trace_id}`'
     log_query += ' | json'
+    start_ms = int((reported_at - LOGS_LINK_LOOKBACK).timestamp() * 1000)
+    end_ms = int((reported_at + LOGS_LINK_LOOKAHEAD).timestamp() * 1000)
     return (f'{Config.OBSERVE_LOGS_BASE_URL}/dev-monitoring/ns/{Config.OPENSHIFT_NAMESPACE}/logs'
-            f'?q={quote(log_query)}&showResources=0')
+            f'?q={quote(log_query)}&start={start_ms}&end={end_ms}&showResources=0')
 
 
 class ReportErrorResource(Resource, UserMixin):
@@ -48,10 +60,11 @@ class ReportErrorResource(Resource, UserMixin):
             reporter_email = User().get_user_email()
             environment = Config.ENVIRONMENT_NAME.upper()
 
-            reported_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            reported_at = datetime.now(timezone.utc)
+            reported_date = reported_at.strftime("%Y-%m-%d %H:%M:%S")
             email_title = (
                 f"[ERROR_REPORT] [{severity.upper()}] [{environment}] - {reported_date} - {business_error}")
-            observe_logs_link = _build_observe_logs_link(trace_id)
+            observe_logs_link = _build_observe_logs_link(trace_id, reported_at)
 
             if auth.get_user_is_proponent():
                 template_path = "email/report_error/ms_error_report_email.html"
