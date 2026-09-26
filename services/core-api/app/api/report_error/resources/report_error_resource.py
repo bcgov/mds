@@ -21,13 +21,11 @@ SEEN_BEFORE_LABELS = {
     None: "Not sure",
 }
 
-# The logs link covers a fixed window around when the report was sent, so it still
-# works whenever the email is opened.
+# The logs link covers a fixed window around when the report was sent, so it still works whenever the email is opened.
 LOGS_LINK_LOOKBACK = timedelta(hours=1)
 LOGS_LINK_LOOKAHEAD = timedelta(minutes=5)
 
-# trace_id comes from the client; only put it in the query if it can't break out of
-# the backtick-quoted filter.
+# trace_id comes from the client; only put it in the query if it can't break out of the backtick-quoted filter.
 SAFE_TRACE_ID = re.compile(r'^[A-Za-z0-9-]+$')
 
 
