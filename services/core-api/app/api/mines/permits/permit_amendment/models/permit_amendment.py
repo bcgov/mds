@@ -4,11 +4,9 @@ from typing import TYPE_CHECKING, Union
 
 from app.api.constants import *
 from app.api.mines.permits.permit_amendment.models.permit_amendment_document import (
-    PermitAmendmentDocument,
-)
+    PermitAmendmentDocument, )
 from app.api.mines.permits.permit_conditions.models.permit_conditions import (
-    PermitConditions,
-)
+    PermitConditions, )
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from app.api.utils.models_mixins import AuditMixin, Base, SoftDeleteMixin
 from app.api.verifiable_credentials.aries_constants import IssueCredentialIssuerState
@@ -50,11 +48,11 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
     permit_amendment_status_description = association_proxy('permit_amendment_status',
                                                             'description')
     permit_guid = association_proxy('permit', 'permit_guid')
-    permit_no: str = association_proxy('permit', 'permit_no')                                                                                                                              #type: ignore[reportAssignmentType]
+    permit_no: str = association_proxy('permit', 'permit_no') #type: ignore[reportAssignmentType]
     permit_amendment_type = db.relationship('PermitAmendmentTypeCode')
     permit_amendment_type_description = association_proxy('permit_amendment_type', 'description')
-                                                                                                                                                                                           #liability_adjustment is the change of work assessed for the new amendment,
-                                                                                                                                                                                           # This value is added to previous amendments to create the new total assessment for the permit
+                                                              #liability_adjustment is the change of work assessed for the new amendment,
+                                                              # This value is added to previous amendments to create the new total assessment for the permit
     liability_adjustment = db.Column(db.Numeric(16, 2))
     security_received_date = db.Column(db.DateTime)
     security_not_required = db.Column(db.Boolean)
@@ -65,12 +63,13 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
         'NOWApplicationIdentity', lazy='select', foreign_keys=[now_application_guid])
     mine: 'Mine' = db.relationship(
         'Mine', lazy='select',
-        back_populates='_mine_permit_amendments')                                                                                                                                          #type: ignore[reportAssignmentType]
+        back_populates='_mine_permit_amendments')             #type: ignore[reportAssignmentType]
 
     condition_categories = db.relationship(
         'PermitConditionCategory',
         lazy='selectin',
-        primaryjoin='and_(PermitAmendment.permit_amendment_id==PermitConditionCategory.permit_amendment_id, PermitConditionCategory.deleted_ind==False)',
+        primaryjoin=
+        'and_(PermitAmendment.permit_amendment_id==PermitConditionCategory.permit_amendment_id, PermitConditionCategory.deleted_ind==False)',
     )
 
     # This relationship is used to get all *top level* conditions for a permit amendment
@@ -81,7 +80,7 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
         "and_(PermitConditions.permit_amendment_id == PermitAmendment.permit_amendment_id, PermitConditions.deleted_ind == False, PermitConditions.parent_permit_condition_id.is_(None))",
         order_by='asc(PermitConditions.display_order)',
         back_populates='permit_amendment')
-    
+
     # This relationship is used to get all conditions for a permit amendment, including sub-conditions
     all_conditions = db.relationship(
         'PermitConditions',
@@ -89,8 +88,7 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
         primaryjoin=
         "and_(PermitConditions.permit_amendment_id == PermitAmendment.permit_amendment_id, PermitConditions.deleted_ind == False)",
         order_by='asc(PermitConditions.display_order)',
-        overlaps="conditions,permit_amendment"
-    )
+        overlaps="conditions,permit_amendment")
     permit_conditions_last_updated_date = db.Column(db.DateTime)
     permit_conditions_last_updated_by = db.Column(db.String(60))
     is_generated_in_core = db.Column(db.Boolean)
@@ -122,7 +120,8 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
     orgbook_publish_status_records: list["PermitAmendmentOrgBookPublish"] = db.relationship(
         'PermitAmendmentOrgBookPublish',
         lazy='selectin',
-        order_by='desc(PermitAmendmentOrgBookPublish.update_timestamp)')                                   #type: ignore[reportAssignmentType]
+        order_by='desc(PermitAmendmentOrgBookPublish.update_timestamp)'
+    )                                                                                        #type: ignore[reportAssignmentType]
     mines_act_permit_vc_locked = association_proxy("permit", 'mines_act_permit_vc_locked')
 
     # Note: This relationship is lazy loaded on purpose to avoid being loaded unless absolutely necessary
@@ -176,10 +175,11 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
             parent_permit_condition_id=None,
             deleted_ind=False).count()
         return permit_conditions > 0
-    
+
     @hybrid_property
     def conditions_review_completed(self):
-        return len(self.conditions) and all([x.permit_condition_status_code == "COM" for x in self.conditions])
+        return len(self.conditions) and all(
+            [x.permit_condition_status_code == "COM" for x in self.conditions])
 
     @hybrid_property
     def vc_credential_exch_state(self):
@@ -201,7 +201,8 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
     @hybrid_property
     def active_orgbook_publish_status(self):
         active = [
-            x for x in self.orgbook_publish_status_records if x.publish_state is True
+            x for x in self.orgbook_publish_status_records
+            if x.publish_state is True and x.revoked_ind is False
         ]
 
         if active:
@@ -322,22 +323,22 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
     def find_original_permit_amendment_by_permit_guid(cls, _guid, mine_guid):
         return cls.query.filter_by(permit_guid=_guid).filter_by(
             permit_amendment_type_code='OGP', mine_guid=mine_guid).first()
-    
+
     @classmethod
     def find_all_guids_with_extracted_conditions(cls, filter_now_application=None):
         query = (
-            cls.query
-            .with_entities(cls.permit_amendment_guid)
-            .join(PermitConditions, PermitConditions.permit_amendment_id == PermitAmendment.permit_amendment_id)
-            .filter(cls.deleted_ind == False, PermitConditions.deleted_ind == False, cls.permit_amendment_status_code != 'DFT')
-        )
+            cls.query.with_entities(cls.permit_amendment_guid).join(
+                PermitConditions,
+                PermitConditions.permit_amendment_id == PermitAmendment.permit_amendment_id).filter(
+                    cls.deleted_ind == False, PermitConditions.deleted_ind == False,
+                    cls.permit_amendment_status_code != 'DFT'))
         if filter_now_application is True:
             query = query.filter(PermitAmendment.now_application_guid.isnot(None))
         elif filter_now_application is False:
             query = query.filter(PermitAmendment.now_application_guid.is_(None))
 
         return [row[0] for row in query.distinct().all()]
-    
+
     @validates('permit_amendment_status_code')
     def validate_status_code(self, key, permit_amendment_status_code):
         if not permit_amendment_status_code:
