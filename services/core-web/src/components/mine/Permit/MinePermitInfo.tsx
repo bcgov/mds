@@ -139,9 +139,12 @@ export const MinePermitInfo: FC = () => {
     return dispatch(issueUNTPCredentialForPermitAmendment(permit_amendment.permit_amendment_guid));
   };
 
-  const handlePermitAmendmentRevokeUNTPCredential = (event, permitAmendment) => {
-    event.preventDefault();
-    return dispatch(revokeUNTPCredentialForPermitAmendment(permitAmendment.permit_amendment_guid));
+  const handlePermitAmendmentRevokeUNTPCredential = (event, permitAmendment, revokedReason) => {
+    event?.preventDefault();
+    return dispatch(revokeUNTPCredentialForPermitAmendment(
+      permitAmendment.permit_amendment_guid,
+      revokedReason
+    ));
   };
 
   const handleRemovePermitAmendmentDocument = (permitGuid, permitAmendmentGuid, documentGuid) =>

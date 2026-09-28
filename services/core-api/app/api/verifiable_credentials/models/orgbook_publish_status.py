@@ -1,7 +1,4 @@
 from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.schema import FetchedValue
-from sqlalchemy.sql import true as sqltrue
-from sqlalchemy.sql.expression import ColumnOperators
 from app.extensions import db
 from typing import List
 from app.api.utils.models_mixins import AuditMixin, Base
@@ -24,6 +21,9 @@ class PermitAmendmentOrgBookPublish(AuditMixin, Base):
     orgbook_entity_id = db.Column(db.String, nullable=False)
     orgbook_credential_id = db.Column(db.String, nullable=False)
     error_msg = db.Column(db.String, nullable=True)
+    revoked_ind = db.Column(
+        db.Boolean, nullable=False, server_default=db.text("false"), default=False)
+    revoked_reason = db.Column(db.String, nullable=True)
 
     def __repr__(self):
         return f'<PermitAmendmentOrgBookPublishStatus unsigned_payload_hash={self.unsigned_payload_hash}, permit_amendment_guid={self.permit_amendment_guid}, error_msg={self.error_msg}, publish_state={self.publish_state}, orgbook_entity_id={self.orgbook_entity_id}>'
@@ -37,12 +37,12 @@ class PermitAmendmentOrgBookPublish(AuditMixin, Base):
         return query.filter_by(unsigned_payload_hash=unsigned_payload_hash).one_or_none()
 
     @classmethod
-    def find_by_credential_id_and_party_guid(
-            cls,
-            credential_id: str,
-            party_guid: str,
-            *,
-            unsafe: bool = False) -> "PermitAmendmentOrgBookPublish":
+    def find_by_credential_id_and_party_guid(cls,
+                                             credential_id: str,
+                                             party_guid: str,
+                                             *,
+                                             unsafe: bool = False
+                                             ) -> "PermitAmendmentOrgBookPublish":
         query = cls.query.unbound_unsafe() if unsafe else cls.query
         return query.filter_by(
             orgbook_credential_id=credential_id,

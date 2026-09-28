@@ -251,6 +251,8 @@ PERMIT_AMENDMENT_ORGBOOK_PUBLISH_STATUS_MODEL = api.model(
         'publish_state': fields.Boolean,
         'orgbook_entity_id': fields.String,
         'orgbook_credential_id': fields.String,
+        'revoked_ind': fields.Boolean,
+        'revoked_reason': fields.String,
     })
 
 PERMIT_AMENDMENT_SHORT_MODEL = api.model(

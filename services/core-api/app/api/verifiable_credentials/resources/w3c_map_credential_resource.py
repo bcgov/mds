@@ -112,6 +112,12 @@ class W3CCredentialRevokeResource(Resource, UserMixin):
         help='GUID of the permit amendment.',
         location='json',
         required=True)
+    parser.add_argument(
+        'revoked_reason',
+        type=str,
+        help='Inspection or reason for revocation.',
+        location='json',
+        required=True)
 
     @api.expect(parser)
     @api.doc(description="revokes a w3c credential from the untp publisher")
@@ -134,9 +140,8 @@ class W3CCredentialRevokeResource(Resource, UserMixin):
             raise BadRequest(
                 f"no published credential found for permit_amendment_guid={permit_amendment_guid}")
         revoked = UNTPCredentialManager().revoke_published_untp_credential(
-            publish_status.orgbook_credential_id,
-            str(publish_status.party_guid),
-        )
+            publish_status.orgbook_credential_id, str(publish_status.party_guid),
+            data["revoked_reason"])
         if not revoked:
             raise BadRequest(
                 f"credential could not be revoked for permit_amendment_guid={permit_amendment_guid}"

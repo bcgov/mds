@@ -263,7 +263,8 @@ class UNTPCredentialManager():
             "error_msg": None,
         }
 
-    def revoke_published_untp_credential(self, credential_id: str, party_guid: str) -> bool:
+    def revoke_published_untp_credential(self, credential_id: str, party_guid: str,
+                                         revoked_reason: str) -> bool:
         credential_guid = credential_id.rsplit("/", 1)[-1]
 
         current_app.logger.info(
@@ -278,32 +279,26 @@ class UNTPCredentialManager():
             )
             return False
 
-        #fetch status list credential for revocation
-
         credential = self.publisher_service.get_cred_contents(credential_id)
 
-        current_app.logger.info(
-            f"fetched credential for revocation with credential_id={credential_id}")
-        current_app.logger.info("decoded credential:\n%s", pprint.pformat(credential))
         status_list_index = credential.get("credentialStatus", {}).get("statusListIndex")
         status_list_cred = credential.get("credentialStatus", {}).get("statusListCredential")
 
-        current_app.logger.info("status list index for revocation: %s", status_list_index)
-
         revoke_resp = self.publisher_service.revoke_cred(
             CredentialRevokeRequest(
-                id=credential_guid,
-                type="BitstringStatusListEntry",
-                statusPurpose="revocation",
-                statusListIndex=str(status_list_index),
-                statusListCredential=status_list_cred,
-            ))
-        current_app.logger.info("revocation response status code: %s", revoke_resp.status_code)
-        current_app.logger.info("revocation response body: %s", revoke_resp.text)
+                credentialId=credential_guid,
+                credentialStatus=CredentialRevokeRequest.CredentialStatus(
+                    statusPurpose="revocation",
+                    statusListIndex=str(status_list_index),
+                    statusListCredential=status_list_cred),
+                status=True))
 
-        # # Implement the actual revocation logic here
-        # # Return True if revocation was successful, False otherwise
-        return False
+        if revoke_resp.status_code == 200:
+            publish_status.revoked_ind = True
+            publish_status.revoked_reason = revoked_reason
+            publish_status.save()
+
+        return revoke_resp.json() if revoke_resp.status_code == 200 else False
 
     @classmethod
     def prepare_permit_amendment_untp_credential_without_id(

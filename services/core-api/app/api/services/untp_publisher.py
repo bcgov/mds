@@ -26,11 +26,14 @@ class CredentialPublishRequest(BaseModel):
 class CredentialRevokeRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
-    id: Optional[str] = None
-    type: Optional[str] = None
-    statusPurpose: str
-    statusListIndex: str
-    statusListCredential: str
+    class CredentialStatus(BaseModel):
+        statusListCredential: str
+        statusPurpose: str
+        statusListIndex: str
+
+    credentialId: Optional[str] = None
+    credentialStatus: CredentialStatus
+    status: bool
 
 
 class UNTPPublisherService():

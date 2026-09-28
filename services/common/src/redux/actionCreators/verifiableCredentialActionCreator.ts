@@ -50,14 +50,18 @@ export const issueUNTPCredentialForPermitAmendment = (
   };
 
 export const revokeUNTPCredentialForPermitAmendment = (
-  permitAmendmentGuid: string
+  permitAmendmentGuid: string,
+  revokedReason: string
 ): AppThunk<Promise<AxiosResponse>> => (dispatch): Promise<AxiosResponse> => {
   dispatch(showLoading("modal"));
   dispatch(request(NetworkReducerTypes.REVOKE_UNTP_CREDENTIAL));
   return CustomAxios()
     .post(
       `${ENVIRONMENT.apiUrl}/verifiable-credentials/credentials/revoke`,
-      { permit_amendment_guid: permitAmendmentGuid },
+      {
+        permit_amendment_guid: permitAmendmentGuid,
+        revoked_reason: revokedReason,
+      },
       createRequestHeader()
     )
     .then((response) => {
