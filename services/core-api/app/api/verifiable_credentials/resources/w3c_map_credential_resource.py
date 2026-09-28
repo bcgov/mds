@@ -7,7 +7,7 @@ from werkzeug.exceptions import BadRequest, ServiceUnavailable
 from flask_restx import Resource, reqparse
 
 from app.extensions import api
-from app.api.utils.access_decorators import requires_any_of, MINESPACE_PROPONENT, EDIT_PARTY, VIEW_ALL
+from app.api.utils.access_decorators import requires_any_of, MINESPACE_PROPONENT, EDIT_PARTY, MINE_ADMIN
 from app.api.utils.resources_mixins import UserMixin
 
 from app.api.verifiable_credentials.untp_manager import UNTPCredentialManager
@@ -121,7 +121,7 @@ class W3CCredentialRevokeResource(Resource, UserMixin):
 
     @api.expect(parser)
     @api.doc(description="revokes a w3c credential from the untp publisher")
-    @requires_any_of([EDIT_PARTY, MINESPACE_PROPONENT])
+    @requires_any_of([MINE_ADMIN])
     def post(self):
         if not is_feature_enabled(Feature.VC_W3C):
             raise ServiceUnavailable("This feature is not enabled.")
