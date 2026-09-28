@@ -38,8 +38,9 @@ export const createPermit =
           dispatch(success(NetworkReducerTypes.CREATE_PERMIT));
           return response;
         })
-        .catch(() => {
+        .catch((err) => {
           dispatch(error(NetworkReducerTypes.CREATE_PERMIT));
+          throw err;
         })
         .finally(() => dispatch(hideLoading("modal")));
     };
@@ -74,8 +75,9 @@ export const fetchDraftPermitByNOW =
           dispatch(permitActions.storeDraftPermits(response.data));
           return response;
         })
-        .catch(() => {
+        .catch((err) => {
           dispatch(error(NetworkReducerTypes.GET_PERMITS));
+          throw err;
         })
         .finally(() => dispatch(hideLoading()));
     };
@@ -103,8 +105,9 @@ export const updatePermit =
           dispatch(success(NetworkReducerTypes.UPDATE_PERMIT));
           return response;
         })
-        .catch(() => {
+        .catch((err) => {
           dispatch(error(NetworkReducerTypes.UPDATE_PERMIT));
+          throw err;
         })
         .finally(() => dispatch(hideLoading()));
     };
@@ -132,8 +135,9 @@ export const createPermitAmendment =
           dispatch(success(NetworkReducerTypes.CREATE_PERMIT_AMENDMENT));
           return response;
         })
-        .catch(() => {
+        .catch((err) => {
           dispatch(error(NetworkReducerTypes.CREATE_PERMIT_AMENDMENT));
+          throw err;
         })
         .finally(() => dispatch(hideLoading("modal")));
     };
@@ -161,8 +165,9 @@ export const createPermitAmendmentVC =
           dispatch(success(NetworkReducerTypes.PERMIT_AMENDMENT_VC));
           return response;
         })
-        .catch(() => {
+        .catch((err) => {
           dispatch(error(NetworkReducerTypes.PERMIT_AMENDMENT_VC));
+          throw err;
         })
         .finally(() => dispatch(hideLoading()));
     };
@@ -195,8 +200,9 @@ export const updatePermitAmendment =
           dispatch(success(NetworkReducerTypes.UPDATE_PERMIT_AMENDMENT));
           return response;
         })
-        .catch(() => {
+        .catch((err) => {
           dispatch(error(NetworkReducerTypes.UPDATE_PERMIT_AMENDMENT));
+          throw err;
         })
         .finally(() => dispatch(hideLoading()));
     };
@@ -206,8 +212,8 @@ export const fetchPermitAmendmentConditionCategories =
     mineGuid: string,
     permitGuid: string,
     permitAmdendmentGuid: string
-  ): AppThunk<Promise<IPermitCondition[] | IDispatchError>> =>
-    (dispatch): Promise<IPermitCondition[] | IDispatchError> => {
+  ): AppThunk<Promise<IPermitConditionCategory[] | IDispatchError>> =>
+    (dispatch): Promise<IPermitConditionCategory[] | IDispatchError> => {
       dispatch(request(NetworkReducerTypes.GET_PERMIT_CONDITION_CATEGORIES));
       dispatch(showLoading());
       return CustomAxios()
@@ -222,7 +228,7 @@ export const fetchPermitAmendmentConditionCategories =
               permitGuid,
             })
           );
-          return response.data;
+          return response.data.records;
         })
         .catch(() => dispatch(error(NetworkReducerTypes.GET_PERMIT_CONDITION_CATEGORIES)))
         .finally(() => dispatch(hideLoading()));
@@ -234,8 +240,8 @@ export const createPermitAmendmentConditionCategory =
     permitGuid: string,
     permitAmdendmentGuid: string,
     payload: IPermitConditionCategory
-  ): AppThunk<Promise<IPermitCondition | IDispatchError>> =>
-    (dispatch): Promise<IPermitCondition | IDispatchError> => {
+  ): AppThunk<Promise<IPermitConditionCategory | IDispatchError>> =>
+    (dispatch): Promise<IPermitConditionCategory | IDispatchError> => {
       dispatch(request(NetworkReducerTypes.CREATE_PERMIT_CONDITION_CATEGORY));
       dispatch(showLoading());
       return CustomAxios()
@@ -267,8 +273,8 @@ export const updatePermitAmendmentConditionCategory =
     permitGuid: string,
     permitAmdendmentGuid: string,
     payload: IPermitConditionCategory
-  ): AppThunk<Promise<IPermitCondition | IDispatchError>> =>
-    (dispatch): Promise<IPermitCondition | IDispatchError> => {
+  ): AppThunk<Promise<IPermitConditionCategory | IDispatchError>> =>
+    (dispatch): Promise<IPermitConditionCategory | IDispatchError> => {
       dispatch(request(NetworkReducerTypes.UPDATE_PERMIT_CONDITION_CATEGORY));
       dispatch(showLoading());
       return CustomAxios()
@@ -299,8 +305,8 @@ export const deletePermitAmendmentConditionCategory =
     permitGuid: string,
     permitAmdendmentGuid: string,
     permitConditionCategoryCode: string
-  ): AppThunk<Promise<IPermitCondition | IDispatchError>> =>
-    (dispatch): Promise<IPermitCondition | IDispatchError> => {
+  ): AppThunk<Promise<IPermitConditionCategory | IDispatchError>> =>
+    (dispatch): Promise<IPermitConditionCategory | IDispatchError> => {
       dispatch(request(NetworkReducerTypes.DELETE_PERMIT_CONDITION_CATEGORY));
       dispatch(showLoading());
       return CustomAxios()
@@ -344,8 +350,9 @@ export const fetchPermitAmendment =
           dispatch(permitActions.storePermitAmendment(response.data, permitGuid));
           return response.data;
         })
-        .catch(() => {
+        .catch((err) => {
           dispatch(error(NetworkReducerTypes.GET_PERMIT_AMENDMENT));
+          throw err;
         })
         .finally(() => dispatch(hideLoading()));
     };
@@ -378,8 +385,9 @@ export const removePermitAmendmentDocument =
           dispatch(success(NetworkReducerTypes.UPDATE_PERMIT_AMENDMENT_DOCUMENT));
           return response;
         })
-        .catch(() => {
+        .catch((err) => {
           dispatch(error(NetworkReducerTypes.UPDATE_PERMIT_AMENDMENT_DOCUMENT));
+          throw err;
         })
         .finally(() => dispatch(hideLoading()));
     };
@@ -402,8 +410,9 @@ export const deletePermit =
           dispatch(success(NetworkReducerTypes.DELETE_PERMIT));
           return response;
         })
-        .catch(() => {
+        .catch((err) => {
           dispatch(error(NetworkReducerTypes.DELETE_PERMIT));
+          throw err;
         })
         .finally(() => dispatch(hideLoading()));
     };
@@ -430,8 +439,9 @@ export const deletePermitAmendment =
           dispatch(success(NetworkReducerTypes.DELETE_PERMIT_AMENDMENT));
           return response;
         })
-        .catch(() => {
+        .catch((err) => {
           dispatch(error(NetworkReducerTypes.DELETE_PERMIT_AMENDMENT));
+          throw err;
         })
         .finally(() => dispatch(hideLoading()));
     };
@@ -468,7 +478,9 @@ export const fetchPermitConditionsData =
           dispatch(success(NetworkReducerTypes.GET_PERMIT_CONDITIONS_DATA));
           dispatch(permitActions.storePermitAmendmentConditions(response.data, permitGuid));
         })
-        .catch(() => dispatch(error(NetworkReducerTypes.GET_PERMIT_CONDITIONS_DATA)))
+        .catch(() => {
+          dispatch(error(NetworkReducerTypes.GET_PERMIT_CONDITIONS_DATA));
+        })
         .finally(() => dispatch(hideLoading()));
     };
 
@@ -635,7 +647,9 @@ export const fetchStandardPermitConditions =
           dispatch(success(NetworkReducerTypes.GET_PERMIT_CONDITIONS));
           dispatch(permitActions.storeStandardPermitConditions(response.data));
         })
-        .catch(() => dispatch(error(NetworkReducerTypes.GET_PERMIT_CONDITIONS)))
+        .catch(() => {
+          dispatch(error(NetworkReducerTypes.GET_PERMIT_CONDITIONS));
+        })
         .finally(() => dispatch(hideLoading()));
     };
 

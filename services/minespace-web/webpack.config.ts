@@ -178,6 +178,11 @@ const devConfig = merge([
 
 const prodConfig = merge([
   {
+    // async: false (the default for mode: "production") makes webpack fail the
+    // build when the TypeScript program reports errors, instead of only logging them.
+    plugins: [new ForkTsCheckerWebpackPlugin()],
+  },
+  {
     output: {
       path: PATHS.build,
       publicPath: ASSET_PATH,

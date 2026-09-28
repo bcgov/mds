@@ -38,9 +38,10 @@ export const issueVCDigitalCredForPermit = (
         dispatch(hideLoading("modal"));
         return response;
       })
-      .catch(() => {
+      .catch((err) => {
         dispatch(error(NetworkReducerTypes.ISSUE_VC));
         dispatch(hideLoading("modal"));
+        throw err;
       });
   };
 
@@ -88,9 +89,10 @@ export const fetchVCWalletInvitations = (
         dispatch(hideLoading("modal"));
         return response;
       })
-      .catch(() => {
+      .catch((err) => {
         dispatch(error(NetworkReducerTypes.FETCH_VC_WALLET_CONNECTION_INVITATIONS));
         dispatch(hideLoading("modal"));
+        throw err;
       });
   };
 
@@ -116,8 +118,9 @@ export const deletePartyWalletConnection = (
         dispatch(hideLoading("modal"));
         return response;
       })
-      .catch(() => {
+      .catch((err) => {
         dispatch(error(NetworkReducerTypes.DELETE_VC_WALLET_CONNECTION));
         dispatch(hideLoading("modal"));
+        throw err;
       });
   };

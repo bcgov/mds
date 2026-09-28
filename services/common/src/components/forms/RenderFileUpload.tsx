@@ -221,6 +221,9 @@ export const FileUpload: FC<FileUploadProps> = ({
 
     const pollUploadStatus = async () => {
       const response = await dispatch(pollDocumentUploadStatus(documentGuid));
+      if (!response) {
+        return;
+      }
       if (response.data.status !== "In Progress") {
         clearInterval(intervalId);
         if (response.data.status === "Success") {
@@ -242,7 +245,7 @@ export const FileUpload: FC<FileUploadProps> = ({
               }
               importIsSuccessful(true);
             } catch (err) {
-              importIsSuccessful(false, err.response.data);
+              importIsSuccessful(false, (err as any)?.response?.data);
             }
 
             if (showWhirlpool) {

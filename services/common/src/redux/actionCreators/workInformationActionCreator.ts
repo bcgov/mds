@@ -33,8 +33,9 @@ export const createMineWorkInformation = (
         dispatch(success(NetworkReducerTypes.CREATE_MINE_WORK_INFORMATION));
         return response;
       })
-      .catch(() => {
+      .catch((err) => {
         dispatch(error(NetworkReducerTypes.CREATE_MINE_WORK_INFORMATION));
+        throw err;
       })
       .finally(() => dispatch(hideLoading("modal")));
   };
@@ -53,8 +54,9 @@ export const fetchMineWorkInformations = (
         dispatch(workInformationActions.storeMineWorkInformations(response.data));
         return response;
       })
-      .catch(() => {
+      .catch((err) => {
         dispatch(error(NetworkReducerTypes.GET_MINE_WORK_INFORMATIONS));
+        throw err;
       })
       .finally(() => dispatch(hideLoading()));
   };
@@ -82,8 +84,9 @@ export const updateMineWorkInformation = (
         dispatch(success(NetworkReducerTypes.UPDATE_MINE_WORK_INFORMATION));
         return response;
       })
-      .catch(() => {
+      .catch((err) => {
         dispatch(error(NetworkReducerTypes.UPDATE_MINE_WORK_INFORMATION));
+        throw err;
       })
       .finally(() => dispatch(hideLoading("modal")));
   };
@@ -107,8 +110,9 @@ export const deleteMineWorkInformation = (
       dispatch(success(NetworkReducerTypes.DELETE_MINE_WORK_INFORMATION));
       return response;
     })
-    .catch(() => {
+    .catch((err) => {
       dispatch(error(NetworkReducerTypes.DELETE_MINE_WORK_INFORMATION));
+      throw err;
     })
     .finally(() => dispatch(hideLoading()));
 };

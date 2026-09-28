@@ -34,8 +34,9 @@ export const createVariance = (
       dispatch(success(NetworkReducerTypes.CREATE_MINE_VARIANCE));
       return response;
     })
-    .catch(() => {
+    .catch((err) => {
       dispatch(error(NetworkReducerTypes.CREATE_MINE_VARIANCE));
+      throw err;
     })
     .finally(() => dispatch(hideLoading("modal")));
 };
@@ -56,8 +57,9 @@ export const updateVariance = (
       dispatch(success(NetworkReducerTypes.UPDATE_MINE_VARIANCE));
       return response;
     })
-    .catch(() => {
+    .catch((err) => {
       dispatch(error(NetworkReducerTypes.UPDATE_MINE_VARIANCE));
+      throw err;
     })
     .finally(() => dispatch(hideLoading("modal")));
 };
@@ -109,8 +111,9 @@ export const addDocumentToVariance = (
       dispatch(success(NetworkReducerTypes.ADD_DOCUMENT_TO_VARIANCE));
       return response;
     })
-    .catch(() => {
+    .catch((err) => {
       dispatch(error(NetworkReducerTypes.ADD_DOCUMENT_TO_VARIANCE));
+      throw err;
     })
     .finally(() => dispatch(hideLoading("modal")));
 };
@@ -131,8 +134,9 @@ export const removeDocumentFromVariance = (
       dispatch(success(NetworkReducerTypes.REMOVE_DOCUMENT_FROM_VARIANCE));
       return response;
     })
-    .catch(() => {
+    .catch((err) => {
       dispatch(error(NetworkReducerTypes.REMOVE_DOCUMENT_FROM_VARIANCE));
+      throw err;
     })
     .finally(() => dispatch(hideLoading("modal")));
 };
@@ -168,8 +172,9 @@ export const deleteVariance = (
       dispatch(success(NetworkReducerTypes.DELETE_VARIANCE));
       return response;
     })
-    .catch(() => {
+    .catch((err) => {
       dispatch(error(NetworkReducerTypes.DELETE_VARIANCE));
+      throw err;
     })
     .finally(() => dispatch(hideLoading()));
 };

@@ -9,6 +9,7 @@ import {
 import { RootState } from "@mds/common/redux/rootState";
 import { getMunicipalityOptions } from "../reducers/staticContentReducer";
 import { MinePartyAppointmentTypeCodeEnum } from "@mds/common/constants/enums";
+import { IOption } from "@mds/common/interfaces";
 
 export const {
   getStaticContentLoadingIsComplete,
@@ -530,7 +531,7 @@ export const getDropdownNoticeOfWorkApplicationTypeOptions = createSelectorWrapp
   getNoticeOfWorkApplicationTypeOptions,
   createDropDownList,
   ["description", "notice_of_work_type_code", "active_ind"]
-) as (state: RootState, showActiveOnly?: boolean) => [];
+) as (state: RootState, showActiveOnly?: boolean) => IOption[];
 
 export const getNoticeOfWorkApplicationTypeOptionsHash = createSelector(
   [getDropdownNoticeOfWorkApplicationTypeOptions],

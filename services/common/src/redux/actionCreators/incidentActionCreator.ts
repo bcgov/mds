@@ -32,8 +32,9 @@ export const createMineIncident = (
       dispatch(success(NetworkReducerTypes.CREATE_MINE_INCIDENT));
       return response;
     })
-    .catch(() => {
+    .catch((err) => {
       dispatch(error(NetworkReducerTypes.CREATE_MINE_INCIDENT));
+      throw err;
     })
     .finally(() => dispatch(hideLoading("modal")));
 };
@@ -93,8 +94,9 @@ export const updateMineIncident = (
       dispatch(success(NetworkReducerTypes.UPDATE_MINE_INCIDENT));
       return response;
     })
-    .catch(() => {
+    .catch((err) => {
       dispatch(error(NetworkReducerTypes.UPDATE_MINE_INCIDENT));
+      throw err;
     })
     .finally(() => dispatch(hideLoading("modal")));
 };
@@ -117,8 +119,9 @@ export const removeDocumentFromMineIncident = (mineGuid, mineIncidentGuid, mineD
       dispatch(success(NetworkReducerTypes.REMOVE_DOCUMENT_FROM_MINE_INCIDENT));
       return response;
     })
-    .catch(() => {
+    .catch((err) => {
       dispatch(error(NetworkReducerTypes.REMOVE_DOCUMENT_FROM_MINE_INCIDENT));
+      throw err;
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -152,8 +155,9 @@ export const deleteMineIncident = (mineGuid, mineIncidentGuid) => (dispatch) => 
       dispatch(success(NetworkReducerTypes.DELETE_MINE_INCIDENT));
       return response;
     })
-    .catch(() => {
+    .catch((err) => {
       dispatch(error(NetworkReducerTypes.DELETE_MINE_INCIDENT));
+      throw err;
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -187,8 +191,9 @@ export const createMineIncidentNote = (mineIncidentGuid, payload) => (dispatch) 
       dispatch(success(NetworkReducerTypes.CREATE_MINE_INCIDENT_NOTE));
       return response;
     })
-    .catch(() => {
+    .catch((err) => {
       dispatch(error(NetworkReducerTypes.CREATE_MINE_INCIDENT_NOTE));
+      throw err;
     });
 };
 
@@ -207,7 +212,8 @@ export const deleteMineIncidentNote = (mineIncidentGuid, mineIncidentNoteGuid) =
       dispatch(success(NetworkReducerTypes.DELETE_MINE_INCIDENT_NOTE));
       return response;
     })
-    .catch(() => {
+    .catch((err) => {
       dispatch(error(NetworkReducerTypes.DELETE_MINE_INCIDENT_NOTE));
+      throw err;
     });
 };
