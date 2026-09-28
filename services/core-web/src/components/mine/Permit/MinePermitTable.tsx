@@ -170,8 +170,12 @@ const RevokeCredentialModal: React.FC<RevokeCredentialModalProps> = ({
       </div>
 
       <Form form={form} layout="vertical">
-        <Form.Item name="details" label="Additional detail">
-          <TextArea rows={4} placeholder="Optional — recorded in the audit log" maxLength={500} />
+        <Form.Item
+          name="details"
+          label="Additional detail"
+          rules={[{ required: true, message: "please record the reason required" }]}
+        >
+          <TextArea rows={4} placeholder="Required" maxLength={500} />
         </Form.Item>
       </Form>
 
