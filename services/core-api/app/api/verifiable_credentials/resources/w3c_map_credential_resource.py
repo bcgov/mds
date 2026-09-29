@@ -29,6 +29,7 @@ ISSUER_CREDENTIAL_REVOKED = "issuer_cred_rev"
 class W3CCredentialResource(Resource, UserMixin):
 
     @api.doc(description='Endpoint to get vc by uri.', params={})
+    @requires_role_view_all
     def get(self, vc_unsigned_hash: str):
         return loads(
             PermitAmendmentOrgBookPublish.find_by_unsigned_payload_hash(
