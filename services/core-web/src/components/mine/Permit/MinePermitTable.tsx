@@ -137,9 +137,7 @@ const RevokeCredentialModal: React.FC<RevokeCredentialModalProps> = ({
 
   const handleSubmit = async () => {
     const values = await form.validateFields();
-    const revokedReason = values.details
-      ? `${values.reason}: ${values.details}`
-      : values.reason;
+    const revokedReason = values.details;
 
     onSubmit(revokedReason);
     form.resetFields();
