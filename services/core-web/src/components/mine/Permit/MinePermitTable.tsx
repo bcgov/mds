@@ -137,7 +137,7 @@ const RevokeCredentialModal: React.FC<RevokeCredentialModalProps> = ({
 
   const handleSubmit = async () => {
     const values = await form.validateFields();
-    const revokedReason = values.details;
+    const revokedReason = values.reason;
 
     onSubmit(revokedReason);
     form.resetFields();
@@ -169,7 +169,7 @@ const RevokeCredentialModal: React.FC<RevokeCredentialModalProps> = ({
 
       <Form form={form} layout="vertical">
         <Form.Item
-          name="details"
+          name="reason"
           label="Additional detail"
           rules={[{ required: true, message: "please record the reason required" }]}
         >
