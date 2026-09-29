@@ -121,14 +121,14 @@ const getUNTPCredentialViewUrl = (credentialUrl: string) => {
 
 interface RevokeCredentialModalProps {
   record: any;
-  visible: boolean;
+  open: boolean;
   onCancel: () => void;
   onSubmit: (reason: string) => void;
 }
 
 const RevokeCredentialModal: React.FC<RevokeCredentialModalProps> = ({
   record,
-  visible,
+  open,
   onCancel,
   onSubmit,
 }) => {
@@ -146,7 +146,7 @@ const RevokeCredentialModal: React.FC<RevokeCredentialModalProps> = ({
   return (
     <Modal
       title="Revoke Digital Credential"
-      visible={visible}
+      open={open}
       onCancel={() => {
         form.resetFields();
         onCancel();
@@ -642,7 +642,7 @@ export const MinePermitTable: React.FC<MinePermitTableProps> = ({
       />
       <RevokeCredentialModal
         record={revokeRecord}
-        visible={Boolean(revokeRecord)}
+        open={Boolean(revokeRecord)}
         onCancel={() => setRevokeRecord(null)}
         onSubmit={(revokedReason) => {
           handlePermitAmendmentRevokeUNTPCredential(null, revokeRecord, revokedReason);
