@@ -1,17 +1,13 @@
 from json import dumps, loads
 from hashlib import md5
-from datetime import datetime
-from uuid import UUID
-from flask import current_app
 from werkzeug.exceptions import BadRequest, ServiceUnavailable
 from flask_restx import Resource, reqparse
 
 from app.extensions import api
-from app.api.utils.access_decorators import requires_any_of, MINESPACE_PROPONENT, EDIT_PARTY, MINE_ADMIN
+from app.api.utils.access_decorators import requires_any_of, MINESPACE_PROPONENT, EDIT_PARTY, MINE_ADMIN, requires_role_view_all
 from app.api.utils.resources_mixins import UserMixin
 
 from app.api.verifiable_credentials.untp_manager import UNTPCredentialManager
-from app.api.verifiable_credentials.anoncred_manager import AnonCredCredentialManager
 from app.api.verifiable_credentials.models.orgbook_publish_status import PermitAmendmentOrgBookPublish
 from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
 from app.api.services.untp_publisher import UNTPPublisherService
