@@ -1,6 +1,6 @@
 import uuid
 from datetime import date, datetime
-from typing import TYPE_CHECKING, Union
+from typing import TYPE_CHECKING, Union, Optional
 
 from app.api.constants import *
 from app.api.mines.permits.permit_amendment.models.permit_amendment_document import (
@@ -14,7 +14,7 @@ from app.extensions import db
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.ext.hybrid import hybrid_property
-from sqlalchemy.orm import validates
+from sqlalchemy.orm import validates, Mapped
 from sqlalchemy.schema import FetchedValue
 
 from . import permit_amendment_status_code, permit_amendment_type_code
@@ -199,7 +199,7 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
                 self.vc_credential_exch) > 0 else None
 
     @hybrid_property
-    def active_orgbook_publish_status(self):
+    def active_orgbook_publish_status(self) -> Mapped["PermitAmendmentOrgBookPublish | None"]:
         active = [
             x for x in self.orgbook_publish_status_records
             if x.publish_state is True and x.revoked_ind is False

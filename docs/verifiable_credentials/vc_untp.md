@@ -69,7 +69,7 @@ The order that context files are important, as a later file can override a type 
 
 The top level of the credential produced is currently typed with all three because, and because all the attributes in all the context files are `protected` no attributes can conflict. AKA. Context files can add attributes to protected types, but cannot redefine an existing term.
 
-## DEPRECATED -Orgbook Publication Architecture Architechture
+## DEPRECATED - Orgbook Publication Architecture
 
 **DEPRECATED** Orgbook is being sunset (eventually??). 
 **Verifying** that a business claim is a real business relys on the [**BC Registries API**](https://www.bcregistry.gov.bc.ca/en-CA/), intgrated Aug 2026. and **Issuing** credentials for UNTP is no longer going to Orgbook, they are going to the standalone [**UNTP Publisher**](https://untp-publisher-api-dev.apps.gold.devops.gov.bc.ca/discovery)
