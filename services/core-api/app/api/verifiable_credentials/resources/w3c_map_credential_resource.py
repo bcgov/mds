@@ -7,7 +7,7 @@ from werkzeug.exceptions import BadRequest, ServiceUnavailable
 from flask_restx import Resource, reqparse
 
 from app.extensions import api
-from app.api.utils.access_decorators import requires_any_of, MINESPACE_PROPONENT, EDIT_PARTY, VIEW_ALL
+from app.api.utils.access_decorators import requires_any_of, MINESPACE_PROPONENT, EDIT_PARTY, VIEW_ALL, requires_role_view_all
 from app.api.utils.resources_mixins import UserMixin
 
 from app.api.verifiable_credentials.untp_manager import UNTPCredentialManager
@@ -29,6 +29,7 @@ ISSUER_CREDENTIAL_REVOKED = "issuer_cred_rev"
 class W3CCredentialResource(Resource, UserMixin):
 
     @api.doc(description='Endpoint to get vc by uri.', params={})
+    @requires_role_view_all
     def get(self, vc_unsigned_hash: str):
         return loads(
             PermitAmendmentOrgBookPublish.find_by_unsigned_payload_hash(

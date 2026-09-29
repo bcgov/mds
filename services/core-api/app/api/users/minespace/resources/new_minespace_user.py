@@ -8,7 +8,7 @@ from pytz import utc
 from app.extensions import api, getJwtManager
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.include.user_info import User as UserUtils
-from app.api.utils.access_decorators import VIEW_ALL
+from app.api.utils.access_decorators import VIEW_ALL, requires_authentication
 
 from app.api.users.minespace.models.minespace_user import MinespaceUser
 from app.api.users.minespace.models.minespace_user_document_xref import MinespaceUserDocumentXref
@@ -24,6 +24,7 @@ from app.api.utils.custom_reqparser import CustomReqparser
 
 class NewMinespaceUserResource(Resource, UserMixin):
     @api.doc(description="Get current user's access request")
+    @requires_authentication
     @api.marshal_with(MINESPACE_USER_ACCESS_REQUEST, code=200)
     def get(self):
         # Get user info from JWT token
@@ -43,6 +44,7 @@ class NewMinespaceUserResource(Resource, UserMixin):
         return user_request
     
     @api.doc(description='Submit new minespace user access request')
+    @requires_authentication
     @api.marshal_with(MINESPACE_USER_ACCESS_REQUEST, code=201)
     def post(self):
         parser = CustomReqparser()
@@ -162,6 +164,7 @@ class NewMinespaceUserResource(Resource, UserMixin):
 
 class NewMinespaceUserDocumentResource(Resource, UserMixin):
     @api.doc(description='Initialize document upload for new minespace user access request')
+    @requires_authentication
     def post(self):
         """Initialize file upload with document manager"""
         # Get user info from JWT token - must be authenticated with BCeID
@@ -190,6 +193,7 @@ class NewMinespaceUserDataResource(Resource, UserMixin):
             'search': 'Search term to match against mine name, mine number, or permit number (minimum 3 characters)',
         }
     )
+    @requires_authentication
     @api.marshal_with(MINE_SEARCH_RESULT, code=200, as_list=True, envelope='mines')
     def get(self):
         search_term = request.args.get('search', type=str)
