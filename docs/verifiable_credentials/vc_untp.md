@@ -143,7 +143,7 @@ Oversees Deployments of:
     - [TEST](https://untp-publisher-api-test.apps.gold.devops.gov.bc.ca/)
     - [PROD](https://publisher.orgbook.gov.bc.ca/)
   - PROVINCIAL ELECTION PAUSED VANITY URL ROLLOUT.
-  - TODO: UPdate this with vanity urls once published.
+  - TODO: Update this with vanity urls once published.
 - ~~[Aries-VCR-VC-Service](https://github.com/bcgov/aries-vcr-vc-service)~~
   - DEPRECATED w/ transition to UNTP Publisher 
 - [Aries-VCR](https://github.com/bcgov/aries-vcr)
