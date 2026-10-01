@@ -43,8 +43,9 @@ export const issueUNTPCredentialForPermitAmendment = (
         dispatch(success(NetworkReducerTypes.ISSUE_UNTP_CREDENTIAL));
         return response;
       })
-      .catch(() => {
+      .catch((err) => {
         dispatch(error(NetworkReducerTypes.ISSUE_UNTP_CREDENTIAL));
+        throw err;
       })
       .finally(() => dispatch(hideLoading("modal")));
   };
