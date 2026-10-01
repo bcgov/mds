@@ -218,12 +218,30 @@ export const FileUpload: FC<FileUploadProps> = ({
 
   const handleSuccess = (documentGuid, file, load, abort, versionGuid?) => {
     let intervalId; // eslint-disable-line prefer-const
+    let consecutiveFailureCount = 0;
+    const MAX_CONSECUTIVE_POLL_FAILURES = 5;
 
     const pollUploadStatus = async () => {
       const response = await dispatch(pollDocumentUploadStatus(documentGuid));
       if (!response) {
+        consecutiveFailureCount += 1;
+        if (consecutiveFailureCount >= MAX_CONSECUTIVE_POLL_FAILURES) {
+          clearInterval(intervalId);
+
+          if (onError) {
+            onError(file?.name ?? "", "Failed to check upload status");
+          }
+
+          notification.error({
+            message: `Failed to upload ${file?.name ?? ""}: unable to confirm upload status`,
+            duration: 10,
+          });
+
+          abort();
+        }
         return;
       }
+      consecutiveFailureCount = 0;
       if (response.data.status !== "In Progress") {
         clearInterval(intervalId);
         if (response.data.status === "Success") {
