@@ -90,6 +90,7 @@ export interface ITableAction {
   clickFunction: (event, record) => any;
   icon?: ReactNode;
   disabled?: boolean;
+  className?: string;
 }
 
 export const renderStatusColumn = (statusMap: { [key: string]: PresetStatusColorType }, title = "Status", dataIndex = "status") => {

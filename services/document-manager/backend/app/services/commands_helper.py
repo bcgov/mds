@@ -127,16 +127,13 @@ def start_zip_job(job_type, docs, task, zip_file_name=None):
     job_id = str(uuid.uuid4())
     doc_ids = [doc.document_id for doc in docs]    
     
-    # Create the arguments for the task
-    data = {"args": [job_id, doc_ids, str(zip_file_name)]}
-    
     # Start the task
-    async_response = apply_task_async(task.name, data)
+    result = task.delay(job_id, doc_ids, str(zip_file_name))
   
     message = f'Added a {job_type} job with ID {job_id} to the task queue: {len(docs)} docs will be zipped'
     
     # Create the response to indicate the task was started
-    response_data = {'task_id': async_response['task-id'], 'message': message}
+    response_data = {'task_id': result.id, 'message': message}
     response = Response(json.dumps(response_data), content_type='application/json')
     return json.loads(response.data.decode('utf-8'))
 

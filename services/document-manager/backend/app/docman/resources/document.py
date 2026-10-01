@@ -356,7 +356,7 @@ class DocumentResource(Resource):
 
     @api.route('/documents/zip', methods=['POST'])
     class DocumentZipResource(Resource):
-        @requires_any_of(DOCUMENT_UPLOAD_ROLES)
+        @requires_any_of(DOCUMENT_UPLOAD_ROLES + [VIEW_ALL])
         def post(self):
             from app.services.commands_helper import create_zip_task
             document_manager_guids = request.json.get('document_manager_guids', [])

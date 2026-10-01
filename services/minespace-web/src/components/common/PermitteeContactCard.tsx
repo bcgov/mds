@@ -66,8 +66,8 @@ export const PermitteeContactCard: FC<PermitteeContactCardProps> = ({
     <PermitteeContactCardRow
       Icon={IdcardOutlined}
       label="BC Registration #"
-      value={partyRelationship?.party.party_orgbook_registration_id || Strings.UNKNOWN}
-      badge={partyRelationship?.party.party_orgbook_registration_id ? "LINKED" : undefined}
+      value={partyRelationship?.party.party_bc_registration_id || Strings.UNKNOWN}
+      badge={partyRelationship?.party.party_bc_registration_id ? "LINKED" : undefined}
     />
     <PermitteeContactCardRow
       Icon={MailOutlined}
