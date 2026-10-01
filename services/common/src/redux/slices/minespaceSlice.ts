@@ -387,7 +387,7 @@ const minespaceSlice = createAppSlice({
                 } catch (error) {
                     thunkApi.dispatch(hideLoading());
                     // Return null if request doesn't exist yet (404) - this is expected for new users
-                    if (error.response?.status === 404) {
+                    if ((error as any)?.response?.status === 404) {
                         return null;
                     }
                     throw error;

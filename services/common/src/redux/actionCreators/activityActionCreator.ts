@@ -33,8 +33,9 @@ export const fetchActivities = (
       dispatch(storeActivities(response.data));
       return response;
     })
-    .catch(() => {
+    .catch((err) => {
       dispatch(error(NetworkReducerTypes.GET_ACTIVITIES));
+      throw err;
     })
     .finally(() => dispatch(hideLoading()));
 };

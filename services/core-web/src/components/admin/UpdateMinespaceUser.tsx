@@ -1,5 +1,5 @@
 import React, { FC, useState } from "react";
-import { ActionCreator, bindActionCreators } from "redux";
+import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { getMineNames } from "@mds/common/redux/selectors/mineSelectors";
 import { fetchMineNameList } from "@mds/common/redux/actionCreators/mineActionCreator";
@@ -8,7 +8,7 @@ import EditMinespaceUser from "@/components/Forms/EditMinespaceUser";
 import { IMine, IMineSearch } from "@mds/common/interfaces";
 
 interface UpdateMinespaceUserProps {
-  fetchMineNameList?: ActionCreator<typeof fetchMineNameList>,
+  fetchMineNameList?: typeof fetchMineNameList,
   mines: IMineSearch[],
   handleSubmit?: () => void,
   initialValues?: any,

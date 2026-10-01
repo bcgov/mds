@@ -30,8 +30,9 @@ export const createExplosivesPermit = (
         dispatch(success(NetworkReducerTypes.CREATE_EXPLOSIVES_PERMIT));
         return response;
       })
-      .catch(() => {
+      .catch((err) => {
         dispatch(error(NetworkReducerTypes.CREATE_EXPLOSIVES_PERMIT));
+        throw err;
       })
       .finally(() => dispatch(hideLoading("modal")));
   };
@@ -50,8 +51,9 @@ export const fetchExplosivesPermits = (
         dispatch(explosivesPermitActions.storeExplosivesPermits(response.data));
         return response;
       })
-      .catch(() => {
+      .catch((err) => {
         dispatch(error(NetworkReducerTypes.GET_EXPLOSIVES_PERMITS));
+        throw err;
       })
       .finally(() => dispatch(hideLoading()));
   };
@@ -79,8 +81,9 @@ export const updateExplosivesPermit = (
         dispatch(success(NetworkReducerTypes.UPDATE_EXPLOSIVES_PERMIT));
         return response;
       })
-      .catch(() => {
+      .catch((err) => {
         dispatch(error(NetworkReducerTypes.UPDATE_EXPLOSIVES_PERMIT));
+        throw err;
       })
       .finally(() => dispatch(hideLoading("modal")));
   };
@@ -104,8 +107,9 @@ export const deleteExplosivesPermit = (
       dispatch(success(NetworkReducerTypes.DELETE_EXPLOSIVES_PERMIT));
       return response;
     })
-    .catch(() => {
+    .catch((err) => {
       dispatch(error(NetworkReducerTypes.DELETE_EXPLOSIVES_PERMIT));
+      throw err;
     })
     .finally(() => dispatch(hideLoading()));
 };

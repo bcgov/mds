@@ -32,8 +32,9 @@ export const createExplosivesPermitAmendment = (
         dispatch(success(NetworkReducerTypes.CREATE_EXPLOSIVES_PERMIT_AMENDMENT));
         return response;
       })
-      .catch(() => {
+      .catch((err) => {
         dispatch(error(NetworkReducerTypes.CREATE_EXPLOSIVES_PERMIT_AMENDMENT));
+        throw err;
       })
       .finally(() => dispatch(hideLoading("modal")));
   };
@@ -63,8 +64,9 @@ export const updateExplosivesPermitAmendment = (
         dispatch(success(NetworkReducerTypes.UPDATE_EXPLOSIVES_PERMIT_AMENDMENT));
         return response;
       })
-      .catch(() => {
+      .catch((err) => {
         dispatch(error(NetworkReducerTypes.UPDATE_EXPLOSIVES_PERMIT_AMENDMENT));
+        throw err;
       })
       .finally(() => dispatch(hideLoading("modal")));
   };
