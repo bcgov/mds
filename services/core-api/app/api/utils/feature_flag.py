@@ -26,6 +26,7 @@ class Feature(Enum):
     NOW_APPLICATION_DOCUMENT_SEARCH = 'now_application_document_search'
     NOTICE_OF_WORK_NATIONS = 'notice_of_work_nations'
     BC_REGISTRIES_SEARCH = 'bc_registries_search'
+    NOW_FILE_MANAGEMENT = 'now_file_management'
 
     def __str__(self):
         return self.value
