@@ -222,3 +222,18 @@ td.ant-table-cell {
   text-align: right;
   width: 0; // effectively "fit-content"
 }
+
+.ant-dropdown-menu-item.vc-action {
+  background-color: #fff3bf;
+  border-left: 4px solid #f08c00;
+  padding: 5px 12px 5px 8px;
+
+  &:hover,
+  &:focus-within {
+    background-color: #ffe066;
+  }
+
+  .menu-item-button {
+    padding: 0;
+  }
+}

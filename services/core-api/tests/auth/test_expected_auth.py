@@ -599,6 +599,7 @@ from app.api.verifiable_credentials.resources.vc_revocation import (
 )
 from app.api.verifiable_credentials.resources.w3c_map_credential_resource import (
     W3CCredentialIssueResource,
+    W3CCredentialRevokeResource,
     W3CCredentialResource,
 )
 from app.api.verify.mine.now.resources.verify_mine_now import VerifyMineNOWResource
@@ -973,6 +974,7 @@ EXPECTED_AUTH_TABLE = [
         (W3CCredentialResource, 'get', [VIEW_ALL]),
         (W3CCredentialIssueResource, 'post', [EDIT_PARTY, MINESPACE_PROPONENT]),
         (W3CCredentialIssueResource, 'get', [EDIT_PARTY, MINESPACE_PROPONENT]),
+    (W3CCredentialRevokeResource, 'post', [MINE_ADMIN]),
         (ZipProgressResource, 'get', [VIEW_ALL, MINESPACE_PROPONENT]),
         (ZipResource, 'post', [VIEW_ALL, MINESPACE_PROPONENT]),
     ]

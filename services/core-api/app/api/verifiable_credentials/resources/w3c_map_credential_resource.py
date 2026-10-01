@@ -1,17 +1,13 @@
 from json import dumps, loads
 from hashlib import md5
-from datetime import datetime
-from uuid import UUID
-from flask import current_app
 from werkzeug.exceptions import BadRequest, ServiceUnavailable
 from flask_restx import Resource, reqparse
 
 from app.extensions import api
-from app.api.utils.access_decorators import requires_any_of, MINESPACE_PROPONENT, EDIT_PARTY, VIEW_ALL, requires_role_view_all
+from app.api.utils.access_decorators import requires_any_of, MINESPACE_PROPONENT, EDIT_PARTY, MINE_ADMIN, requires_role_view_all
 from app.api.utils.resources_mixins import UserMixin
 
 from app.api.verifiable_credentials.untp_manager import UNTPCredentialManager
-from app.api.verifiable_credentials.anoncred_manager import AnonCredCredentialManager
 from app.api.verifiable_credentials.models.orgbook_publish_status import PermitAmendmentOrgBookPublish
 from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
 from app.api.services.untp_publisher import UNTPPublisherService
@@ -103,3 +99,49 @@ class W3CCredentialIssueResource(Resource, UserMixin):
             payload_hash) is not None
 
         return {"hash": payload_hash, "existing": existing, "payload": payload}
+
+
+class W3CCredentialRevokeResource(Resource, UserMixin):
+    parser = reqparse.RequestParser(trim=True)
+    parser.add_argument(
+        'permit_amendment_guid',
+        type=str,
+        help='GUID of the permit amendment.',
+        location='json',
+        required=True)
+    parser.add_argument(
+        'revoked_reason',
+        type=str,
+        help='Inspection or reason for revocation.',
+        location='json',
+        required=True)
+
+    @api.expect(parser)
+    @api.doc(description="revokes a w3c credential from the untp publisher")
+    @requires_any_of([MINE_ADMIN])
+    def post(self):
+        if not is_feature_enabled(Feature.VC_W3C):
+            raise ServiceUnavailable("This feature is not enabled.")
+
+        data = self.parser.parse_args()
+        permit_amendment_guid = data["permit_amendment_guid"]
+        permit_amendment = PermitAmendment.find_by_permit_amendment_guid(
+            permit_amendment_guid, unsafe=True)
+        if not permit_amendment:
+            raise BadRequest(
+                f"permit_amendment could not be found for permit_amendment_guid={permit_amendment_guid}"
+            )
+
+        publish_status = permit_amendment.active_orgbook_publish_status
+        if not publish_status or not publish_status.publish_state or not publish_status.orgbook_credential_id:
+            raise BadRequest(
+                f"no published credential found for permit_amendment_guid={permit_amendment_guid}")
+        revoked = UNTPCredentialManager().revoke_published_untp_credential(
+            publish_status.orgbook_credential_id, str(publish_status.party_guid),
+            data["revoked_reason"])
+        if not revoked:
+            raise BadRequest(
+                f"credential could not be revoked for permit_amendment_guid={permit_amendment_guid}"
+            )
+
+        return {"revoked": True}, 200

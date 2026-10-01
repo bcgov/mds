@@ -32,6 +32,7 @@ describe("MinePermitTable", () => {
             openAddPermitHistoricalAmendmentModal={jest.fn()}
             openAddAmalgamatedPermitModal={jest.fn()}
             handlePermitAmendmentIssueVC={jest.fn()}
+            handlePermitAmendmentRevokeUNTPCredential={jest.fn()}
             expandedRowKeys={[]}
             onExpand={jest.fn()}
             handleDeletePermit={jest.fn()}

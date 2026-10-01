@@ -13,6 +13,8 @@ export interface IActiveOrgbookPublishStatus {
   permit_number: string;
   orgbook_entity_id: string;
   orgbook_credential_id: string | null;
+  revoked_ind: boolean;
+  revoked_reason: string | null;
   error_msg?: string | null;
   create_timestamp: string;
   update_timestamp: string;

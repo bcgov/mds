@@ -30,7 +30,9 @@ export interface IParty {
   party_guid: string;
   /** party_name: if the party is ORG, the company name, if it's PER, then last_name */
   party_name: string;
-  party_bc_registration: IPartyBCRegistration;
+  party_bc_registration?: IPartyBCRegistration;
+  party_bc_registration_id: string | null;
+  party_bc_registration_name: string | null;
   party_type_code: PartyTypeCodeEnum;
   phone_ext?: string;
   phone_no: string;
