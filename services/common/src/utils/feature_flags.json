@@ -34,5 +34,6 @@
     "now_application_document_search": true,
     "notice_of_work_nations": true,
     "inspector_permit_package_type_selector": true,
-    "cdv_permit_package_files": true
+    "cdv_permit_package_files": true,
+    "now_file_management": true
 }
