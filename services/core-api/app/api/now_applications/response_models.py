@@ -2,7 +2,7 @@ from app.extensions import api
 from flask_restx import fields
 
 from app.api.parties.response_models import PARTY
-from app.api.mines.response_models import MINE_DOCUMENT_MODEL, PERMIT_AMENDMENT_SHORT_MODEL, MINE_TYPE_MODEL
+from app.api.mines.response_models import MINE_DOCUMENT_MODEL, MINE_DOCUMENT_VERSION_MODEL, PERMIT_AMENDMENT_SHORT_MODEL, MINE_TYPE_MODEL
 from app.api.document_generation.response_models import DOCUMENT_TEMPLATE_MODEL
 
 
@@ -428,7 +428,11 @@ IMPORTED_NOW_SUBMISSION_DOCUMENT = api.model(
         'preamble_date': fields.Date,
         'now_application_document_xref_guid': fields.String,
         'now_application_id': fields.Integer,
-        'update_timestamp': fields.DateTime
+        'update_timestamp': fields.DateTime,
+        'is_archived': fields.Boolean,
+        'archived_date': fields.String,
+        'archived_by': fields.String,
+        'versions': fields.List(fields.Nested(MINE_DOCUMENT_VERSION_MODEL)),
     })
 
 APPLICATION_SOURCE_TYPE_CODE = api.model(
@@ -580,7 +584,10 @@ NOW_APPLICATION_MODEL = api.model(
         fields.Nested(NOW_APPLICATION_UNDERGROUND_EXPLORATION, skip_none=True),
         'water_supply':
         fields.Nested(NOW_APPLICATION_WATER_SUPPLY, skip_none=True),
+        # Archived documents are listed separately in archived_documents
         'documents':
+        fields.List(fields.Nested(NOW_APPLICATION_DOCUMENT), skip_none=True, attribute='active_documents'),
+        'archived_documents':
         fields.List(fields.Nested(NOW_APPLICATION_DOCUMENT), skip_none=True),
         'locked_ntr_guid':
         fields.String,
@@ -615,6 +622,8 @@ NOW_APPLICATION_MODEL = api.model(
         'imported_submission_documents':
         fields.List(fields.Nested(NOW_SUBMISSION_DOCUMENT)),
         'filtered_submission_documents':
+        fields.List(fields.Nested(IMPORTED_NOW_SUBMISSION_DOCUMENT)),
+        'archived_submission_documents':
         fields.List(fields.Nested(IMPORTED_NOW_SUBMISSION_DOCUMENT)),
         'spatial_document_bundles':
         fields.List(fields.Raw),
