@@ -17,6 +17,7 @@ from app.api.now_applications.resources.now_application_progress_resource import
 from app.api.now_applications.resources.now_application_progress_status_resource import NOWApplicationProgressStatusResource
 from app.api.now_applications.resources.now_application_document_resource import NOWApplicationDocumentResource, NOWApplicationDocumentUploadResource, NOWApplicationDocumentSortResource, NOWApplicationDocumentIdentityResource
 from app.api.now_applications.resources.now_application_document_version_resource import NOWApplicationDocumentVersionUploadResource, NOWApplicationDocumentVersionListResource
+from app.api.now_applications.resources.now_application_document_archive_resource import NOWApplicationDocumentArchiveResource
 from app.api.now_applications.resources.now_application_permit_type_resource import NOWApplicationPermitTypeResource
 from app.api.now_applications.resources.now_application_review_resource import NOWApplicationReviewListResource, NOWApplicationReviewResource
 from app.api.now_applications.resources.now_application_review_type_resource import NOWApplicationReviewTypeResource
@@ -60,6 +61,7 @@ api.add_resource(NOWApplicationDocumentVersionUploadResource,
                  '/<string:application_guid>/document/<string:mine_document_guid>/versions/upload')
 api.add_resource(NOWApplicationDocumentVersionListResource,
                  '/<string:application_guid>/document/<string:mine_document_guid>/versions')
+api.add_resource(NOWApplicationDocumentArchiveResource, '/<string:application_guid>/documents/archive')
 api.add_resource(NOWApplicationDocumentIdentityResource,
                  '/<string:application_guid>/document-identity')
 api.add_resource(NOWApplicationDocumentGenerateResource,
