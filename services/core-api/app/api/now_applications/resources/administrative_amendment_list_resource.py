@@ -126,7 +126,7 @@ class AdministrativeAmendmentListResource(Resource, UserMixin):
 
             def get_documents_to_attach(db, documents):
                 res_documents = []
-                for doc in [doc for doc in documents if doc.is_final_package]:
+                for doc in [doc for doc in documents if doc.is_final_package and not doc.mine_document.is_archived]:
                     mine_doc = MineDocument(
                         document_name=doc.mine_document.document_name,
                         document_manager_guid=doc.mine_document.document_manager_guid,

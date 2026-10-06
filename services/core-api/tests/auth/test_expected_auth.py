@@ -294,6 +294,9 @@ from app.api.now_applications.resources.now_application_document_resource import
     NOWApplicationDocumentSortResource,
     NOWApplicationDocumentUploadResource,
 )
+from app.api.now_applications.resources.now_application_document_archive_resource import (
+    NOWApplicationDocumentArchiveResource,
+)
 from app.api.now_applications.resources.now_application_document_version_resource import (
     NOWApplicationDocumentVersionListResource,
     NOWApplicationDocumentVersionUploadResource,
@@ -829,6 +832,7 @@ EXPECTED_AUTH_TABLE = [
         (NOWApplicationDocumentResource, 'delete', [EDIT_PERMIT]),
         (NOWApplicationDocumentResource, 'put', [EDIT_PERMIT]),
         (NOWApplicationDocumentSortResource, 'put', [EDIT_PERMIT]),
+        (NOWApplicationDocumentArchiveResource, 'patch', [EDIT_PERMIT]),
         (NOWApplicationDocumentVersionListResource, 'post', [EDIT_PERMIT]),
         (NOWApplicationDocumentVersionUploadResource, 'post', [EDIT_PERMIT]),
         (NOWApplicationDocumentTypeListResource, 'get', [VIEW_ALL]),
