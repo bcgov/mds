@@ -252,6 +252,43 @@ class TestStartUpload:
         assert resp.status_code == 404
 
 
+class TestRecordVersion:
+    """POST /now-applications/{application_guid}/document/{mine_document_guid}/versions"""
+
+    @responses.activate
+    def test_record_version_rejects_different_file_type(self, test_client, db_session, auth_headers):
+        now_application_identity = NOWApplicationIdentityFactory()
+        mine_document, _ = _make_core_document(db_session, now_application_identity, document_name='report.pdf')
+        version_guid = str(uuid.uuid4())
+        _mock_docman_version_lookups(mine_document, version_guid, 'report.docx')
+
+        resp = _record_version(test_client, auth_headers, now_application_identity, mine_document, version_guid)
+
+        assert resp.status_code == 400
+        assert 'same file type' in resp.json['message']
+        db_session.refresh(mine_document)
+        assert mine_document.document_name == 'report.pdf'
+        assert MineDocumentVersion.query.filter_by(mine_document_guid=mine_document.mine_document_guid).count() == 0
+
+    @responses.activate
+    def test_record_version_rejects_already_recorded_version(self, test_client, db_session, auth_headers):
+        now_application_identity = NOWApplicationIdentityFactory()
+        mine_document, _ = _make_core_document(db_session, now_application_identity, document_name='report.pdf')
+        version_guid = str(uuid.uuid4())
+        _mock_docman_version_lookups(mine_document, version_guid, 'report-v2.pdf')
+
+        first_resp = _record_version(test_client, auth_headers, now_application_identity, mine_document, version_guid)
+        assert first_resp.status_code == 200, first_resp.data
+        docman_calls = len(responses.calls)
+
+        resp = _record_version(test_client, auth_headers, now_application_identity, mine_document, version_guid)
+
+        assert resp.status_code == 400
+        assert 'already been recorded' in resp.json['message']
+        assert MineDocumentVersion.query.filter_by(mine_document_guid=mine_document.mine_document_guid).count() == 1
+        assert len(responses.calls) == docman_calls
+
+
 class TestPermitPackageRules:
     """Replace rules for permit package documents: allowed while in progress, blocked once locked or delayed"""
 
