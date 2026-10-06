@@ -66,9 +66,22 @@ class NOWApplicationDocumentVersionListResource(Resource, UserMixin):
         check_can_replace(now_application_identity, mine_document, xref)
 
         args = self.parser.parse_args()
+        document_manager_version_guid = args.get('document_manager_version_guid')
+
+        # Stops a request that's retried from adding the same file to the version history twice
+        if MineDocumentVersion.query.filter_by(
+                mine_document_guid=mine_document.mine_document_guid,
+                document_manager_version_guid=document_manager_version_guid,
+                deleted_ind=False).first():
+            raise BadRequest('This version of the document has already been recorded.')
+
+        # The upload step could only check the filename the client sent, so we also check the file Document Manager actually stored
+        new_filename = DocumentManagerService.get_document(
+            request=request, document_manager_guid=mine_document.document_manager_guid).get('file_display_name')
+        check_can_replace(now_application_identity, mine_document, xref, new_filename=new_filename)
 
         # Updates the existing mine_document in place, so the xref row (and the now_application_document_xref_guid that permit conditions reference) is left untouched.
         return MineDocumentVersion.create_from_docman_version(
             mine_document=mine_document,
-            document_manager_version_guid=args.get('document_manager_version_guid'),
+            document_manager_version_guid=document_manager_version_guid,
         )
