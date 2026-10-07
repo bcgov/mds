@@ -14,6 +14,8 @@ import {
     updateNoticeOfWorkStatus,
     fetchImportNoticeOfWorkSubmissionDocumentsJob,
     deleteNoticeOfWorkApplicationDocument,
+    createNoticeOfWorkDocumentVersion,
+    archiveNoticeOfWorkDocuments,
     createAdminAmendmentApplication,
     createNoticeOfWorkApplicationImportSubmissionDocumentsJob,
     sortNoticeOfWorkDocuments,
@@ -470,6 +472,73 @@ describe("`deleteNoticeOfWorkApplicationDocument` action creator", () => {
             expect(errorSpy).toHaveBeenCalledTimes(1);
             expect(dispatch).toHaveBeenCalledTimes(4);
         });
+    });
+});
+
+describe("`createNoticeOfWorkDocumentVersion` action creator", () => {
+    const applicationGuid = NOW_MOCK.NOTICE_OF_WORK.now_application_guid;
+    const mineDocumentGuid = NOW_MOCK.NOTICE_OF_WORK.documents[0].mine_document_guid;
+    const documentManagerVersionGuid = "5d1b6b2e-1b0e-4c2a-9a55-3b3c2a6f1d10";
+    const url = ENVIRONMENT.apiUrl + API.NOTICE_OF_WORK_DOCUMENT_VERSIONS(applicationGuid, mineDocumentGuid);
+
+    it("Request successful, dispatches `success` with correct response", async () => {
+        const mockResponse = { mine_document_version_guid: "version-guid" };
+        mockAxios
+            .onPost(url, { document_manager_version_guid: documentManagerVersionGuid })
+            .reply(200, mockResponse);
+
+        const response = await createNoticeOfWorkDocumentVersion(
+            applicationGuid,
+            mineDocumentGuid,
+            documentManagerVersionGuid
+        )(dispatch);
+
+        expect(response.data).toEqual(mockResponse);
+        expect(requestSpy).toHaveBeenCalledTimes(1);
+        expect(successSpy).toHaveBeenCalledTimes(1);
+        expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+
+    it("Request failure, dispatches `error` and rethrows", async () => {
+        mockAxios.onPost(url).reply(400, MOCK.ERROR);
+
+        await expect(
+            createNoticeOfWorkDocumentVersion(
+                applicationGuid,
+                mineDocumentGuid,
+                documentManagerVersionGuid
+            )(dispatch)
+        ).rejects.toBeDefined();
+        expect(requestSpy).toHaveBeenCalledTimes(1);
+        expect(errorSpy).toHaveBeenCalledTimes(1);
+        expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+});
+
+describe("`archiveNoticeOfWorkDocuments` action creator", () => {
+    const applicationGuid = NOW_MOCK.NOTICE_OF_WORK.now_application_guid;
+    const mineDocumentGuids = [NOW_MOCK.NOTICE_OF_WORK.documents[0].mine_document_guid];
+    const url = ENVIRONMENT.apiUrl + API.NOTICE_OF_WORK_DOCUMENTS_ARCHIVE(applicationGuid);
+
+    it("Request successful, dispatches `success` with correct response", async () => {
+        mockAxios.onPatch(url, { mine_document_guids: mineDocumentGuids }).reply(204);
+
+        await archiveNoticeOfWorkDocuments(applicationGuid, mineDocumentGuids)(dispatch);
+
+        expect(requestSpy).toHaveBeenCalledTimes(1);
+        expect(successSpy).toHaveBeenCalledTimes(1);
+        expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+
+    it("Request failure, dispatches `error` and rethrows", async () => {
+        mockAxios.onPatch(url).reply(400, MOCK.ERROR);
+
+        await expect(
+            archiveNoticeOfWorkDocuments(applicationGuid, mineDocumentGuids)(dispatch)
+        ).rejects.toBeDefined();
+        expect(requestSpy).toHaveBeenCalledTimes(1);
+        expect(errorSpy).toHaveBeenCalledTimes(1);
+        expect(dispatch).toHaveBeenCalledTimes(4);
     });
 });
 

@@ -551,6 +551,58 @@ export const deleteNoticeOfWorkApplicationDocument = (applicationGuid, mineDocum
     .finally(() => dispatch(hideLoading()));
 };
 
+export const createNoticeOfWorkDocumentVersion = (
+  applicationGuid,
+  mineDocumentGuid,
+  documentManagerVersionGuid
+) => (dispatch) => {
+  dispatch(request(NetworkReducerTypes.CREATE_NOTICE_OF_WORK_DOCUMENT_VERSION));
+  dispatch(showLoading());
+  return CustomAxios()
+    .post(
+      `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_DOCUMENT_VERSIONS(applicationGuid, mineDocumentGuid)}`,
+      { document_manager_version_guid: documentManagerVersionGuid },
+      createRequestHeader()
+    )
+    .then((response) => {
+      notification.success({
+        message: "Successfully replaced the document",
+        duration: 10,
+      });
+      dispatch(success(NetworkReducerTypes.CREATE_NOTICE_OF_WORK_DOCUMENT_VERSION));
+      return response;
+    })
+    .catch((err) => {
+      dispatch(error(NetworkReducerTypes.CREATE_NOTICE_OF_WORK_DOCUMENT_VERSION));
+      throw err;
+    })
+    .finally(() => dispatch(hideLoading()));
+};
+
+export const archiveNoticeOfWorkDocuments = (applicationGuid, mineDocumentGuids) => (dispatch) => {
+  dispatch(request(NetworkReducerTypes.ARCHIVE_NOTICE_OF_WORK_DOCUMENTS));
+  dispatch(showLoading());
+  return CustomAxios()
+    .patch(
+      `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_DOCUMENTS_ARCHIVE(applicationGuid)}`,
+      { mine_document_guids: mineDocumentGuids },
+      createRequestHeader()
+    )
+    .then((response) => {
+      notification.success({
+        message: `Successfully archived ${mineDocumentGuids.length > 1 ? "the documents" : "the document"}`,
+        duration: 10,
+      });
+      dispatch(success(NetworkReducerTypes.ARCHIVE_NOTICE_OF_WORK_DOCUMENTS));
+      return response;
+    })
+    .catch((err) => {
+      dispatch(error(NetworkReducerTypes.ARCHIVE_NOTICE_OF_WORK_DOCUMENTS));
+      throw err;
+    })
+    .finally(() => dispatch(hideLoading()));
+};
+
 export const createAdminAmendmentApplication = (payload) => (dispatch) => {
   dispatch(request(NetworkReducerTypes.CREATE_ADMIN_AMENDMENT_APPLICATION));
   dispatch(showLoading("modal"));
