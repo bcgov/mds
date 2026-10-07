@@ -7,6 +7,8 @@ import NOWDocuments from "@/components/noticeOfWork/applications//NOWDocuments";
 import ScrollContentWrapper from "@/components/noticeOfWork/applications/ScrollContentWrapper";
 import NOWSubmissionDocuments from "@/components/noticeOfWork/applications//NOWSubmissionDocuments";
 import NOWSpatialFiles from "@/components/noticeOfWork/applications/NOWSpatialFiles";
+import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
+import { Feature } from "@mds/common/utils/featureFlag";
 
 /**
  * @class NOWApplicationManageDocuments- contains all information relating to the documents on a Notice of Work Application
@@ -26,6 +28,7 @@ const defaultProps = { importNowSubmissionDocumentsJob: {}, isViewMode: false };
 
 export const NOWApplicationManageDocuments = (props) => {
   const [spatialScrollRequestId, setSpatialScrollRequestId] = useState(null);
+  const { isFeatureEnabled } = useFeatureFlag();
   const isNoWApplication = props.noticeOfWork.application_type_code === "NOW";
   const applicationFilesTypes = ["AAF", "MDO", "SDO"];
   // default to true, as the preferred flow has permit conditions.
@@ -127,6 +130,7 @@ export const NOWApplicationManageDocuments = (props) => {
           isStandardDocuments
           disableCategoryFilter
           showDescription
+          enableFileManagement={isFeatureEnabled(Feature.NOW_FILE_MANAGEMENT)}
         />
       </ScrollContentWrapper>
       {(isNoWApplication || hasPermitConditionsFlow) && (
