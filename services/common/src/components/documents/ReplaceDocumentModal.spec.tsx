@@ -177,6 +177,78 @@ describe("ReplaceDocumentModal", () => {
     expect(replacedDoc.versions).toHaveLength(2);
   });
 
+  it("uploads to and records the version with the overrides when they are given", async () => {
+    const handleSubmit = jest.fn().mockReturnValue(Promise.resolve());
+    const createVersion = jest.fn().mockResolvedValue({
+      data: {
+        mine_document_version_guid: "v2-guid",
+        document_name: "original.pdf",
+        upload_date: "2024-02-01",
+      },
+    });
+    const postNewDocumentVersionSpy = jest.spyOn(docActions, "postNewDocumentVersion");
+    const originalDoc = new MineDocument({
+      ...MINEDOCUMENTS.records[0],
+      document_name: "original.pdf",
+    });
+
+    render(
+      <ReduxWrapper>
+        <ReplaceDocumentModal
+          document={originalDoc}
+          handleSubmit={handleSubmit}
+          alertMessage="Alert"
+          uploadUrl="/custom/versions/upload"
+          createVersion={createVersion}
+        />
+      </ReduxWrapper>
+    );
+
+    expect(capturedFileUploadProps.uploadUrl).toBe("/custom/versions/upload");
+
+    await act(async () => {
+      await capturedFileUploadProps.beforeAddFile({ fileExtension: "pdf", filename: "replacement.pdf" });
+    });
+    act(() => {
+      capturedFileUploadProps.onFileLoad("replacement.pdf", "doc-man-guid");
+      capturedFileUploadProps.onUploadResponse({ document_manager_version_guid: "ver-guid-123" });
+    });
+    await act(async () => {
+      await capturedFormSubmit();
+    });
+
+    expect(createVersion).toHaveBeenCalledWith("ver-guid-123");
+    expect(postNewDocumentVersionSpy).not.toHaveBeenCalled();
+    expect(handleSubmit).toHaveBeenCalled();
+  });
+
+  it("keeps the modal open when recording the version fails", async () => {
+    const handleSubmit = jest.fn().mockReturnValue(Promise.resolve());
+    const createVersion = jest.fn().mockRejectedValue(new Error("400"));
+
+    render(
+      <ReduxWrapper>
+        <ReplaceDocumentModal
+          document={new MineDocument({ ...MINEDOCUMENTS.records[0], document_name: "original.pdf" })}
+          handleSubmit={handleSubmit}
+          alertMessage="Alert"
+          createVersion={createVersion}
+        />
+      </ReduxWrapper>
+    );
+
+    act(() => {
+      capturedFileUploadProps.onFileLoad("replacement.pdf", "doc-man-guid");
+      capturedFileUploadProps.onUploadResponse({ document_manager_version_guid: "ver-guid-123" });
+    });
+    await act(async () => {
+      await capturedFormSubmit();
+    });
+
+    expect(createVersion).toHaveBeenCalledWith("ver-guid-123");
+    expect(handleSubmit).not.toHaveBeenCalled();
+  });
+
   it("handles onRemoveFile callback and fallback when file_type is unknown", async () => {
     const docWithoutFileType = new MineDocument({
       ...MINEDOCUMENTS.records[0],

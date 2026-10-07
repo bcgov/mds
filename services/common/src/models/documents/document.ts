@@ -2,6 +2,7 @@ import { USER_ROLES } from "@mds/common/constants/environment";
 import { IMineDocument, IMineDocumentVersion } from "@mds/common/interfaces";
 import { isFeatureEnabled, Feature } from "@mds/common/utils";
 import { MAJOR_MINES_APPLICATION_DOCUMENT_SUBTYPE_CODE } from "@mds/common/constants/strings";
+import { UNIQUELY_SPATIAL } from "@mds/common/constants/fileTypes";
 
 export enum FileOperations {
   View = "Open in document viewer",
@@ -279,5 +280,111 @@ export class MajorMineApplicationDocument extends MineDocument {
     return allowedActions.filter(
       (action) => canModify || [FileOperations.View, FileOperations.Download].includes(action)
     );
+  }
+}
+
+// Matches NOW_SPATIAL_FILE_EXTENSIONS in core-api (app/api/constants.py). Spatial files can be archived but not replaced.
+export const NOW_SPATIAL_FILE_EXTENSIONS = [...Object.keys(UNIQUELY_SPATIAL), ".shp.xml"];
+
+const NOW_APPLICATION_LOCKED_STATUS_CODES = ["AIA", "REJ", "WDN", "NPR"];
+const NOW_APPLICATION_DOCUMENT_SUB_TYPE_CODES = ["AAF", "MDO", "SDO"];
+const NOW_GOVERNMENT_DOCUMENT_SUB_TYPE_CODE = "GDO";
+
+/*
+A document on a Notice of Work application's Manage Documents page.
+
+Replace and Archive follow the same rules core-api enforces (now_document_file_management.py).
+Previous versions can only be downloaded, as the document viewer always opens the latest version of a file.
+Delete is not offered here, the NoW tables keep their own delete button.
+
+Expects the mine_document fields flattened onto the json alongside the xref fields.
+*/
+export class NoWApplicationDocument extends MineDocument {
+  public now_application_document_xref_guid: string;
+
+  public now_application_document_sub_type_code: string;
+
+  public is_final_package: boolean;
+
+  public is_referral_package: boolean;
+
+  public is_consultation_package: boolean;
+
+  public is_system_generated: boolean;
+
+  // vFCBC submission documents (now_application_document_identity_xref) have no sub type code
+  public is_imported_submission_document: boolean;
+
+  public now_application_status_code: string;
+
+  public is_delayed: boolean;
+
+  public is_view_mode: boolean;
+
+  constructor(jsonObject: any) {
+    super(jsonObject);
+    this.now_application_document_xref_guid = jsonObject.now_application_document_xref_guid;
+    this.now_application_document_sub_type_code = jsonObject.now_application_document_sub_type_code;
+    this.is_final_package = jsonObject.is_final_package ?? false;
+    this.is_referral_package = jsonObject.is_referral_package ?? false;
+    this.is_consultation_package = jsonObject.is_consultation_package ?? false;
+    this.is_system_generated = jsonObject.is_system_generated ?? false;
+    this.is_imported_submission_document = jsonObject.is_imported_submission_document ?? false;
+    this.now_application_status_code = jsonObject.now_application_status_code;
+    this.is_delayed = jsonObject.is_delayed ?? false;
+    this.is_view_mode = jsonObject.is_view_mode ?? false;
+    // MineDocument works out allowed actions inside its own constructor, before the fields above are set, so we have to work them out again
+    this.setAllowedActions(jsonObject.user_roles);
+  }
+
+  protected getAllowedActions(
+    userRoles: string[] = [],
+    is_latest_version: boolean = this.is_latest_version
+  ) {
+    const canView = is_latest_version && this.file_type === ".pdf" && this.document_manager_guid;
+    const canChange = is_latest_version && this.canChangeFile(userRoles);
+    return [
+      canView && FileOperations.View,
+      FileOperations.Download,
+      canChange && !this.isSpatialFile() && FileOperations.Replace,
+      canChange && FileOperations.Archive,
+    ];
+  }
+
+  private canChangeFile(userRoles: string[]) {
+    // Not set yet while MineDocument's constructor runs
+    if (this.now_application_status_code === undefined) {
+      return false;
+    }
+    if (this.is_view_mode || !userRoles.includes(USER_ROLES.role_edit_permits)) {
+      return false;
+    }
+    // No mine_document_guid means a vFCBC submission document that hasn't been imported yet
+    if (!this.mine_document_guid || this.is_archived || this.is_system_generated) {
+      return false;
+    }
+    if (this.is_referral_package || this.is_consultation_package) {
+      return false;
+    }
+
+    if (this.is_final_package) {
+      const isLocked = NOW_APPLICATION_LOCKED_STATUS_CODES.includes(this.now_application_status_code);
+      return !isLocked && !this.is_delayed;
+    }
+    if (
+      this.is_imported_submission_document ||
+      NOW_APPLICATION_DOCUMENT_SUB_TYPE_CODES.includes(this.now_application_document_sub_type_code)
+    ) {
+      return true;
+    }
+    if (this.now_application_document_sub_type_code === NOW_GOVERNMENT_DOCUMENT_SUB_TYPE_CODE) {
+      return !this.is_delayed;
+    }
+    return false;
+  }
+
+  private isSpatialFile() {
+    const documentName = this.document_name.toLowerCase();
+    return NOW_SPATIAL_FILE_EXTENSIONS.some((extension) => documentName.endsWith(extension));
   }
 }

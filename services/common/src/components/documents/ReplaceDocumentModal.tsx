@@ -9,6 +9,7 @@ import { IMAGE, DOCUMENT, EXCEL, SPATIAL } from "@mds/common/constants/fileTypes
 import { postNewDocumentVersion } from "@mds/common/redux/actionCreators/documentActionCreator";
 import { IMineDocumentVersion } from "@mds/common/interfaces";
 import { FilePondFile } from "filepond";
+import { AxiosResponse } from "axios";
 import FormWrapper from "../forms/FormWrapper";
 import { FORM } from "@mds/common/constants/forms";
 import { closeModal } from "@mds/common/redux/actions/modalActions";
@@ -20,6 +21,9 @@ interface ReplaceDocumentModalProps {
   document: MineDocument;
   alertMessage: string;
   handleSubmit(document: MineDocument): Promise<void>;
+  // Override where the replacement file is uploaded and how the new version is recorded. Default to the mine document endpoints.
+  uploadUrl?: string;
+  createVersion?(documentManagerVersionGuid: string): Promise<AxiosResponse<IMineDocumentVersion> | void>;
 }
 
 const ReplaceDocumentModal: FC<ReplaceDocumentModalProps> = (props) => {
@@ -82,15 +86,26 @@ const ReplaceDocumentModal: FC<ReplaceDocumentModalProps> = (props) => {
     setDisableReplace(true);
   };
 
-  const handleReplaceSubmit = async () => {
-    if (versionGuid) {
-      const ConnectedVersion = await dispatch(
+  const createVersion =
+    props.createVersion ??
+    ((documentManagerVersionGuid: string) =>
+      dispatch(
         postNewDocumentVersion({
           mineGuid: document.mine_guid,
           mineDocumentGuid: document.mine_document_guid,
-          documentManagerVersionGuid: versionGuid,
+          documentManagerVersionGuid,
         })
-      );
+      ));
+
+  const handleReplaceSubmit = async () => {
+    if (versionGuid) {
+      let ConnectedVersion;
+      try {
+        ConnectedVersion = await createVersion(versionGuid);
+      } catch (error) {
+        // The action creator has already surfaced the error; keep the modal open so the user can retry.
+        return;
+      }
 
       if (ConnectedVersion) {
         const docConstructor = document instanceof MineDocument ? (document as any).constructor : MineDocument;
@@ -105,8 +120,7 @@ const ReplaceDocumentModal: FC<ReplaceDocumentModalProps> = (props) => {
           await props.handleSubmit(newDocument);
           dispatch(closeModal());
         } catch (error) {
-          // handleSubmit is responsible for surfacing the error and rolling back
-          // any optimistic updates; keep the modal open so the user can retry.
+          // handleSubmit is responsible for surfacing the error and rolling backany optimistic updates; keep the modal open so the user can retry.
         }
       }
     }
@@ -137,10 +151,13 @@ const ReplaceDocumentModal: FC<ReplaceDocumentModalProps> = (props) => {
         id="fileUpload"
         name="fileUpload"
         component={RenderFileUpload}
-        uploadUrl={NEW_VERSION_DOCUMENTS({
-          mineGuid: document.mine_guid,
-          mineDocumentGuid: document.mine_document_guid,
-        })}
+        uploadUrl={
+          props.uploadUrl ??
+          NEW_VERSION_DOCUMENTS({
+            mineGuid: document.mine_guid,
+            mineDocumentGuid: document.mine_document_guid,
+          })
+        }
         acceptedFileTypesMap={acceptedFileTypesMap}
         onFileLoad={onFileLoad}
         onRemoveFile={onRemoveFile}

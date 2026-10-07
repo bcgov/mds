@@ -5,7 +5,14 @@ import { isEmpty } from "lodash";
 import { PropTypes } from "prop-types";
 import { Button, Popconfirm, Tooltip, Row, Col, Typography } from "antd";
 import moment from "moment";
-import { FlagOutlined, MenuOutlined } from "@ant-design/icons";
+import {
+  DownloadOutlined,
+  FileOutlined,
+  FlagOutlined,
+  InboxOutlined,
+  MenuOutlined,
+  SyncOutlined,
+} from "@ant-design/icons";
 import CustomPropTypes from "@/customPropTypes";
 import { formatDate, formatDateTime } from "@mds/common/redux/utils/helpers";
 import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
@@ -18,6 +25,7 @@ import {
   getApplicationDelay,
 } from "@mds/common/redux/selectors/noticeOfWorkSelectors";
 import { getDraftPermitAmendmentForNOW } from "@mds/common/redux/selectors/permitSelectors";
+import { getUserAccessData } from "@mds/common/redux/selectors/authenticationSelectors";
 import {
   comparePermitPackageDocuments,
   getPermitPackageOrderLabel,
@@ -29,7 +37,17 @@ import {
   deleteNoticeOfWorkApplicationDocument,
   editNoticeOfWorkDocument,
   sortNoticeOfWorkDocuments,
+  createNoticeOfWorkDocumentVersion,
+  archiveNoticeOfWorkDocuments,
 } from "@mds/common/redux/actionCreators/noticeOfWorkActionCreator";
+import { NOTICE_OF_WORK_DOCUMENT_VERSION_UPLOAD } from "@mds/common/constants/API";
+import { FileOperations, NoWApplicationDocument } from "@mds/common/models/documents/document";
+import { renderActionsColumn } from "@mds/common/components/common/CoreTableCommonColumns";
+import { documentWithTag } from "@mds/common/components/documents/DocumentColumns";
+import ReplaceDocumentModal from "@mds/common/components/documents/ReplaceDocumentModal";
+import ArchiveDocumentModal from "@mds/common/components/documents/ArchiveDocumentModal";
+import { openDocument } from "@mds/common/components/syncfusion/DocumentViewer";
+import { downloadFileFromDocumentManager } from "@mds/common/redux/utils/actionlessNetworkCalls";
 import * as Strings from "@mds/common/constants/strings";
 import DocumentLink from "@mds/common/components/documents/DocumentLink";
 import AddButton from "@/components/common/buttons/AddButton";
@@ -75,6 +93,11 @@ const propTypes = {
   draftPermitAmendment: PropTypes.objectOf(PropTypes.any),
   showOrderColumn: PropTypes.bool,
   documentNumberFormat: PropTypes.oneOf(["decimal", "whole"]),
+  enableFileManagement: PropTypes.bool,
+  userRoles: PropTypes.arrayOf(PropTypes.string),
+  createNoticeOfWorkDocumentVersion: PropTypes.func.isRequired,
+  archiveNoticeOfWorkDocuments: PropTypes.func.isRequired,
+  openDocument: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -94,13 +117,32 @@ const defaultProps = {
   lockedRowKeys: [],
   documentNumberFormat: "decimal",
   showOrderColumn: false,
+  enableFileManagement: false,
+  userRoles: [],
 };
+
+// Previous versions of a file are shown as child rows of the current one
+const isVersionRow = (record) => Boolean(record.mine_document_version_guid);
+
+// Wraps a table row in a NoWApplicationDocument, which works out the row's allowed actions and its version rows
+const toFileManagementRow = (row, fileManagementContext) =>
+  Object.assign(
+    // document_name uses the row's filename, which falls back to a placeholder when the file has no name
+    new NoWApplicationDocument({
+      ...row,
+      ...row.mine_document,
+      document_name: row.filename,
+      ...fileManagementContext,
+    }),
+    row
+  );
 
 const transformDocuments = (
   documents,
   now_application_guid,
   noticeOfWorkApplicationDocumentTypeOptionsHash,
-  isFinalPackageTable
+  isFinalPackageTable,
+  fileManagementContext = null
 ) =>
   documents &&
   documents
@@ -131,18 +173,30 @@ const transformDocuments = (
         isFinalPackageTable,
       index,
       ...document,
-    }));
+    }))
+    .map((row) => (fileManagementContext ? toFileManagementRow(row, fileManagementContext) : row));
 
 const SortableItem = sortableElement((props) => <tr {...props} />);
 const SortableContainer = sortableContainer((props) => <tbody {...props} />);
 
 export class NOWDocuments extends Component {
+  getFileManagementContext = () =>
+    this.props.enableFileManagement
+      ? {
+        now_application_status_code: this.props.noticeOfWork.now_application_status_code,
+        is_delayed: !isEmpty(this.props.applicationDelay),
+        is_view_mode: this.props.isViewMode,
+        user_roles: this.props.userRoles,
+      }
+      : null;
+
   getDataSource = () =>
     transformDocuments(
       this.props.documents,
       this.props.noticeOfWork.now_application_guid,
       this.props.noticeOfWorkApplicationDocumentTypeOptionsHash,
-      this.props.isFinalPackageTable
+      this.props.isFinalPackageTable,
+      this.getFileManagementContext()
     );
 
   state = {
@@ -150,7 +204,14 @@ export class NOWDocuments extends Component {
   };
 
   componentDidUpdate = (prevProps) => {
-    if (prevProps.documents !== this.props.documents) {
+    const fileManagementContextChanged =
+      this.props.enableFileManagement &&
+      (prevProps.applicationDelay !== this.props.applicationDelay ||
+        prevProps.userRoles !== this.props.userRoles ||
+        prevProps.isViewMode !== this.props.isViewMode ||
+        prevProps.noticeOfWork.now_application_status_code !==
+        this.props.noticeOfWork.now_application_status_code);
+    if (prevProps.documents !== this.props.documents || fileManagementContextChanged) {
       this.setState({
         dataSource: this.getDataSource(),
       });
@@ -316,6 +377,103 @@ export class NOWDocuments extends Component {
     });
   };
 
+  refreshApplication = () =>
+    this.props.fetchImportedNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid);
+
+  openReplaceModal = (record) => {
+    const applicationGuid = this.props.noticeOfWork.now_application_guid;
+    this.props.openModal({
+      props: {
+        title: "Replace File",
+        document: record,
+        alertMessage:
+          "The new file must be the same file type as the original. The current file will be kept as a previous version, which can be downloaded from this table.",
+        uploadUrl: NOTICE_OF_WORK_DOCUMENT_VERSION_UPLOAD(applicationGuid, record.mine_document_guid),
+        createVersion: (documentManagerVersionGuid) =>
+          this.props.createNoticeOfWorkDocumentVersion(
+            applicationGuid,
+            record.mine_document_guid,
+            documentManagerVersionGuid
+          ),
+        handleSubmit: this.refreshApplication,
+      },
+      content: ReplaceDocumentModal,
+    });
+  };
+
+  getArchivePermitPackageWarning = (record) => {
+    if (!record.is_final_package) {
+      return undefined;
+    }
+    const isReferenced = isFileReferencedInConditions(
+      this.props.draftPermitAmendment?.conditions,
+      record.now_application_document_xref_guid
+    );
+    return isReferenced
+      ? "This file is in the permit package and is currently being referenced in a permit condition. Archiving it will remove it from the permit package and break that reference."
+      : "This file is in the permit package. Archiving it will remove it from the permit package.";
+  };
+
+  openArchiveModal = (record) => {
+    const applicationGuid = this.props.noticeOfWork.now_application_guid;
+    this.props.openModal({
+      props: {
+        title: "Archive File",
+        documents: [record],
+        alertMessage: "This action cannot be undone",
+        alertDescription:
+          "Archiving removes this file from Government Documents. You can find it and its previous versions, in Archived Documents.",
+        extraWarning: this.getArchivePermitPackageWarning(record),
+        handleSubmit: async () => {
+          try {
+            await this.props.archiveNoticeOfWorkDocuments(applicationGuid, [
+              record.mine_document_guid,
+            ]);
+          } catch (err) {
+            // The action creator has already surfaced the error; keep the modal open so the user can retry.
+            return;
+          }
+          await this.refreshApplication();
+          this.props.closeModal();
+        },
+      },
+      content: ArchiveDocumentModal,
+    });
+  };
+
+  fileManagementActionsColumn = () =>
+    renderActionsColumn({
+      actions: [
+        {
+          key: "view",
+          label: FileOperations.View,
+          icon: <FileOutlined />,
+          clickFunction: (_event, record) =>
+            this.props.openDocument(record.document_manager_guid, record.document_name),
+        },
+        {
+          key: "download",
+          label: FileOperations.Download,
+          icon: <DownloadOutlined />,
+          clickFunction: (_event, record) => downloadFileFromDocumentManager(record),
+        },
+        {
+          key: "replace",
+          label: FileOperations.Replace,
+          icon: <SyncOutlined />,
+          clickFunction: (_event, record) => this.openReplaceModal(record),
+        },
+        {
+          key: "archive",
+          label: FileOperations.Archive,
+          icon: <InboxOutlined />,
+          clickFunction: (_event, record) => this.openArchiveModal(record),
+        },
+      ],
+      recordActionsFilter: (record, actions) =>
+        actions.filter((action) => record.allowed_actions?.includes(action.label)),
+    });
+
   columns = (noticeOfWorkApplicationDocumentTypeOptions, categoriesToShow) => {
     let tableColumns = [];
     const filtered = noticeOfWorkApplicationDocumentTypeOptions.filter(({ subType, value }) => {
@@ -389,7 +547,21 @@ export class NOWDocuments extends Component {
           if (record.isLockedApplicationForm && !record.document_manager_guid) {
             return <div title="File Name">N/A</div>;
           }
-          return (
+          // Previous versions are download only (for now), as the document viewer always opens the latest version of a file and this is an existing pattern.
+          if (isVersionRow(record)) {
+            return (
+              <div title="File Name">
+                <Button
+                  type="link"
+                  style={{ padding: 0, height: "auto" }}
+                  onClick={() => downloadFileFromDocumentManager(record)}
+                >
+                  {record.document_name}
+                </Button>
+              </div>
+            );
+          }
+          const fileName = (
             <div title="File Name">
               <DocumentLink
                 documentManagerGuid={record.document_manager_guid}
@@ -399,6 +571,9 @@ export class NOWDocuments extends Component {
               {this.renderDescriptionCaption(record)}
             </div>
           );
+          return this.props.enableFileManagement
+            ? documentWithTag(record, fileName, "File Name", true)
+            : fileName;
         },
       };
 
@@ -459,7 +634,7 @@ export class NOWDocuments extends Component {
       key: "isModificationAllowed",
       width: 170,
       render: (isModificationAllowed, record) => {
-        if (record.isLockedApplicationForm) {
+        if (record.isLockedApplicationForm || isVersionRow(record)) {
           return <div />;
         }
         if (this.props.isFinalPackageTable && this.props.isViewMode) {
@@ -575,7 +750,8 @@ export class NOWDocuments extends Component {
       },
       dataIndex: "is_final_package",
       key: "is_final_package",
-      render: (text) => <div title="Part of Permit">{text ? "Yes" : "No"}</div>,
+      render: (text, record) =>
+        isVersionRow(record) ? null : <div title="Part of Permit">{text ? "Yes" : "No"}</div>,
     };
 
     const consultationPackageColumn = {
@@ -598,7 +774,8 @@ export class NOWDocuments extends Component {
       },
       dataIndex: "is_consultation_package",
       key: "is_consultation_package",
-      render: (text) => <div title="Consultation Package">{text ? "Yes" : "No"}</div>,
+      render: (text, record) =>
+        isVersionRow(record) ? null : <div title="Consultation Package">{text ? "Yes" : "No"}</div>,
     };
 
     const referralPackageColumn = {
@@ -621,13 +798,17 @@ export class NOWDocuments extends Component {
       },
       dataIndex: "is_referral_package",
       key: "is_referral_package",
-      render: (text) => <div title="Referral Package">{text ? "Yes" : "No"}</div>,
+      render: (text, record) =>
+        isVersionRow(record) ? null : <div title="Referral Package">{text ? "Yes" : "No"}</div>,
     };
 
     const postApprovalDocumentColumn = {
       title: "",
       key: "post_approval_document",
       render: (text, record) => {
+        if (isVersionRow(record)) {
+          return null;
+        }
         let isPostDecision = false;
         if (
           this.isInCompleteStatus() &&
@@ -673,6 +854,9 @@ export class NOWDocuments extends Component {
         consultationPackageColumn,
         permitPackageColumn,
       ];
+      if (this.props.enableFileManagement) {
+        tableColumns = [...tableColumns, this.fileManagementActionsColumn()];
+      }
     } else if (this.props.isRefConDocuments) {
       tableColumns = [categoryColumn, fileNameColumn];
       if (this.isInCompleteStatus()) {
@@ -727,7 +911,25 @@ export class NOWDocuments extends Component {
           recordType="document description"
           dataSource={this.state.dataSource}
           // The key must be set to "index" to allow the drag-sort to work.
-          rowKey={this.props.isSortingAllowed ? "index" : "key"}
+          rowKey={
+            this.props.enableFileManagement
+              ? (record) => record.mine_document_version_guid ?? record.key
+              : this.props.isSortingAllowed
+                ? "index"
+                : "key"
+          }
+          expandProps={
+            this.props.enableFileManagement
+              ? {
+                childrenColumnName: "versions",
+                matchChildColumnsToParent: true,
+                recordDescription: "version history",
+                rowExpandable: (record) => record.number_prev_versions > 0,
+                // Show the expand icon beside the file name rather than the category
+                expandIconColumnIndex: 1,
+              }
+              : null
+          }
           components={{
             body: {
               wrapper: this.DraggableContainer,
@@ -763,6 +965,7 @@ const mapStateToProps = (state) => ({
   noticeOfWork: getNoticeOfWork(state),
   applicationDelay: getApplicationDelay(state),
   draftPermitAmendment: getDraftPermitAmendmentForNOW(state),
+  userRoles: getUserAccessData(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -775,6 +978,9 @@ const mapDispatchToProps = (dispatch) =>
       deleteNoticeOfWorkApplicationDocument,
       editNoticeOfWorkDocument,
       sortNoticeOfWorkDocuments,
+      createNoticeOfWorkDocumentVersion,
+      archiveNoticeOfWorkDocuments,
+      openDocument,
     },
     dispatch
   );
