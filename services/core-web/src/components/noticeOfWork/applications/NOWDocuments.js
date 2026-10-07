@@ -551,7 +551,13 @@ export class NOWDocuments extends Component {
           if (isVersionRow(record)) {
             return (
               <div title="File Name">
-                <a onClick={() => downloadFileFromDocumentManager(record)}>{record.document_name}</a>
+                <Button
+                  type="link"
+                  style={{ padding: 0, height: "auto" }}
+                  onClick={() => downloadFileFromDocumentManager(record)}
+                >
+                  {record.document_name}
+                </Button>
               </div>
             );
           }

@@ -10,6 +10,12 @@ import { USER_ROLES } from "@mds/common/constants/environment";
 import ReplaceDocumentModal from "@mds/common/components/documents/ReplaceDocumentModal";
 import ArchiveDocumentModal from "@mds/common/components/documents/ArchiveDocumentModal";
 import { NOTICE_OF_WORK_DOCUMENT_VERSION_UPLOAD } from "@mds/common/constants/API";
+import { downloadFileFromDocumentManager } from "@mds/common/redux/utils/actionlessNetworkCalls";
+
+jest.mock("@mds/common/redux/utils/actionlessNetworkCalls", () => ({
+  ...jest.requireActual("@mds/common/redux/utils/actionlessNetworkCalls"),
+  downloadFileFromDocumentManager: jest.fn(),
+}));
 
 jest.mock("antd", () => {
   const actual = jest.requireActual("antd");
@@ -320,6 +326,17 @@ describe("NOWDocuments", () => {
       await openActionsMenu(1);
       expect(screen.queryByText("Open in document viewer")).not.toBeInTheDocument();
       expect(screen.queryByText("Replace file")).not.toBeInTheDocument();
+    });
+
+    it("downloads a previous version when its file name is clicked", async () => {
+      const { container } = renderFileManagement();
+
+      await userEvent.click(container.querySelector(".expand-row-icon"));
+      await userEvent.click(screen.getByRole("button", { name: "report-v1.pdf" }));
+
+      expect(downloadFileFromDocumentManager).toHaveBeenCalledWith(
+        expect.objectContaining({ document_manager_version_guid: "doc-manager-version-guid" })
+      );
     });
 
     it("replaces the file through the NoW endpoints", async () => {
