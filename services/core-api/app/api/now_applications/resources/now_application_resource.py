@@ -167,6 +167,8 @@ class NOWApplicationResource(Resource, UserMixin):
                     doc.is_final_package = filtered_doc['is_final_package']
                     doc.is_consultation_package = filtered_doc['is_consultation_package']
                     doc.is_referral_package = filtered_doc['is_referral_package']
+                    if doc.is_final_package and 'preamble_title' in filtered_doc:
+                        doc.preamble_title = filtered_doc['preamble_title']
                     if doc.is_final_package:
                         if doc.final_package_order is None:
                             doc.final_package_order = now_application_identity.now_application.next_document_final_package_order

@@ -206,4 +206,45 @@ describe("NOWDocuments", () => {
       expect(dispatchProps.deleteNoticeOfWorkApplicationDocument).toHaveBeenCalled();
     });
   });
+
+  describe("permit package modal Title column", () => {
+    const packageDocument = {
+      ...orderedDocument,
+      is_final_package: false,
+      preamble_title: "Status Report",
+    };
+
+    it("is not shown in the package modal when packageTitles isn't passed", () => {
+      renderComponent({
+        documents: [packageDocument],
+        isPackageModal: true,
+        isViewMode: true,
+        selectedRows: { selectedCoreRows: [], setSelectedCoreRows: jest.fn() },
+      });
+      expect(screen.queryByRole("columnheader", { name: "Title" })).not.toBeInTheDocument();
+    });
+
+    it("is shown in the package modal when packageTitles is passed", () => {
+      renderComponent({
+        documents: [packageDocument],
+        isPackageModal: true,
+        isViewMode: true,
+        selectedRows: { selectedCoreRows: [], setSelectedCoreRows: jest.fn() },
+        packageTitles: { titles: { "doc-xref-1": "Status Report" }, onTitleChange: jest.fn() },
+      });
+      expect(screen.getByRole("columnheader", { name: "Title" })).toBeInTheDocument();
+      expect(screen.getByText("Status Report")).toBeInTheDocument();
+    });
+
+    it("shows a title input for a selected row", () => {
+      renderComponent({
+        documents: [packageDocument],
+        isPackageModal: true,
+        isViewMode: true,
+        selectedRows: { selectedCoreRows: ["doc-xref-1"], setSelectedCoreRows: jest.fn() },
+        packageTitles: { titles: { "doc-xref-1": "Status Report" }, onTitleChange: jest.fn() },
+      });
+      expect(screen.getByRole("textbox", { name: "Title" })).toHaveValue("Status Report");
+    });
+  });
 });

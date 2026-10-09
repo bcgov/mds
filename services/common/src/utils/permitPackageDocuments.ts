@@ -1,9 +1,11 @@
+import { isEmpty } from "lodash";
 import { getLockedSystemNtrDoc } from "@mds/common/utils/helpers";
 import { parseConditionText } from "@mds/common/utils/conditionTokenParser";
 import { IPermitCondition } from "@mds/common/interfaces";
 
 export interface PermitPackageDocumentRow {
   now_application_document_type_code?: string | null;
+  now_application_document_sub_type_code?: string | null;
   now_application_document_xref_guid?: string;
   final_package_order?: number | null;
   is_final_package?: boolean;
@@ -37,6 +39,22 @@ export interface PermitPackageNoticeOfWork {
 export interface PermitPackageNowProgress {
   REV?: { end_date?: string | null };
 }
+
+export interface PermitPackageDraftPermitAmendment {
+  has_permit_conditions?: boolean;
+}
+
+export interface PermitPackageDocumentSections {
+  application: PermitPackageDocumentRow[];
+  systemGenerated: PermitPackageDocumentRow[];
+  government: PermitPackageDocumentRow[];
+  excludedFromSections: PermitPackageDocumentRow[];
+}
+
+
+const APPLICATION_FILE_SUB_TYPES = ["AAF", "MDO", "SDO"];
+const PERMIT_DOCUMENT_TYPES = ["PMT", "PMA"];
+const REVIEW_DOCUMENT_SUB_TYPES = ["RDO", "CDO", "PDO"];
 
 const TECHNICAL_REVIEW_NTR_DESCRIPTION =
   "This document was automatically created when Technical Review was completed.";
@@ -257,4 +275,58 @@ export const resolvePermitPackageFileReference = (
   }
 
   return { found: true, label: `${match.orderLabel} ${match.preamble_title}` };
+};
+
+export const isApplicationCoreDocument = (doc: PermitPackageDocumentRow): boolean =>
+  APPLICATION_FILE_SUB_TYPES.includes(doc.now_application_document_sub_type_code);
+
+export const isSystemGeneratedDocument = (doc: PermitPackageDocumentRow): boolean =>
+  doc.now_application_document_sub_type_code === "AEF" && !isIssuedPermitDocument(doc);
+
+/**
+ * These aren't shown in any section of the Manage Documents tab, so the Create Final Application Package bulk modal leaves them out too.
+ */
+export const isIssuedPermitDocument = (doc: PermitPackageDocumentRow): boolean =>
+  doc.now_application_document_sub_type_code === "AEF" &&
+  PERMIT_DOCUMENT_TYPES.includes(doc.now_application_document_type_code) &&
+  !doc.mine_document?.document_name?.includes("DRAFT");
+
+/**
+ * These aren't shown in the Government Documents section of the Manage Documents tab, so the Create Final Application Package bulk modal leaves them out too.
+ */
+export const isReviewDocument = (doc: PermitPackageDocumentRow): boolean =>
+  REVIEW_DOCUMENT_SUB_TYPES.includes(doc.now_application_document_sub_type_code);
+
+export const shouldShowSystemGeneratedSection = (
+  noticeOfWork: PermitPackageNoticeOfWork,
+  draftPermitAmendment: PermitPackageDraftPermitAmendment
+): boolean => {
+  if (noticeOfWork?.application_type_code === "NOW") return true;
+  return isEmpty(draftPermitAmendment) || !!draftPermitAmendment.has_permit_conditions;
+};
+
+/**
+ * Splits Core documents into the Create Final Application Package modal's sections so each document appears exactly once.
+ * Government Documents also holds any document that doesn't fit another section, except Working Permit (PMT),
+ * Working Permit for Amendment (PMA) documents without “DRAFT” in the file name, Referral, Consultation and Public Comment documents,
+ * which are returned separately in `excludedFromSections` as they aren't shown in the modal.
+ */
+export const splitPermitPackageCoreDocuments = (
+  documents: PermitPackageDocumentRow[],
+  showSystemGenerated: boolean
+): PermitPackageDocumentSections => {
+  const allDocuments = documents || [];
+  const excludedFromSections = allDocuments.filter(
+    (doc) => isIssuedPermitDocument(doc) || isReviewDocument(doc)
+  );
+  const application = allDocuments.filter(isApplicationCoreDocument);
+  const systemGenerated = showSystemGenerated ? allDocuments.filter(isSystemGeneratedDocument) : [];
+  const government = allDocuments.filter(
+    (doc) =>
+      !application.includes(doc) &&
+      !systemGenerated.includes(doc) &&
+      !excludedFromSections.includes(doc)
+  );
+
+  return { application, systemGenerated, government, excludedFromSections };
 };
