@@ -120,6 +120,30 @@ label .ant-btn {
   }
 }
 
+// A link button that looks like a regular link (e.g. a file name in a table), without the default button border and spacing above
+.ant-btn.ant-btn-link.btn--inline-link {
+  height: auto;
+  margin: 0;
+  padding: 0;
+  border: none;
+  font-weight: inherit;
+  white-space: normal;
+  text-align: left;
+  color: $a-color;
+  text-decoration: underline;
+
+  span {
+    font-size: inherit;
+    text-decoration: underline;
+  }
+
+  &:hover,
+  &:focus {
+    color: $a-color-hover;
+    text-decoration: underline;
+  }
+}
+
 .btn-danger--icon {
   &:hover {
     color: $danger-btn-color-hover;
