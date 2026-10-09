@@ -100,8 +100,16 @@ class MineDocumentVersionListResource(Resource, UserMixin):
             raise BadRequest('Cannot create new version of archived document')
 
         args = self.parser.parse_args()
+        document_manager_version_guid = args.get('document_manager_version_guid')
+
+        # Stops a request that's retried from adding the same file to the version history twice
+        if MineDocumentVersion.query.filter_by(
+                mine_document_guid=mine_document.mine_document_guid,
+                document_manager_version_guid=document_manager_version_guid,
+                deleted_ind=False).first():
+            raise BadRequest('This version of the document has already been recorded.')
 
         return MineDocumentVersion.create_from_docman_version(
             mine_document=mine_document,
-            document_manager_version_guid=args.get('document_manager_version_guid'),
+            document_manager_version_guid=document_manager_version_guid,
         )
