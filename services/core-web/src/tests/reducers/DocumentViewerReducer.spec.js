@@ -9,6 +9,7 @@ const baseExpectedValue = {
   isDocumentViewerOpen: false,
   props: { title: "Document Viewer" },
   location: null,
+  versionId: null,
 };
 
 // Creates deep copy of javascript object instead of setting a reference

@@ -3,6 +3,7 @@ import CustomAxios from "../customAxios";
 import { createRequestHeader } from "./RequestHeaders";
 import {
   DOCUMENT_MANAGER_DOCUMENT,
+  DOCUMENT_MANAGER_DOCUMENT_VERSION,
   DOCUMENT_MANAGER_FILE_GET_URL,
   DOCUMENT_MANAGER_TOKEN_GET_URL,
   NOTICE_OF_WORK_DOCUMENT_FILE_GET_URL,
@@ -116,6 +117,16 @@ export const getDocument = (documentManagerGuid) => {
   return CustomAxios()
     .get(
       `${ENVIRONMENT.docManUrl + DOCUMENT_MANAGER_DOCUMENT(documentManagerGuid)}`,
+      createRequestHeader()
+    )
+    .then((response) => response.data);
+};
+
+export const getDocumentVersion = (documentManagerGuid, documentManagerVersionGuid) => {
+  return CustomAxios()
+    .get(
+      `${ENVIRONMENT.docManUrl +
+        DOCUMENT_MANAGER_DOCUMENT_VERSION(documentManagerGuid, documentManagerVersionGuid)}`,
       createRequestHeader()
     )
     .then((response) => response.data);
