@@ -167,10 +167,9 @@ class NOWApplicationDocumentResource(Resource, UserMixin):
             permit_package_document_type_code = data.get('permit_package_document_type_code')
             if permit_package_document_type_code is not None:
                 xref.permit_package_document_type_code = permit_package_document_type_code
-            type_changed = (
-                permit_package_document_type_code is not None
-                and permit_package_document_type_code != previous_permit_package_document_type_code
-            )
+            previous_type = previous_permit_package_document_type_code or 'DOCUMENT'
+            new_type = permit_package_document_type_code or 'DOCUMENT'
+            type_changed = permit_package_document_type_code is not None and new_type != previous_type
 
             now_application = NOWApplication.find_by_application_guid(application_guid)
             if not now_application:
