@@ -16,6 +16,7 @@ interface IPreviewPermitAmendmentDocumentProps {
  */
 export const PreviewPermitAmendmentDocument = (props: IPreviewPermitAmendmentDocumentProps) => {
   const [documentUrl, setDocumentUrl] = React.useState<string>(null);
+  const [documentName, setDocumentName] = React.useState<string>(null);
 
   useEffect(() => {
     // Fetch url of document on load
@@ -26,6 +27,7 @@ export const PreviewPermitAmendmentDocument = (props: IPreviewPermitAmendmentDoc
         const fetchDocument = async () => {
           const docUrl = await getDocument(amdDoc.document_manager_guid);
           setDocumentUrl(docUrl.object_store_path);
+          setDocumentName(amdDoc.document_name);
         }
 
         fetchDocument();
@@ -40,5 +42,5 @@ export const PreviewPermitAmendmentDocument = (props: IPreviewPermitAmendmentDoc
     }
     : null;
 
-  return documentUrl ? <PdfViewer id="preview-permit-amendment-pdf" documentPath={documentUrl} annotationLocation={annotationLocation} /> : <Skeleton />;
+  return documentUrl ? <PdfViewer id="preview-permit-amendment-pdf" documentPath={documentUrl} annotationLocation={annotationLocation} downloadFileName={documentName} /> : <Skeleton />;
 };

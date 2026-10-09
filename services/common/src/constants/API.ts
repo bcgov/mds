@@ -41,6 +41,8 @@ export const DOCUMENT_MANAGER_TOKEN_GET_URL = (documentManagerGuid) =>
   `/download-token/${documentManagerGuid}`;
 export const DOCUMENT_MANAGER_DOCUMENT = (documentManagerGuid) =>
   `/documents/${documentManagerGuid}`;
+export const DOCUMENT_MANAGER_DOCUMENT_VERSION = (documentManagerGuid, documentManagerVersionGuid) =>
+  `/documents/${documentManagerGuid}/versions/${documentManagerVersionGuid}`;
 export const MINESPACE_USER = (mine_guid?) => `/users/minespace${mine_guid ? `?${queryString.stringify({ mine_guid })}` : ""}`;
 export const UPDATE_MINESPACE_USER = (id) => `/users/minespace/${id}`;
 export const NEW_MINESPACE_USER_MINES = (params = {}) => `/users/minespace/mines?${queryString.stringify(params)}`;
