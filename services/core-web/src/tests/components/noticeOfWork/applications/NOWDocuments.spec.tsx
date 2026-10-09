@@ -314,7 +314,7 @@ describe("NOWDocuments", () => {
       expect(screen.queryByText("Archive file")).not.toBeInTheDocument();
     });
 
-    it("shows previous versions as download-only rows without the package columns", async () => {
+    it("shows previous versions as view and download only rows without the package columns", async () => {
       const { container } = renderFileManagement();
 
       await userEvent.click(container.querySelector(".expand-row-icon"));
@@ -324,8 +324,38 @@ describe("NOWDocuments", () => {
       expect(screen.getAllByText("No")).toHaveLength(3);
 
       await openActionsMenu(1);
-      expect(screen.queryByText("Open in document viewer")).not.toBeInTheDocument();
+      expect(screen.getByText("Open in document viewer")).toBeInTheDocument();
       expect(screen.queryByText("Replace file")).not.toBeInTheDocument();
+      expect(screen.queryByText("Archive file")).not.toBeInTheDocument();
+    });
+
+    it("opens the current file in the document viewer without a version", async () => {
+      renderFileManagement();
+
+      await openActionsMenu();
+      await userEvent.click(screen.getByText("Open in document viewer"));
+
+      expect(dispatchProps.openDocument).toHaveBeenCalledWith(
+        "doc-manager-guid",
+        "report-v2.pdf",
+        null,
+        null
+      );
+    });
+
+    it("opens a previous version in the document viewer with its version", async () => {
+      const { container } = renderFileManagement();
+
+      await userEvent.click(container.querySelector(".expand-row-icon"));
+      await openActionsMenu(1);
+      await userEvent.click(screen.getByText("Open in document viewer"));
+
+      expect(dispatchProps.openDocument).toHaveBeenCalledWith(
+        "doc-manager-guid",
+        "report-v1.pdf",
+        null,
+        "doc-manager-version-guid"
+      );
     });
 
     it("downloads a previous version when its file name is clicked", async () => {

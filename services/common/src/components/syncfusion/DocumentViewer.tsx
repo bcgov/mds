@@ -30,10 +30,12 @@ import {
   getIsDocumentViewerOpen,
   getProps,
   getLocation,
+  getVersionId,
 } from "@mds/common/redux/selectors/documentViewerSelectors";
 
 import {
   getDocument,
+  getDocumentVersion,
   downloadFileFromDocumentManager,
 } from "@mds/common/redux/utils/actionlessNetworkCalls";
 import {
@@ -45,8 +47,10 @@ interface DocumentViewerProps {
   closeDocumentViewer: () => void;
   isDocumentViewerOpen: boolean;
   documentPath: string;
+  documentName?: string;
   props: any;
   location?: DocumentViewerLocation | null;
+  versionId?: string | null;
 }
 
 type DocumentViewerLocation = IPdfViewerAnnotationLocation;
@@ -71,10 +75,17 @@ export const OPENABLE_DOCUMENT_TYPES = ["PDF"];
 export const isDocumentOpenable = (documentName) =>
   OPENABLE_DOCUMENT_TYPES.some((type) => documentName.toUpperCase().includes(`.${type}`));
 
-export const openDocument = (documentManagerGuid, documentName, location = null) => async (dispatch) => {
+// Pass documentManagerVersionGuid to view a previous version of a file, otherwise the latest version is opened
+export const openDocument = (
+  documentManagerGuid,
+  documentName,
+  location = null,
+  documentManagerVersionGuid = null
+) => async (dispatch) => {
   const document = {
     document_manager_guid: documentManagerGuid,
     document_name: documentName,
+    document_manager_version_guid: documentManagerVersionGuid,
   };
 
   if (!isDocumentOpenable(documentName)) {
@@ -87,12 +98,23 @@ export const openDocument = (documentManagerGuid, documentName, location = null)
     return downloadFileFromDocumentManager(document);
   }
 
+  let versionId = null;
+  if (documentManagerVersionGuid) {
+    const versionRecord = await getDocumentVersion(documentManagerGuid, documentManagerVersionGuid);
+    versionId = versionRecord.object_store_version_id;
+    // Without the object store version the viewer would show the latest version, so download the requested version instead
+    if (!versionId) {
+      return downloadFileFromDocumentManager(document);
+    }
+  }
+
   return dispatch(
     openDocumentViewer({
       documentPath,
       documentName,
       props: { title: documentName },
       location,
+      versionId,
     })
   );
 };
@@ -104,18 +126,21 @@ interface ViewPDFProps {
   id?: string;
   annotationLocation?: IPdfViewerAnnotationLocation | null;
   onInit?: (pdfViewer: any) => void;
+  versionId?: string | null;
+  downloadFileName?: string;
 }
 interface PDFViewerProps {
   documentPath: string;
   id?: string;
   annotationLocation?: IPdfViewerAnnotationLocation | null;
   onInit?: (pdfViewer: any) => void;
+  downloadFileName?: string;
 }
 
 export const PdfViewer: React.FC<PDFViewerProps> = (props: PDFViewerProps) => {
   const ajaxSettings = getAjaxRequestSettings();
 
-  return <ViewPdf id={props.id} onInit={props.onInit} annotationLocation={props.annotationLocation} pdfViewerServiceUrl={ENVIRONMENT.pdfViewerServiceUrl} documentPath={props.documentPath} ajaxRequestSettings={ajaxSettings} />;
+  return <ViewPdf id={props.id} onInit={props.onInit} annotationLocation={props.annotationLocation} pdfViewerServiceUrl={ENVIRONMENT.pdfViewerServiceUrl} documentPath={props.documentPath} ajaxRequestSettings={ajaxSettings} downloadFileName={props.downloadFileName} />;
 };
 
 export const ViewPdf: React.FC<ViewPDFProps> = ({
@@ -124,7 +149,9 @@ export const ViewPdf: React.FC<ViewPDFProps> = ({
   ajaxRequestSettings,
   id = "pdfviewer-container",
   annotationLocation = null,
-  onInit = null
+  onInit = null,
+  versionId = null,
+  downloadFileName,
 }) => {
   const pdfViewerRef = useRef<any>(null);
   const [loadedDocumentPath, setLoadedDocumentPath] = useState<string | null>(null);
@@ -155,6 +182,13 @@ export const ViewPdf: React.FC<ViewPDFProps> = ({
     setLoadedDocumentPath(documentPath);
   };
 
+  // Tells the PDF viewer service which version of the file to load, it's only sent when viewing a previous version
+  const handleAjaxRequestInitiate = (args) => {
+    if (versionId && pdfViewerRef.current) {
+      pdfViewerRef.current.setJsonData({ ...args.JsonData, versionId });
+    }
+  };
+
   return (
     <PdfViewerComponent
       id={id}
@@ -166,6 +200,9 @@ export const ViewPdf: React.FC<ViewPDFProps> = ({
       enableFormDesigner={false}
       polygonSettings={{ fillColor: 'yellow', opacity: 0.6, strokeColor: 'orange' }}
       documentLoad={handleDocumentLoaded}
+      ajaxRequestInitiate={handleAjaxRequestInitiate}
+      // Without this the viewer's download button saves the file as "undefined.pdf", as object store paths have no file extension
+      downloadFileName={downloadFileName}
       ref={(scope) => {
         pdfViewerRef.current = scope;
 
@@ -198,8 +235,10 @@ export const DocumentViewer: React.FC<DocumentViewerProps> = ({
   closeDocumentViewer,
   isDocumentViewerOpen,
   documentPath,
+  documentName,
   props,
   location,
+  versionId = null,
 }) => {
   const containerRef = useRef(null);
   const [modal, contextHolder] = Modal.useModal();
@@ -232,6 +271,8 @@ export const DocumentViewer: React.FC<DocumentViewerProps> = ({
             documentPath={documentPath}
             ajaxRequestSettings={ajaxRequestSettings}
             annotationLocation={location}
+            versionId={versionId}
+            downloadFileName={documentName}
           />
         ),
       });
@@ -243,7 +284,7 @@ export const DocumentViewer: React.FC<DocumentViewerProps> = ({
         setModalInstance(null);
       }
     }
-  }, [isDocumentViewerOpen, documentPath, location]);
+  }, [isDocumentViewerOpen, documentPath, documentName, location, versionId]);
 
   return (
     <>
@@ -260,6 +301,7 @@ const mapStateToProps = (state) => ({
   isDocumentViewerOpen: getIsDocumentViewerOpen(state),
   props: getProps(state),
   location: getLocation(state),
+  versionId: getVersionId(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

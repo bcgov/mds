@@ -716,6 +716,32 @@ namespace Syncfusion.EJ2.FileManager.AmazonS3FileProvider
             catch (Exception ex) { throw ex; }
         }
 
+        // Opens a single file at a specific object store version, so the PDF viewer can show previous versions of a file
+        public virtual FileStreamResult DownloadVersion(string path, string name, string versionId)
+        {
+            GetBucketList();
+            try
+            {
+                var streamRequest = new TransferUtilityOpenStreamRequest
+                {
+                    BucketName = bucketName,
+                    Key = RootName.Replace("/", "") + path + name,
+                    VersionId = versionId
+                };
+                var streamResponse = fileTransferUtility.OpenStreamWithResponseAsync(streamRequest).GetAwaiter().GetResult();
+                Stream stream = new DisposableStream(streamResponse.ResponseStream, streamResponse);
+                return new FileStreamResult(stream, "APPLICATION/octet-stream") { FileDownloadName = name };
+            }
+            catch (AmazonS3Exception amazonS3Exception)
+            {
+                if (amazonS3Exception.StatusCode == System.Net.HttpStatusCode.NotFound || amazonS3Exception.ErrorCode == "NoSuchKey" || amazonS3Exception.ErrorCode == "NoSuchVersion")
+                {
+                    return null;
+                }
+                throw;
+            }
+        }
+
         public virtual FileStreamResult Download(string path, string[] Names, params FileManagerDirectoryContent[] data)
         {
             return DownloadAsync(path, Names, data).Result; // or .GetAwaiter().GetResult();

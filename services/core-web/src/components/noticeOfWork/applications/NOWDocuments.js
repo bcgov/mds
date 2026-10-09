@@ -387,7 +387,7 @@ export class NOWDocuments extends Component {
         title: "Replace File",
         document: record,
         alertMessage:
-          "The new file must be the same file type as the original. The current file will be kept as a previous version, which can be downloaded from this table.",
+          "The new file must be the same file type as the original. The current file will be kept as a previous version, which can be viewed or downloaded from this table.",
         uploadUrl: NOTICE_OF_WORK_DOCUMENT_VERSION_UPLOAD(applicationGuid, record.mine_document_guid),
         createVersion: (documentManagerVersionGuid) =>
           this.props.createNoticeOfWorkDocumentVersion(
@@ -449,7 +449,12 @@ export class NOWDocuments extends Component {
           label: FileOperations.View,
           icon: <FileOutlined />,
           clickFunction: (_event, record) =>
-            this.props.openDocument(record.document_manager_guid, record.document_name),
+            this.props.openDocument(
+              record.document_manager_guid,
+              record.document_name,
+              null,
+              isVersionRow(record) ? record.document_manager_version_guid : null
+            ),
         },
         {
           key: "download",
@@ -506,8 +511,7 @@ export class NOWDocuments extends Component {
             </span>
           );
         }
-        // Order column can now be visible without dragging being allowed —
-        // hide the drag handle itself whenever isSortingAllowed is false.
+        // Order column can now be visible without dragging being allowed — hide the drag handle itself whenever isSortingAllowed is false.
         const dragHandle = this.props.isSortingAllowed ? (
           <DragHandle />
         ) : (
@@ -547,13 +551,13 @@ export class NOWDocuments extends Component {
           if (record.isLockedApplicationForm && !record.document_manager_guid) {
             return <div title="File Name">N/A</div>;
           }
-          // Previous versions are download only (for now), as the document viewer always opens the latest version of a file and this is an existing pattern.
+          // Clicking a previous version's file name downloads that version, it can also be viewed from the Actions menu
           if (isVersionRow(record)) {
             return (
               <div title="File Name">
                 <Button
                   type="link"
-                  style={{ padding: 0, height: "auto" }}
+                  className="btn--inline-link"
                   onClick={() => downloadFileFromDocumentManager(record)}
                 >
                   {record.document_name}
