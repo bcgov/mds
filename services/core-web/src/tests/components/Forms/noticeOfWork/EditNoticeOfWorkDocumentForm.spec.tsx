@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import EditNoticeOfWorkDocumentForm from "@/components/Forms/noticeOfWork/EditNoticeOfWorkDocumentForm";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
@@ -184,5 +184,48 @@ describe("EditNoticeOfWorkDocumentForm - remove-from-package reference warning",
         expect(
             screen.queryByText(/This file is currently being referenced in a permit condition/i)
         ).not.toBeInTheDocument();
+    });
+});
+
+describe("EditNoticeOfWorkDocumentForm - Title requirement", () => {
+    afterEach(() => {
+        jest.clearAllMocks();
+    });
+
+    const renderWithValues = (initialValues: Record<string, unknown>) =>
+        render(
+            <ReduxWrapper initialState={authenticatedState(false)}>
+                <EditNoticeOfWorkDocumentForm {...baseProps} initialValues={initialValues} />
+            </ReduxWrapper>
+        );
+
+    const submit = () => userEvent.click(screen.getByRole("button", { name: baseProps.title }));
+
+    it("requires a Title when the document is part of the permit package", async () => {
+        renderWithValues({ is_final_package: true });
+        await submit();
+        await waitFor(() => {
+            expect(screen.getByText("This is a required field")).toBeInTheDocument();
+        });
+        expect(baseProps.onSubmit).not.toHaveBeenCalled();
+    });
+
+    it("submits when the document is part of the permit package and has a Title", async () => {
+        renderWithValues({ is_final_package: true, preamble_title: "Reclamation Plan" });
+        await submit();
+        await waitFor(() => {
+            expect(baseProps.onSubmit).toHaveBeenCalled();
+        });
+        expect(screen.queryByText("This is a required field")).not.toBeInTheDocument();
+    });
+
+    it("doesn't require a Title when the document isn't part of the permit package", async () => {
+        renderWithValues({ is_final_package: false });
+        expect(screen.queryByRole("textbox", { name: "preamble_title" })).not.toBeInTheDocument();
+        await submit();
+        await waitFor(() => {
+            expect(baseProps.onSubmit).toHaveBeenCalled();
+        });
+        expect(screen.queryByText("This is a required field")).not.toBeInTheDocument();
     });
 });

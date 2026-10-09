@@ -33,6 +33,7 @@ import AddButton from "@/components/common/buttons/AddButton";
 import ReferralConsultationPackage from "@/components/noticeOfWork/applications/referals/ReferralConsultationPackage";
 import PermitPackage from "@/components/noticeOfWork/applications/PermitPackage";
 import CoreTable from "@mds/common/components/common/CoreTable";
+import { renderPermitPackageTitleColumn } from "@/components/noticeOfWork/applications/permitPackageTitleColumn";
 import SpatialFilesRowLink from "@mds/common/components/documents/spatial/SpatialFilesRowLink";
 
 const propTypes = {
@@ -66,6 +67,10 @@ const propTypes = {
   isAdminView: PropTypes.bool,
   isPackageModal: PropTypes.bool,
   lockedRowKeys: PropTypes.arrayOf(PropTypes.string),
+  packageTitles: PropTypes.shape({
+    titles: PropTypes.objectOf(PropTypes.string),
+    onTitleChange: PropTypes.func,
+  }),
   preTableContent: PropTypes.node,
   // Only supplied where the Spatial Files panel sits above this table.
   onSpatialFileLinkClick: PropTypes.func,
@@ -87,6 +92,7 @@ const defaultProps = {
   isAdminView: false,
   isPackageModal: false,
   lockedRowKeys: [],
+  packageTitles: null,
   preTableContent: null,
   onSpatialFileLinkClick: null,
 };
@@ -555,7 +561,22 @@ export const NOWSubmissionDocuments = (props) => {
   }
 
   if (props.isPackageModal) {
-    columns = [fileNameColumn, categoryColumn, descriptionColumn, uploadDateColumn];
+    const titleColumns = props.packageTitles
+      ? [
+        renderPermitPackageTitleColumn({
+          selectedKeys: props.selectedRows?.selectedSubmissionRows,
+          lockedRowKeys: props.lockedRowKeys,
+          packageTitles: props.packageTitles,
+        }),
+      ]
+      : [];
+    columns = [
+      fileNameColumn,
+      ...titleColumns,
+      categoryColumn,
+      descriptionColumn,
+      uploadDateColumn,
+    ];
   }
 
   const renderImportJobStatus = () => {

@@ -3,8 +3,14 @@ import {
   getOrderedPermitPackageDocuments,
   getPermitPackageFilesByType,
   getPermitPackageOrderLabel,
+  isApplicationCoreDocument,
   isFileReferencedInConditions,
+  isIssuedPermitDocument,
+  isReviewDocument,
+  isSystemGeneratedDocument,
   resolvePermitPackageFileReference,
+  shouldShowSystemGeneratedSection,
+  splitPermitPackageCoreDocuments,
 } from "../../utils/permitPackageDocuments";
 
 const makeCoreDoc = (overrides = {}) => ({
@@ -358,5 +364,87 @@ describe("isFileReferencedInConditions", () => {
   it("ignores plain {variable} tokens that aren't permit package file references", () => {
     const conditions = [{ condition: "{mine_name} has no file reference.", sub_conditions: [] }];
     expect(isFileReferencedInConditions(conditions as any, "file-guid-1")).toBe(false);
+  });
+});
+
+const makeSectionDoc = (
+  xrefGuid: string,
+  subTypeCode: string | null,
+  typeCode: string,
+  documentName = "file.pdf"
+) => ({
+  now_application_document_xref_guid: xrefGuid,
+  now_application_document_sub_type_code: subTypeCode,
+  now_application_document_type_code: typeCode,
+  mine_document: { mine_document_guid: `mine-${xrefGuid}`, document_name: documentName },
+});
+
+const sectionGuids = (docs) => docs.map((doc) => doc.now_application_document_xref_guid);
+
+describe("shouldShowSystemGeneratedSection", () => {
+  it("is always true for Notice of Work applications", () => {
+    expect(
+      shouldShowSystemGeneratedSection(
+        { application_type_code: "NOW", documents: [] },
+        { has_permit_conditions: false }
+      )
+    ).toBe(true);
+  });
+
+  it("follows the permit conditions flow for other applications", () => {
+    const amendment = { application_type_code: "ADA", documents: [] };
+    expect(shouldShowSystemGeneratedSection(amendment, { has_permit_conditions: true })).toBe(true);
+    expect(shouldShowSystemGeneratedSection(amendment, { has_permit_conditions: false })).toBe(
+      false
+    );
+  });
+
+  it("assumes the permit conditions flow when there is no draft permit amendment", () => {
+    const amendment = { application_type_code: "ADA", documents: [] };
+    expect(shouldShowSystemGeneratedSection(amendment, null)).toBe(true);
+    expect(shouldShowSystemGeneratedSection(amendment, {})).toBe(true);
+  });
+});
+
+describe("splitPermitPackageCoreDocuments", () => {
+  const documents = [
+    makeSectionDoc("annual-summary", "AAF", "ANS"),
+    makeSectionDoc("location-map", "MDO", "LMA"),
+    makeSectionDoc("bond-calculator", "SDO", "SCD"),
+    makeSectionDoc("status-report", "GDO", "SRE"),
+    makeSectionDoc("ntr", "AEF", "NTR", "form.pdf"),
+    makeSectionDoc("draft-permit", "AEF", "PMT", "DRAFT-permit.pdf"),
+    makeSectionDoc("issued-permit", "AEF", "PMT", "permit.pdf"),
+    makeSectionDoc("referral", "RDO", "BRR"),
+    makeSectionDoc("consultation", "CDO", "CRS"),
+    makeSectionDoc("public-comment", "PDO", "PCC"),
+    makeSectionDoc("uncategorised", null, "XXX"),
+  ];
+
+  it("puts each document into exactly one section when the System-generated section is shown", () => {
+    const sections = splitPermitPackageCoreDocuments(documents, true);
+
+    expect(sectionGuids(sections.application)).toEqual([
+      "annual-summary",
+      "location-map",
+      "bond-calculator",
+    ]);
+    expect(sectionGuids(sections.systemGenerated)).toEqual(["ntr", "draft-permit"]);
+    expect(sectionGuids(sections.government)).toEqual(["status-report", "uncategorised"]);
+    expect(sectionGuids(sections.excludedFromSections)).toEqual([
+      "issued-permit",
+      "referral",
+      "consultation",
+      "public-comment",
+    ]);
+
+    const allGuids = [
+      ...sections.application,
+      ...sections.systemGenerated,
+      ...sections.government,
+      ...sections.excludedFromSections,
+    ].map((doc) => doc.now_application_document_xref_guid);
+    expect(allGuids).toHaveLength(documents.length);
+    expect(new Set(allGuids).size).toBe(documents.length);
   });
 });

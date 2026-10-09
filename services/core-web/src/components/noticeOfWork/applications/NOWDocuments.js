@@ -42,6 +42,7 @@ import PermitPackage from "@/components/noticeOfWork/applications/PermitPackage"
 import { sortableContainer, sortableElement, sortableHandle } from "react-sortable-hoc";
 import arrayMove from "array-move";
 import CoreTable from "@mds/common/components/common/CoreTable";
+import { renderPermitPackageTitleColumn } from "@/components/noticeOfWork/applications/permitPackageTitleColumn";
 
 const DragHandle = sortableHandle(() => <MenuOutlined style={{ cursor: "grab", color: "#999" }} />);
 
@@ -71,6 +72,10 @@ const propTypes = {
   isSortingAllowed: PropTypes.bool,
   showDescription: PropTypes.bool,
   lockedRowKeys: PropTypes.arrayOf(PropTypes.string),
+  packageTitles: PropTypes.shape({
+    titles: PropTypes.objectOf(PropTypes.string),
+    onTitleChange: PropTypes.func,
+  }),
   applicationDelay: PropTypes.objectOf(PropTypes.string).isRequired,
   draftPermitAmendment: PropTypes.objectOf(PropTypes.any),
   showOrderColumn: PropTypes.bool,
@@ -92,6 +97,7 @@ const defaultProps = {
   isSortingAllowed: false,
   showDescription: false,
   lockedRowKeys: [],
+  packageTitles: null,
   documentNumberFormat: "decimal",
   showOrderColumn: false,
 };
@@ -680,7 +686,24 @@ export class NOWDocuments extends Component {
       }
       tableColumns = [...tableColumns, uploadDateColumn];
     } else if (this.props.isPackageModal) {
-      tableColumns = [fileNameColumn, categoryColumn, descriptionColumn, uploadDateColumn];
+      // The Title column is only shown in the permit package bulk modal,
+      // Other bulk modals (e.g. consultation) are unchanged.
+      const titleColumns = this.props.packageTitles
+        ? [
+          renderPermitPackageTitleColumn({
+            selectedKeys: this.props.selectedRows?.selectedCoreRows,
+            lockedRowKeys: this.props.lockedRowKeys,
+            packageTitles: this.props.packageTitles,
+          }),
+        ]
+        : [];
+      tableColumns = [
+        fileNameColumn,
+        ...titleColumns,
+        categoryColumn,
+        descriptionColumn,
+        uploadDateColumn,
+      ];
     } else {
       tableColumns = [categoryColumn, fileNameColumn, uploadDateColumn];
     }

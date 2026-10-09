@@ -51,17 +51,34 @@ export class PermitPackage extends Component {
     documents: [],
   };
 
-  createFinalDocumentPackage = (selectedCoreRows, selectedSubmissionRows) => {
+  createFinalDocumentPackage = (
+    selectedCoreRows,
+    selectedSubmissionRows,
+    { coreTitles = {}, submissionTitles = {} } = {}
+  ) => {
+    const getTitle = (titles, documentGuid, currentTitle) =>
+      documentGuid in titles ? titles[documentGuid]?.trim() : currentTitle;
+
     const documentsPayload = this.props.noticeOfWork.documents.map((document) => {
-      document.is_final_package = selectedCoreRows.includes(
-        document.now_application_document_xref_guid
-      );
+      const xrefGuid = document.now_application_document_xref_guid;
+      document.is_final_package = selectedCoreRows.includes(xrefGuid);
+      if (document.is_final_package) {
+        document.preamble_title = getTitle(coreTitles, xrefGuid, document.preamble_title);
+      }
       return document;
     });
 
     const submissionDocumentsPayload = this.props.noticeOfWork.filtered_submission_documents.map(
       (document) => {
-        document.is_final_package = selectedSubmissionRows.includes(document.mine_document_guid);
+        const mineDocumentGuid = document.mine_document_guid;
+        document.is_final_package = selectedSubmissionRows.includes(mineDocumentGuid);
+        if (document.is_final_package) {
+          document.preamble_title = getTitle(
+            submissionTitles,
+            mineDocumentGuid,
+            document.preamble_title
+          );
+        }
         return document;
       }
     );

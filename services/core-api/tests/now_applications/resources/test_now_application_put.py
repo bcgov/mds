@@ -3,6 +3,7 @@ from flask_restx import marshal, fields
 
 from app.api.now_applications.response_models import NOW_APPLICATION_MODEL
 from app.api.now_applications.models.now_application_document_xref import NOWApplicationDocumentXref
+from app.api.now_applications.models.now_application_document_identity_xref import NOWApplicationDocumentIdentityXref
 from tests.now_application_factories import NOWApplicationIdentityFactory, NOWApplicationFactory
 from tests.factories import MineDocumentFactory
 from unittest.mock import patch
@@ -15,6 +16,36 @@ def _make_bulk_document_xref(now_application_identity):
         mine_document_guid=mine_doc.mine_document_guid,
         now_application_document_type_code='OTH')
     return mine_doc, xref
+
+
+def _make_imported_submission_document(db_session, now_application_identity, **overrides):
+    mine_doc = MineDocumentFactory(mine=now_application_identity.mine)
+    submission_doc = NOWApplicationDocumentIdentityXref(
+        filename='submission.pdf',
+        messageid=1,
+        documenturl='https://example.com/submission.pdf',
+        documenttype='OTH',
+        mine_document=mine_doc,
+        **overrides)
+    now_application_identity.now_application.imported_submission_documents.append(submission_doc)
+    db_session.commit()
+    return submission_doc
+
+
+def _filtered_submission_document_data(submission_doc, **overrides):
+    """The vFCBC document as the permit package modal sends it in filtered_submission_documents."""
+    data = {
+        'documenturl': submission_doc.documenturl,
+        'messageid': submission_doc.messageid,
+        'filename': submission_doc.filename,
+        'documenttype': submission_doc.documenttype,
+        'is_final_package': bool(submission_doc.is_final_package),
+        'is_consultation_package': False,
+        'is_referral_package': False,
+        'preamble_title': submission_doc.preamble_title,
+    }
+    data.update(overrides)
+    return data
 
 
 def _find_document_data(data, xref_guid):
@@ -271,3 +302,56 @@ class TestNOWApplication:
         db_session.refresh(xref)
         assert xref.final_package_order is None
         assert xref.permit_package_document_type_code is None
+
+    @patch('app.api.now_applications.resources.now_application_resource.NROSNOWStatusService.nros_now_status_update')
+    @patch('app.api.now_applications.resources.now_application_resource.DocumentManagerService.importNoticeOfWorkSubmissionDocuments')
+    def test_put_submission_documents_saves_title_for_document_added_to_package(
+            self, mock_import_docs, mock_nros, test_client, db_session, auth_headers):
+        now_application = NOWApplicationFactory()
+        test_application = NOWApplicationIdentityFactory(now_application=now_application)
+        submission_doc = _make_imported_submission_document(db_session, test_application)
+
+        data = marshal(test_application.now_application, NOW_APPLICATION_MODEL)
+        data['filtered_submission_documents'] = [
+            _filtered_submission_document_data(
+                submission_doc, is_final_package=True, preamble_title='Reclamation Plan')
+        ]
+
+        put_resp = test_client.put(
+            f'/now-applications/{test_application.now_application_guid}',
+            json=data,
+            headers=auth_headers['full_auth_header'])
+
+        assert put_resp.status_code == 200, put_resp.response
+        db_session.refresh(submission_doc)
+        assert submission_doc.is_final_package is True
+        assert submission_doc.preamble_title == 'Reclamation Plan'
+
+    @patch('app.api.now_applications.resources.now_application_resource.NROSNOWStatusService.nros_now_status_update')
+    @patch('app.api.now_applications.resources.now_application_resource.DocumentManagerService.importNoticeOfWorkSubmissionDocuments')
+    def test_put_submission_documents_keeps_title_when_removed_from_package(
+            self, mock_import_docs, mock_nros, test_client, db_session, auth_headers):
+        now_application = NOWApplicationFactory()
+        test_application = NOWApplicationIdentityFactory(now_application=now_application)
+        submission_doc = _make_imported_submission_document(
+            db_session,
+            test_application,
+            is_final_package=True,
+            final_package_order=1,
+            preamble_title='Reclamation Plan')
+
+        data = marshal(test_application.now_application, NOW_APPLICATION_MODEL)
+        data['filtered_submission_documents'] = [
+            _filtered_submission_document_data(
+                submission_doc, is_final_package=False, preamble_title='Changed title')
+        ]
+
+        put_resp = test_client.put(
+            f'/now-applications/{test_application.now_application_guid}',
+            json=data,
+            headers=auth_headers['full_auth_header'])
+
+        assert put_resp.status_code == 200, put_resp.response
+        db_session.refresh(submission_doc)
+        assert submission_doc.is_final_package is False
+        assert submission_doc.preamble_title == 'Reclamation Plan'
