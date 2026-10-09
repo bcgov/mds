@@ -148,6 +148,58 @@ class TestNOWApplicationDocumentResourcePut:
         db_session.refresh(xref)
         assert xref.final_package_order == 3
 
+    def test_put_preserves_order_when_untagged_document_is_explicitly_tagged_document(
+            self, test_client, db_session, auth_headers):
+        """An untagged document (permit_package_document_type_code is None) is
+        treated as belonging to the Document bucket. Explicitly tagging it as Document for
+        the first time must not be mistaken for a real type switch and must not move it."""
+        now_application_identity = NOWApplicationIdentityFactory()
+        mine_doc, xref = _make_document_xref(now_application_identity)
+        xref.is_final_package = True
+        xref.permit_package_document_type_code = None
+        xref.final_package_order = 2
+        db_session.add(xref)
+        db_session.commit()
+
+        resp = test_client.put(
+            f'/now-applications/{now_application_identity.now_application_guid}/document/{mine_doc.mine_document_guid}',
+            json={'is_final_package': True, 'permit_package_document_type_code': 'DOCUMENT'},
+            headers=auth_headers['full_auth_header'])
+
+        assert resp.status_code == 200
+        db_session.refresh(xref)
+        assert xref.permit_package_document_type_code == 'DOCUMENT'
+        assert xref.final_package_order == 2
+
+    def test_put_reassigns_order_when_untagged_document_is_tagged_figure(
+            self, test_client, db_session, auth_headers):
+        """Unlike tagging an untagged document as Document, tagging it as Figure is a real
+        bucket change - it belongs in the Figure table's own numbering now, so it must move
+        to the bottom of that table rather than keep its old Document-bucket position."""
+        now_application_identity = NOWApplicationIdentityFactory()
+        other_mine_doc, other_xref = _make_document_xref(now_application_identity)
+        other_xref.is_final_package = True
+        other_xref.permit_package_document_type_code = 'FIGURE'
+        other_xref.final_package_order = 1
+        db_session.add(other_xref)
+
+        mine_doc, xref = _make_document_xref(now_application_identity)
+        xref.is_final_package = True
+        xref.permit_package_document_type_code = None
+        xref.final_package_order = 10
+        db_session.add(xref)
+        db_session.commit()
+
+        resp = test_client.put(
+            f'/now-applications/{now_application_identity.now_application_guid}/document/{mine_doc.mine_document_guid}',
+            json={'is_final_package': True, 'permit_package_document_type_code': 'FIGURE'},
+            headers=auth_headers['full_auth_header'])
+
+        assert resp.status_code == 200
+        db_session.refresh(xref)
+        assert xref.permit_package_document_type_code == 'FIGURE'
+        assert xref.final_package_order == 2
+
     def test_put_reassigns_order_on_type_switch(
             self, test_client, db_session, auth_headers):
         """Switching a document from Document to Figure moves it into the Figure

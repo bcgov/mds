@@ -20,6 +20,7 @@ import {
 import { getDraftPermitAmendmentForNOW } from "@mds/common/redux/selectors/permitSelectors";
 import {
   comparePermitPackageDocuments,
+  compareByTypeThenOrder,
   getPermitPackageOrderLabel,
   isFileReferencedInConditions,
 } from "@mds/common/utils/permitPackageDocuments";
@@ -74,6 +75,7 @@ const propTypes = {
   applicationDelay: PropTypes.objectOf(PropTypes.string).isRequired,
   draftPermitAmendment: PropTypes.objectOf(PropTypes.any),
   showOrderColumn: PropTypes.bool,
+  groupFiguresFirst: PropTypes.bool,
   documentNumberFormat: PropTypes.oneOf(["decimal", "whole"]),
 };
 
@@ -94,17 +96,19 @@ const defaultProps = {
   lockedRowKeys: [],
   documentNumberFormat: "decimal",
   showOrderColumn: false,
+  groupFiguresFirst: false,
 };
 
 const transformDocuments = (
   documents,
   now_application_guid,
   noticeOfWorkApplicationDocumentTypeOptionsHash,
-  isFinalPackageTable
+  isFinalPackageTable,
+  compareFn = comparePermitPackageDocuments
 ) =>
   documents &&
   documents
-    .sort(comparePermitPackageDocuments)
+    .sort(compareFn)
     .map((document, index) => ({
       key: document.now_application_document_xref_guid,
       now_application_document_xref_guid: document.now_application_document_xref_guid,
@@ -142,7 +146,8 @@ export class NOWDocuments extends Component {
       this.props.documents,
       this.props.noticeOfWork.now_application_guid,
       this.props.noticeOfWorkApplicationDocumentTypeOptionsHash,
-      this.props.isFinalPackageTable
+      this.props.isFinalPackageTable,
+      this.props.groupFiguresFirst ? compareByTypeThenOrder : comparePermitPackageDocuments
     );
 
   state = {
