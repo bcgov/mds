@@ -439,7 +439,7 @@ class NOWApplicationExportResource(Resource, UserMixin):
                         'description': submission_doc['description'],
                         'final_package_order': submission_doc['final_package_order'],
                         'mine_document': {
-                            'document_name': submission_doc['filename'],
+                            'document_name': submission_doc['document_name'],
                             'upload_date': now_application.get('submitted_date', None),
                         }
                     }

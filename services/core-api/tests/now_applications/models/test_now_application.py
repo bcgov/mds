@@ -381,3 +381,43 @@ class TestGetFilteredSubmissionsDocuments:
         by_guid = {doc['now_application_document_xref_guid']: doc for doc in docs}
         assert by_guid['xref-fig']['permit_package_document_type_code'] == 'FIGURE'
         assert by_guid['xref-doc']['permit_package_document_type_code'] == 'DOCUMENT'
+
+    def test_includes_the_current_name_of_an_imported_file(self, app):
+        """A replaced file keeps its original filename (part of the primary key), so its current name is sent separately"""
+        from app.api.now_applications.models.now_application import NOWApplication
+        imported_doc = _make_imported_submission_doc()
+        imported_doc.document_name = 'replacement.pdf'
+        now_application = self._make_now_application(imported=[imported_doc])
+
+        docs = NOWApplication.get_filtered_submissions_documents(now_application)
+
+        assert docs[0]['filename'] == 'test-file.pdf'
+        assert docs[0]['document_name'] == 'replacement.pdf'
+
+    def test_uses_the_filename_for_a_file_not_yet_imported(self, app):
+        from app.api.now_applications.models.now_application import NOWApplication
+        submission_doc = MagicMock()
+        submission_doc.filename = 'not-imported.pdf'
+        now_application = self._make_now_application(submission=[submission_doc])
+
+        docs = NOWApplication.get_filtered_submissions_documents(now_application)
+
+        assert docs[0]['document_name'] == 'not-imported.pdf'
+
+
+class TestNOWApplicationDocumentIdentityXrefDocumentName:
+    """NOWApplicationDocumentIdentityXref.document_name"""
+
+    def test_returns_the_current_name_of_the_file(self, app):
+        from app.api.mines.documents.models.mine_document import MineDocument
+        from app.api.now_applications.models.now_application_document_identity_xref import NOWApplicationDocumentIdentityXref
+        xref = NOWApplicationDocumentIdentityXref(
+            filename='original.pdf', mine_document=MineDocument(document_name='replacement.pdf'))
+
+        assert xref.document_name == 'replacement.pdf'
+
+    def test_falls_back_to_the_filename_without_a_mine_document(self, app):
+        from app.api.now_applications.models.now_application_document_identity_xref import NOWApplicationDocumentIdentityXref
+        xref = NOWApplicationDocumentIdentityXref(filename='original.pdf')
+
+        assert xref.document_name == 'original.pdf'
