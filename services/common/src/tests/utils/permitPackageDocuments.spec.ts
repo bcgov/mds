@@ -1,4 +1,5 @@
 import {
+  compareByTypeThenOrder,
   getNowApplicationDocument,
   getOrderedPermitPackageDocuments,
   getPermitPackageFilesByType,
@@ -44,6 +45,74 @@ describe("getPermitPackageOrderLabel", () => {
   it("offsets by 2 when no locked row is present (reserves the 1.1 slot)", () => {
     expect(getPermitPackageOrderLabel(0, false, false)).toBe("1.2");
     expect(getPermitPackageOrderLabel(1, false, false)).toBe("1.3");
+  });
+});
+
+describe("compareByTypeThenOrder", () => {
+  const figure = (overrides = {}) => ({
+    now_application_document_xref_guid: "fig",
+    permit_package_document_type_code: "FIGURE",
+    final_package_order: 1,
+    ...overrides,
+  });
+
+  const document = (overrides = {}) => ({
+    now_application_document_xref_guid: "doc",
+    permit_package_document_type_code: "DOCUMENT",
+    final_package_order: 1,
+    ...overrides,
+  });
+
+  const sortedGuids = (rows) =>
+    [...rows].sort(compareByTypeThenOrder).map((r) => r.now_application_document_xref_guid);
+
+  it("sorts Figures ahead of Documents even when the Document has a lower final_package_order", () => {
+    const rows = [
+      document({ now_application_document_xref_guid: "doc", final_package_order: 1 }),
+      figure({ now_application_document_xref_guid: "fig", final_package_order: 5 }),
+    ];
+    expect(sortedGuids(rows)).toEqual(["fig", "doc"]);
+  });
+
+  it("treats a missing permit_package_document_type_code as a Document", () => {
+    const rows = [
+      figure({ now_application_document_xref_guid: "fig", final_package_order: 2 }),
+      {
+        now_application_document_xref_guid: "untagged",
+        permit_package_document_type_code: undefined,
+        final_package_order: 1,
+      },
+    ];
+    expect(sortedGuids(rows)).toEqual(["fig", "untagged"]);
+  });
+
+  it("orders Figures by final_package_order within the Figure group", () => {
+    const rows = [
+      figure({ now_application_document_xref_guid: "fig-b", final_package_order: 2 }),
+      figure({ now_application_document_xref_guid: "fig-a", final_package_order: 1 }),
+    ];
+    expect(sortedGuids(rows)).toEqual(["fig-a", "fig-b"]);
+  });
+
+  it("orders Documents by final_package_order within the Document group", () => {
+    const rows = [
+      document({ now_application_document_xref_guid: "doc-b", final_package_order: 2 }),
+      document({ now_application_document_xref_guid: "doc-a", final_package_order: 1 }),
+    ];
+    expect(sortedGuids(rows)).toEqual(["doc-a", "doc-b"]);
+  });
+
+  it("puts the locked '1.1' row first within the Document group, not ahead of the whole table", () => {
+    const rows = [
+      figure({ now_application_document_xref_guid: "fig", final_package_order: 1 }),
+      document({ now_application_document_xref_guid: "doc", final_package_order: 1 }),
+      {
+        now_application_document_xref_guid: "locked",
+        isLockedApplicationForm: true,
+        final_package_order: 999,
+      },
+    ];
+    expect(sortedGuids(rows)).toEqual(["fig", "locked", "doc"]);
   });
 });
 

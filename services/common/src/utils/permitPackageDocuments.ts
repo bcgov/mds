@@ -135,6 +135,26 @@ export const comparePermitPackageDocuments = (
 };
 
 /**
+ * Groups all Figures ahead of all Documents (a missing type counts as a Document).
+ */
+export const compareByTypeThenOrder = (
+  a: PermitPackageDocumentRow,
+  b: PermitPackageDocumentRow
+): number => {
+  const typeRank = (doc: PermitPackageDocumentRow) =>
+    !doc.isLockedApplicationForm && doc.permit_package_document_type_code === "FIGURE" ? 0 : 1;
+
+  const rankDiff = typeRank(a) - typeRank(b);
+  if (rankDiff !== 0) return rankDiff;
+
+  if (a.isLockedApplicationForm && b.isLockedApplicationForm) return 0;
+  if (a.isLockedApplicationForm) return -1;
+  if (b.isLockedApplicationForm) return 1;
+
+  return (a.final_package_order ?? 0) - (b.final_package_order ?? 0);
+};
+
+/**
  * The "1.N" order label shown for a permit package document, matching the numbering rendered in NOWDocuments.js's sortable "Order" column.
  * The locked row (when present) always occupies "1.1"; when it's absent, numbering still starts at "1.2" to preserve that reserved slot.
  */
