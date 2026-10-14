@@ -51,6 +51,7 @@ export const NOWApplicationManageDocuments = (props) => {
           showInUnifiedView
           adminView
           disableCategoryFilter
+          enableFileManagement={isFeatureEnabled(Feature.NOW_FILE_MANAGEMENT)}
         />
       </ScrollContentWrapper>
       <ScrollContentWrapper

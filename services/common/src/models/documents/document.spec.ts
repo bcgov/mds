@@ -116,6 +116,22 @@ describe("NoWApplicationDocument model", () => {
     it("cannot be changed while the application is delayed", () => {
       expect(allowedActions({ is_final_package: true, is_delayed: true })).toEqual(canViewActions);
     });
+
+    it("cannot be changed when the file is from another table, e.g. System-generated Documents", () => {
+      expect(
+        allowedActions({ is_final_package: true, now_application_document_sub_type_code: "AEF" })
+      ).toEqual(canViewActions);
+    });
+
+    it("imported submission documents can be changed while the application is in progress", () => {
+      expect(
+        allowedActions({
+          is_final_package: true,
+          now_application_document_sub_type_code: "Application Form",
+          is_imported_submission_document: true,
+        })
+      ).toEqual(canChangeActions);
+    });
   });
 
   describe("application documents", () => {

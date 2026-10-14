@@ -299,6 +299,14 @@ class TestPermitPackageRules:
 
         _assert_upload_allowed(test_client, auth_headers, now_application_identity, mine_document)
 
+    @responses.activate
+    def test_document_from_another_table_blocked_in_permit_package(self, test_client, db_session, auth_headers):
+        now_application_identity = NOWApplicationIdentityFactory()
+        mine_document, _ = _make_core_document(
+            db_session, now_application_identity, document_type_code=SYSTEM_GENERATED_DOCUMENT_TYPE, is_final_package=True)
+
+        _assert_blocked(test_client, auth_headers, now_application_identity, mine_document, 'cannot be changed from Manage Documents')
+
     @pytest.mark.parametrize('status_code', LOCKED_STATUS_CODES)
     @responses.activate
     def test_permit_package_document_blocked_once_locked(self, test_client, db_session, auth_headers, status_code):
