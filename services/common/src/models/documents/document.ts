@@ -345,7 +345,8 @@ export class NoWApplicationDocument extends MineDocument {
     const canChange = is_latest_version && this.canChangeFile(userRoles);
     return [
       canView && FileOperations.View,
-      FileOperations.Download,
+      // Rows without a file (e.g. a vFCBC document that hasn't been imported yet or the 1.1 locked row) have nothing to download
+      this.document_manager_guid && FileOperations.Download,
       canChange && !this.isSpatialFile() && FileOperations.Replace,
       canChange && FileOperations.Archive,
     ];
