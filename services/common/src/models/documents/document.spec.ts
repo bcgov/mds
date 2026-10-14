@@ -86,6 +86,12 @@ describe("NoWApplicationDocument model", () => {
     ]);
   });
 
+  it("offers no actions for a row without a file", () => {
+    expect(allowedActions({ document_manager_guid: undefined, mine_document_guid: undefined })).toEqual(
+      []
+    );
+  });
+
   describe("government documents", () => {
     it.each(["AIA", "REJ", "WDN", "NPR"])("can be changed once the application is %s", (status) => {
       expect(allowedActions({ now_application_status_code: status })).toEqual(canChangeActions);
