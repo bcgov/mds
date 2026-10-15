@@ -1,6 +1,7 @@
 import {
   getArchivePermitPackageWarning,
   getFileManagementContext,
+  getFileNameOffset,
   openArchiveFileModal,
   toFileManagementRow,
 } from "@/components/noticeOfWork/applications/nowFileManagement";
@@ -107,6 +108,23 @@ describe("nowFileManagement", () => {
         FileOperations.Download,
       ]);
       expect(row.versions[0].document_manager_guid).toBe("doc-mgr-guid");
+    });
+  });
+
+  describe("getFileNameOffset", () => {
+    // Like Major Projects, names line up whether or not the expand icon sits beside them
+    it("offsets a file with versions past the expand icon beside it", () => {
+      expect(getFileNameOffset({ number_prev_versions: 2 })).toEqual({ marginLeft: "14px" });
+    });
+
+    it("offsets a previous version to line up with the file names above it", () => {
+      expect(getFileNameOffset({ mine_document_version_guid: "version-guid" })).toEqual({
+        marginLeft: "38px",
+      });
+    });
+
+    it("leaves a file without versions to documentWithTag, which already offsets it", () => {
+      expect(getFileNameOffset({ number_prev_versions: 0 })).toEqual({});
     });
   });
 
