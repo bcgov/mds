@@ -1,5 +1,5 @@
 import pytest
-from app.utils.access_decorators import DOCUMENT_UPLOAD_ROLES
+from app.utils.access_decorators import DOCUMENT_UPLOAD_ROLES, VIEW_ALL
 from app.docman.resources.document import DocumentResource, DocumentListResource
 from app.docman.resources.document_version_list_resource import DocumentVersionListResource
 from app.docman.resources.document_version_resource import DocumentVersionResource
@@ -15,7 +15,9 @@ from app.docman.resources.tusd_hooks import TusdHooks
                            "post", DOCUMENT_UPLOAD_ROLES),
                           (DocumentResource, "patch", DOCUMENT_UPLOAD_ROLES),
                           (DocumentResource, "head", DOCUMENT_UPLOAD_ROLES),
-                          (TusdHooks, "post", DOCUMENT_UPLOAD_ROLES)])
+                          (TusdHooks, "post", DOCUMENT_UPLOAD_ROLES),
+                          (DocumentResource.DocumentZipResource,
+                           "post", DOCUMENT_UPLOAD_ROLES + [VIEW_ALL])])
 def test_endpoint_auth(resource, method, expected_roles):
     endpoint = getattr(resource, method, None)
     assert endpoint != None, '{0} does not have a {1} method.'.format(

@@ -108,6 +108,7 @@ MINE_DOCUMENT_VERSION_MODEL = api.model(
         'document_name': fields.String,
         'upload_date': fields.String,
         'create_user': fields.String,
+        'update_user': fields.String,
         'update_timestamp': fields.String
     })
 
@@ -174,6 +175,8 @@ MINE_DOCUMENT_MODEL = api.model(
         'update_timestamp':
         fields.String,
         'create_user':
+        fields.String,
+        'update_user':
         fields.String,
         'is_archived':
         fields.Boolean,
@@ -248,6 +251,8 @@ PERMIT_AMENDMENT_ORGBOOK_PUBLISH_STATUS_MODEL = api.model(
         'publish_state': fields.Boolean,
         'orgbook_entity_id': fields.String,
         'orgbook_credential_id': fields.String,
+        'revoked_ind': fields.Boolean,
+        'revoked_reason': fields.String,
     })
 
 PERMIT_AMENDMENT_SHORT_MODEL = api.model(

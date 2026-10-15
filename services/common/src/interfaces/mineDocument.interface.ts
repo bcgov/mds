@@ -7,6 +7,7 @@ export interface IMineDocument {
   document_name: string;
   upload_date: string;
   create_user: string;
+  update_user?: string;
   is_archived?: boolean;
   archived_date?: string;
   archived_by?: string;

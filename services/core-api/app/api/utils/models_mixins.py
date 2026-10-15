@@ -178,6 +178,9 @@ class Base(db.Model):
                         f'session objects marked as deleted: {db.session.deleted}')
 
             if isinstance(v, list):
+                if k not in mapper.attrs:
+                    current_app.logger.debug(f'key <{k}> is not a mapped attribute, skipping')
+                    continue
                 rel = getattr(self.__class__, k) #SA.relationship definition
                 obj_list = getattr(self, k)
                 obj_list_class = rel.property.entity.class_
@@ -542,6 +545,7 @@ class DocumentXrefMixin(object):
     document_name = association_proxy('mine_document', 'document_name')
     upload_date = association_proxy('mine_document', 'upload_date')
     create_user = association_proxy('mine_document', 'create_user')
+    update_user = association_proxy('mine_document', 'update_user')
     versions = association_proxy('mine_document', 'versions')
     update_timestamp = association_proxy('mine_document', 'update_timestamp')
     mine_document_bundle_id = association_proxy('mine_document', 'mine_document_bundle_id')

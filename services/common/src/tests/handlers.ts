@@ -36,6 +36,10 @@ const mineHandlers = [
   http.get("/%3CAPI_URL%3E/mines/18133c75-49ad-4101-85f3-a43e35ae989a/alerts", async () => {
     return HttpResponse.json(MOCK.MINE_ALERTS);
   }),
+  http.get("/%3CAPI_URL%3E/mines/:mineGuid/tailings/:tsfGuid", async ({ params }) => {
+    const { tsfGuid } = params;
+    return HttpResponse.json({ ...MOCK.TSF, mine_tailings_storage_facility_guid: tsfGuid });
+  }),
 ];
 
 const geoSpatialHandlers = [
@@ -85,6 +89,15 @@ const permitHandlers = [
   }),
   http.get("/%3CAPI_URL%3E/mines/permits/condition-category-codes", async () => {
     return HttpResponse.json(MINE_REPORT_CATEGORY_OPTIONS);
+  }),
+  http.get("/%3CAPI_URL%3E/mines/permits/condition-tags", async () => {
+    return HttpResponse.json({ records: MOCK.PERMIT_CONDITION_TAGS });
+  }),
+  // Matches both the plain permits list (fetchPermits) and the
+  // ?now_application_guid=... draft-permits variant (fetchDraftPermitByNOW) -
+  // MSW route matching ignores the query string.
+  http.get("/%3CAPI_URL%3E/mines/:mineGuid/permits", async () => {
+    return HttpResponse.json({ records: PERMITS });
   }),
   http.get(
     "/%3CAPI_URL%3E/mines/:mineGuid/permits/:permitGuid/amendments/:permitAmendmentGuid/conditions",

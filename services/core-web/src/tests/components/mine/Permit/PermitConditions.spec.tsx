@@ -339,7 +339,7 @@ describe("PermitConditions", () => {
       expect(addReport).toBeInTheDocument();
       const addListItem = screen.queryByText("Condition");
       expect(addListItem).toBeInTheDocument();
-      const conditionInput = container.querySelector('[name="condition"]');
+      const conditionInput = screen.getByRole("textbox", { name: "Condition text" });
       expect(conditionInput).toBeInTheDocument();
     });
   });

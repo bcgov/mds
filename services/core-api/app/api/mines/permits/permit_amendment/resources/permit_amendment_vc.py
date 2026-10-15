@@ -13,11 +13,14 @@ from app.api.services.issue_to_orgbook_service import OrgBookIssuerService
 
 
 class PermitAmendmentVCResource(Resource, UserMixin):
+
     @requires_role_mine_admin
+    @api.doc(deprecated=True)
     @api.response(200, "VC Issued to OrgBook, no local data created")
     def post(self, mine_guid, permit_guid, permit_amendment_guid):
         permit_amendment = PermitAmendment.find_by_permit_amendment_guid(permit_amendment_guid)
 
+        #TODO replace with Issue to UNTP PUBLISHER
         response = OrgBookIssuerService().issue_permit_amendment_vc(permit_amendment)
         if not response:
             raise BadRequest(

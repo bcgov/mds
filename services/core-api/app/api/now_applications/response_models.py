@@ -420,6 +420,7 @@ IMPORTED_NOW_SUBMISSION_DOCUMENT = api.model(
         'mine_document_bundle_id': fields.Integer,
         'is_final_package': fields.Boolean,
         'final_package_order': fields.Integer,
+        'permit_package_document_type_code': fields.String,
         'is_referral_package': fields.Boolean,
         'is_consultation_package': fields.Boolean,
         'preamble_title': fields.String,

@@ -5,6 +5,7 @@ import { IPermitCondition } from "@mds/common/interfaces/permits/permitCondition
 import { IMineReportPermitRequirement } from "../interfaces/permits";
 import { INoWApplicationForm } from "../interfaces/noticeOfWork.interface";
 import { REPORT_FREQUENCY_HASH, REPORT_MINISTRY_RECIPIENT_HASH, REPORT_REGULATORY_AUTHORITY_CODES_HASH } from "../constants/strings";
+import { Feature } from "./featureFlag";
 
 
 const transformAuthorizations = (
@@ -174,4 +175,26 @@ export const getLockedSystemNtrDoc = (
 ) => {
   if (!lockedNtrGuid) return null;
   return (documents || []).find((doc) => doc.now_application_document_xref_guid === lockedNtrGuid) || null;
+};
+
+export const splitFinalApplicationPackageByType = (
+  documents: any[],
+  isFeatureEnabled: (feature: Feature) => boolean
+) => {
+  if (!isFeatureEnabled(Feature.INSPECTOR_PERMIT_PACKAGE_TYPE_SELECTOR)) {
+    // Flag off: keep today's behaviour exactly — one combined list, no figures split.
+    return { final_application_package: documents, final_application_package_figures: [] };
+  }
+
+  const finalApplicationPackageFigures = documents.filter(
+    (doc) => doc.permit_package_document_type_code === "FIGURE"
+  );
+  const finalApplicationPackageDocuments = documents.filter(
+    (doc) => doc.permit_package_document_type_code !== "FIGURE"
+  );
+
+  return {
+    final_application_package: finalApplicationPackageDocuments,
+    final_application_package_figures: finalApplicationPackageFigures,
+  };
 };

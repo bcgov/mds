@@ -31,6 +31,7 @@ class ProjectSummaryAuthorizationDocumentXref(Base):
     update_timestamp = association_proxy('mine_document', 'update_timestamp')
     versions = association_proxy('mine_document', 'versions')
     create_user = association_proxy('mine_document', 'create_user')
+    update_user = association_proxy('mine_document', 'update_user')
     is_archived = association_proxy('mine_document', 'is_archived')
 
     def __repr__(self):

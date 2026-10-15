@@ -62,8 +62,7 @@ export const getTotalApplicationDelayDuration = createSelector([getApplicationDe
   delays?.map((delay) => {
     const endDate = delay.end_date ? delay.end_date : today;
     const delayDuration = moment.duration(moment(endDate).diff(moment(delay.start_date)));
-    // eslint-disable-next-line no-underscore-dangle
-    return totalArr.push(delayDuration._milliseconds);
+    return totalArr.push(delayDuration.asMilliseconds());
   });
   const total = getAmountSum(totalArr);
   const newMoment = moment.duration(total, "milliseconds");
@@ -85,8 +84,7 @@ export const getNOWProgress = createSelector(
         }
         const endDate = obj.end_date ? obj.end_date : today;
         const duration = moment.duration(moment(endDate).diff(moment(obj.start_date)));
-        // eslint-disable-next-line no-underscore-dangle
-        const difference = duration._milliseconds - delayDurations.milliseconds;
+        const difference = duration.asMilliseconds() - delayDurations.milliseconds;
         const durationDifference = moment.duration(difference, "milliseconds");
         return {
           [obj.application_progress_status_code]: {
@@ -156,6 +154,6 @@ export const getNoticeOfWorkEditableTypes = createSelector(
     if (application.application_type_code === "NOW") {
       editableOptions.push("SAG");
     }
-    return applicationTypeOptions.filter((o) => editableOptions.includes(o.value));
+    return applicationTypeOptions.filter((o) => editableOptions.includes(String(o.value)));
   }
 );

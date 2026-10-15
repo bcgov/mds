@@ -17,6 +17,13 @@ import {
   getNoticeOfWork,
   getApplicationDelay,
 } from "@mds/common/redux/selectors/noticeOfWorkSelectors";
+import { getDraftPermitAmendmentForNOW } from "@mds/common/redux/selectors/permitSelectors";
+import {
+  comparePermitPackageDocuments,
+  compareByTypeThenOrder,
+  getPermitPackageOrderLabel,
+  isFileReferencedInConditions,
+} from "@mds/common/utils/permitPackageDocuments";
 import {
   fetchImportedNoticeOfWorkApplication,
   updateNoticeOfWorkApplication,
@@ -66,11 +73,16 @@ const propTypes = {
   showDescription: PropTypes.bool,
   lockedRowKeys: PropTypes.arrayOf(PropTypes.string),
   applicationDelay: PropTypes.objectOf(PropTypes.string).isRequired,
+  draftPermitAmendment: PropTypes.objectOf(PropTypes.any),
+  showOrderColumn: PropTypes.bool,
+  groupFiguresFirst: PropTypes.bool,
+  documentNumberFormat: PropTypes.oneOf(["decimal", "whole"]),
 };
 
 const defaultProps = {
   selectedRows: null,
   categoriesToShow: [],
+  draftPermitAmendment: null,
   disclaimerText: "",
   isAdminView: false,
   allowAfterProcess: false,
@@ -82,22 +94,21 @@ const defaultProps = {
   isSortingAllowed: false,
   showDescription: false,
   lockedRowKeys: [],
+  documentNumberFormat: "decimal",
+  showOrderColumn: false,
+  groupFiguresFirst: false,
 };
 
 const transformDocuments = (
   documents,
   now_application_guid,
   noticeOfWorkApplicationDocumentTypeOptionsHash,
-  isFinalPackageTable
+  isFinalPackageTable,
+  compareFn = comparePermitPackageDocuments
 ) =>
   documents &&
   documents
-    .sort((a, b) => {
-      if (a.isLockedApplicationForm && b.isLockedApplicationForm) return 0;
-      if (a.isLockedApplicationForm) return -1;
-      if (b.isLockedApplicationForm) return 1;
-      return a.final_package_order - b.final_package_order;
-    })
+    .sort(compareFn)
     .map((document, index) => ({
       key: document.now_application_document_xref_guid,
       now_application_document_xref_guid: document.now_application_document_xref_guid,
@@ -135,7 +146,8 @@ export class NOWDocuments extends Component {
       this.props.documents,
       this.props.noticeOfWork.now_application_guid,
       this.props.noticeOfWorkApplicationDocumentTypeOptionsHash,
-      this.props.isFinalPackageTable
+      this.props.isFinalPackageTable,
+      this.props.groupFiguresFirst ? compareByTypeThenOrder : comparePermitPackageDocuments
     );
 
   state = {
@@ -190,7 +202,15 @@ export class NOWDocuments extends Component {
       this.state.dataSource &&
       this.state.dataSource.findIndex((x) => x.index === restProps["data-row-key"]);
     const isLockedRow = this.state.dataSource?.[index]?.isLockedApplicationForm;
-    return <SortableItem index={index} disabled={isLockedRow} {...restProps} />;
+    // Order column can now be visible without dragging being allowed —
+    // disable the actual drag capability whenever isSortingAllowed is false.
+    return (
+      <SortableItem
+        index={index}
+        disabled={isLockedRow || !this.props.isSortingAllowed}
+        {...restProps}
+      />
+    );
   };
 
   isInCompleteStatus = () =>
@@ -323,19 +343,35 @@ export class NOWDocuments extends Component {
       dataIndex: "index",
       className: "drag-visible",
       render: (text, record) => {
+        const hasLockedRow = this.state.dataSource?.some((d) => d.isLockedApplicationForm);
         if (record.isLockedApplicationForm) {
           // The NoW application document (NTR — system-generated Notice of Work Form) is
           // always position 1.1 in the permit; it is locked and cannot be reordered.
-          return <span style={{ paddingLeft: "26px" }}>1.1</span>;
+          return (
+            <span style={{ paddingLeft: "26px" }}>
+              {getPermitPackageOrderLabel(text, hasLockedRow, true)}
+            </span>
+          );
         }
-        // Offset is 1 when the locked 1.1 row is present (its index is 0),
-        // or 2 when there is no locked row (preserves numbering
-        // for applications where no system generated NTR doc has been found).
-        const hasLockedRow = this.state.dataSource?.some((d) => d.isLockedApplicationForm);
+        // Order column can now be visible without dragging being allowed —
+        // hide the drag handle itself whenever isSortingAllowed is false.
+        const dragHandle = this.props.isSortingAllowed ? (
+          <DragHandle />
+        ) : (
+          <span style={{ display: "inline-block", width: 14 }} />
+        );
+        if (this.props.documentNumberFormat === "whole") {
+          return (
+            <>
+              {dragHandle}
+              &nbsp; {text + 1}
+            </>
+          );
+        }
         return (
           <>
-            <DragHandle />
-            &nbsp; 1.{text + (hasLockedRow ? 1 : 2)}
+            {dragHandle}
+            &nbsp; {getPermitPackageOrderLabel(text, hasLockedRow, false)}
           </>
         );
       },
@@ -431,6 +467,9 @@ export class NOWDocuments extends Component {
         if (record.isLockedApplicationForm) {
           return <div />;
         }
+        if (this.props.isFinalPackageTable && this.props.isViewMode) {
+          return <div />;
+        }
         if (!this.isInCompleteStatus()) {
           if (isModificationAllowed) {
             return (
@@ -442,7 +481,14 @@ export class NOWDocuments extends Component {
                 {!this.props.isFinalPackageTable && (
                   <Popconfirm
                     placement="topLeft"
-                    title="Are you sure you want to remove this document?"
+                    title={
+                      isFileReferencedInConditions(
+                        this.props.draftPermitAmendment?.conditions,
+                        record.now_application_document_xref_guid
+                      )
+                        ? "This file is currently being referenced in a permit condition. Deleting it will break that reference. Are you sure you want to delete this document?"
+                        : "Are you sure you want to remove this document?"
+                    }
                     okText="Delete"
                     cancelText="Cancel"
                     onConfirm={() =>
@@ -617,7 +663,7 @@ export class NOWDocuments extends Component {
         descriptionColumn,
         deleteAndEditButtonColumn,
       ];
-      if (this.props.isSortingAllowed) {
+      if (this.props.showOrderColumn) {
         tableColumns = [sortColumn, ...tableColumns];
       }
     } else if (this.props.isStandardDocuments) {
@@ -655,23 +701,26 @@ export class NOWDocuments extends Component {
             <p>{this.props.disclaimerText}</p>
           </Col>
           <Col span={6}>
-            {!this.props.selectedRows && !this.props.isViewMode && !this.props.isRefConDocuments && (
-              <NOWActionWrapper
-                permission={Permission.EDIT_PERMITS}
-                tab={this.props.isAdminView ? "" : "REV"}
-                allowAfterProcess={this.props.allowAfterProcess}
-                ignoreDelay
-              >
-                <AddButton
-                  className="position-right"
-                  disabled={this.props.isViewMode}
-                  style={this.props.isAdminView ? { marginRight: "100px" } : {}}
-                  onClick={this.openAddDocumentModal}
+            {!this.props.selectedRows &&
+              !this.props.isViewMode &&
+              !this.props.isRefConDocuments &&
+              !this.props.isFinalPackageTable && (
+                <NOWActionWrapper
+                  permission={Permission.EDIT_PERMITS}
+                  tab={this.props.isAdminView ? "" : "REV"}
+                  allowAfterProcess={this.props.allowAfterProcess}
+                  ignoreDelay
                 >
-                  Add Document
-                </AddButton>
-              </NOWActionWrapper>
-            )}
+                  <AddButton
+                    className="position-right"
+                    disabled={this.props.isViewMode}
+                    style={this.props.isAdminView ? { marginRight: "100px" } : {}}
+                    onClick={this.openAddDocumentModal}
+                  >
+                    Add Document
+                  </AddButton>
+                </NOWActionWrapper>
+              )}
           </Col>
         </Row>
         <br />
@@ -718,6 +767,7 @@ const mapStateToProps = (state) => ({
   ),
   noticeOfWork: getNoticeOfWork(state),
   applicationDelay: getApplicationDelay(state),
+  draftPermitAmendment: getDraftPermitAmendmentForNOW(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

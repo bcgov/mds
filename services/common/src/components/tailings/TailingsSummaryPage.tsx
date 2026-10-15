@@ -126,7 +126,7 @@ export const TailingsSummaryPage: FC = () => {
     } catch (error) {
       notification.error({
         message: "Error",
-        description: error.message,
+        description: (error as any)?.message,
       });
     }
   };

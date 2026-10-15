@@ -82,6 +82,24 @@ def test_update_field_in_nested_item(db_session):
     assert now_app.camp.reclamation_description == new_reclam_desc
 
 
+def test_update_ignores_list_keys_that_are_not_relationships(db_session):
+    now_app = NOWApplicationIdentityFactory().now_application
+
+    new_reclam_desc = "TEST DESCRIPTIONzzzz"
+
+    now_app_dict = marshal(now_app, NOW_APPLICATION_MODEL)
+    now_app_dict['camp']['reclamation_description'] = new_reclam_desc
+    # response-only fields the front-end round-trips on save; not relationships on NOWApplication
+    assert not hasattr(NOWApplication, 'spatial_document_bundles')
+    now_app_dict['spatial_document_bundles'] = [{'bundle_id': 1}]
+    now_app_dict['not_a_real_list_field'] = [{'anything': 'goes'}]
+
+    now_app.deep_update_from_dict(now_app_dict)
+
+    db_session.refresh(now_app)
+    assert now_app.camp.reclamation_description == new_reclam_desc
+
+
 #schema implemented for now_application_activity_details only
 def test_update_new_now_application_activity_detail(db_session):
     now_app = NOWApplicationIdentityFactory()

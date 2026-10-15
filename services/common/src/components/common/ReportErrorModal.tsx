@@ -1,5 +1,6 @@
-import React, { FC, useState } from "react";
-import { Modal, Segmented, Input, Radio, Typography } from "antd";
+import React, { FC } from "react";
+import { Modal, Segmented, Input, Radio, Form } from "antd";
+import { getFormItemLabel } from "../forms/BaseInput";
 
 export const ERROR_SEVERITY = {
   LOW: "Low",
@@ -35,22 +36,26 @@ const SEEN_BEFORE_OPTIONS = [
   { label: "Not sure", value: SEEN_BEFORE_CHOICES.NOT_SURE },
 ];
 
-export const ReportErrorModal: FC<ReportErrorModalProps> = ({ open, onCancel, onSubmit }) => {
-  const [severity, setSeverity] = useState<string>(ERROR_SEVERITY.LOW);
-  const [description, setDescription] = useState<string>("");
-  const [seenBefore, setSeenBefore] = useState<SeenBeforeChoice | undefined>(undefined);
+interface ReportErrorFormValues {
+  severity: string;
+  description: string;
+  seenBefore?: SeenBeforeChoice;
+}
 
-  const handleSubmit = () => {
+export const ReportErrorModal: FC<ReportErrorModalProps> = ({ open, onCancel, onSubmit }) => {
+  const [form] = Form.useForm<ReportErrorFormValues>();
+
+  const handleFinish = (values: ReportErrorFormValues) => {
     let seenBeforeValue: boolean | null | undefined = undefined;
-    if (seenBefore === SEEN_BEFORE_CHOICES.YES) {
+    if (values.seenBefore === SEEN_BEFORE_CHOICES.YES) {
       seenBeforeValue = true;
-    } else if (seenBefore === SEEN_BEFORE_CHOICES.NO) {
+    } else if (values.seenBefore === SEEN_BEFORE_CHOICES.NO) {
       seenBeforeValue = false;
-    } else if (seenBefore === SEEN_BEFORE_CHOICES.NOT_SURE) {
+    } else if (values.seenBefore === SEEN_BEFORE_CHOICES.NOT_SURE) {
       seenBeforeValue = null;
     }
 
-    onSubmit({ severity, description, seenBefore: seenBeforeValue });
+    onSubmit({ severity: values.severity, description: values.description, seenBefore: seenBeforeValue });
   };
 
   return (
@@ -58,38 +63,46 @@ export const ReportErrorModal: FC<ReportErrorModalProps> = ({ open, onCancel, on
       title="Report an error"
       open={open}
       onCancel={onCancel}
-      onOk={handleSubmit}
+      onOk={() => form.submit()}
       okText="Send"
-      okButtonProps={{ disabled: description.trim().length === 0 }}
       cancelText="Cancel"
+      afterClose={() => form.resetFields()}
     >
-      <Typography.Paragraph strong>Severity</Typography.Paragraph>
-      <Segmented
-        options={[ERROR_SEVERITY.LOW, ERROR_SEVERITY.MEDIUM, ERROR_SEVERITY.HIGH]}
-        value={severity}
-        onChange={(value) => setSeverity(value as string)}
-      />
+      <Form
+        form={form}
+        layout="vertical"
+        className="common-form"
+        initialValues={{ severity: ERROR_SEVERITY.LOW }}
+        onFinish={handleFinish}
+      >
+        <Form.Item
+          name="severity"
+          label="Severity"
+          rules={[{ required: true, message: "Please select a severity" }]}
+        >
+          <Segmented
+            className="report-error-severity"
+            options={[ERROR_SEVERITY.LOW, ERROR_SEVERITY.MEDIUM, ERROR_SEVERITY.HIGH]}
+          />
+        </Form.Item>
 
-      <Typography.Paragraph strong className="margin-large--top">
-        What were you trying to do?
-      </Typography.Paragraph>
-      <Input.TextArea
-        rows={4}
-        placeholder="Describe what you were doing when this happened"
-        showCount
-        maxLength={DESCRIPTION_MAX_LENGTH}
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-      />
+        <Form.Item
+          name="description"
+          label="What were you trying to do?"
+          rules={[{ required: true, message: "Please describe what you were doing" }]}
+        >
+          <Input.TextArea
+            rows={4}
+            placeholder="Describe what you were doing when this happened"
+            showCount
+            maxLength={DESCRIPTION_MAX_LENGTH}
+          />
+        </Form.Item>
 
-      <Typography.Paragraph strong className="margin-large--top">
-        Have you experienced this issue before? (optional)
-      </Typography.Paragraph>
-      <Radio.Group
-        options={SEEN_BEFORE_OPTIONS}
-        value={seenBefore}
-        onChange={(e) => setSeenBefore(e.target.value)}
-      />
+        <Form.Item name="seenBefore" label={getFormItemLabel("Have you experienced this issue before?", false)}>
+          <Radio.Group options={SEEN_BEFORE_OPTIONS} />
+        </Form.Item>
+      </Form>
     </Modal>
   );
 };

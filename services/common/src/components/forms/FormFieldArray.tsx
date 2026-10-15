@@ -14,7 +14,8 @@ const ViewFieldArray: FC<BaseFieldArrayProps<any, any>> = ({ name, component: In
     const valueArray = getNestedValue(initialValues, fullName) ?? [];
 
     const fields = valueArray.map((_v, index) => `${fullName}[${index}]`);
-    fields.get = (index) => fields[index];
+    // mirror redux-form's fields.get, which returns the row value rather than its field name
+    fields.get = (index) => valueArray[index];
     return <InputComponent fields={fields} {...props} />
 };
 

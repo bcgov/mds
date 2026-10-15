@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
+import withFeatureFlag from "@mds/common/providers/featureFlags/withFeatureFlag";
+import { splitFinalApplicationPackageByType } from "@mds/common/utils/helpers";
 import PropTypes from "prop-types";
 import moment from "moment";
 import { isEmpty } from "lodash";
@@ -93,6 +95,7 @@ const propTypes = {
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
   fixedTop: PropTypes.bool.isRequired,
   generateNoticeOfWorkApplicationDocument: PropTypes.func.isRequired,
+  isFeatureEnabled: PropTypes.func,
   fetchNoticeOfWorkApplicationContextTemplate: PropTypes.func.isRequired,
   noticeOfWorkApplicationStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   documentContextTemplate: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
@@ -405,6 +408,7 @@ export class ProcessPermit extends Component {
         .map((doc) => ({
           document_info: getDocumentInfo(doc),
           final_package_order: doc.final_package_order,
+          permit_package_document_type_code: doc.permit_package_document_type_code,
         }));
       documents = filteredSubmissionDocuments;
     }
@@ -417,11 +421,13 @@ export class ProcessPermit extends Component {
         .map((doc) => ({
           document_info: getDocumentInfo(doc),
           final_package_order: doc.final_package_order,
+          permit_package_document_type_code: doc.permit_package_document_type_code,
         }));
       documents = [...documents, ...requestedDocuments];
     }
     documents.sort((a, b) => a.final_package_order - b.final_package_order);
-    return documents;
+
+    return splitFinalApplicationPackageByType(documents, this.props.isFeatureEnabled);
   };
 
   afterSuccess = (values, message, code) => {
@@ -491,7 +497,7 @@ export class ProcessPermit extends Component {
             formatted_auth_end_date: formatDate(values.auth_end_date),
             formatted_issue_date: formatDate(values.issue_date),
             application_dated: formatDate(permitObj.application_date),
-            final_application_package: this.getFinalApplicationPackage(this.props.noticeOfWork),
+            ...this.getFinalApplicationPackage(this.props.noticeOfWork),
           },
           values,
           this.afterSuccess
@@ -1107,4 +1113,4 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   );
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ProcessPermit));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(withFeatureFlag(ProcessPermit)));

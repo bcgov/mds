@@ -28,9 +28,19 @@ export class MineDocumentVersion {
 
   public create_user: string;
 
+  public update_user: string;
+
   public update_timestamp: string;
 
   public allowed_actions: FileOperations[];
+
+  // A replaced file keeps the category/type of the document it belongs to,
+  // not its own independent metadata, so these are inherited from the parent.
+  public category?: string;
+
+  public category_code?: string;
+
+  public file_type: string;
 
   constructor(jsonObject: any) {
     this.mine_document_guid = jsonObject.mine_document_guid;
@@ -41,8 +51,17 @@ export class MineDocumentVersion {
     this.document_name = jsonObject.document_name;
     this.upload_date = jsonObject.upload_date;
     this.create_user = jsonObject.create_user;
+    this.update_user = jsonObject.update_user;
     this.update_timestamp = jsonObject.update_timestamp;
     this.allowed_actions = jsonObject.allowed_actions;
+    this.category = jsonObject.category;
+    this.category_code = jsonObject.category_code;
+    this.file_type = this.getFileType();
+  }
+
+  public getFileType() {
+    const index = this.document_name.lastIndexOf(".");
+    return index === -1 ? null : this.document_name.substring(index).toLocaleLowerCase();
   }
 }
 
@@ -146,6 +165,8 @@ export class MineDocument implements IMineDocument {
               mine_document_guid: this.mine_document_guid,
               document_manager_guid: this.document_manager_guid,
               allowed_actions: this.getAllowedActions(jsonObject.user_roles, false).filter(Boolean),
+              category: this.category,
+              category_code: this.category_code,
             },
             jsonObject
           )

@@ -35,6 +35,8 @@ EDIT_TSF = "core_edit_tsf"
 EDIT_PROJECT_DECISION_PACKAGES = "core_edit_project_decision_packages"
 EDIT_HELPDESK = "core_helpdesk"
 MANAGE_CONSULTATION_ADVISORS = "core_manage_consultation_advisor"
+# Label for endpoints that need a valid token but no specific role (e.g. new MineSpace users
+AUTHENTICATED = "authenticated"
 
 def require_auth():
     return getJwtManager()._require_auth_validation()
@@ -135,6 +137,25 @@ def requires_role_edit_requirements(func):
 def requires_role_manage_consultation_advisors(func):
     return _inner_wrapper(func, MANAGE_CONSULTATION_ADVISORS)
 
+
+
+def public_endpoint(func):
+    @wraps(func)
+    def wrapper(*args, **kwds):
+        return func(*args, **kwds)
+
+    wrapper.required_roles = _combine_role_flags(func, ["public"])
+    return wrapper
+
+
+def requires_authentication(func):
+    """Requires a valid token, but no specific role."""
+    @wraps(func)
+    def wrapper(*args, **kwds):
+        return getJwtManager().requires_auth(func)(*args, **kwds)
+
+    wrapper.required_roles = _combine_role_flags(func, [AUTHENTICATED])
+    return wrapper
 
 
 def requires_any_of(roles):

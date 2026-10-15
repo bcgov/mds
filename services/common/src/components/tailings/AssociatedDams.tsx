@@ -120,7 +120,7 @@ const AssociatedDams: FC<AssociatedDamsProps> = (props) => {
     const mostRecentUpdatedDate = tsf.dams.length ? moment(
         Math.max.apply(
             null,
-            tsf.dams.map((dam) => moment(dam.update_timestamp))
+            tsf.dams.map((dam) => moment(dam.update_timestamp).valueOf())
         )
     ).format("DD-MM-YYYY H:mm") : EMPTY_FIELD;
 

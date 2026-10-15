@@ -15,6 +15,11 @@ class NOWApplicationDocumentXref(SoftDeleteMixin, AuditMixin, Base):
     _edit_groups = [NOW_APPLICATION_EDIT_GROUP]
     _protected_columns = ['is_system_generated']
 
+    # IMPORTANT: 
+    # Permit conditions can embed a live reference to a permit package file as {permit_package_file:<now_application_document_xref_guid>}.
+    # This is resolved via the guid alone (see resolvePermitPackageFileReference in permitPackageDocuments.ts).
+    # When "replace file" functionality is built, it must update mine_document_guid on this existing row, rather than soft-deleting it and creating a new xref.
+    # Creating a new row means a new guid, which would break every existing condition reference.
     now_application_document_xref_guid = db.Column(
         UUID(as_uuid=True), primary_key=True, server_default=FetchedValue())
     mine_document_guid = db.Column(

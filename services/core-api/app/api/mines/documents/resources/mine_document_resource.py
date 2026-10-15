@@ -11,7 +11,7 @@ from datetime import datetime
 from werkzeug.exceptions import BadRequest, NotFound
 
 from app.extensions import api
-from app.api.utils.access_decorators import EDIT_MAJOR_MINE_APPLICATIONS, MINE_ADMIN, requires_any_of, VIEW_ALL, MINESPACE_PROPONENT, is_minespace_user
+from app.api.utils.access_decorators import EDIT_MAJOR_MINE_APPLICATIONS, MINE_ADMIN, requires_any_of, VIEW_ALL, MINESPACE_PROPONENT, is_minespace_user, public_endpoint
 from app.api.utils.resources_mixins import UserMixin
 
 from app.api.mines.documents.models.mine_document import MineDocument
@@ -231,7 +231,8 @@ class DocumentUploadStatusResource(Resource, UserMixin):
         'Returns the status of the document upload.',
         )
 
+    @public_endpoint
     def get(self, mine_document_guid):
-        # Allow checking upload status without authentication
-        # The document manager will handle authorization based on the document type
+        # Intentionally public: upload status can be checked without authentication.
+        # The document manager's upload-status endpoint does not check auth either, it only returns the status for the given document GUID.
         return DocumentManagerService.poll_upload_progress(request, mine_document_guid)

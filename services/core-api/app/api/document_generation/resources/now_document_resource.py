@@ -1,22 +1,26 @@
 import requests
-from flask import request, Response, stream_with_context
-from flask_restx import Resource, marshal
-from werkzeug.exceptions import BadRequest, InternalServerError, BadGateway
-from app.extensions import api, cache
-
-from app.api.utils.resources_mixins import UserMixin
 from app.api.constants import NOW_DOCUMENT_DOWNLOAD_TOKEN
-from app.config import Config
-
 from app.api.mines.documents.models.mine_document import MineDocument
 from app.api.now_applications.models.now_application import NOWApplication
-from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
-from app.api.now_applications.models.now_application_document_type import NOWApplicationDocumentType
-from app.api.now_applications.models.now_application_document_xref import NOWApplicationDocumentXref
+from app.api.now_applications.models.now_application_document_type import (
+    NOWApplicationDocumentType,
+)
+from app.api.now_applications.models.now_application_document_xref import (
+    NOWApplicationDocumentXref,
+)
+from app.api.now_applications.models.now_application_identity import (
+    NOWApplicationIdentity,
+)
+from app.api.now_applications.response_models import NOW_APPLICATION_DOCUMENT
 from app.api.services.document_generator_service import DocumentGeneratorService
 from app.api.services.document_manager_service import DocumentManagerService
-from app.api.now_applications.response_models import NOW_APPLICATION_DOCUMENT
-from app.api.utils.access_decorators import requires_role_edit_permit
+from app.api.utils.access_decorators import public_endpoint, requires_role_edit_permit
+from app.api.utils.resources_mixins import UserMixin
+from app.config import Config
+from app.extensions import api, cache
+from flask import Response, request, stream_with_context
+from flask_restx import Resource, marshal
+from werkzeug.exceptions import BadGateway, BadRequest, InternalServerError
 
 
 class NoticeOfWorkDocumentResource(Resource, UserMixin):
@@ -31,6 +35,7 @@ class NoticeOfWorkDocumentResource(Resource, UserMixin):
             'is_preview':
             'If true, returns the generated document without creating the document record.'
         })
+    @public_endpoint
     def get(self):
         token = request.args.get('token', '')
         return_record = request.args.get('return_record') == 'true'

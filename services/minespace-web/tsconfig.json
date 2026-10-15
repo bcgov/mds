@@ -17,8 +17,10 @@
     //    "checkJs": true /* Enable error reporting in type-checked JavaScript files. */,
     "esModuleInterop": true /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */,
     "forceConsistentCasingInFileNames": true /* Ensure that casing is correct in imports. */,
-    "strict": false /* Enable all strict type-checking options. */,
-    "noImplicitAny": false /* Enable error reporting for expressions and declarations with an implied 'any' type. */,
+    "strict": true /* Enable all strict type-checking options, except the ones explicitly overridden below. */,
+    "noImplicitAny": false /* TODO: large volume of pre-existing violations; needs a dedicated cleanup effort. */,
+    "strictNullChecks": false /* TODO: large volume of pre-existing violations; needs a dedicated cleanup effort. */,
+    "strictFunctionTypes": false /* TODO: mostly Ant Design ColumnType / connect() HOC variance issues; needs a dedicated cleanup effort. */,
     "skipLibCheck": true /* Skip type checking all .d.ts files. */,
     "typeRoots": [
       "../../node_modules/@types",
@@ -35,5 +37,13 @@
     "webpack.parts.js",
     "jest.config.js"
   ],
-  "exclude": ["node_modules", "src/**/*.test.ts", "src/**/*.test.tsx"]
+  "exclude": [
+    "node_modules",
+    "src/**/*.test.ts",
+    "src/**/*.test.tsx",
+    "src/**/*.spec.ts",
+    "src/**/*.spec.tsx",
+    "src/**/*.spec.js",
+    "src/**/*.spec.jsx"
+  ]
 }
