@@ -505,6 +505,8 @@ class NOWApplication(Base, AuditMixin):
                 doc.is_referral_package,
                 'filename':
                 doc.filename,
+                'document_name':
+                doc.document_name,
                 'now_application_id':
                 doc.now_application_id,
                 'document_manager_guid':
@@ -552,6 +554,7 @@ class NOWApplication(Base, AuditMixin):
                     'is_referral_package': False,
                     'is_consultation_package': False,
                     'filename': doc.filename,
+                    'document_name': doc.filename,
                     'now_application_id': now_application.now_application_id,
                     'document_manager_guid': None,
                     # Not imported yet, so there's no mine_document to archive or version

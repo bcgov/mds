@@ -86,6 +86,12 @@ describe("NoWApplicationDocument model", () => {
     ]);
   });
 
+  it("offers no actions for a row without a file", () => {
+    expect(allowedActions({ document_manager_guid: undefined, mine_document_guid: undefined })).toEqual(
+      []
+    );
+  });
+
   describe("government documents", () => {
     it.each(["AIA", "REJ", "WDN", "NPR"])("can be changed once the application is %s", (status) => {
       expect(allowedActions({ now_application_status_code: status })).toEqual(canChangeActions);
@@ -109,6 +115,22 @@ describe("NoWApplicationDocument model", () => {
 
     it("cannot be changed while the application is delayed", () => {
       expect(allowedActions({ is_final_package: true, is_delayed: true })).toEqual(canViewActions);
+    });
+
+    it("cannot be changed when the file is from another table, e.g. System-generated Documents", () => {
+      expect(
+        allowedActions({ is_final_package: true, now_application_document_sub_type_code: "AEF" })
+      ).toEqual(canViewActions);
+    });
+
+    it("imported submission documents can be changed while the application is in progress", () => {
+      expect(
+        allowedActions({
+          is_final_package: true,
+          now_application_document_sub_type_code: "Application Form",
+          is_imported_submission_document: true,
+        })
+      ).toEqual(canChangeActions);
     });
   });
 

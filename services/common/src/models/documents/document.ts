@@ -345,7 +345,8 @@ export class NoWApplicationDocument extends MineDocument {
     const canChange = is_latest_version && this.canChangeFile(userRoles);
     return [
       canView && FileOperations.View,
-      FileOperations.Download,
+      // Rows without a file (e.g. a vFCBC document that hasn't been imported yet or the 1.1 locked row) have nothing to download
+      this.document_manager_guid && FileOperations.Download,
       canChange && !this.isSpatialFile() && FileOperations.Replace,
       canChange && FileOperations.Archive,
     ];
@@ -367,20 +368,24 @@ export class NoWApplicationDocument extends MineDocument {
       return false;
     }
 
+    const isApplicationDocument =
+      this.is_imported_submission_document ||
+      NOW_APPLICATION_DOCUMENT_SUB_TYPE_CODES.includes(this.now_application_document_sub_type_code);
+    const isGovernmentDocument =
+      this.now_application_document_sub_type_code === NOW_GOVERNMENT_DOCUMENT_SUB_TYPE_CODE;
+
+    // Checked before the permit package rules, since files from other tables (e.g. System-generated) can also be added to the package
+    if (!isApplicationDocument && !isGovernmentDocument) {
+      return false;
+    }
     if (this.is_final_package) {
       const isLocked = NOW_APPLICATION_LOCKED_STATUS_CODES.includes(this.now_application_status_code);
       return !isLocked && !this.is_delayed;
     }
-    if (
-      this.is_imported_submission_document ||
-      NOW_APPLICATION_DOCUMENT_SUB_TYPE_CODES.includes(this.now_application_document_sub_type_code)
-    ) {
-      return true;
-    }
-    if (this.now_application_document_sub_type_code === NOW_GOVERNMENT_DOCUMENT_SUB_TYPE_CODE) {
+    if (isGovernmentDocument) {
       return !this.is_delayed;
     }
-    return false;
+    return true;
   }
 
   private isSpatialFile() {

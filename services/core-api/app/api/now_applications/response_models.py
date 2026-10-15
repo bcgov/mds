@@ -413,6 +413,7 @@ IMPORTED_NOW_SUBMISSION_DOCUMENT = api.model(
         'messageid': fields.Integer,
         'documenturl': fields.String,
         'filename': fields.String,
+        'document_name': fields.String,
         'documenttype': fields.String,
         'description': fields.String,
         'mine_document_guid': fields.String,

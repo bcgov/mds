@@ -50,6 +50,11 @@ class NOWApplicationDocumentIdentityXref(SoftDeleteMixin, AuditMixin, Base):
     def document_manager_guid(self):
         return self.mine_document.document_manager_guid
 
+    @property
+    def document_name(self):
+        # The file's current name. Replacing a file renames its mine_document, but filename is part of this table's primary key so it never changes
+        return self.mine_document.document_name if self.mine_document else self.filename
+
     def __repr__(self):
         return '<NOWApplicationDocumentIdentityXref %r>' % self.now_application_document_xref_guid
 

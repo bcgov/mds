@@ -217,6 +217,17 @@ class TestArchiveDocuments:
 class TestPermitPackageArchiveRules:
     """Archive rules for permit package documents: allowed while in progress, blocked once locked or delayed"""
 
+    def test_document_from_another_table_blocked(self, test_client, db_session, auth_headers):
+        now_application_identity = NOWApplicationIdentityFactory()
+        mine_document, xref = _make_core_document(
+            db_session, now_application_identity, document_type_code=SYSTEM_GENERATED_DOCUMENT_TYPE,
+            **PERMIT_PACKAGE_FIELDS)
+
+        _assert_archive_blocked(test_client, db_session, auth_headers, now_application_identity, mine_document,
+                                'cannot be changed from Manage Documents')
+        db_session.refresh(xref)
+        assert xref.is_final_package is True
+
     @pytest.mark.parametrize('status_code', LOCKED_STATUS_CODES)
     def test_permit_package_document_blocked_once_locked(self, test_client, db_session, auth_headers, status_code):
         now_application_identity = NOWApplicationIdentityFactory()

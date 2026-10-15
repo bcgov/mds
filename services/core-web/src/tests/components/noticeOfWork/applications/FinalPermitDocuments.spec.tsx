@@ -1,11 +1,13 @@
 import React from "react";
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { FinalPermitDocuments, getNowApplicationDocument } from "@/components/noticeOfWork/applications/FinalPermitDocuments";
 import * as MOCK from "@mds/common/tests/mocks/dataMocks";
 import { IMPORTED_NOTICE_OF_WORK } from "@mds/common/tests/mocks/noticeOfWorkMock";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 import { BrowserRouter } from "react-router-dom";
-import { NOTICE_OF_WORK } from "@mds/common/constants/reducerTypes";
+import { AUTHENTICATION, NOTICE_OF_WORK } from "@mds/common/constants/reducerTypes";
+import { USER_ROLES } from "@mds/common/constants/environment";
 
 const dispatchProps = {
   setNoticeOfWorkApplicationDocumentDownloadState: jest.fn(),
@@ -253,6 +255,80 @@ describe("FinalPermitDocuments", () => {
       });
       expect(getByText("Order")).toBeInTheDocument();
       expect(container.querySelector(".anticon-menu")).toBeNull();
+    });
+
+    it("only shows the file management Actions menu when it's enabled", () => {
+      const { queryByRole, unmount } = renderUnified({ adminView: true });
+      expect(queryByRole("button", { name: /Actions/ })).not.toBeInTheDocument();
+      unmount();
+
+      const { getByRole } = renderUnified({ adminView: true, enableFileManagement: true });
+      expect(getByRole("button", { name: /Actions/ })).toBeInTheDocument();
+    });
+
+    it("lets imported vFCBC files in the permit package be replaced and archived", async () => {
+      render(
+        <BrowserRouter>
+          <ReduxWrapper
+            initialState={{
+              [NOTICE_OF_WORK]: {
+                ...initialState[NOTICE_OF_WORK],
+                noticeOfWork: { ...IMPORTED_NOTICE_OF_WORK, now_application_status_code: "REC" },
+              },
+              [AUTHENTICATION]: { userAccessData: [USER_ROLES.role_edit_permits] },
+            }}
+          >
+            <FinalPermitDocuments
+              {...dispatchProps}
+              {...baseProps}
+              noticeOfWork={{
+                ...IMPORTED_NOTICE_OF_WORK,
+                documents: [],
+                filtered_submission_documents: [
+                  {
+                    id: 1,
+                    documenttype: "Application Form",
+                    filename: "imported.pdf",
+                    is_final_package: true,
+                    mine_document_guid: "imported-mine-doc",
+                    document_manager_guid: "imported-doc-mgr",
+                  },
+                ],
+              }}
+              showInUnifiedView
+              adminView
+              enableFileManagement
+            />
+          </ReduxWrapper>
+        </BrowserRouter>
+      );
+
+      await userEvent.hover(screen.getByRole("button", { name: /Actions/ }));
+      expect(await screen.findByText("Replace file")).toBeInTheDocument();
+      expect(screen.getByText("Archive file")).toBeInTheDocument();
+    });
+
+    it("shows the current name of a replaced vFCBC file, not its original filename", () => {
+      const { getByText, queryByText } = renderUnified({
+        adminView: true,
+        noticeOfWork: {
+          ...IMPORTED_NOTICE_OF_WORK,
+          documents: [],
+          filtered_submission_documents: [
+            {
+              id: 1,
+              documenttype: "Application Form",
+              filename: "original.pdf",
+              document_name: "replaced.pdf",
+              is_final_package: true,
+              mine_document_guid: "imported-mine-doc",
+              document_manager_guid: "imported-doc-mgr",
+            },
+          ],
+        },
+      });
+      expect(getByText("replaced.pdf")).toBeInTheDocument();
+      expect(queryByText("original.pdf")).not.toBeInTheDocument();
     });
   });
 });
