@@ -165,7 +165,7 @@ class TestNOWApplicationDocumentResourcePut:
 
         resp = test_client.put(
             f'/now-applications/{now_application_identity.now_application_guid}/document/{mine_doc.mine_document_guid}',
-            json={'is_final_package': True, 'permit_package_document_type_code': 'DOCUMENT'},
+            json={'is_final_package': True, 'preamble_title': 'Status Report', 'permit_package_document_type_code': 'DOCUMENT'},
             headers=auth_headers['full_auth_header'])
 
         assert resp.status_code == 200
@@ -194,7 +194,7 @@ class TestNOWApplicationDocumentResourcePut:
 
         resp = test_client.put(
             f'/now-applications/{now_application_identity.now_application_guid}/document/{mine_doc.mine_document_guid}',
-            json={'is_final_package': True, 'permit_package_document_type_code': 'FIGURE'},
+            json={'is_final_package': True, 'preamble_title': 'Status Report', 'permit_package_document_type_code': 'FIGURE'},
             headers=auth_headers['full_auth_header'])
 
         assert resp.status_code == 200
