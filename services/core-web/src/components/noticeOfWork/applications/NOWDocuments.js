@@ -50,7 +50,9 @@ import arrayMove from "array-move";
 import CoreTable from "@mds/common/components/common/CoreTable";
 import {
   fileManagementActionsColumn,
+  fileNameHeaderCell,
   getFileManagementContext,
+  getFileNameOffset,
   isVersionRow,
   openArchiveFileModal,
   openReplaceFileModal,
@@ -238,12 +240,13 @@ export class NOWDocuments extends Component {
       this.state.dataSource &&
       this.state.dataSource.findIndex((x) => x.index === restProps["data-row-key"]);
     const isLockedRow = this.state.dataSource?.[index]?.isLockedApplicationForm;
-    // Order column can now be visible without dragging being allowed —
-    // disable the actual drag capability whenever isSortingAllowed is false.
+    // Order column can now be visible without dragging being allowed — disable the actual drag capability whenever isSortingAllowed is false.
     return (
       <SortableItem
         index={index}
         disabled={isLockedRow || !this.props.isSortingAllowed}
+        // Keeps the row classes that line file names up beside the version history icon
+        className={this.props.enableFileManagement ? className : undefined}
         {...restProps}
       />
     );
@@ -452,6 +455,7 @@ export class NOWDocuments extends Component {
       }
       : {
         title: "File Name",
+        onHeaderCell: this.props.enableFileManagement ? fileNameHeaderCell : undefined,
         dataIndex: "filename",
         key: "filename",
         sorter: (a, b) => (a.filename > b.filename ? -1 : 1),
@@ -462,7 +466,7 @@ export class NOWDocuments extends Component {
           // Clicking a previous version's file name downloads that version, it can also be viewed from the Actions menu
           if (isVersionRow(record)) {
             return (
-              <div title="File Name">
+              <div title="File Name" style={getFileNameOffset(record)}>
                 <Button
                   type="link"
                   className="btn--inline-link"
@@ -474,7 +478,10 @@ export class NOWDocuments extends Component {
             );
           }
           const fileName = (
-            <div title="File Name">
+            <div
+              title="File Name"
+              style={this.props.enableFileManagement ? getFileNameOffset(record) : {}}
+            >
               <DocumentLink
                 documentManagerGuid={record.document_manager_guid}
                 documentName={record.filename}

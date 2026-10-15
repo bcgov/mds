@@ -17,6 +17,18 @@ and Government Documents), shared so the tables behave the same.
 // Previous versions of a file are shown as child rows of the current one
 export const isVersionRow = (record) => Boolean(record.mine_document_version_guid);
 
+// Matches Major Projects: the expand icon sits beside the file name, so names are offset to line up with each other
+export const FILE_MANAGEMENT_ROW_CLASS = "table-row-align-middle no-sub-table-expandable-rows";
+// The header is offset with a class, a non-text title would leave the sort button without an accessible name
+export const fileNameHeaderCell = () => ({ className: "file-name-header--offset" });
+// Files without versions get documentWithTag's 38px, so previous versions (not wrapped in it) match that, and files with versions add 14px to the icon
+export const getFileNameOffset = (record) => {
+  if (isVersionRow(record)) {
+    return { marginLeft: "38px" };
+  }
+  return record.number_prev_versions > 0 ? { marginLeft: "14px" } : {};
+};
+
 // What the NoWApplicationDocument model needs, on top of the row itself, to work out a row's allowed actions
 export const getFileManagementContext = ({
   noticeOfWork,

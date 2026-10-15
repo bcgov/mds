@@ -15,7 +15,12 @@ import DocumentLink from "@mds/common/components/documents/DocumentLink";
 import { modalConfig } from "@/components/modalContent/config";
 import * as Permission from "@/constants/permissions";
 import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
-import { getNoticeOfWork } from "@mds/common/redux/selectors/noticeOfWorkSelectors";
+import {
+  getNoticeOfWork,
+  getApplicationDelay,
+} from "@mds/common/redux/selectors/noticeOfWorkSelectors";
+import { getDraftPermitAmendmentForNOW } from "@mds/common/redux/selectors/permitSelectors";
+import { getUserAccessData } from "@mds/common/redux/selectors/authenticationSelectors";
 import {
   createNoticeOfWorkApplicationImportSubmissionDocumentsJob,
   fetchImportNoticeOfWorkSubmissionDocumentsJob,
@@ -23,7 +28,12 @@ import {
   updateNoticeOfWorkApplication,
   deleteNoticeOfWorkApplicationDocument,
   editNoticeOfWorkDocument,
+  createNoticeOfWorkDocumentVersion,
+  archiveNoticeOfWorkDocuments,
 } from "@mds/common/redux/actionCreators/noticeOfWorkActionCreator";
+import { documentWithTag } from "@mds/common/components/documents/DocumentColumns";
+import { openDocument } from "@mds/common/components/syncfusion/DocumentViewer";
+import { downloadFileFromDocumentManager } from "@mds/common/redux/utils/actionlessNetworkCalls";
 import {
   getNoticeOfWorkApplicationDocumentTypeOptionsHash,
   getDropdownNoticeOfWorkApplicationDocumentTypeOptions,
@@ -34,6 +44,17 @@ import ReferralConsultationPackage from "@/components/noticeOfWork/applications/
 import PermitPackage from "@/components/noticeOfWork/applications/PermitPackage";
 import CoreTable from "@mds/common/components/common/CoreTable";
 import SpatialFilesRowLink from "@mds/common/components/documents/spatial/SpatialFilesRowLink";
+import {
+  FILE_MANAGEMENT_ROW_CLASS,
+  fileManagementActionsColumn,
+  fileNameHeaderCell,
+  getFileManagementContext,
+  getFileNameOffset,
+  isVersionRow,
+  openArchiveFileModal,
+  openReplaceFileModal,
+  toFileManagementRow,
+} from "@/components/noticeOfWork/applications/nowFileManagement";
 
 const propTypes = {
   openModal: PropTypes.func.isRequired,
@@ -69,6 +90,14 @@ const propTypes = {
   preTableContent: PropTypes.node,
   // Only supplied where the Spatial Files panel sits above this table.
   onSpatialFileLinkClick: PropTypes.func,
+  // Replace, Archive and version history, only on the Manage Documents page
+  enableFileManagement: PropTypes.bool,
+  applicationDelay: PropTypes.objectOf(PropTypes.any),
+  draftPermitAmendment: PropTypes.objectOf(PropTypes.any),
+  userRoles: PropTypes.arrayOf(PropTypes.string),
+  createNoticeOfWorkDocumentVersion: PropTypes.func,
+  archiveNoticeOfWorkDocuments: PropTypes.func,
+  openDocument: PropTypes.func,
 };
 
 const defaultProps = {
@@ -89,6 +118,13 @@ const defaultProps = {
   lockedRowKeys: [],
   preTableContent: null,
   onSpatialFileLinkClick: null,
+  enableFileManagement: false,
+  applicationDelay: undefined,
+  draftPermitAmendment: null,
+  userRoles: [],
+  createNoticeOfWorkDocumentVersion: undefined,
+  archiveNoticeOfWorkDocuments: undefined,
+  openDocument: undefined,
 };
 
 const transformDocuments = (
@@ -115,7 +151,6 @@ const transformDocuments = (
       key: document.mine_document_guid ?? document.id,
       now_application_document_xref_guid: document.now_application_document_xref_guid,
       now_application_guid,
-      filename: document.filename || Strings.EMPTY_FIELD,
       url: document.documenturl,
       category: document.is_imported_submission
         ? document.category
@@ -136,6 +171,8 @@ const transformDocuments = (
         !document.is_consultation_package,
       upload_date: document?.mine_document?.upload_date,
       ...document,
+      // A replaced vFCBC file keeps its original filename, document_name is its current name
+      filename: document.document_name || document.filename || Strings.EMPTY_FIELD,
     };
   });
 
@@ -237,12 +274,58 @@ export const NOWSubmissionDocuments = (props) => {
     value: item.value,
   }));
 
-  const dataSource = transformDocuments(
+  const fileManagementContext = props.enableFileManagement
+    ? getFileManagementContext({
+      noticeOfWork: props.noticeOfWork,
+      applicationDelay: props.applicationDelay,
+      isViewMode: props.isViewMode,
+      userRoles: props.userRoles,
+    })
+    : null;
+
+  const transformedDocuments = transformDocuments(
     props.documents,
     props.importNowSubmissionDocumentsJob,
     props.now_application_guid,
     props
   );
+  const dataSource = fileManagementContext
+    ? transformedDocuments?.map((row) =>
+      toFileManagementRow(
+        {
+          ...row,
+          // Documents added in Core are passed in with notForImport, the rest are vFCBC submission documents
+          is_imported_submission_document: !row.notForImport,
+        },
+        fileManagementContext
+      )
+    )
+    : transformedDocuments;
+
+  const refreshApplication = () =>
+    props.fetchImportedNoticeOfWorkApplication(props.noticeOfWork.now_application_guid);
+
+  const actionsColumn = fileManagementActionsColumn({
+    openDocument: props.openDocument,
+    onReplace: (record) =>
+      openReplaceFileModal({
+        record,
+        applicationGuid: props.noticeOfWork.now_application_guid,
+        openModal: props.openModal,
+        createNoticeOfWorkDocumentVersion: props.createNoticeOfWorkDocumentVersion,
+        onReplaced: refreshApplication,
+      }),
+    onArchive: (record) =>
+      openArchiveFileModal({
+        record,
+        applicationGuid: props.noticeOfWork.now_application_guid,
+        conditions: props.draftPermitAmendment?.conditions,
+        openModal: props.openModal,
+        closeModal: props.closeModal,
+        archiveNoticeOfWorkDocuments: props.archiveNoticeOfWorkDocuments,
+        onArchived: refreshApplication,
+      }),
+  });
 
   // Matching on the guids the panel itself lists keeps "tinted here" and "shown in Spatial Files"
   // the same statement, and works for both imported submissions and documents added in Core.
@@ -255,6 +338,7 @@ export const NOWSubmissionDocuments = (props) => {
   );
   const linksToSpatialFiles = (record) =>
     Boolean(props.onSpatialFileLinkClick) &&
+    !isVersionRow(record) &&
     [record?.mine_document_guid, record?.document_manager_guid].some(
       (guid) => guid && spatialFileGuids.has(String(guid))
     );
@@ -278,22 +362,42 @@ export const NOWSubmissionDocuments = (props) => {
     }
     : {
       title: "File Name",
+      onHeaderCell: props.enableFileManagement ? fileNameHeaderCell : undefined,
       dataIndex: "filename",
       key: "filename",
       sorter: (a, b) => (a.filename > b.filename ? -1 : 1),
-      render: (text, record) => (
-        <div title="File Name">
-          <DocumentLink
-            documentManagerGuid={record.document_manager_guid}
-            documentName={record.filename}
-            truncateDocumentName={false}
-          />
-          {linksToSpatialFiles(record) && (
-            <SpatialFilesRowLink onClick={() => props.onSpatialFileLinkClick()} />
-          )}
-          {renderDescriptionCaption(record)}
-        </div>
-      ),
+      render: (text, record) => {
+        // Clicking a previous version's file name downloads that version, it can also be viewed from the Actions menu
+        if (isVersionRow(record)) {
+          return (
+            <div title="File Name" style={getFileNameOffset(record)}>
+              <Button
+                type="link"
+                className="btn--inline-link"
+                onClick={() => downloadFileFromDocumentManager(record)}
+              >
+                {record.document_name}
+              </Button>
+            </div>
+          );
+        }
+        const fileName = (
+          <div title="File Name" style={props.enableFileManagement ? getFileNameOffset(record) : {}}>
+            <DocumentLink
+              documentManagerGuid={record.document_manager_guid}
+              documentName={record.filename}
+              truncateDocumentName={false}
+            />
+            {linksToSpatialFiles(record) && (
+              <SpatialFilesRowLink onClick={() => props.onSpatialFileLinkClick()} />
+            )}
+            {renderDescriptionCaption(record)}
+          </div>
+        );
+        return props.enableFileManagement
+          ? documentWithTag(record, fileName, "File Name", true)
+          : fileName;
+      },
     };
 
   const descriptionColumn = {
@@ -330,6 +434,9 @@ export const NOWSubmissionDocuments = (props) => {
     key: "isModificationAllowed",
     width: 170,
     render: (isModificationAllowed, record) => {
+      if (isVersionRow(record)) {
+        return <div />;
+      }
       if (!isInCompleteStatus) {
         if (isModificationAllowed) {
           return (
@@ -425,7 +532,8 @@ export const NOWSubmissionDocuments = (props) => {
     },
     dataIndex: "is_final_package",
     key: "is_final_package",
-    render: (text) => <div title="Part of Permit">{text ? "Yes" : "No"}</div>,
+    render: (text, record) =>
+      isVersionRow(record) ? null : <div title="Part of Permit">{text ? "Yes" : "No"}</div>,
   };
 
   const consultationPackageColumn = {
@@ -448,7 +556,8 @@ export const NOWSubmissionDocuments = (props) => {
     },
     dataIndex: "is_consultation_package",
     key: "is_consultation_package",
-    render: (text) => <div title="Consultation Package">{text ? "Yes" : "No"}</div>,
+    render: (text, record) =>
+      isVersionRow(record) ? null : <div title="Consultation Package">{text ? "Yes" : "No"}</div>,
   };
 
   const referralPackageColumn = {
@@ -471,13 +580,17 @@ export const NOWSubmissionDocuments = (props) => {
     },
     dataIndex: "is_referral_package",
     key: "is_referral_package",
-    render: (text) => <div title="Referral Package">{text ? "Yes" : "No"}</div>,
+    render: (text, record) =>
+      isVersionRow(record) ? null : <div title="Referral Package">{text ? "Yes" : "No"}</div>,
   };
 
   const importStatusColumn = {
     title: "Import Status",
     key: "import_status",
     render: (text, record) => {
+      if (isVersionRow(record)) {
+        return null;
+      }
       let statusBadgeType = "warning";
       let statusText = "Not Started";
       let error = null;
@@ -516,6 +629,7 @@ export const NOWSubmissionDocuments = (props) => {
     render: (text, record) => {
       let isPostDecision = false;
       if (
+        !isVersionRow(record) &&
         isInCompleteStatus &&
         moment(record.upload_date, "YYYY-MM-DD") >
         moment(props.noticeOfWork.decision_by_user_date, "YYYY-MM-DD")
@@ -552,6 +666,10 @@ export const NOWSubmissionDocuments = (props) => {
 
   if (!props.hideImportStatusColumn) {
     columns = [...columns, importStatusColumn];
+  }
+
+  if (props.enableFileManagement) {
+    columns = [...columns, actionsColumn];
   }
 
   if (props.isPackageModal) {
@@ -695,8 +813,31 @@ export const NOWSubmissionDocuments = (props) => {
       <CoreTable
         columns={columns}
         dataSource={dataSource}
+        rowKey={
+          props.enableFileManagement
+            ? (record) => record.mine_document_version_guid ?? record.key
+            : "key"
+        }
+        expandProps={
+          props.enableFileManagement
+            ? {
+              childrenColumnName: "versions",
+              matchChildColumnsToParent: true,
+              recordDescription: "version history",
+              rowExpandable: (record) => record.number_prev_versions > 0,
+              // Show the expand icon beside the file name, wherever it sits in the table
+              expandIconColumnIndex: columns.findIndex((column) => column.key === "filename"),
+            }
+            : null
+        }
         rowClassName={(record) =>
-          linksToSpatialFiles(record) ? "fade-in spatial-file-row" : "fade-in"
+          [
+            props.enableFileManagement && FILE_MANAGEMENT_ROW_CLASS,
+            "fade-in",
+            linksToSpatialFiles(record) && "spatial-file-row",
+          ]
+            .filter(Boolean)
+            .join(" ")
         }
         rowSelection={
           props.selectedRows
@@ -726,6 +867,9 @@ const mapStateToProps = (state) => ({
     state
   ),
   noticeOfWork: getNoticeOfWork(state),
+  applicationDelay: getApplicationDelay(state),
+  draftPermitAmendment: getDraftPermitAmendmentForNOW(state),
+  userRoles: getUserAccessData(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -739,6 +883,9 @@ const mapDispatchToProps = (dispatch) =>
       editNoticeOfWorkDocument,
       createNoticeOfWorkApplicationImportSubmissionDocumentsJob,
       fetchImportNoticeOfWorkSubmissionDocumentsJob,
+      createNoticeOfWorkDocumentVersion,
+      archiveNoticeOfWorkDocuments,
+      openDocument,
     },
     dispatch
   );
