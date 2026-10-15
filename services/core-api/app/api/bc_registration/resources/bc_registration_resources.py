@@ -28,30 +28,22 @@ class SearchResource(Resource):
         if not (bool(search_name) ^ bool(registration_id)):
             raise ValueError(
                 'Either search_name or registration_id must be provided, and not both.')
-        ## SEARCH BY NAME
-        if search_name:
-            results = OrgBookService().search(search_name)
-            if is_feature_enabled(Feature.BC_REGISTRIES_SEARCH):
-                reg_results = None
-                try:
-                    reg_results = BCRegistriesService().search(search_name)
-                    current_app.logger.debug(f"New BC Registries API results: {reg_results}")
-                except Exception as e:
-                    current_app.logger.warning(f"BCREG_API ERROR: {str(e)}")
+        ## SEARCH BY BC REGISTRIES - harmonized
+        if is_feature_enabled(Feature.BC_REGISTRIES_SEARCH):
+            results = BCRegistriesService().search(
+                search_name if bool(search_name) else str(registration_id))
 
-        ## SEARCH BY REGISTRATION NUMBER
+        ## SEARCH by ORGBOOK, separate endpoints
         else:
-            registration_id = request.args.get('registration_id')
-            response = OrgBookService().get_business_details(registration_id)
-
-            if not response:
-                raise ValueError(f'No registration found with registration_id: {registration_id}')
-
-            results = [{
-                'credential_id': response.get('credential_id'),
-                'text': response['names'][0].get('text') if response.get('names') else None,
-                'registration_id': registration_id,
-            }]
+            if search_name:
+                results = OrgBookService().search(search_name)
+            else:
+                response = OrgBookService().get_business_details(registration_id)
+                results = [{
+                    'credential_id': response.get('credential_id'),
+                    'text': response['names'][0].get('text') if response.get('names') else None,
+                    'registration_id': registration_id,
+                }]
 
         return results
 
