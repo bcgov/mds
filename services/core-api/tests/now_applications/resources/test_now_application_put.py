@@ -172,6 +172,7 @@ class TestNOWApplication:
         doc_data = _find_document_data(data, xref.now_application_document_xref_guid)
         doc_data['is_final_package'] = True
         doc_data['permit_package_document_type_code'] = 'DOCUMENT'
+        doc_data['preamble_title'] = 'Status Report'
 
         put_resp = test_client.put(
             f'/now-applications/{test_application.now_application_guid}',
@@ -199,6 +200,7 @@ class TestNOWApplication:
             doc_data = _find_document_data(data, xref.now_application_document_xref_guid)
             doc_data['is_final_package'] = True
             doc_data['permit_package_document_type_code'] = 'DOCUMENT'
+            doc_data['preamble_title'] = 'Status Report'
 
         put_resp = test_client.put(
             f'/now-applications/{test_application.now_application_guid}',
@@ -234,9 +236,11 @@ class TestNOWApplication:
         figure_doc_data = _find_document_data(data, new_figure_xref.now_application_document_xref_guid)
         figure_doc_data['is_final_package'] = True
         figure_doc_data['permit_package_document_type_code'] = 'FIGURE'
+        figure_doc_data['preamble_title'] = 'Site Map'
         document_doc_data = _find_document_data(data, new_document_xref.now_application_document_xref_guid)
         document_doc_data['is_final_package'] = True
         document_doc_data['permit_package_document_type_code'] = 'DOCUMENT'
+        document_doc_data['preamble_title'] = 'Status Report'
 
         put_resp = test_client.put(
             f'/now-applications/{test_application.now_application_guid}',
@@ -355,3 +359,48 @@ class TestNOWApplication:
         db_session.refresh(submission_doc)
         assert submission_doc.is_final_package is False
         assert submission_doc.preamble_title == 'Reclamation Plan'
+
+    @patch('app.api.now_applications.resources.now_application_resource.NROSNOWStatusService.nros_now_status_update')
+    @patch('app.api.now_applications.resources.now_application_resource.DocumentManagerService.importNoticeOfWorkSubmissionDocuments')
+    def test_put_documents_rejects_document_added_to_package_without_title(
+            self, mock_import_docs, mock_nros, test_client, db_session, auth_headers):
+        now_application = NOWApplicationFactory()
+        test_application = NOWApplicationIdentityFactory(now_application=now_application)
+        mine_doc, xref = _make_bulk_document_xref(test_application)
+        db_session.add(xref)
+        db_session.commit()
+
+        data = marshal(test_application.now_application, NOW_APPLICATION_MODEL)
+        doc_data = _find_document_data(data, xref.now_application_document_xref_guid)
+        doc_data['is_final_package'] = True
+        doc_data['permit_package_document_type_code'] = 'DOCUMENT'
+        doc_data['preamble_title'] = '   '
+
+        put_resp = test_client.put(
+            f'/now-applications/{test_application.now_application_guid}',
+            json=data,
+            headers=auth_headers['full_auth_header'])
+
+        assert put_resp.status_code == 400
+        assert b'A document in the permit package is missing a title.' in put_resp.data
+
+    @patch('app.api.now_applications.resources.now_application_resource.NROSNOWStatusService.nros_now_status_update')
+    @patch('app.api.now_applications.resources.now_application_resource.DocumentManagerService.importNoticeOfWorkSubmissionDocuments')
+    def test_put_submission_documents_rejects_document_added_to_package_without_title(
+            self, mock_import_docs, mock_nros, test_client, db_session, auth_headers):
+        now_application = NOWApplicationFactory()
+        test_application = NOWApplicationIdentityFactory(now_application=now_application)
+        submission_doc = _make_imported_submission_document(db_session, test_application)
+
+        data = marshal(test_application.now_application, NOW_APPLICATION_MODEL)
+        data['filtered_submission_documents'] = [
+            _filtered_submission_document_data(submission_doc, is_final_package=True, preamble_title=None)
+        ]
+
+        put_resp = test_client.put(
+            f'/now-applications/{test_application.now_application_guid}',
+            json=data,
+            headers=auth_headers['full_auth_header'])
+
+        assert put_resp.status_code == 400
+        assert b'A document in the permit package is missing a title.' in put_resp.data

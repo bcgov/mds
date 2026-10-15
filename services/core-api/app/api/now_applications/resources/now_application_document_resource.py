@@ -153,6 +153,10 @@ class NOWApplicationDocumentResource(Resource, UserMixin):
             if locked_ntr_guid and str(now_app_xref.now_application_document_xref_guid) == locked_ntr_guid:
                 raise BadRequest('Cannot modify the active system-generated document.')
 
+        will_be_in_package = is_final_package if is_final_package is not None else xref.is_final_package
+        if will_be_in_package and not (data.get('preamble_title') or '').strip():
+            raise BadRequest('A document in the permit package is missing a title.')
+
         if new_description:
             xref.description = new_description
 

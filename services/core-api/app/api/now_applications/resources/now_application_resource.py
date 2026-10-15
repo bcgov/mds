@@ -164,6 +164,9 @@ class NOWApplicationResource(Resource, UserMixin):
                      and x['filename'] == doc.filename and x['documenttype'] == doc.documenttype),
                     None)
                 if filtered_doc:
+                    is_being_added = filtered_doc['is_final_package'] and not doc.is_final_package
+                    if is_being_added and not (filtered_doc.get('preamble_title') or '').strip():
+                        raise BadRequest('A document in the permit package is missing a title.')
                     doc.is_final_package = filtered_doc['is_final_package']
                     doc.is_consultation_package = filtered_doc['is_consultation_package']
                     doc.is_referral_package = filtered_doc['is_referral_package']
@@ -246,6 +249,13 @@ class NOWApplicationResource(Resource, UserMixin):
         if new_documents:
             next_order_by_type = {}
             for doc in new_documents:
+                existing = next(
+                    (x for x in now_application_identity.now_application.documents
+                     if str(x.now_application_document_xref_guid) == doc.get('now_application_document_xref_guid')),
+                    None)
+                is_being_added = doc.get('is_final_package') and not (existing and existing.is_final_package)
+                if is_being_added and not (doc.get('preamble_title') or '').strip():
+                    raise BadRequest('A document in the permit package is missing a title.')
                 if doc.get('is_final_package') and doc.get('final_package_order') is None:
                     doc_type = doc.get('permit_package_document_type_code') or 'DOCUMENT'
                     if doc_type not in next_order_by_type:
