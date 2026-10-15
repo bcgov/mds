@@ -39,8 +39,9 @@ export const createNoticeOfDeparture = (
         dispatch(success(NetworkReducerTypes.CREATE_NOTICE_OF_DEPARTURE));
         return response;
       })
-      .catch(() => {
+      .catch((err) => {
         dispatch(error(NetworkReducerTypes.CREATE_NOTICE_OF_DEPARTURE));
+        throw err;
       })
       .finally(() => {
         dispatch(hideLoading("modal"));
@@ -87,8 +88,9 @@ export const updateNoticeOfDeparture = (
         dispatch(success(NetworkReducerTypes.UPDATE_NOTICE_OF_DEPARTURE));
         return response;
       })
-      .catch(() => {
+      .catch((err) => {
         dispatch(error(NetworkReducerTypes.UPDATE_NOTICE_OF_DEPARTURE));
+        throw err;
       })
       .finally(() => dispatch(hideLoading("modal")));
   };

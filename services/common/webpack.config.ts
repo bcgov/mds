@@ -4,6 +4,8 @@ const path = require("path");
 const pkg = require("./package.json");
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const nodeExternals = require("webpack-node-externals");
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 
 module.exports = (opts) => {
   const mode = opts.development ? "development" : "production";
@@ -26,6 +28,9 @@ module.exports = (opts) => {
       poll: 2500,
       ignored: /node_modules|dist/,
     },
+    // async: false (the default for mode: "production") makes webpack fail the
+    // build when the TypeScript program reports errors, instead of only logging them.
+    plugins: [new ForkTsCheckerWebpackPlugin()],
     module: {
       rules: [
         {

@@ -22,8 +22,8 @@ const propTypes = {
 };
 
 export class AmazonS3Provider extends SampleBase {
-  constructor() {
-    super(...arguments);
+  constructor(props) {
+    super(props);
     this.hostUrl = ENVIRONMENT.filesystemProviderUrl;
     this.pathPrefix = `mms-archive/${this.props.mineNumber}`;
   }
@@ -103,7 +103,7 @@ export class AmazonS3Provider extends SampleBase {
             anchor.download = name;
             anchor.click();
           } else {
-            window.location = anchorUrl;
+            window.location.href = anchorUrl;
           }
           setTimeout(function () {
             URL.revokeObjectURL(anchorUrl);

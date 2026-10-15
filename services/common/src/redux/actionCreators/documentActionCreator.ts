@@ -86,8 +86,9 @@ export const documentsCompression = (mineGuid, documentManagerGuids) => (dispatc
       dispatch(success(NetworkReducerTypes.DOCUMENTS_COMPRESSION));
       return response;
     })
-    .catch(() => {
+    .catch((err) => {
       dispatch(error(NetworkReducerTypes.DOCUMENTS_COMPRESSION));
+      throw err;
     })
     .finally(() => dispatch(hideLoading()));
 };
@@ -105,8 +106,9 @@ export const pollDocumentsCompressionProgress = (taskId) => (dispatch) => {
       dispatch(documentActions.storeDocumentCompressionProgress(response.data));
       return response;
     })
-    .catch(() => {
+    .catch((err) => {
       dispatch(error(NetworkReducerTypes.POLL_DOCUMENTS_COMPRESSION_PROGRESS));
+      throw err;
     })
     .finally(() => dispatch(hideLoading()));
 };

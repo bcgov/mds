@@ -140,6 +140,59 @@ describe("NOWDocuments", () => {
     expect(container.querySelector(".anticon-menu")).toBeNull();
   });
 
+  describe("groupFiguresFirst", () => {
+    const figureDoc = {
+      now_application_document_xref_guid: "fig-xref-1",
+      final_package_order: 5,
+      is_final_package: true,
+      permit_package_document_type_code: "FIGURE",
+      description: "Test figure",
+      now_application_document_type_code: "OTH",
+      mine_document: {
+        mine_document_guid: "mine-doc-fig",
+        document_manager_guid: "doc-mgr-fig",
+        document_name: "figure-a.pdf",
+        upload_date: "2025-01-15",
+      },
+    };
+
+    const documentDoc = {
+      now_application_document_xref_guid: "doc-xref-2",
+      final_package_order: 1,
+      is_final_package: true,
+      permit_package_document_type_code: "DOCUMENT",
+      description: "Test document",
+      now_application_document_type_code: "OTH",
+      mine_document: {
+        mine_document_guid: "mine-doc-2",
+        document_manager_guid: "doc-mgr-2",
+        document_name: "document-a.pdf",
+        upload_date: "2025-01-15",
+      },
+    };
+
+    it("sorts by final_package_order alone when groupFiguresFirst is false (default)", () => {
+      const { container } = renderComponent({
+        documents: [figureDoc, documentDoc],
+        isFinalPackageTable: true,
+        showOrderColumn: true,
+      });
+      const text = container.textContent;
+      expect(text.indexOf("document-a.pdf")).toBeLessThan(text.indexOf("figure-a.pdf"));
+    });
+
+    it("groups Figures ahead of Documents when groupFiguresFirst is true, even with a higher final_package_order", () => {
+      const { container } = renderComponent({
+        documents: [figureDoc, documentDoc],
+        isFinalPackageTable: true,
+        showOrderColumn: true,
+        groupFiguresFirst: true,
+      });
+      const text = container.textContent;
+      expect(text.indexOf("figure-a.pdf")).toBeLessThan(text.indexOf("document-a.pdf"));
+    });
+  });
+
   describe("delete document reference warning", () => {
     const FILE_GUID = "figure-guid-123";
 

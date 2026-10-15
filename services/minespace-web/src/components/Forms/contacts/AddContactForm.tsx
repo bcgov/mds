@@ -4,7 +4,7 @@ import { getPartyRelationships } from "@mds/common/redux/slices/partiesSlice";
 import AddContactFormDetails from "./AddContactFormDetails";
 import { MinePartyAppointmentTypeCodeEnum } from "@mds/common/constants/enums";
 import { useAppSelector } from "@mds/common/redux/rootState";
-import { IMinePartyAppt, IParty } from "@mds/common/interfaces";
+import { IPartyAppt, IParty } from "@mds/common/interfaces";
 
 export interface AddContactFormProps {
   mine_party_appt_type_code: MinePartyAppointmentTypeCodeEnum;
@@ -16,7 +16,7 @@ export const AddContactForm: FC<AddContactFormProps> = (props) => {
   const [selectedParty, setSelectedParty] = useState<any>({
     job_title_code: props?.mine_party_appt_type_code,
   });
-  const parties = useAppSelector(getPartyRelationships) as IMinePartyAppt[];
+  const parties = useAppSelector(getPartyRelationships) as IPartyAppt[];
   const handleSelectChange = (party_guid: string) => {
     if (!party_guid) {
       setSelectedParty({ job_title_code: props?.mine_party_appt_type_code });

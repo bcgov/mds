@@ -39,7 +39,7 @@ describe("`fetchActivities` action creator", () => {
     return fetchActivities(user)(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(5);
+      expect(dispatch).toHaveBeenCalledTimes(4);
     });
   });
 });

@@ -2,9 +2,11 @@ import pytest
 import json, uuid, os
 from unittest import mock
 
-from app.extensions import cache
+from app.extensions import cache, jwt as _jwt
 from app.constants import DOWNLOAD_TOKEN, TIMEOUT_5_MINUTES
+from app.utils.access_decorators import VIEW_ALL, MINESPACE_PROPONENT
 
+from tests.constants import BASE_AUTH_CLAIMS, TOKEN_HEADER
 from tests.factories import DocumentFactory
 
 
@@ -106,3 +108,39 @@ def test_get_upload_status_existing_document(test_client, auth_headers):
     # make sure status in returned data matches status of document in setup
     assert 'status' in get_data
     assert get_data['status'] == document.status
+
+
+def _auth_header_with_roles(roles):
+    token = _jwt.create_jwt({**BASE_AUTH_CLAIMS, "client_roles": roles}, TOKEN_HEADER)
+    return {'Authorization': 'Bearer ' + token}
+
+
+@pytest.mark.parametrize("roles", [[VIEW_ALL], [MINESPACE_PROPONENT]])
+def test_post_documents_zip_allowed_roles(test_client, roles):
+    """Users who can view documents (Core view-all or MineSpace) can start a zip"""
+    document_guids = [str(uuid.uuid4())]
+
+    with mock.patch('app.services.commands_helper.create_zip_task') as mock_create_zip_task:
+        mock_create_zip_task.return_value = {'task_id': 'test-task-id'}
+
+        post_resp = test_client.post(
+            '/documents/zip',
+            json={'zip_file_name': 'test.zip', 'document_manager_guids': document_guids},
+            headers=_auth_header_with_roles(roles)
+        )
+
+        assert post_resp.status_code == 200
+        mock_create_zip_task.assert_called_once_with('test.zip', document_guids)
+
+
+def test_post_documents_zip_forbidden_without_role(test_client, auth_headers):
+    """Users without a document view role cannot start a zip"""
+    with mock.patch('app.services.commands_helper.create_zip_task') as mock_create_zip_task:
+        post_resp = test_client.post(
+            '/documents/zip',
+            json={'zip_file_name': 'test.zip', 'document_manager_guids': [str(uuid.uuid4())]},
+            headers=auth_headers['base_auth_header']
+        )
+
+        assert post_resp.status_code == 403
+        mock_create_zip_task.assert_not_called()

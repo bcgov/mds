@@ -10,6 +10,76 @@ import { AxiosResponse } from "axios";
 import { notification } from "antd";
 import { ENVIRONMENT } from "@mds/common/constants/environment";
 
+interface IUNTPCredentialIssueResponse {
+  hash: string;
+  existing: boolean;
+  collision: boolean;
+  response: unknown;
+}
+
+export const issueUNTPCredentialForPermitAmendment = (
+  permitAmendmentGuid: string
+): AppThunk<Promise<AxiosResponse<IUNTPCredentialIssueResponse>>> => (
+  dispatch
+): Promise<AxiosResponse<IUNTPCredentialIssueResponse>> => {
+    dispatch(showLoading("modal"));
+    dispatch(request(NetworkReducerTypes.ISSUE_UNTP_CREDENTIAL));
+    return CustomAxios()
+      .post<IUNTPCredentialIssueResponse>(
+        `${ENVIRONMENT.apiUrl}/verifiable-credentials/credentials/issue`,
+        { permit_amendment_guid: permitAmendmentGuid },
+        createRequestHeader()
+      )
+      .then((response) => {
+        const { existing } = response.data;
+        const message = existing
+          ? "Credential already published"
+          : "UNTP Conformity Credential has been issued.";
+
+        notification.success({
+          message,
+          duration: 10,
+        });
+        dispatch(success(NetworkReducerTypes.ISSUE_UNTP_CREDENTIAL));
+        return response;
+      })
+      .catch((err) => {
+        dispatch(error(NetworkReducerTypes.ISSUE_UNTP_CREDENTIAL));
+        throw err;
+      })
+      .finally(() => dispatch(hideLoading("modal")));
+  };
+
+export const revokeUNTPCredentialForPermitAmendment = (
+  permitAmendmentGuid: string,
+  revokedReason: string
+): AppThunk<Promise<AxiosResponse>> => (dispatch): Promise<AxiosResponse> => {
+  dispatch(showLoading("modal"));
+  dispatch(request(NetworkReducerTypes.REVOKE_UNTP_CREDENTIAL));
+  return CustomAxios()
+    .post(
+      `${ENVIRONMENT.apiUrl}/verifiable-credentials/credentials/revoke`,
+      {
+        permit_amendment_guid: permitAmendmentGuid,
+        revoked_reason: revokedReason,
+      },
+      createRequestHeader()
+    )
+    .then((response) => {
+      notification.success({
+        message: "UNTP Conformity Credential has been revoked.",
+        duration: 10,
+      });
+      dispatch(success(NetworkReducerTypes.REVOKE_UNTP_CREDENTIAL));
+      return response;
+    })
+    .catch((err) => {
+      dispatch(error(NetworkReducerTypes.REVOKE_UNTP_CREDENTIAL));
+      throw err;
+    })
+    .finally(() => dispatch(hideLoading("modal")));
+};
+
 export const issueVCDigitalCredForPermit = (
   partyGuid: string,
   permitAmendmentGuid: string
@@ -38,9 +108,10 @@ export const issueVCDigitalCredForPermit = (
         dispatch(hideLoading("modal"));
         return response;
       })
-      .catch(() => {
+      .catch((err) => {
         dispatch(error(NetworkReducerTypes.ISSUE_VC));
         dispatch(hideLoading("modal"));
+        throw err;
       });
   };
 
@@ -88,9 +159,10 @@ export const fetchVCWalletInvitations = (
         dispatch(hideLoading("modal"));
         return response;
       })
-      .catch(() => {
+      .catch((err) => {
         dispatch(error(NetworkReducerTypes.FETCH_VC_WALLET_CONNECTION_INVITATIONS));
         dispatch(hideLoading("modal"));
+        throw err;
       });
   };
 
@@ -116,8 +188,9 @@ export const deletePartyWalletConnection = (
         dispatch(hideLoading("modal"));
         return response;
       })
-      .catch(() => {
+      .catch((err) => {
         dispatch(error(NetworkReducerTypes.DELETE_VC_WALLET_CONNECTION));
         dispatch(hideLoading("modal"));
+        throw err;
       });
   };

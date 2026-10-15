@@ -180,7 +180,11 @@ export class FinalPermitDocuments extends Component {
         );
       } else {
         unifiedDocumentsView = (
-          <NOWDocuments {...sharedNOWDocumentsProps} documents={combinedDocuments} />
+          <NOWDocuments
+            {...sharedNOWDocumentsProps}
+            documents={combinedDocuments}
+            groupFiguresFirst={this.props.adminView}
+          />
         );
       }
     }
