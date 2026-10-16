@@ -322,6 +322,16 @@ describe("NOWSubmissionDocuments", () => {
     });
 
     it.each([
+      ["only when file management is enabled", { enableFileManagement: false }, false],
+      ["on Application Documents", {}, true],
+      ["not in the Create Final Application Package modal", { isPackageModal: true }, false],
+    ])("offers Download All %s", (_description, overrides, isShown) => {
+      renderFileManagement(overrides);
+
+      expect(Boolean(screen.queryByRole("button", { name: /Download All/ }))).toBe(isShown);
+    });
+
+    it.each([
       ["an imported vFCBC document", importedDocument()],
       ["a document added in Core", coreApplicationDocument()],
     ])("lets %s be replaced and archived", async (_description, document) => {
