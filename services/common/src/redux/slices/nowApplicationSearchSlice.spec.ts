@@ -323,6 +323,37 @@ describe('async actions', () => {
 
         expect(selectNowSearchLoading(store.getState())).toBe(false);
     });
+
+    it('closes an earlier search and ignores its results when a new search starts', async () => {
+        const store = getStore();
+        const searches = [];
+
+        (createEventSource as jest.Mock).mockImplementation((options) => {
+            const search = { onMessage: options.onMessage, onDisconnect: options.onDisconnect, close: jest.fn() };
+            searches.push(search);
+            return search;
+        });
+        const search = (query: string) => store.dispatch(searchNowApplicationDocuments({
+            nowApplicationGuid: 'test-guid',
+            query,
+            filters: []
+        }));
+
+        await search('first');
+        await search('second');
+        const [firstSearch, secondSearch] = searches;
+
+        expect(firstSearch.close).toHaveBeenCalled();
+        expect(secondSearch.close).not.toHaveBeenCalled();
+
+        secondSearch.onMessage({ event: SearchEventType.DOCUMENTS, data: JSON.stringify({ documents: ['second result'] }) });
+        firstSearch.onMessage({ event: SearchEventType.DOCUMENTS, data: JSON.stringify({ documents: ['first result'] }) });
+        expect(selectNowSearchResults(store.getState())).toEqual({ documents: ['second result'] });
+
+        // The closed search's loading bar was hidden when it was closed, so only the latest search's remains
+        secondSearch.onDisconnect();
+        expect(store.getState().loadingBar.default).toBe(0);
+    });
 });
 
 describe('buildNowSearchFilters', () => {

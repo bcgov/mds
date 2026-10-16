@@ -24,6 +24,7 @@ from app.api.services.document_manager_service import DocumentManagerService
 from app.api.projects.project.project_util import notify_file_updates
 from app.api.projects.ams_final_application.models.ams_final_application_document_xref import AmsFinalApplicationDocumentXref
 from app.api.projects.ams_final_application.models.ams_final_application import AmsFinalApplication
+from app.api.now_applications.now_document_file_management import check_not_now_document
 
 class MineDocumentListResource(Resource, UserMixin):
     @api.doc(description='Returns list of documents associated with mines')
@@ -138,6 +139,7 @@ class MineDocumentArchiveResource(Resource, UserMixin):
         for document in documents:
             if str(document.mine_guid) != str(mine_guid):
                 raise BadRequest('Document not attached to mine')
+            check_not_now_document(document)
 
         MineDocument.mark_as_archived_many(mine_document_guids)
 

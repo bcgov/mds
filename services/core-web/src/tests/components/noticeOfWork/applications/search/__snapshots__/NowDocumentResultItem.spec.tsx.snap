@@ -64,7 +64,6 @@ exports[`NowDocumentResultItem renders properly with highlights 1`] = `
             >
               <span
                 class="ant-tag ant-tag-blue"
-                style="cursor: default;"
               >
                 Technical Report
               </span>
@@ -171,7 +170,6 @@ exports[`NowDocumentResultItem renders properly without highlights 1`] = `
             >
               <span
                 class="ant-tag ant-tag-blue"
-                style="cursor: default;"
               >
                 Technical Report
               </span>
@@ -274,7 +272,6 @@ exports[`NowDocumentResultItem renders with permit package styling 1`] = `
             >
               <span
                 class="ant-tag ant-tag-orange"
-                style="cursor: default;"
               >
                 Permit Package
               </span>
