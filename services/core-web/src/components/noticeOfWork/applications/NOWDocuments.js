@@ -248,6 +248,7 @@ export class NOWDocuments extends Component {
   );
 
   DraggableBodyRow = ({ className, style, ...restProps }) => {
+    // Matches rows on "index", so this only finds the row when rowKey is "index" (see rowKey below)
     const index =
       this.state.dataSource &&
       this.state.dataSource.findIndex((x) => x.index === restProps["data-row-key"]);
@@ -881,6 +882,8 @@ export class NOWDocuments extends Component {
           recordType="document description"
           dataSource={this.state.dataSource}
           // The key must be set to "index" to allow the drag-sort to work.
+          // With file management on, rows are keyed by version guid or key instead (so version history can expand), which
+          // DraggableBodyRow can't match, so drag-sort won't work. That's fine for now, as file management is only on where sorting isn't allowed.
           rowKey={
             this.props.enableFileManagement
               ? (record) => record.mine_document_version_guid ?? record.key

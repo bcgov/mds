@@ -245,7 +245,7 @@ const NowApplicationDocumentSearch: React.FC<NowApplicationDocumentSearchProps> 
           <Space size="middle">
             {isIndexed ? (
               <Popconfirm
-                title="Re-index documents? This will re-scan all application documents. It is only necessary if new documents have been added since the last time this was run."
+                title="Re-index documents? This will re-scan all application documents. It is only necessary if documents have been added or replaced since the last time this was run."
                 onConfirm={() => dispatch(indexNowApplicationDocuments(nowApplicationGuid))}
                 okText="Re-index"
                 cancelText="Cancel"
@@ -257,7 +257,7 @@ const NowApplicationDocumentSearch: React.FC<NowApplicationDocumentSearchProps> 
             )}
             <CoreTooltip
               icon="question"
-              title="This process downloads and analyzes all application documents to make their content searchable by the AI. This is only necessary if new documents have been added since the last index."
+              title="This process downloads and analyzes all application documents to make their content searchable by the AI. This is only necessary if documents have been added or replaced since the last index."
             />
           </Space>
         )}
@@ -283,6 +283,9 @@ const NowApplicationDocumentSearch: React.FC<NowApplicationDocumentSearchProps> 
       }, 300),
     [nowApplicationGuid, documentManagerGuids]
   );
+
+  // Stops a typed search that's still waiting from firing with the previous archived filter
+  useEffect(() => () => debouncedSearch.cancel(), [debouncedSearch]);
 
   const handleArchivedFilterChange = (value: ArchivedFilter) => {
     setArchivedFilter(value);

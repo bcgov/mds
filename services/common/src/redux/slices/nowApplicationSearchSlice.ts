@@ -109,6 +109,9 @@ const initialState: NowApplicationSearchState = {
   nowApplicationGuid: null,
 };
 
+// Only the latest search updates the results, so a slower earlier search can't overwrite them
+let latestNowSearchSource = null;
+
 const nowApplicationSearchSlice = createAppSlice({
   name: nowApplicationSearchReducerType,
   initialState,
@@ -262,6 +265,13 @@ const nowApplicationSearchSlice = createAppSlice({
 
         let eventSource = null;
 
+        if (latestNowSearchSource) {
+          // close() doesn't call onDisconnect, so the earlier search's loading bar is hidden here
+          latestNowSearchSource.close();
+          latestNowSearchSource = null;
+          thunkApi.dispatch(hideLoading());
+        }
+
         try {
           eventSource = createEventSource({
             url: `${ENVIRONMENT.apiUrl}${API.NOW_APPLICATION_DOCUMENT_SEARCH(payload.nowApplicationGuid)}`,
@@ -275,6 +285,9 @@ const nowApplicationSearchSlice = createAppSlice({
             },
 
             onMessage: ({ event, data }) => {
+              if (eventSource !== latestNowSearchSource) {
+                return;
+              }
               const eventPayload = JSON.parse(data);
               const updatedState: RootState = thunkApi.getState();
 
@@ -310,9 +323,13 @@ const nowApplicationSearchSlice = createAppSlice({
 
             onDisconnect: () => {
               eventSource.close();
+              if (eventSource === latestNowSearchSource) {
+                latestNowSearchSource = null;
+              }
               thunkApi.dispatch(hideLoading());
             },
           });
+          latestNowSearchSource = eventSource;
 
           return null;
         } catch (error) {
