@@ -28,6 +28,37 @@ export enum SearchEventType {
 
 export type NowApplicationSearchFilters = Array<{ category: string; value: string }>;
 
+/**
+ * Turns the selected filters into the search request's filters, one "in" condition per category.
+ * documentManagerGuids, when given, limits the results to those files (e.g. to hide or only show archived files).
+ */
+export const buildNowSearchFilters = (
+  filters: NowApplicationSearchFilters,
+  documentManagerGuids?: string[]
+): SearchQuery["filters"] => {
+  const filtersByCategory: Record<string, string[]> = filters.reduce(
+    (acc, filter) => {
+      acc[filter.category] = acc[filter.category] || [];
+      acc[filter.category].push(filter.value);
+      return acc;
+    },
+    {} as Record<string, string[]>
+  );
+  const conditions = Object.entries(filtersByCategory).map(([category, values]) => ({
+    field: category,
+    operator: ConditionOperator.IN,
+    value: values,
+  }));
+  if (documentManagerGuids) {
+    conditions.push({
+      field: "document_manager_guid",
+      operator: ConditionOperator.IN,
+      value: documentManagerGuids,
+    });
+  }
+  return conditions.length > 0 ? { operator: FilterOperator.AND, conditions } : undefined;
+};
+
 export type NowIndexerStatusValue =
   | "never_run"
   | "running"
@@ -199,6 +230,7 @@ const nowApplicationSearchSlice = createAppSlice({
           nowApplicationGuid: string;
           query: string;
           filters: NowApplicationSearchFilters;
+          documentManagerGuids?: string[];
         },
         thunkApi
       ) => {
@@ -210,28 +242,9 @@ const nowApplicationSearchSlice = createAppSlice({
 
         const headers = createRequestHeader();
 
-        const filtersByCategory: Record<string, string[]> = payload.filters.reduce(
-          (acc, filter) => {
-            acc[filter.category] = acc[filter.category] || [];
-            acc[filter.category].push(filter.value);
-            return acc;
-          },
-          {} as Record<string, string[]>
-        );
-
         const searchQuery: SearchQuery = {
           query: payload.query,
-          filters:
-            payload.filters.length > 0
-              ? {
-                  operator: FilterOperator.AND,
-                  conditions: Object.entries(filtersByCategory).map(([category, values]) => ({
-                    field: category,
-                    operator: ConditionOperator.IN,
-                    value: values,
-                  })),
-                }
-              : undefined,
+          filters: buildNowSearchFilters(payload.filters, payload.documentManagerGuids),
         };
 
         const state = thunkApi.getState() as RootState;
