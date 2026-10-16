@@ -8,6 +8,8 @@ import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 import { BrowserRouter } from "react-router-dom";
 import { AUTHENTICATION, NOTICE_OF_WORK } from "@mds/common/constants/reducerTypes";
 import { USER_ROLES } from "@mds/common/constants/environment";
+import { Feature } from "@mds/common/utils/featureFlag";
+import * as documentActionCreator from "@mds/common/redux/actionCreators/documentActionCreator";
 
 const dispatchProps = {
   setNoticeOfWorkApplicationDocumentDownloadState: jest.fn(),
@@ -195,6 +197,44 @@ describe("FinalPermitDocuments", () => {
           </ReduxWrapper>
         </BrowserRouter>
       );
+
+    it.each([
+      [true, "warns"],
+      [false, "doesn't warn"],
+    ])(
+      "with file management enabled: %s, Download All %s that previous versions aren't included",
+      async (isFileManagementEnabled) => {
+        // Without the warning, Download All starts zipping straight away
+        const compressionSpy = jest
+          .spyOn(documentActionCreator, "documentsCompression")
+          .mockReturnValue(() => Promise.resolve({ data: {} }));
+        const noticeOfWork = { ...IMPORTED_NOTICE_OF_WORK, documents: [finalPackageDocument] };
+        render(
+          <BrowserRouter>
+            <ReduxWrapper
+              initialState={{ ...initialState, [NOTICE_OF_WORK]: { ...initialState[NOTICE_OF_WORK], noticeOfWork } }}
+            >
+              <FinalPermitDocuments
+                {...dispatchProps}
+                {...baseProps}
+                noticeOfWork={noticeOfWork}
+                adminView
+                isFeatureEnabled={(feature) =>
+                  feature === Feature.NOW_FILE_MANAGEMENT && isFileManagementEnabled
+                }
+              />
+            </ReduxWrapper>
+          </BrowserRouter>
+        );
+
+        await userEvent.click(screen.getByRole("button", { name: /Download All/ }));
+
+        expect(Boolean(screen.queryByText(/previous versions will not be downloaded/))).toBe(
+          isFileManagementEnabled
+        );
+        compressionSpy.mockRestore();
+      }
+    );
 
     it("splits into separate Figure and Document tables when every split condition is met", () => {
       const { container } = renderUnified();

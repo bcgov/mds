@@ -211,7 +211,10 @@ export class FinalPermitDocuments extends Component {
             }
           </div>
           <div>
-            <PermitPackage isAdminView={this.props.adminView} />
+            <PermitPackage
+              isAdminView={this.props.adminView}
+              showDownloadWarning={this.props.isFeatureEnabled(Feature.NOW_FILE_MANAGEMENT)}
+            />
           </div>
         </div>
         {(this.props.showPreambleFileMetadata && this.props.showInUnifiedView && (

@@ -7,6 +7,7 @@ import NOWDocuments from "@/components/noticeOfWork/applications//NOWDocuments";
 import ScrollContentWrapper from "@/components/noticeOfWork/applications/ScrollContentWrapper";
 import NOWSubmissionDocuments from "@/components/noticeOfWork/applications//NOWSubmissionDocuments";
 import NOWSpatialFiles from "@/components/noticeOfWork/applications/NOWSpatialFiles";
+import NOWArchivedDocuments from "@/components/noticeOfWork/applications/manageDocuments/NOWArchivedDocuments";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { Feature } from "@mds/common/utils/featureFlag";
 
@@ -190,6 +191,15 @@ export const NOWApplicationManageDocuments = (props) => {
           isRefConDocuments
         />
       </ScrollContentWrapper>
+      {isFeatureEnabled(Feature.NOW_FILE_MANAGEMENT) && (
+        <ScrollContentWrapper
+          id="archived-documents"
+          title="Archived Documents"
+          isLoaded={props.isLoaded}
+        >
+          <NOWArchivedDocuments noticeOfWork={props.noticeOfWork} />
+        </ScrollContentWrapper>
+      )}
     </div>
   );
 };

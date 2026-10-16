@@ -19,7 +19,11 @@ import { useDispatch } from "react-redux";
 import { Feature } from "@mds/common/utils/featureFlag";
 import { SizeType } from "antd/lib/config-provider/SizeContext";
 import { ColumnsType } from "antd/es/table";
-import { FileOperations, MineDocument } from "@mds/common/models/documents/document";
+import {
+  FileOperations,
+  MineDocument,
+  MineDocumentVersion,
+} from "@mds/common/models/documents/document";
 
 import DeleteOutlined from "@ant-design/icons/DeleteOutlined";
 import DownloadOutlined from "@ant-design/icons/DownloadOutlined";
@@ -50,6 +54,7 @@ export const DocumentTable: FC<DocumentTableProps> = ({
   view = "standard",
   canArchiveDocuments = false,
   canReplaceDocuments = true,
+  openSelectedVersion = false,
   removeDocument,
   replaceAlertMessage = <Typography.Text>The replaced file will <b>not</b> be reviewed as part of the application submission package.
     To ensure successful replacement, the new file must be the <b>same file type</b> as the original. Please verify the file format before proceeding.</Typography.Text>,
@@ -200,7 +205,16 @@ export const DocumentTable: FC<DocumentTableProps> = ({
       label: FileOperations.View,
       icon: <FileOutlined />,
       clickFunction: (_event, record: MineDocument) =>
-        dispatch(openDocument(record.document_manager_guid, record.document_name)),
+        dispatch(
+          openDocument(
+            record.document_manager_guid,
+            record.document_name,
+            null,
+            openSelectedVersion && record instanceof MineDocumentVersion
+              ? record.document_manager_version_guid
+              : null
+          )
+        ),
     },
     {
       key: "download",
