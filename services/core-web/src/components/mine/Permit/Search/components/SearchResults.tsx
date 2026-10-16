@@ -40,8 +40,8 @@ export interface SearchResultsProps {
         selectAllFacets?: (state: RootState) => { [key: string]: Facet[] };
     };
     /**
-     * Optional controls shown beside the Filters button (e.g. NoW document search's archived
-     * files filter). Permit condition search doesn't pass this, so it's unchanged.
+     * Optional controls shown beside the Filters button (e.g. NoW document search's archived files filter). 
+     * Permit condition search doesn't pass this, so it's unchanged.
      */
     headerControls?: React.ReactNode;
 }

@@ -161,8 +161,7 @@ const NowApplicationDocumentSearch: React.FC<NowApplicationDocumentSearchProps> 
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const [archivedFilter, setArchivedFilter] = useState<ArchivedFilter>("all");
 
-  // Only the NoW's own (non-vFCBC) files are indexed, and the NoW splits them into current and archived files, so
-  // hiding or only showing archived files limits the search to one of those lists.
+  // Only the NoW's own (non-vFCBC) files are indexed, and the NoW splits them into current and archived files, so hiding or only showing archived files limits the search to one of those lists.
   const currentDocumentManagerGuids = useMemo(
     () => toDocumentManagerGuids(noticeOfWork?.documents),
     [noticeOfWork?.documents]
