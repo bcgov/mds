@@ -22,7 +22,8 @@ import {
     selectNowIndexerStatus,
     selectNowIndexerStatusLoading,
     NowApplicationSearchFilters,
-    SearchEventType
+    SearchEventType,
+    buildNowSearchFilters
 } from '@mds/common/redux/slices/nowApplicationSearchSlice';
 import { getStore } from "@mds/common/redux/rootState";
 import CustomAxios from "@mds/common/redux/customAxios";
@@ -321,5 +322,57 @@ describe('async actions', () => {
         }
 
         expect(selectNowSearchLoading(store.getState())).toBe(false);
+    });
+});
+
+describe('buildNowSearchFilters', () => {
+    it('sends no filters when none are selected', () => {
+        expect(buildNowSearchFilters([])).toBeUndefined();
+    });
+
+    it('groups the selected filters into one "in" condition per category', () => {
+        expect(buildNowSearchFilters([
+            { category: 'document_type', value: 'Letter' },
+            { category: 'document_type', value: 'Map' },
+        ])).toEqual({
+            operator: 'AND',
+            conditions: [{ field: 'document_type', operator: 'in', value: ['Letter', 'Map'] }],
+        });
+    });
+
+    it('limits the results to the given files, alongside the selected filters', () => {
+        expect(buildNowSearchFilters([{ category: 'document_type', value: 'Letter' }], ['dm-1', 'dm-2'])).toEqual({
+            operator: 'AND',
+            conditions: [
+                { field: 'document_type', operator: 'in', value: ['Letter'] },
+                { field: 'document_manager_guid', operator: 'in', value: ['dm-1', 'dm-2'] },
+            ],
+        });
+    });
+
+    it('still limits the results when there are no files to show, so nothing is returned', () => {
+        expect(buildNowSearchFilters([], [])).toEqual({
+            operator: 'AND',
+            conditions: [{ field: 'document_manager_guid', operator: 'in', value: [] }],
+        });
+    });
+
+    it('sends the file limit with the search request', async () => {
+        const store = getStore();
+        (createEventSource as jest.Mock).mockImplementation(() => ({ close: jest.fn() }));
+
+        store.dispatch(searchNowApplicationDocuments({
+            nowApplicationGuid: 'test-guid',
+            query: 'test',
+            filters: [],
+            documentManagerGuids: ['dm-1'],
+        }));
+        await Promise.resolve();
+
+        const { body } = (createEventSource as jest.Mock).mock.calls.at(-1)[0];
+        expect(JSON.parse(body).filters).toEqual({
+            operator: 'AND',
+            conditions: [{ field: 'document_manager_guid', operator: 'in', value: ['dm-1'] }],
+        });
     });
 });

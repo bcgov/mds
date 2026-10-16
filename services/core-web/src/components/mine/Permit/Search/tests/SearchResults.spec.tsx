@@ -82,4 +82,18 @@ describe('SearchResults', () => {
         // antd Skeleton should be present
         expect(document.querySelector('.ant-skeleton')).toBeInTheDocument();
     });
+
+    it('shows header controls beside the Filters button', () => {
+        setup({ headerControls: <div data-testid="header-control" /> });
+
+        const filtersButton = screen.getByRole('button', { name: /Filters/ });
+        expect(screen.getByTestId('header-control').closest('.ant-space')).toContainElement(filtersButton);
+    });
+
+    it('shows only the Filters button when no header controls are passed', () => {
+        setup();
+
+        const filtersButton = screen.getByRole('button', { name: /Filters/ });
+        expect(filtersButton.closest('.ant-space').querySelectorAll('.ant-space-item')).toHaveLength(1);
+    });
 });

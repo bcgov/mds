@@ -229,7 +229,10 @@ export const NoticeOfWorkApplication: FC<NoticeOfWorkApplicationProps> = (props)
           >
             {isImported && (
               <LoadingWrapper condition={isTabLoaded}>
-                <NowApplicationDocumentSearch nowApplicationGuid={noticeOfWork.now_application_guid} />
+                <NowApplicationDocumentSearch
+                  nowApplicationGuid={noticeOfWork.now_application_guid}
+                  noticeOfWork={noticeOfWork}
+                />
               </LoadingWrapper>
             )}
           </Tabs.TabPane>

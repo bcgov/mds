@@ -13,6 +13,8 @@ interface NowDocumentResultItemProps {
   result: NowDocumentSearchResult;
   onFilterClick?: (category: string, value: string) => void;
   index?: number;
+  // The file has been archived from Manage Documents
+  isArchived?: boolean;
 }
 
 // Scores from Azure hybrid search sit in roughly the 1–4 range.
@@ -51,6 +53,7 @@ const NowDocumentResultItem: React.FC<NowDocumentResultItemProps> = ({
   result,
   onFilterClick,
   index,
+  isArchived = false,
 }) => {
   const { content, meta, score } = result;
   const {
@@ -247,6 +250,7 @@ const NowDocumentResultItem: React.FC<NowDocumentResultItemProps> = ({
               {isPermitPackage && (
                 <Tag color="gold">Permit Package</Tag>
               )}
+              {isArchived && <Tag>Archived</Tag>}
             </Space>
           </Col>
           <Col>

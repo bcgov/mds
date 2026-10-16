@@ -39,6 +39,11 @@ export interface SearchResultsProps {
         selectDocumentLoading?: (state: RootState) => boolean;
         selectAllFacets?: (state: RootState) => { [key: string]: Facet[] };
     };
+    /**
+     * Optional controls shown beside the Filters button (e.g. NoW document search's archived
+     * files filter). Permit condition search doesn't pass this, so it's unchanged.
+     */
+    headerControls?: React.ReactNode;
 }
 
 /**
@@ -49,7 +54,7 @@ export interface SearchResultsProps {
  * - When a filter is unchecked, it is removed from the pending filters.
  * - When the user clicks "Apply Filters", the pending filters are applied to the search results.
  */
-const SearchResults: React.FC<SearchResultsProps> = ({ onFilterChange, renderItem, selectors }) => {
+const SearchResults: React.FC<SearchResultsProps> = ({ onFilterChange, renderItem, selectors, headerControls }) => {
     const results = useAppSelector(selectors?.selectResults ?? selectSearchResults);
     const documentLoading = useAppSelector(selectors?.selectDocumentLoading ?? selectDocumentLoading);
     const selectedFilters = useAppSelector(selectors?.selectFilters ?? selectSearchFilters);
@@ -144,22 +149,25 @@ const SearchResults: React.FC<SearchResultsProps> = ({ onFilterChange, renderIte
                         )}
                     </Col>
                     <Col>
-                        <Button
-                            icon={<FilterOutlined />}
-                            onClick={() => setDrawerVisible(true)}
-                        >
-                            Filters
-                            {selectedFilters?.length > 0 && (
-                                <Badge
-                                    count={selectedFilters?.length}
-                                    style={{
-                                        backgroundColor: '#1890ff',
-                                        marginLeft: '8px',
-                                        marginRight: '-8px'
-                                    }}
-                                />
-                            )}
-                        </Button>
+                        <Space>
+                            {headerControls}
+                            <Button
+                                icon={<FilterOutlined />}
+                                onClick={() => setDrawerVisible(true)}
+                            >
+                                Filters
+                                {selectedFilters?.length > 0 && (
+                                    <Badge
+                                        count={selectedFilters?.length}
+                                        style={{
+                                            backgroundColor: '#1890ff',
+                                            marginLeft: '8px',
+                                            marginRight: '-8px'
+                                        }}
+                                    />
+                                )}
+                            </Button>
+                        </Space>
                     </Col>
                 </Row>
 
