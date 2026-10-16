@@ -419,6 +419,13 @@
   margin-left: 38px;
 }
 
+// Download All sits beside Add Document on the Manage Documents tables, like the Permit Package's buttons
+.now-table-header-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
 .spatial-files-row-link {
   margin-left: 8px;
   padding: 0;

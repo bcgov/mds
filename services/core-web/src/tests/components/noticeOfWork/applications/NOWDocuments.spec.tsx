@@ -292,6 +292,17 @@ describe("NOWDocuments", () => {
       expect(document.querySelector(".expand-row-icon")).toBeNull();
     });
 
+    it.each([
+      ["only when file management is enabled", { enableFileManagement: false }, false],
+      ["on Government Documents", {}, true],
+      // The Permit Package has its own Download All
+      ["not on the Permit Package", { isFinalPackageTable: true }, false],
+    ])("offers Download All %s", (_description, overrides, isShown) => {
+      renderFileManagement(overrides);
+
+      expect(Boolean(screen.queryByRole("button", { name: /Download All/ }))).toBe(isShown);
+    });
+
     it("shows the Actions menu and the number of previous versions", async () => {
       renderFileManagement();
 
