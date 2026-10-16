@@ -120,7 +120,7 @@ const ReplaceDocumentModal: FC<ReplaceDocumentModalProps> = (props) => {
           await props.handleSubmit(newDocument);
           dispatch(closeModal());
         } catch (error) {
-          // handleSubmit is responsible for surfacing the error and rolling backany optimistic updates; keep the modal open so the user can retry.
+          // handleSubmit is responsible for surfacing the error and rolling back any optimistic updates; keep the modal open so the user can retry.
         }
       }
     }
