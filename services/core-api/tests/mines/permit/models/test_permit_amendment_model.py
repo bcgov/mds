@@ -4,7 +4,9 @@ import uuid
 import pytest
 
 from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
-from tests.factories import create_mine_and_permit
+from app.api.now_applications.models.now_application_document_xref import NOWApplicationDocumentXref
+from tests.factories import create_mine_and_permit, MineDocumentFactory
+from tests.now_application_factories import NOWApplicationIdentityFactory
 
 
 def test_permit_amendment_model_find_by_permit_amendment_id(db_session):
@@ -84,3 +86,19 @@ def test_permit_model_validate_issue_date(db_session):
             issue_date=datetime.today() + timedelta(days=1),
             authorization_end_date=datetime.today())
     assert 'Permit amendment issue date cannot be set to the future.' in str(e.value)
+
+
+def test_permit_amendment_model_now_application_documents_excludes_archived(db_session):
+    mine, permit = create_mine_and_permit()
+    permit_amendment = permit.permit_amendments[0]
+    now_application_identity = NOWApplicationIdentityFactory(mine=mine)
+    permit_amendment.now_application_guid = now_application_identity.now_application_guid
+    for document_name, is_archived in [('active-map.pdf', False), ('archived-map.pdf', True)]:
+        mine_document = MineDocumentFactory(mine=mine, document_name=document_name, is_archived=is_archived)
+        db_session.add(NOWApplicationDocumentXref(
+            now_application_id=now_application_identity.now_application_id,
+            mine_document_guid=mine_document.mine_document_guid,
+            now_application_document_type_code='MPW'))
+    db_session.commit()
+
+    assert [doc.mine_document.document_name for doc in permit_amendment.now_application_documents] == ['active-map.pdf']

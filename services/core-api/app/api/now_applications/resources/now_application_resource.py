@@ -28,6 +28,13 @@ from app.api.mines.mine.models.mine_type import MineType
 from app.api.mines.mine.models.mine_type import MineTypeDetail
 
 
+def _attach_submission_documents(application):
+    """Splits vFCBC submission documents into active and archived lists for the response."""
+    submission_documents = NOWApplication.get_filtered_submissions_documents(now_application=application)
+    application.filtered_submission_documents = [doc for doc in submission_documents if not doc['is_archived']]
+    application.archived_submission_documents = [doc for doc in submission_documents if doc['is_archived']]
+
+
 class NOWApplicationResource(Resource, UserMixin):
     @staticmethod
     def _get_spatial_document_guids_to_process(documents):
@@ -71,8 +78,7 @@ class NOWApplicationResource(Resource, UserMixin):
             application = transmogrify_now(now_application_identity, include_contacts=original)
             application.imported_to_core = False
 
-        application.filtered_submission_documents = NOWApplication.get_filtered_submissions_documents(
-            now_application=application)
+        _attach_submission_documents(application)
         application.spatial_document_bundles = NOWApplication.get_spatial_document_bundles(
             now_application=application)
 
@@ -163,7 +169,9 @@ class NOWApplicationResource(Resource, UserMixin):
                      if x['documenturl'] == doc.documenturl and x['messageid'] == doc.messageid
                      and x['filename'] == doc.filename and x['documenttype'] == doc.documenttype),
                     None)
-                if filtered_doc:
+                # Archived documents keep their saved values, so a stale page can't put them back into a package
+                is_archived = doc.mine_document is not None and doc.mine_document.is_archived
+                if filtered_doc and not is_archived:
                     doc.is_final_package = filtered_doc['is_final_package']
                     doc.is_consultation_package = filtered_doc['is_consultation_package']
                     doc.is_referral_package = filtered_doc['is_referral_package']
@@ -237,6 +245,18 @@ class NOWApplicationResource(Resource, UserMixin):
                 )
                 now_application_identity.now_application.application_tier = new_tier
 
+        # Ignore payload entries for archived documents. A page loaded before a document was archived would otherwise put it back into the permit package (or other packages) on save.
+        # Done before spatial processing so a stale page behaves the same as a fresh one, which never includes archived documents.
+        if data.get('documents'):
+            archived_xref_guids = {
+                str(doc.now_application_document_xref_guid)
+                for doc in now_application_identity.now_application.archived_documents
+            }
+            data['documents'] = [
+                doc for doc in data['documents']
+                if str(doc.get('now_application_document_xref_guid')) not in archived_xref_guids
+            ]
+
         new_spatial_document_guids = self._get_spatial_document_guids_to_process(
             data.get('documents'))
 
@@ -279,8 +299,7 @@ class NOWApplicationResource(Resource, UserMixin):
                 "%Y-%m-%dT%H:%M:%S"))
 
         application = now_application_identity.now_application
-        application.filtered_submission_documents = NOWApplication.get_filtered_submissions_documents(
-            now_application=application)
+        _attach_submission_documents(application)
         application.spatial_document_bundles = NOWApplication.get_spatial_document_bundles(
             now_application=application)
         return application

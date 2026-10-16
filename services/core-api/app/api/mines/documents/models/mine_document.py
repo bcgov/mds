@@ -90,14 +90,15 @@ class MineDocument(SoftDeleteMixin, AuditMixin, Base):
         return cls._mine_document_by_guids_qs(mine_document_guids).all()
 
     @classmethod
-    def mark_as_archived_many(cls, mine_document_guids):
+    def mark_as_archived_many(cls, mine_document_guids, commit=True):
         cls._mine_document_by_guids_qs(mine_document_guids) \
             .update({
                 'is_archived': True,
                 'archived_date': datetime.utcnow(),
                 'archived_by': User().get_user_username(),
             }, synchronize_session='fetch')
-        db.session.commit()
+        if commit:
+            db.session.commit()
 
     # TODO: Remove when mine_party_appt is refactored
 
