@@ -1,5 +1,9 @@
 import { USER_ROLES } from "@mds/common/constants/environment";
-import { FileOperations, NoWApplicationDocument } from "@mds/common/models/documents/document";
+import {
+  FileOperations,
+  MajorMineApplicationDocument,
+  NoWApplicationDocument,
+} from "@mds/common/models/documents/document";
 
 jest.mock("@mds/common/utils", () => ({
   ...jest.requireActual("@mds/common/utils"),
@@ -189,5 +193,49 @@ describe("NoWApplicationDocument model", () => {
         FileOperations.Archive,
       ]);
     });
+  });
+});
+
+describe("MajorMineApplicationDocument model", () => {
+  const replacedDocument = (user_roles: string[]) =>
+    new MajorMineApplicationDocument({
+      mine_document_guid: "mine-doc-guid",
+      mine_guid: "mine-guid",
+      document_manager_guid: "doc-manager-guid",
+      document_name: "current.pdf",
+      user_roles,
+      versions: [
+        {
+          mine_document_version_guid: "version-guid",
+          document_manager_version_guid: "doc-manager-version-guid",
+          document_name: "previous.pdf",
+        },
+      ],
+    });
+
+  it("lets a user who can edit change the current file, but only view and download previous versions", () => {
+    const document = replacedDocument([USER_ROLES.role_edit_major_mine_applications]);
+
+    expect(document.allowed_actions).toEqual([
+      FileOperations.View,
+      FileOperations.Download,
+      FileOperations.Replace,
+      FileOperations.Archive,
+      FileOperations.Delete,
+    ]);
+    expect(document.versions[0].allowed_actions).toEqual([
+      FileOperations.View,
+      FileOperations.Download,
+    ]);
+  });
+
+  it("only lets a user who can't edit view and download", () => {
+    const document = replacedDocument([]);
+
+    expect(document.allowed_actions).toEqual([FileOperations.View, FileOperations.Download]);
+    expect(document.versions[0].allowed_actions).toEqual([
+      FileOperations.View,
+      FileOperations.Download,
+    ]);
   });
 });
