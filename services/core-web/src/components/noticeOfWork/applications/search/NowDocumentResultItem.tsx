@@ -166,7 +166,7 @@ const NowDocumentResultItem: React.FC<NowDocumentResultItemProps> = ({
           <div className="now-search__artifact-table-controls now-search__artifact-table-controls--top">
             <Button
               type="link"
-              className="now-search__table-toggle"
+              className="btn--inline-link"
               aria-expanded={isTableExpanded}
               onClick={() => setIsTableExpanded((expanded) => !expanded)}
             >
