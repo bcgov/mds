@@ -43,3 +43,42 @@
 .bcgov-callout--danger>p {
     margin-bottom: 0;
 }
+
+.bcgov-callout--with-icon {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+
+    .bcgov-callout-icon {
+        display: flex;
+        align-items: center;
+        height: 24px;
+        font-size: 20px;
+        line-height: 1;
+        flex-shrink: 0;
+    }
+
+    .bcgov-callout-content {
+        flex: 1;
+
+        > p:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    &.bcgov-callout--info .bcgov-callout-icon {
+        color: #38598a;
+    }
+
+    &.bcgov-callout--success .bcgov-callout-icon {
+        color: #5cb85c;
+    }
+
+    &.bcgov-callout--warning .bcgov-callout-icon {
+        color: #f0ad4e;
+    }
+
+    &.bcgov-callout--danger .bcgov-callout-icon {
+        color: #d9534f;
+    }
+}
