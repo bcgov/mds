@@ -125,6 +125,25 @@ const SearchResults: React.FC<SearchResultsProps> = ({ onFilterChange, renderIte
     };
 
 
+    const filtersButton = (
+        <Button
+            icon={<FilterOutlined />}
+            onClick={() => setDrawerVisible(true)}
+        >
+            Filters
+            {selectedFilters?.length > 0 && (
+                <Badge
+                    count={selectedFilters?.length}
+                    style={{
+                        backgroundColor: '#1890ff',
+                        marginLeft: '8px',
+                        marginRight: '-8px'
+                    }}
+                />
+            )}
+        </Button>
+    );
+
     if (!query && !results && !documentLoading) {
         return (
             <Row className="permit-search__empty-state" justify="center" align="middle">
@@ -149,25 +168,14 @@ const SearchResults: React.FC<SearchResultsProps> = ({ onFilterChange, renderIte
                         )}
                     </Col>
                     <Col>
-                        <Space>
-                            {headerControls}
-                            <Button
-                                icon={<FilterOutlined />}
-                                onClick={() => setDrawerVisible(true)}
-                            >
-                                Filters
-                                {selectedFilters?.length > 0 && (
-                                    <Badge
-                                        count={selectedFilters?.length}
-                                        style={{
-                                            backgroundColor: '#1890ff',
-                                            marginLeft: '8px',
-                                            marginRight: '-8px'
-                                        }}
-                                    />
-                                )}
-                            </Button>
-                        </Space>
+                        {headerControls ? (
+                            <Space>
+                                {headerControls}
+                                {filtersButton}
+                            </Space>
+                        ) : (
+                            filtersButton
+                        )}
                     </Col>
                 </Row>
 

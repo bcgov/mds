@@ -90,10 +90,10 @@ describe('SearchResults', () => {
         expect(screen.getByTestId('header-control').closest('.ant-space')).toContainElement(filtersButton);
     });
 
-    it('shows only the Filters button when no header controls are passed', () => {
+    it("doesn't wrap the Filters button when no header controls are passed, so Permit condition search is unchanged", () => {
         setup();
 
         const filtersButton = screen.getByRole('button', { name: /Filters/ });
-        expect(filtersButton.closest('.ant-space').querySelectorAll('.ant-space-item')).toHaveLength(1);
+        expect(filtersButton.closest('.ant-space')).toBeNull();
     });
 });
