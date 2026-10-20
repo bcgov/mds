@@ -175,17 +175,34 @@ completeness_checker_agent = Agent(
         "1. Search indexed documents (primary evidence source) to evaluate each checklist requirement.\n"
         "2. Fetch and verify Core API metadata; detect discrepancies (files in search but not API, vice versa, metadata mismatches).\n"
         "3. Evaluate all checklist items (True/False/N/A) with evidence from search results.\n"
-        "4. Highlight discrepancies in the summary field (e.g., 'file.pdf missing from index' or 'metadata differs from API').\n"
+        "4. Mention discrepancies in your chat reply only (e.g., 'file.pdf missing from index'); keep spreadsheet cells to the one-sentence summary.\n"
         "5. Write the Excel report with all findings when the user asks for a complete review or report.\n\n"
         "TOOLS:\n"
         "- search_now_documents(now_application_guid, search_query, filters) — Query indexed NOW documents (PRIMARY).\n"
         "- lookup_now_application_in_core(now_application_guid, original) — Fetch Core API metadata and file listings (VERIFY).\n"
         "- read_now_regional_checklist_requirements() — Load all checklist requirements.\n"
         "- write_now_checklist_report(findings_json, output_filename, applicant_name, now_number) — Write Excel report.\n\n"
+        "STATUS RULES:\n"
+        "- 'True' if present; 'False' if missing; 'N/A' if not applicable. If unclear, mark 'False'.\n"
+        "- Present means a completed section in the form and/or an attachment included and listed in the attachment summary.\n"
+        "- Summary: ONE sentence in wording consistent with the application, ending with the page as '(p. N)'. "
+        "Use page numbers from search results only; never guess.\n"
+        "- Evaluate every Tier 1/2/3 row (e.g. '<=10,000 bulk sampling of ore'); do not skip any.\n"
+        "- 'MX Tier #:' (NoW Application section): decide it from the Tier rows you just evaluated, in the checklist order of the sheet. "
+        "A row is a trigger when its status is True and it is an Activity Type or Activity Level & Land Disturbance row of that tier "
+        "(e.g. '<= 5 km new exploration access construction' is a Tier 2 trigger; '> 5 km ...' or 'Blasting' are Tier 3 triggers). "
+        "A Tier 1 Activity Level row marked False means the Tier 1 limit is exceeded, so the application is at least Tier 2 "
+        "(e.g. '< 1km new exploration access construction' False with 3.8 km proposed). "
+        "Tier 3 First Nations rows that are True (not commenced, opposition, complex overlap) are Tier 3 triggers. "
+        "Rule: any Tier 3 trigger -> Tier 3; otherwise any Tier 2 trigger or any exceeded Tier 1 limit -> Tier 2; otherwise Tier 1. "
+        "Never state 'no Tier 2 triggers' while a Tier 2 row is True or a Tier 1 limit row is False. "
+        "Mark 'True' when a tier is determined; the summary is one sentence like 'MX Tier assessed as Tier 2: <triggering rows> (pp. N, N).' "
+        "Evaluate this row after the Tier rows.\n"
+        "- Report only the checklist; no extra text in cells.\n\n"
         "KEY CONSTRAINTS:\n"
         "- Search indexed documents FIRST; use Core API for verification, metadata enrichment, and file listings only.\n"
         "- Evaluate ALL checklist items — include True, False, and N/A statuses in final output.\n"
-        "- ALWAYS compare search results against Core API file listings and flag any discrepancies in the summary:\n"
+        "- ALWAYS compare search results against Core API file listings and report any discrepancies in your chat reply (never in the spreadsheet):\n"
         "    • Files found in search but not in API → Note 'Search-only (potentially lost/unregistered)'\n"
         "    • Files in API but not found in search → Note 'Missing from index (API-only)'\n"
         "    • Metadata mismatches → Note the specific difference\n"
@@ -195,10 +212,7 @@ completeness_checker_agent = Agent(
         "      \"section\": \"<string>\",\n"
         "      \"requirement\": \"<string>\",\n"
         "      \"status\": \"True\" | \"False\" | \"N/A\",\n"
-        "      \"actual_value\": \"<exact value from search; empty string if not found>\",\n"
-        "      \"summary\": \"<evidence from search + discrepancies/missing notes>\",\n"
-        "      \"evidence_value\": \"<optional; copy of actual_value>\",\n"
-        "      \"file_name\": \"<name from search; empty if not found>\",\n"
+        "      \"summary\": \"<one sentence consistent with application wording; page added as (p. N)>\",\n"
         "      \"page_number\": \"<number from search; empty if not found>\",\n"
         "      \"is_instruction\": false\n"
         "    }\n"
@@ -206,7 +220,8 @@ completeness_checker_agent = Agent(
         "- For a complete review or report request, call write_now_checklist_report exactly once with the complete findings array.\n"
         "- For a focused follow-up, answer directly from the indexed documents and Core API without generating a new report unless requested.\n"
         "- Keep all follow-up work scoped to the NOW application GUID established in the conversation.\n"
-        "- Ask for a NOW application GUID only when the conversation does not establish one."
+        "- Ask for a NOW application GUID only when the conversation does not establish one.\n"
+        "- End your response with the findings summary and report path. Do not offer or suggest additional work."
     ),
     tools=[
         search_now_documents,
@@ -234,7 +249,8 @@ orchestrator_agent = Agent(
         "COMPLETION:\n"
         "- Complete reviews should produce an Excel report.\n"
         "- Focused follow-ups should return a concise evidence-based answer and only produce a report when explicitly requested.\n"
-        "- Do not invoke any participant more than once per user message. Do not loop."
+        "- Do not invoke any participant more than once per user message. Do not loop.\n"
+        "- Once CompletenessCheckerAgent returns a report path or a direct answer, the request is satisfied; finish immediately."
     ),
 )
 
@@ -254,7 +270,7 @@ def build_now_analyzer_workflow():
             intermediate_output_from=[
                 completeness_checker_agent,
             ],
-            max_round_count=20,   # 1 dispatch + 1 agent run + 1 buffer
+            max_round_count=3,   # 1 dispatch + 1 agent run + 1 buffer
             max_stall_count=1,
         )
         .build()
