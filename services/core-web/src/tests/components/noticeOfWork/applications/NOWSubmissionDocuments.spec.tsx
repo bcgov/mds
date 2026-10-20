@@ -200,4 +200,59 @@ describe("NOWSubmissionDocuments", () => {
       expect(queryAllByText("in Spatial Files above")).toHaveLength(0);
     });
   });
+
+  describe("permit package modal Title column", () => {
+    const submissionDocument = {
+      mine_document_guid: "submission-guid-1",
+      document_manager_guid: "dm-submission-1",
+      filename: "application.pdf",
+      category: "Application",
+      is_imported_submission: true,
+      preamble_title: "Notice of Work Application Form",
+    };
+
+    it("is not shown in the package modal when packageTitles isn't passed", () => {
+      const { queryByRole } = renderTable({
+        documents: [submissionDocument],
+        isPackageModal: true,
+        isViewMode: true,
+        selectedRows: { selectedSubmissionRows: [], setSelectedSubmissionRows: jest.fn() },
+      });
+      expect(queryByRole("columnheader", { name: "Title" })).not.toBeInTheDocument();
+    });
+
+    it("is shown in the package modal when packageTitles is passed", () => {
+      const { getByRole, getByText } = renderTable({
+        documents: [submissionDocument],
+        isPackageModal: true,
+        isViewMode: true,
+        selectedRows: { selectedSubmissionRows: [], setSelectedSubmissionRows: jest.fn() },
+        packageTitles: {
+          titles: { "submission-guid-1": "Notice of Work Application Form" },
+          onTitleChange: jest.fn(),
+        },
+      });
+      expect(getByRole("columnheader", { name: "Title" })).toBeInTheDocument();
+      expect(getByText("Notice of Work Application Form")).toBeInTheDocument();
+    });
+
+    it("shows a title input for a selected row", () => {
+      const { getByRole } = renderTable({
+        documents: [submissionDocument],
+        isPackageModal: true,
+        isViewMode: true,
+        selectedRows: {
+          selectedSubmissionRows: ["submission-guid-1"],
+          setSelectedSubmissionRows: jest.fn(),
+        },
+        packageTitles: {
+          titles: { "submission-guid-1": "Notice of Work Application Form" },
+          onTitleChange: jest.fn(),
+        },
+      });
+      expect(getByRole("textbox", { name: "Title" })).toHaveValue(
+        "Notice of Work Application Form"
+      );
+    });
+  });
 });

@@ -24,7 +24,7 @@ class TestNOWApplicationDocumentResourcePut:
 
         resp = test_client.put(
             f'/now-applications/{now_application_identity.now_application_guid}/document/{mine_doc.mine_document_guid}',
-            json={'is_final_package': True, 'permit_package_document_type_code': 'FIGURE'},
+            json={'is_final_package': True, 'preamble_title': 'Status Report', 'permit_package_document_type_code': 'FIGURE'},
             headers=auth_headers['full_auth_header'])
 
         assert resp.status_code == 200
@@ -62,7 +62,7 @@ class TestNOWApplicationDocumentResourcePut:
 
         resp = test_client.put(
             f'/now-applications/{now_application_identity.now_application_guid}/document/{mine_doc.mine_document_guid}',
-            json={'is_final_package': True, 'description': 'Updated description only'},
+            json={'is_final_package': True, 'preamble_title': 'Status Report', 'description': 'Updated description only'},
             headers=auth_headers['full_auth_header'])
 
         assert resp.status_code == 200
@@ -79,7 +79,7 @@ class TestNOWApplicationDocumentResourcePut:
 
         resp = test_client.put(
             f'/now-applications/{now_application_identity.now_application_guid}/document/{mine_doc.mine_document_guid}',
-            json={'is_final_package': True, 'permit_package_document_type_code': 'NOT_A_REAL_CODE'},
+            json={'is_final_package': True, 'preamble_title': 'Status Report', 'permit_package_document_type_code': 'NOT_A_REAL_CODE'},
             headers=auth_headers['full_auth_header'])
 
         # A rejected FK triggers the generic error handler, which tears down the shared test session entirely - we can't query through it further in this test
@@ -95,7 +95,7 @@ class TestNOWApplicationDocumentResourcePut:
 
         resp = test_client.put(
             f'/now-applications/{now_application_identity.now_application_guid}/document/{mine_doc.mine_document_guid}',
-            json={'is_final_package': True, 'permit_package_document_type_code': 'DOCUMENT'},
+            json={'is_final_package': True, 'preamble_title': 'Status Report', 'permit_package_document_type_code': 'DOCUMENT'},
             headers=auth_headers['full_auth_header'])
 
         assert resp.status_code == 200
@@ -114,6 +114,7 @@ class TestNOWApplicationDocumentResourcePut:
             f'/now-applications/{now_application_identity.now_application_guid}/document/{mine_doc.mine_document_guid}',
             json={
                 'is_final_package': True,
+                'preamble_title': 'Status Report',
                 'permit_package_document_type_code': 'DOCUMENT',
                 'final_package_order': 42,
             },
@@ -139,6 +140,7 @@ class TestNOWApplicationDocumentResourcePut:
             f'/now-applications/{now_application_identity.now_application_guid}/document/{mine_doc.mine_document_guid}',
             json={
                 'is_final_package': True,
+                'preamble_title': 'Status Report',
                 'permit_package_document_type_code': 'DOCUMENT',
                 'description': 'Just updating the description',
             },
@@ -163,7 +165,7 @@ class TestNOWApplicationDocumentResourcePut:
 
         resp = test_client.put(
             f'/now-applications/{now_application_identity.now_application_guid}/document/{mine_doc.mine_document_guid}',
-            json={'is_final_package': True, 'permit_package_document_type_code': 'DOCUMENT'},
+            json={'is_final_package': True, 'preamble_title': 'Status Report', 'permit_package_document_type_code': 'DOCUMENT'},
             headers=auth_headers['full_auth_header'])
 
         assert resp.status_code == 200
@@ -192,7 +194,7 @@ class TestNOWApplicationDocumentResourcePut:
 
         resp = test_client.put(
             f'/now-applications/{now_application_identity.now_application_guid}/document/{mine_doc.mine_document_guid}',
-            json={'is_final_package': True, 'permit_package_document_type_code': 'FIGURE'},
+            json={'is_final_package': True, 'preamble_title': 'Status Report', 'permit_package_document_type_code': 'FIGURE'},
             headers=auth_headers['full_auth_header'])
 
         assert resp.status_code == 200
@@ -222,7 +224,7 @@ class TestNOWApplicationDocumentResourcePut:
 
         resp = test_client.put(
             f'/now-applications/{now_application_identity.now_application_guid}/document/{mine_doc.mine_document_guid}',
-            json={'is_final_package': True, 'permit_package_document_type_code': 'FIGURE'},
+            json={'is_final_package': True, 'preamble_title': 'Status Report', 'permit_package_document_type_code': 'FIGURE'},
             headers=auth_headers['full_auth_header'])
 
         assert resp.status_code == 200
@@ -242,7 +244,7 @@ class TestNOWApplicationDocumentResourcePut:
 
         resp = test_client.put(
             f'/now-applications/{now_application_identity.now_application_guid}/document/{mine_doc.mine_document_guid}',
-            json={'is_final_package': True, 'permit_package_document_type_code': 'FIGURE'},
+            json={'is_final_package': True, 'preamble_title': 'Status Report', 'permit_package_document_type_code': 'FIGURE'},
             headers=auth_headers['full_auth_header'])
 
         assert resp.status_code == 200
@@ -267,3 +269,58 @@ class TestNOWApplicationDocumentResourcePut:
         assert resp.status_code == 200
         db_session.refresh(xref)
         assert xref.final_package_order is None
+
+    def test_put_rejects_adding_to_permit_package_without_title(
+            self, test_client, db_session, auth_headers):
+        now_application_identity = NOWApplicationIdentityFactory()
+        mine_doc, xref = _make_document_xref(now_application_identity)
+        db_session.add(xref)
+        db_session.commit()
+
+        resp = test_client.put(
+            f'/now-applications/{now_application_identity.now_application_guid}/document/{mine_doc.mine_document_guid}',
+            json={'is_final_package': True, 'permit_package_document_type_code': 'DOCUMENT'},
+            headers=auth_headers['full_auth_header'])
+
+        assert resp.status_code == 400
+        assert b'A document in the permit package is missing a title.' in resp.data
+
+    def test_put_rejects_editing_permit_package_document_with_blank_title(
+            self, test_client, db_session, auth_headers):
+        now_application_identity = NOWApplicationIdentityFactory()
+        mine_doc, xref = _make_document_xref(now_application_identity)
+        xref.is_final_package = True
+        xref.permit_package_document_type_code = 'DOCUMENT'
+        xref.final_package_order = 1
+        xref.preamble_title = 'Status Report'
+        db_session.add(xref)
+        db_session.commit()
+
+        resp = test_client.put(
+            f'/now-applications/{now_application_identity.now_application_guid}/document/{mine_doc.mine_document_guid}',
+            json={'is_final_package': True, 'preamble_title': '   '},
+            headers=auth_headers['full_auth_header'])
+
+        assert resp.status_code == 400
+        assert b'A document in the permit package is missing a title.' in resp.data
+
+    def test_put_saves_title_when_added_to_permit_package(
+            self, test_client, db_session, auth_headers):
+        now_application_identity = NOWApplicationIdentityFactory()
+        mine_doc, xref = _make_document_xref(now_application_identity)
+        db_session.add(xref)
+        db_session.commit()
+
+        resp = test_client.put(
+            f'/now-applications/{now_application_identity.now_application_guid}/document/{mine_doc.mine_document_guid}',
+            json={
+                'is_final_package': True,
+                'permit_package_document_type_code': 'DOCUMENT',
+                'preamble_title': 'Reclamation Plan',
+            },
+            headers=auth_headers['full_auth_header'])
+
+        assert resp.status_code == 200
+        db_session.refresh(xref)
+        assert xref.is_final_package is True
+        assert xref.preamble_title == 'Reclamation Plan'

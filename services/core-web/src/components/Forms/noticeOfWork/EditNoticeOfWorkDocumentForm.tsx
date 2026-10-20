@@ -202,6 +202,8 @@ const EditNoticeOfWorkDocumentForm: FC<EditNoticeOfWorkDocumentFormProps> = ({
                     label="Title"
                     placeholder="Title"
                     component={RenderField}
+                    validate={[required]}
+                    required
                   />
                 </Col>
                 <Col md={12} xs={24}>
