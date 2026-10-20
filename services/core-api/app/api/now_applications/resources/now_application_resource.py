@@ -13,6 +13,7 @@ from app.api.utils.access_decorators import requires_role_view_all, requires_rol
 from app.api.utils.include.user_info import User
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.custom_reqparser import CustomReqparser
+from app.api.utils.helpers import is_permit_package_title_missing
 
 from app.api.mines.mine.models.mine import Mine
 from app.api.now_applications.models.now_application import NOWApplication
@@ -164,8 +165,9 @@ class NOWApplicationResource(Resource, UserMixin):
                      and x['filename'] == doc.filename and x['documenttype'] == doc.documenttype),
                     None)
                 if filtered_doc:
-                    is_being_added = filtered_doc['is_final_package'] and not doc.is_final_package
-                    if is_being_added and not (filtered_doc.get('preamble_title') or '').strip():
+                    if is_permit_package_title_missing(filtered_doc['is_final_package'],
+                                                       filtered_doc.get('preamble_title', doc.preamble_title),
+                                                       doc.is_final_package, doc.preamble_title):
                         raise BadRequest('A document in the permit package is missing a title.')
                     doc.is_final_package = filtered_doc['is_final_package']
                     doc.is_consultation_package = filtered_doc['is_consultation_package']
@@ -253,8 +255,10 @@ class NOWApplicationResource(Resource, UserMixin):
                     (x for x in now_application_identity.now_application.documents
                      if str(x.now_application_document_xref_guid) == doc.get('now_application_document_xref_guid')),
                     None)
-                is_being_added = doc.get('is_final_package') and not (existing and existing.is_final_package)
-                if is_being_added and not (doc.get('preamble_title') or '').strip():
+                if is_permit_package_title_missing(doc.get('is_final_package'),
+                                                   doc.get('preamble_title', existing.preamble_title if existing else None),
+                                                   existing and existing.is_final_package,
+                                                   existing and existing.preamble_title):
                     raise BadRequest('A document in the permit package is missing a title.')
                 if doc.get('is_final_package') and doc.get('final_package_order') is None:
                     doc_type = doc.get('permit_package_document_type_code') or 'DOCUMENT'

@@ -8,6 +8,7 @@ from app.extensions import api
 from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_permit, requires_any_of, VIEW_ALL
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.custom_reqparser import CustomReqparser
+from app.api.utils.helpers import is_permit_package_title_missing
 from app.api.services.document_manager_service import DocumentManagerService
 from app.api.mines.documents.models.mine_document import MineDocument
 from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
@@ -154,7 +155,8 @@ class NOWApplicationDocumentResource(Resource, UserMixin):
                 raise BadRequest('Cannot modify the active system-generated document.')
 
         will_be_in_package = is_final_package if is_final_package is not None else xref.is_final_package
-        if will_be_in_package and not (data.get('preamble_title') or '').strip():
+        if is_permit_package_title_missing(will_be_in_package, data.get('preamble_title'),
+                                           xref.is_final_package, xref.preamble_title):
             raise BadRequest('A document in the permit package is missing a title.')
 
         if new_description:
