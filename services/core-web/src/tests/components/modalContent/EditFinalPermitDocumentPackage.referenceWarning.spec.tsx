@@ -27,6 +27,19 @@ const CORE_FILE_GUID = "core-file-guid";
 const SUBMISSION_MINE_DOC_GUID = "submission-mine-doc-guid";
 const SUBMISSION_FILE_GUID = "submission-file-guid";
 
+const CORE_FILE = {
+  now_application_document_xref_guid: CORE_FILE_GUID,
+  now_application_document_sub_type_code: "GDO",
+  now_application_document_type_code: "SRE",
+  preamble_title: "Status Report",
+  mine_document: { mine_document_guid: "core-mine-doc-guid", document_name: "status-report.pdf" },
+};
+
+const TITLES = expect.objectContaining({
+  coreTitles: expect.any(Object),
+  submissionTitles: expect.any(Object),
+});
+
 const stateWithCondition = (referencedGuid: string | null) => ({
   [NOTICE_OF_WORK]: {
     noticeOfWork: { now_application_guid: NOW_APPLICATION_GUID },
@@ -53,16 +66,17 @@ const baseProps = {
   onSubmit: jest.fn().mockResolvedValue(undefined),
   closeModal: jest.fn(),
   title: "mockTitle",
-  documents: [],
+  documents: [CORE_FILE],
   mineGuid: "",
   noticeOfWorkGuid: "",
   documentDownloadState: { downloading: false, currentFile: 1, totalFiles: 1 },
   noticeOfWork: {
-    documents: [],
+    documents: [CORE_FILE],
     filtered_submission_documents: [
       {
         mine_document_guid: SUBMISSION_MINE_DOC_GUID,
         now_application_document_xref_guid: SUBMISSION_FILE_GUID,
+        preamble_title: "Notice of Work Application Form",
       },
     ],
   },
@@ -86,7 +100,7 @@ describe("EditFinalPermitDocumentPackage - remove-from-package reference warning
     renderPackageEditor(stateWithCondition(null));
     await userEvent.click(screen.getByText("mock-deselect-core-rows"));
     await userEvent.click(screen.getByText("Save Application Package"));
-    expect(baseProps.onSubmit).toHaveBeenCalledWith([], [SUBMISSION_MINE_DOC_GUID]);
+    expect(baseProps.onSubmit).toHaveBeenCalledWith([], [SUBMISSION_MINE_DOC_GUID], TITLES);
   });
 
   it("warns before saving when a deselected core document is referenced in a condition", async () => {
@@ -99,7 +113,7 @@ describe("EditFinalPermitDocumentPackage - remove-from-package reference warning
     expect(baseProps.onSubmit).not.toHaveBeenCalled();
 
     await userEvent.click(screen.getByText("Yes"));
-    expect(baseProps.onSubmit).toHaveBeenCalledWith([], [SUBMISSION_MINE_DOC_GUID]);
+    expect(baseProps.onSubmit).toHaveBeenCalledWith([], [SUBMISSION_MINE_DOC_GUID], TITLES);
   });
 
   it("warns before saving when a deselected submission document is referenced in a condition", async () => {
@@ -116,6 +130,6 @@ describe("EditFinalPermitDocumentPackage - remove-from-package reference warning
     renderPackageEditor(stateWithCondition("some-other-guid"));
     await userEvent.click(screen.getByText("mock-deselect-submission-rows"));
     await userEvent.click(screen.getByText("Save Application Package"));
-    expect(baseProps.onSubmit).toHaveBeenCalledWith([CORE_FILE_GUID], []);
+    expect(baseProps.onSubmit).toHaveBeenCalledWith([CORE_FILE_GUID], [], TITLES);
   });
 });

@@ -114,3 +114,13 @@ def parse_status_code_to_text(status_code: str) -> str:
     }
 
     return status_mapping.get(status_code, "Unknown Status Code")
+
+
+def is_permit_package_title_missing(is_final_package, preamble_title, was_final_package=False, previous_title=None):
+    """
+    A document in the permit package needs a title when it's added to the package or when its title is cleared.
+    Documents already in the package that never had a title are allowed so older applications can still be saved.
+    """
+    if not is_final_package or (preamble_title or '').strip():
+        return False
+    return not was_final_package or bool((previous_title or '').strip())
