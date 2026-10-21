@@ -17,7 +17,65 @@ exports[`Applicant Component should render the component with expected fields 1`
       <div
         class="ant-typography"
       >
-        This must be the name of the company or person seeking authorization.
+        Enter the details of the proposed permit holder - the company, organization, or individual seeking authorization. This may be different from the person completing this application.
+      </div>
+      <div
+        class="bcgov-callout--info bcgov-callout bcgov-callout--with-icon"
+      >
+        <span
+          aria-hidden="true"
+          aria-label="info-circle"
+          class="anticon anticon-info-circle bcgov-callout-icon"
+          role="img"
+        >
+          <svg
+            aria-hidden="true"
+            class=""
+            data-icon="info-circle"
+            fill="currentColor"
+            focusable="false"
+            height="1em"
+            viewBox="64 64 896 896"
+            width="1em"
+          >
+            <path
+              d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
+            />
+            <path
+              d="M464 336a48 48 0 1096 0 48 48 0 10-96 0zm72 112h-48c-4.4 0-8 3.6-8 8v272c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8V456c0-4.4-3.6-8-8-8z"
+            />
+          </svg>
+        </span>
+        <div
+          class="bcgov-callout-content"
+        >
+          <p
+            class="bcgov-callout-title"
+          >
+            Enter the applicant's details, not your own
+          </p>
+          <div>
+            <div
+              class="ant-typography"
+            >
+              The applicant is the company, organization, or individual that will hold the authorization for this project.
+            </div>
+            <div
+              class="ant-typography"
+            >
+              If you are completing this application on behalf of someone else, do
+               
+              <strong>
+                not
+              </strong>
+               enter your own details here. Enter your contact information in the 
+              <strong>
+                Representing Agent
+              </strong>
+               section instead.
+            </div>
+          </div>
+        </div>
       </div>
       <div
         class="ant-form-item ant-form-item-with-help"
@@ -110,6 +168,20 @@ exports[`Applicant Component should render the component with expected fields 1`
             </div>
           </div>
         </div>
+      </div>
+      <div
+        class="ant-typography"
+      >
+        Select who will hold the authorization for this project.
+      </div>
+      <div
+        class="bcgov-callout--info bcgov-callout"
+      >
+        <span
+          class="ant-typography"
+        >
+          Enter the company or organization that will hold the authorization. Do not enter the personal details of the representative submitting this application.
+        </span>
       </div>
       <div>
         <div

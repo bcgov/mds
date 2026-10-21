@@ -1,7 +1,7 @@
 import { Col, Row, Typography } from "antd";
 import React, { FC, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Field, getFormValues, change } from "@mds/common/components/forms/form";
+import { change, Field, getFormValues } from "@mds/common/components/forms/form";
 import {
   email,
   maxLength,
@@ -17,9 +17,7 @@ import { IOrgbookCredential } from "@mds/common/interfaces/party";
 import RenderBCRegistrationSearch from "@mds/common/components/forms/RenderBCRegistrationSearch";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleCheck, faCircleX, faSpinner } from "@fortawesome/pro-light-svg-icons";
-import {
-  fetchOrgBookCredential,
-} from "@mds/common/redux/actionCreators/orgbookActionCreator";
+import { fetchOrgBookCredential } from "@mds/common/redux/actionCreators/orgbookActionCreator";
 import RenderField from "@mds/common/components/forms/RenderField";
 import { getDropdownProvinceOptions } from "@mds/common/redux/selectors/staticContentSelectors";
 import RenderSelect from "@mds/common/components/forms/RenderSelect";
@@ -30,8 +28,9 @@ import { PaymentContact } from "@mds/common/components/projectSummary/PaymentCon
 import { IProjectSummaryForm } from "@mds/common/interfaces";
 import { ProjectSummaryFormComponentProps } from "./ProjectSummaryForm";
 import { COLOR } from "@mds/common/constants/styles";
+import Callout from "@mds/common/components/common/Callout";
 
-const { Title, Paragraph } = Typography;
+const { Title, Paragraph, Text } = Typography;
 interface IVerifiedCredential {
   businessNumber: string;
   registrationStatus: string;
@@ -47,7 +46,9 @@ const Applicant: FC<ProjectSummaryFormComponentProps> = ({ fieldsDisabled }) => 
   const [verifiedCredential, setVerifiedCredential] = useState<IVerifiedCredential>(null);
 
   const orgBookCredential = useSelector(getOrgBookCredential);
-  const formValues = useSelector(getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)) as IProjectSummaryForm;
+  const formValues = useSelector(
+    getFormValues(FORM.ADD_EDIT_PROJECT_SUMMARY)
+  ) as IProjectSummaryForm;
   const {
     applicant = {},
     is_legal_address_same_as_mailing_address = false,
@@ -127,7 +128,7 @@ const Applicant: FC<ProjectSummaryFormComponentProps> = ({ fieldsDisabled }) => 
     let color = undefined;
     let text = undefined;
 
-    if ((!checkingStatus) || verifiedCredential) {
+    if (!checkingStatus || verifiedCredential) {
       icon = faCircleCheck;
       color = COLOR.successGreen;
       text = "Verified by BC Registries";
@@ -244,9 +245,8 @@ const Applicant: FC<ProjectSummaryFormComponentProps> = ({ fieldsDisabled }) => 
       return false;
     }
 
-    const { address_line_1, address_type_code, city, post_code, sub_division_code } = address[
-      index
-    ];
+    const { address_line_1, address_type_code, city, post_code, sub_division_code } =
+      address[index];
 
     if (!isAddressInternational) {
       return address_line_1 && address_type_code && city && post_code && sub_division_code;
@@ -258,7 +258,27 @@ const Applicant: FC<ProjectSummaryFormComponentProps> = ({ fieldsDisabled }) => 
   return (
     <div className="ant-form-vertical">
       <Title level={3}>Applicant Information</Title>
-      <Paragraph>This must be the name of the company or person seeking authorization.</Paragraph>
+      <Paragraph>
+        Enter the details of the proposed permit holder - the company, organization, or individual
+        seeking authorization. This may be different from the person completing this application.
+      </Paragraph>
+      <Callout
+        showIcon
+        title={`Enter the applicant's details, not your own`}
+        message={
+          <div>
+            <Paragraph>
+              The applicant is the company, organization, or individual that will hold the
+              authorization for this project.
+            </Paragraph>
+            <Paragraph>
+              If you are completing this application on behalf of someone else, do{" "}
+              <strong>not</strong> enter your own details here. Enter your contact information in
+              the <strong>Representing Agent</strong> section instead.
+            </Paragraph>
+          </div>
+        }
+      />
       <Field
         name="applicant.party_type_code"
         id="applicant.party_type_code"
@@ -277,6 +297,23 @@ const Applicant: FC<ProjectSummaryFormComponentProps> = ({ fieldsDisabled }) => 
         optionType="button"
         onChange={handleResetParty}
         disabled={fieldsDisabled}
+      />
+      <Paragraph>Select who will hold the authorization for this project.</Paragraph>
+      <Callout
+        message={
+          party_type_code === "PER" ? (
+            <Text>
+              Enter the individual who will hold the authorization. Do not enter the personal
+              details of the representative submitting this application unless they are the
+              authorization holder.
+            </Text>
+          ) : (
+            <Text>
+              Enter the company or organization that will hold the authorization. Do not enter the
+              personal details of the representative submitting this application.
+            </Text>
+          )
+        }
       />
       {party_type_code === "ORG" && (
         <div>
@@ -345,6 +382,7 @@ const Applicant: FC<ProjectSummaryFormComponentProps> = ({ fieldsDisabled }) => 
               validate={[required, maxLength(60)]}
               component={RenderField}
               disabled={fieldsDisabled}
+              help={"Name of the applicant, not the person completing the form."}
             />
           </Col>
           <Col md={8} sm={24}>
