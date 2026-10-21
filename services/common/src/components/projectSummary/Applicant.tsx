@@ -301,10 +301,18 @@ const Applicant: FC<ProjectSummaryFormComponentProps> = ({ fieldsDisabled }) => 
       <Paragraph>Select who will hold the authorization for this project.</Paragraph>
       <Callout
         message={
-          <Text>
-            Enter the company or organization that will hold the authorization. Do not enter the
-            personal details of the representative submitting this application.
-          </Text>
+          party_type_code === "PER" ? (
+            <Text>
+              Enter the individual who will hold the authorization. Do not enter the personal
+              details of the representative submitting this application unless they are the
+              authorization holder.
+            </Text>
+          ) : (
+            <Text>
+              Enter the company or organization that will hold the authorization. Do not enter the
+              personal details of the representative submitting this application.
+            </Text>
+          )
         }
       />
       {party_type_code === "ORG" && (

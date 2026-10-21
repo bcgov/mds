@@ -6,6 +6,11 @@
 }
 
 .bcgov-callout {
+    &--info {
+        @include base-callout;
+        border-left: 10px solid #38598a;
+    }
+
     &--success {
         @include base-callout;
         border-left: 10px solid #5cb85c;
@@ -38,6 +43,7 @@
     }
 }
 
+.bcgov-callout--info>p,
 .bcgov-callout--success>p,
 .bcgov-callout--warning>p,
 .bcgov-callout--danger>p {
