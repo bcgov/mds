@@ -124,6 +124,7 @@ const EditNoticeOfWorkDocumentForm: FC<EditNoticeOfWorkDocumentFormProps> = ({
       name={FORM.EDIT_NOTICE_OF_WORK_DOCUMENT_FORM}
       onSubmit={onSubmit}
       initialValues={{ now_application_guid, ...initialValues }}
+      scrollOnToggleEdit={false}
       reduxFormConfig={{
         touchOnBlur: false,
         onSubmitSuccess: resetForm(FORM.EDIT_NOTICE_OF_WORK_DOCUMENT_FORM),
