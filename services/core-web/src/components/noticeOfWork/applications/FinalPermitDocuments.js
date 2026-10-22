@@ -144,7 +144,7 @@ export class FinalPermitDocuments extends Component {
                 now_application_document_sub_type_code: doc.documenttype,
                 mine_document: {
                   document_manager_guid: doc.document_manager_guid,
-                  document_name: doc.filename,
+                  document_name: currentName,
                   mine_document_guid: doc.mine_document_guid,
                   mine_guid: this.props.noticeOfWork.mine_guid,
                 },
