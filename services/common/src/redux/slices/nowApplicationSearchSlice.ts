@@ -240,6 +240,14 @@ const nowApplicationSearchSlice = createAppSlice({
         thunkApi.dispatch(setNowFilters(payload.filters));
         thunkApi.dispatch(setNowQuery(payload.query));
 
+        // Closed before the empty file list check below, so an earlier search can't overwrite its empty results
+        if (latestNowSearchSource) {
+          // close() doesn't call onDisconnect, so the earlier search's loading bar is hidden here
+          latestNowSearchSource.close();
+          latestNowSearchSource = null;
+          thunkApi.dispatch(hideLoading());
+        }
+
         // An empty file list (e.g. Hide archived when every file is archived) leaves nothing to search, so there are no results. 
         // This is handled here rather than relying on how the search service treats an empty "in" filter - instead prevent it from ever trying.
         if (payload.documentManagerGuids?.length === 0) {
@@ -264,13 +272,6 @@ const nowApplicationSearchSlice = createAppSlice({
         const currentFilters = state.nowApplicationSearch.filters;
 
         let eventSource = null;
-
-        if (latestNowSearchSource) {
-          // close() doesn't call onDisconnect, so the earlier search's loading bar is hidden here
-          latestNowSearchSource.close();
-          latestNowSearchSource = null;
-          thunkApi.dispatch(hideLoading());
-        }
 
         try {
           eventSource = createEventSource({

@@ -354,6 +354,37 @@ describe('async actions', () => {
         secondSearch.onDisconnect();
         expect(store.getState().loadingBar.default).toBe(0);
     });
+
+    it('closes an earlier search when there are no files to search, so its results do not replace the empty results', async () => {
+        const store = getStore();
+        const searches = [];
+
+        (createEventSource as jest.Mock).mockImplementation((options) => {
+            const search = { onMessage: options.onMessage, onDisconnect: options.onDisconnect, close: jest.fn() };
+            searches.push(search);
+            return search;
+        });
+
+        await store.dispatch(searchNowApplicationDocuments({
+            nowApplicationGuid: 'test-guid',
+            query: 'test',
+            filters: []
+        }));
+        await store.dispatch(searchNowApplicationDocuments({
+            nowApplicationGuid: 'test-guid',
+            query: 'test',
+            filters: [],
+            documentManagerGuids: []
+        }));
+        const [earlierSearch] = searches;
+
+        expect(searches).toHaveLength(1);
+        expect(earlierSearch.close).toHaveBeenCalled();
+
+        earlierSearch.onMessage({ event: SearchEventType.DOCUMENTS, data: JSON.stringify({ documents: ['earlier result'] }) });
+        expect(selectNowSearchResults(store.getState())).toEqual({ documents: [], prompt: null });
+        expect(store.getState().loadingBar.default).toBe(0);
+    });
 });
 
 describe('buildNowSearchFilters', () => {
