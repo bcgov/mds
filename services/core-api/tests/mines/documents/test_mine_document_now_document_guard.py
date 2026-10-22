@@ -99,3 +99,22 @@ class TestMineLevelEndpointsRejectNowDocuments:
         assert response.status_code == 204, response.response
         db_session.refresh(mine_document)
         assert mine_document.is_archived
+
+    def test_rejects_document_still_on_now_through_its_other_link(self, test_client, db_session, auth_headers):
+        now_application_identity = NOWApplicationIdentityFactory()
+        mine_document = _make_core_document(db_session, now_application_identity, deleted_ind=True)
+        db_session.add(NOWApplicationDocumentIdentityXref(
+            messageid=random.randint(1, 2_000_000_000),
+            documenturl=f'https://vfcbc.example/{uuid.uuid4()}',
+            filename=mine_document.document_name,
+            documenttype='Application',
+            now_application_id=now_application_identity.now_application_id,
+            mine_document=mine_document))
+        db_session.commit()
+
+        response = _archive(test_client, auth_headers, mine_document)
+
+        assert response.status_code == 400, response.response
+        assert NOW_DOCUMENT_ERROR in response.json['message']
+        db_session.refresh(mine_document)
+        assert not mine_document.is_archived

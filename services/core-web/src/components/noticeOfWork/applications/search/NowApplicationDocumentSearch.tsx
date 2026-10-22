@@ -288,6 +288,8 @@ const NowApplicationDocumentSearch: React.FC<NowApplicationDocumentSearchProps> 
   useEffect(() => () => debouncedSearch.cancel(), [debouncedSearch]);
 
   const handleArchivedFilterChange = (value: ArchivedFilter) => {
+    // A typed search that's still waiting would otherwise fire with the previous archived filter
+    debouncedSearch.cancel();
     setArchivedFilter(value);
     dispatch(
       searchNowApplicationDocuments({
