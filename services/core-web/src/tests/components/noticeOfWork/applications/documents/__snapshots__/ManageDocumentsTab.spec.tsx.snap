@@ -629,7 +629,7 @@ exports[`ManageDocumentsTab renders properly 1`] = `
                           >
                             <div />
                             <button
-                              class="ant-btn ant-btn-secondary full-mobile"
+                              class="ant-btn ant-btn-default full-mobile"
                               disabled=""
                               type="button"
                             >
@@ -1061,7 +1061,7 @@ exports[`ManageDocumentsTab renders properly 1`] = `
                           >
                             <div />
                             <button
-                              class="ant-btn ant-btn-secondary full-mobile"
+                              class="ant-btn ant-btn-default full-mobile"
                               disabled=""
                               type="button"
                             >

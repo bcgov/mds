@@ -485,7 +485,7 @@ exports[`NOWApplicationManageDocuments renders properly 1`] = `
                       >
                         <div />
                         <button
-                          class="ant-btn ant-btn-secondary full-mobile"
+                          class="ant-btn ant-btn-default full-mobile"
                           disabled=""
                           type="button"
                         >
@@ -917,7 +917,7 @@ exports[`NOWApplicationManageDocuments renders properly 1`] = `
                       >
                         <div />
                         <button
-                          class="ant-btn ant-btn-secondary full-mobile"
+                          class="ant-btn ant-btn-default full-mobile"
                           disabled=""
                           type="button"
                         >

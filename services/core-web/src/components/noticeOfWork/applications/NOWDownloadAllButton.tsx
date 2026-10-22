@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
+import React, { FC, useState } from "react";
 import { Button } from "antd";
 import { DownloadOutlined } from "@ant-design/icons";
 import DocumentCompression from "@mds/common/components/documents/DocumentCompression";
@@ -11,15 +10,24 @@ latest version is included, and Document Manager names each file in the zip, so 
 current name.
 */
 
-const propTypes = {
-  // Table rows, previous versions and files that aren't in Document Manager yet (e.g. vFCBC files not imported) are skipped
-  rows: PropTypes.arrayOf(PropTypes.any).isRequired,
-  mineGuid: PropTypes.string.isRequired,
-  // Keeps each table's progress notification separate
-  documentType: PropTypes.string.isRequired,
-};
+// A Manage Documents table row, only the fields used to build the download are typed
+interface IDownloadAllRow {
+  mine_document_guid?: string;
+  document_manager_guid?: string;
+  mine_document_version_guid?: string;
+  filename?: string;
+  [key: string]: any;
+}
 
-export const toDownloadAllDocuments = (rows, mineGuid) =>
+interface NOWDownloadAllButtonProps {
+  // Table rows, previous versions and files that aren't in Document Manager yet (e.g. vFCBC files not imported) are skipped
+  rows: IDownloadAllRow[];
+  mineGuid: string;
+  // Keeps each table's progress notification separate
+  documentType: string;
+}
+
+export const toDownloadAllDocuments = (rows: IDownloadAllRow[], mineGuid: string): MineDocument[] =>
   rows
     .filter((row) => row.document_manager_guid && !row.mine_document_version_guid)
     .map(
@@ -32,7 +40,7 @@ export const toDownloadAllDocuments = (rows, mineGuid) =>
         })
     );
 
-export const NOWDownloadAllButton = (props) => {
+export const NOWDownloadAllButton: FC<NOWDownloadAllButtonProps> = (props) => {
   const [isCompressionModal, setIsCompressionModal] = useState(false);
   const [isCompressionInProgress, setIsCompressionInProgress] = useState(false);
   const documents = toDownloadAllDocuments(props.rows, props.mineGuid);
@@ -49,7 +57,7 @@ export const NOWDownloadAllButton = (props) => {
         showDownloadWarning
       />
       <Button
-        type="secondary"
+        type="default"
         className="full-mobile"
         onClick={() => setIsCompressionModal(true)}
         disabled={isCompressionInProgress || documents.length === 0}
@@ -60,7 +68,5 @@ export const NOWDownloadAllButton = (props) => {
     </>
   );
 };
-
-NOWDownloadAllButton.propTypes = propTypes;
 
 export default NOWDownloadAllButton;

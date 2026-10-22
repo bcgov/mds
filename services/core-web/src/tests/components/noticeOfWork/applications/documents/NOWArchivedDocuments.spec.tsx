@@ -3,6 +3,7 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import * as NOWMocks from "@mds/common/tests/mocks/noticeOfWorkMock";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 import { FileOperations } from "@mds/common/models/documents/document";
+import * as Strings from "@mds/common/constants/strings";
 import * as DocumentViewer from "@mds/common/components/syncfusion/DocumentViewer";
 import {
   NOWArchivedDocuments,
@@ -71,6 +72,15 @@ describe("NOWArchivedDocuments", () => {
           FileOperations.Download,
         ])
       );
+    });
+
+    it("doesn't crash when an archived file comes back without its mine document", () => {
+      const [core] = toArchivedDocuments(
+        { ...noticeOfWork, archived_documents: [{ ...archivedCoreDocument, mine_document: undefined }] },
+        documentTypeOptionsHash
+      );
+
+      expect(core.document_name).toBe(Strings.EMPTY_FIELD);
     });
 
     it("has nothing to show when no files have been archived", () => {

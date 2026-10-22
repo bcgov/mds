@@ -1,11 +1,11 @@
-import React, { useMemo } from "react";
+import React, { FC, useMemo } from "react";
 import { useSelector } from "react-redux";
 import { Typography } from "antd";
-import CustomPropTypes from "@/customPropTypes";
 import * as Strings from "@mds/common/constants/strings";
 import DocumentTable from "@mds/common/components/documents/DocumentTable";
 import { renderTextColumn } from "@mds/common/components/common/CoreTableCommonColumns";
 import { NoWApplicationDocument } from "@mds/common/models/documents/document";
+import { INoWDocument } from "@mds/common/interfaces/NoWDocument.interface";
 import { getNoticeOfWorkApplicationDocumentTypeOptionsHash } from "@mds/common/redux/selectors/staticContentSelectors";
 
 /*
@@ -13,20 +13,37 @@ Files archived from the Permit Package, Application Documents and Government Doc
 Major Projects' Archived Documents. Archived files can only be viewed and downloaded.
 */
 
-const propTypes = {
-  noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
-};
+// An archived vFCBC file, only the fields used here are typed
+interface IArchivedSubmissionDocument {
+  document_name?: string;
+  filename?: string;
+  documenttype?: string;
+  [key: string]: any;
+}
+
+interface IArchivedDocumentsNoticeOfWork {
+  mine_guid: string;
+  archived_documents?: INoWDocument[];
+  archived_submission_documents?: IArchivedSubmissionDocument[];
+}
+
+interface NOWArchivedDocumentsProps {
+  noticeOfWork: IArchivedDocumentsNoticeOfWork;
+}
 
 // "From" is the document category the file was archived from
 const fromColumn = renderTextColumn("category", "From", true);
 
-export const toArchivedDocuments = (noticeOfWork, documentTypeOptionsHash) => {
+export const toArchivedDocuments = (
+  noticeOfWork: IArchivedDocumentsNoticeOfWork,
+  documentTypeOptionsHash: Record<string, string>
+): NoWApplicationDocument[] => {
   const coreDocuments = (noticeOfWork.archived_documents ?? []).map(
     (doc) =>
       new NoWApplicationDocument({
         ...doc,
         ...doc.mine_document,
-        document_name: doc.mine_document.document_name || Strings.EMPTY_FIELD,
+        document_name: doc.mine_document?.document_name || Strings.EMPTY_FIELD,
         category: documentTypeOptionsHash?.[doc.now_application_document_type_code],
       })
   );
@@ -44,7 +61,7 @@ export const toArchivedDocuments = (noticeOfWork, documentTypeOptionsHash) => {
   return [...coreDocuments, ...submissionDocuments];
 };
 
-export const NOWArchivedDocuments = (props) => {
+export const NOWArchivedDocuments: FC<NOWArchivedDocumentsProps> = (props) => {
   const documentTypeOptionsHash = useSelector(getNoticeOfWorkApplicationDocumentTypeOptionsHash);
   const documents = useMemo(
     () => toArchivedDocuments(props.noticeOfWork, documentTypeOptionsHash),
@@ -67,7 +84,5 @@ export const NOWArchivedDocuments = (props) => {
     </>
   );
 };
-
-NOWArchivedDocuments.propTypes = propTypes;
 
 export default NOWArchivedDocuments;
