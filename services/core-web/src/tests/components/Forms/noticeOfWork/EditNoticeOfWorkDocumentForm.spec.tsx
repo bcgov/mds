@@ -187,6 +187,17 @@ describe("EditNoticeOfWorkDocumentForm - remove-from-package reference warning",
     });
 });
 
+describe("EditNoticeOfWorkDocumentForm - page scroll position", () => {
+    // This form opens in a modal over the NoW tabs (Draft, Manage Documents, Application,
+    // Administrative). Opening it must not scroll the page behind the modal back to the top.
+    it("does not scroll the window when the form opens", () => {
+        const scrollToSpy = jest.spyOn(window, "scrollTo").mockImplementation(() => undefined);
+        renderForm(false, authenticatedState(true));
+        expect(scrollToSpy).not.toHaveBeenCalled();
+        scrollToSpy.mockRestore();
+    });
+});
+
 describe("EditNoticeOfWorkDocumentForm - Title requirement", () => {
     afterEach(() => {
         jest.clearAllMocks();
