@@ -234,11 +234,21 @@ const nowApplicationSearchSlice = createAppSlice({
         },
         thunkApi
       ) => {
-        thunkApi.dispatch(showLoading());
         thunkApi.dispatch(setNowFilters(payload.filters));
+        thunkApi.dispatch(setNowQuery(payload.query));
+
+        // An empty file list (e.g. Hide archived when every file is archived) leaves nothing to search, so there are no results. 
+        // This is handled here rather than relying on how the search service treats an empty "in" filter - instead prevent it from ever trying.
+        if (payload.documentManagerGuids?.length === 0) {
+          thunkApi.dispatch(updateNowSearchResults({ documents: [], prompt: null }));
+          thunkApi.dispatch(setNowDocumentLoading(false));
+          thunkApi.dispatch(setNowAiLoading(false));
+          return null;
+        }
+
+        thunkApi.dispatch(showLoading());
         thunkApi.dispatch(setNowDocumentLoading(true));
         thunkApi.dispatch(setNowAiLoading(true));
-        thunkApi.dispatch(setNowQuery(payload.query));
 
         const headers = createRequestHeader();
 

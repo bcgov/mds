@@ -350,7 +350,7 @@ describe('buildNowSearchFilters', () => {
         });
     });
 
-    it('still limits the results when there are no files to show, so nothing is returned', () => {
+    it('keeps an empty file limit rather than dropping it, which would search every file', () => {
         expect(buildNowSearchFilters([], [])).toEqual({
             operator: 'AND',
             conditions: [{ field: 'document_manager_guid', operator: 'in', value: [] }],
@@ -374,5 +374,25 @@ describe('buildNowSearchFilters', () => {
             operator: 'AND',
             conditions: [{ field: 'document_manager_guid', operator: 'in', value: ['dm-1'] }],
         });
+    });
+
+    it("shows no results without searching when there are no files to search", async () => {
+        const store = getStore();
+        (createEventSource as jest.Mock).mockClear();
+
+        await store.dispatch(searchNowApplicationDocuments({
+            nowApplicationGuid: 'test-guid',
+            query: 'test',
+            filters: [{ category: 'document_type', value: 'Letter' }],
+            documentManagerGuids: [],
+        }));
+
+        expect(createEventSource).not.toHaveBeenCalled();
+        expect(selectNowSearchResults(store.getState())).toEqual({ documents: [], prompt: null });
+        expect(selectNowSearchQuery(store.getState())).toBe('test');
+        expect(selectNowSearchFilters(store.getState())).toEqual([{ category: 'document_type', value: 'Letter' }]);
+        expect(selectNowSearchLoading(store.getState())).toBe(false);
+        expect(selectNowDocumentLoading(store.getState())).toBe(false);
+        expect(selectNowAiLoading(store.getState())).toBe(false);
     });
 });
