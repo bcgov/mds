@@ -54,7 +54,6 @@ export const DocumentTable: FC<DocumentTableProps> = ({
   view = "standard",
   canArchiveDocuments = false,
   canReplaceDocuments = true,
-  openSelectedVersion = false,
   removeDocument,
   replaceAlertMessage = <Typography.Text>The replaced file will <b>not</b> be reviewed as part of the application submission package.
     To ensure successful replacement, the new file must be the <b>same file type</b> as the original. Please verify the file format before proceeding.</Typography.Text>,
@@ -204,15 +203,14 @@ export const DocumentTable: FC<DocumentTableProps> = ({
       key: "view",
       label: FileOperations.View,
       icon: <FileOutlined />,
+      // A previous version row opens that version in the viewer, otherwise the latest file is opened
       clickFunction: (_event, record: MineDocument) =>
         dispatch(
           openDocument(
             record.document_manager_guid,
             record.document_name,
             null,
-            openSelectedVersion && record instanceof MineDocumentVersion
-              ? record.document_manager_version_guid
-              : null
+            record instanceof MineDocumentVersion ? record.document_manager_version_guid : null
           )
         ),
     },
