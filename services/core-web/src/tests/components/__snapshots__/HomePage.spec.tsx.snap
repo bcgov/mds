@@ -456,7 +456,7 @@ exports[`HomePage renders properly 1`] = `
           </h4>
           <div>
             <a
-              href="[object Object]"
+              href="https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/health-safety/health-safety-and-reclamation-code-for-mines-in-british-columbia"
               rel="noopener noreferrer"
               target="_blank"
             >
