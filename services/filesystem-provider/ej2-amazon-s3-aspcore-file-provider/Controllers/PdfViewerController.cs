@@ -65,7 +65,10 @@ namespace EJ2AmazonS3ASPCoreFileProvider.Controllers
                     {
                         string path = Path.GetDirectoryName(jsonObject["document"]) + "/";
                         string filename = Path.GetFileName(jsonObject["document"]);
-                        FileStreamResult fsr = this.operation.Download(path, new string[] { filename });
+                        // A versionId is only sent when viewing a previous version of a file, otherwise the latest version is loaded
+                        FileStreamResult fsr = jsonObject.TryGetValue("versionId", out var versionId) && !string.IsNullOrEmpty(versionId)
+                            ? this.operation.DownloadVersion(path, filename, versionId)
+                            : this.operation.Download(path, new string[] { filename });
                         if (fsr == null)
                         {
                             return NotFound(jsonObject["document"] + " is not found");

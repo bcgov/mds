@@ -49,10 +49,19 @@ describe("NoWApplicationDocument model", () => {
     expect(allowedActions()).toEqual(canChangeActions);
   });
 
-  it("only allows previous versions to be downloaded", () => {
+  it("only allows previous versions to be viewed and downloaded", () => {
     const document = new NoWApplicationDocument(mockNoWDocumentData);
 
     expect(document.number_prev_versions).toEqual(1);
+    expect(document.versions[0].allowed_actions).toEqual(canViewActions);
+  });
+
+  it("only allows previous versions of a non-PDF file to be downloaded", () => {
+    const document = new NoWApplicationDocument({
+      ...mockNoWDocumentData,
+      document_name: "report.docx",
+    });
+
     expect(document.versions[0].allowed_actions).toEqual([FileOperations.Download]);
   });
 

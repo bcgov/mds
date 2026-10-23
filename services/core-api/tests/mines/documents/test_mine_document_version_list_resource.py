@@ -103,6 +103,29 @@ class TestMineDocumentVersionUploadResource:
         assert versions[1]['upload_date'] == str(first_replace_upload_date)
 
     @responses.activate
+    def test_create_same_docman_version_twice_returns_400(self, test_client, db_session, auth_headers, setup_info):
+        """Recording the same docman version twice (e.g. a retried request) returns 400 and keeps a single version"""
+
+        mine = setup_info['mine']
+        document = setup_info['document']
+        docman_version_guid = str(uuid.uuid4())
+        doc_url = f'{DocumentManagerService.document_manager_document_resource_url}/{document.document_manager_guid}'
+        responses.add(responses.GET, f'{doc_url}/versions/{docman_version_guid}', json={'file_display_name': 'test.pdf'})
+        responses.add(responses.GET, doc_url, json={'file_display_name': 'replacement.pdf'})
+
+        url = f'/mines/{mine.mine_guid}/documents/{document.mine_document_guid}/versions'
+        first_resp = test_client.post(
+            url, headers=auth_headers['full_auth_header'], json={'document_manager_version_guid': docman_version_guid})
+        second_resp = test_client.post(
+            url, headers=auth_headers['full_auth_header'], json={'document_manager_version_guid': docman_version_guid})
+
+        assert first_resp.status_code == 200
+        assert second_resp.status_code == 400
+        assert 'This version of the document has already been recorded.' in json.loads(second_resp.data.decode())['message']
+        db_session.refresh(document)
+        assert len(document.versions) == 1
+
+    @responses.activate
     def test_create_docman_failure_does_not_commit(self, test_client, db_session, auth_headers, setup_info):
         """A failed docman lookup does not create a version or change the document"""
 

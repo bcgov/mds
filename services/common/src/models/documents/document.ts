@@ -294,7 +294,7 @@ const NOW_GOVERNMENT_DOCUMENT_SUB_TYPE_CODE = "GDO";
 A document on a Notice of Work application's Manage Documents page.
 
 Replace and Archive follow the same rules core-api enforces (now_document_file_management.py).
-Previous versions can only be downloaded, as the document viewer always opens the latest version of a file.
+Previous versions can be viewed (PDFs only) and downloaded, but not replaced or archived.
 Delete is not offered here, the NoW tables keep their own delete button.
 
 Expects the mine_document fields flattened onto the json alongside the xref fields.
@@ -341,7 +341,7 @@ export class NoWApplicationDocument extends MineDocument {
     userRoles: string[] = [],
     is_latest_version: boolean = this.is_latest_version
   ) {
-    const canView = is_latest_version && this.file_type === ".pdf" && this.document_manager_guid;
+    const canView = this.file_type === ".pdf" && this.document_manager_guid;
     const canChange = is_latest_version && this.canChangeFile(userRoles);
     return [
       canView && FileOperations.View,
