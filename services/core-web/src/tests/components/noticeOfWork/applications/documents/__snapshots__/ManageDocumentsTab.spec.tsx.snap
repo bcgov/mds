@@ -990,7 +990,7 @@ exports[`ManageDocumentsTab renders properly 1`] = `
                             class="ant-spin-container"
                           >
                             <div
-                              class="ant-table ant-table-empty"
+                              class="ant-table ant-table-empty ant-table-has-fix-right"
                             >
                               <div
                                 class="ant-table-container"
@@ -1264,6 +1264,10 @@ exports[`ManageDocumentsTab renders properly 1`] = `
                                             </div>
                                           </div>
                                         </th>
+                                        <th
+                                          class="ant-table-cell actions-column ant-table-cell-fix-right ant-table-cell-fix-right-first"
+                                          style="position: sticky; right: 0px;"
+                                        />
                                       </tr>
                                     </thead>
                                     <tbody
@@ -1272,7 +1276,7 @@ exports[`ManageDocumentsTab renders properly 1`] = `
                                       <tr>
                                         <td
                                           class="ant-table-cell"
-                                          colspan="7"
+                                          colspan="8"
                                         >
                                           No Data Yet
                                         </td>

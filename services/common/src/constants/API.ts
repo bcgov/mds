@@ -371,6 +371,12 @@ export const NOW_APPLICATION_PROGRESS_STATUS_CODES =
   "/now-applications/application-progress-status-codes";
 export const NOTICE_OF_WORK_DOCUMENT = (now_document_guid) =>
   `/now-applications/${now_document_guid}/document`;
+export const NOTICE_OF_WORK_DOCUMENT_VERSION_UPLOAD = (applicationGuid, mineDocumentGuid) =>
+  `/now-applications/${applicationGuid}/document/${mineDocumentGuid}/versions/upload`;
+export const NOTICE_OF_WORK_DOCUMENT_VERSIONS = (applicationGuid, mineDocumentGuid) =>
+  `/now-applications/${applicationGuid}/document/${mineDocumentGuid}/versions`;
+export const NOTICE_OF_WORK_DOCUMENTS_ARCHIVE = (applicationGuid) =>
+  `/now-applications/${applicationGuid}/documents/archive`;
 export const SORT_NOTICE_OF_WORK_DOCUMENTS = (now_document_guid) =>
   `/now-applications/${now_document_guid}/sort-documents`;
 export const NOW_APPLICATION_PERMIT_TYPES = "/now-applications/application-permit-types";

@@ -14,7 +14,7 @@ import { downloadFileFromDocumentManager } from "@mds/common/redux/utils/actionl
 import DocumentLink from "./DocumentLink";
 import { IPermitAmendmentDocument } from "@mds/common/interfaces";
 
-const documentWithTag = (
+export const documentWithTag = (
   record: MineDocument,
   elem: ReactNode,
   title: string,
