@@ -19,7 +19,12 @@ jest.mock('@mds/common/redux/customAxios', () => {
 
 const mockAxios = customAxios() as jest.Mocked<any>;
 
-jest.mock('@/components/mine/Permit/Search/components/SearchBox', () => () => <div data-testid="mock-search-box">SearchBox</div>);
+jest.mock('@/components/mine/Permit/Search/components/SearchBox', () => ({ onSearch }) => (
+    <div data-testid="mock-search-box">
+        SearchBox
+        <button onClick={() => onSearch('typed query')}>Type a search</button>
+    </div>
+));
 jest.mock('@/components/mine/Permit/Search/components/SearchResults', () => (props) => (
     <div data-testid="mock-search-results">
         SearchResults
@@ -33,11 +38,14 @@ jest.mock('./NowDocumentResultItem', () => ({ isArchived }) => (
 ));
 jest.mock('@/components/mine/Permit/Search/components/MarkdownViewer', () => () => <div data-testid="mock-markdown-viewer">MarkdownViewer</div>);
 jest.mock('./NowApplicationDocumentSearchSplashScreen', () => () => <div data-testid="mock-splash-screen">SplashScreen</div>);
+// Searches run straight away, unless a test turns on the real 300ms debounce
+let mockUseRealDebounce = false;
 jest.mock('lodash', () => {
     const actual = jest.requireActual('lodash');
     return {
         ...actual,
-        debounce: (fn: (...args: unknown[]) => unknown) => fn,
+        debounce: (fn: (...args: unknown[]) => unknown, wait: number) =>
+            mockUseRealDebounce ? actual.debounce(fn, wait) : Object.assign(fn, { cancel: jest.fn() }),
     };
 });
 
@@ -401,6 +409,28 @@ describe('NowApplicationDocumentSearch', () => {
             expect(searchSpy).toHaveBeenLastCalledWith(
                 expect.objectContaining({ documentManagerGuids: undefined })
             );
+        });
+
+        it('drops a typed search that was still waiting when the filter changes', () => {
+            jest.useFakeTimers();
+            mockUseRealDebounce = true;
+            try {
+                renderSearch();
+
+                fireEvent.click(screen.getByText('Type a search'));
+                fireEvent.click(screen.getByText('Only archived'));
+                act(() => {
+                    jest.advanceTimersByTime(300);
+                });
+
+                expect(searchSpy).toHaveBeenCalledTimes(1);
+                expect(searchSpy).toHaveBeenCalledWith(
+                    expect.objectContaining({ documentManagerGuids: ['archived-guid'] })
+                );
+            } finally {
+                mockUseRealDebounce = false;
+                jest.useRealTimers();
+            }
         });
 
         it("isn't shown when the application has no archived files", () => {

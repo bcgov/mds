@@ -109,6 +109,9 @@ const initialState: NowApplicationSearchState = {
   nowApplicationGuid: null,
 };
 
+// Only the latest search updates the results, so a slower earlier search can't overwrite them
+let latestNowSearchSource = null;
+
 const nowApplicationSearchSlice = createAppSlice({
   name: nowApplicationSearchReducerType,
   initialState,
@@ -237,6 +240,14 @@ const nowApplicationSearchSlice = createAppSlice({
         thunkApi.dispatch(setNowFilters(payload.filters));
         thunkApi.dispatch(setNowQuery(payload.query));
 
+        // Closed before the empty file list check below, so an earlier search can't overwrite its empty results
+        if (latestNowSearchSource) {
+          // close() doesn't call onDisconnect, so the earlier search's loading bar is hidden here
+          latestNowSearchSource.close();
+          latestNowSearchSource = null;
+          thunkApi.dispatch(hideLoading());
+        }
+
         // An empty file list (e.g. Hide archived when every file is archived) leaves nothing to search, so there are no results. 
         // This is handled here rather than relying on how the search service treats an empty "in" filter - instead prevent it from ever trying.
         if (payload.documentManagerGuids?.length === 0) {
@@ -275,6 +286,9 @@ const nowApplicationSearchSlice = createAppSlice({
             },
 
             onMessage: ({ event, data }) => {
+              if (eventSource !== latestNowSearchSource) {
+                return;
+              }
               const eventPayload = JSON.parse(data);
               const updatedState: RootState = thunkApi.getState();
 
@@ -310,9 +324,13 @@ const nowApplicationSearchSlice = createAppSlice({
 
             onDisconnect: () => {
               eventSource.close();
+              if (eventSource === latestNowSearchSource) {
+                latestNowSearchSource = null;
+              }
               thunkApi.dispatch(hideLoading());
             },
           });
+          latestNowSearchSource = eventSource;
 
           return null;
         } catch (error) {

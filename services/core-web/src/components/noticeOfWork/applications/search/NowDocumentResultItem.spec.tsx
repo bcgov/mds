@@ -79,4 +79,37 @@ describe("NowDocumentResultItem", () => {
 
         expect(screen.queryByText("Archived")).not.toBeInTheDocument();
     });
+
+    it("makes filter tags buttons, so they can be used with the keyboard", () => {
+        const onFilterClick = jest.fn();
+        const artifactResult = { ...result, meta: { ...result.meta, artifact_type: "figure", artifact_page_number: 3 } };
+
+        render(<NowDocumentResultItem result={artifactResult} onFilterClick={onFilterClick} />);
+
+        expect(screen.getByRole("button", { name: "Supporting Document" })).toBeInTheDocument();
+        expect(screen.getByRole("button", { name: "Figure" })).toBeInTheDocument();
+        fireEvent.click(screen.getByRole("button", { name: "Page 3" }));
+        expect(onFilterClick).toHaveBeenCalledWith("artifact_page_number", "3");
+    });
+
+    it("doesn't make tags buttons when they can't filter the results", () => {
+        render(<NowDocumentResultItem result={result} />);
+
+        expect(screen.getByText("Supporting Document")).toBeInTheDocument();
+        expect(screen.queryByRole("button", { name: "Supporting Document" })).not.toBeInTheDocument();
+    });
+
+    it("says whether the formatted table is shown", () => {
+        const tableResult = { ...result, meta: { ...result.meta, artifact_type: "table", artifact_table_markdown: "| a |" } };
+
+        render(<NowDocumentResultItem result={tableResult} />);
+
+        const toggle = screen.getByRole("button", { name: /Show more/ });
+        expect(toggle).toHaveAttribute("aria-expanded", "false");
+
+        fireEvent.click(toggle);
+
+        expect(screen.getByRole("button", { name: /Show less/ })).toHaveAttribute("aria-expanded", "true");
+        expect(screen.getByTestId("markdown-viewer")).toBeInTheDocument();
+    });
 });

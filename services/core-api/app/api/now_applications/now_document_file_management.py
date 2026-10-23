@@ -59,6 +59,17 @@ def check_can_archive(now_application_identity, mine_document, xref):
     _check_file_management_rules(now_application_identity, mine_document, xref)
 
 
+def check_not_now_document(mine_document):
+    """
+    Raises BadRequest if the document is on a Notice of Work. The mine-level archive and replace endpoints don't run
+    the rules in this module, so NoW files can only be changed from the NoW's Manage Documents page.
+    """
+    # Both are checked, as a file removed from one link to the NoW could still be on the NoW through the other
+    xrefs = (mine_document.now_application_document_xref, mine_document.now_application_document_identity_xref)
+    if any(xref and not xref.deleted_ind for xref in xrefs):
+        raise BadRequest('Notice of Work documents can only be replaced or archived from the Notice of Work.')
+
+
 def _check_file_management_rules(now_application_identity, mine_document, xref):
     """
     Rules shared by replace and archive. These mirror when a document can be edited or deleted on the Manage

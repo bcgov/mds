@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { Col, Row, Space, Tag, Typography } from "antd";
+import { Button, Col, Row, Space, Tag, Typography } from "antd";
 import { DownOutlined, UpOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
 import DocumentLink from "@mds/common/components/documents/DocumentLink";
@@ -16,6 +16,23 @@ interface NowDocumentResultItemProps {
   // The file has been archived from Manage Documents
   isArchived?: boolean;
 }
+
+// Tags that filter the results are buttons, so they can also be reached and used with the keyboard
+const FilterTag = ({
+  label,
+  onClick,
+  ...tagProps
+}: React.ComponentProps<typeof Tag> & { label: React.ReactNode; onClick?: () => void }) => (
+  <Tag {...tagProps}>
+    {onClick ? (
+      <button type="button" className="now-search__tag-button" onClick={onClick}>
+        {label}
+      </button>
+    ) : (
+      label
+    )}
+  </Tag>
+);
 
 // Scores from Azure hybrid search sit in roughly the 1–4 range.
 const normalizeScore = (score: number) =>
@@ -147,17 +164,15 @@ const NowDocumentResultItem: React.FC<NowDocumentResultItemProps> = ({
       {hasFormattedTable && (
         <Col span={24} className="now-search__artifact-table">
           <div className="now-search__artifact-table-controls now-search__artifact-table-controls--top">
-            <Typography.Link
-              href="#"
-              className="margin-none"
-              onClick={(event) => {
-                event.preventDefault();
-                setIsTableExpanded((expanded) => !expanded);
-              }}
+            <Button
+              type="link"
+              className="btn--inline-link"
+              aria-expanded={isTableExpanded}
+              onClick={() => setIsTableExpanded((expanded) => !expanded)}
             >
               <span>{isTableExpanded ? "Show less " : "Show more "}</span>
               {isTableExpanded ? <UpOutlined /> : <DownOutlined />}
-            </Typography.Link>
+            </Button>
           </div>
           {isTableExpanded && (
             <>
@@ -207,45 +222,38 @@ const NowDocumentResultItem: React.FC<NowDocumentResultItemProps> = ({
           <Col>
             <Space wrap size={4}>
               {document_type && (
-                <Tag
+                <FilterTag
                   color={isPermitPackage ? "orange" : "blue"}
-                  style={{ cursor: onFilterClick ? "pointer" : "default" }}
-                  onClick={() => onFilterClick?.("document_type", document_type)}
-                >
-                  {document_type}
-                </Tag>
+                  label={document_type}
+                  onClick={onFilterClick && (() => onFilterClick("document_type", document_type))}
+                />
               )}
               {artifact_type && (
-                <Tag
+                <FilterTag
                   color="geekblue"
                   className="permit-search__artifact-tag"
-                  style={{ cursor: onFilterClick ? "pointer" : "default" }}
-                  onClick={() => onFilterClick?.("artifact_type", artifact_type)}
-                >
-                  {displayFormat(artifact_type)}
-                </Tag>
+                  label={displayFormat(artifact_type)}
+                  onClick={onFilterClick && (() => onFilterClick("artifact_type", artifact_type))}
+                />
               )}
               {artifact_category && (
-                <Tag
+                <FilterTag
                   color="purple"
                   className="permit-search__artifact-tag"
-                  style={{ cursor: onFilterClick ? "pointer" : "default" }}
-                  onClick={() => onFilterClick?.("artifact_category", artifact_category)}
-                >
-                  {displayFormat(artifact_category)}
-                </Tag>
+                  label={displayFormat(artifact_category)}
+                  onClick={onFilterClick && (() => onFilterClick("artifact_category", artifact_category))}
+                />
               )}
               {typeof artifact_page_number === "number" && (
-                <Tag
+                <FilterTag
                   color="cyan"
                   className="permit-search__artifact-tag"
-                  style={{ cursor: onFilterClick ? "pointer" : "default" }}
-                  onClick={() =>
-                    onFilterClick?.("artifact_page_number", String(artifact_page_number))
+                  label={`Page ${artifact_page_number}`}
+                  onClick={
+                    onFilterClick &&
+                    (() => onFilterClick("artifact_page_number", String(artifact_page_number)))
                   }
-                >
-                  Page {artifact_page_number}
-                </Tag>
+                />
               )}
               {isPermitPackage && (
                 <Tag color="gold">Permit Package</Tag>

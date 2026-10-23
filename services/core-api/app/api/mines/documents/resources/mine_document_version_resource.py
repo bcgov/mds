@@ -21,6 +21,7 @@ from app.api.mines.response_models import MINE_DOCUMENT_MODEL, MINE_DOCUMENT_VER
 from app.api.services.document_manager_service import DocumentManagerService
 from app.api.projects.ams_final_application.models.ams_final_application_document_xref import AmsFinalApplicationDocumentXref
 from app.api.projects.ams_final_application.models.ams_final_application import AmsFinalApplication
+from app.api.now_applications.now_document_file_management import check_not_now_document
 
 class MineDocumentVersionUploadResource(Resource, UserMixin):
 
@@ -58,6 +59,7 @@ class MineDocumentVersionUploadResource(Resource, UserMixin):
 
         if mine_document.is_archived:
             raise BadRequest('Cannot create new version of archived document')
+        check_not_now_document(mine_document)
 
         return DocumentManagerService.initializeFileVersionUploadWithDocumentManager(
             request, mine_document)
@@ -98,6 +100,7 @@ class MineDocumentVersionListResource(Resource, UserMixin):
 
         if mine_document.is_archived:
             raise BadRequest('Cannot create new version of archived document')
+        check_not_now_document(mine_document)
 
         args = self.parser.parse_args()
         document_manager_version_guid = args.get('document_manager_version_guid')

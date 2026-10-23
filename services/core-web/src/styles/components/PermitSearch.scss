@@ -261,3 +261,13 @@
         overflow-x: auto;
     }
 }
+
+// Filter tags in NoW search results, the button only adds keyboard access, so the tag looks the same
+.now-search__tag-button {
+    padding: 0;
+    border: none;
+    background: none;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+}
