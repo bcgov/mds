@@ -118,6 +118,15 @@ PERMIT_EDIT_GROUP = 'PERMIT_EDIT_GROUP'
 PERMIT_AMENDMENT_EDIT_GROUP = 'PERMIT_AMENDMENT_EDIT_GROUP'
 MINE_EDIT_GROUP = 'MINE_EDIT_GROUP'
 
+# NoW applications in these statuses have had a decision made, and their permit package files can no longer change
+NOW_APPLICATION_LOCKED_STATUS_CODES = ['AIA', 'REJ', 'WDN', 'NPR']
+
+# Spatial files can be archived but never replaced. Mirrors UNIQUELY_SPATIAL in common/src/constants/fileTypes.ts, plus .shp.xml
+NOW_SPATIAL_FILE_EXTENSIONS = [
+    '.geojson', '.gml', '.dbf', '.kml', '.kmz', '.prj', '.sbn', '.sbx', '.shp', '.shx', '.ain', '.aih',
+    '.atx', '.cpg', '.fbn', '.fbx', '.ixs', '.mxs', '.shpz', '.wkt', '.shp.xml'
+]
+
 CSS_AUTH_TOKEN = 'CSS_AUTH_TOKEN'
 
 # Transmogrify NoW
