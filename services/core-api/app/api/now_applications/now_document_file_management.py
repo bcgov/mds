@@ -52,6 +52,13 @@ def check_can_replace(now_application_identity, mine_document, xref, new_filenam
         raise BadRequest('The new file must be the same file type as the original.')
 
 
+def check_can_archive(now_application_identity, mine_document, xref):
+    """
+    Raises BadRequest if the document can't be archived. Unlike replace, spatial files can be archived.
+    """
+    _check_file_management_rules(now_application_identity, mine_document, xref)
+
+
 def _check_file_management_rules(now_application_identity, mine_document, xref):
     """
     Rules shared by replace and archive. These mirror when a document can be edited or deleted on the Manage

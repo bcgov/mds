@@ -286,6 +286,18 @@ class NOWApplication(Base, AuditMixin):
     def next_document_final_package_order(self):
         return self._next_final_package_order()
 
+    @property
+    def active_documents(self):
+        """
+        documents, minus archived ones. Read-only: the documents relationship itself still holds every document,
+        so code that works with the relationship (e.g. transferring an application to another mine) is unaffected.
+        """
+        return [doc for doc in self.documents if not (doc.mine_document and doc.mine_document.is_archived)]
+
+    @property
+    def archived_documents(self):
+        return [doc for doc in self.documents if doc.mine_document and doc.mine_document.is_archived]
+
     def next_document_final_package_order_for_type(self, permit_package_document_type_code, exclude=None):
         # A document with no type is treated as a DOCUMENT type.
         # Exclude parameter is used to skip the document that is having it's type updated.
@@ -506,7 +518,15 @@ class NOWApplication(Base, AuditMixin):
                 'preamble_date':
                 doc.preamble_date,
                 'update_timestamp':
-                doc.update_timestamp
+                doc.update_timestamp,
+                'is_archived':
+                doc.mine_document.is_archived if doc.mine_document else False,
+                'archived_date':
+                doc.mine_document.archived_date if doc.mine_document else None,
+                'archived_by':
+                doc.mine_document.archived_by if doc.mine_document else None,
+                'versions':
+                doc.mine_document.versions if doc.mine_document else [],
             })
 
         for doc in now_application.submission_documents:
@@ -534,6 +554,11 @@ class NOWApplication(Base, AuditMixin):
                     'filename': doc.filename,
                     'now_application_id': now_application.now_application_id,
                     'document_manager_guid': None,
+                    # Not imported yet, so there's no mine_document to archive or version
+                    'is_archived': False,
+                    'archived_date': None,
+                    'archived_by': None,
+                    'versions': [],
                 })
 
         return docs
