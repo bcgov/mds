@@ -28,6 +28,37 @@ export enum SearchEventType {
 
 export type NowApplicationSearchFilters = Array<{ category: string; value: string }>;
 
+/**
+ * Turns the selected filters into the search request's filters, one "in" condition per category.
+ * documentManagerGuids, when given, limits the results to those files (e.g. to hide or only show archived files).
+ */
+export const buildNowSearchFilters = (
+  filters: NowApplicationSearchFilters,
+  documentManagerGuids?: string[]
+): SearchQuery["filters"] => {
+  const filtersByCategory: Record<string, string[]> = filters.reduce(
+    (acc, filter) => {
+      acc[filter.category] = acc[filter.category] || [];
+      acc[filter.category].push(filter.value);
+      return acc;
+    },
+    {} as Record<string, string[]>
+  );
+  const conditions = Object.entries(filtersByCategory).map(([category, values]) => ({
+    field: category,
+    operator: ConditionOperator.IN,
+    value: values,
+  }));
+  if (documentManagerGuids) {
+    conditions.push({
+      field: "document_manager_guid",
+      operator: ConditionOperator.IN,
+      value: documentManagerGuids,
+    });
+  }
+  return conditions.length > 0 ? { operator: FilterOperator.AND, conditions } : undefined;
+};
+
 export type NowIndexerStatusValue =
   | "never_run"
   | "running"
@@ -199,39 +230,31 @@ const nowApplicationSearchSlice = createAppSlice({
           nowApplicationGuid: string;
           query: string;
           filters: NowApplicationSearchFilters;
+          documentManagerGuids?: string[];
         },
         thunkApi
       ) => {
-        thunkApi.dispatch(showLoading());
         thunkApi.dispatch(setNowFilters(payload.filters));
+        thunkApi.dispatch(setNowQuery(payload.query));
+
+        // An empty file list (e.g. Hide archived when every file is archived) leaves nothing to search, so there are no results. 
+        // This is handled here rather than relying on how the search service treats an empty "in" filter - instead prevent it from ever trying.
+        if (payload.documentManagerGuids?.length === 0) {
+          thunkApi.dispatch(updateNowSearchResults({ documents: [], prompt: null }));
+          thunkApi.dispatch(setNowDocumentLoading(false));
+          thunkApi.dispatch(setNowAiLoading(false));
+          return null;
+        }
+
+        thunkApi.dispatch(showLoading());
         thunkApi.dispatch(setNowDocumentLoading(true));
         thunkApi.dispatch(setNowAiLoading(true));
-        thunkApi.dispatch(setNowQuery(payload.query));
 
         const headers = createRequestHeader();
 
-        const filtersByCategory: Record<string, string[]> = payload.filters.reduce(
-          (acc, filter) => {
-            acc[filter.category] = acc[filter.category] || [];
-            acc[filter.category].push(filter.value);
-            return acc;
-          },
-          {} as Record<string, string[]>
-        );
-
         const searchQuery: SearchQuery = {
           query: payload.query,
-          filters:
-            payload.filters.length > 0
-              ? {
-                  operator: FilterOperator.AND,
-                  conditions: Object.entries(filtersByCategory).map(([category, values]) => ({
-                    field: category,
-                    operator: ConditionOperator.IN,
-                    value: values,
-                  })),
-                }
-              : undefined,
+          filters: buildNowSearchFilters(payload.filters, payload.documentManagerGuids),
         };
 
         const state = thunkApi.getState() as RootState;

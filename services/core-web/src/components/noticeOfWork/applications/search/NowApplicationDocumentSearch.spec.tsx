@@ -5,6 +5,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import NowApplicationDocumentSearch from './NowApplicationDocumentSearch';
 import nowApplicationSearchReducer from '@mds/common/redux/slices/nowApplicationSearchSlice';
 import customAxios from '@mds/common/redux/customAxios';
+import * as nowApplicationSearchSlice from '@mds/common/redux/slices/nowApplicationSearchSlice';
 
 // Mock dependencies
 jest.mock('@mds/common/redux/customAxios', () => {
@@ -19,7 +20,17 @@ jest.mock('@mds/common/redux/customAxios', () => {
 const mockAxios = customAxios() as jest.Mocked<any>;
 
 jest.mock('@/components/mine/Permit/Search/components/SearchBox', () => () => <div data-testid="mock-search-box">SearchBox</div>);
-jest.mock('@/components/mine/Permit/Search/components/SearchResults', () => () => <div data-testid="mock-search-results">SearchResults</div>);
+jest.mock('@/components/mine/Permit/Search/components/SearchResults', () => (props) => (
+    <div data-testid="mock-search-results">
+        SearchResults
+        {props.headerControls}
+        <button onClick={() => props.onFilterChange([])}>Apply filters</button>
+        {props.renderItem?.({ id: 'result-1', content: '', score: 1, meta: { document_manager_guid: 'archived-guid' } }, jest.fn(), 0)}
+    </div>
+));
+jest.mock('./NowDocumentResultItem', () => ({ isArchived }) => (
+    <div data-testid="mock-result-item">{isArchived ? 'Archived result' : 'Current result'}</div>
+));
 jest.mock('@/components/mine/Permit/Search/components/MarkdownViewer', () => () => <div data-testid="mock-markdown-viewer">MarkdownViewer</div>);
 jest.mock('./NowApplicationDocumentSearchSplashScreen', () => () => <div data-testid="mock-splash-screen">SplashScreen</div>);
 jest.mock('lodash', () => {
@@ -314,6 +325,89 @@ describe('NowApplicationDocumentSearch', () => {
             });
 
             expect(mockAxios.get.mock.calls.length).toBe(initialCalls);
+        });
+    });
+
+    describe('archived files filter', () => {
+        const noticeOfWork = {
+            documents: [{ mine_document: { document_manager_guid: 'current-guid' } }],
+            archived_documents: [{ mine_document: { document_manager_guid: 'archived-guid' } }],
+        };
+        const filters = [{ category: 'document_type', value: 'Map' }];
+
+        const renderSearch = (props = {}) => {
+            const store = createMockStore({ query: 'test', filters });
+            render(
+                <Provider store={store}>
+                    <NowApplicationDocumentSearch nowApplicationGuid="test-guid" noticeOfWork={noticeOfWork} {...props} />
+                </Provider>
+            );
+        };
+
+        let searchSpy: jest.SpyInstance;
+        beforeEach(() => {
+            searchSpy = jest
+                .spyOn(nowApplicationSearchSlice, 'searchNowApplicationDocuments')
+                .mockReturnValue({ type: 'mock-search' } as any);
+        });
+        afterEach(() => searchSpy.mockRestore());
+
+        it('labels archived files in the results', () => {
+            renderSearch();
+
+            expect(screen.getByText('Archived result')).toBeInTheDocument();
+        });
+
+        it('only shows archived files, keeping the current search and filters', () => {
+            renderSearch();
+
+            fireEvent.click(screen.getByText('Only archived'));
+
+            expect(searchSpy).toHaveBeenCalledWith({
+                nowApplicationGuid: 'test-guid',
+                query: 'test',
+                filters,
+                documentManagerGuids: ['archived-guid'],
+            });
+        });
+
+        it('hides archived files by only searching the current files', () => {
+            renderSearch();
+
+            fireEvent.click(screen.getByText('Hide archived'));
+
+            expect(searchSpy).toHaveBeenCalledWith(
+                expect.objectContaining({ documentManagerGuids: ['current-guid'] })
+            );
+        });
+
+        it('keeps only showing archived files when the filters change', () => {
+            renderSearch();
+
+            fireEvent.click(screen.getByText('Only archived'));
+            fireEvent.click(screen.getByText('Apply filters'));
+
+            expect(searchSpy).toHaveBeenLastCalledWith(
+                expect.objectContaining({ filters: [], documentManagerGuids: ['archived-guid'] })
+            );
+        });
+
+        it('searches every file again when switching back to all files', () => {
+            renderSearch();
+
+            fireEvent.click(screen.getByText('Only archived'));
+            fireEvent.click(screen.getByText('All files'));
+
+            expect(searchSpy).toHaveBeenLastCalledWith(
+                expect.objectContaining({ documentManagerGuids: undefined })
+            );
+        });
+
+        it("isn't shown when the application has no archived files", () => {
+            renderSearch({ noticeOfWork: { ...noticeOfWork, archived_documents: [] } });
+
+            expect(screen.queryByText('Only archived')).not.toBeInTheDocument();
+            expect(screen.getByText('Current result')).toBeInTheDocument();
         });
     });
 });

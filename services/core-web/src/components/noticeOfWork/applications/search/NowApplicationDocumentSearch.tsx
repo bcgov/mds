@@ -7,6 +7,7 @@ import {
   Popconfirm,
   Progress,
   Row,
+  Segmented,
   Skeleton,
   Space,
   Tag,
@@ -54,10 +55,28 @@ import NowApplicationDocumentSearchSplashScreen from "./NowApplicationDocumentSe
 import NowDocumentResultItem from "./NowDocumentResultItem";
 import { NowDocumentSearchResult } from "@mds/common/interfaces/search/facet-search.interface";
 import CoreButton from "@mds/common/components/common/CoreButton";
+import { Feature } from "@mds/common/utils/featureFlag";
+import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 
 interface NowApplicationDocumentSearchProps {
   nowApplicationGuid: string;
+  // Used to tell which search results are archived files
+  noticeOfWork?: {
+    documents?: { mine_document?: { document_manager_guid?: string } }[];
+    archived_documents?: { mine_document?: { document_manager_guid?: string } }[];
+  };
 }
+
+type ArchivedFilter = "all" | "hide" | "only";
+
+const ARCHIVED_FILTER_OPTIONS = [
+  { label: "All files", value: "all" },
+  { label: "Hide archived", value: "hide" },
+  { label: "Only archived", value: "only" },
+];
+
+const toDocumentManagerGuids = (documents = []) =>
+  documents.map((doc) => doc.mine_document?.document_manager_guid).filter(Boolean);
 
 /**
  * Document search UI for a Notice of Work application.
@@ -126,8 +145,10 @@ function LastIndexedLabel({ status }: { status: NowIndexerStatus | null }) {
 
 const NowApplicationDocumentSearch: React.FC<NowApplicationDocumentSearchProps> = ({
   nowApplicationGuid,
+  noticeOfWork,
 }) => {
   const dispatch = useAppDispatch();
+  const { isFeatureEnabled } = useFeatureFlag();
   const results = useAppSelector(selectNowSearchResults);
   const loading = useAppSelector(selectNowSearchLoading);
   const aiLoading = useAppSelector(selectNowAiLoading);
@@ -138,6 +159,22 @@ const NowApplicationDocumentSearch: React.FC<NowApplicationDocumentSearchProps> 
   const selectedFilters = useAppSelector(selectNowSearchFilters);
   const [isAIResponseExpanded, setIsAIResponseExpanded] = useState(false);
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const [archivedFilter, setArchivedFilter] = useState<ArchivedFilter>("all");
+
+  // Only the NoW's own (non-vFCBC) files are indexed, and the NoW splits them into current and archived files, so hiding or only showing archived files limits the search to one of those lists.
+  const currentDocumentManagerGuids = useMemo(
+    () => toDocumentManagerGuids(noticeOfWork?.documents),
+    [noticeOfWork?.documents]
+  );
+  const archivedDocumentManagerGuids = useMemo(
+    () => toDocumentManagerGuids(noticeOfWork?.archived_documents),
+    [noticeOfWork?.archived_documents]
+  );
+  const showArchivedFilter =
+    isFeatureEnabled(Feature.NOW_FILE_MANAGEMENT) && archivedDocumentManagerGuids.length > 0;
+  const getDocumentManagerGuids = (filter: ArchivedFilter) =>
+    ({ all: undefined, hide: currentDocumentManagerGuids, only: archivedDocumentManagerGuids })[filter];
+  const documentManagerGuids = getDocumentManagerGuids(showArchivedFilter ? archivedFilter : "all");
 
   const refreshStatus = () => dispatch(fetchNowIndexingStatus(nowApplicationGuid));
   const isRunning = indexerStatus?.status === "running";
@@ -240,11 +277,24 @@ const NowApplicationDocumentSearch: React.FC<NowApplicationDocumentSearchProps> 
             nowApplicationGuid,
             query: searchQuery,
             filters,
+            documentManagerGuids,
           })
         );
       }, 300),
-    [nowApplicationGuid]
+    [nowApplicationGuid, documentManagerGuids]
   );
+
+  const handleArchivedFilterChange = (value: ArchivedFilter) => {
+    setArchivedFilter(value);
+    dispatch(
+      searchNowApplicationDocuments({
+        nowApplicationGuid,
+        query,
+        filters: selectedFilters,
+        documentManagerGuids: getDocumentManagerGuids(value),
+      })
+    );
+  };
 
 
   return (
@@ -280,13 +330,30 @@ const NowApplicationDocumentSearch: React.FC<NowApplicationDocumentSearchProps> 
                 <Col xs={24} lg={isAIResponseExpanded ? 8 : 16}>
                   <SearchResults
                     onFilterChange={(filters) => debouncedSearch(query, filters)}
-                    renderItem={(result, onFilterClick, index) => (
-                      <NowDocumentResultItem
-                        result={result as unknown as NowDocumentSearchResult}
-                        onFilterClick={onFilterClick}
-                        index={index}
-                      />
-                    )}
+                    headerControls={
+                      showArchivedFilter && (
+                        <Segmented
+                          aria-label="Archived files"
+                          options={ARCHIVED_FILTER_OPTIONS}
+                          value={archivedFilter}
+                          onChange={(value) => handleArchivedFilterChange(value as ArchivedFilter)}
+                        />
+                      )
+                    }
+                    renderItem={(result, onFilterClick, index) => {
+                      const nowResult = result as unknown as NowDocumentSearchResult;
+                      return (
+                        <NowDocumentResultItem
+                          result={nowResult}
+                          onFilterClick={onFilterClick}
+                          index={index}
+                          isArchived={
+                            showArchivedFilter &&
+                            archivedDocumentManagerGuids.includes(nowResult.meta.document_manager_guid)
+                          }
+                        />
+                      );
+                    }}
                     selectors={{
                       selectResults: selectNowSearchResults,
                       selectFilters: selectNowSearchFilters,
