@@ -37,6 +37,7 @@ const propTypes = {
   showBCMIWarning: PropTypes.bool,
   userCanEditPermits: PropTypes.bool.isRequired,
   isFeatureEnabled: PropTypes.func,
+  enableFileManagement: PropTypes.bool,
 };
 
 const defaultProps = {
@@ -48,6 +49,7 @@ const defaultProps = {
   showInUnifiedView: false,
   showBCMIWarning: false,
   isFeatureEnabled: () => false,
+  enableFileManagement: false,
 };
 
 export class FinalPermitDocuments extends Component {
@@ -130,17 +132,24 @@ export class FinalPermitDocuments extends Component {
         )
         .concat(
           (permitSubmissionDocuments || [])
-            .map((doc) => ({
-              ...doc,
-              now_application_document_type_code: doc.documenttype,
-              now_application_document_sub_type_code: doc.documenttype,
-              mine_document: {
-                document_manager_guid: doc.document_manager_guid,
-                document_name: doc.filename,
-                mine_document_guid: doc.mine_document_guid,
-                mine_guid: this.props.noticeOfWork.mine_guid,
-              },
-            }))
+            .map((doc) => {
+              // A replaced vFCBC file keeps its original filename, document_name is its current name
+              const currentName = doc.document_name ?? doc.filename;
+              return {
+                ...doc,
+                filename: currentName,
+                // vFCBC imports have no sub-type, this marks them as Application Documents for file management
+                is_imported_submission_document: true,
+                now_application_document_type_code: doc.documenttype,
+                now_application_document_sub_type_code: doc.documenttype,
+                mine_document: {
+                  document_manager_guid: doc.document_manager_guid,
+                  document_name: currentName,
+                  mine_document_guid: doc.mine_document_guid,
+                  mine_guid: this.props.noticeOfWork.mine_guid,
+                },
+              };
+            })
         );
 
       const legacyOrderingAllowed =
@@ -161,6 +170,7 @@ export class FinalPermitDocuments extends Component {
         isAdminView: true,
         isSortingAllowed: legacyOrderingAllowed,
         showOrderColumn: orderColumnVisibleOutsideSplit,
+        enableFileManagement: this.props.enableFileManagement,
       };
 
       if (shouldSplitFiguresAndDocuments) {

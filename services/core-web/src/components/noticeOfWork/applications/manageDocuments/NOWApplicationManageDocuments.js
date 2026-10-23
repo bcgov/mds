@@ -51,6 +51,7 @@ export const NOWApplicationManageDocuments = (props) => {
           showInUnifiedView
           adminView
           disableCategoryFilter
+          enableFileManagement={isFeatureEnabled(Feature.NOW_FILE_MANAGEMENT)}
         />
       </ScrollContentWrapper>
       <ScrollContentWrapper
@@ -102,6 +103,7 @@ export const NOWApplicationManageDocuments = (props) => {
           hideJobStatusColumn={!isNoWApplication}
           hideImportStatusColumn={!isNoWApplication}
           onSpatialFileLinkClick={scrollToSpatialFiles}
+          enableFileManagement={isFeatureEnabled(Feature.NOW_FILE_MANAGEMENT)}
           preTableContent={
             <NOWSpatialFiles
               spatialDocumentBundles={props.noticeOfWork.spatial_document_bundles || []}

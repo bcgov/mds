@@ -238,7 +238,7 @@ exports[`ManageDocumentsTab renders properly 1`] = `
                               class="ant-spin-container"
                             >
                               <div
-                                class="ant-table ant-table-empty"
+                                class="ant-table ant-table-empty ant-table-has-fix-right"
                               >
                                 <div
                                   class="ant-table-container"
@@ -342,7 +342,7 @@ exports[`ManageDocumentsTab renders properly 1`] = `
                                           </th>
                                           <th
                                             aria-label="File Name"
-                                            class="ant-table-cell ant-table-column-has-sorters"
+                                            class="ant-table-cell file-name-header--offset ant-table-column-has-sorters"
                                             tabindex="0"
                                           >
                                             <div
@@ -467,15 +467,21 @@ exports[`ManageDocumentsTab renders properly 1`] = `
                                           >
                                             
                                           </th>
+                                          <th
+                                            class="ant-table-cell actions-column ant-table-cell-fix-right ant-table-cell-fix-right-first"
+                                            style="position: sticky; right: 0px;"
+                                          />
                                         </tr>
                                       </thead>
                                       <tbody
                                         class="ant-table-tbody"
                                       >
-                                        <tr>
+                                        <tr
+                                          class="ant-table-placeholder"
+                                        >
                                           <td
                                             class="ant-table-cell"
-                                            colspan="7"
+                                            colspan="8"
                                           >
                                             No Data Yet
                                           </td>
@@ -619,7 +625,7 @@ exports[`ManageDocumentsTab renders properly 1`] = `
                             class="ant-spin-container"
                           >
                             <div
-                              class="ant-table"
+                              class="ant-table ant-table-has-fix-right"
                             >
                               <div
                                 class="ant-table-container"
@@ -713,7 +719,7 @@ exports[`ManageDocumentsTab renders properly 1`] = `
                                         </th>
                                         <th
                                           aria-label="File Name"
-                                          class="ant-table-cell ant-table-column-has-sorters"
+                                          class="ant-table-cell file-name-header--offset ant-table-column-has-sorters"
                                           tabindex="0"
                                         >
                                           <div
@@ -836,13 +842,17 @@ exports[`ManageDocumentsTab renders properly 1`] = `
                                         >
                                           Import Status
                                         </th>
+                                        <th
+                                          class="ant-table-cell actions-column ant-table-cell-fix-right ant-table-cell-fix-right-first"
+                                          style="position: sticky; right: 0px;"
+                                        />
                                       </tr>
                                     </thead>
                                     <tbody
                                       class="ant-table-tbody"
                                     >
                                       <tr
-                                        class="ant-table-row ant-table-row-level-0 fade-in"
+                                        class="ant-table-row ant-table-row-level-0 table-row-align-middle no-sub-table-expandable-rows fade-in"
                                       >
                                         <td
                                           class="ant-table-cell"
@@ -854,14 +864,30 @@ exports[`ManageDocumentsTab renders properly 1`] = `
                                           </div>
                                         </td>
                                         <td
-                                          class="ant-table-cell"
+                                          class="ant-table-cell ant-table-cell-with-append"
                                         >
+                                          <span
+                                            class="ant-table-row-indent indent-level-0"
+                                            style="padding-left: 0px;"
+                                          />
                                           <div
+                                            class="inline-flex flex-between file-name-container"
+                                            style="margin-left: 38px;"
                                             title="File Name"
                                           >
-                                            <a
-                                              role="link"
-                                              tabindex="0"
+                                            <div
+                                              title="File Name"
+                                            >
+                                              <a
+                                                role="link"
+                                                tabindex="0"
+                                                title="N/A"
+                                              >
+                                                N/A
+                                              </a>
+                                            </div>
+                                            <span
+                                              class="file-history-container"
                                             />
                                           </div>
                                         </td>
@@ -915,6 +941,12 @@ exports[`ManageDocumentsTab renders properly 1`] = `
                                               </span>
                                             </span>
                                           </div>
+                                        </td>
+                                        <td
+                                          class="ant-table-cell actions-column ant-table-cell-fix-right ant-table-cell-fix-right-first"
+                                          style="position: sticky; right: 0px;"
+                                        >
+                                          <span />
                                         </td>
                                       </tr>
                                     </tbody>
@@ -1085,7 +1117,7 @@ exports[`ManageDocumentsTab renders properly 1`] = `
                                         </th>
                                         <th
                                           aria-label="File Name"
-                                          class="ant-table-cell ant-table-column-has-sorters"
+                                          class="ant-table-cell file-name-header--offset ant-table-column-has-sorters"
                                           tabindex="0"
                                         >
                                           <div
@@ -1273,7 +1305,9 @@ exports[`ManageDocumentsTab renders properly 1`] = `
                                     <tbody
                                       class="ant-table-tbody"
                                     >
-                                      <tr>
+                                      <tr
+                                        class="ant-table-placeholder"
+                                      >
                                         <td
                                           class="ant-table-cell"
                                           colspan="8"

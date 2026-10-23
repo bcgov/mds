@@ -79,6 +79,16 @@ def _check_file_management_rules(now_application_identity, mine_document, xref):
     is_locked = now_application_identity.now_application.now_application_status_code in NOW_APPLICATION_LOCKED_STATUS_CODES
     is_delayed = any(delay.end_date is None for delay in now_application_identity.application_delays)
 
+    # vFCBC imports have no sub-type, and always belong to Application Documents
+    is_imported = isinstance(xref, NOWApplicationDocumentIdentityXref)
+    sub_type_code = None if is_imported else xref.now_application_document_sub_type_code
+    is_application_document = is_imported or sub_type_code in APPLICATION_DOCUMENT_SUB_TYPE_CODES
+    is_government_document = sub_type_code == GOVERNMENT_DOCUMENT_SUB_TYPE_CODE
+
+    # Checked before the permit package rules, since files from other tables (e.g. System-generated) can also be added to the package
+    if not is_application_document and not is_government_document:
+        raise BadRequest('This document cannot be changed from Manage Documents.')
+
     if xref.is_final_package:
         if is_locked:
             raise BadRequest('Permit package documents cannot be changed once the application has a decision.')
@@ -86,20 +96,8 @@ def _check_file_management_rules(now_application_identity, mine_document, xref):
             raise BadRequest('Permit package documents cannot be changed while the application is delayed.')
         return
 
-    # vFCBC imports have no sub-type, and always belong to Application Documents
-    if isinstance(xref, NOWApplicationDocumentIdentityXref):
-        return
-
-    sub_type_code = xref.now_application_document_sub_type_code
-    if sub_type_code in APPLICATION_DOCUMENT_SUB_TYPE_CODES:
-        return
-
-    if sub_type_code == GOVERNMENT_DOCUMENT_SUB_TYPE_CODE:
-        if is_delayed:
-            raise BadRequest('Government documents cannot be changed while the application is delayed.')
-        return
-
-    raise BadRequest('This document cannot be changed from Manage Documents.')
+    if is_government_document and is_delayed:
+        raise BadRequest('Government documents cannot be changed while the application is delayed.')
 
 
 def _get_file_extension(filename):

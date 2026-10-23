@@ -414,6 +414,11 @@
   background-color: #f8f7fb;
 }
 
+// Lines the File Name header up with the file names, which sit beside the version history icon (like Major Projects)
+.file-name-header--offset .ant-table-column-title {
+  margin-left: 38px;
+}
+
 .spatial-files-row-link {
   margin-left: 8px;
   padding: 0;

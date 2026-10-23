@@ -495,6 +495,7 @@ describe("NOWDocuments", () => {
 
       const { content, props: modalProps } = lastOpenModalCall();
       expect(content).toBe(ArchiveDocumentModal);
+      expect(modalProps.alertDescription).toContain("removes this file from Government Documents");
       expect(modalProps.extraWarning).toBeUndefined();
 
       await modalProps.handleSubmit();
@@ -538,5 +539,57 @@ describe("NOWDocuments", () => {
         expect(lastOpenModalCall().props.extraWarning).toContain(expectedWarning);
       }
     );
+
+    describe("permit package table", () => {
+      const renderPermitPackage = (overrides: Record<string, unknown> = {}) =>
+        renderFileManagement({
+          isStandardDocuments: false,
+          isFinalPackageTable: true,
+          documents: [governmentDocument({ is_final_package: true })],
+          ...overrides,
+        });
+
+      it("shows the Actions menu while the application is in progress", async () => {
+        renderPermitPackage();
+
+        await openActionsMenu();
+        expect(screen.getByText("Replace file")).toBeInTheDocument();
+        expect(screen.getByText("Archive file")).toBeInTheDocument();
+      });
+
+      it("only offers view and download once the application has a decision", async () => {
+        renderPermitPackage({
+          noticeOfWork: { ...NOWMocks.IMPORTED_NOTICE_OF_WORK, now_application_status_code: "AIA" },
+        });
+
+        await openActionsMenu();
+        expect(screen.getByText("Open in document viewer")).toBeInTheDocument();
+        expect(screen.queryByText("Replace file")).not.toBeInTheDocument();
+        expect(screen.queryByText("Archive file")).not.toBeInTheDocument();
+      });
+
+      it("offers no actions on the 1.1 placeholder row, which has no file", () => {
+        renderPermitPackage({
+          documents: [
+            {
+              isLockedApplicationForm: true,
+              is_final_package: true,
+              now_application_document_xref_guid: "application-form-1.1",
+              mine_document: { mine_document_guid: null, document_manager_guid: null, document_name: null },
+            },
+          ],
+        });
+
+        expect(screen.getByTitle("File Name")).toHaveTextContent("N/A");
+        expect(screen.queryByRole("button", { name: /Actions/ })).not.toBeInTheDocument();
+      });
+
+      it("shows the version history expand icon in the File Name column", () => {
+        const { container } = renderPermitPackage();
+
+        const expandIconCell = container.querySelector(".expand-row-icon").closest("td");
+        expect(expandIconCell).toHaveTextContent("report-v2.pdf");
+      });
+    });
   });
 });
