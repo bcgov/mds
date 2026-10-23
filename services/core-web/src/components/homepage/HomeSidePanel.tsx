@@ -34,8 +34,8 @@ const ExternalLinksSection = () => {
         "https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/mineral-titles/mineral-placer-titles/mineraltitlesonline",
     },
     {
-      title: "LAMP",
-      url: "https://gww.nrs.gov.bc.ca/empr/mines-and-mineral-resources/inspector-mines-training",
+      title: "LAMP - Core User Guides",
+      url: "https://intranet.gov.bc.ca/mcm/the-lamp/systems/core",
     },
     {
       title: "Mineral Inventory (MINFILE)",

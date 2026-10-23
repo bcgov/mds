@@ -348,11 +348,11 @@ exports[`HomePage renders properly 1`] = `
           </div>
           <div>
             <a
-              href="https://gww.nrs.gov.bc.ca/empr/mines-and-mineral-resources/inspector-mines-training"
+              href="https://intranet.gov.bc.ca/mcm/the-lamp/systems/core"
               rel="noopener noreferrer"
               target="_blank"
             >
-              LAMP
+              LAMP - Core User Guides
             </a>
           </div>
           <div>
