@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Typography } from "antd";
-import { HSRC_PDF, MEMP_PDF } from "@/constants/assets";
+import { MEMP_PDF } from "@/constants/assets";
 
 const linkWidget = (title, links) => {
   return (
@@ -90,7 +90,8 @@ const DocumentsSection = () => {
   const links = [
     {
       title: "Health, Safety and Reclamation Code",
-      url: HSRC_PDF, //new code
+      url:
+        "https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/health-safety/health-safety-and-reclamation-code-for-mines-in-british-columbia",
     },
     {
       title: "Chief Inspector's Annual Reports",
