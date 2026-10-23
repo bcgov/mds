@@ -30,6 +30,8 @@ export interface GenericDocTableProps<T> {
 
 interface DocumentTableProps extends GenericDocTableProps<MineDocument> {
   documents: MineDocument[] | IMineDocument[];
+  // Opens a previous version in the document viewer, rather than the latest file
+  openSelectedVersion?: boolean;
 }
 
 export default DocumentTableProps;

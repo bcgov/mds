@@ -127,6 +127,17 @@ exports[`ManageDocumentsTab renders properly 1`] = `
                 Referral, Consultation and Public Comment Documents
               </a>
             </div>
+            <div
+              class="ant-anchor-link now-menu-link"
+            >
+              <a
+                class="ant-anchor-link-title"
+                href="#archived-documents"
+                title="Archived Documents"
+              >
+                Archived Documents
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -612,7 +623,42 @@ exports[`ManageDocumentsTab renders properly 1`] = `
                         </div>
                         <div
                           class="ant-col ant-col-6"
-                        />
+                        >
+                          <div
+                            class="now-table-header-actions"
+                          >
+                            <div />
+                            <button
+                              class="ant-btn ant-btn-default full-mobile"
+                              disabled=""
+                              type="button"
+                            >
+                              <span
+                                aria-label="download"
+                                class="anticon anticon-download padding-sm--right icon-sm"
+                                role="img"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  class=""
+                                  data-icon="download"
+                                  fill="currentColor"
+                                  focusable="false"
+                                  height="1em"
+                                  viewBox="64 64 896 896"
+                                  width="1em"
+                                >
+                                  <path
+                                    d="M505.7 661a8 8 0 0012.6 0l112-141.7c4.1-5.2.4-12.9-6.3-12.9h-74.1V168c0-4.4-3.6-8-8-8h-60c-4.4 0-8 3.6-8 8v338.3H400c-6.7 0-10.4 7.7-6.3 12.9l112 141.8zM878 626h-60c-4.4 0-8 3.6-8 8v154H214V634c0-4.4-3.6-8-8-8h-60c-4.4 0-8 3.6-8 8v198c0 17.7 14.3 32 32 32h684c17.7 0 32-14.3 32-32V634c0-4.4-3.6-8-8-8z"
+                                  />
+                                </svg>
+                              </span>
+                              <span>
+                                Download All
+                              </span>
+                            </button>
+                          </div>
+                        </div>
                       </div>
                       <br />
                       <div
@@ -1009,7 +1055,42 @@ exports[`ManageDocumentsTab renders properly 1`] = `
                         </div>
                         <div
                           class="ant-col ant-col-6"
-                        />
+                        >
+                          <div
+                            class="now-table-header-actions"
+                          >
+                            <div />
+                            <button
+                              class="ant-btn ant-btn-default full-mobile"
+                              disabled=""
+                              type="button"
+                            >
+                              <span
+                                aria-label="download"
+                                class="anticon anticon-download padding-sm--right icon-sm"
+                                role="img"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  class=""
+                                  data-icon="download"
+                                  fill="currentColor"
+                                  focusable="false"
+                                  height="1em"
+                                  viewBox="64 64 896 896"
+                                  width="1em"
+                                >
+                                  <path
+                                    d="M505.7 661a8 8 0 0012.6 0l112-141.7c4.1-5.2.4-12.9-6.3-12.9h-74.1V168c0-4.4-3.6-8-8-8h-60c-4.4 0-8 3.6-8 8v338.3H400c-6.7 0-10.4 7.7-6.3 12.9l112 141.8zM878 626h-60c-4.4 0-8 3.6-8 8v154H214V634c0-4.4-3.6-8-8-8h-60c-4.4 0-8 3.6-8 8v198c0 17.7 14.3 32 32 32h684c17.7 0 32-14.3 32-32V634c0-4.4-3.6-8-8-8z"
+                                  />
+                                </svg>
+                              </span>
+                              <span>
+                                Download All
+                              </span>
+                            </button>
+                          </div>
+                        </div>
                       </div>
                       <br />
                       <div
@@ -2111,6 +2192,414 @@ exports[`ManageDocumentsTab renders properly 1`] = `
                                         <td
                                           class="ant-table-cell"
                                           colspan="3"
+                                        >
+                                          No Data Yet
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="scroll-wrapper"
+        >
+          <div
+            class="inline-flex"
+          >
+            <div
+              class="circle grey"
+            />
+            <div
+              id="archived-documents"
+            >
+              <div
+                class="scroll-wrapper--title"
+              >
+                <h3>
+                  Archived Documents
+                </h3>
+              </div>
+            </div>
+          </div>
+          <div
+            class="scroll-wrapper--border"
+          >
+            <div>
+              <div
+                class="fade-in"
+              >
+                <div
+                  class="scroll-wrapper--body"
+                >
+                  <span>
+                    <div
+                      class="ant-typography"
+                    >
+                      Files archived from the Permit Package, Application Documents and Government Documents tables
+                    </div>
+                    <div>
+                      <div />
+                      <div
+                        class="ant-table-wrapper  core-table"
+                      >
+                        <div
+                          class="ant-spin-nested-loading"
+                        >
+                          <div
+                            class="ant-spin-container"
+                          >
+                            <div
+                              class="ant-table ant-table-empty ant-table-has-fix-right"
+                            >
+                              <div
+                                class="ant-table-container"
+                              >
+                                <div
+                                  class="ant-table-content"
+                                >
+                                  <table
+                                    style="table-layout: auto;"
+                                  >
+                                    <colgroup />
+                                    <thead
+                                      class="ant-table-thead"
+                                    >
+                                      <tr>
+                                        <th
+                                          aria-label=""
+                                          class="ant-table-cell ant-table-column-has-sorters"
+                                          tabindex="0"
+                                        >
+                                          <div
+                                            class="ant-table-column-sorters"
+                                          >
+                                            <span
+                                              class="ant-table-column-title"
+                                            >
+                                              <span
+                                                style="margin-left: 38px;"
+                                              >
+                                                File Name
+                                              </span>
+                                            </span>
+                                            <span
+                                              class="ant-table-column-sorter ant-table-column-sorter-full"
+                                            >
+                                              <span
+                                                class="ant-table-column-sorter-inner"
+                                              >
+                                                <span
+                                                  aria-label="caret-up"
+                                                  class="anticon anticon-caret-up ant-table-column-sorter-up"
+                                                  role="presentation"
+                                                >
+                                                  <svg
+                                                    aria-hidden="true"
+                                                    data-icon="caret-up"
+                                                    fill="currentColor"
+                                                    focusable="false"
+                                                    height="1em"
+                                                    viewBox="0 0 1024 1024"
+                                                    width="1em"
+                                                  >
+                                                    <path
+                                                      d="M858.9 689L530.5 308.2c-9.4-10.9-27.5-10.9-37 0L165.1 689c-12.2 14.2-1.2 35 18.5 35h656.8c19.7 0 30.7-20.8 18.5-35z"
+                                                    />
+                                                  </svg>
+                                                </span>
+                                                <span
+                                                  aria-label="caret-down"
+                                                  class="anticon anticon-caret-down ant-table-column-sorter-down"
+                                                  role="presentation"
+                                                >
+                                                  <svg
+                                                    aria-hidden="true"
+                                                    data-icon="caret-down"
+                                                    fill="currentColor"
+                                                    focusable="false"
+                                                    height="1em"
+                                                    viewBox="0 0 1024 1024"
+                                                    width="1em"
+                                                  >
+                                                    <path
+                                                      d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
+                                                    />
+                                                  </svg>
+                                                </span>
+                                              </span>
+                                            </span>
+                                          </div>
+                                        </th>
+                                        <th
+                                          aria-label="From"
+                                          class="ant-table-cell ant-table-column-has-sorters"
+                                          tabindex="0"
+                                        >
+                                          <div
+                                            class="ant-table-column-sorters"
+                                          >
+                                            <span
+                                              class="ant-table-column-title"
+                                            >
+                                              From
+                                            </span>
+                                            <span
+                                              class="ant-table-column-sorter ant-table-column-sorter-full"
+                                            >
+                                              <span
+                                                class="ant-table-column-sorter-inner"
+                                              >
+                                                <span
+                                                  aria-label="caret-up"
+                                                  class="anticon anticon-caret-up ant-table-column-sorter-up"
+                                                  role="presentation"
+                                                >
+                                                  <svg
+                                                    aria-hidden="true"
+                                                    data-icon="caret-up"
+                                                    fill="currentColor"
+                                                    focusable="false"
+                                                    height="1em"
+                                                    viewBox="0 0 1024 1024"
+                                                    width="1em"
+                                                  >
+                                                    <path
+                                                      d="M858.9 689L530.5 308.2c-9.4-10.9-27.5-10.9-37 0L165.1 689c-12.2 14.2-1.2 35 18.5 35h656.8c19.7 0 30.7-20.8 18.5-35z"
+                                                    />
+                                                  </svg>
+                                                </span>
+                                                <span
+                                                  aria-label="caret-down"
+                                                  class="anticon anticon-caret-down ant-table-column-sorter-down"
+                                                  role="presentation"
+                                                >
+                                                  <svg
+                                                    aria-hidden="true"
+                                                    data-icon="caret-down"
+                                                    fill="currentColor"
+                                                    focusable="false"
+                                                    height="1em"
+                                                    viewBox="0 0 1024 1024"
+                                                    width="1em"
+                                                  >
+                                                    <path
+                                                      d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
+                                                    />
+                                                  </svg>
+                                                </span>
+                                              </span>
+                                            </span>
+                                          </div>
+                                        </th>
+                                        <th
+                                          aria-label="File Type"
+                                          class="ant-table-cell ant-table-column-has-sorters"
+                                          tabindex="0"
+                                        >
+                                          <div
+                                            class="ant-table-column-sorters"
+                                          >
+                                            <span
+                                              class="ant-table-column-title"
+                                            >
+                                              File Type
+                                            </span>
+                                            <span
+                                              class="ant-table-column-sorter ant-table-column-sorter-full"
+                                            >
+                                              <span
+                                                class="ant-table-column-sorter-inner"
+                                              >
+                                                <span
+                                                  aria-label="caret-up"
+                                                  class="anticon anticon-caret-up ant-table-column-sorter-up"
+                                                  role="presentation"
+                                                >
+                                                  <svg
+                                                    aria-hidden="true"
+                                                    data-icon="caret-up"
+                                                    fill="currentColor"
+                                                    focusable="false"
+                                                    height="1em"
+                                                    viewBox="0 0 1024 1024"
+                                                    width="1em"
+                                                  >
+                                                    <path
+                                                      d="M858.9 689L530.5 308.2c-9.4-10.9-27.5-10.9-37 0L165.1 689c-12.2 14.2-1.2 35 18.5 35h656.8c19.7 0 30.7-20.8 18.5-35z"
+                                                    />
+                                                  </svg>
+                                                </span>
+                                                <span
+                                                  aria-label="caret-down"
+                                                  class="anticon anticon-caret-down ant-table-column-sorter-down"
+                                                  role="presentation"
+                                                >
+                                                  <svg
+                                                    aria-hidden="true"
+                                                    data-icon="caret-down"
+                                                    fill="currentColor"
+                                                    focusable="false"
+                                                    height="1em"
+                                                    viewBox="0 0 1024 1024"
+                                                    width="1em"
+                                                  >
+                                                    <path
+                                                      d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
+                                                    />
+                                                  </svg>
+                                                </span>
+                                              </span>
+                                            </span>
+                                          </div>
+                                        </th>
+                                        <th
+                                          aria-sort="descending"
+                                          class="ant-table-cell ant-table-column-sort ant-table-column-has-sorters"
+                                          tabindex="0"
+                                        >
+                                          <div
+                                            class="ant-table-column-sorters"
+                                          >
+                                            <span
+                                              class="ant-table-column-title"
+                                            >
+                                              Last Modified
+                                            </span>
+                                            <span
+                                              class="ant-table-column-sorter ant-table-column-sorter-full"
+                                            >
+                                              <span
+                                                class="ant-table-column-sorter-inner"
+                                              >
+                                                <span
+                                                  aria-label="caret-up"
+                                                  class="anticon anticon-caret-up ant-table-column-sorter-up"
+                                                  role="presentation"
+                                                >
+                                                  <svg
+                                                    aria-hidden="true"
+                                                    data-icon="caret-up"
+                                                    fill="currentColor"
+                                                    focusable="false"
+                                                    height="1em"
+                                                    viewBox="0 0 1024 1024"
+                                                    width="1em"
+                                                  >
+                                                    <path
+                                                      d="M858.9 689L530.5 308.2c-9.4-10.9-27.5-10.9-37 0L165.1 689c-12.2 14.2-1.2 35 18.5 35h656.8c19.7 0 30.7-20.8 18.5-35z"
+                                                    />
+                                                  </svg>
+                                                </span>
+                                                <span
+                                                  aria-label="caret-down"
+                                                  class="anticon anticon-caret-down ant-table-column-sorter-down active"
+                                                  role="presentation"
+                                                >
+                                                  <svg
+                                                    aria-hidden="true"
+                                                    data-icon="caret-down"
+                                                    fill="currentColor"
+                                                    focusable="false"
+                                                    height="1em"
+                                                    viewBox="0 0 1024 1024"
+                                                    width="1em"
+                                                  >
+                                                    <path
+                                                      d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
+                                                    />
+                                                  </svg>
+                                                </span>
+                                              </span>
+                                            </span>
+                                          </div>
+                                        </th>
+                                        <th
+                                          aria-label="Created By"
+                                          class="ant-table-cell ant-table-column-has-sorters"
+                                          tabindex="0"
+                                        >
+                                          <div
+                                            class="ant-table-column-sorters"
+                                          >
+                                            <span
+                                              class="ant-table-column-title"
+                                            >
+                                              Created By
+                                            </span>
+                                            <span
+                                              class="ant-table-column-sorter ant-table-column-sorter-full"
+                                            >
+                                              <span
+                                                class="ant-table-column-sorter-inner"
+                                              >
+                                                <span
+                                                  aria-label="caret-up"
+                                                  class="anticon anticon-caret-up ant-table-column-sorter-up"
+                                                  role="presentation"
+                                                >
+                                                  <svg
+                                                    aria-hidden="true"
+                                                    data-icon="caret-up"
+                                                    fill="currentColor"
+                                                    focusable="false"
+                                                    height="1em"
+                                                    viewBox="0 0 1024 1024"
+                                                    width="1em"
+                                                  >
+                                                    <path
+                                                      d="M858.9 689L530.5 308.2c-9.4-10.9-27.5-10.9-37 0L165.1 689c-12.2 14.2-1.2 35 18.5 35h656.8c19.7 0 30.7-20.8 18.5-35z"
+                                                    />
+                                                  </svg>
+                                                </span>
+                                                <span
+                                                  aria-label="caret-down"
+                                                  class="anticon anticon-caret-down ant-table-column-sorter-down"
+                                                  role="presentation"
+                                                >
+                                                  <svg
+                                                    aria-hidden="true"
+                                                    data-icon="caret-down"
+                                                    fill="currentColor"
+                                                    focusable="false"
+                                                    height="1em"
+                                                    viewBox="0 0 1024 1024"
+                                                    width="1em"
+                                                  >
+                                                    <path
+                                                      d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
+                                                    />
+                                                  </svg>
+                                                </span>
+                                              </span>
+                                            </span>
+                                          </div>
+                                        </th>
+                                        <th
+                                          class="ant-table-cell actions-column ant-table-cell-fix-right ant-table-cell-fix-right-first"
+                                          style="position: sticky; right: 0px;"
+                                        />
+                                      </tr>
+                                    </thead>
+                                    <tbody
+                                      class="ant-table-tbody"
+                                    >
+                                      <tr
+                                        class="ant-table-placeholder"
+                                      >
+                                        <td
+                                          class="ant-table-cell"
+                                          colspan="6"
                                         >
                                           No Data Yet
                                         </td>

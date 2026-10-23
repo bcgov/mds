@@ -50,6 +50,7 @@ import { sortableContainer, sortableElement, sortableHandle } from "react-sortab
 import arrayMove from "array-move";
 import CoreTable from "@mds/common/components/common/CoreTable";
 import { renderPermitPackageTitleColumn } from "@/components/noticeOfWork/applications/permitPackageTitleColumn";
+import NOWDownloadAllButton from "@/components/noticeOfWork/applications/NOWDownloadAllButton";
 import {
   fileManagementActionsColumn,
   fileNameHeaderCell,
@@ -827,6 +828,32 @@ export class NOWDocuments extends Component {
       this.props.noticeOfWorkApplicationDocumentTypeOptions,
       this.props.categoriesToShow
     );
+    const showDownloadAll =
+      this.props.enableFileManagement &&
+      !this.props.selectedRows &&
+      !this.props.isFinalPackageTable &&
+      !this.props.isRefConDocuments;
+    const addDocumentButton = !this.props.selectedRows &&
+      !this.props.isViewMode &&
+      !this.props.isRefConDocuments &&
+      !this.props.isFinalPackageTable && (
+        <NOWActionWrapper
+          permission={Permission.EDIT_PERMITS}
+          tab={this.props.isAdminView ? "" : "REV"}
+          allowAfterProcess={this.props.allowAfterProcess}
+          ignoreDelay
+        >
+          <AddButton
+            // Sits beside Download All when it's shown, otherwise in its usual spot
+            className={showDownloadAll ? undefined : "position-right"}
+            disabled={this.props.isViewMode}
+            style={this.props.isAdminView && !showDownloadAll ? { marginRight: "100px" } : {}}
+            onClick={this.openAddDocumentModal}
+          >
+            Add Document
+          </AddButton>
+        </NOWActionWrapper>
+      );
     return (
       <div>
         <Row className="inline-flex between">
@@ -834,26 +861,18 @@ export class NOWDocuments extends Component {
             <p>{this.props.disclaimerText}</p>
           </Col>
           <Col span={6}>
-            {!this.props.selectedRows &&
-              !this.props.isViewMode &&
-              !this.props.isRefConDocuments &&
-              !this.props.isFinalPackageTable && (
-                <NOWActionWrapper
-                  permission={Permission.EDIT_PERMITS}
-                  tab={this.props.isAdminView ? "" : "REV"}
-                  allowAfterProcess={this.props.allowAfterProcess}
-                  ignoreDelay
-                >
-                  <AddButton
-                    className="position-right"
-                    disabled={this.props.isViewMode}
-                    style={this.props.isAdminView ? { marginRight: "100px" } : {}}
-                    onClick={this.openAddDocumentModal}
-                  >
-                    Add Document
-                  </AddButton>
-                </NOWActionWrapper>
-              )}
+            {showDownloadAll ? (
+              <div className="now-table-header-actions">
+                <NOWDownloadAllButton
+                  rows={this.state.dataSource ?? []}
+                  mineGuid={this.props.noticeOfWork.mine_guid}
+                  documentType="government-documents"
+                />
+                {addDocumentButton}
+              </div>
+            ) : (
+              addDocumentButton
+            )}
           </Col>
         </Row>
         <br />

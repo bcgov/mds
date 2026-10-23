@@ -339,6 +339,13 @@ export const sideMenuOptions = (tab, hasPermitConditionsFlow = true, hasLegacyFu
         alwaysVisible: true,
         applicationType: ["NOW", "ADA"],
       },
+      {
+        href: "archived-documents",
+        title: "Archived Documents",
+        alwaysVisible: true,
+        applicationType: ["NOW", "ADA"],
+        featureFlag: "NOW_FILE_MANAGEMENT",
+      },
     ],
   };
   return options[tab];

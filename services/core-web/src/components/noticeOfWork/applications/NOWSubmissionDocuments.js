@@ -42,6 +42,7 @@ import { EDIT_OUTLINE_VIOLET, TRASHCAN } from "@/constants/assets";
 import AddButton from "@/components/common/buttons/AddButton";
 import ReferralConsultationPackage from "@/components/noticeOfWork/applications/referals/ReferralConsultationPackage";
 import PermitPackage from "@/components/noticeOfWork/applications/PermitPackage";
+import NOWDownloadAllButton from "@/components/noticeOfWork/applications/NOWDownloadAllButton";
 import CoreTable from "@mds/common/components/common/CoreTable";
 import { renderPermitPackageTitleColumn } from "@/components/noticeOfWork/applications/permitPackageTitleColumn";
 import SpatialFilesRowLink from "@mds/common/components/documents/spatial/SpatialFilesRowLink";
@@ -804,6 +805,26 @@ export const NOWSubmissionDocuments = (props) => {
     );
   };
 
+  const showDownloadAll = props.enableFileManagement && !props.selectedRows && !props.isPackageModal;
+  const addDocumentButton = !props.selectedRows && !props.isViewMode && !props.isPackageModal && (
+    <NOWActionWrapper
+      permission={Permission.EDIT_PERMITS}
+      tab={props.isAdminView ? "" : "REV"}
+      allowAfterProcess={props.allowAfterProcess}
+      ignoreDelay
+    >
+      <AddButton
+        // Sits beside Download All when it's shown, otherwise in its usual spot
+        className={showDownloadAll ? undefined : "position-right"}
+        disabled={props.isViewMode}
+        style={props.isAdminView && !showDownloadAll ? { marginRight: "100px" } : {}}
+        onClick={openAddDocumentModal}
+      >
+        Add Document
+      </AddButton>
+    </NOWActionWrapper>
+  );
+
   return (
     <div>
       {!props.hideJobStatusColumn && !props.isPackageModal && renderImportJobStatus()}
@@ -811,22 +832,17 @@ export const NOWSubmissionDocuments = (props) => {
       <Row className="inline-flex between">
         <Col span={16}>{props.displayTableDescription && <p>{props.tableDescription}</p>}</Col>
         <Col span={6}>
-          {!props.selectedRows && !props.isViewMode && !props.isPackageModal && (
-            <NOWActionWrapper
-              permission={Permission.EDIT_PERMITS}
-              tab={props.isAdminView ? "" : "REV"}
-              allowAfterProcess={props.allowAfterProcess}
-              ignoreDelay
-            >
-              <AddButton
-                className="position-right"
-                disabled={props.isViewMode}
-                style={props.isAdminView ? { marginRight: "100px" } : {}}
-                onClick={openAddDocumentModal}
-              >
-                Add Document
-              </AddButton>
-            </NOWActionWrapper>
+          {showDownloadAll ? (
+            <div className="now-table-header-actions">
+              <NOWDownloadAllButton
+                rows={dataSource ?? []}
+                mineGuid={props.noticeOfWork.mine_guid}
+                documentType="application-documents"
+              />
+              {addDocumentButton}
+            </div>
+          ) : (
+            addDocumentButton
           )}
         </Col>
       </Row>

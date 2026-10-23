@@ -36,10 +36,13 @@ const propTypes = {
   openModal: PropTypes.func.isRequired,
   isAdminView: PropTypes.bool,
   isTableHeaderView: PropTypes.bool,
+  // Like Major Projects, warns that previous versions and archived files aren't included in Download All
+  showDownloadWarning: PropTypes.bool,
 };
 
 const defaultProps = {
   isTableHeaderView: false,
+  showDownloadWarning: false,
   isAdminView: false,
   importNowSubmissionDocumentsJob: {},
 };
@@ -187,7 +190,7 @@ export class PermitPackage extends Component {
           setCompressionModalVisible={(state) => this.setState({ isCompressionModal: state })}
           isCompressionModalVisible={this.state.isCompressionModal}
           setCompressionInProgress={(state) => this.setState({ isCompressionInProgress: state })}
-          showDownloadWarning={false}
+          showDownloadWarning={this.props.showDownloadWarning}
         />
         <Button
           type="secondary"
