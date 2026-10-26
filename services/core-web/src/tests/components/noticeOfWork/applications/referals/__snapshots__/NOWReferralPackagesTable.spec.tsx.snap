@@ -1,0 +1,243 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NOWReferralPackagesTable renders referral packages and document details properly 1`] = `
+<div>
+  <div
+    class="ant-table-wrapper referral-packages-table core-table"
+  >
+    <div
+      class="ant-spin-nested-loading"
+    >
+      <div
+        class="ant-spin-container"
+      >
+        <div
+          class="ant-table"
+        >
+          <div
+            class="ant-table-container"
+          >
+            <div
+              class="ant-table-content"
+            >
+              <table
+                style="table-layout: auto;"
+              >
+                <colgroup>
+                  <col
+                    class="ant-table-expand-icon-col"
+                  />
+                </colgroup>
+                <thead
+                  class="ant-table-thead"
+                >
+                  <tr>
+                    <th
+                      class="ant-table-cell ant-table-row-expand-icon-cell"
+                    />
+                    <th
+                      class="ant-table-cell"
+                    >
+                      Package
+                    </th>
+                    <th
+                      class="ant-table-cell"
+                    >
+                      Date
+                    </th>
+                    <th
+                      class="ant-table-cell"
+                    >
+                      Created By
+                    </th>
+                    <th
+                      class="ant-table-cell"
+                    >
+                      Files
+                    </th>
+                  </tr>
+                </thead>
+                <tbody
+                  class="ant-table-tbody"
+                >
+                  <tr
+                    class="ant-table-row ant-table-row-level-0 fade-in"
+                    data-row-key="pkg-guid-1"
+                  >
+                    <td
+                      class="ant-table-cell ant-table-row-expand-icon-cell"
+                    >
+                      <span>
+                        <a
+                          class="expand-row-icon"
+                          role="link"
+                          style="cursor: pointer;"
+                          tabindex="0"
+                        >
+                          <span
+                            aria-label="minus-square"
+                            class="anticon anticon-minus-square icon-lg--lightgrey"
+                            role="img"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              class=""
+                              data-icon="minus-square"
+                              fill="currentColor"
+                              focusable="false"
+                              height="1em"
+                              viewBox="64 64 896 896"
+                              width="1em"
+                            >
+                              <path
+                                d="M880 112H144c-17.7 0-32 14.3-32 32v736c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V144c0-17.7-14.3-32-32-32zM704 536c0 4.4-3.6 8-8 8H328c-4.4 0-8-3.6-8-8v-48c0-4.4 3.6-8 8-8h368c4.4 0 8 3.6 8 8v48z"
+                              />
+                            </svg>
+                          </span>
+                        </a>
+                      </span>
+                    </td>
+                    <td
+                      class="ant-table-cell"
+                    >
+                      <strong>
+                        Package #1
+                      </strong>
+                    </td>
+                    <td
+                      class="ant-table-cell"
+                    >
+                      <div
+                        title="Oct 22, 2026 4:00 AM"
+                      >
+                        Oct 22 2026
+                      </div>
+                    </td>
+                    <td
+                      class="ant-table-cell"
+                    >
+                      idir\\testuser
+                    </td>
+                    <td
+                      class="ant-table-cell"
+                    >
+                      1
+                    </td>
+                  </tr>
+                  <tr
+                    class="ant-table-expanded-row ant-table-expanded-row-level-1"
+                  >
+                    <td
+                      class="ant-table-cell"
+                      colspan="5"
+                    >
+                      <div
+                        class="ant-table-wrapper"
+                      >
+                        <div
+                          class="ant-spin-nested-loading"
+                        >
+                          <div
+                            class="ant-spin-container"
+                          >
+                            <div
+                              class="ant-table"
+                            >
+                              <div
+                                class="ant-table-container"
+                              >
+                                <div
+                                  class="ant-table-content"
+                                >
+                                  <table
+                                    style="table-layout: auto;"
+                                  >
+                                    <colgroup />
+                                    <thead
+                                      class="ant-table-thead"
+                                    >
+                                      <tr>
+                                        <th
+                                          class="ant-table-cell"
+                                        >
+                                          File Name
+                                        </th>
+                                        <th
+                                          class="ant-table-cell"
+                                        >
+                                          Version
+                                        </th>
+                                        <th
+                                          class="ant-table-cell"
+                                        >
+                                          Category
+                                        </th>
+                                        <th
+                                          class="ant-table-cell"
+                                          style="text-align: right;"
+                                        >
+                                          
+                                        </th>
+                                      </tr>
+                                    </thead>
+                                    <tbody
+                                      class="ant-table-tbody"
+                                    >
+                                      <tr
+                                        class="ant-table-row ant-table-row-level-0"
+                                        data-row-key="xref-1"
+                                      >
+                                        <td
+                                          class="ant-table-cell"
+                                        >
+                                          TestDocument.pdf
+                                        </td>
+                                        <td
+                                          class="ant-table-cell"
+                                        >
+                                          v1
+                                        </td>
+                                        <td
+                                          class="ant-table-cell"
+                                        >
+                                          Referral / Consultation Package
+                                        </td>
+                                        <td
+                                          class="ant-table-cell"
+                                          style="text-align: right;"
+                                        >
+                                          <div
+                                            style="display: flex; justify-content: flex-end; align-items: center;"
+                                          >
+                                            <button
+                                              aria-label="View TestDocument.pdf"
+                                              class="ant-btn ant-btn-link"
+                                              type="button"
+                                            >
+                                              <span>
+                                                View
+                                              </span>
+                                            </button>
+                                          </div>
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

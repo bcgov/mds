@@ -39,6 +39,11 @@ export const storeNoticeOfWorkApplicationReviews = (payload) => ({
   payload,
 });
 
+export const storeNoticeOfWorkReferralPackages = (payload) => ({
+  type: actionTypes.STORE_NOTICE_OF_WORK_REFERRAL_PACKAGES,
+  payload,
+});
+
 export const storeNoticeOfWorkApplicationDocumentDownloadState = (payload) => ({
   type: actionTypes.STORE_NOTICE_OF_WORK_APPLICATION_DOCUMENT_DOWNLOAD_STATE,
   payload,

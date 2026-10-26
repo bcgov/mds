@@ -17,6 +17,7 @@ const dispatchProps = {
   updateNoticeOfWorkApplication: jest.fn(),
   setNoticeOfWorkApplicationDocumentDownloadState: jest.fn(),
   fetchImportedNoticeOfWorkApplication: jest.fn(),
+  fetchNoticeOfWorkReferralPackages: jest.fn(() => Promise.resolve()),
 };
 const reducerProps = {
   fixedTop: false,

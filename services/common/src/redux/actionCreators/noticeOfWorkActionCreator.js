@@ -744,3 +744,40 @@ export const createNoticeOfWorkApplicationNationEvent = (applicationGuid, nation
     })
     .finally(() => dispatch(hideLoading()));
 };
+
+export const fetchNoticeOfWorkReferralPackages = (applicationGuid) => (dispatch) => {
+  dispatch(request(NetworkReducerTypes.GET_NOTICE_OF_WORK_REFERRAL_PACKAGES));
+  dispatch(showLoading());
+  return CustomAxios()
+    .get(
+      `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_REFERRAL_PACKAGES(applicationGuid)}`,
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(success(NetworkReducerTypes.GET_NOTICE_OF_WORK_REFERRAL_PACKAGES));
+      dispatch(noticeOfWorkActions.storeNoticeOfWorkReferralPackages(response.data));
+      return response;
+    })
+    .catch(() => dispatch(error(NetworkReducerTypes.GET_NOTICE_OF_WORK_REFERRAL_PACKAGES)))
+    .finally(() => dispatch(hideLoading()));
+};
+
+export const createNoticeOfWorkReferralPackage = (applicationGuid, payload) => (dispatch) => {
+  dispatch(request(NetworkReducerTypes.CREATE_NOTICE_OF_WORK_REFERRAL_PACKAGE));
+  dispatch(showLoading());
+  return CustomAxios()
+    .post(
+      `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_REFERRAL_PACKAGES(applicationGuid)}`,
+      payload,
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(success(NetworkReducerTypes.CREATE_NOTICE_OF_WORK_REFERRAL_PACKAGE));
+      return response;
+    })
+    .catch((err) => {
+      dispatch(error(NetworkReducerTypes.CREATE_NOTICE_OF_WORK_REFERRAL_PACKAGE));
+      throw err;
+    })
+    .finally(() => dispatch(hideLoading()));
+};

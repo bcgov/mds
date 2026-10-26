@@ -107,6 +107,17 @@ exports[`ReferralTabs renders properly 1`] = `
                   Referral
                 </a>
               </div>
+              <div
+                class="ant-anchor-link now-menu-link"
+              >
+                <a
+                  class="ant-anchor-link-title"
+                  href="#referral-packages"
+                  title="Referral Packages"
+                >
+                  Referral Packages
+                </a>
+              </div>
             </div>
           </div>
         </div>
@@ -243,6 +254,106 @@ exports[`ReferralTabs renders properly 1`] = `
           <div
             class="right center-mobile"
           />
+          <div
+            class="padding-lg--top"
+          >
+            <div
+              class="scroll-wrapper"
+            >
+              <div
+                class="inline-flex"
+              >
+                <div
+                  class="circle grey"
+                />
+                <div
+                  id="referral-packages"
+                >
+                  <div
+                    class="scroll-wrapper--title"
+                  >
+                    <h3>
+                      Referral Packages
+                    </h3>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="scroll-wrapper--border"
+              >
+                <div>
+                  <div
+                    class="fade-in"
+                  >
+                    <div
+                      class="scroll-wrapper--body"
+                    >
+                      <span>
+                        <div
+                          class="ant-table-wrapper"
+                        >
+                          <div
+                            class="ant-spin-nested-loading"
+                          >
+                            <div
+                              class="ant-spin-container"
+                            >
+                              <div
+                                class="ant-table"
+                              >
+                                <div
+                                  class="ant-table-container"
+                                >
+                                  <div
+                                    class="ant-table-content"
+                                  >
+                                    <table
+                                      style="table-layout: auto;"
+                                    >
+                                      <colgroup />
+                                      <thead
+                                        class="ant-table-thead"
+                                      >
+                                        <tr>
+                                          <th
+                                            class="ant-table-cell"
+                                          >
+                                            Package
+                                          </th>
+                                          <th
+                                            class="ant-table-cell"
+                                          >
+                                            Date
+                                          </th>
+                                          <th
+                                            class="ant-table-cell"
+                                          >
+                                            Created By
+                                          </th>
+                                          <th
+                                            class="ant-table-cell"
+                                          >
+                                            Files
+                                          </th>
+                                        </tr>
+                                      </thead>
+                                      <tbody
+                                        class="ant-table-tbody"
+                                      />
+                                    </table>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
