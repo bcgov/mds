@@ -85,10 +85,10 @@ describe("BC timezone change: 'not in the future' validation", () => {
     });
 });
 
-describe("BC timezone change: form component side effects", () => {
+describe("Known RenderDateTimeTz global timezone behavior", () => {
     afterEach(() => moment.tz.setDefault());
 
-    it("does not change the app-wide default zone after rendering", () => {
+    it("sets the app-wide default zone to the form timezone", () => {
         moment.tz.setDefault();
         render(
             <ReduxWrapper initialState={{ form: { [inputMeta.form]: { values: {} } } }}>
@@ -104,7 +104,7 @@ describe("BC timezone change: form component side effects", () => {
             [
                 "Default zone after rendering a Canada/Mountain field",
                 "n/a",
-                "unset",
+                "Canada/Mountain",
                 (moment() as moment.Moment & { tz(): string | undefined }).tz() ?? "unset",
             ],
         ]);

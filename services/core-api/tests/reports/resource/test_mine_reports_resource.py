@@ -146,7 +146,7 @@ def test_get_a_report_for_a_mine(test_client, db_session, auth_headers):
 
 
 def test_is_overdue_flag_in_list_and_detail(test_client, db_session, auth_headers):
-    today_pst = datetime.now(pytz_timezone('US/Pacific')).date()
+    today_pst = datetime.now(pytz_timezone('America/Vancouver')).date()
     yesterday = today_pst - timedelta(days=1)
     apr_1_2025 = date(2025, 4, 1)
 
@@ -193,7 +193,7 @@ def test_is_overdue_flag_in_list_and_detail(test_client, db_session, auth_header
 
 
 def test_is_overdue_false_when_latest_submission_present(test_client, db_session, auth_headers):
-    today_pst = datetime.now(pytz_timezone('US/Pacific')).date()
+    today_pst = datetime.now(pytz_timezone('America/Vancouver')).date()
     yesterday = today_pst - timedelta(days=1)
     apr_1_2025 = date(2025, 4, 1)
 

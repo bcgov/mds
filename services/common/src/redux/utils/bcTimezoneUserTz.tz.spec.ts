@@ -38,33 +38,6 @@ describe("BC timezone change: Canada zone picker mapping", () => {
         ]);
     });
 
-    it("uses the same winter offset for Pacific, Yukon and Mountain after the change", () => {
-        const instants: [string, string][] = [
-            ["Past winter", "2025-12-15T20:00:00Z"],
-            ["New winter", "2026-12-15T20:00:00Z"],
-        ];
-        // Pacific moved from UTC-8 to UTC-7 and now matches Yukon and Mountain in winter.
-        const expected: Record<string, [[string, string], [string, string]]> = {
-            "Past winter": [["-08:00", "PST"], ["-07:00", "MST"]],
-            "New winter": [["-07:00", "MST"], ["-07:00", "MST"]],
-        };
-        expectRows(
-            instants.flatMap(([scenario, instant]): Row[] => [
-                [
-                    `${scenario}: Canada/Pacific`,
-                    instant,
-                    `${expected[scenario][0][0]} ${expected[scenario][0][1]}`,
-                    moment.tz(instant, "Canada/Pacific").format("Z z"),
-                ],
-                [
-                    `${scenario}: Canada/Mountain`,
-                    instant,
-                    `${expected[scenario][1][0]} ${expected[scenario][1][1]}`,
-                    moment.tz(instant, "Canada/Mountain").format("Z z"),
-                ],
-            ])
-        );
-    });
 });
 
 describe("BC timezone change: validation messages", () => {

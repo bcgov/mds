@@ -2,6 +2,7 @@
 import json
 from datetime import date
 
+import pytest
 from freezegun import freeze_time
 from sqlalchemy import text
 from tests.factories import MineFactory, MineReportFactory
@@ -28,20 +29,25 @@ class TestDatabaseTimezone:
         assert_rows(rows)
 
 
+@pytest.fixture(scope="module", autouse=True)
+def initialize_app_fixtures_before_database_tests(app, test_client, auth_headers):
+    pass
+
+
 class TestReportStatsToday:
     """Report stats 'today' in BC time"""
 
     @staticmethod
     def _overdue(test_client, auth_headers, frozen_utc, due):
         with freeze_time(frozen_utc):
-            mine = MineFactory(mine_reports=0)
+            mine = MineFactory(mine_reports=0, mine_permit_amendments=0)
             MineReportFactory(mine=mine, mine_report_submissions=0, due_date=due, received_date=None)
             resp = test_client.get(
                 f"/mines/{mine.mine_guid}/reports/stats", headers=auth_headers['full_auth_header'])
         assert resp.status_code == 200
         return json.loads(resp.data.decode())['overdue_reports']
 
-    def test_overdue_uses_bc_date(self, test_client, db_session, auth_headers):
+    def test_overdue_uses_bc_date(self, test_client, auth_headers, db_session):
         """Overdue count just after BC midnight"""
         rows = [
             ("Control, UTC-8: 23:30 BC on Dec 9, due Dec 9", "2025-12-10T07:30:00Z", 0,
