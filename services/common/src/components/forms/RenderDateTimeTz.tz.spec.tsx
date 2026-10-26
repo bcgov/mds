@@ -5,7 +5,7 @@ import RenderDateTimeTz from "@mds/common/components/forms/RenderDateTimeTz";
 import { FormContext } from "@mds/common/components/forms/FormWrapper";
 import { inputMeta, inputProps } from "@mds/common/components/forms/testHelper";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
-import { BC_MATRIX, Row, expectRows } from "@mds/common/tests/utils/bcTimezoneFixtures";
+import { BC_MATRIX, BC_ZONES, Row, expectRows } from "@mds/common/tests/utils/bcTimezoneFixtures";
 
 const viewText = (value: string, timezone: string) => {
     const { container, unmount } = render(
@@ -48,7 +48,7 @@ const editInputText = (value: string, timezone: string) => {
 describe("BC timezone change: RenderDateTimeTz view mode", () => {
     afterEach(() => moment.tz.setDefault());
 
-    it.each(["Canada/Pacific", "America/Vancouver"])("%s shows the right BC time", (zone) => {
+    it.each(BC_ZONES)("%s shows the right BC time", (zone) => {
         expectRows(
             BC_MATRIX.map(([scenario, instant, offset, , abbreviation]): Row => {
                 const expected = `${moment.utc(instant).utcOffset(offset).format("YYYY-MM-DD HH:mm")} ${offset} ${abbreviation}`;
@@ -58,7 +58,7 @@ describe("BC timezone change: RenderDateTimeTz view mode", () => {
         );
     });
 
-    it.each(["Canada/Pacific", "America/Vancouver"])("%s edit field shows offset and abbreviation", (zone) => {
+    it.each(BC_ZONES)("%s edit field shows offset and abbreviation", (zone) => {
         expectRows(
             BC_MATRIX.map(([scenario, instant, offset, , abbreviation]): Row => [
                 `${zone}: ${scenario}`,

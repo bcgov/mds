@@ -1,6 +1,8 @@
 // Shared fixtures for the *.tz.spec.* BC permanent UTC-7 (no fall-back on 2026-11-01) checks.
 export type Row = [scenario: string, instant: string, expected: string, actual: string];
 
+export const BC_ZONES = ["Canada/Pacific", "America/Vancouver"];
+
 const table = (rows: Row[]) => {
     const header = ["Scenario", "Instant", "Expected", "Actual", "Result"];
     const body = rows.map(([s, i, e, a]) => [s, i, e, a, e === a ? "PASS" : "FAIL"]);

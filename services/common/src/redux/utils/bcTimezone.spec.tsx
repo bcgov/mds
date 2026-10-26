@@ -10,12 +10,10 @@ import { dateNotInFutureTZ } from "@mds/common/redux/utils/Validate";
 import RenderDateTimeTz from "@mds/common/components/forms/RenderDateTimeTz";
 import { inputMeta, inputProps } from "@mds/common/components/forms/testHelper";
 import { ReduxWrapper } from "@mds/common/tests/utils/ReduxWrapper";
-import { BC_MATRIX, Row, expectRows } from "@mds/common/tests/utils/bcTimezoneFixtures";
-
-const ZONES = ["Canada/Pacific", "America/Vancouver"];
+import { BC_MATRIX, BC_ZONES, Row, expectRows } from "@mds/common/tests/utils/bcTimezoneFixtures";
 
 describe("BC timezone change: bundled tz data", () => {
-    it.each(ZONES)("%s offsets before and after 2026-11-01", (zone) => {
+    it.each(BC_ZONES)("%s offsets before and after 2026-11-01", (zone) => {
         expectRows(
             BC_MATRIX.map(([scenario, instant, offset, , abbreviation]): Row => [
                 `${zone}: ${scenario}`,
@@ -28,7 +26,7 @@ describe("BC timezone change: bundled tz data", () => {
 });
 
 describe("BC timezone change: displayed incident time (formatDateTimeTz)", () => {
-    it.each(ZONES)("%s shows the right BC hour", (zone) => {
+    it.each(BC_ZONES)("%s shows the right BC hour", (zone) => {
         expectRows(
             BC_MATRIX.map(([scenario, instant, , text, abbreviation]): Row => [
                 `${zone}: ${scenario}`,
