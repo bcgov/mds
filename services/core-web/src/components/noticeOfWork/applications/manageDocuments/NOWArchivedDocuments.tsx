@@ -78,7 +78,6 @@ export const NOWArchivedDocuments: FC<NOWArchivedDocumentsProps> = (props) => {
         documents={documents}
         showVersionHistory
         canReplaceDocuments={false}
-        openSelectedVersion
         additionalColumns={[fromColumn]}
       />
     </>

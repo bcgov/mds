@@ -268,8 +268,12 @@ export class MajorMineApplicationDocument extends MineDocument {
     return undefined;
   }
 
-  public getAllowedActions(userRoles: string[] = []) {
-    const allowedActions = super.getAllowedActions();
+  // is_latest_version is passed through so previous versions can't be replaced, archived or deleted
+  public getAllowedActions(
+    userRoles: string[] = [],
+    is_latest_version: boolean = this.is_latest_version
+  ) {
+    const allowedActions = super.getAllowedActions(userRoles, is_latest_version);
 
     const canModifyRoles = [
       USER_ROLES.role_edit_major_mine_applications,

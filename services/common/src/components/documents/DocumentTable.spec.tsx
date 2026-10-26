@@ -83,15 +83,10 @@ describe("DocumentTable", () => {
       ],
     });
 
-    const viewFromActions = async (openSelectedVersion: boolean, rowIndex: number) => {
+    const viewFromActions = async (rowIndex: number) => {
       const { container, getAllByText, findByTestId } = render(
         <ReduxWrapper>
-          <DocumentTable
-            documents={[replacedDocument]}
-            showVersionHistory
-            canReplaceDocuments={false}
-            openSelectedVersion={openSelectedVersion}
-          />
+          <DocumentTable documents={[replacedDocument]} showVersionHistory canReplaceDocuments={false} />
         </ReduxWrapper>
       );
       fireEvent.click(container.querySelector(".expand-row-icon"));
@@ -103,8 +98,8 @@ describe("DocumentTable", () => {
       openDocumentSpy.mockClear();
     });
 
-    it("opens the selected version when openSelectedVersion is set", async () => {
-      await viewFromActions(true, 1);
+    it("opens the selected version from a previous version row", async () => {
+      await viewFromActions(1);
 
       expect(openDocumentSpy).toHaveBeenCalledWith(
         "doc-manager-guid",
@@ -114,16 +109,10 @@ describe("DocumentTable", () => {
       );
     });
 
-    it("still opens the latest file from the current row when openSelectedVersion is set", async () => {
-      await viewFromActions(true, 0);
+    it("opens the latest file from the current row", async () => {
+      await viewFromActions(0);
 
       expect(openDocumentSpy).toHaveBeenCalledWith("doc-manager-guid", "current.pdf", null, null);
-    });
-
-    it("opens the latest file by default, as Major Projects does", async () => {
-      await viewFromActions(false, 1);
-
-      expect(openDocumentSpy).toHaveBeenCalledWith("doc-manager-guid", "previous.pdf", null, null);
     });
   });
 });
