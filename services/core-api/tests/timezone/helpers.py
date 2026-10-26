@@ -1,16 +1,18 @@
 """Shared Scenario / Instant / Expected / Actual / Result table for the BC timezone backend tests."""
 
-# (scenario, UTC instant, expected BC local text, expected timezone abbreviation)
-LOCAL_TIME_MATRIX = [
-    ("Past winter stays UTC-8", "2025-12-15T20:00:00+00:00", "Dec 15 2025, 12:00", "PST"),
-    ("Past winter stays UTC-8", "2026-01-15T20:00:00+00:00", "Jan 15 2026, 12:00", "PST"),
-    ("Summer unchanged", "2026-07-01T19:00:00+00:00", "Jul 01 2026, 12:00", "PDT"),
-    ("Day before old fall-back", "2026-10-31T23:00:00+00:00", "Oct 31 2026, 16:00", "PDT"),
-    ("Old fall-back date, before 2am", "2026-11-01T08:30:00+00:00", "Nov 01 2026, 01:30", "PDT"),
-    ("Old fall-back date, after 2am", "2026-11-01T09:30:00+00:00", "Nov 01 2026, 02:30", "MST"),
-    ("New winter behaviour", "2026-12-15T20:00:00+00:00", "Dec 15 2026, 13:00", "MST"),
-    ("No spring-forward in 2027", "2027-03-15T20:00:00+00:00", "Mar 15 2027, 13:00", "MST"),
+# (scenario, UTC instant, expected offset hours, BC local text, timezone abbreviation)
+BC_TIME_MATRIX = [
+    ("Past winter stays UTC-8", "2025-12-15T20:00:00+00:00", -8, "Dec 15 2025, 12:00", "PST"),
+    ("Past winter stays UTC-8", "2026-01-15T20:00:00+00:00", -8, "Jan 15 2026, 12:00", "PST"),
+    ("Summer unchanged", "2026-07-01T19:00:00+00:00", -7, "Jul 01 2026, 12:00", "PDT"),
+    ("Day before old fall-back", "2026-10-31T23:00:00+00:00", -7, "Oct 31 2026, 16:00", "PDT"),
+    ("Old fall-back date, before 2am", "2026-11-01T08:30:00+00:00", -7, "Nov 01 2026, 01:30", "PDT"),
+    ("Old fall-back date, after 2am", "2026-11-01T09:30:00+00:00", -7, "Nov 01 2026, 02:30", "MST"),
+    ("New winter behaviour", "2026-12-15T20:00:00+00:00", -7, "Dec 15 2026, 13:00", "MST"),
+    ("No spring-forward in 2027", "2027-03-15T20:00:00+00:00", -7, "Mar 15 2027, 13:00", "MST"),
 ]
+
+BC_TIMEZONES = ("Canada/Pacific", "America/Vancouver")
 
 
 def table(rows):

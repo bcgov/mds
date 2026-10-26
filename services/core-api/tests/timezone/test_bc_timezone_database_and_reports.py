@@ -6,7 +6,7 @@ import pytest
 from freezegun import freeze_time
 from sqlalchemy import text
 from tests.factories import MineFactory, MineReportFactory
-from tests.timezone.helpers import LOCAL_TIME_MATRIX, assert_rows
+from tests.timezone.helpers import BC_TIME_MATRIX, assert_rows
 
 
 class TestDatabaseTimezone:
@@ -20,7 +20,7 @@ class TestDatabaseTimezone:
     def test_vancouver_rules(self, db_session):
         """Postgres tz rules for America/Vancouver"""
         rows = []
-        for scenario, instant, local_text, _ in LOCAL_TIME_MATRIX:
+        for scenario, instant, _, local_text, _ in BC_TIME_MATRIX:
             actual = db_session.execute(
                 text("SELECT to_char(CAST(:ts AS timestamptz) AT TIME ZONE 'America/Vancouver', "
                      "'Mon DD YYYY, HH24:MI')"),

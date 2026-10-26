@@ -7,7 +7,7 @@ import pytest
 from app.api.incidents.models.mine_incident import MineIncident
 from freezegun import freeze_time
 from tests.factories import MineIncidentFactory
-from tests.timezone.helpers import LOCAL_TIME_MATRIX, assert_rows
+from tests.timezone.helpers import BC_TIME_MATRIX, assert_rows
 
 FROZEN_AFTER_ALL_ROWS = "2027-06-01T00:00:00+00:00"
 
@@ -49,7 +49,7 @@ class TestIncidentEmails:
     def test_ministry_email_shows_bc_time(self, mock_send_async, db_session):
         """Occurred-on and reported-on times in the ministry email"""
         rows = []
-        for scenario, instant, local_text, abbreviation in LOCAL_TIME_MATRIX:
+        for scenario, instant, _, local_text, abbreviation in BC_TIME_MATRIX:
             mock_send_async.reset_mock()
             with freeze_time(FROZEN_AFTER_ALL_ROWS):
                 occurred = _utc(instant)

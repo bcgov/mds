@@ -18,37 +18,14 @@ from app.api.mines.work_information.models.mine_work_information import (
 )
 from app.api.utils.helpers import format_email_datetime_to_string
 from freezegun import freeze_time
-from sqlalchemy import func
 from sqlalchemy.dialects import postgresql
-
-# (scenario, UTC instant, expected UTC offset in hours)
-OFFSET_MATRIX = [
-    ("Past winter stays UTC-8", "2025-12-15T20:00:00", -8),
-    ("Past winter stays UTC-8", "2026-01-15T20:00:00", -8),
-    ("Summer unchanged", "2026-07-01T19:00:00", -7),
-    ("Day before old fall-back", "2026-10-31T23:00:00", -7),
-    ("Old fall-back date, before 2am", "2026-11-01T08:30:00", -7),
-    ("Old fall-back date, after 2am", "2026-11-01T09:30:00", -7),
-    ("New winter behaviour", "2026-12-15T20:00:00", -7),
-    ("No spring-forward in 2027", "2027-03-15T20:00:00", -7),
-]
-
-
-def _table(rows):
-    header = ("Scenario", "Instant", "Expected", "Actual", "Result")
-    body = [(s, i, str(e), str(a), "PASS" if e == a else "FAIL") for s, i, e, a in rows]
-    widths = [max(len(r[c]) for r in [header] + body) for c in range(len(header))]
-    line = lambda r: " | ".join(v.ljust(widths[c]) for c, v in enumerate(r))
-    return "\n".join([line(header), "-+-".join("-" * w for w in widths)] + [line(r) for r in body])
-
-
-def _assert_rows(rows):
-    failed = [r for r in rows if r[2] != r[3]]
-    assert not failed, "\n" + _table(rows)
+from tests.timezone.helpers import BC_TIME_MATRIX, BC_TIMEZONES, assert_rows
 
 
 def _offset_hours(zone_name, naive_utc_iso):
     utc = datetime.fromisoformat(naive_utc_iso)
+    if utc.tzinfo is not None:
+        utc = utc.astimezone(pytz.UTC).replace(tzinfo=None)
     offset = pytz.timezone(zone_name).fromutc(utc).utcoffset()
     assert offset is not None
     return offset.total_seconds() / 3600
@@ -57,40 +34,34 @@ def _offset_hours(zone_name, naive_utc_iso):
 class TestTimezoneData:
     """Backend tz data"""
 
-    @pytest.mark.parametrize("zone", ["Canada/Pacific", "America/Vancouver"])
+    @pytest.mark.parametrize("zone", BC_TIMEZONES)
     def test_pacific_offsets(self, zone):
         """BC offsets before and after 2026-11-01"""
-        rows = [(f"{zone}: {s}", i, f"{e:+g}h", f"{_offset_hours(zone, i):+g}h")
-                for s, i, e in OFFSET_MATRIX]
-        _assert_rows(rows)
+        rows = [
+            (f"{zone}: {scenario}", instant, f"{expected:+g}h", f"{_offset_hours(zone, instant):+g}h")
+            for scenario, instant, expected, _, _ in BC_TIME_MATRIX
+        ]
+        assert_rows(rows)
 
     def test_us_pacific_is_not_bc(self):
         """US/Pacific diverges from BC after 2026-11-01 (why it must not be used)"""
-        assert _offset_hours("US/Pacific", "2026-12-15T20:00:00") == -8
-        assert _offset_hours("America/Vancouver", "2026-12-15T20:00:00") == -7
+        assert _offset_hours("US/Pacific", "2026-12-15T20:00:00+00:00") == -8
+        assert _offset_hours("America/Vancouver", "2026-12-15T20:00:00+00:00") == -7
 
 
 class TestEmailTimeFormatting:
     """Email time formatting"""
 
-    # (scenario, naive UTC value, expected local text and zone abbreviation)
-    CASES = [
-        ("Past winter", datetime(2025, 12, 15, 20, 0), "Dec 15 2025 at 12:00 PST"),
-        ("Summer", datetime(2026, 7, 1, 19, 0), "Jul 01 2026 at 12:00 PDT"),
-        ("Old fall-back date, before 2am", datetime(2026, 11, 1, 8, 30), "Nov 01 2026 at 01:30 PDT"),
-        ("Old fall-back date, after 2am", datetime(2026, 11, 1, 9, 30), "Nov 01 2026 at 02:30 MST"),
-        ("New winter", datetime(2026, 12, 15, 20, 0), "Dec 15 2026 at 13:00 MST"),
-        ("2027 spring", datetime(2027, 3, 15, 20, 0), "Mar 15 2027 at 13:00 MST"),
-    ]
-
-    @pytest.mark.parametrize("zone", ["Canada/Pacific", "America/Vancouver"])
+    @pytest.mark.parametrize("zone", BC_TIMEZONES)
     def test_local_time_in_emails(self, zone):
         """Incident and report emails show the right BC hour"""
         rows = []
-        for scenario, value, expected in self.CASES:
+        for scenario, instant, _, local_text, abbreviation in BC_TIME_MATRIX:
+            value = datetime.fromisoformat(instant).replace(tzinfo=None)
             actual = format_email_datetime_to_string(value, zone)
+            expected = local_text.replace(", ", " at ") + f" {abbreviation}"
             rows.append((f"{zone}: {scenario}", value.isoformat(), expected, actual))
-        _assert_rows(rows)
+        assert_rows(rows)
 
 
 class TestExplicitPacificCode:
@@ -121,7 +92,7 @@ class TestExplicitPacificCode:
             ("00:30 BC on Nov 2 after the change", "2026-11-02T07:30:00", "Working",
              self._work_status("2026-11-02T07:30:00", date(2026, 11, 2))),
         ]
-        _assert_rows(rows)
+        assert_rows(rows)
 
     def test_report_overdue_uses_bc_date(self):
         """Mine report overdue flag"""
@@ -131,7 +102,7 @@ class TestExplicitPacificCode:
             ("Due Nov 1, 00:30 BC on Nov 2 after the change", "2026-11-02T07:30:00", True,
              self._is_overdue("2026-11-02T07:30:00", date(2026, 11, 1))),
         ]
-        _assert_rows(rows)
+        assert_rows(rows)
 
     @pytest.mark.parametrize("model", [ExplosivesPermit, ExplosivesPermitAmendment])
     def test_application_number_uses_bc_month(self, model):
@@ -143,7 +114,7 @@ class TestExplicitPacificCode:
             (f"{name} 00:30 BC on Dec 1 after the change", "2026-12-01T07:30:00", "2026-12",
              self._application_suffix(model, "2026-12-01T07:30:00")),
         ]
-        _assert_rows(rows)
+        assert_rows(rows)
 
     def test_no_us_pacific_left_in_backend(self):
         """No US/Pacific references remain in app code"""
@@ -153,4 +124,4 @@ class TestExplicitPacificCode:
             for p in app_dir.rglob("*.py")
             for n, text in enumerate(p.read_text(errors="ignore").splitlines(), 1)
             if "US/Pacific" in text)
-        _assert_rows([("US/Pacific references in app/", "n/a", "none", ", ".join(hits) or "none")])
+        assert_rows([("US/Pacific references in app/", "n/a", "none", ", ".join(hits) or "none")])
