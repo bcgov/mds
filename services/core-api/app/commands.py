@@ -114,16 +114,6 @@ def register_commands(app):
                 db.session.rollback()
                 raise
 
-    @app.cli.command()
-    def run_etl():
-        from app.cli_jobs import ETL_jobs
-        ETL_jobs.run_ETL()
-
-    @app.cli.command()
-    def run_address_etl():
-        from app.cli_jobs import ETL_jobs
-        ETL_jobs.run_address_etl()
-
     @app.cli.command('notify_expiring_party_appointments')
     def notify_expiring_party_appointments():
         from app import auth
