@@ -36,8 +36,44 @@ const initialState = {
   }
 }
 describe("ReferralTabs", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   it("renders properly", () => {
-    const { container: component } = render(<BrowserRouter><ReduxWrapper initialState={initialState}><ReferralTabs {...dispatchProps} {...reducerProps} /></ReduxWrapper></BrowserRouter>);
+    const { container: component } = render(
+      <BrowserRouter>
+        <ReduxWrapper initialState={initialState}>
+          <ReferralTabs {...dispatchProps} {...reducerProps} />
+        </ReduxWrapper>
+      </BrowserRouter>
+    );
     expect(component).toMatchSnapshot();
+    expect(dispatchProps.fetchNoticeOfWorkReferralPackages).toHaveBeenCalledWith(
+      NOW_MOCK.NOTICE_OF_WORK.now_application_guid
+    );
+  });
+
+  it("does not fetch referral packages on mount when type is CON", () => {
+    render(
+      <BrowserRouter>
+        <ReduxWrapper initialState={initialState}>
+          <ReferralTabs {...dispatchProps} {...reducerProps} type="CON" />
+        </ReduxWrapper>
+      </BrowserRouter>
+    );
+    expect(dispatchProps.fetchNoticeOfWorkReferralPackages).not.toHaveBeenCalled();
+  });
+
+  it("renders properly without fetchNoticeOfWorkReferralPackages prop", () => {
+    const { fetchNoticeOfWorkReferralPackages, ...propsWithoutFetch } = dispatchProps;
+    render(
+      <BrowserRouter>
+        <ReduxWrapper initialState={initialState}>
+          <ReferralTabs {...propsWithoutFetch} {...reducerProps} />
+        </ReduxWrapper>
+      </BrowserRouter>
+    );
+    expect(propsWithoutFetch.fetchNoticeOfWorkApplicationReviews).toHaveBeenCalled();
   });
 });
