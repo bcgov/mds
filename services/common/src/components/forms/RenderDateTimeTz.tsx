@@ -36,6 +36,27 @@ const defaultProps = {
   validate: [],
 };
 
+// Defined at module level: an inline Field component remounts on every render and closes the picker.
+const TimezoneSelect = ({ input, disabled, options, selectedTimezone, onTimezoneChange }) => (
+  <Select
+    id={input.name}
+    virtual={false}
+    disabled={disabled}
+    dropdownMatchSelectWidth
+    getPopupContainer={(trigger) => trigger.parentNode}
+    dropdownStyle={{
+      zIndex: 100000,
+      position: "relative",
+    }}
+    value={selectedTimezone}
+    onChange={(val) => {
+      onTimezoneChange(val);
+      input.onChange(val);
+    }}
+    options={options}
+  />
+);
+
 const RenderDateTimeTz = (props) => {
   const {
     disabled,
@@ -147,28 +168,15 @@ const RenderDateTimeTz = (props) => {
             // @ts-ignore (no property gutter)
             <Form.Item label="Timezone" gutter={8} className="padding-md--top">
               <Field
-                id={timezoneFieldProps?.name}
-                name={timezoneFieldProps?.name}
-                component={(tzProps) => (
-                  <Select
-                    virtual={false}
-                    disabled={disabled}
-                    defaultValue={defaultTimezone}
-                    dropdownMatchSelectWidth
-                    getPopupContainer={(trigger) => trigger.parentNode}
-                    dropdownStyle={{
-                      zIndex: 100000,
-                      position: "relative",
-                    }}
-                    value={selectedTimezone}
-                    {...tzProps}
-                    {...timezoneFieldProps}
-                    onChange={(val) => {
-                      setTimezone(val);
-                    }}
-                    options={timezoneOptions}
-                  />
-                )}
+                id={timezoneFieldProps.name}
+                name={timezoneFieldProps.name}
+                component={TimezoneSelect}
+                props={{
+                  disabled,
+                  options: timezoneOptions,
+                  selectedTimezone,
+                  onTimezoneChange: setTimezone,
+                }}
               />
             </Form.Item>
           )
