@@ -1,5 +1,6 @@
 import uuid
 from datetime import date, datetime
+from typing import Self
 
 from app.api.activity.models.activity_notification import (
     ActivityRecipients,
@@ -20,8 +21,8 @@ from app.api.mines.reports.models.mine_report_submission import MineReportSubmis
 from app.api.mines.reports.models.mine_report_submission_status_code import (
     MineReportSubmissionStatusCode,
 )
-from app.api.services.email_service import EmailService
 from app.api.ministry_contacts.models.distribution_list import DistributionListNames
+from app.api.services.email_service import EmailService
 from app.api.utils.helpers import (
     format_email_datetime_to_string,
     get_current_core_or_ms_env_url,
@@ -32,13 +33,12 @@ from app.config import Config
 from app.extensions import db
 from flask import current_app
 from pytz import timezone as pytz_timezone
-from sqlalchemy import and_, desc, func, literal, select, exists, or_
+from sqlalchemy import and_, desc, exists, func, literal, or_, select
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import validates
 from sqlalchemy.schema import FetchedValue
-from typing import Self
 
 
 class MineReport(SoftDeleteMixin, AuditMixin, Base):
@@ -126,7 +126,7 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
         A report is considered overdue for reports with a due date after April 1, 2025,
         as that is when report submissions became mandatory through Minespace.
         """
-        as_of_date = datetime.now(pytz_timezone('US/Pacific')).date()
+        as_of_date = datetime.now(pytz_timezone('America/Vancouver')).date()
         april_1_2025 = date(2025, 4, 1)
 
         due_dt = self.due_date
@@ -481,9 +481,11 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
             due_date: The specific due date for this report instance
         """
         # Import here to avoid circular import
-        from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
         from app.api.mines.mine.models.mine import Mine
-        
+        from app.api.mines.permits.permit_amendment.models.permit_amendment import (
+            PermitAmendment,
+        )
+
         # Get the permit amendment to find the mine
         permit_amendment = PermitAmendment.find_by_permit_amendment_id(requirement.permit_amendment_id)
         if not permit_amendment:
@@ -517,13 +519,18 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
 
     @classmethod
     def get_all_recurring_crr_reports(cls):
-        from app.api.mines.reports.models.mine_report_definition import MineReportDefinition
         from app.api.mines.permits.permit.models.mine_permit_xref import MinePermitXref
         from app.api.mines.permits.permit.models.permit import Permit
-        from app.api.mines.reports.models.mine_report_category_xref import MineReportCategoryXref
+        from app.api.mines.reports.models.mine_report_category_xref import (
+            MineReportCategoryXref,
+        )
+        from app.api.mines.reports.models.mine_report_definition import (
+            MineReportDefinition,
+        )
+        from app.api.mines.reports.models.mine_report_definition_compliance_article_xref import (
+            MineReportDefinitionComplianceArticleXref,
+        )
         from app.api.mines.tailings.models.tailings import MineTailingsStorageFacility
-        from app.api.mines.reports.models.mine_report_definition_compliance_article_xref import \
-            MineReportDefinitionComplianceArticleXref
 
         # Check to see if mine report's mine has an active permit
         active_permit_exists = exists().where(

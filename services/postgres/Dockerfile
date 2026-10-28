@@ -1,4 +1,4 @@
-FROM postgres:16-bookworm
+FROM postgres:16.15-bookworm
 
 # The Git ref (branch/tag) specifying the version of oracle-fdw to use
 # This is referencing a specific revision (master as of 2021.06.01)
