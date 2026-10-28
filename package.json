@@ -36,9 +36,9 @@
     "@types/react-dom": "16.9.8",
     "@types/react-router-dom": "5.3.3",
     "cheerio": "1.0.0-rc.3",
-    "@syncfusion/ej2-base": "31.2.5",
-    "@syncfusion/ej2-react-pdfviewer": "31.2.5",
-    "@syncfusion/ej2-pdfviewer": "31.2.5"
+    "@syncfusion/ej2-base": "31.2.18",
+    "@syncfusion/ej2-react-pdfviewer": "31.2.18",
+    "@syncfusion/ej2-pdfviewer": "31.2.18"
   },
   "scripts": {
     "postinstall": "husky install"
