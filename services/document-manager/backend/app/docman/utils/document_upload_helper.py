@@ -58,6 +58,16 @@ class DocumentUploadHelper:
         return inferred_content_type or 'application/octet-stream'
 
     @classmethod
+    def version_temp_key(cls, document_guid, version_guid):
+        """
+        Temporary S3 key a replacement file is uploaded to.
+        The file stays here until the user confirms the replacement or cancels it,
+        so the document's real file is never touched before the user clicks "Replace".
+        """
+        doc_guid = base64.b64encode(str(document_guid).encode('utf-8')).decode('utf-8')
+        return f'{Config.S3_PREFIX}multipart/{doc_guid}/{version_guid}'
+
+    @classmethod
     def initiate_document_upload(cls, document_guid, file_path, folder, file_size, version_guid=None, filename=None):
         folder = secure_filename(folder) if folder else None
         file_path = secure_filename(file_path)
@@ -90,7 +100,10 @@ class DocumentUploadHelper:
 
             # Send the request
             if is_s3_multipart:
-                object_store_path = Config.S3_PREFIX + 'multipart/' + doc_guid
+                if version_guid is not None:
+                    object_store_path = cls.version_temp_key(document_guid, version_guid)
+                else:
+                    object_store_path = Config.S3_PREFIX + 'multipart/' + doc_guid
                 multipart_upload_path = object_store_path
                 content_type = cls._resolve_content_type(filename)
                 s3_upload = ObjectStoreStorageService().create_multipart_upload(
@@ -228,6 +241,16 @@ class DocumentUploadHelper:
 
     @classmethod
     def complete_multipart_upload(cls, upload_id, parts, document, version=None, is_bundle=False):
+        if version is not None:
+            """
+            Replacement file: only assemble the uploaded parts in its temporary
+            location. The copy over the document's real file happens when the user confirms the
+            replacement, so backing out leaves the document untouched.
+            """
+            temp_key = cls.version_temp_key(document.document_guid, version.id)
+            ObjectStoreStorageService().complete_multipart_upload(upload_id, temp_key, parts)
+            return ('', 204)
+
         ObjectStoreStorageService().complete_multipart_upload(upload_id, document.multipart_upload_path, parts)
 
         # File has been uploaded to S3 in the {Config.S3_PREFIX}/multipart folder, now move it to its final destination
@@ -238,14 +261,25 @@ class DocumentUploadHelper:
             new_key=upload_destination_path,
             doc_guid=str(document.document_guid),
             versions=None,
-            version_guid=str(version.id) if version is not None else None,
+            version_guid=None,
             info_key=None,
             is_bundle=is_bundle
         )
 
     @classmethod
-    def complete_upload(cls, key, new_key, doc_guid, versions=None, version_guid=None, info_key=None, is_bundle=False):
+    def complete_upload(cls, key, new_key, doc_guid, versions=None, version_guid=None, info_key=None, is_bundle=False,
+                        update_doc_status_on_error=True):
+        """
+        Copies the uploaded file from its temporary location to its final location and then removes the temporary file.
+        """
         oss = ObjectStoreStorageService()
+
+        def on_error(e):
+            if update_doc_status_on_error:
+                handle_status_and_update_doc(e, doc_guid)
+            else:
+                db.session.rollback()
+                current_app.logger.error(f'Failed to complete upload of {key} for document {doc_guid}: {e}')
 
         # Copy the file to its new location
         try:
@@ -257,7 +291,7 @@ class DocumentUploadHelper:
                 versions = [v for v in all_versions if v['Key'] == new_key]
 
         except Exception as e:
-            handle_status_and_update_doc(e, doc_guid)
+            on_error(e)
             raise e
 
         # Update the document's object store path and create a new version
@@ -296,7 +330,7 @@ class DocumentUploadHelper:
             db.session.commit()
 
         except Exception as e:
-            handle_status_and_update_doc(e, doc_guid)
+            on_error(e)
             raise e
 
         # Delete the old file and its .info file
@@ -306,8 +340,11 @@ class DocumentUploadHelper:
             if info_key:
                 ObjectStoreStorageService().delete_file(info_key)
         except Exception as e:
-            handle_status_and_update_doc(e, doc_guid)
-            raise e
+            if not update_doc_status_on_error:
+                current_app.logger.error(f'Failed to delete temporary file {key} for document {doc_guid}: {e}')
+            else:
+                on_error(e)
+                raise e
 
         # If there are no exceptions up to this point, set the status to 'Success'
         handle_status_and_update_doc('Success', doc_guid)

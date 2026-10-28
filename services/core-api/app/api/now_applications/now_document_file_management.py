@@ -1,9 +1,9 @@
 """
 Shared rules for replacing and archiving files on a Notice of Work's Manage Documents page.
 
-Both steps of a replace (starting the upload, then recording the new version) run the same checks. They must run
-on the first step: Document Manager makes the uploaded file current as soon as the upload finishes, before Core
-records the version.
+Both steps of a replace (starting the upload, then recording the new version) run the same checks. Running them on
+the first step refuses a file before it's uploaded. Document Manager holds the uploaded file until the version is
+recorded (committed), so the second step's checks still run before the document changes.
 """
 import os
 
