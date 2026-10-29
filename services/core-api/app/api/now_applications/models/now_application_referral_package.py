@@ -1,5 +1,7 @@
 from datetime import datetime
+from sqlalchemy import func
 from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.schema import FetchedValue
 from app.extensions import db
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
@@ -21,6 +23,9 @@ class NOWApplicationReferralPackageDocumentXref(SoftDeleteMixin, AuditMixin, Bas
     document_name = db.Column(db.String(255), nullable=False)
     version_number = db.Column(db.Integer, nullable=False, default=1)
     category = db.Column(db.String(100), nullable=True)
+    # When the file captured by this snapshot was uploaded. MineDocumentVersion copies this value
+    # when the file is replaced, so it identifies the archived version without relying on list order.
+    file_create_timestamp = db.Column(db.DateTime(timezone=True), nullable=True)
 
     mine_document = db.relationship('MineDocument', lazy='joined')
 
@@ -33,20 +38,12 @@ class NOWApplicationReferralPackageDocumentXref(SoftDeleteMixin, AuditMixin, Bas
 
     @property
     def document_manager_version_guid(self):
-        if not self.mine_document:
+        # While the snapshotted file is still the current one, it has no archived version yet.
+        if not self.mine_document or not self.file_create_timestamp:
             return None
-        # Sort versions chronologically (version 1, version 2...)
-        versions = sorted(
-            self.mine_document.versions,
-            key=lambda v: (v.create_timestamp or datetime.min, v.mine_document_version_guid)
-        )
-        if not versions:
-            return None
-        # Total versions = len(versions) + 1. The current file is version (len(versions) + 1).
-        # If this snapshot was for a version earlier than the current file:
-        if self.version_number <= len(versions):
-            target_ver = versions[self.version_number - 1]
-            return str(target_ver.document_manager_version_guid) if target_ver.document_manager_version_guid else None
+        for version in self.mine_document.versions:
+            if version.create_timestamp == self.file_create_timestamp:
+                return str(version.document_manager_version_guid) if version.document_manager_version_guid else None
         return None
 
 
@@ -77,42 +74,43 @@ class NOWApplicationReferralPackage(SoftDeleteMixin, AuditMixin, Base):
             cls.package_order.desc()).all()
 
     @classmethod
-    def create(cls, now_application, mine_document_guids, add_to_session=True):
+    def create(cls, now_application, mine_documents, add_to_session=True):
         existing_packages = cls.find_by_now_application_id(now_application.now_application_id)
 
-        # Prevent duplicate identical package if created within 5 minutes with the same documents
+        # A new package is only recorded when the documents or their versions differ from the latest one.
         if existing_packages:
             latest = existing_packages[0]
-            if latest.create_timestamp:
-                time_diff = (datetime.utcnow() - latest.create_timestamp).total_seconds()
-                if time_diff < 300:
-                    latest_doc_map = {str(d.mine_document_guid): d.version_number for d in latest.documents}
-                    new_doc_map = {}
-                    for g in mine_document_guids:
-                        md = MineDocument.find_by_mine_document_guid(g)
-                        if md:
-                            new_doc_map[str(md.mine_document_guid)] = len(md.versions) + 1
-                    if latest_doc_map == new_doc_map:
-                        return latest
+            latest_doc_map = {str(d.mine_document_guid): d.version_number for d in latest.documents}
+            new_doc_map = {str(md.mine_document_guid): len(md.versions) + 1 for md in mine_documents}
+            if latest_doc_map == new_doc_map:
+                return latest
 
-        package_order = len(existing_packages) + 1
-        package_name = f'Referral Package #{package_order}'
+        # Retry once if a concurrent save claimed the same package_order (unique constraint).
+        for attempt in range(2):
+            package = cls._build(now_application, mine_documents)
+            if not add_to_session:
+                return package
+            try:
+                package.save(commit=True)
+                return package
+            except IntegrityError:
+                if attempt == 1:
+                    raise
+        return package
+
+    @classmethod
+    def _build(cls, now_application, mine_documents):
+        # Deleted packages are included so their numbers are never reused.
+        max_order = db.session.query(func.max(cls.package_order)).filter_by(
+            now_application_id=now_application.now_application_id).scalar() or 0
+        package_order = max_order + 1
 
         package = cls(
             now_application_id=now_application.now_application_id,
             package_order=package_order,
-            package_name=package_name)
+            package_name=f'Referral Package #{package_order}')
 
-        if add_to_session:
-            package.save(commit=False)
-
-        for mine_doc_guid in mine_document_guids:
-            mine_doc = MineDocument.find_by_mine_document_guid(mine_doc_guid)
-            if not mine_doc:
-                continue
-
-            version_number = len(mine_doc.versions) + 1
-
+        for mine_doc in mine_documents:
             category = 'Document'
             xref = mine_doc.now_application_document_xref or mine_doc.now_application_document_identity_xref
             if xref:
@@ -123,15 +121,13 @@ class NOWApplicationReferralPackage(SoftDeleteMixin, AuditMixin, Base):
                 elif hasattr(xref, 'now_application_document_sub_type_code') and xref.now_application_document_sub_type_code:
                     category = xref.now_application_document_sub_type_code
 
-            doc_xref = NOWApplicationReferralPackageDocumentXref(
-                mine_document_guid=mine_doc.mine_document_guid,
-                document_manager_guid=mine_doc.document_manager_guid,
-                document_name=mine_doc.document_name,
-                version_number=version_number,
-                category=category)
-            package.documents.append(doc_xref)
-
-        if add_to_session:
-            package.save(commit=True)
+            package.documents.append(
+                NOWApplicationReferralPackageDocumentXref(
+                    mine_document_guid=mine_doc.mine_document_guid,
+                    document_manager_guid=mine_doc.document_manager_guid,
+                    document_name=mine_doc.document_name,
+                    version_number=len(mine_doc.versions) + 1,
+                    file_create_timestamp=mine_doc.create_timestamp,
+                    category=category))
 
         return package

@@ -79,6 +79,33 @@ export const ReferralConsultationPackage = (props) => {
     return [...new Set([...coreMineGuids, ...subMineGuids])];
   };
 
+  // Recording the version history must never block the save/download itself, so failures only notify.
+  const recordReferralPackage = async (selectedCoreRows, selectedSubmissionRows) => {
+    if (props.type !== "REF" || !isFeatureEnabled(Feature.NOW_FILE_MANAGEMENT)) {
+      return;
+    }
+    const selectedMineDocGuids = getSelectedMineDocumentGuids(
+      selectedCoreRows,
+      selectedSubmissionRows
+    );
+    if (selectedMineDocGuids.length === 0) {
+      return;
+    }
+    try {
+      await props.createNoticeOfWorkReferralPackage(props.noticeOfWork.now_application_guid, {
+        mine_document_guids: selectedMineDocGuids,
+      });
+      await props.fetchNoticeOfWorkReferralPackages(props.noticeOfWork.now_application_guid);
+    } catch (err) {
+      notification.error({
+        message: "Unable to record referral package version",
+        description:
+          "The package was processed, but its version history could not be recorded. Please try again.",
+        duration: 10,
+      });
+    }
+  };
+
   useEffect(() => {
     if (zipFileToDownload) {
       downloadFileFromDocumentManager({ document_manager_guid: zipFileToDownload });
@@ -155,23 +182,7 @@ export const ReferralConsultationPackage = (props) => {
             } else if (data.state === "SUCCESS" && progressRef.current) {
               setZipFileToDownload(data.success_docs[0]);
               handleCloseCompressionNotification();
-              if (props.type === "REF" && isFeatureEnabled(Feature.NOW_FILE_MANAGEMENT)) {
-                const selectedMineDocGuids = getSelectedMineDocumentGuids(
-                  selectedCoreRows,
-                  selectedSubmissionRows
-                );
-                if (selectedMineDocGuids.length > 0) {
-                  props
-                    .createNoticeOfWorkReferralPackage(props.noticeOfWork.now_application_guid, {
-                      mine_document_guids: selectedMineDocGuids,
-                    })
-                    .then(() => {
-                      props.fetchNoticeOfWorkReferralPackages(
-                        props.noticeOfWork.now_application_guid
-                      );
-                    });
-                }
-              }
+              recordReferralPackage(selectedCoreRows, selectedSubmissionRows);
             }
           };
           poll();
@@ -223,18 +234,7 @@ export const ReferralConsultationPackage = (props) => {
       return props
         .updateNoticeOfWorkApplication(payload, props.noticeOfWork.now_application_guid, message)
         .then(async () => {
-          if (props.type === "REF" && isFeatureEnabled(Feature.NOW_FILE_MANAGEMENT)) {
-            const selectedMineDocGuids = getSelectedMineDocumentGuids(
-              selectedCoreRows,
-              selectedSubmissionRows
-            );
-            if (selectedMineDocGuids.length > 0) {
-              await props.createNoticeOfWorkReferralPackage(props.noticeOfWork.now_application_guid, {
-                mine_document_guids: selectedMineDocGuids,
-              });
-              await props.fetchNoticeOfWorkReferralPackages(props.noticeOfWork.now_application_guid);
-            }
-          }
+          await recordReferralPackage(selectedCoreRows, selectedSubmissionRows);
           await props.fetchImportedNoticeOfWorkApplication(props.noticeOfWork.now_application_guid);
           props.closeModal();
         });

@@ -265,4 +265,38 @@ describe("ReferralConsultationPackage", () => {
     expect(dispatchProps.createNoticeOfWorkReferralPackage).not.toHaveBeenCalled();
     expect(dispatchProps.closeModal).toHaveBeenCalled();
   });
+
+  it("still refreshes and closes the modal when the snapshot fails on save", async () => {
+    dispatchProps.createNoticeOfWorkReferralPackage.mockRejectedValueOnce(new Error("fail"));
+    render(<ReferralConsultationPackage {...dispatchProps} {...reducerProps} />);
+    fireEvent.click(screen.getByRole("button", { name: "Referral Package" }));
+
+    const modalProps = dispatchProps.openModal.mock.calls[0][0].props;
+    await modalProps.handleSavePackage(["core-xref-1"], ["mine-doc-sub-1"]);
+
+    expect(dispatchProps.fetchNoticeOfWorkReferralPackages).not.toHaveBeenCalled();
+    expect(dispatchProps.fetchImportedNoticeOfWorkApplication).toHaveBeenCalledWith(
+      mockNoticeOfWork.now_application_guid
+    );
+    expect(dispatchProps.closeModal).toHaveBeenCalled();
+  });
+
+  it("does not throw when the snapshot fails after a successful download", async () => {
+    dispatchProps.createNoticeOfWorkReferralPackage.mockRejectedValueOnce(new Error("fail"));
+    dispatchProps.documentsCompression.mockResolvedValue({ data: { task_id: "task-123" } });
+    dispatchProps.pollDocumentsCompressionProgress.mockResolvedValue({
+      data: { state: "SUCCESS", success_docs: ["zip-guid-1"], error: [] },
+    });
+
+    render(<ReferralConsultationPackage {...dispatchProps} {...reducerProps} />);
+    fireEvent.click(screen.getByRole("button", { name: "Referral Package" }));
+
+    const modalProps = dispatchProps.openModal.mock.calls[0][0].props;
+    modalProps.onSubmit(["core-xref-1"], ["mine-doc-sub-1"]);
+
+    await waitFor(() => {
+      expect(dispatchProps.createNoticeOfWorkReferralPackage).toHaveBeenCalled();
+    });
+    expect(dispatchProps.fetchNoticeOfWorkReferralPackages).not.toHaveBeenCalled();
+  });
 });

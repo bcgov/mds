@@ -1,4 +1,6 @@
 import json
+import uuid
+from datetime import datetime
 from tests.now_application_factories import NOWApplicationIdentityFactory
 from tests.factories import MineDocumentFactory
 from app.api.now_applications.models.now_application_document_xref import NOWApplicationDocumentXref
@@ -92,3 +94,110 @@ class TestNOWApplicationReferralPackageResource:
             json={'mine_document_guids': []},
             headers=auth_headers['full_auth_header'])
         assert resp.status_code == 404
+
+    def test_post_referral_package_invalid_guid(self, test_client, db_session, auth_headers):
+        now_application_identity = NOWApplicationIdentityFactory()
+        resp = test_client.post(
+            f'/now-applications/{now_application_identity.now_application_guid}/referral-packages',
+            json={'mine_document_guids': ['not-a-uuid']},
+            headers=auth_headers['full_auth_header'])
+        assert resp.status_code == 400
+
+    def test_post_referral_package_unknown_document(self, test_client, db_session, auth_headers):
+        now_application_identity = NOWApplicationIdentityFactory()
+        resp = test_client.post(
+            f'/now-applications/{now_application_identity.now_application_guid}/referral-packages',
+            json={'mine_document_guids': ['00000000-0000-0000-0000-000000000000']},
+            headers=auth_headers['full_auth_header'])
+        assert resp.status_code == 404
+
+    def test_post_referral_package_document_from_other_application(self, test_client, db_session,
+                                                                   auth_headers):
+        now_application_identity = NOWApplicationIdentityFactory()
+        other_identity = NOWApplicationIdentityFactory()
+        mine_doc, xref = _make_document_xref(other_identity)
+        db_session.add(xref)
+        db_session.commit()
+
+        resp = test_client.post(
+            f'/now-applications/{now_application_identity.now_application_guid}/referral-packages',
+            json={'mine_document_guids': [str(mine_doc.mine_document_guid)]},
+            headers=auth_headers['full_auth_header'])
+        assert resp.status_code == 404
+
+    def test_package_order_not_reused_after_delete(self, test_client, db_session, auth_headers):
+        now_application_identity = NOWApplicationIdentityFactory()
+        mine_doc, xref = _make_document_xref(now_application_identity)
+        db_session.add(xref)
+        db_session.commit()
+        url = f'/now-applications/{now_application_identity.now_application_guid}/referral-packages'
+        payload = {'mine_document_guids': [str(mine_doc.mine_document_guid)]}
+
+        other_doc, other_xref = _make_document_xref(now_application_identity)
+        db_session.add(other_xref)
+        db_session.commit()
+
+        NOWApplicationReferralPackage.create(now_application_identity.now_application, [mine_doc])
+        second = NOWApplicationReferralPackage.create(
+            now_application_identity.now_application, [mine_doc, other_doc])
+        assert second.package_order == 2
+        second.deleted_ind = True
+        second.save()
+
+        payload = {'mine_document_guids': [str(mine_doc.mine_document_guid), str(other_doc.mine_document_guid)]}
+        resp = test_client.post(url, json=payload, headers=auth_headers['full_auth_header'])
+        assert resp.status_code == 201
+        assert json.loads(resp.data.decode())['package_order'] == 3
+
+    def test_document_manager_version_guid_resolved_by_timestamp(self, db_session):
+        from app.api.mines.documents.models.mine_document_version import MineDocumentVersion
+        now_application_identity = NOWApplicationIdentityFactory()
+        mine_doc, xref = _make_document_xref(now_application_identity)
+        db_session.add(xref)
+        db_session.commit()
+
+        package = NOWApplicationReferralPackage.create(
+            now_application_identity.now_application, [mine_doc])
+        snap = package.documents[0]
+        # Still the current file: no archived version yet
+        assert snap.document_manager_version_guid is None
+
+        # Replace the file the same way create_from_docman_version does
+        archived_guid = uuid.uuid4()
+        version = MineDocumentVersion(
+            mine_document_guid=mine_doc.mine_document_guid,
+            document_manager_version_guid=archived_guid,
+            document_name=mine_doc.document_name)
+        version.create_timestamp = mine_doc.create_timestamp
+        version.save()
+        mine_doc.create_timestamp = datetime.utcnow()
+        mine_doc.save()
+        db_session.refresh(mine_doc)
+
+        assert snap.document_manager_version_guid == str(archived_guid)
+
+    def test_new_package_created_when_documents_change(self, db_session):
+        from app.api.mines.documents.models.mine_document_version import MineDocumentVersion
+        now_application_identity = NOWApplicationIdentityFactory()
+        now_application = now_application_identity.now_application
+        doc_a, xref_a = _make_document_xref(now_application_identity)
+        doc_b, xref_b = _make_document_xref(now_application_identity)
+        db_session.add_all([xref_a, xref_b])
+        db_session.commit()
+
+        first = NOWApplicationReferralPackage.create(now_application, [doc_a])
+        assert NOWApplicationReferralPackage.create(now_application, [doc_a]) is first
+
+        # Different document set
+        second = NOWApplicationReferralPackage.create(now_application, [doc_a, doc_b])
+        assert second.package_order == 2
+
+        # New version of an existing document
+        MineDocumentVersion(
+            mine_document_guid=doc_a.mine_document_guid,
+            document_manager_version_guid=uuid.uuid4(),
+            document_name=doc_a.document_name).save()
+        db_session.refresh(doc_a)
+        third = NOWApplicationReferralPackage.create(now_application, [doc_a, doc_b])
+        assert third.package_order == 3
+        assert {d.version_number for d in third.documents} == {1, 2}
