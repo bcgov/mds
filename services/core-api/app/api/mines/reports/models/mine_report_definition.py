@@ -1,24 +1,23 @@
 import uuid
 from datetime import datetime
+
+from app.api.compliance.models.compliance_article import ComplianceArticle
+from app.api.mines.reports.models.mine_report import MineReport
+from app.api.mines.reports.models.mine_report_definition_compliance_article_xref import (
+    MineReportDefinitionComplianceArticleXref,
+)
+from app.api.mines.reports.models.mine_report_due_date_type import MineReportDueDateType
+from app.api.mines.reports.models.mine_report_permit_requirement import CimOrCpo
+from app.api.utils.models_mixins import AuditMixin, Base
+from app.extensions import db
 from dateutil.relativedelta import relativedelta
 from pytz import timezone
-
+from sqlalchemy import Integer, and_, cast, exists, nullsfirst, nullslast, or_
 from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.schema import FetchedValue
 from sqlalchemy.ext.hybrid import hybrid_property
-from sqlalchemy import or_, cast, Integer, nullsfirst, nullslast, and_, exists
+from sqlalchemy.schema import FetchedValue
 from sqlalchemy_filters import apply_pagination
 from werkzeug.exceptions import BadRequest
-
-from app.api.mines.reports.models.mine_report_permit_requirement import CimOrCpo
-
-from app.api.utils.models_mixins import Base, AuditMixin
-from app.api.mines.reports.models.mine_report_definition_compliance_article_xref import \
-    MineReportDefinitionComplianceArticleXref
-from app.api.mines.reports.models.mine_report_due_date_type import MineReportDueDateType
-from app.api.mines.reports.models.mine_report import MineReport
-from app.api.compliance.models.compliance_article import ComplianceArticle
-from app.extensions import db
 
 
 class MineReportDefinition(Base, AuditMixin):
@@ -108,7 +107,7 @@ class MineReportDefinition(Base, AuditMixin):
     @classmethod
     def find_one_by_section(cls, section, sub_section=None, paragraph=None, sub_paragraph=None):
         try:
-            now = datetime.now(timezone('US/Pacific'))
+            now = datetime.now(timezone('America/Vancouver'))
 
             query = cls.query.filter_by(active_ind=True).filter(
                 MineReportDefinition.compliance_articles.any(
@@ -193,7 +192,7 @@ class MineReportDefinition(Base, AuditMixin):
                 filters.append(field_name.ilike(part))
 
         if not show_expired:
-            now = datetime.now(timezone('US/Pacific'))
+            now = datetime.now(timezone('America/Vancouver'))
             filters.append(
                 and_(
                     ComplianceArticle.effective_date <= now,

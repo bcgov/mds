@@ -34,7 +34,7 @@ def test_report_stats_active_permits_excludes_inactive_permits(test_client, db_s
 
 
 def test_report_stats_overdue_and_next_90_days_pst(test_client, db_session, auth_headers):
-    today_pst = datetime.now(pytz_timezone('US/Pacific')).date()
+    today_pst = datetime.now(pytz_timezone('America/Vancouver')).date()
     in_10 = today_pst + timedelta(days=10)
     in_95 = today_pst + timedelta(days=95)
     ytd = today_pst - timedelta(days=1)
@@ -96,7 +96,7 @@ def test_report_stats_overdue_and_next_90_days_pst(test_client, db_session, auth
 
 
 def test_pst_midnight_boundary_just_after_midnight(test_client, db_session, auth_headers):
-    today = datetime.now(pytz_timezone('US/Pacific')).date()
+    today = datetime.now(pytz_timezone('America/Vancouver')).date()
     yesterday = today - timedelta(days=1)
 
     mine = MineFactory(mine_reports=0, minimal=True)
@@ -117,7 +117,7 @@ def test_pst_midnight_boundary_just_after_midnight(test_client, db_session, auth
 
 
 def test_overdue_threshold_april_1_boundary(test_client, db_session, auth_headers):
-    today = datetime.now(pytz_timezone('US/Pacific')).date()
+    today = datetime.now(pytz_timezone('America/Vancouver')).date()
     apr_1_2025 = date(2025, 4, 1)
     mar_31_2025 = date(2025, 3, 31)
 
@@ -138,7 +138,7 @@ def test_overdue_threshold_april_1_boundary(test_client, db_session, auth_header
 
 
 def test_report_stats_only_include_latest_permit_required_reports(test_client, db_session, auth_headers):
-    today = datetime.now(pytz_timezone('US/Pacific')).date()
+    today = datetime.now(pytz_timezone('America/Vancouver')).date()
     mine, permit = create_mine_and_permit(mine_kwargs={"mine_reports": 0}, num_permit_amendments=2)
     # Set distinct issue_dates so the filter can determine the latest amendment
     for i, amendment in enumerate(permit.permit_amendments):

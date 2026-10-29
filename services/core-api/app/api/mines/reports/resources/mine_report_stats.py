@@ -1,8 +1,8 @@
 from datetime import date, datetime, timedelta
 
 from app.api.mines.mine.models.mine import Mine
-from app.api.mines.reports.report_helpers import ReportFilterHelper
 from app.api.mines.reports.models.mine_report import MineReport
+from app.api.mines.reports.report_helpers import ReportFilterHelper
 from app.api.mines.response_models import MINE_REPORT_STATS_MODEL
 from app.api.utils.access_decorators import (
     MINESPACE_PROPONENT,
@@ -14,6 +14,7 @@ from app.extensions import api
 from flask_restx import Resource
 from pytz import timezone
 from werkzeug.exceptions import NotFound
+
 
 class MineReportStatsResource(Resource, UserMixin):
     @api.marshal_with(MINE_REPORT_STATS_MODEL, code=200)
@@ -32,7 +33,7 @@ class MineReportStatsResource(Resource, UserMixin):
         active_permits = len([permit for permit in mine.mine_permit if permit.permit_status_code != 'C'])
 
         # Compute 'today' in Pacific Time to evaluate overdue and upcoming windows
-        today = datetime.now(timezone('US/Pacific')).date()
+        today = datetime.now(timezone('America/Vancouver')).date()
         april_1_2025 = date(2025, 4, 1)
         in_90_days = today + timedelta(days=90)
 

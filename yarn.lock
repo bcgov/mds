@@ -3050,7 +3050,7 @@ __metadata:
     lodash-es: 4.17.21
     mini-css-extract-plugin: 2.9.1
     moment: 2.29.4
-    moment-timezone: 0.5.43
+    moment-timezone: 0.6.5
     moment-timezone-data-webpack-plugin: 1.5.1
     msw: 2.3.5
     postcss: 8.4.47
@@ -3190,7 +3190,7 @@ __metadata:
     lodash-es: 4.17.23
     mini-css-extract-plugin: 2.9.1
     moment: ^2.24.0
-    moment-timezone: 0.5.43
+    moment-timezone: 0.6.5
     moment-timezone-data-webpack-plugin: 1.5.1
     msw: 2.3.5
     pm2: 6.0.9
@@ -16163,12 +16163,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"moment-timezone@npm:0.5.43":
-  version: 0.5.43
-  resolution: "moment-timezone@npm:0.5.43"
+"moment-timezone@npm:0.6.5":
+  version: 0.6.5
+  resolution: "moment-timezone@npm:0.6.5"
   dependencies:
     moment: ^2.29.4
-  checksum: 8075c897ed8a044f992ef26fe8cdbcad80caf974251db424cae157473cca03be2830de8c74d99341b76edae59f148c9d9d19c1c1d9363259085688ec1cf508d0
+  checksum: bbcad50c94f955346ca6483ae77d2304620a23dc7d2cbbed97749ed455f5cc67efbe149b5ea0e0333b068436db55730b90aa2d60bbd5cbebe06a9435927d9232
   languageName: node
   linkType: hard
 
