@@ -130,6 +130,7 @@ describe("ReferralConsultationPackage", () => {
       expect(dispatchProps.fetchNoticeOfWorkReferralPackages).toHaveBeenCalledWith(
         mockNoticeOfWork.now_application_guid
       );
+      expect(dispatchProps.closeModal).toHaveBeenCalled();
     });
   });
 
@@ -295,8 +296,9 @@ describe("ReferralConsultationPackage", () => {
     modalProps.onSubmit(["core-xref-1"], ["mine-doc-sub-1"]);
 
     await waitFor(() => {
-      expect(dispatchProps.createNoticeOfWorkReferralPackage).toHaveBeenCalled();
+      expect(dispatchProps.closeModal).toHaveBeenCalled();
     });
+    expect(dispatchProps.createNoticeOfWorkReferralPackage).toHaveBeenCalled();
     expect(dispatchProps.fetchNoticeOfWorkReferralPackages).not.toHaveBeenCalled();
   });
 });

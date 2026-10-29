@@ -182,7 +182,8 @@ export const ReferralConsultationPackage = (props) => {
             } else if (data.state === "SUCCESS" && progressRef.current) {
               setZipFileToDownload(data.success_docs[0]);
               handleCloseCompressionNotification();
-              recordReferralPackage(selectedCoreRows, selectedSubmissionRows);
+              await recordReferralPackage(selectedCoreRows, selectedSubmissionRows);
+              props.closeModal();
             }
           };
           poll();
