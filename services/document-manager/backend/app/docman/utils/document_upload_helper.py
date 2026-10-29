@@ -228,11 +228,19 @@ class DocumentUploadHelper:
 
     @classmethod
     def complete_multipart_upload(cls, upload_id, parts, document, version=None, is_bundle=False):
+        # Work out the final destination first, so a bad destination fails before anything is written
+        key_prefix = Config.S3_PREFIX[:-1] if Config.S3_PREFIX and Config.S3_PREFIX != '/' else ''
+        if document.full_storage_path:
+            upload_destination_path = f'{key_prefix}{document.full_storage_path}'
+        else:
+            # Imported NoW documents (vFCBC/NROS) have no full_storage_path; their key is object_store_path
+            upload_destination_path = document.object_store_path
+
+        cls._validate_upload_destination(upload_destination_path, document.document_guid)
+
         ObjectStoreStorageService().complete_multipart_upload(upload_id, document.multipart_upload_path, parts)
 
         # File has been uploaded to S3 in the {Config.S3_PREFIX}/multipart folder, now move it to its final destination
-        key_prefix = Config.S3_PREFIX[:-1] if Config.S3_PREFIX and Config.S3_PREFIX != '/' else ''
-        upload_destination_path = f'{key_prefix}{document.full_storage_path}'
         return cls.complete_upload(
             key=document.multipart_upload_path,
             new_key=upload_destination_path,
@@ -242,6 +250,24 @@ class DocumentUploadHelper:
             info_key=None,
             is_bundle=is_bundle
         )
+
+    @staticmethod
+    def _validate_upload_destination(destination, document_guid):
+        """
+        Refuses destinations that are not a real file key, such as the bare prefix
+        or the multipart staging folder, which would be shared across documents.
+        """
+        prefix = Config.S3_PREFIX or ''
+        bare_prefixes = {prefix, prefix.rstrip('/')}
+        multipart_prefix = f'{prefix}multipart/'
+
+        if (not destination
+                or destination in bare_prefixes
+                or destination.endswith('/')
+                or destination.startswith(multipart_prefix)):
+            message = f'Invalid upload destination "{destination}" for document {document_guid}'
+            current_app.logger.error(message)
+            raise InternalServerError(message)
 
     @classmethod
     def complete_upload(cls, key, new_key, doc_guid, versions=None, version_guid=None, info_key=None, is_bundle=False):
