@@ -393,7 +393,13 @@ describe("ReplaceDocumentModal", () => {
       expect(mockDelete).not.toHaveBeenCalled();
 
       await act(async () => {
-        resolveCreateVersion({ data: { mine_document_version_guid: "v2-guid" } });
+        resolveCreateVersion({
+          data: {
+            mine_document_version_guid: "v2-guid",
+            document_name: "original.pdf",
+            upload_date: "2024-02-01",
+          },
+        });
         await submitPromise;
       });
     });
