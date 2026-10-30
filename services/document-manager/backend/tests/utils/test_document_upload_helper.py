@@ -21,6 +21,7 @@ def make_document(full_storage_path, object_store_path):
         multipart_upload_path=f'{S3_PREFIX}multipart/{doc_guid}',
         upload_completed_date=None,
         update_user='original-user',
+        file_display_name='original.pdf',
     )
 
 
@@ -41,14 +42,27 @@ def upload_mocks(test_client):
 
 
 def complete_version_upload(mocks, document, versions):
-    """Completes a version upload of the document, with the object store holding the given versions"""
-    version = SimpleNamespace(id=uuid.uuid4(), object_store_version_id=None, upload_completed_date=None)
+    """Replaces the document's file, with the object store holding the given versions"""
+    version = SimpleNamespace(
+        id=uuid.uuid4(), object_store_version_id=None, upload_completed_date=None, file_display_name='replacement.pdf')
     mocks.document_model.find_by_document_guid.return_value = document
     mocks.version_model.find_by_id.return_value = version
     mocks.oss.list_versions.return_value = {'Versions': versions}
 
     DocumentUploadHelper.complete_multipart_upload(
         upload_id='upload-id', parts=[], document=document, version=version)
+
+    # Nothing is copied over the document's file until the replacement is committed
+    mocks.oss.copy_file.assert_not_called()
+
+    DocumentUploadHelper.complete_upload(
+        key=DocumentUploadHelper.version_temp_key(document.document_guid, version.id),
+        new_key=DocumentUploadHelper.upload_destination_path(document),
+        doc_guid=str(document.document_guid),
+        version_guid=str(version.id),
+        update_doc_status_on_error=False,
+        new_file_display_name=version.file_display_name,
+    )
 
     return version
 
@@ -65,7 +79,7 @@ def test_replace_imported_document_keeps_original_key(upload_mocks):
     version = complete_version_upload(upload_mocks, document, versions)
 
     upload_mocks.oss.copy_file.assert_called_once_with(
-        source_key=document.multipart_upload_path, key=original_key)
+        source_key=DocumentUploadHelper.version_temp_key(document.document_guid, version.id), key=original_key)
     upload_mocks.oss.list_versions.assert_called_once_with(original_key)
     assert document.object_store_path == original_key
     assert document.update_user == 'original-user'
@@ -79,10 +93,10 @@ def test_replace_uploaded_document_uses_full_storage_path(upload_mocks):
     expected_key = f'mds-files-test{full_storage_path}'
     document = make_document(full_storage_path=full_storage_path, object_store_path=expected_key)
 
-    complete_version_upload(upload_mocks, document, versions=[])
+    version = complete_version_upload(upload_mocks, document, versions=[])
 
     upload_mocks.oss.copy_file.assert_called_once_with(
-        source_key=document.multipart_upload_path, key=expected_key)
+        source_key=DocumentUploadHelper.version_temp_key(document.document_guid, version.id), key=expected_key)
     assert document.object_store_path == expected_key
 
 
@@ -100,6 +114,9 @@ def test_replace_rejects_invalid_destination(upload_mocks, object_store_path):
 
     with pytest.raises(InternalServerError):
         complete_version_upload(upload_mocks, document, versions=[])
+
+    with pytest.raises(InternalServerError):
+        DocumentUploadHelper.upload_destination_path(document)
 
     upload_mocks.oss.complete_multipart_upload.assert_not_called()
     upload_mocks.oss.copy_file.assert_not_called()

@@ -58,6 +58,16 @@ class DocumentUploadHelper:
         return inferred_content_type or 'application/octet-stream'
 
     @classmethod
+    def version_temp_key(cls, document_guid, version_guid):
+        """
+        Temporary S3 key a replacement file is uploaded to.
+        The file stays here until the user confirms the replacement or cancels it,
+        so the document's real file is never touched before the user clicks "Replace".
+        """
+        doc_guid = base64.b64encode(str(document_guid).encode('utf-8')).decode('utf-8')
+        return f'{Config.S3_PREFIX}multipart/{doc_guid}/{version_guid}'
+
+    @classmethod
     def initiate_document_upload(cls, document_guid, file_path, folder, file_size, version_guid=None, filename=None):
         folder = secure_filename(folder) if folder else None
         file_path = secure_filename(file_path)
@@ -90,7 +100,10 @@ class DocumentUploadHelper:
 
             # Send the request
             if is_s3_multipart:
-                object_store_path = Config.S3_PREFIX + 'multipart/' + doc_guid
+                if version_guid is not None:
+                    object_store_path = cls.version_temp_key(document_guid, version_guid)
+                else:
+                    object_store_path = Config.S3_PREFIX + 'multipart/' + doc_guid
                 multipart_upload_path = object_store_path
                 content_type = cls._resolve_content_type(filename)
                 s3_upload = ObjectStoreStorageService().create_multipart_upload(
@@ -229,14 +242,15 @@ class DocumentUploadHelper:
     @classmethod
     def complete_multipart_upload(cls, upload_id, parts, document, version=None, is_bundle=False):
         # Work out the final destination first, so a bad destination fails before anything is written
-        key_prefix = Config.S3_PREFIX[:-1] if Config.S3_PREFIX and Config.S3_PREFIX != '/' else ''
-        if document.full_storage_path:
-            upload_destination_path = f'{key_prefix}{document.full_storage_path}'
-        else:
-            # Imported NoW documents (vFCBC/NROS) have no full_storage_path; their key is object_store_path
-            upload_destination_path = document.object_store_path
+        upload_destination_path = cls.upload_destination_path(document)
 
-        cls._validate_upload_destination(upload_destination_path, document.document_guid)
+        if version is not None:
+            # Replacement file: only assemble the uploaded parts in its temporary location. The copy over the
+            # document's real file happens when the user confirms the replacement, so backing out leaves the
+            # document untouched.
+            temp_key = cls.version_temp_key(document.document_guid, version.id)
+            ObjectStoreStorageService().complete_multipart_upload(upload_id, temp_key, parts)
+            return ('', 204)
 
         ObjectStoreStorageService().complete_multipart_upload(upload_id, document.multipart_upload_path, parts)
 
@@ -246,10 +260,26 @@ class DocumentUploadHelper:
             new_key=upload_destination_path,
             doc_guid=str(document.document_guid),
             versions=None,
-            version_guid=str(version.id) if version is not None else None,
+            version_guid=None,
             info_key=None,
             is_bundle=is_bundle
         )
+
+    @classmethod
+    def upload_destination_path(cls, document):
+        """
+        Object store key of the document's file, where an uploaded file (or a committed replacement) is copied to.
+        Raises if it isn't a real file key.
+        """
+        key_prefix = Config.S3_PREFIX[:-1] if Config.S3_PREFIX and Config.S3_PREFIX != '/' else ''
+        if document.full_storage_path:
+            destination = f'{key_prefix}{document.full_storage_path}'
+        else:
+            # Imported NoW documents (vFCBC/NROS) have no full_storage_path; their key is object_store_path
+            destination = document.object_store_path
+
+        cls._validate_upload_destination(destination, document.document_guid)
+        return destination
 
     @staticmethod
     def _validate_upload_destination(destination, document_guid):
@@ -270,8 +300,19 @@ class DocumentUploadHelper:
             raise InternalServerError(message)
 
     @classmethod
-    def complete_upload(cls, key, new_key, doc_guid, versions=None, version_guid=None, info_key=None, is_bundle=False):
+    def complete_upload(cls, key, new_key, doc_guid, versions=None, version_guid=None, info_key=None, is_bundle=False,
+                        update_doc_status_on_error=True, new_file_display_name=None):
+        """
+        Copies the uploaded file from its temporary location to its final location and then removes the temporary file.
+        """
         oss = ObjectStoreStorageService()
+
+        def on_error(e):
+            if update_doc_status_on_error:
+                handle_status_and_update_doc(e, doc_guid)
+            else:
+                db.session.rollback()
+                current_app.logger.error(f'Failed to complete upload of {key} for document {doc_guid}: {e}')
 
         # Copy the file to its new location
         try:
@@ -283,7 +324,7 @@ class DocumentUploadHelper:
                 versions = [v for v in all_versions if v['Key'] == new_key]
 
         except Exception as e:
-            handle_status_and_update_doc(e, doc_guid)
+            on_error(e)
             raise e
 
         # Update the document's object store path and create a new version
@@ -300,29 +341,32 @@ class DocumentUploadHelper:
 
                 db.session.add(doc)
 
+            previous_version = DocumentVersion.find_by_id(version_guid) if version_guid is not None else None
+
             # update the record of the previous version
-            if versions is not None and len(versions) >= 2:
+            if previous_version is not None and versions is not None and len(versions) >= 2:
                 # Sort the versions
                 versions.sort(key=lambda v: v["LastModified"], reverse=True)
 
                 # get the versionId of the previous version (the second newest)
-                previous_version_data = versions[1]
-                previous_version_id = previous_version_data["VersionId"]
+                previous_version.object_store_version_id = versions[1]["VersionId"]
+                previous_version.upload_completed_date = datetime.utcnow()
 
-                # find the corresponding DocumentVersion record
-                if version_guid is not None:
-                    previous_version = DocumentVersion.find_by_id(version_guid)
+                db.session.add(previous_version)
 
-                    if previous_version is not None:
-                        previous_version.object_store_version_id = previous_version_id
-                        previous_version.upload_completed_date = datetime.utcnow()
+            if previous_version is not None and new_file_display_name is not None:
+                previous_version.file_display_name = doc.file_display_name
+                doc.file_display_name = new_file_display_name
+                if previous_version.upload_completed_date is None:
+                    previous_version.upload_completed_date = datetime.utcnow()
 
-                        db.session.add(previous_version)
+                db.session.add(previous_version)
+                db.session.add(doc)
 
             db.session.commit()
 
         except Exception as e:
-            handle_status_and_update_doc(e, doc_guid)
+            on_error(e)
             raise e
 
         # Delete the old file and its .info file
@@ -332,8 +376,11 @@ class DocumentUploadHelper:
             if info_key:
                 ObjectStoreStorageService().delete_file(info_key)
         except Exception as e:
-            handle_status_and_update_doc(e, doc_guid)
-            raise e
+            if not update_doc_status_on_error:
+                current_app.logger.error(f'Failed to delete temporary file {key} for document {doc_guid}: {e}')
+            else:
+                on_error(e)
+                raise e
 
         # If there are no exceptions up to this point, set the status to 'Success'
         handle_status_and_update_doc('Success', doc_guid)

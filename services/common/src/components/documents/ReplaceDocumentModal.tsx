@@ -1,10 +1,13 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useRef, useState } from "react";
 import { Field } from "@mds/common/components/forms/form";
 import { Alert, Col, notification, Row, Typography } from "antd";
 import { MineDocument } from "@mds/common/models/documents/document";
 import { formatDate } from "@mds/common/redux/utils/helpers";
 import RenderFileUpload from "@mds/common/components/forms/RenderFileUpload";
-import { NEW_VERSION_DOCUMENTS } from "@mds/common/constants/API";
+import { DOCUMENT_MANAGER_DOCUMENT_VERSION, NEW_VERSION_DOCUMENTS } from "@mds/common/constants/API";
+import { ENVIRONMENT } from "@mds/common/constants/environment";
+import CustomAxios from "@mds/common/redux/customAxios";
+import { createRequestHeader } from "@mds/common/redux/utils/RequestHeaders";
 import { IMAGE, DOCUMENT, EXCEL, SPATIAL } from "@mds/common/constants/fileTypes";
 import { postNewDocumentVersion } from "@mds/common/redux/actionCreators/documentActionCreator";
 import { IMineDocumentVersion } from "@mds/common/interfaces";
@@ -33,6 +36,29 @@ const ReplaceDocumentModal: FC<ReplaceDocumentModalProps> = (props) => {
   const [disableReplace, setDisableReplace] = useState<boolean>(true);
   const [updatedDocument, setUpdatedDocument] = useState<MineDocument>(document);
 
+  // The uploaded replacement file is held in a temporary location until "Replace" is clicked.
+  // If the user backs out, it is discarded.
+  const versionGuidRef = useRef<string>();
+  const committedRef = useRef(false);
+
+  const discardVersion = () => {
+    const guid = versionGuidRef.current;
+    if (!guid || committedRef.current) {
+      return;
+    }
+    versionGuidRef.current = undefined;
+    CustomAxios({ suppressErrorNotification: true })
+      .delete(
+        ENVIRONMENT.docManUrl + DOCUMENT_MANAGER_DOCUMENT_VERSION(document.document_manager_guid, guid),
+        createRequestHeader()
+      )
+      .catch(() => { });
+  };
+
+  useEffect(() => {
+    return () => discardVersion();
+  }, []);
+
   const getAcceptedFileTypes = () => {
     const allAcceptedFileTypesMap = {
       ...DOCUMENT,
@@ -55,6 +81,7 @@ const ReplaceDocumentModal: FC<ReplaceDocumentModalProps> = (props) => {
   const onUploadResponse = (response) => {
     if (response.document_manager_version_guid) {
       setVersionGuid(response.document_manager_version_guid);
+      versionGuidRef.current = response.document_manager_version_guid;
     }
   };
 
@@ -82,6 +109,8 @@ const ReplaceDocumentModal: FC<ReplaceDocumentModalProps> = (props) => {
   };
 
   const onRemoveFile = (err, fileItem) => {
+    discardVersion();
+    setVersionGuid(undefined);
     setUpdatedDocument(document);
     setDisableReplace(true);
   };
@@ -100,11 +129,18 @@ const ReplaceDocumentModal: FC<ReplaceDocumentModalProps> = (props) => {
   const handleReplaceSubmit = async () => {
     if (versionGuid) {
       let ConnectedVersion;
+      // Set before the request, so closing the modal while the replacement is being committed doesn't discard it
+      committedRef.current = true;
       try {
         ConnectedVersion = await createVersion(versionGuid);
       } catch (error) {
+        committedRef.current = false;
         // The action creator has already surfaced the error; keep the modal open so the user can retry.
         return;
+      }
+
+      if (!ConnectedVersion) {
+        committedRef.current = false;
       }
 
       if (ConnectedVersion) {
