@@ -18,12 +18,15 @@ import {
   setNoticeOfWorkApplicationDocumentDownloadState,
   updateNoticeOfWorkApplication,
   fetchImportedNoticeOfWorkApplication,
+  fetchNoticeOfWorkReferralPackages,
 } from "@mds/common/redux/actionCreators/noticeOfWorkActionCreator";
 import {
   getNoticeOfWork,
   getImportNowSubmissionDocumentsJob,
   getNoticeOfWorkReviews,
+  getNoticeOfWorkReferralPackages,
 } from "@mds/common/redux/selectors/noticeOfWorkSelectors";
+import { isFeatureEnabled, Feature } from "@mds/common/utils/featureFlag";
 import {
   getDropdownNoticeOfWorkApplicationReviewTypeOptions,
   getNoticeOfWorkApplicationApplicationReviewTypeHash,
@@ -63,10 +66,12 @@ const propTypes = {
   type: PropTypes.string.isRequired,
   noticeOfWorkReviewTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   fixedTop: PropTypes.bool.isRequired,
+  fetchNoticeOfWorkReferralPackages: PropTypes.func,
 };
 
 const defaultProps = {
   importNowSubmissionDocumentsJob: {},
+  fetchNoticeOfWorkReferralPackages: () => {},
 };
 
 export class ReferralTabs extends Component {
@@ -76,6 +81,9 @@ export class ReferralTabs extends Component {
     this.props
       .fetchNoticeOfWorkApplicationReviews(this.props.noticeOfWork.now_application_guid)
       .then(() => this.setState({ isLoaded: true }));
+    if (this.props.type === REFERRAL_CODE && isFeatureEnabled(Feature.NOW_FILE_MANAGEMENT)) {
+      this.props.fetchNoticeOfWorkReferralPackages?.(this.props.noticeOfWork.now_application_guid);
+    }
   }
 
   handleAddReview = (values) => {
@@ -245,6 +253,7 @@ export class ReferralTabs extends Component {
                 >
                   <Referral
                     {...commonApplicationReviewProps}
+                    referralPackages={this.props.referralPackages}
                     noticeOfWorkReviews={this.props.noticeOfWorkReviews.filter(
                       (review) => review.now_application_review_type_code === REFERRAL_CODE
                     )}
@@ -318,6 +327,7 @@ export class ReferralTabs extends Component {
 
 const mapStateToProps = (state) => ({
   noticeOfWorkReviews: getNoticeOfWorkReviews(state),
+  referralPackages: getNoticeOfWorkReferralPackages(state),
   noticeOfWork: getNoticeOfWork(state),
   importNowSubmissionDocumentsJob: getImportNowSubmissionDocumentsJob(state),
   noticeOfWorkReviewTypes: getDropdownNoticeOfWorkApplicationReviewTypeOptions(state),
@@ -337,6 +347,7 @@ const mapDispatchToProps = (dispatch) =>
       setNoticeOfWorkApplicationDocumentDownloadState,
       updateNoticeOfWorkApplication,
       fetchImportedNoticeOfWorkApplication,
+      fetchNoticeOfWorkReferralPackages,
     },
     dispatch
   );

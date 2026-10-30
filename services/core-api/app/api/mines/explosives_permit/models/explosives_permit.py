@@ -2,29 +2,26 @@ from datetime import datetime
 
 # from app.api.mines.explosives_permit_amendment.models.explosives_permit_amendment import ExplosivesPermitAmendment
 from app.api.mines.documents.models.mine_document import MineDocument
-from app.api.mines.explosives_permit.models.explosives_permit_document_type import ExplosivesPermitDocumentType
-from app.api.mines.explosives_permit.models.explosives_permit_document_xref import ExplosivesPermitDocumentXref
-from app.api.mines.explosives_permit.models.explosives_permit_magazine import ExplosivesPermitMagazine
+from app.api.mines.explosives_permit.models.explosives_permit_document_type import (
+    ExplosivesPermitDocumentType,
+)
+from app.api.mines.explosives_permit.models.explosives_permit_document_xref import (
+    ExplosivesPermitDocumentXref,
+)
+from app.api.mines.explosives_permit.models.explosives_permit_magazine import (
+    ExplosivesPermitMagazine,
+)
 from app.api.parties.party.models.party import Party
-from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, PermitMixin, Base
+from app.api.utils.include.user_info import User
+from app.api.utils.models_mixins import AuditMixin, Base, PermitMixin, SoftDeleteMixin
 from app.extensions import db
 from flask import current_app
 from pytz import timezone
-from sqlalchemy import func
+from sqlalchemy import and_, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.schema import FetchedValue, Sequence
-from sqlalchemy import and_, func
 from sqlalchemy.sql import update
-
-from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, PermitMixin, Base
-from app.extensions import db
-from app.api.mines.explosives_permit.models.explosives_permit_document_type import ExplosivesPermitDocumentType
-from app.api.mines.explosives_permit.models.explosives_permit_magazine import ExplosivesPermitMagazine
-from app.api.mines.explosives_permit.models.explosives_permit_document_xref import ExplosivesPermitDocumentXref
-from app.api.mines.documents.models.mine_document import MineDocument
-from app.api.parties.party.models.party import Party
-from app.api.utils.include.user_info import User
 
 
 class ExplosivesPermit(SoftDeleteMixin, AuditMixin, PermitMixin, Base):
@@ -164,10 +161,12 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, PermitMixin, Base):
                 self.decision_reason = decision_reason
 
             if (self.application_status == 'REC' or self.application_status == 'APP') and application_status == 'APP':
-                from app.api.document_generation.resources.explosives_permit_document_resource import \
-                    ExplosivesPermitDocumentResource
-                from app.api.mines.explosives_permit.resources.explosives_permit_document_type import \
-                    ExplosivesPermitDocumentGenerateResource
+                from app.api.document_generation.resources.explosives_permit_document_resource import (
+                    ExplosivesPermitDocumentResource,
+                )
+                from app.api.mines.explosives_permit.resources.explosives_permit_document_type import (
+                    ExplosivesPermitDocumentGenerateResource,
+                )
 
                 def create_permit_enclosed_letter():
                     mine = self.mine
@@ -230,7 +229,7 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, PermitMixin, Base):
 
     @classmethod
     def get_next_application_number(cls):
-        now = datetime.now(timezone('US/Pacific'))
+        now = datetime.now(timezone('America/Vancouver'))
         month = now.strftime('%m')
         year = now.strftime('%Y')
 

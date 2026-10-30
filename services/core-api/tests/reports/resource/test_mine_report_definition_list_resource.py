@@ -3,10 +3,11 @@ import math
 from urllib import parse
 
 from app.api.compliance.models.compliance_article import ComplianceArticle
-from app.api.mines.reports.models.mine_report_definition import MineReportDefinition
-from app.api.mines.reports.models.mine_report_definition_compliance_article_xref import \
-    MineReportDefinitionComplianceArticleXref
 from app.api.mines.reports.models.mine_report import MineReport
+from app.api.mines.reports.models.mine_report_definition import MineReportDefinition
+from app.api.mines.reports.models.mine_report_definition_compliance_article_xref import (
+    MineReportDefinitionComplianceArticleXref,
+)
 
 
 # test non-paginated results
@@ -29,13 +30,14 @@ def test_post_mine_report_definition_no_pagination(test_client, db_session, auth
     assert(get_data['total']) == record_count
 
 from datetime import datetime
+
 from pytz import timezone
 from sqlalchemy import and_, or_
 
 
 def test_get_mine_report_definition_without_expired(test_client, db_session, auth_headers):
-    # Current datetime in the 'US/Pacific' timezone
-    now = datetime.now(timezone('US/Pacific'))
+    # Current datetime in the 'America/Vancouver' timezone
+    now = datetime.now(timezone('America/Vancouver'))
 
     # Query only active MineReportDefinition records with valid ComplianceArticle dates
     active_records = (

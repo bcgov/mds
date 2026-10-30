@@ -224,6 +224,8 @@ BEGIN
             public.now_application_placer_xref,
             public.now_application_progress,
             public.now_application_progress_status,
+            public.now_application_referral_package,
+            public.now_application_referral_package_document_xref,
             public.now_application_review,
             public.now_application_review_type,
             public.now_application_settling_pond_xref,

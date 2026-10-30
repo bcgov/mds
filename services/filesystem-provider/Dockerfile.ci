@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:7.0
+FROM mcr.microsoft.com/dotnet/sdk:10.0
 
 USER 0
 
@@ -15,6 +15,9 @@ RUN apt-get update \
     vim \     
     supervisor \     
     procps     
+
+# Syncfusion's PDF renderer (PDFium) loads "libdl.so", which glibc 2.34+ no longer ships
+RUN ln -sf /usr/lib/$(uname -m)-linux-gnu/libdl.so.2 /usr/lib/$(uname -m)-linux-gnu/libdl.so
 
 RUN mkdir /tmp/DOTNET_CLI_HOME
 

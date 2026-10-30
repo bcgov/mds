@@ -2,10 +2,13 @@ import React from "react";
 import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
 import * as Permission from "@/constants/permissions";
+import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
+import { Feature } from "@mds/common/utils/featureFlag";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 import AddButton from "@/components/common/buttons/AddButton";
 import NOWApplicationReviewsTable from "@/components/noticeOfWork/applications/referals/NOWApplicationReviewsTable";
 import ScrollContentWrapper from "@/components/noticeOfWork/applications/ScrollContentWrapper";
+import NOWReferralPackagesTable from "@/components/noticeOfWork/applications/referals/NOWReferralPackagesTable";
 
 /**
  * @constant Referral renders edit/view for the Referral step
@@ -21,11 +24,18 @@ const propTypes = {
   handleDocumentDelete: PropTypes.func.isRequired,
   openAddReviewModal: PropTypes.func.isRequired,
   handleAddReview: PropTypes.func.isRequired,
+  referralPackages: PropTypes.arrayOf(PropTypes.any),
+};
+
+const defaultProps = {
+  referralPackages: [],
 };
 
 const referralCode = "REF";
 const categoriesToShow = ["RDO"];
 export const Referral = (props) => {
+  const { isFeatureEnabled } = useFeatureFlag();
+
   return (
     <div>
       <ScrollContentWrapper id="referral" title="Referral">
@@ -53,10 +63,24 @@ export const Referral = (props) => {
           </AddButton>
         </NOWActionWrapper>
       </div>
+      {isFeatureEnabled(Feature.NOW_FILE_MANAGEMENT) && (
+        <div className="padding-lg--top">
+          <ScrollContentWrapper
+            id="referral-packages"
+            title="Referral Packages"
+          >
+            <NOWReferralPackagesTable
+              isLoaded={props.isLoaded}
+              referralPackages={props.referralPackages}
+            />
+          </ScrollContentWrapper>
+        </div>
+      )}
     </div>
   );
 };
 
 Referral.propTypes = propTypes;
+Referral.defaultProps = defaultProps;
 
 export default Referral;

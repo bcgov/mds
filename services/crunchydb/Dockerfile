@@ -54,7 +54,7 @@ RUN make && \
 ### Base image is maintained by the BCGov platform team
 ### https://github.com/bcgov/crunchy-postgres
 ### ================================= #
-FROM artifacts.developer.gov.bc.ca/bcgov-docker-local/crunchy-postgres-gis:ubi8-16.6-3.4-0
+FROM artifacts.developer.gov.bc.ca/bcgov-docker-local/crunchy-postgres-gis:ubi8-16.11-3.4-20260910
 
 ARG ORACLE_FDW_VERSION=ORACLE_FDW_2_6_0
 ARG instantclient_version=21_6

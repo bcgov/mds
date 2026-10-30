@@ -18,6 +18,7 @@ from app.api.now_applications.resources.now_application_progress_status_resource
 from app.api.now_applications.resources.now_application_document_resource import NOWApplicationDocumentResource, NOWApplicationDocumentUploadResource, NOWApplicationDocumentSortResource, NOWApplicationDocumentIdentityResource
 from app.api.now_applications.resources.now_application_document_version_resource import NOWApplicationDocumentVersionUploadResource, NOWApplicationDocumentVersionListResource
 from app.api.now_applications.resources.now_application_document_archive_resource import NOWApplicationDocumentArchiveResource
+from app.api.now_applications.resources.now_application_referral_package_resource import NOWApplicationReferralPackageListResource
 from app.api.now_applications.resources.now_application_permit_type_resource import NOWApplicationPermitTypeResource
 from app.api.now_applications.resources.now_application_review_resource import NOWApplicationReviewListResource, NOWApplicationReviewResource
 from app.api.now_applications.resources.now_application_review_type_resource import NOWApplicationReviewTypeResource
@@ -51,6 +52,7 @@ api.add_resource(NOWApplicationTierHistoryResource, '/<string:application_guid>/
 api.add_resource(NOWApplicationProgressResource,
                  '/<string:application_guid>/progress/<string:application_progress_status_code>')
 api.add_resource(NOWApplicationReviewListResource, '/<string:application_guid>/reviews')
+api.add_resource(NOWApplicationReferralPackageListResource, '/<string:application_guid>/referral-packages')
 api.add_resource(NOWApplicationReviewResource,
                  '/<string:application_guid>/reviews/<int:now_application_review_id>')
 api.add_resource(NOWApplicationDocumentUploadResource, '/<string:application_guid>/document')

@@ -1,5 +1,4 @@
 
-from app.config import Config
 from app.docman.models.document_version import DocumentVersion
 from app.docman.models.document import Document
 from app.docman.response_models import DOCUMENT_VERSION_MODEL
@@ -52,10 +51,9 @@ class DocumentVersionResource(Resource):
 
         new_file_display_name = document_version.file_display_name
 
-        key_prefix = Config.S3_PREFIX[:-1] if Config.S3_PREFIX and Config.S3_PREFIX != '/' else ''
         DocumentUploadHelper.complete_upload(
             key=temp_key,
-            new_key=f'{key_prefix}{document.full_storage_path}',
+            new_key=DocumentUploadHelper.upload_destination_path(document),
             doc_guid=str(document.document_guid),
             versions=None,
             version_guid=str(document_version.id),

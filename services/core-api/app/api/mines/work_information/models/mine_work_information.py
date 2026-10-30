@@ -1,17 +1,17 @@
 from datetime import datetime
+
+from app.api.ministry_contacts.models.distribution_list import DistributionListNames
+from app.api.services.email_service import EmailService
+from app.api.utils.include.user_info import User
+from app.api.utils.models_mixins import AuditMixin, Base, SoftDeleteMixin
+from app.config import Config
+from app.extensions import db
 from pytz import timezone
+from sqlalchemy import and_, case
 from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.schema import FetchedValue
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import validates
-from sqlalchemy import and_, case
-
-from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
-from app.api.utils.include.user_info import User
-from app.extensions import db
-from app.api.services.email_service import EmailService
-from app.api.ministry_contacts.models.distribution_list import DistributionListNames
-from app.config import Config
+from sqlalchemy.schema import FetchedValue
 
 
 class MineWorkInformation(SoftDeleteMixin, AuditMixin, Base):
@@ -46,7 +46,7 @@ class MineWorkInformation(SoftDeleteMixin, AuditMixin, Base):
 
     @hybrid_property
     def work_status(self):
-        today = datetime.now(timezone('US/Pacific')).date()
+        today = datetime.now(timezone('America/Vancouver')).date()
         start = self.work_start_date
         stop = self.work_stop_date
 
@@ -73,7 +73,7 @@ class MineWorkInformation(SoftDeleteMixin, AuditMixin, Base):
 
     @work_status.expression
     def work_status(cls):
-        today = datetime.now(timezone('US/Pacific')).date()
+        today = datetime.now(timezone('America/Vancouver')).date()
         start = cls.work_start_date
         stop = cls.work_stop_date
         return case([(and_(start == None, stop == None), "Unknown"),

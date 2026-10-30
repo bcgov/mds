@@ -152,12 +152,12 @@ class TestArchiveDocuments:
         now_application_identity = NOWApplicationIdentityFactory()
         package_document, package_xref = _make_core_document(db_session, now_application_identity, **PERMIT_PACKAGE_FIELDS)
         blocked_document, _ = _make_core_document(
-            db_session, now_application_identity, document_name='referral.pdf', is_referral_package=True)
+            db_session, now_application_identity, document_name='consultation.pdf', is_consultation_package=True)
 
         resp = _archive(test_client, auth_headers, now_application_identity, [package_document, blocked_document])
 
         assert resp.status_code == 400
-        assert 'referral.pdf' in resp.json['message']
+        assert 'consultation.pdf' in resp.json['message']
         _assert_not_archived(db_session, package_document)
         _assert_not_archived(db_session, blocked_document)
         db_session.refresh(package_xref)
@@ -301,20 +301,27 @@ class TestAlwaysBlockedArchive:
         _assert_archive_blocked(test_client, db_session, auth_headers, now_application_identity, mine_document,
                                 'System-generated')
 
-    @pytest.mark.parametrize('package_field', ['is_referral_package', 'is_consultation_package'])
-    def test_referral_and_consultation_documents_blocked(self, test_client, db_session, auth_headers, package_field):
+    def test_consultation_document_blocked(self, test_client, db_session, auth_headers):
         now_application_identity = NOWApplicationIdentityFactory()
-        mine_document, _ = _make_core_document(db_session, now_application_identity, **{package_field: True})
+        mine_document, _ = _make_core_document(db_session, now_application_identity, is_consultation_package=True)
 
         _assert_archive_blocked(test_client, db_session, auth_headers, now_application_identity, mine_document,
-                                'Referral or Consultation')
+                                'Consultation')
 
-    def test_imported_referral_document_blocked(self, test_client, db_session, auth_headers):
+    def test_imported_consultation_document_blocked(self, test_client, db_session, auth_headers):
         now_application_identity = NOWApplicationIdentityFactory()
-        mine_document, _ = _make_imported_document(db_session, now_application_identity, is_referral_package=True)
+        mine_document, _ = _make_imported_document(db_session, now_application_identity, is_consultation_package=True)
 
         _assert_archive_blocked(test_client, db_session, auth_headers, now_application_identity, mine_document,
-                                'Referral or Consultation')
+                                'Consultation')
+
+    def test_referral_document_can_be_archived(self, test_client, db_session, auth_headers):
+        now_application_identity = NOWApplicationIdentityFactory()
+        mine_document, _ = _make_core_document(db_session, now_application_identity, is_referral_package=True)
+
+        resp = _archive(test_client, auth_headers, now_application_identity, [mine_document])
+        assert resp.status_code == 204
+        _assert_archived(db_session, mine_document)
 
     def test_document_outside_manage_documents_tables_blocked(self, test_client, db_session, auth_headers):
         now_application_identity = NOWApplicationIdentityFactory()

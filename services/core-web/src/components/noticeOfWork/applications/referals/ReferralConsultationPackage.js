@@ -5,6 +5,8 @@ import { bindActionCreators } from "redux";
 import { Button, notification } from "antd";
 
 import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
+import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
+import { Feature } from "@mds/common/utils/featureFlag";
 import {
   createNoticeOfWorkApplicationReview,
   fetchNoticeOfWorkApplicationReviews,
@@ -14,6 +16,8 @@ import {
   setNoticeOfWorkApplicationDocumentDownloadState,
   updateNoticeOfWorkApplication,
   fetchImportedNoticeOfWorkApplication,
+  createNoticeOfWorkReferralPackage,
+  fetchNoticeOfWorkReferralPackages,
 } from "@mds/common/redux/actionCreators/noticeOfWorkActionCreator";
 import {
   getNoticeOfWorkReviews,
@@ -57,10 +61,50 @@ const defaultProps = {
 };
 
 export const ReferralConsultationPackage = (props) => {
+  const { isFeatureEnabled } = useFeatureFlag();
   const [cancelDownload, setCancelDownload] = useState(false);
   const [zipFileToDownload, setZipFileToDownload] = useState("");
 
   const progressRef = useRef(false);
+
+  const getSelectedMineDocumentGuids = (selectedCoreRows, selectedSubmissionRows) => {
+    const coreMineGuids = (props.noticeOfWork.documents || [])
+      .filter((doc) => selectedCoreRows.includes(doc.now_application_document_xref_guid))
+      .map((doc) => doc.mine_document?.mine_document_guid)
+      .filter(Boolean);
+    const subMineGuids = (props.noticeOfWork.filtered_submission_documents || [])
+      .filter((doc) => selectedSubmissionRows.includes(doc.mine_document_guid))
+      .map((doc) => doc.mine_document_guid)
+      .filter(Boolean);
+    return [...new Set([...coreMineGuids, ...subMineGuids])];
+  };
+
+  // Recording the version history must never block the save/download itself, so failures only notify.
+  const recordReferralPackage = async (selectedCoreRows, selectedSubmissionRows) => {
+    if (props.type !== "REF" || !isFeatureEnabled(Feature.NOW_FILE_MANAGEMENT)) {
+      return;
+    }
+    const selectedMineDocGuids = getSelectedMineDocumentGuids(
+      selectedCoreRows,
+      selectedSubmissionRows
+    );
+    if (selectedMineDocGuids.length === 0) {
+      return;
+    }
+    try {
+      await props.createNoticeOfWorkReferralPackage(props.noticeOfWork.now_application_guid, {
+        mine_document_guids: selectedMineDocGuids,
+      });
+      await props.fetchNoticeOfWorkReferralPackages(props.noticeOfWork.now_application_guid);
+    } catch (err) {
+      notification.error({
+        message: "Unable to record referral package version",
+        description:
+          "The package was processed, but its version history could not be recorded. Please try again.",
+        duration: 10,
+      });
+    }
+  };
 
   useEffect(() => {
     if (zipFileToDownload) {
@@ -135,9 +179,11 @@ export const ReferralConsultationPackage = (props) => {
                 "Unable to retrieve files",
                 10
               );
-            } else {
+            } else if (data.state === "SUCCESS" && progressRef.current) {
               setZipFileToDownload(data.success_docs[0]);
               handleCloseCompressionNotification();
+              await recordReferralPackage(selectedCoreRows, selectedSubmissionRows);
+              props.closeModal();
             }
           };
           poll();
@@ -188,12 +234,10 @@ export const ReferralConsultationPackage = (props) => {
 
       return props
         .updateNoticeOfWorkApplication(payload, props.noticeOfWork.now_application_guid, message)
-        .then(() => {
-          props
-            .fetchImportedNoticeOfWorkApplication(props.noticeOfWork.now_application_guid)
-            .then(() => {
-              props.closeModal();
-            });
+        .then(async () => {
+          await recordReferralPackage(selectedCoreRows, selectedSubmissionRows);
+          await props.fetchImportedNoticeOfWorkApplication(props.noticeOfWork.now_application_guid);
+          props.closeModal();
         });
     };
 
@@ -204,7 +248,10 @@ export const ReferralConsultationPackage = (props) => {
         importNowSubmissionDocumentsJob: props.importNowSubmissionDocumentsJob,
         coreDocuments: props.noticeOfWork.documents,
         onSubmit: downloadDocumentPackage,
-        cancelDownload: () => setCancelDownload(true),
+        cancelDownload: () => {
+          progressRef.current = false;
+          setCancelDownload(true);
+        },
         title: "Download Referral Package",
         submissionDocumentsInPackage,
         coreDocumentsInPackage,
@@ -253,6 +300,8 @@ const mapDispatchToProps = (dispatch) =>
       fetchImportedNoticeOfWorkApplication,
       documentsCompression,
       pollDocumentsCompressionProgress,
+      createNoticeOfWorkReferralPackage,
+      fetchNoticeOfWorkReferralPackages,
     },
     dispatch
   );

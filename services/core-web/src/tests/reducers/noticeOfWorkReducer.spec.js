@@ -5,7 +5,8 @@ import {
   storeNoticeOfWorkApplicationReviews,
   storeProponentNoticeOfWorkApplicationsList,
   storePipConsultationAreaData,
-  storeNoticeOfWorkApplicationNation
+  storeNoticeOfWorkApplicationNation,
+  storeNoticeOfWorkReferralPackages,
 } from "@mds/common/redux/actions/noticeOfWorkActions";
 import * as MOCK from "@mds/common/tests/mocks/noticeOfWorkMock";
 
@@ -20,6 +21,7 @@ const baseExpectedValue = {
   documentDownloadState: { downloading: false, currentFile: 1, totalFiles: 1 },
   pipConsultationData: [],
   noticeOfWorkNations: [],
+  noticeOfWorkReferralPackages: [],
 };
 
 // Creates deep copy of javascript object instead of setting a reference
@@ -112,6 +114,18 @@ describe("noticeOfWorkReducer", () => {
     const result = noticeOfWorkReducer(
       undefined,
       storeNoticeOfWorkApplicationNation(MOCK.NOW_APPLICATION_NATION_RESPONSE)
+    );
+
+    expect(result).toEqual(expectedValue);
+  });
+
+  it("receives STORE_NOTICE_OF_WORK_REFERRAL_PACKAGES", () => {
+    const expectedValue = getBaseExpectedValue();
+    expectedValue.noticeOfWorkReferralPackages = [{ now_referral_package_id: 1 }];
+
+    const result = noticeOfWorkReducer(
+      undefined,
+      storeNoticeOfWorkReferralPackages([{ now_referral_package_id: 1 }])
     );
 
     expect(result).toEqual(expectedValue);

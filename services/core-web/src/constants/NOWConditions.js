@@ -248,6 +248,14 @@ export const sideMenuOptions = (tab, hasPermitConditionsFlow = true, hasLegacyFu
         children: [],
         applicationType: ["NOW", "ADA"],
       },
+      {
+        href: "referral-packages",
+        title: "Referral Packages",
+        alwaysVisible: true,
+        children: [],
+        applicationType: ["NOW", "ADA"],
+        featureFlag: "NOW_FILE_MANAGEMENT",
+      },
     ],
     consultation: [
       {
@@ -324,7 +332,7 @@ export const sideMenuOptions = (tab, hasPermitConditionsFlow = true, hasLegacyFu
         title: "Government Documents",
         alwaysVisible: true,
         children: [],
-        applicationType: ["NOW", , "ADA"],
+        applicationType: ["NOW", "ADA"],
       },
       {
         href: "generated-documents",
