@@ -368,6 +368,8 @@ export const NOTICE_OF_WORK_APPLICATION_PROGRESS = (applicationGuid, progressCod
   `/now-applications/${applicationGuid}/progress/${progressCode}`;
 export const NOTICE_OF_WORK_APPLICATION_REVIEW = (applicationGuid) =>
   `/now-applications/${applicationGuid}/reviews`;
+export const NOTICE_OF_WORK_REFERRAL_PACKAGES = (applicationGuid) =>
+  `/now-applications/${applicationGuid}/referral-packages`;
 export const NOTICE_OF_WORK_APPLICATION_REVIEW_TYPES = `/now-applications/review-types`;
 export const NOW_APPLICATION_PROGRESS_STATUS_CODES =
   "/now-applications/application-progress-status-codes";

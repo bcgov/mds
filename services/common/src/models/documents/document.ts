@@ -368,7 +368,10 @@ export class NoWApplicationDocument extends MineDocument {
     if (!this.mine_document_guid || this.is_archived || this.is_system_generated) {
       return false;
     }
-    if (this.is_referral_package || this.is_consultation_package) {
+    if (this.is_consultation_package) {
+      return false;
+    }
+    if (!isFeatureEnabled(Feature.NOW_FILE_MANAGEMENT) && this.is_referral_package) {
       return false;
     }
 

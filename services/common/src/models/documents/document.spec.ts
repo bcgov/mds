@@ -5,9 +5,11 @@ import {
   NoWApplicationDocument,
 } from "@mds/common/models/documents/document";
 
+const mockIsFeatureEnabled = jest.fn(() => true);
+
 jest.mock("@mds/common/utils", () => ({
   ...jest.requireActual("@mds/common/utils"),
-  isFeatureEnabled: () => true,
+  isFeatureEnabled: (...args) => mockIsFeatureEnabled(...args),
 }));
 
 describe("NoWApplicationDocument model", () => {
@@ -167,14 +169,22 @@ describe("NoWApplicationDocument model", () => {
   describe("documents that can never be changed", () => {
     it.each([
       ["system-generated", { is_system_generated: true }],
-      ["in a referral package", { is_referral_package: true }],
       ["in a consultation package", { is_consultation_package: true }],
-      ["in a referral and the permit package", { is_referral_package: true, is_final_package: true }],
       ["archived", { is_archived: true }],
       ["not yet imported", { mine_document_guid: undefined }],
       ["outside the Manage Documents tables", { now_application_document_sub_type_code: "AEF" }],
     ])("%s", (_description, overrides) => {
       expect(allowedActions(overrides)).toEqual(canViewActions);
+    });
+
+    it("in a referral package cannot be changed when now_file_management feature flag is disabled", () => {
+      mockIsFeatureEnabled.mockReturnValueOnce(false);
+      expect(allowedActions({ is_referral_package: true })).toEqual(canViewActions);
+    });
+
+    it("in a referral package can be changed when now_file_management feature flag is enabled", () => {
+      mockIsFeatureEnabled.mockReturnValueOnce(true);
+      expect(allowedActions({ is_referral_package: true })).toEqual(canChangeActions);
     });
   });
 
