@@ -360,5 +360,66 @@ describe("ReplaceDocumentModal", () => {
 
       expect(mockDelete).not.toHaveBeenCalled();
     });
+
+    it("does not discard it when the modal is closed while Replace is in progress", async () => {
+      let resolveCreateVersion!: (value: any) => void;
+      const createVersion = jest.fn(
+        () =>
+          new Promise((resolve) => {
+            resolveCreateVersion = resolve;
+          })
+      );
+
+      const { unmount } = render(
+        <ReduxWrapper>
+          <ReplaceDocumentModal
+            document={document}
+            handleSubmit={jest.fn().mockReturnValue(Promise.resolve())}
+            alertMessage="Alert"
+            createVersion={createVersion as any}
+          />
+        </ReduxWrapper>
+      );
+      uploadReplacement();
+
+      let submitPromise!: Promise<any>;
+      act(() => {
+        submitPromise = capturedFormSubmit();
+      });
+      // Closed before the server has responded
+      unmount();
+
+      expect(createVersion).toHaveBeenCalledWith("ver-guid-123");
+      expect(mockDelete).not.toHaveBeenCalled();
+
+      await act(async () => {
+        resolveCreateVersion({ data: { mine_document_version_guid: "v2-guid" } });
+        await submitPromise;
+      });
+    });
+
+    it("discards it when the modal is closed after Replace fails", async () => {
+      const createVersion = jest.fn().mockRejectedValue(new Error("400"));
+
+      const { unmount } = render(
+        <ReduxWrapper>
+          <ReplaceDocumentModal
+            document={document}
+            handleSubmit={jest.fn().mockReturnValue(Promise.resolve())}
+            alertMessage="Alert"
+            createVersion={createVersion}
+          />
+        </ReduxWrapper>
+      );
+      uploadReplacement();
+
+      await act(async () => {
+        await capturedFormSubmit();
+      });
+      unmount();
+
+      expect(mockDelete).toHaveBeenCalledTimes(1);
+      expect(mockDelete.mock.calls[0][0]).toEqual(expect.stringContaining(versionUrl));
+    });
   });
 });

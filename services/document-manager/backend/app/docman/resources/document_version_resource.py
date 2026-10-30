@@ -1,11 +1,10 @@
-from datetime import datetime
 
 from app.config import Config
 from app.docman.models.document_version import DocumentVersion
 from app.docman.models.document import Document
 from app.docman.response_models import DOCUMENT_VERSION_MODEL
 from app.docman.utils.document_upload_helper import DocumentUploadHelper
-from app.extensions import api
+from app.extensions import api, db
 from app.services.object_store_storage_service import ObjectStoreStorageService
 from app.utils.access_decorators import requires_any_of, VIEW_ALL, MINESPACE_PROPONENT, GIS, DOCUMENT_UPLOAD_ROLES
 from app.utils.include.user_info import User
@@ -62,23 +61,13 @@ class DocumentVersionResource(Resource):
             version_guid=str(document_version.id),
             info_key=None,
             update_doc_status_on_error=False,
+            new_file_display_name=new_file_display_name,
         )
 
-        document = Document.find_by_document_guid(document_guid=document_guid)
-        document_version = DocumentVersion.find_by_id(document_version_guid)
-
-        document_version.file_display_name = document.file_display_name
-        document.file_display_name = new_file_display_name
-        if document_version.upload_completed_date is None:
-            document_version.upload_completed_date = datetime.utcnow()
-
-        document_version.save(commit=False)
-        document.save()
-
-        return document_version
+        return DocumentVersion.find_by_id(document_version_guid)
 
     @api.doc(
-        description='Discards an uploaded replacement file that has not been committed'
+        description='Discards an uploaded replacement file that has not been committed, '
         'e.g. when the user cancels the replacement. The document is not changed.')
     @requires_any_of(DOCUMENT_UPLOAD_ROLES)
     def delete(self, document_guid, document_version_guid):
@@ -90,6 +79,11 @@ class DocumentVersionResource(Resource):
         # Soft delete the temporary upload file in the object store
         ObjectStoreStorageService().delete_file(
             DocumentUploadHelper.version_temp_key(document.document_guid, document_version.id))
+
+        # Remove the version record of the discarded replacement, so these don't pile up. Nothing references
+        # uncommitted versions, and a late complete-upload or commit for it now gets a 404.
+        db.session.delete(document_version)
+        db.session.commit()
 
         return '', 204
 

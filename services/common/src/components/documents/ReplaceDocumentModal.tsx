@@ -129,15 +129,21 @@ const ReplaceDocumentModal: FC<ReplaceDocumentModalProps> = (props) => {
   const handleReplaceSubmit = async () => {
     if (versionGuid) {
       let ConnectedVersion;
+      // Set before the request, so closing the modal while the replacement is being committed doesn't discard it
+      committedRef.current = true;
       try {
         ConnectedVersion = await createVersion(versionGuid);
       } catch (error) {
+        committedRef.current = false;
         // The action creator has already surfaced the error; keep the modal open so the user can retry.
         return;
       }
 
+      if (!ConnectedVersion) {
+        committedRef.current = false;
+      }
+
       if (ConnectedVersion) {
-        committedRef.current = true;
         const docConstructor = document instanceof MineDocument ? (document as any).constructor : MineDocument;
         const existingVersionsAsc = (document.versions ?? []).slice().reverse();
         const newVersionsChronological = [...existingVersionsAsc, ConnectedVersion.data as IMineDocumentVersion];

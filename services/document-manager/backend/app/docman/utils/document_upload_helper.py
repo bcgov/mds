@@ -268,7 +268,7 @@ class DocumentUploadHelper:
 
     @classmethod
     def complete_upload(cls, key, new_key, doc_guid, versions=None, version_guid=None, info_key=None, is_bundle=False,
-                        update_doc_status_on_error=True):
+                        update_doc_status_on_error=True, new_file_display_name=None):
         """
         Copies the uploaded file from its temporary location to its final location and then removes the temporary file.
         """
@@ -308,24 +308,27 @@ class DocumentUploadHelper:
 
                 db.session.add(doc)
 
+            previous_version = DocumentVersion.find_by_id(version_guid) if version_guid is not None else None
+
             # update the record of the previous version
-            if versions is not None and len(versions) >= 2:
+            if previous_version is not None and versions is not None and len(versions) >= 2:
                 # Sort the versions
                 versions.sort(key=lambda v: v["LastModified"], reverse=True)
 
                 # get the versionId of the previous version (the second newest)
-                previous_version_data = versions[1]
-                previous_version_id = previous_version_data["VersionId"]
+                previous_version.object_store_version_id = versions[1]["VersionId"]
+                previous_version.upload_completed_date = datetime.utcnow()
 
-                # find the corresponding DocumentVersion record
-                if version_guid is not None:
-                    previous_version = DocumentVersion.find_by_id(version_guid)
+                db.session.add(previous_version)
 
-                    if previous_version is not None:
-                        previous_version.object_store_version_id = previous_version_id
-                        previous_version.upload_completed_date = datetime.utcnow()
+            if previous_version is not None and new_file_display_name is not None:
+                previous_version.file_display_name = doc.file_display_name
+                doc.file_display_name = new_file_display_name
+                if previous_version.upload_completed_date is None:
+                    previous_version.upload_completed_date = datetime.utcnow()
 
-                        db.session.add(previous_version)
+                db.session.add(previous_version)
+                db.session.add(doc)
 
             db.session.commit()
 
