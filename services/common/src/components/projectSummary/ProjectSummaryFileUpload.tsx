@@ -80,6 +80,7 @@ export const ProjectSummaryFileUpload: FC<WrappedFieldProps & ProjectSummaryFile
     setFileName("");
     setMineDocumentGuid(null);
     setVersion(null);
+    setUploadUrl(PROJECT_SUMMARY_DOCUMENTS(props.params));
     return new Promise<boolean>((resolve, reject) => {
       const existingDocument = existingFiles.find(
         (document) => document.document_name === file.filename

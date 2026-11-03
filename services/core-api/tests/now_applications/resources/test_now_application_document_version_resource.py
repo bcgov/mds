@@ -91,10 +91,29 @@ def _mock_docman_upload(mine_document):
         })
 
 
+def _docman_version_url(mine_document, version_guid):
+    return f'{DocumentManagerService.document_manager_document_resource_url}/{mine_document.document_manager_guid}/versions/{version_guid}'
+
+
 def _mock_docman_version_lookups(mine_document, version_guid, new_filename):
+    """
+    Mocks Document Manager for recording a replacement. Responses for the same URL are returned in the order they're added.
+    """
     base_url = f'{DocumentManagerService.document_manager_document_resource_url}/{mine_document.document_manager_guid}'
-    responses.add(responses.GET, f'{base_url}/versions/{version_guid}', json={'file_display_name': mine_document.document_name})
+    version_url = _docman_version_url(mine_document, version_guid)
+    # Before it's committed, the replacement is held by Document Manager and the version holds the replacement's name
+    responses.add(responses.GET, version_url, json={'file_display_name': new_filename, 'upload_completed_date': None})
+    # Commit: the replacement becomes the document's file
+    responses.add(responses.POST, version_url, json={})
+    # After the commit, the version keeps the previous name and the document takes the replacement's name
+    responses.add(responses.GET, version_url,
+                  json={'file_display_name': mine_document.document_name, 'upload_completed_date': '2026-10-27T00:00:00'})
     responses.add(responses.GET, base_url, json={'file_display_name': new_filename})
+
+
+def _commit_calls(mine_document, version_guid):
+    url = _docman_version_url(mine_document, version_guid)
+    return [call for call in responses.calls if call.request.method == 'POST' and call.request.url == url]
 
 
 def _assert_upload_allowed(test_client, auth_headers, now_application_identity, mine_document):
@@ -269,6 +288,24 @@ class TestRecordVersion:
         db_session.refresh(mine_document)
         assert mine_document.document_name == 'report.pdf'
         assert MineDocumentVersion.query.filter_by(mine_document_guid=mine_document.mine_document_guid).count() == 0
+        # The refused file is never applied to the document in Document Manager
+        assert len(_commit_calls(mine_document, version_guid)) == 0
+
+    @responses.activate
+    def test_record_version_applies_replacement_in_docman(self, test_client, db_session, auth_headers):
+        """The replacement file is held by Document Manager until the version is recorded, so recording it commits it"""
+        now_application_identity = NOWApplicationIdentityFactory()
+        mine_document, _ = _make_core_document(db_session, now_application_identity, document_name='report.pdf')
+        version_guid = str(uuid.uuid4())
+        _mock_docman_version_lookups(mine_document, version_guid, 'report-v2.pdf')
+
+        resp = _record_version(test_client, auth_headers, now_application_identity, mine_document, version_guid)
+
+        assert resp.status_code == 200, resp.data
+        assert len(_commit_calls(mine_document, version_guid)) == 1
+        db_session.refresh(mine_document)
+        assert mine_document.document_name == 'report-v2.pdf'
+        assert resp.json['document_name'] == 'report.pdf'
 
     @responses.activate
     def test_record_version_rejects_already_recorded_version(self, test_client, db_session, auth_headers):

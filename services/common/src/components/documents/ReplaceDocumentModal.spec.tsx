@@ -10,6 +10,12 @@ import * as docActions from "@mds/common/redux/actionCreators/documentActionCrea
 let capturedFileUploadProps: any = {};
 let capturedFormSubmit: any = null;
 
+const mockDelete = jest.fn((..._args: any[]) => Promise.resolve());
+jest.mock("@mds/common/redux/customAxios", () => ({
+  __esModule: true,
+  default: () => ({ delete: (...args: any[]) => mockDelete(...args) }),
+}));
+
 jest.mock("@mds/common/components/forms/RenderFileUpload", () => {
   const actual = jest.requireActual("@mds/common/components/forms/RenderFileUpload").default;
   return (props: any) => {
@@ -267,6 +273,159 @@ describe("ReplaceDocumentModal", () => {
 
     act(() => {
       capturedFileUploadProps.onRemoveFile(null, {});
+    });
+  });
+
+  describe("discarding an uploaded replacement the user backs out of", () => {
+    const document = new MineDocument({ ...MINEDOCUMENTS.records[0], file_type: ".pdf" });
+    const versionUrl = `/documents/${document.document_manager_guid}/versions/ver-guid-123`;
+
+    const renderModal = () =>
+      render(
+        <ReduxWrapper>
+          <ReplaceDocumentModal
+            document={document}
+            handleSubmit={jest.fn().mockReturnValue(Promise.resolve())}
+            alertMessage="Alert"
+          />
+        </ReduxWrapper>
+      );
+
+    const uploadReplacement = () => {
+      act(() => {
+        capturedFileUploadProps.onUploadResponse({ document_manager_version_guid: "ver-guid-123" });
+        capturedFileUploadProps.onFileLoad("replacement.pdf", "doc-man-guid");
+      });
+    };
+
+    it("discards it when the uploaded file is removed (X icon)", () => {
+      renderModal();
+      uploadReplacement();
+
+      act(() => {
+        capturedFileUploadProps.onRemoveFile(null, {});
+      });
+
+      expect(mockDelete).toHaveBeenCalledTimes(1);
+      expect(mockDelete.mock.calls[0][0]).toEqual(expect.stringContaining(versionUrl));
+    });
+
+    it("discards it when the modal is closed without clicking Replace", () => {
+      const { unmount } = renderModal();
+      uploadReplacement();
+
+      unmount();
+
+      expect(mockDelete).toHaveBeenCalledTimes(1);
+      expect(mockDelete.mock.calls[0][0]).toEqual(expect.stringContaining(versionUrl));
+    });
+
+    it("discards it only once when the file is removed and the modal is then closed", () => {
+      const { unmount } = renderModal();
+      uploadReplacement();
+
+      act(() => {
+        capturedFileUploadProps.onRemoveFile(null, {});
+      });
+      unmount();
+
+      expect(mockDelete).toHaveBeenCalledTimes(1);
+    });
+
+    it("does nothing when the modal is closed before anything was uploaded", () => {
+      const { unmount } = renderModal();
+
+      unmount();
+
+      expect(mockDelete).not.toHaveBeenCalled();
+    });
+
+    it("does not discard it once Replace has been clicked", async () => {
+      jest.spyOn(docActions, "postNewDocumentVersion").mockReturnValue((() =>
+        Promise.resolve({
+          data: {
+            mine_document_version_guid: "v2-guid",
+            document_name: "original.pdf",
+            upload_date: "2024-02-01",
+          },
+        })) as any);
+
+      const { unmount } = renderModal();
+      uploadReplacement();
+
+      await act(async () => {
+        await capturedFormSubmit();
+      });
+      unmount();
+
+      expect(mockDelete).not.toHaveBeenCalled();
+    });
+
+    it("does not discard it when the modal is closed while Replace is in progress", async () => {
+      let resolveCreateVersion!: (value: any) => void;
+      const createVersion = jest.fn(
+        () =>
+          new Promise((resolve) => {
+            resolveCreateVersion = resolve;
+          })
+      );
+
+      const { unmount } = render(
+        <ReduxWrapper>
+          <ReplaceDocumentModal
+            document={document}
+            handleSubmit={jest.fn().mockReturnValue(Promise.resolve())}
+            alertMessage="Alert"
+            createVersion={createVersion as any}
+          />
+        </ReduxWrapper>
+      );
+      uploadReplacement();
+
+      let submitPromise!: Promise<any>;
+      act(() => {
+        submitPromise = capturedFormSubmit();
+      });
+      // Closed before the server has responded
+      unmount();
+
+      expect(createVersion).toHaveBeenCalledWith("ver-guid-123");
+      expect(mockDelete).not.toHaveBeenCalled();
+
+      await act(async () => {
+        resolveCreateVersion({
+          data: {
+            mine_document_version_guid: "v2-guid",
+            document_name: "original.pdf",
+            upload_date: "2024-02-01",
+          },
+        });
+        await submitPromise;
+      });
+    });
+
+    it("discards it when the modal is closed after Replace fails", async () => {
+      const createVersion = jest.fn().mockRejectedValue(new Error("400"));
+
+      const { unmount } = render(
+        <ReduxWrapper>
+          <ReplaceDocumentModal
+            document={document}
+            handleSubmit={jest.fn().mockReturnValue(Promise.resolve())}
+            alertMessage="Alert"
+            createVersion={createVersion}
+          />
+        </ReduxWrapper>
+      );
+      uploadReplacement();
+
+      await act(async () => {
+        await capturedFormSubmit();
+      });
+      unmount();
+
+      expect(mockDelete).toHaveBeenCalledTimes(1);
+      expect(mockDelete.mock.calls[0][0]).toEqual(expect.stringContaining(versionUrl));
     });
   });
 });

@@ -34,7 +34,10 @@ class DocumentVersionListResource(Resource):
         """
         Initiating a new Tusd document upload to the storage path of the 
         original document, and creates a new DocumentVersion to 
-        keep a record of the new document version
+        keep a record of the new document version.
+
+        For S3 multipart uploads the file is uploaded to a temporary location and the document
+        itself (contents and name) is only changed once the replacement is committed
         """
         document = Document.query.filter_by(
             document_guid=document_guid).one_or_none()
@@ -56,7 +59,21 @@ class DocumentVersionListResource(Resource):
             version_guid=version_guid,
             filename=filename)
 
-        # Create document record
+        is_deferred_commit = Config.OBJECT_STORE_ENABLED and request.headers.get('Upload-Protocol') == 's3-multipart'
+
+        if is_deferred_commit:
+            new_version = DocumentVersion(
+                id=version_guid,
+                document_guid=document.document_guid,
+                created_by=User().get_user_username() or 'mds',
+                created_date=datetime.utcnow(),
+                file_display_name=filename,
+                upload_started_date=datetime.utcnow(),
+            )
+            new_version.save()
+
+            return response
+
         new_version = DocumentVersion(
             id=version_guid,
             document_guid=document.document_guid,
@@ -64,6 +81,7 @@ class DocumentVersionListResource(Resource):
             created_date=datetime.utcnow(),
             file_display_name=document.file_display_name,
             upload_started_date=datetime.utcnow(),
+            upload_completed_date=datetime.utcnow(),
         )
         new_version.save()
 

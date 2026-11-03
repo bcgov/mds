@@ -112,6 +112,12 @@ class MineDocumentVersionListResource(Resource, UserMixin):
                 deleted_ind=False).first():
             raise BadRequest('This version of the document has already been recorded.')
 
+        DocumentManagerService.commit_document_version(
+            request=request,
+            document_manager_guid=mine_document.document_manager_guid,
+            document_manager_version_guid=document_manager_version_guid,
+        )
+
         return MineDocumentVersion.create_from_docman_version(
             mine_document=mine_document,
             document_manager_version_guid=document_manager_version_guid,

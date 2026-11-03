@@ -39,6 +39,7 @@ class TestMineDocumentVersionUploadResource:
         mine = setup_info['mine']
         document = setup_info['document']
         ver_url = f'{DocumentManagerService.document_manager_document_resource_url}/{document.document_manager_guid}/versions/{docman_version_guid}'
+        responses.add(responses.POST, ver_url, json={})
         responses.add(responses.GET, ver_url, json={
             'file_display_name': 'test.pdf'
         })
@@ -80,6 +81,7 @@ class TestMineDocumentVersionUploadResource:
         versions = []
         for _ in range(2):
             docman_version_guid = str(uuid.uuid4())
+            responses.add(responses.POST, f'{doc_url}/versions/{docman_version_guid}', json={})
             responses.add(
                 responses.GET,
                 f'{doc_url}/versions/{docman_version_guid}',
@@ -110,6 +112,7 @@ class TestMineDocumentVersionUploadResource:
         document = setup_info['document']
         docman_version_guid = str(uuid.uuid4())
         doc_url = f'{DocumentManagerService.document_manager_document_resource_url}/{document.document_manager_guid}'
+        responses.add(responses.POST, f'{doc_url}/versions/{docman_version_guid}', json={})
         responses.add(responses.GET, f'{doc_url}/versions/{docman_version_guid}', json={'file_display_name': 'test.pdf'})
         responses.add(responses.GET, doc_url, json={'file_display_name': 'replacement.pdf'})
 
@@ -134,6 +137,10 @@ class TestMineDocumentVersionUploadResource:
         original_name = document.document_name
         docman_version_guid = str(uuid.uuid4())
         responses.add(
+            responses.POST,
+            f'{DocumentManagerService.document_manager_document_resource_url}/{document.document_manager_guid}/versions/{docman_version_guid}',
+            json={})
+        responses.add(
             responses.GET,
             f'{DocumentManagerService.document_manager_document_resource_url}/{document.document_manager_guid}/versions/{docman_version_guid}',
             status=404,
@@ -145,6 +152,56 @@ class TestMineDocumentVersionUploadResource:
             json={'document_manager_version_guid': docman_version_guid})
 
         assert post_resp.status_code >= 400
+        db_session.refresh(document)
+        assert document.document_name == original_name
+        assert len(document.versions) == 0
+
+    @responses.activate
+    def test_create_commits_replacement_in_docman_first(self, test_client, db_session, auth_headers, setup_info):
+        """The uploaded replacement is applied in docman before the version is read and recorded"""
+
+        mine = setup_info['mine']
+        document = setup_info['document']
+        docman_version_guid = str(uuid.uuid4())
+        doc_url = f'{DocumentManagerService.document_manager_document_resource_url}/{document.document_manager_guid}'
+        ver_url = f'{doc_url}/versions/{docman_version_guid}'
+        responses.add(responses.POST, ver_url, json={})
+        responses.add(responses.GET, ver_url, json={'file_display_name': 'test.pdf'})
+        responses.add(responses.GET, doc_url, json={'file_display_name': 'replacement.pdf'})
+
+        post_resp = test_client.post(
+            f'/mines/{mine.mine_guid}/documents/{document.mine_document_guid}/versions',
+            headers=auth_headers['full_auth_header'],
+            json={'document_manager_version_guid': docman_version_guid})
+
+        assert post_resp.status_code == 200
+        assert responses.calls[0].request.method == 'POST'
+        assert responses.calls[0].request.url == ver_url
+        db_session.refresh(document)
+        assert document.document_name == 'replacement.pdf'
+
+    @responses.activate
+    def test_create_commit_failure_does_not_create_version(self, test_client, db_session, auth_headers, setup_info):
+        """If docman can't apply the replacement, no version is recorded and the document is unchanged"""
+
+        mine = setup_info['mine']
+        document = setup_info['document']
+        original_name = document.document_name
+        docman_version_guid = str(uuid.uuid4())
+        responses.add(
+            responses.POST,
+            f'{DocumentManagerService.document_manager_document_resource_url}/{document.document_manager_guid}/versions/{docman_version_guid}',
+            status=400,
+            json={'status': 400, 'message': 'The replacement file could not be found.'})
+
+        post_resp = test_client.post(
+            f'/mines/{mine.mine_guid}/documents/{document.mine_document_guid}/versions',
+            headers=auth_headers['full_auth_header'],
+            json={'document_manager_version_guid': docman_version_guid})
+
+        assert post_resp.status_code == 400
+        assert 'The replacement file could not be found.' in json.loads(post_resp.data.decode())['message']
+        assert len(responses.calls) == 1
         db_session.refresh(document)
         assert document.document_name == original_name
         assert len(document.versions) == 0

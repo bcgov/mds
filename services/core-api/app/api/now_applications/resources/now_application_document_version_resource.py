@@ -29,7 +29,7 @@ class NOWApplicationDocumentVersionUploadResource(Resource, UserMixin):
         now_application_identity, mine_document, xref = get_now_document_for_file_management(
             application_guid, mine_document_guid)
 
-        # Checked here as well as when the version is recorded: Document Manager makes the uploaded file current as soon as the upload finishes.
+        # Checked here as well as when the version is recorded, so a file that can't be used is refused before it's uploaded.
         new_filename = DocumentManagerService._parse_request_metadata(request).get('filename')
         if not new_filename:
             raise BadRequest('Upload-Metadata must include the filename of the replacement file.')
@@ -75,10 +75,25 @@ class NOWApplicationDocumentVersionListResource(Resource, UserMixin):
                 deleted_ind=False).first():
             raise BadRequest('This version of the document has already been recorded.')
 
-        # The upload step could only check the filename the client sent, so we also check the file Document Manager actually stored
-        new_filename = DocumentManagerService.get_document(
-            request=request, document_manager_guid=mine_document.document_manager_guid).get('file_display_name')
+        # The upload step could only check the filename the client sent, so we also check the file Document Manager actually stored.
+        # Replacement files are held by Document Manager until they're committed, and until then the version holds the replacement's name.
+        # Legacy (tusd) uploads are applied as soon as they finish (the version is already completed), so the document has the new name.
+        docman_version = DocumentManagerService.get_document_version(
+            request=request,
+            document_manager_guid=mine_document.document_manager_guid,
+            document_manager_version_guid=document_manager_version_guid)
+        if docman_version.get('upload_completed_date'):
+            new_filename = DocumentManagerService.get_document(
+                request=request, document_manager_guid=mine_document.document_manager_guid).get('file_display_name')
+        else:
+            new_filename = docman_version.get('file_display_name')
         check_can_replace(now_application_identity, mine_document, xref, new_filename=new_filename)
+
+        DocumentManagerService.commit_document_version(
+            request=request,
+            document_manager_guid=mine_document.document_manager_guid,
+            document_manager_version_guid=document_manager_version_guid,
+        )
 
         # Updates the existing mine_document in place, so the xref row (and the now_application_document_xref_guid that permit conditions reference) is left untouched.
         return MineDocumentVersion.create_from_docman_version(

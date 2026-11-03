@@ -281,6 +281,33 @@ class DocumentManagerService():
         return resp.json()
 
     @classmethod
+    def commit_document_version(cls, request, document_manager_guid, document_manager_version_guid):
+        """
+        Applies an uploaded replacement file (document version) to the document in Document Manager:
+        the file is copied over the document's file and the document is renamed.
+        Replacement files are held in a temporary location until this is called, so a replacement
+        the user backs out of never changes the document.
+        """
+        resp = requests.post(
+            url=f'{cls.document_manager_document_resource_url}/{document_manager_guid}/versions/{document_manager_version_guid}',
+            headers={key: value
+                     for (key, value) in request.headers if key not in ('Host', 'Content-Type', 'Content-Length')},
+            timeout=100,
+        )
+
+        if resp.status_code != 200:
+            current_app.logger.error(f'Document manager version commit failed: {resp.status_code} - {resp.text}')
+            if resp.status_code in (400, 403, 404):
+                try:
+                    message = resp.json().get('message') or resp.text
+                except ValueError:
+                    message = resp.text
+                raise BadRequest(f'Failed to replace the document: {message}')
+            raise Exception(f'Failed to commit document version in document manager. {resp.status_code}: {resp.text}')
+
+        return resp.json()
+
+    @classmethod
     def get_document(cls, request, document_manager_guid):
         resp = requests.get(
             url=f'{cls.document_manager_document_resource_url}/{document_manager_guid}',
