@@ -60,7 +60,6 @@ permit_amendments_for_orgbook_query = """
     and (mpa.end_date > pa.issue_date OR mpa.end_date is null or mpa.end_date = '9999-12-31')
     and pa.deleted_ind = false
     and pmt.permit_status_code = 'O'
-    and substring(pmt.permit_no,2,1) != 'X'
 
     group by pa.permit_amendment_guid, p.party_guid, pa.description, pa.issue_date, pa.permit_amendment_status_code, pmt.permit_no, mpa.permit_id, poe.party_guid, p.party_name, poe.name_text, poe.registration_id, m.mine_name, mine_party_appt_type_code
     order by pmt.permit_no, pa.issue_date;
@@ -140,24 +139,6 @@ class UNTPCredentialManager():
     @classmethod
     def push_permit_amendment_to_untp_publisher(
             cls, pa: PermitAmendment, publisher_service: UNTPPublisherService) -> dict[str, Any]:
-        if pa.permit_no[1] in ("X", "x"):
-            current_app.logger.info(
-                f"exclude exploration permit={pa.permit_no}, they cannot produce goods for sale")
-            return {
-                "status":
-                "skipped",
-                "hash":
-                None,
-                "existing":
-                False,
-                "collision":
-                False,
-                "response":
-                None,
-                "error_msg":
-                f"exclude exploration permit={pa.permit_no}, they cannot produce goods for sale",
-            }
-
         # Shape matches PublicationRequest from the untp-publisher API:
         # https://untp-publisher-api-dev.apps.gold.devops.gov.bc.ca/docs#/Credentials/publish_credential_credentials_publish_post
         publish_payload, party_guid = cls.prepare_permit_amendment_untp_credential_without_id(
@@ -338,11 +319,6 @@ class UNTPCredentialManager():
 
         if next_pmt_appt:
             valid_until_date = next_pmt_appt.issue_date
-
-        if pa.permit_no[1] in ("X", "x"):
-            current_app.logger.info(
-                f"exclude exploration permit={pa.permit_no}, they cannot produce goods for sale")
-            return None, None
 
         publish_payload = {
             "template": "BCMinesActPermitCredential",
