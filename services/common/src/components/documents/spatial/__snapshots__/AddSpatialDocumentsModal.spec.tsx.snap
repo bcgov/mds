@@ -119,7 +119,7 @@ exports[`AddSpatialDocumentsModal renders properly 1`] = `
             Visit
              
             <a
-              href="https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/permitting/reclamation-closure/spatial-data-arr"
+              href="https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/permitting/mine-exploration/now-application-mapping-requirements#datarequirements"
               target="_blank"
             >
               GIS Shapefile Standards
