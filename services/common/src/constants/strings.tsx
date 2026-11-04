@@ -206,7 +206,7 @@ export const CALLOUT_SEVERITY = {
 };
 
 export const SPATIAL_DATA_STANDARDS_URL =
-  "https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/permitting/reclamation-closure/spatial-data-arr";
+  "https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/permitting/mine-exploration/now-application-mapping-requirements#datarequirements";
 
 export const MAJOR_MINES_APPLICATION_DOCUMENT_TYPE = {
   PRIMARY: "primary_documents",
