@@ -384,8 +384,11 @@ class PermitAmendmentResource(Resource, UserMixin):
             data.get('issue_date'), data.get('permit_amendment_type_code'),
             permit_amendment.permit_guid, mine_guid)
 
-        if data.get(
-                'site_properties') != {} and permit_amendment.permit_amendment_status_code == 'DFT':
+        # mine_tenure_type_code is NOT NULL on mine_type, so site properties can only be persisted once a tenure type is chosen.
+        site_properties = data.get('site_properties') or {}
+        if site_properties.get(
+                'mine_tenure_type_code'
+        ) and permit_amendment.permit_amendment_status_code == 'DFT':
 
             MineType.create_or_update_mine_type_with_details(
                 mine_guid=mine_guid,

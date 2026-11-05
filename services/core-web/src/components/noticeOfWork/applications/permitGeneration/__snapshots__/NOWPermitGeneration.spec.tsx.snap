@@ -9,22 +9,27 @@ exports[`NOWPermitGeneration renders properly 1`] = `
       <div
         class="inline-flex flex-center view--header--content"
       >
-        <button
-          class="ant-btn ant-btn-default full-mobile"
-          type="button"
+        <div
+          class="inline-flex flex-center"
+          style="position: relative; gap: 8px;"
         >
-          <span>
-            Cancel
-          </span>
-        </button>
-        <button
-          class="ant-btn ant-btn-primary full-mobile"
-          type="button"
-        >
-          <span>
-            Save
-          </span>
-        </button>
+          <button
+            class="ant-btn ant-btn-default full-mobile"
+            type="button"
+          >
+            <span>
+              Cancel
+            </span>
+          </button>
+          <button
+            class="ant-btn ant-btn-primary full-mobile"
+            type="button"
+          >
+            <span>
+              Save
+            </span>
+          </button>
+        </div>
       </div>
       <div
         class="ant-alert ant-alert-warning ant-alert-no-icon ant-alert-banner status-banner"
