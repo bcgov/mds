@@ -221,6 +221,34 @@ export const FileUpload: FC<FileUploadProps> = ({
     let consecutiveFailureCount = 0;
     const MAX_CONSECUTIVE_POLL_FAILURES = 5;
 
+    const completeUpload = async () => {
+      load(documentGuid);
+
+      onFileLoad(file.name, documentGuid, versionGuid);
+
+      if (afterSuccess?.action) {
+        try {
+          if (afterSuccess?.irtGuid) {
+            await afterSuccess.action[1](
+              afterSuccess?.projectGuid,
+              afterSuccess?.irtGuid,
+              file,
+              documentGuid
+            );
+          } else {
+            await afterSuccess.action[0](afterSuccess?.projectGuid, file, documentGuid);
+          }
+          importIsSuccessful(true);
+        } catch (err) {
+          importIsSuccessful(false, (err as any)?.response?.data);
+        }
+
+        if (showWhirlpool) {
+          flushSound.play();
+        }
+      }
+    };
+
     const pollUploadStatus = async () => {
       const response = await dispatch(pollDocumentUploadStatus(documentGuid));
       if (!response) {
@@ -245,31 +273,7 @@ export const FileUpload: FC<FileUploadProps> = ({
       if (response.data.status !== "In Progress") {
         clearInterval(intervalId);
         if (response.data.status === "Success") {
-          load(documentGuid);
-
-          onFileLoad(file.name, documentGuid, versionGuid);
-
-          if (afterSuccess?.action) {
-            try {
-              if (afterSuccess?.irtGuid) {
-                await afterSuccess.action[1](
-                  afterSuccess?.projectGuid,
-                  afterSuccess?.irtGuid,
-                  file,
-                  documentGuid
-                );
-              } else {
-                await afterSuccess.action[0](afterSuccess?.projectGuid, file, documentGuid);
-              }
-              importIsSuccessful(true);
-            } catch (err) {
-              importIsSuccessful(false, (err as any)?.response?.data);
-            }
-
-            if (showWhirlpool) {
-              flushSound.play();
-            }
-          }
+          await completeUpload();
         } else {
           if (onError) {
             onError(file?.name ?? "", response.data);
@@ -285,6 +289,12 @@ export const FileUpload: FC<FileUploadProps> = ({
         }
       }
     };
+
+    if (versionGuid) {
+      completeUpload();
+      return;
+    }
+
     intervalId = setInterval(pollUploadStatus, 1000);
   };
 
