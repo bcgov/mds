@@ -169,7 +169,6 @@ describe("NoWApplicationDocument model", () => {
   describe("documents that can never be changed", () => {
     it.each([
       ["system-generated", { is_system_generated: true }],
-      ["in a consultation package", { is_consultation_package: true }],
       ["archived", { is_archived: true }],
       ["not yet imported", { mine_document_guid: undefined }],
       ["outside the Manage Documents tables", { now_application_document_sub_type_code: "AEF" }],
@@ -185,6 +184,16 @@ describe("NoWApplicationDocument model", () => {
     it("in a referral package can be changed when now_file_management feature flag is enabled", () => {
       mockIsFeatureEnabled.mockReturnValueOnce(true);
       expect(allowedActions({ is_referral_package: true })).toEqual(canChangeActions);
+    });
+
+    it("in a consultation package cannot be changed when now_file_management feature flag is disabled", () => {
+      mockIsFeatureEnabled.mockReturnValueOnce(false);
+      expect(allowedActions({ is_consultation_package: true })).toEqual(canViewActions);
+    });
+
+    it("in a consultation package can be changed when now_file_management feature flag is enabled", () => {
+      mockIsFeatureEnabled.mockReturnValueOnce(true);
+      expect(allowedActions({ is_consultation_package: true })).toEqual(canChangeActions);
     });
   });
 

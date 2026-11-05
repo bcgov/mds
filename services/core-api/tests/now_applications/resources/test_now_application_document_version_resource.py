@@ -428,26 +428,11 @@ class TestAlwaysBlocked:
         _assert_blocked(test_client, auth_headers, now_application_identity, mine_document, 'System-generated')
 
     @responses.activate
-    def test_consultation_documents_blocked(self, test_client, db_session, auth_headers):
+    def test_consultation_document_can_be_replaced(self, test_client, db_session, auth_headers):
         now_application_identity = NOWApplicationIdentityFactory()
         mine_document, _ = _make_core_document(db_session, now_application_identity, is_consultation_package=True)
 
-        _assert_blocked(test_client, auth_headers, now_application_identity, mine_document, 'Consultation')
-
-    @responses.activate
-    def test_consultation_document_in_permit_package_blocked_while_in_progress(self, test_client, db_session, auth_headers):
-        now_application_identity = NOWApplicationIdentityFactory()
-        mine_document, _ = _make_core_document(
-            db_session, now_application_identity, is_final_package=True, is_consultation_package=True)
-
-        _assert_blocked(test_client, auth_headers, now_application_identity, mine_document, 'Consultation')
-
-    @responses.activate
-    def test_imported_consultation_document_blocked(self, test_client, db_session, auth_headers):
-        now_application_identity = NOWApplicationIdentityFactory()
-        mine_document, _ = _make_imported_document(db_session, now_application_identity, is_consultation_package=True)
-
-        _assert_blocked(test_client, auth_headers, now_application_identity, mine_document, 'Consultation')
+        _assert_upload_allowed(test_client, auth_headers, now_application_identity, mine_document)
 
     @responses.activate
     def test_referral_document_can_be_replaced(self, test_client, db_session, auth_headers):

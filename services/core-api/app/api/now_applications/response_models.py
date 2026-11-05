@@ -387,29 +387,38 @@ NOW_APPLICATION_REVIEW_MODEL = api.model(
         'documents': fields.List(fields.Nested(NOW_APPLICATION_DOCUMENT))
     })
 
-NOW_APPLICATION_REFERRAL_PACKAGE_DOCUMENT = api.model(
-    'NOWApplicationReferralPackageDocument', {
-        'now_application_referral_package_document_xref_guid': fields.String,
-        'mine_document_guid': fields.String,
-        'document_manager_guid': fields.String,
-        'document_manager_version_guid': fields.String,
-        'document_name': fields.String,
-        'version_number': fields.Integer,
-        'version_label': fields.String,
-        'category': fields.String,
-    })
 
-NOW_APPLICATION_REFERRAL_PACKAGE = api.model(
-    'NOWApplicationReferralPackage', {
-        'now_application_referral_package_id': fields.Integer,
-        'now_application_referral_package_guid': fields.String,
-        'now_application_id': fields.Integer,
-        'package_order': fields.Integer,
-        'package_name': fields.String,
-        'create_user': fields.String,
-        'create_timestamp': fields.DateTime,
-        'documents': fields.List(fields.Nested(NOW_APPLICATION_REFERRAL_PACKAGE_DOCUMENT)),
-    })
+def _package_models(label):
+    """Builds the document and package response models for a NoW package type, e.g. 'Referral'."""
+    key = label.lower()
+    document = api.model(
+        f'NOWApplication{label}PackageDocument', {
+            f'now_application_{key}_package_document_xref_guid': fields.String,
+            'mine_document_guid': fields.String,
+            'document_manager_guid': fields.String,
+            'document_manager_version_guid': fields.String,
+            'document_name': fields.String,
+            'version_number': fields.Integer,
+            'version_label': fields.String,
+            'category': fields.String,
+        })
+    package = api.model(
+        f'NOWApplication{label}Package', {
+            f'now_application_{key}_package_id': fields.Integer,
+            f'now_application_{key}_package_guid': fields.String,
+            'now_application_id': fields.Integer,
+            'package_order': fields.Integer,
+            'package_name': fields.String,
+            'create_user': fields.String,
+            'create_timestamp': fields.DateTime,
+            'documents': fields.List(fields.Nested(document)),
+        })
+    return document, package
+
+
+NOW_APPLICATION_REFERRAL_PACKAGE_DOCUMENT, NOW_APPLICATION_REFERRAL_PACKAGE = _package_models('Referral')
+NOW_APPLICATION_CONSULTATION_PACKAGE_DOCUMENT, NOW_APPLICATION_CONSULTATION_PACKAGE = _package_models(
+    'Consultation')
 
 NOW_SUBMISSION_DOCUMENT = api.model(
     'SUBMISSION_DOCUMENT', {

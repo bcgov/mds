@@ -84,8 +84,8 @@ def _check_file_management_rules(now_application_identity, mine_document, xref):
     if getattr(xref, 'is_system_generated', False):
         raise BadRequest('System-generated documents cannot be changed.')
 
-    # Consultation package files keep their existing behaviour, even when also in the permit package
-    if xref.is_consultation_package:
+    # Referral and Consultation package files keep their existing behaviour, even when also in the permit package
+    if not is_feature_enabled(Feature.NOW_FILE_MANAGEMENT) and xref.is_consultation_package:
         raise BadRequest('Documents in a Consultation package cannot be changed.')
     if not is_feature_enabled(Feature.NOW_FILE_MANAGEMENT) and xref.is_referral_package:
         raise BadRequest('Documents in a Referral package cannot be changed.')

@@ -265,6 +265,14 @@ export const sideMenuOptions = (tab, hasPermitConditionsFlow = true, hasLegacyFu
         children: [],
         applicationType: ["NOW", "ADA"],
       },
+      {
+        href: "consultation-packages",
+        title: "Consultation Packages",
+        alwaysVisible: true,
+        children: [],
+        applicationType: ["NOW", "ADA"],
+        featureFlag: "NOW_FILE_MANAGEMENT",
+      },
     ],
     "public-comment": [
       {

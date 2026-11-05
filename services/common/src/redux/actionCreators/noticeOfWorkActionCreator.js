@@ -781,3 +781,40 @@ export const createNoticeOfWorkReferralPackage = (applicationGuid, payload) => (
     })
     .finally(() => dispatch(hideLoading()));
 };
+
+export const fetchNoticeOfWorkConsultationPackages = (applicationGuid) => (dispatch) => {
+  dispatch(request(NetworkReducerTypes.GET_NOTICE_OF_WORK_CONSULTATION_PACKAGES));
+  dispatch(showLoading());
+  return CustomAxios()
+    .get(
+      `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_CONSULTATION_PACKAGES(applicationGuid)}`,
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(success(NetworkReducerTypes.GET_NOTICE_OF_WORK_CONSULTATION_PACKAGES));
+      dispatch(noticeOfWorkActions.storeNoticeOfWorkConsultationPackages(response.data));
+      return response;
+    })
+    .catch(() => dispatch(error(NetworkReducerTypes.GET_NOTICE_OF_WORK_CONSULTATION_PACKAGES)))
+    .finally(() => dispatch(hideLoading()));
+};
+
+export const createNoticeOfWorkConsultationPackage = (applicationGuid, payload) => (dispatch) => {
+  dispatch(request(NetworkReducerTypes.CREATE_NOTICE_OF_WORK_CONSULTATION_PACKAGE));
+  dispatch(showLoading());
+  return CustomAxios()
+    .post(
+      `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_CONSULTATION_PACKAGES(applicationGuid)}`,
+      payload,
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(success(NetworkReducerTypes.CREATE_NOTICE_OF_WORK_CONSULTATION_PACKAGE));
+      return response;
+    })
+    .catch((err) => {
+      dispatch(error(NetworkReducerTypes.CREATE_NOTICE_OF_WORK_CONSULTATION_PACKAGE));
+      throw err;
+    })
+    .finally(() => dispatch(hideLoading()));
+};
