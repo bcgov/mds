@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from "react";
 import moment from "moment";
-import { isEmpty } from "lodash";
-import { Button, Popconfirm } from "antd";
+import { isEmpty, startCase } from "lodash";
+import { Button, Popconfirm, Popover } from "antd";
 import { DownloadOutlined } from "@ant-design/icons";
 import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
 import { formatDate, getDurationText, flattenObject, formatDateUTC } from "@mds/common/redux/utils/helpers";
@@ -113,6 +113,7 @@ export const NOWPermitGeneration: FC<NOWPermitGenerationProps> = ({
   const [permitAmendmentDropdown, setPermitAmendmentDropdown] = useState([]);
   const [isPermitAmendmentTypeDropDownDisabled, setIsPermitAmendmentTypeDropDownDisabled] = useState(true);
   const [downloadingDraft, setDownloadingDraft] = useState(false);
+  const [showValidationErrors, setShowValidationErrors] = useState(false);
 
   const createPermitGenObject = () => {
     let OGPIssueDate = null;
@@ -304,16 +305,42 @@ export const NOWPermitGeneration: FC<NOWPermitGenerationProps> = ({
     }).finally(() => setDownloadingDraft(false));
   };
 
+  const FIELD_LABELS = {
+    regional_office: "Regional Office",
+    issuing_inspector_title: "Issuing Inspector Title",
+    issue_date: "Issue Date",
+    auth_end_date: "Authorization End Date",
+    permit_amendment_type_code: "Permit Amendment Type",
+    preamble_text: "Preamble Text",
+    site_property: "Site Properties",
+  };
+
+  const validationErrors = Object.entries(flattenObject(formErrors) ?? {}).map(([field, message]) => {
+    const baseField = field.split(".")[0];
+    const label = FIELD_LABELS[baseField] ?? startCase(baseField);
+    return `${label}: ${message}`;
+  });
+
   const focusErrorInput = () => {
     dispatch(submit(FORM.GENERATE_PERMIT));
     const errors = Object.keys(flattenObject(formErrors));
-    const errorElement = document.querySelector(`[name="${errors[0]}"]`);
-    if (errorElement instanceof HTMLElement) {
-      errorElement.focus();
-    }
+    // Fields only get their error styling once submit has marked them touched, so wait for that render.
+    // The error may be in a section that is scrolled out of view (e.g. while editing conditions).
+    setTimeout(() => {
+      const errorElement =
+        document.querySelector(`[name="${errors[0]}"]`) ??
+        document.querySelector(".ant-form-item-has-error");
+      if (errorElement instanceof HTMLElement) {
+        // Leave room for the sticky page header and edit-mode banner.
+        errorElement.style.scrollMarginTop = "200px";
+        errorElement.scrollIntoView({ block: "start" });
+        errorElement.focus({ preventScroll: true });
+      }
+    }, 100);
   };
 
   const handleCancelDraftEdit = () => {
+    setShowValidationErrors(false);
     dispatch(reset(FORM.GENERATE_PERMIT));
     toggleEditMode();
   };
@@ -321,9 +348,11 @@ export const NOWPermitGeneration: FC<NOWPermitGenerationProps> = ({
   const handleSaveDraftEdit = () => {
     const errors = Object.keys(flattenObject(formErrors));
     if (errors.length > 0) {
+      setShowValidationErrors(true);
       focusErrorInput();
       return;
     }
+    setShowValidationErrors(false);
 
     const transformDocumentsMetadata = (documentsMetadata) => {
       const allFileMetadata = {};
@@ -376,7 +405,8 @@ export const NOWPermitGeneration: FC<NOWPermitGenerationProps> = ({
       .then(() => {
         handleDraftPermit();
         toggleEditMode();
-      });
+      })
+      .catch(() => setIsLoaded(true));
   };
 
   const handleSavePreamble = () => {
@@ -394,7 +424,8 @@ export const NOWPermitGeneration: FC<NOWPermitGenerationProps> = ({
       .then(() => {
         handleDraftPermit();
         dispatch(storeEditingPreambleFlag(false));
-      });
+      })
+      .catch(() => setIsLoaded(true));
   };
 
   const handleCancelPreambleTextEdit = () => {
@@ -537,7 +568,7 @@ export const NOWPermitGeneration: FC<NOWPermitGenerationProps> = ({
         fixedTop={fixedTop}
         noticeOfWork={noticeOfWork}
         tabEditActions={
-          <>
+          <div className="inline-flex flex-center" style={{ position: "relative", gap: 8 }}>
             <Popconfirm
               placement="bottomRight"
               title="You have unsaved changes. Are you sure you want to cancel?"
@@ -552,17 +583,36 @@ export const NOWPermitGeneration: FC<NOWPermitGenerationProps> = ({
                 Cancel
               </Button>
             </Popconfirm>
-            <Button
-              type="primary"
-              className="full-mobile"
-              onClick={() => {
-                handleSaveDraftEdit();
-              }}
-              loading={submitting}
+            <Popover
+              placement="bottomRight"
+              open={showValidationErrors && validationErrors.length > 0}
+              onOpenChange={(open) => !open && setShowValidationErrors(false)}
+              trigger="click"
+              title="Unable to save. Please fix the following:"
+              overlayStyle={{ maxWidth: 380 }}
+              align={{ offset: [0, 16] }}
+              // Render inside the fixed header (not a body portal) so it moves with it while scrolling.
+              getPopupContainer={(trigger) => trigger.parentElement}
+              content={
+                <ul style={{ margin: 0, paddingLeft: 16, lineHeight: 1.5 }}>
+                  {validationErrors.map((error) => (
+                    <li key={error}>{error}</li>
+                  ))}
+                </ul>
+              }
             >
-              Save
-            </Button>
-          </>
+              <Button
+                type="primary"
+                className="full-mobile"
+                onClick={() => {
+                  handleSaveDraftEdit();
+                }}
+                loading={submitting}
+              >
+                Save
+              </Button>
+            </Popover>
+          </div>
         }
         isEditMode={!isViewMode}
         isNoticeOfWorkTypeDisabled={isNoticeOfWorkTypeDisabled}
