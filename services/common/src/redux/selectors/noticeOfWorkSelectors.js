@@ -16,6 +16,7 @@ export const {
   getImportNowSubmissionDocumentsJob,
   getNoticeOfWorkReviews,
   getNoticeOfWorkReferralPackages,
+  getNoticeOfWorkConsultationPackages,
   getDocumentDownloadState,
   getApplicationDelays,
   getPipConsultationData,

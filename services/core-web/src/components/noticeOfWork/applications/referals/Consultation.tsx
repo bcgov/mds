@@ -5,6 +5,9 @@ import AddButton from "@/components/common/buttons/AddButton";
 import NOWApplicationReviewsTable from "@/components/noticeOfWork/applications/referals/NOWApplicationReviewsTable";
 import NOWConsultationNationsTable from "./NOWConsultationNationsTable";
 import ScrollContentWrapper from "@/components/noticeOfWork/applications/ScrollContentWrapper";
+import NOWConsultationPackagesTable, {
+  ConsultationPackage,
+} from "./NOWConsultationPackagesTable";
 import { CONSULTATION_TAB_CODE } from "@/constants/NOWConditions";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { Feature } from "@mds/common/utils/featureFlag";
@@ -41,6 +44,7 @@ interface ConsultationProps {
   handleDocumentDelete: (...args: any[]) => void;
   openAddReviewModal: (...args: any[]) => void;
   handleAddReview: (...args: any[]) => void;
+  consultationPackages?: ConsultationPackage[];
 }
 
 const categoriesToShow = ["CDO"];
@@ -223,6 +227,19 @@ export const Consultation: FC<ConsultationProps> = (props) => {
           </NOWActionWrapper>
         </div>
       </ScrollContentWrapper>
+      {isFeatureEnabled(Feature.NOW_FILE_MANAGEMENT) && (
+        <div className="padding-lg--top">
+          <ScrollContentWrapper
+            id="consultation-packages"
+            title="Consultation Packages"
+          >
+            <NOWConsultationPackagesTable
+              isLoaded={props.isLoaded}
+              consultationPackages={props.consultationPackages}
+            />
+          </ScrollContentWrapper>
+        </div>
+      )}
     </div>
   );
 };

@@ -9,6 +9,7 @@ const initialState = {
   noticeOfWorkPageData: {},
   noticeOfWorkReviews: [],
   noticeOfWorkReferralPackages: [],
+  noticeOfWorkConsultationPackages: [],
   documentDownloadState: { downloading: false, currentFile: 1, totalFiles: 1 },
   applicationDelays: [],
   pipConsultationData: [],
@@ -60,6 +61,11 @@ export const noticeOfWorkReducer = (state = initialState, action) => {
         ...state,
         noticeOfWorkReferralPackages: action.payload.records ?? action.payload,
       };
+    case actionTypes.STORE_NOTICE_OF_WORK_CONSULTATION_PACKAGES:
+      return {
+        ...state,
+        noticeOfWorkConsultationPackages: action.payload.records ?? action.payload,
+      };
     case actionTypes.STORE_NOTICE_OF_WORK_APPLICATION_DOCUMENT_DOWNLOAD_STATE:
       return {
         ...state,
@@ -102,6 +108,7 @@ export const getImportNowSubmissionDocumentsJob = (state) =>
 export const getNoticeOfWorkPageData = (state) => state[NOTICE_OF_WORK].noticeOfWorkPageData;
 export const getNoticeOfWorkReviews = (state) => state[NOTICE_OF_WORK].noticeOfWorkReviews;
 export const getNoticeOfWorkReferralPackages = (state) => state[NOTICE_OF_WORK].noticeOfWorkReferralPackages;
+export const getNoticeOfWorkConsultationPackages = (state) => state[NOTICE_OF_WORK].noticeOfWorkConsultationPackages;
 export const getDocumentDownloadState = (state) => state[NOTICE_OF_WORK].documentDownloadState;
 export const getApplicationDelays = (state) => state[NOTICE_OF_WORK].applicationDelays;
 export const getPipConsultationData = (state) => state[NOTICE_OF_WORK].pipConsultationData;

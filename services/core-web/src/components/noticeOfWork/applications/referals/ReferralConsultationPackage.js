@@ -18,6 +18,8 @@ import {
   fetchImportedNoticeOfWorkApplication,
   createNoticeOfWorkReferralPackage,
   fetchNoticeOfWorkReferralPackages,
+  createNoticeOfWorkConsultationPackage,
+  fetchNoticeOfWorkConsultationPackages,
 } from "@mds/common/redux/actionCreators/noticeOfWorkActionCreator";
 import {
   getNoticeOfWorkReviews,
@@ -52,6 +54,10 @@ const propTypes = {
   documentsCompression: PropTypes.func,
   pollDocumentsCompressionProgress: PropTypes.func,
   documentType: PropTypes.string,
+  createNoticeOfWorkReferralPackage: PropTypes.func,
+  fetchNoticeOfWorkReferralPackages: PropTypes.func,
+  createNoticeOfWorkConsultationPackage: PropTypes.func,
+  fetchNoticeOfWorkConsultationPackages: PropTypes.func,
 };
 
 const defaultProps = {
@@ -80,8 +86,11 @@ export const ReferralConsultationPackage = (props) => {
   };
 
   // Recording the version history must never block the save/download itself, so failures only notify.
-  const recordReferralPackage = async (selectedCoreRows, selectedSubmissionRows) => {
-    if (props.type !== "REF" || !isFeatureEnabled(Feature.NOW_FILE_MANAGEMENT)) {
+  const recordPackage = async (selectedCoreRows, selectedSubmissionRows) => {
+    if (!isFeatureEnabled(Feature.NOW_FILE_MANAGEMENT)) {
+      return;
+    }
+    if (props.type !== "REF" && props.type !== "CON") {
       return;
     }
     const selectedMineDocGuids = getSelectedMineDocumentGuids(
@@ -91,14 +100,23 @@ export const ReferralConsultationPackage = (props) => {
     if (selectedMineDocGuids.length === 0) {
       return;
     }
+    const isReferral = props.type === "REF";
+    const createPackage = isReferral
+      ? props.createNoticeOfWorkReferralPackage
+      : props.createNoticeOfWorkConsultationPackage;
+    const fetchPackages = isReferral
+      ? props.fetchNoticeOfWorkReferralPackages
+      : props.fetchNoticeOfWorkConsultationPackages;
+    const typeLabel = isReferral ? "referral" : "consultation";
+
     try {
-      await props.createNoticeOfWorkReferralPackage(props.noticeOfWork.now_application_guid, {
+      await createPackage(props.noticeOfWork.now_application_guid, {
         mine_document_guids: selectedMineDocGuids,
       });
-      await props.fetchNoticeOfWorkReferralPackages(props.noticeOfWork.now_application_guid);
+      await fetchPackages(props.noticeOfWork.now_application_guid);
     } catch (err) {
       notification.error({
-        message: "Unable to record referral package version",
+        message: `Unable to record ${typeLabel} package version`,
         description:
           "The package was processed, but its version history could not be recorded. Please try again.",
         duration: 10,
@@ -182,7 +200,7 @@ export const ReferralConsultationPackage = (props) => {
             } else if (data.state === "SUCCESS" && progressRef.current) {
               setZipFileToDownload(data.success_docs[0]);
               handleCloseCompressionNotification();
-              await recordReferralPackage(selectedCoreRows, selectedSubmissionRows);
+              await recordPackage(selectedCoreRows, selectedSubmissionRows);
               props.closeModal();
             }
           };
@@ -235,7 +253,7 @@ export const ReferralConsultationPackage = (props) => {
       return props
         .updateNoticeOfWorkApplication(payload, props.noticeOfWork.now_application_guid, message)
         .then(async () => {
-          await recordReferralPackage(selectedCoreRows, selectedSubmissionRows);
+          await recordPackage(selectedCoreRows, selectedSubmissionRows);
           await props.fetchImportedNoticeOfWorkApplication(props.noticeOfWork.now_application_guid);
           props.closeModal();
         });
@@ -302,6 +320,8 @@ const mapDispatchToProps = (dispatch) =>
       pollDocumentsCompressionProgress,
       createNoticeOfWorkReferralPackage,
       fetchNoticeOfWorkReferralPackages,
+      createNoticeOfWorkConsultationPackage,
+      fetchNoticeOfWorkConsultationPackages,
     },
     dispatch
   );

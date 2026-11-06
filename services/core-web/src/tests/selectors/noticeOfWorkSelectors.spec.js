@@ -3,6 +3,7 @@ import {
   getNoticeOfWork,
   getOriginalNoticeOfWork,
   getNoticeOfWorkReferralPackages,
+  getNoticeOfWorkConsultationPackages,
 } from "@mds/common/redux/selectors/noticeOfWorkSelectors";
 import { noticeOfWorkReducer } from "@mds/common/redux/reducers/noticeOfWorkReducer";
 import {
@@ -10,6 +11,7 @@ import {
   storeNoticeOfWorkApplication,
   storeOriginalNoticeOfWorkApplication,
   storeNoticeOfWorkReferralPackages,
+  storeNoticeOfWorkConsultationPackages,
 } from "@mds/common/redux/actions/noticeOfWorkActions";
 import { NOTICE_OF_WORK } from "@mds/common/constants/reducerTypes";
 import * as MOCKS from "@mds/common/tests/mocks/noticeOfWorkMock";
@@ -58,5 +60,15 @@ describe("noticeOfWorkSelectors", () => {
       [NOTICE_OF_WORK]: storeState,
     };
     expect(getNoticeOfWorkReferralPackages(localMockState)).toEqual(packages);
+  });
+
+  it("`getNoticeOfWorkConsultationPackages` calls `noticeOfWorkReducer.getNoticeOfWorkConsultationPackages`", () => {
+    const packages = [{ now_consultation_package_id: 1 }];
+    const storeAction = storeNoticeOfWorkConsultationPackages(packages);
+    const storeState = noticeOfWorkReducer({}, storeAction);
+    const localMockState = {
+      [NOTICE_OF_WORK]: storeState,
+    };
+    expect(getNoticeOfWorkConsultationPackages(localMockState)).toEqual(packages);
   });
 });
