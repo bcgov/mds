@@ -13,7 +13,7 @@ from app.extensions import db
 
 def _add_permit_package_document(db_session, now_application, mine, *, preamble_title, final_package_order,
                                   is_final_package=True, now_application_document_type_code='OTH',
-                                  is_system_generated=False):
+                                  is_system_generated=False, permit_package_document_type_code=None):
     # Setting now_application_id AND appending to now_application.documents both populate the same row.
     #  Since `documents` has no back_populates, doing both makes the row appear twice in the in-memory collection.
     # Set the FK only, then expire the cached collection so the next access re-queries it cleanly.
@@ -24,7 +24,8 @@ def _add_permit_package_document(db_session, now_application, mine, *, preamble_
         is_final_package=is_final_package,
         is_system_generated=is_system_generated,
         final_package_order=final_package_order,
-        preamble_title=preamble_title)
+        preamble_title=preamble_title,
+        permit_package_document_type_code=permit_package_document_type_code)
     db_session.add(xref)
     db_session.flush()
     db_session.expire(now_application, ['documents'])
@@ -199,8 +200,8 @@ def test_ordered_permit_package_documents_orders_by_final_package_order(db_sessi
 
     ordered = now_template_transformer._ordered_permit_package_documents(now_application)
 
-    assert [label for label, _, _ in ordered] == ['1.2', '1.3']
-    assert [title for _, _, title in ordered] == ['First Doc', 'Second Doc']
+    assert [label for label, _, _, _ in ordered] == ['1.2', '1.3']
+    assert [title for _, _, title, _ in ordered] == ['First Doc', 'Second Doc']
     assert ordered[0][1] == str(first.now_application_document_xref_guid)
     assert ordered[1][1] == str(second.now_application_document_xref_guid)
 
@@ -227,7 +228,7 @@ def test_ordered_permit_package_documents_locked_ntr_row_is_always_first_and_1_1
     ordered = now_template_transformer._ordered_permit_package_documents(now_application)
 
     assert ordered[0] == ('1.1', str(locked.now_application_document_xref_guid),
-                           'Notice of Work Application')
+                           'Notice of Work Application', 'DOCUMENT')
     assert ordered[1][0] == '1.2'
 
 
@@ -253,8 +254,8 @@ def test_ordered_permit_package_documents_locked_row_not_treated_as_1_1_before_t
     ordered = now_template_transformer._ordered_permit_package_documents(now_application)
 
     assert ('1.1', str(not_yet_locked.now_application_document_xref_guid),
-            'Notice of Work Application') not in ordered
-    assert [label for label, _, _ in ordered] == ['1.2', '1.3']
+            'Notice of Work Application', 'DOCUMENT') not in ordered
+    assert [label for label, _, _, _ in ordered] == ['1.2', '1.3']
 
 
 def test_ordered_permit_package_documents_excludes_documents_not_in_the_package(db_session):
@@ -277,9 +278,33 @@ def test_resolve_permit_package_file_reference_found_and_not_found(db_session):
     guid = str(doc.now_application_document_xref_guid)
     label_map = now_template_transformer.build_permit_package_file_label_map(now_application)
     assert now_template_transformer.resolve_permit_package_file_reference(
-        guid, label_map) == '1.2 Site Map'
+        guid, label_map) == 'Permit Document 1.2, Site Map'
     assert now_template_transformer.resolve_permit_package_file_reference(
         '00000000-0000-0000-0000-000000000000', label_map) is None
+
+
+def test_build_permit_package_file_label_map_prefixes_figures_and_documents(db_session):
+    """Figures resolve to "Figure N, Title" and Documents (including untagged files) to
+    "Permit Document 1.N, Title", each numbered in their own sequence."""
+    identity = NOWApplicationIdentityFactory(now_application=NOWApplicationFactory())
+    now_application = identity.now_application
+    figure = _add_permit_package_document(
+        db_session, now_application, identity.mine, preamble_title='Site Plan',
+        final_package_order=1, permit_package_document_type_code='FIGURE')
+    document = _add_permit_package_document(
+        db_session, now_application, identity.mine, preamble_title='Reclamation Plan',
+        final_package_order=1, permit_package_document_type_code='DOCUMENT')
+    untagged = _add_permit_package_document(
+        db_session, now_application, identity.mine, preamble_title='Legacy File',
+        final_package_order=2)
+
+    label_map = now_template_transformer.build_permit_package_file_label_map(now_application)
+
+    assert label_map[str(figure.now_application_document_xref_guid)] == 'Figure 1, Site Plan'
+    assert label_map[str(document.now_application_document_xref_guid)] == \
+        'Permit Document 1.2, Reclamation Plan'
+    assert label_map[str(untagged.now_application_document_xref_guid)] == \
+        'Permit Document 1.3, Legacy File'
 
 
 def test_resolve_permit_package_file_tokens_replaces_valid_and_broken_tokens(db_session):
@@ -294,7 +319,7 @@ def test_resolve_permit_package_file_tokens_replaces_valid_and_broken_tokens(db_
             "{permit_package_file:00000000-0000-0000-0000-000000000000}.")
     result = now_template_transformer.resolve_permit_package_file_tokens(text, label_map)
 
-    assert result == "See 1.2 Site Map and Reference unavailable."
+    assert result == "See Permit Document 1.2, Site Map and Reference unavailable."
 
 
 def test_resolve_permit_package_file_tokens_noop_without_label_map(db_session):
@@ -317,7 +342,7 @@ def test_build_permit_package_file_label_map_without_now_application(db_session)
 
 def test_replace_condition_value_with_data_resolves_permit_package_file_tokens(db_session):
     """The shared substitution function used both for document generation and at issuance should
-    resolve {permit_package_file:<guid>} tokens to their live "1.N Title" text, alongside the
+    resolve {permit_package_file:<guid>} tokens to their live "Permit Document 1.N, Title" text, alongside the
     existing known-variable substitution, and never leave the raw token in the output."""
     identity = NOWApplicationIdentityFactory(now_application=NOWApplicationFactory())
     now_application = identity.now_application
@@ -334,7 +359,7 @@ def test_replace_condition_value_with_data_resolves_permit_package_file_tokens(d
     result = now_template_transformer.replace_condition_value_with_data(
         condition, condition_var, label_map)
 
-    assert result == "Value: 12345. See 1.2 Site Map for details."
+    assert result == "Value: 12345. See Permit Document 1.2, Site Map for details."
     assert '{' not in result and '}' not in result
 
 

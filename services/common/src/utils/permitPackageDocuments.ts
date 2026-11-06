@@ -275,7 +275,8 @@ export interface PermitPackageFileReference {
 }
 
 /**
- * Resolves a permit package file's live "1.N Title" label from its xref guid, by guid, across both Figures and Documents.
+ * Resolves a permit package file's live label from its xref guid, by guid, across both Figures and Documents:
+ * "Figure N, Title" for a Figure, "Permit Document 1.N, Title" for a Document (or an untagged file).
  * Used by the Condition Data Variable picker's read view to render an inserted reference's current index/title.
  * Returns `found: false` when the guid no longer attaches any permit package file (e.g. it was soft-deleted or removed from the package).
  */
@@ -294,7 +295,8 @@ export const resolvePermitPackageFileReference = (
     return { found: false };
   }
 
-  return { found: true, label: `${match.orderLabel} ${match.preamble_title}` };
+  const prefix = match.permit_package_document_type_code === "FIGURE" ? "Figure" : "Permit Document";
+  return { found: true, label: `${prefix} ${match.orderLabel}, ${match.preamble_title}` };
 };
 
 export const isApplicationCoreDocument = (doc: PermitPackageDocumentRow): boolean =>
