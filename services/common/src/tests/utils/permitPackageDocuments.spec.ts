@@ -336,7 +336,7 @@ describe("resolvePermitPackageFileReference", () => {
 
     expect(resolvePermitPackageFileReference("fig-1", noticeOfWork, {})).toEqual({
       found: true,
-      label: "1 Site Map",
+      label: "Figure 1, Site Map",
     });
   });
 
@@ -355,7 +355,26 @@ describe("resolvePermitPackageFileReference", () => {
 
     expect(resolvePermitPackageFileReference("doc-1", noticeOfWork, {})).toEqual({
       found: true,
-      label: "1.2 Application Form",
+      label: "Permit Document 1.2, Application Form",
+    });
+  });
+
+  it("prefixes an untagged file as a Permit Document", () => {
+    const document = makeCoreDoc({
+      now_application_document_xref_guid: "doc-1",
+      final_package_order: 1,
+      permit_package_document_type_code: undefined,
+      preamble_title: "Legacy File",
+    });
+    const noticeOfWork = {
+      application_type_code: "NOW",
+      documents: [document],
+      filtered_submission_documents: [],
+    };
+
+    expect(resolvePermitPackageFileReference("doc-1", noticeOfWork, {})).toEqual({
+      found: true,
+      label: "Permit Document 1.2, Legacy File",
     });
   });
 
