@@ -145,6 +145,9 @@ class ApplicationListResource(Resource, UserMixin):
             now_number=NOWApplicationIdentity.create_now_number(mine))
         application.processed = 'Y'
         application.originating_system = 'VFCBC'
+        if application.documents:
+            for doc in application.documents:
+                doc.is_imported = True
         current_app.logger.debug('Attempting to Save')
         application.save()
 

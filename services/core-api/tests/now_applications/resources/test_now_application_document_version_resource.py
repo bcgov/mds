@@ -41,7 +41,7 @@ def _make_core_document(db_session, now_application_identity, document_type_code
 
 
 def _make_imported_document(db_session, now_application_identity, document_name='application.pdf', **xref_fields):
-    mine_document = MineDocumentFactory(mine=now_application_identity.mine, document_name=document_name)
+    mine_document = MineDocumentFactory(mine=now_application_identity.mine, document_name=document_name, is_imported=True)
     xref = NOWApplicationDocumentIdentityXref(
         messageid=random.randint(1, 2_000_000_000),
         documenturl=f'https://vfcbc.example/{uuid.uuid4()}',
@@ -182,6 +182,12 @@ class TestReplaceKeepsIds:
         # filename is part of the identity xref's primary key, so it must not change
         assert xref.filename == 'application.pdf'
         assert mine_document.document_name == 'application-v2.pdf'
+        # The new replacement file was uploaded in Core, so is_imported is False on the current file
+        assert mine_document.is_imported is False
+        # The original file is preserved in version history with is_imported = True
+        latest_version = MineDocumentVersion.query.filter_by(mine_document_guid=mine_document_guid).first()
+        assert latest_version is not None
+        assert latest_version.is_imported is True
 
 
 class TestStartUpload:

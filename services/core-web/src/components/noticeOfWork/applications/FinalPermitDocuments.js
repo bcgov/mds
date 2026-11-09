@@ -140,6 +140,7 @@ export class FinalPermitDocuments extends Component {
                 filename: currentName,
                 // vFCBC imports have no sub-type, this marks them as Application Documents for file management
                 is_imported_submission_document: true,
+                is_imported: doc.is_imported ?? doc.mine_document?.is_imported ?? true,
                 now_application_document_type_code: doc.documenttype,
                 now_application_document_sub_type_code: doc.documenttype,
                 mine_document: {
@@ -147,6 +148,7 @@ export class FinalPermitDocuments extends Component {
                   document_name: currentName,
                   mine_document_guid: doc.mine_document_guid,
                   mine_guid: this.props.noticeOfWork.mine_guid,
+                  is_imported: doc.is_imported ?? doc.mine_document?.is_imported ?? true,
                 },
               };
             })

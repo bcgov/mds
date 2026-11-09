@@ -55,6 +55,7 @@ export const toArchivedDocuments = (
         document_name: doc.document_name || doc.filename || Strings.EMPTY_FIELD,
         mine_guid: noticeOfWork.mine_guid,
         is_imported_submission_document: true,
+        is_imported: doc.is_imported ?? doc.mine_document?.is_imported ?? true,
         category: doc.documenttype,
       })
   );

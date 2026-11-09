@@ -454,6 +454,7 @@ IMPORTED_NOW_SUBMISSION_DOCUMENT = api.model(
         'now_application_document_xref_guid': fields.String,
         'now_application_id': fields.Integer,
         'update_timestamp': fields.DateTime,
+        'is_imported': fields.Boolean,
         'is_archived': fields.Boolean,
         'archived_date': fields.String,
         'archived_by': fields.String,

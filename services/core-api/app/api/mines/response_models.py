@@ -109,7 +109,8 @@ MINE_DOCUMENT_VERSION_MODEL = api.model(
         'upload_date': fields.String,
         'create_user': fields.String,
         'update_user': fields.String,
-        'update_timestamp': fields.String
+        'update_timestamp': fields.String,
+        'is_imported': fields.Boolean,
     })
 
 MAJOR_MINE_APPLICATION_DOCUMENT_XREF_MODEL = api.model(
@@ -186,6 +187,8 @@ MINE_DOCUMENT_MODEL = api.model(
         fields.String,
         'mine_document_bundle_id':
         fields.Integer,
+        'is_imported':
+        fields.Boolean,
         'versions':
         fields.List(fields.Nested(MINE_DOCUMENT_VERSION_MODEL)),
         'major_mine_application_document_xref':

@@ -70,7 +70,8 @@ DOCUMENT = api.model(
         'is_final_package': fields.Boolean,
         'final_package_order': fields.Integer,
         'is_referral_package': fields.Boolean,
-        'is_consultation_package': fields.Boolean
+        'is_consultation_package': fields.Boolean,
+        'is_imported': fields.Boolean
     })
 
 PLACER_ACTIVITY = api.model(

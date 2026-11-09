@@ -43,6 +43,8 @@ export class MineDocumentVersion {
 
   public file_type: string;
 
+  public is_imported: boolean;
+
   constructor(jsonObject: any) {
     this.mine_document_guid = jsonObject.mine_document_guid;
     this.mine_document_version_guid = jsonObject.mine_document_version_guid;
@@ -57,6 +59,7 @@ export class MineDocumentVersion {
     this.allowed_actions = jsonObject.allowed_actions;
     this.category = jsonObject.category;
     this.category_code = jsonObject.category_code;
+    this.is_imported = jsonObject.is_imported ?? false;
     this.file_type = this.getFileType();
   }
 
@@ -96,6 +99,8 @@ export class MineDocument implements IMineDocument {
 
   public is_archived: boolean;
 
+  public is_imported: boolean;
+
   public archived_by: string;
 
   public archived_date: string;
@@ -133,6 +138,7 @@ export class MineDocument implements IMineDocument {
     this.upload_date = jsonObject.upload_date;
     this.update_timestamp = jsonObject.update_timestamp;
     this.category = jsonObject.category;
+    this.is_imported = jsonObject.is_imported ?? jsonObject.mine_document?.is_imported ?? false;
     this.is_archived = jsonObject.is_archived ?? false;
     this.archived_by = jsonObject.archived_by;
     this.archived_date = jsonObject.archived_date;
@@ -168,6 +174,7 @@ export class MineDocument implements IMineDocument {
               allowed_actions: this.getAllowedActions(jsonObject.user_roles, false).filter(Boolean),
               category: this.category,
               category_code: this.category_code,
+              is_imported: version.is_imported ?? false,
             },
             jsonObject
           )

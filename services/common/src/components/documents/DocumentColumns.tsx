@@ -10,6 +10,7 @@ import { MineDocument } from "@mds/common/models/documents/document";
 import { nullableStringSorter } from "@mds/common/redux/utils/helpers";
 import ClockCircleOutlined from "@ant-design/icons/ClockCircleOutlined";
 import DeleteOutlined from "@ant-design/icons/DeleteOutlined";
+import ImportOutlined from "@ant-design/icons/ImportOutlined";
 import { downloadFileFromDocumentManager } from "@mds/common/redux/utils/actionlessNetworkCalls";
 import DocumentLink from "./DocumentLink";
 import { IPermitAmendmentDocument } from "@mds/common/interfaces";
@@ -45,6 +46,14 @@ export const documentWithTag = (
               </Tag>
             </Tooltip>
           </span>
+        ) : null}
+        {record.is_imported ? (
+          <Tooltip title="Imported from vFCBC" placement="top">
+            <ImportOutlined
+              style={{ fontSize: "14px", color: "#606060", marginLeft: "6px" }}
+              aria-label="Imported from vFCBC"
+            />
+          </Tooltip>
         ) : null}
         {record.is_archived ? <Tag className="table-tag table-tag--grey">{"Archived"}</Tag> : null}
       </span>

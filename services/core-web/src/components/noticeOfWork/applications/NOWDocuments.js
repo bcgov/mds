@@ -3,9 +3,9 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { isEmpty } from "lodash";
 import { PropTypes } from "prop-types";
-import { Button, Popconfirm, Tooltip, Row, Col, Typography } from "antd";
+import { Button, Popconfirm, Tooltip, Row, Col, Typography, Tag } from "antd";
 import moment from "moment";
-import { FlagOutlined, MenuOutlined } from "@ant-design/icons";
+import { FlagOutlined, ImportOutlined, MenuOutlined } from "@ant-design/icons";
 import CustomPropTypes from "@/customPropTypes";
 import { formatDate, formatDateTime } from "@mds/common/redux/utils/helpers";
 import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
@@ -479,7 +479,11 @@ export class NOWDocuments extends Component {
           // Clicking a previous version's file name downloads that version, it can also be viewed from the Actions menu
           if (isVersionRow(record)) {
             return (
-              <div title="File Name" style={getFileNameOffset(record)}>
+              <div
+                title="File Name"
+                className="inline-flex flex-between file-name-container child"
+                style={getFileNameOffset(record)}
+              >
                 <Button
                   type="link"
                   className="btn--inline-link"
@@ -487,6 +491,16 @@ export class NOWDocuments extends Component {
                 >
                   {record.document_name}
                 </Button>
+                {record.is_imported && (
+                  <span className="file-history-container">
+                    <Tooltip title="Imported from vFCBC" placement="top">
+                      <ImportOutlined
+                        style={{ fontSize: "14px", color: "#606060", marginLeft: "6px" }}
+                        aria-label="Imported from vFCBC"
+                      />
+                    </Tooltip>
+                  </span>
+                )}
               </div>
             );
           }

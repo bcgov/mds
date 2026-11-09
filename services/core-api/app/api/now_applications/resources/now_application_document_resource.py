@@ -238,7 +238,8 @@ class NOWApplicationDocumentIdentityResource(Resource, UserMixin):
         new_mine_doc = MineDocument(
             mine_guid=now_application_identity.mine_guid,
             document_manager_guid=document_manager_document_guid,
-            document_name=file_name)
+            document_name=file_name,
+            is_imported=True)
 
         new_document_identity_xref = NOWApplicationDocumentIdentityXref(
             messageid=message_id,

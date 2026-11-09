@@ -63,6 +63,19 @@ describe("NOWArchivedDocuments", () => {
       expect(submission.document_name).toBe("replaced.pdf");
     });
 
+    it("preserves is_imported flag on archived submission documents", () => {
+      const [core, submission] = toArchivedDocuments(
+        {
+          ...noticeOfWork,
+          archived_submission_documents: [{ ...archivedSubmissionDocument, is_imported: true }],
+        },
+        documentTypeOptionsHash
+      );
+
+      expect(core.is_imported).toBe(false);
+      expect(submission.is_imported).toBe(true);
+    });
+
     it("only lets archived files, and their previous versions, be viewed and downloaded", () => {
       const [core, submission] = toArchivedDocuments(noticeOfWork, documentTypeOptionsHash);
 

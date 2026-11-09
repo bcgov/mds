@@ -55,6 +55,27 @@ describe("NoWApplicationDocument model", () => {
     expect(allowedActions()).toEqual(canChangeActions);
   });
 
+  it("retains is_imported flag on document and versions independently", () => {
+    const document = new NoWApplicationDocument({
+      ...mockNoWDocumentData,
+      is_imported: false,
+      versions: [
+        {
+          ...mockNoWDocumentData.versions[0],
+          is_imported: true,
+        },
+      ],
+    });
+    expect(document.is_imported).toBe(false);
+    expect(document.versions[0].is_imported).toBe(true);
+  });
+
+  it("defaults is_imported to false when not provided", () => {
+    const document = new NoWApplicationDocument(mockNoWDocumentData);
+    expect(document.is_imported).toBe(false);
+    expect(document.versions[0].is_imported).toBe(false);
+  });
+
   it("only allows previous versions to be viewed and downloaded", () => {
     const document = new NoWApplicationDocument(mockNoWDocumentData);
 

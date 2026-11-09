@@ -85,6 +85,7 @@ export const toFileManagementRow = (
     ...row,
     ...row.mine_document,
     document_name: row.filename,
+    is_imported: row.is_imported ?? row.mine_document?.is_imported ?? false,
     ...fileManagementContext,
   });
   // vFCBC rows also carry the raw versions from the API, keep the model's version rows (with their allowed actions) instead

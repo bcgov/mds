@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import moment from "moment";
 import { PropTypes } from "prop-types";
-import { Badge, Tooltip, Button, Popconfirm, Row, Col, Typography } from "antd";
+import { Badge, Tooltip, Button, Popconfirm, Row, Col, Typography, Tag } from "antd";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { ImportOutlined, ReloadOutlined, FlagOutlined } from "@ant-design/icons";
@@ -180,6 +180,7 @@ const transformDocuments = (
       ...document,
       // A replaced vFCBC file keeps its original filename, document_name is its current name
       filename: document.document_name || document.filename || Strings.EMPTY_FIELD,
+      is_imported: document.is_imported ?? document.mine_document?.is_imported ?? (!document.notForImport),
     };
   });
 
@@ -377,7 +378,11 @@ export const NOWSubmissionDocuments = (props) => {
         // Clicking a previous version's file name downloads that version, it can also be viewed from the Actions menu
         if (isVersionRow(record)) {
           return (
-            <div title="File Name" style={getFileNameOffset(record)}>
+            <div
+              title="File Name"
+              className="inline-flex flex-between file-name-container child"
+              style={getFileNameOffset(record)}
+            >
               <Button
                 type="link"
                 className="btn--inline-link"
@@ -385,6 +390,16 @@ export const NOWSubmissionDocuments = (props) => {
               >
                 {record.document_name}
               </Button>
+              {record.is_imported && (
+                <span className="file-history-container">
+                  <Tooltip title="Imported from vFCBC" placement="top">
+                    <ImportOutlined
+                      style={{ fontSize: "14px", color: "#606060", marginLeft: "6px" }}
+                      aria-label="Imported from vFCBC"
+                    />
+                  </Tooltip>
+                </span>
+              )}
             </div>
           );
         }

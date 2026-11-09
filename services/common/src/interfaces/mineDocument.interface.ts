@@ -16,4 +16,5 @@ export interface IMineDocument {
   mine_document_bundle_id?: string | number;
   update_timestamp?: string;
   label?: string;
+  is_imported?: boolean;
 }
