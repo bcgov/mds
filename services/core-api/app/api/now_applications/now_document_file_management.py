@@ -12,6 +12,7 @@ from werkzeug.exceptions import BadRequest, NotFound
 from app.api.utils.feature_flag import Feature, is_feature_enabled
 from app.api.constants import NOW_APPLICATION_LOCKED_STATUS_CODES, NOW_SPATIAL_FILE_EXTENSIONS
 from app.api.mines.documents.models.mine_document import MineDocument
+from app.api.now_applications.models.now_application_consultation_package import NOWApplicationConsultationPackage
 from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
 from app.api.now_applications.models.now_application_document_identity_xref import NOWApplicationDocumentIdentityXref
 
@@ -84,8 +85,12 @@ def _check_file_management_rules(now_application_identity, mine_document, xref):
     if getattr(xref, 'is_system_generated', False):
         raise BadRequest('System-generated documents cannot be changed.')
 
-    # Referral and Consultation package files keep their existing behaviour, even when also in the permit package
-    if not is_feature_enabled(Feature.NOW_FILE_MANAGEMENT) and xref.is_consultation_package:
+    # Referral and Consultation package files keep their existing behaviour, even when also in the permit package.
+    # Consultation packages sent before snapshots existed have no record of the version sent, so they stay locked
+    # until the application has at least one snapshot.
+    if xref.is_consultation_package and (
+            not is_feature_enabled(Feature.NOW_FILE_MANAGEMENT)
+            or not NOWApplicationConsultationPackage.find_by_now_application_id(xref.now_application_id)):
         raise BadRequest('Documents in a Consultation package cannot be changed.')
     if not is_feature_enabled(Feature.NOW_FILE_MANAGEMENT) and xref.is_referral_package:
         raise BadRequest('Documents in a Referral package cannot be changed.')

@@ -34,17 +34,27 @@ export const noticeOfWorkReducer = (state = initialState, action) => {
         ...state,
         noticeOfWorkList: action.payload,
       };
-    case actionTypes.STORE_NOTICE_OF_WORK_APPLICATION:
+    case actionTypes.STORE_NOTICE_OF_WORK_APPLICATION: {
+      // Packages are fetched separately, so drop the previous application's while the new ones load
+      const isNewApplication =
+        state.noticeOfWork?.now_application_guid !== action.payload?.now_application_guid;
       return {
         ...state,
         noticeOfWork: action.payload,
+        ...(isNewApplication && {
+          noticeOfWorkReferralPackages: [],
+          noticeOfWorkConsultationPackages: [],
+        }),
       };
+    }
     case actionTypes.CLEAR_NOTICE_OF_WORK_APPLICATION:
       return {
         ...state,
         noticeOfWork: {},
         originalNoticeOfWork: {},
         importNowSubmissionDocumentsJob: {},
+        noticeOfWorkReferralPackages: [],
+        noticeOfWorkConsultationPackages: [],
       };
     case actionTypes.STORE_ORIGINAL_NOTICE_OF_WORK_APPLICATION:
       return {

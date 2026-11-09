@@ -7,7 +7,6 @@ import { openDocument } from "@mds/common/components/syncfusion/DocumentViewer";
 import { useAppDispatch } from "@mds/common/redux/rootState";
 
 export interface PackageDocument {
-  [key: string]: any;
   mine_document_guid: string;
   document_manager_guid: string;
   document_manager_version_guid?: string | null;
@@ -18,7 +17,6 @@ export interface PackageDocument {
 }
 
 export interface Package {
-  [key: string]: any;
   package_order: number;
   package_name: string;
   create_user: string;
@@ -26,11 +24,11 @@ export interface Package {
   documents: PackageDocument[];
 }
 
-export type PackageType = "referral" | "consultation";
-
 interface NOWPackagesTableProps {
   isLoaded: boolean;
-  packageType: PackageType;
+  packageType: string; // used for labels and class names only
+  packageKey: string;
+  documentKey: string;
   packages: Package[];
 }
 
@@ -38,26 +36,25 @@ interface NOWPackagesTableProps {
 export const NOWPackagesTable: FC<NOWPackagesTableProps> = ({
   isLoaded,
   packageType,
+  packageKey,
+  documentKey,
   packages = [],
 }) => {
-  const packageGuidKey = `now_application_${packageType}_package_guid`;
-  const documentGuidKey = `now_application_${packageType}_package_document_xref_guid`;
+  const getPackageGuid = (pkg: Package) => pkg[packageKey as keyof Package] as string;
   const dispatch = useAppDispatch();
   const [expandedRowKeys, setExpandedRowKeys] = useState<string[]>([]);
 
   useEffect(() => {
     if (packages?.length > 0 && expandedRowKeys.length === 0) {
-      setExpandedRowKeys([packages[0][packageGuidKey]]);
+      setExpandedRowKeys([getPackageGuid(packages[0])]);
     }
   }, [packages]);
 
   const onExpand = (expanded: boolean, record: Package) => {
     if (expanded) {
-      setExpandedRowKeys((prev) => [...prev, record[packageGuidKey]]);
+      setExpandedRowKeys((prev) => [...prev, getPackageGuid(record)]);
     } else {
-      setExpandedRowKeys((prev) =>
-        prev.filter((k) => k !== record[packageGuidKey])
-      );
+      setExpandedRowKeys((prev) => prev.filter((k) => k !== getPackageGuid(record)));
     }
   };
 
@@ -72,9 +69,7 @@ export const NOWPackagesTable: FC<NOWPackagesTableProps> = ({
       title: "Date",
       dataIndex: "create_timestamp",
       key: "create_timestamp",
-      render: (text) => (
-        <div title={formatDateTime(text)}>{formatDate(text)}</div>
-      ),
+      render: (text) => <div title={formatDateTime(text)}>{formatDate(text)}</div>,
     },
     {
       title: "Created By",
@@ -139,7 +134,7 @@ export const NOWPackagesTable: FC<NOWPackagesTableProps> = ({
   const renderExpandedRow = (record: Package) => {
     return (
       <Table
-        rowKey={documentGuidKey}
+        rowKey={documentKey}
         columns={documentColumns}
         dataSource={record.documents || []}
         pagination={false}
@@ -149,7 +144,7 @@ export const NOWPackagesTable: FC<NOWPackagesTableProps> = ({
 
   const rowData = (packages || []).map((pkg) => ({
     ...pkg,
-    key: pkg[packageGuidKey],
+    key: getPackageGuid(pkg),
   }));
 
   return (
@@ -158,9 +153,9 @@ export const NOWPackagesTable: FC<NOWPackagesTableProps> = ({
       dataSource={rowData}
       columns={packageColumns}
       classPrefix={`${packageType}-packages`}
-      rowKey={packageGuidKey}
+      rowKey={packageKey}
       expandProps={{
-        rowKey: packageGuidKey,
+        rowKey: packageKey,
         recordDescription: `${packageType} package documents`,
         rowExpandable: (record: Package) => (record.documents?.length ?? 0) > 0,
         getDataSource: (record: Package) => record.documents || [],

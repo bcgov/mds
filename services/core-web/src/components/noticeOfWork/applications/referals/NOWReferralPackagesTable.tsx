@@ -20,7 +20,13 @@ export const NOWReferralPackagesTable: FC<NOWReferralPackagesTableProps> = ({
   isLoaded,
   referralPackages = [],
 }) => (
-  <NOWPackagesTable isLoaded={isLoaded} packageType="referral" packages={referralPackages} />
+  <NOWPackagesTable
+    isLoaded={isLoaded}
+    packageType="referral"
+    packageKey="now_application_referral_package_guid"
+    documentKey="now_application_referral_package_document_xref_guid"
+    packages={referralPackages}
+  />
 );
 
 export default NOWReferralPackagesTable;

@@ -23,6 +23,8 @@ export const NOWConsultationPackagesTable: FC<NOWConsultationPackagesTableProps>
   <NOWPackagesTable
     isLoaded={isLoaded}
     packageType="consultation"
+    packageKey="now_application_consultation_package_guid"
+    documentKey="now_application_consultation_package_document_xref_guid"
     packages={consultationPackages}
   />
 );
