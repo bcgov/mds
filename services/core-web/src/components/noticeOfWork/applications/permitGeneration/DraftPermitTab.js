@@ -28,7 +28,6 @@ const propTypes = {
   generateNoticeOfWorkApplicationDocument: PropTypes.func.isRequired,
   reset: PropTypes.func.isRequired,
   fixedTop: PropTypes.bool.isRequired,
-  closeModal: PropTypes.func.isRequired,
   isNoticeOfWorkTypeDisabled: PropTypes.bool,
 };
 
@@ -58,22 +57,18 @@ export class DraftPermitTab extends Component {
       now_application_guid: this.props.noticeOfWork.now_application_guid,
       template_data: newValues,
     };
-    return this.props
-      .generateNoticeOfWorkApplicationDocument(
-        documentTypeCode,
-        payload,
-        "Successfully created document and attached it to Notice of Work",
-        false,
-        () => {
-          this.setState({ isLoaded: false });
-          this.props
-            .fetchImportedNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid)
-            .then(() => this.setState({ isLoaded: true }));
-        }
-      )
-      .then(() => {
-        this.props.closeModal();
-      });
+    return this.props.generateNoticeOfWorkApplicationDocument(
+      documentTypeCode,
+      payload,
+      "Successfully created document and attached it to Notice of Work",
+      false,
+      () => {
+        this.setState({ isLoaded: false });
+        this.props
+          .fetchImportedNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid)
+          .then(() => this.setState({ isLoaded: true }));
+      }
+    );
   };
 
   render() {

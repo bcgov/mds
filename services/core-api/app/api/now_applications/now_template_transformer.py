@@ -141,18 +141,18 @@ def _ordered_permit_package_documents(now_application):
     if locked is not None:
         ordered.append(
             (LOCKED_PERMIT_PACKAGE_ORDER_LABEL, str(locked.now_application_document_xref_guid),
-             locked.preamble_title or 'Notice of Work Application'))
+             locked.preamble_title or 'Notice of Work Application', 'DOCUMENT'))
     for index, (_, guid, title) in enumerate(documents):
-        ordered.append((f'1.{index + 2}', guid, title))
+        ordered.append((f'1.{index + 2}', guid, title, 'DOCUMENT'))
     for index, (_, guid, title) in enumerate(figures):
-        ordered.append((str(index + 1), guid, title))
+        ordered.append((str(index + 1), guid, title, 'FIGURE'))
 
     return tuple(ordered)
 
 
 def build_permit_package_file_label_map(now_application):
     """
-    Builds the {guid: "1.N Title"} map once per resolution pass (one now_application), rather
+    Builds the {guid: "Permit Document 1.N, Title" | "Figure N, Title"} map once per resolution pass (one now_application), rather
     than each {permit_package_file:<guid>} token independently recomputing
     _ordered_permit_package_documents (including a call to get_filtered_submissions_documents)
     from scratch. Callers (transform_permit, the issuance status resource, the CLI export) build
@@ -161,8 +161,8 @@ def build_permit_package_file_label_map(now_application):
     if not now_application:
         return {}
     return {
-        guid: f'{label} {title}'
-        for label, guid, title in _ordered_permit_package_documents(now_application)
+        guid: f'{"Figure" if type_code == "FIGURE" else "Permit Document"} {label}, {title}'
+        for label, guid, title, type_code in _ordered_permit_package_documents(now_application)
     }
 
 
