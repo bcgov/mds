@@ -4,6 +4,7 @@ from unittest.mock import patch
 
 import pytest
 
+from app.api.now_applications.models.now_application_consultation_package import NOWApplicationConsultationPackage
 from app.api.now_applications.models.now_application_document_identity_xref import NOWApplicationDocumentIdentityXref
 from app.api.now_applications.models.now_application_document_xref import NOWApplicationDocumentXref
 from tests.factories import MineDocumentFactory
@@ -301,9 +302,17 @@ class TestAlwaysBlockedArchive:
         _assert_archive_blocked(test_client, db_session, auth_headers, now_application_identity, mine_document,
                                 'System-generated')
 
+    def test_consultation_document_without_snapshot_blocked(self, test_client, db_session, auth_headers):
+        now_application_identity = NOWApplicationIdentityFactory()
+        mine_document, _ = _make_core_document(db_session, now_application_identity, is_consultation_package=True)
+
+        _assert_archive_blocked(test_client, db_session, auth_headers, now_application_identity, mine_document,
+                                'Consultation package')
+
     def test_consultation_document_can_be_archived(self, test_client, db_session, auth_headers):
         now_application_identity = NOWApplicationIdentityFactory()
         mine_document, _ = _make_core_document(db_session, now_application_identity, is_consultation_package=True)
+        NOWApplicationConsultationPackage.create(now_application_identity.now_application, [mine_document])
 
         resp = _archive(test_client, auth_headers, now_application_identity, [mine_document])
         assert resp.status_code == 204
