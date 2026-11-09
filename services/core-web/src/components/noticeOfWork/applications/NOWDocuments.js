@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { isEmpty } from "lodash";
 import { PropTypes } from "prop-types";
-import { Button, Popconfirm, Tooltip, Row, Col, Typography, Tag } from "antd";
+import { Button, Popconfirm, Tooltip, Row, Col, Typography } from "antd";
 import moment from "moment";
 import { FlagOutlined, ImportOutlined, MenuOutlined } from "@ant-design/icons";
 import CustomPropTypes from "@/customPropTypes";

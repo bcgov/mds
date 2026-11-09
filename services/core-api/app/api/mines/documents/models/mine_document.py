@@ -116,4 +116,5 @@ class MineDocument(SoftDeleteMixin, AuditMixin, Base):
             'upload_date': str(self.upload_date),
             'versions': self.versions or [],
             'mine_document_bundle': self.mine_document_bundle.json() if self.mine_document_bundle else None,
+            'is_imported': self.is_imported,
         }

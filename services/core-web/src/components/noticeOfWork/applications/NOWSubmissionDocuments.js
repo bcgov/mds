@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import moment from "moment";
 import { PropTypes } from "prop-types";
-import { Badge, Tooltip, Button, Popconfirm, Row, Col, Typography, Tag } from "antd";
+import { Badge, Tooltip, Button, Popconfirm, Row, Col, Typography } from "antd";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { ImportOutlined, ReloadOutlined, FlagOutlined } from "@ant-design/icons";
