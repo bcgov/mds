@@ -421,6 +421,124 @@ exports[`Consultation renders properly with feature flag enabled and manage role
         </div>
       </div>
     </div>
+    <div
+      class="padding-lg--top"
+    >
+      <div
+        class="scroll-wrapper"
+      >
+        <div
+          class="inline-flex"
+        >
+          <div
+            class="circle grey"
+          />
+          <div
+            id="consultation-packages"
+          >
+            <div
+              class="scroll-wrapper--title"
+            >
+              <h3>
+                Consultation Packages
+              </h3>
+            </div>
+          </div>
+        </div>
+        <div
+          class="scroll-wrapper--border"
+        >
+          <div>
+            <div
+              class="fade-in"
+            >
+              <div
+                class="scroll-wrapper--body"
+              >
+                <span>
+                  <div
+                    class="ant-table-wrapper consultation-packages-table core-table"
+                  >
+                    <div
+                      class="ant-spin-nested-loading"
+                    >
+                      <div
+                        class="ant-spin-container"
+                      >
+                        <div
+                          class="ant-table ant-table-empty"
+                        >
+                          <div
+                            class="ant-table-container"
+                          >
+                            <div
+                              class="ant-table-content"
+                            >
+                              <table
+                                style="table-layout: auto;"
+                              >
+                                <colgroup>
+                                  <col
+                                    class="ant-table-expand-icon-col"
+                                  />
+                                </colgroup>
+                                <thead
+                                  class="ant-table-thead"
+                                >
+                                  <tr>
+                                    <th
+                                      class="ant-table-cell ant-table-row-expand-icon-cell"
+                                    />
+                                    <th
+                                      class="ant-table-cell"
+                                    >
+                                      Package
+                                    </th>
+                                    <th
+                                      class="ant-table-cell"
+                                    >
+                                      Date
+                                    </th>
+                                    <th
+                                      class="ant-table-cell"
+                                    >
+                                      Created By
+                                    </th>
+                                    <th
+                                      class="ant-table-cell"
+                                    >
+                                      Files
+                                    </th>
+                                  </tr>
+                                </thead>
+                                <tbody
+                                  class="ant-table-tbody"
+                                >
+                                  <tr
+                                    class="ant-table-placeholder"
+                                  >
+                                    <td
+                                      class="ant-table-cell"
+                                      colspan="5"
+                                    >
+                                      No Data Yet
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 `;
@@ -764,6 +882,124 @@ exports[`Consultation renders properly with feature flag enabled without manage 
                   </button>
                 </div>
               </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="padding-lg--top"
+    >
+      <div
+        class="scroll-wrapper"
+      >
+        <div
+          class="inline-flex"
+        >
+          <div
+            class="circle grey"
+          />
+          <div
+            id="consultation-packages"
+          >
+            <div
+              class="scroll-wrapper--title"
+            >
+              <h3>
+                Consultation Packages
+              </h3>
+            </div>
+          </div>
+        </div>
+        <div
+          class="scroll-wrapper--border"
+        >
+          <div>
+            <div
+              class="fade-in"
+            >
+              <div
+                class="scroll-wrapper--body"
+              >
+                <span>
+                  <div
+                    class="ant-table-wrapper consultation-packages-table core-table"
+                  >
+                    <div
+                      class="ant-spin-nested-loading"
+                    >
+                      <div
+                        class="ant-spin-container"
+                      >
+                        <div
+                          class="ant-table ant-table-empty"
+                        >
+                          <div
+                            class="ant-table-container"
+                          >
+                            <div
+                              class="ant-table-content"
+                            >
+                              <table
+                                style="table-layout: auto;"
+                              >
+                                <colgroup>
+                                  <col
+                                    class="ant-table-expand-icon-col"
+                                  />
+                                </colgroup>
+                                <thead
+                                  class="ant-table-thead"
+                                >
+                                  <tr>
+                                    <th
+                                      class="ant-table-cell ant-table-row-expand-icon-cell"
+                                    />
+                                    <th
+                                      class="ant-table-cell"
+                                    >
+                                      Package
+                                    </th>
+                                    <th
+                                      class="ant-table-cell"
+                                    >
+                                      Date
+                                    </th>
+                                    <th
+                                      class="ant-table-cell"
+                                    >
+                                      Created By
+                                    </th>
+                                    <th
+                                      class="ant-table-cell"
+                                    >
+                                      Files
+                                    </th>
+                                  </tr>
+                                </thead>
+                                <tbody
+                                  class="ant-table-tbody"
+                                >
+                                  <tr
+                                    class="ant-table-placeholder"
+                                  >
+                                    <td
+                                      class="ant-table-cell"
+                                      colspan="5"
+                                    >
+                                      No Data Yet
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </span>
+              </div>
             </div>
           </div>
         </div>

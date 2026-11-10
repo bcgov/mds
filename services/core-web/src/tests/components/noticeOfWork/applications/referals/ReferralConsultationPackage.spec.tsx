@@ -52,6 +52,8 @@ const dispatchProps = {
   pollDocumentsCompressionProgress: jest.fn(),
   createNoticeOfWorkReferralPackage: jest.fn(() => Promise.resolve()),
   fetchNoticeOfWorkReferralPackages: jest.fn(() => Promise.resolve()),
+  createNoticeOfWorkConsultationPackage: jest.fn(() => Promise.resolve()),
+  fetchNoticeOfWorkConsultationPackages: jest.fn(() => Promise.resolve()),
 };
 
 const reducerProps = {
@@ -134,7 +136,7 @@ describe("ReferralConsultationPackage", () => {
     });
   });
 
-  it("does not create referral package snapshot on download if type is CON", async () => {
+  it("creates consultation package snapshot on download if type is CON", async () => {
     dispatchProps.documentsCompression.mockResolvedValue({
       data: { task_id: "task-123" },
     });
@@ -156,6 +158,13 @@ describe("ReferralConsultationPackage", () => {
 
     await waitFor(() => {
       expect(dispatchProps.documentsCompression).toHaveBeenCalled();
+      expect(dispatchProps.createNoticeOfWorkConsultationPackage).toHaveBeenCalledWith(
+        mockNoticeOfWork.now_application_guid,
+        { mine_document_guids: ["mine-doc-core-1", "mine-doc-sub-1"] }
+      );
+      expect(dispatchProps.fetchNoticeOfWorkConsultationPackages).toHaveBeenCalledWith(
+        mockNoticeOfWork.now_application_guid
+      );
     });
     expect(dispatchProps.createNoticeOfWorkReferralPackage).not.toHaveBeenCalled();
   });
@@ -236,7 +245,7 @@ describe("ReferralConsultationPackage", () => {
     expect(dispatchProps.closeModal).toHaveBeenCalled();
   });
 
-  it("handles handleSavePackage for CON without creating referral package snapshot", async () => {
+  it("handles handleSavePackage and creates consultation package snapshot for CON", async () => {
     render(
       <ReferralConsultationPackage
         {...dispatchProps}
@@ -251,6 +260,13 @@ describe("ReferralConsultationPackage", () => {
 
     expect(dispatchProps.updateNoticeOfWorkApplication).toHaveBeenCalled();
     expect(dispatchProps.createNoticeOfWorkReferralPackage).not.toHaveBeenCalled();
+    expect(dispatchProps.createNoticeOfWorkConsultationPackage).toHaveBeenCalledWith(
+      mockNoticeOfWork.now_application_guid,
+      { mine_document_guids: ["mine-doc-core-1"] }
+    );
+    expect(dispatchProps.fetchNoticeOfWorkConsultationPackages).toHaveBeenCalledWith(
+      mockNoticeOfWork.now_application_guid
+    );
     expect(dispatchProps.fetchImportedNoticeOfWorkApplication).toHaveBeenCalled();
     expect(dispatchProps.closeModal).toHaveBeenCalled();
   });

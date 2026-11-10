@@ -18,6 +18,7 @@ const dispatchProps = {
   setNoticeOfWorkApplicationDocumentDownloadState: jest.fn(),
   fetchImportedNoticeOfWorkApplication: jest.fn(),
   fetchNoticeOfWorkReferralPackages: jest.fn(() => Promise.resolve()),
+  fetchNoticeOfWorkConsultationPackages: jest.fn(() => Promise.resolve()),
 };
 const reducerProps = {
   fixedTop: false,
@@ -52,9 +53,10 @@ describe("ReferralTabs", () => {
     expect(dispatchProps.fetchNoticeOfWorkReferralPackages).toHaveBeenCalledWith(
       NOW_MOCK.NOTICE_OF_WORK.now_application_guid
     );
+    expect(dispatchProps.fetchNoticeOfWorkConsultationPackages).not.toHaveBeenCalled();
   });
 
-  it("does not fetch referral packages on mount when type is CON", () => {
+  it("fetches consultation packages and not referral packages on mount when type is CON", () => {
     render(
       <BrowserRouter>
         <ReduxWrapper initialState={initialState}>
@@ -63,6 +65,9 @@ describe("ReferralTabs", () => {
       </BrowserRouter>
     );
     expect(dispatchProps.fetchNoticeOfWorkReferralPackages).not.toHaveBeenCalled();
+    expect(dispatchProps.fetchNoticeOfWorkConsultationPackages).toHaveBeenCalledWith(
+      NOW_MOCK.NOTICE_OF_WORK.now_application_guid
+    );
   });
 
   it("renders properly without fetchNoticeOfWorkReferralPackages prop", () => {

@@ -16,6 +16,7 @@ from .now_application_document_index_run import NowApplicationDocumentIndexRun
 from .permit_package_document_type import PermitPackageDocumentType
 from .now_application_review import NOWApplicationReview, NOWApplicationReviewDocumentXref
 from .now_application_referral_package import NOWApplicationReferralPackage, NOWApplicationReferralPackageDocumentXref
+from .now_application_consultation_package import NOWApplicationConsultationPackage, NOWApplicationConsultationPackageDocumentXref
 from .now_application_review_type import NOWApplicationReviewType
 from .notice_of_work_tier import NoticeOfWorkTier
 from .now_application_tier import NOWApplicationTier
@@ -51,6 +52,8 @@ model_list = [
     NOWApplicationReviewDocumentXref,
     NOWApplicationReferralPackage,
     NOWApplicationReferralPackageDocumentXref,
+    NOWApplicationConsultationPackage,
+    NOWApplicationConsultationPackageDocumentXref,
     NOWApplicationReviewType,
     BlastingOperation,
     UnitType,

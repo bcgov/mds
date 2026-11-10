@@ -1,0 +1,50 @@
+from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.schema import FetchedValue
+from app.extensions import db
+from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
+from app.api.now_applications.models.now_application_package_base import PackageMixin, PackageDocumentXrefMixin
+
+
+class NOWApplicationConsultationPackageDocumentXref(PackageDocumentXrefMixin, SoftDeleteMixin, AuditMixin, Base):
+    __tablename__ = 'now_application_consultation_package_document_xref'
+
+    now_application_consultation_package_document_xref_guid = db.Column(
+        UUID(as_uuid=True), primary_key=True, server_default=FetchedValue())
+    now_application_consultation_package_id = db.Column(
+        db.Integer,
+        db.ForeignKey('now_application_consultation_package.now_application_consultation_package_id'),
+        nullable=False)
+
+    def __repr__(self):
+        return f'<NOWApplicationConsultationPackageDocumentXref {self.now_application_consultation_package_document_xref_guid}>'
+
+
+class NOWApplicationConsultationPackage(PackageMixin, SoftDeleteMixin, AuditMixin, Base):
+    __tablename__ = 'now_application_consultation_package'
+    package_label = 'Consultation'
+
+    now_application_consultation_package_id = db.Column(
+        db.Integer, primary_key=True, server_default=FetchedValue())
+    now_application_consultation_package_guid = db.Column(
+        UUID(as_uuid=True), server_default=FetchedValue())
+
+    documents = db.relationship(
+        'NOWApplicationConsultationPackageDocumentXref',
+        backref='consultation_package',
+        lazy='joined',
+        cascade='all, delete-orphan')
+
+    @classmethod
+    def has_snapshot_of_document(cls, now_application_id, mine_document_guid):
+        """True if the document is in at least one of the application's consultation package snapshots."""
+        xref = NOWApplicationConsultationPackageDocumentXref
+        return db.session.query(
+            xref.query.join(cls, cls.now_application_consultation_package_id == xref.now_application_consultation_package_id)
+            .filter(
+                cls.now_application_id == now_application_id,
+                cls.deleted_ind == False,
+                xref.mine_document_guid == mine_document_guid,
+                xref.deleted_ind == False).exists()).scalar()
+
+    def __repr__(self):
+        return f'<NOWApplicationConsultationPackage {self.now_application_consultation_package_id}>'

@@ -4,6 +4,7 @@ from unittest.mock import patch
 
 import pytest
 
+from app.api.now_applications.models.now_application_consultation_package import NOWApplicationConsultationPackage
 from app.api.now_applications.models.now_application_document_identity_xref import NOWApplicationDocumentIdentityXref
 from app.api.now_applications.models.now_application_document_xref import NOWApplicationDocumentXref
 from tests.factories import MineDocumentFactory
@@ -152,12 +153,12 @@ class TestArchiveDocuments:
         now_application_identity = NOWApplicationIdentityFactory()
         package_document, package_xref = _make_core_document(db_session, now_application_identity, **PERMIT_PACKAGE_FIELDS)
         blocked_document, _ = _make_core_document(
-            db_session, now_application_identity, document_name='consultation.pdf', is_consultation_package=True)
+            db_session, now_application_identity, document_name='system_generated.pdf', is_system_generated=True)
 
         resp = _archive(test_client, auth_headers, now_application_identity, [package_document, blocked_document])
 
         assert resp.status_code == 400
-        assert 'consultation.pdf' in resp.json['message']
+        assert 'system_generated.pdf' in resp.json['message']
         _assert_not_archived(db_session, package_document)
         _assert_not_archived(db_session, blocked_document)
         db_session.refresh(package_xref)
@@ -301,19 +302,30 @@ class TestAlwaysBlockedArchive:
         _assert_archive_blocked(test_client, db_session, auth_headers, now_application_identity, mine_document,
                                 'System-generated')
 
-    def test_consultation_document_blocked(self, test_client, db_session, auth_headers):
+    def test_consultation_document_without_snapshot_blocked(self, test_client, db_session, auth_headers):
         now_application_identity = NOWApplicationIdentityFactory()
         mine_document, _ = _make_core_document(db_session, now_application_identity, is_consultation_package=True)
 
         _assert_archive_blocked(test_client, db_session, auth_headers, now_application_identity, mine_document,
-                                'Consultation')
+                                'Consultation package')
 
-    def test_imported_consultation_document_blocked(self, test_client, db_session, auth_headers):
+    def test_consultation_document_can_be_archived(self, test_client, db_session, auth_headers):
         now_application_identity = NOWApplicationIdentityFactory()
-        mine_document, _ = _make_imported_document(db_session, now_application_identity, is_consultation_package=True)
+        mine_document, _ = _make_core_document(db_session, now_application_identity, is_consultation_package=True)
+        NOWApplicationConsultationPackage.create(now_application_identity.now_application, [mine_document])
 
-        _assert_archive_blocked(test_client, db_session, auth_headers, now_application_identity, mine_document,
-                                'Consultation')
+        resp = _archive(test_client, auth_headers, now_application_identity, [mine_document])
+        assert resp.status_code == 204
+        _assert_archived(db_session, mine_document)
+
+    def test_consultation_document_missing_from_snapshots_blocked(self, test_client, db_session, auth_headers):
+        now_application_identity = NOWApplicationIdentityFactory()
+        snapshotted, _ = _make_core_document(db_session, now_application_identity, is_consultation_package=True)
+        not_snapshotted, _ = _make_core_document(db_session, now_application_identity, is_consultation_package=True)
+        NOWApplicationConsultationPackage.create(now_application_identity.now_application, [snapshotted])
+
+        _assert_archive_blocked(test_client, db_session, auth_headers, now_application_identity, not_snapshotted,
+                                'Consultation package')
 
     def test_referral_document_can_be_archived(self, test_client, db_session, auth_headers):
         now_application_identity = NOWApplicationIdentityFactory()

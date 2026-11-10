@@ -213,6 +213,8 @@ BEGIN
             public.notice_of_work_tier,
             public.notice_of_work_type,
             public.now_application,
+            public.now_application_consultation_package,
+            public.now_application_consultation_package_document_xref,
             public.now_application_delay,
             public.now_application_delay_type,
             public.now_application_document_identity_xref,

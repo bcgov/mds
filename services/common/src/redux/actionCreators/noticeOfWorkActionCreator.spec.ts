@@ -36,6 +36,8 @@ import {
     createNoticeOfWorkApplicationNationEvent,
     fetchNoticeOfWorkReferralPackages,
     createNoticeOfWorkReferralPackage,
+    fetchNoticeOfWorkConsultationPackages,
+    createNoticeOfWorkConsultationPackage,
 } from "@mds/common/redux/actionCreators/noticeOfWorkActionCreator";
 import * as genericActions from "@mds/common/redux/actions/genericActions";
 import { ENVIRONMENT } from "@mds/common/constants/environment";
@@ -1063,6 +1065,59 @@ describe("`createNoticeOfWorkReferralPackage` action creator", () => {
         mockAxios.onPost(url).reply(418, MOCK.ERROR);
 
         return createNoticeOfWorkReferralPackage(applicationGuid, payload)(dispatch).catch(() => {
+            expect(requestSpy).toHaveBeenCalledTimes(1);
+            expect(errorSpy).toHaveBeenCalledTimes(1);
+            expect(dispatch).toHaveBeenCalledTimes(4);
+        });
+    });
+});
+
+describe("`fetchNoticeOfWorkConsultationPackages` action creator", () => {
+    const applicationGuid = "12345";
+    const url = `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_CONSULTATION_PACKAGES(applicationGuid)}`;
+
+    it("Request successful, dispatches `success` with correct response", () => {
+        const mockResponse = { data: { records: [] } };
+        mockAxios.onGet(url).reply(200, mockResponse);
+
+        return fetchNoticeOfWorkConsultationPackages(applicationGuid)(dispatch).then(() => {
+            expect(requestSpy).toHaveBeenCalledTimes(1);
+            expect(successSpy).toHaveBeenCalledTimes(1);
+            expect(dispatch).toHaveBeenCalledTimes(5);
+        });
+    });
+
+    it("Request failure, dispatches `error` with correct response", () => {
+        mockAxios.onGet(url).reply(418, MOCK.ERROR);
+
+        return fetchNoticeOfWorkConsultationPackages(applicationGuid)(dispatch).then(() => {
+            expect(requestSpy).toHaveBeenCalledTimes(1);
+            expect(errorSpy).toHaveBeenCalledTimes(1);
+            expect(dispatch).toHaveBeenCalledTimes(4);
+        });
+    });
+});
+
+describe("`createNoticeOfWorkConsultationPackage` action creator", () => {
+    const applicationGuid = "12345";
+    const payload = { mine_document_guids: ["guid-1"] };
+    const url = `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_CONSULTATION_PACKAGES(applicationGuid)}`;
+
+    it("Request successful, dispatches `success` with correct response", () => {
+        const mockResponse = { data: { success: true } };
+        mockAxios.onPost(url, payload).reply(201, mockResponse);
+
+        return createNoticeOfWorkConsultationPackage(applicationGuid, payload)(dispatch).then(() => {
+            expect(requestSpy).toHaveBeenCalledTimes(1);
+            expect(successSpy).toHaveBeenCalledTimes(1);
+            expect(dispatch).toHaveBeenCalledTimes(4);
+        });
+    });
+
+    it("Request failure, dispatches `error` with correct response", () => {
+        mockAxios.onPost(url).reply(418, MOCK.ERROR);
+
+        return createNoticeOfWorkConsultationPackage(applicationGuid, payload)(dispatch).catch(() => {
             expect(requestSpy).toHaveBeenCalledTimes(1);
             expect(errorSpy).toHaveBeenCalledTimes(1);
             expect(dispatch).toHaveBeenCalledTimes(4);

@@ -363,6 +363,9 @@ from app.api.now_applications.resources.now_application_review_resource import (
 from app.api.now_applications.resources.now_application_referral_package_resource import (
     NOWApplicationReferralPackageListResource,
 )
+from app.api.now_applications.resources.now_application_consultation_package_resource import (
+    NOWApplicationConsultationPackageListResource,
+)
 from app.api.now_applications.resources.now_application_review_type_resource import (
     NOWApplicationReviewTypeResource,
 )
@@ -866,6 +869,8 @@ EXPECTED_AUTH_TABLE = [
         (NOWApplicationReviewListResource, 'post', [EDIT_PERMIT]),
         (NOWApplicationReferralPackageListResource, 'get', [VIEW_ALL]),
         (NOWApplicationReferralPackageListResource, 'post', [EDIT_PERMIT]),
+        (NOWApplicationConsultationPackageListResource, 'get', [VIEW_ALL]),
+        (NOWApplicationConsultationPackageListResource, 'post', [EDIT_PERMIT]),
         (NOWApplicationReviewResource, 'delete', [EDIT_PERMIT]),
         (NOWApplicationReviewResource, 'put', [EDIT_PERMIT]),
         (NOWApplicationReviewTypeResource, 'get', [VIEW_ALL]),
