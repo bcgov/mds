@@ -47,6 +47,7 @@ ORIGINAL_NOW_FIELD_PATHS = [
     'is_first_year_of_multi',
     'crown_grant_or_district_lot_numbers',
     'proposed_end_date',
+    'work_year_info',
     'tenure_number',
     'directions_to_site',
     'has_req_access_authorizations',
@@ -73,6 +74,7 @@ ORIGINAL_NOW_FIELD_PATHS = [
     'state_of_land.has_fn_cultural_heritage_sites_in_area',
     'state_of_land.fn_engagement_activities',
     'state_of_land.cultural_heritage_description',
+    'state_of_land.protection_of_cultural_heritage_resources',
     'state_of_land.recreational_trail_use_description',
     'state_of_land.has_shared_info_with_fn',
     'state_of_land.has_acknowledged_undrip',
@@ -171,6 +173,8 @@ ORIGINAL_NOW_FIELD_PATHS = [
     'exploration_surface_drilling.reclamation_description',
     'exploration_surface_drilling.reclamation_cost',
     'exploration_surface_drilling.drill_program',
+    'exploration_surface_drilling.has_more_than_25_unreclaimed_drill_sites',
+    'exploration_surface_drilling.num_unreclaimed_drill_sites',
     'underground_exploration.total_ore_amount',
     'underground_exploration.total_waste_amount',
     'underground_exploration.surface_total_ore_amount',
@@ -233,6 +237,19 @@ CHECKBOX_FIELDS = [
 UNDERGROUND_EXPLORATION_CODE_FIELDS = [
     'underground_exploration_type_code',
 ]
+
+
+def has_legacy_fuel_data(camp):
+    """
+    Mirrors hasLegacyFuelData in core-web (NOWConditions.js): the old fuel fields are only shown
+    when at least one of them still has a value. Must run before transform_data, which turns
+    None into EMPTY_FIELD.
+    """
+    if not camp:
+        return False
+    return (camp.get('has_fuel_stored_in_bulk') is not None
+            or camp.get('has_fuel_stored_in_barrels') is not None
+            or camp.get('volume_fuel_stored') is not None)
 
 
 class NOWApplicationExportResource(Resource, UserMixin):
@@ -534,6 +551,9 @@ class NOWApplicationExportResource(Resource, UserMixin):
         now_application_json['render'] = get_renderable_now_sections(now_application_json)
         now_application_json['summary'] = get_reclamation_summary(now_application_json,
                                                                   now_application_json['render'])
+        if now_application_json.get('camp') is not None:
+            now_application_json['camp']['has_legacy_fuel_data'] = has_legacy_fuel_data(
+                now_application_json['camp'])
         now_application_json = transform_data(now_application_json)
 
         # Determine what fields have changed from the original application
