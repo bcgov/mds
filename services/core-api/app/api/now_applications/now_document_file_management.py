@@ -87,10 +87,11 @@ def _check_file_management_rules(now_application_identity, mine_document, xref):
 
     # Referral and Consultation package files keep their existing behaviour, even when also in the permit package.
     # Consultation packages sent before snapshots existed have no record of the version sent, so they stay locked
-    # until the application has at least one snapshot.
+    # until that specific document is in one of the application's snapshots.
     if xref.is_consultation_package and (
             not is_feature_enabled(Feature.NOW_FILE_MANAGEMENT)
-            or not NOWApplicationConsultationPackage.find_by_now_application_id(xref.now_application_id)):
+            or not NOWApplicationConsultationPackage.has_snapshot_of_document(
+                xref.now_application_id, mine_document.mine_document_guid)):
         raise BadRequest('Documents in a Consultation package cannot be changed.')
     if not is_feature_enabled(Feature.NOW_FILE_MANAGEMENT) and xref.is_referral_package:
         raise BadRequest('Documents in a Referral package cannot be changed.')

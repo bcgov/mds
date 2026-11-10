@@ -34,5 +34,17 @@ class NOWApplicationConsultationPackage(PackageMixin, SoftDeleteMixin, AuditMixi
         lazy='joined',
         cascade='all, delete-orphan')
 
+    @classmethod
+    def has_snapshot_of_document(cls, now_application_id, mine_document_guid):
+        """True if the document is in at least one of the application's consultation package snapshots."""
+        xref = NOWApplicationConsultationPackageDocumentXref
+        return db.session.query(
+            xref.query.join(cls, cls.now_application_consultation_package_id == xref.now_application_consultation_package_id)
+            .filter(
+                cls.now_application_id == now_application_id,
+                cls.deleted_ind == False,
+                xref.mine_document_guid == mine_document_guid,
+                xref.deleted_ind == False).exists()).scalar()
+
     def __repr__(self):
         return f'<NOWApplicationConsultationPackage {self.now_application_consultation_package_id}>'

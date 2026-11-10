@@ -318,6 +318,15 @@ class TestAlwaysBlockedArchive:
         assert resp.status_code == 204
         _assert_archived(db_session, mine_document)
 
+    def test_consultation_document_missing_from_snapshots_blocked(self, test_client, db_session, auth_headers):
+        now_application_identity = NOWApplicationIdentityFactory()
+        snapshotted, _ = _make_core_document(db_session, now_application_identity, is_consultation_package=True)
+        not_snapshotted, _ = _make_core_document(db_session, now_application_identity, is_consultation_package=True)
+        NOWApplicationConsultationPackage.create(now_application_identity.now_application, [snapshotted])
+
+        _assert_archive_blocked(test_client, db_session, auth_headers, now_application_identity, not_snapshotted,
+                                'Consultation package')
+
     def test_referral_document_can_be_archived(self, test_client, db_session, auth_headers):
         now_application_identity = NOWApplicationIdentityFactory()
         mine_document, _ = _make_core_document(db_session, now_application_identity, is_referral_package=True)
