@@ -35,4 +35,4 @@ class TestNOWApplicationDocumentIdentity:
         from app.api.mines.documents.models.mine_document import MineDocument
         mine_doc = MineDocument.query.filter_by(document_name='some_data').first()
         assert mine_doc is not None
-        assert mine_doc.is_imported is True
+        assert mine_doc.is_original_vfcbc_file is True

@@ -344,7 +344,7 @@ describe("NOWSubmissionDocuments", () => {
 
     it("displays the Imported from vFCBC indicator on imported documents", async () => {
       renderFileManagement({
-        documents: [importedDocument({ is_imported: true, versions: [] })],
+        documents: [importedDocument({ is_original_vfcbc_file: true, versions: [] })],
       });
 
       const indicator = screen.getByLabelText("Imported from vFCBC");
@@ -357,13 +357,13 @@ describe("NOWSubmissionDocuments", () => {
       const { container } = renderFileManagement({
         documents: [
           importedDocument({
-            is_imported: false,
+            is_original_vfcbc_file: false,
             versions: [
               {
                 mine_document_version_guid: "imported-version",
                 document_manager_version_guid: "imported-doc-manager-version",
                 document_name: "application-v1.pdf",
-                is_imported: true,
+                is_original_vfcbc_file: true,
               },
             ],
           }),

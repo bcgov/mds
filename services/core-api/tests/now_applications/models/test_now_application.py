@@ -407,33 +407,33 @@ class TestGetFilteredSubmissionsDocuments:
     def test_includes_is_imported_for_imported_submission_document(self, app):
         from app.api.now_applications.models.now_application import NOWApplication
         imported_doc = _make_imported_submission_doc()
-        imported_doc.mine_document.is_imported = True
+        imported_doc.mine_document.is_original_vfcbc_file = True
         now_application = self._make_now_application(imported=[imported_doc])
 
         docs = NOWApplication.get_filtered_submissions_documents(now_application)
 
-        assert docs[0]['is_imported'] is True
+        assert docs[0]['is_original_vfcbc_file'] is True
 
     def test_includes_is_imported_for_pending_submission_document(self, app):
         from app.api.now_applications.models.now_application import NOWApplication
         submission_doc = MagicMock()
         submission_doc.filename = 'not-imported.pdf'
-        submission_doc.is_imported = True
+        submission_doc.is_original_vfcbc_file = True
         now_application = self._make_now_application(submission=[submission_doc])
 
         docs = NOWApplication.get_filtered_submissions_documents(now_application)
 
-        assert docs[0]['is_imported'] is True
+        assert docs[0]['is_original_vfcbc_file'] is True
 
     def test_preserves_is_imported_false_when_not_imported(self, app):
         from app.api.now_applications.models.now_application import NOWApplication
         imported_doc = _make_imported_submission_doc()
-        imported_doc.mine_document.is_imported = False
+        imported_doc.mine_document.is_original_vfcbc_file = False
         now_application = self._make_now_application(imported=[imported_doc])
 
         docs = NOWApplication.get_filtered_submissions_documents(now_application)
 
-        assert docs[0]['is_imported'] is False
+        assert docs[0]['is_original_vfcbc_file'] is False
 
 
 class TestNOWApplicationDocumentIdentityXrefDocumentName:

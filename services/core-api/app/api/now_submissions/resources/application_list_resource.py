@@ -147,7 +147,7 @@ class ApplicationListResource(Resource, UserMixin):
         application.originating_system = 'VFCBC'
         if application.documents:
             for doc in application.documents:
-                doc.is_imported = True
+                doc.is_original_vfcbc_file = True
         current_app.logger.debug('Attempting to Save')
         application.save()
 

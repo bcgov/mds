@@ -753,7 +753,7 @@ class TestGetApplicationListResource:
         assert post_data["mine_guid"] == str(mine.mine_guid)
 
     def test_post_now_application_documents_marked_as_imported(self, test_client, db_session, auth_headers):
-        """Incoming documents with NoW Application from vFCBC should have is_imported set to True"""
+        """Incoming documents with NoW Application from vFCBC should have is_original_vfcbc_file set to True"""
 
         mine = MineFactory()
         test_data = copy.deepcopy(NOW_APPLICATION_DATA)
@@ -780,7 +780,7 @@ class TestGetApplicationListResource:
 
         assert post_resp.status_code in [200, 201], post_resp.response
         assert len(post_data["documents"]) == 1
-        assert post_data["documents"][0]["is_imported"] is True
+        assert post_data["documents"][0]["is_original_vfcbc_file"] is True
 
     def test_post_now_application_messageid_in_use(self, test_client, db_session, auth_headers):
         """Should return a 400 messageid in use"""

@@ -5,10 +5,11 @@ import { isEmpty } from "lodash";
 import { PropTypes } from "prop-types";
 import { Button, Popconfirm, Tooltip, Row, Col, Typography } from "antd";
 import moment from "moment";
-import { FlagOutlined, ImportOutlined, MenuOutlined } from "@ant-design/icons";
+import { FlagOutlined, MenuOutlined } from "@ant-design/icons";
 import CustomPropTypes from "@/customPropTypes";
 import { formatDate, formatDateTime } from "@mds/common/redux/utils/helpers";
 import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
+import OriginalVfcbcFileIcon from "@mds/common/components/documents/OriginalVfcbcFileIcon";
 import {
   getNoticeOfWorkApplicationDocumentTypeOptionsHash,
   getDropdownNoticeOfWorkApplicationDocumentTypeOptions,
@@ -491,15 +492,8 @@ export class NOWDocuments extends Component {
                 >
                   {record.document_name}
                 </Button>
-                {record.is_imported && (
-                  <span className="file-history-container">
-                    <Tooltip title="Imported from vFCBC" placement="top">
-                      <ImportOutlined
-                        style={{ fontSize: "14px", color: "#606060", marginLeft: "6px" }}
-                        aria-label="Imported from vFCBC"
-                      />
-                    </Tooltip>
-                  </span>
+                {record.is_original_vfcbc_file && (
+                  <OriginalVfcbcFileIcon containerClassName="file-history-container" />
                 )}
               </div>
             );

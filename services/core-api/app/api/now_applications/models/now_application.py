@@ -521,8 +521,8 @@ class NOWApplication(Base, AuditMixin):
                 doc.preamble_date,
                 'update_timestamp':
                 doc.update_timestamp,
-                'is_imported':
-                doc.mine_document.is_imported if doc.mine_document else True,
+                'is_original_vfcbc_file':
+                doc.mine_document.is_original_vfcbc_file if doc.mine_document else True,
                 'is_archived':
                 doc.mine_document.is_archived if doc.mine_document else False,
                 'archived_date':
@@ -559,7 +559,7 @@ class NOWApplication(Base, AuditMixin):
                     'document_name': doc.filename,
                     'now_application_id': now_application.now_application_id,
                     'document_manager_guid': None,
-                    'is_imported': getattr(doc, 'is_imported', True),
+                    'is_original_vfcbc_file': getattr(doc, 'is_original_vfcbc_file', True),
                     # Not imported yet, so there's no mine_document to archive or version
                     'is_archived': False,
                     'archived_date': None,

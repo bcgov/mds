@@ -12,6 +12,8 @@ import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Strings from "@mds/common/constants/strings";
 import DocumentLink from "@mds/common/components/documents/DocumentLink";
+import OriginalVfcbcFileIcon from "@mds/common/components/documents/OriginalVfcbcFileIcon";
+import { resolveIsOriginalVfcbcFile } from "@mds/common/utils/vfcbcFile";
 import { modalConfig } from "@/components/modalContent/config";
 import * as Permission from "@/constants/permissions";
 import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
@@ -180,7 +182,7 @@ const transformDocuments = (
       ...document,
       // A replaced vFCBC file keeps its original filename, document_name is its current name
       filename: document.document_name || document.filename || Strings.EMPTY_FIELD,
-      is_imported: document.is_imported ?? document.mine_document?.is_imported ?? (!document.notForImport),
+      is_original_vfcbc_file: resolveIsOriginalVfcbcFile(document, !document.notForImport),
     };
   });
 
@@ -390,15 +392,8 @@ export const NOWSubmissionDocuments = (props) => {
               >
                 {record.document_name}
               </Button>
-              {record.is_imported && (
-                <span className="file-history-container">
-                  <Tooltip title="Imported from vFCBC" placement="top">
-                    <ImportOutlined
-                      style={{ fontSize: "14px", color: "#606060", marginLeft: "6px" }}
-                      aria-label="Imported from vFCBC"
-                    />
-                  </Tooltip>
-                </span>
+              {record.is_original_vfcbc_file && (
+                <OriginalVfcbcFileIcon containerClassName="file-history-container" />
               )}
             </div>
           );
