@@ -27,6 +27,7 @@ class MineDocumentVersion(SoftDeleteMixin, AuditMixin, Base):
     document_manager_version_guid = db.Column(UUID(as_uuid=True), nullable=False)
     upload_date = db.Column(db.Date, nullable=False, default=datetime.utcnow)
     document_name = db.Column(db.String(255), nullable=False)
+    is_original_vfcbc_file = db.Column(db.Boolean, nullable=False, default=False, server_default=FetchedValue())
 
     @classmethod
     def create_from_docman_version(
@@ -53,6 +54,7 @@ class MineDocumentVersion(SoftDeleteMixin, AuditMixin, Base):
             document_manager_version_guid=document_manager_version_guid,
             document_name=docman_version.get('file_display_name'),
             upload_date=mine_document.upload_date,
+            is_original_vfcbc_file=mine_document.is_original_vfcbc_file,
         )
         new_version.create_user = mine_document.create_user
         new_version.create_timestamp = mine_document.create_timestamp
@@ -72,6 +74,7 @@ class MineDocumentVersion(SoftDeleteMixin, AuditMixin, Base):
         mine_document.create_user = User().get_user_username()
         mine_document.create_timestamp = datetime.utcnow()
         mine_document.upload_date = mine_document.create_timestamp
+        mine_document.is_original_vfcbc_file = False
         mine_document.save(commit=commit)
 
         return new_version.json(mine_document.mine_guid, mine_document.document_manager_guid)
@@ -91,4 +94,5 @@ class MineDocumentVersion(SoftDeleteMixin, AuditMixin, Base):
             'update_timestamp': str(self.update_timestamp),
             'mine_guid': str(mine_guid) if mine_guid else None,
             'document_manager_guid': str(document_manager_guid) if document_manager_guid else None,
+            'is_original_vfcbc_file': self.is_original_vfcbc_file,
         }

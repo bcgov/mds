@@ -100,9 +100,9 @@ def _check_file_management_rules(now_application_identity, mine_document, xref):
     is_delayed = any(delay.end_date is None for delay in now_application_identity.application_delays)
 
     # vFCBC imports have no sub-type, and always belong to Application Documents
-    is_imported = isinstance(xref, NOWApplicationDocumentIdentityXref)
-    sub_type_code = None if is_imported else xref.now_application_document_sub_type_code
-    is_application_document = is_imported or sub_type_code in APPLICATION_DOCUMENT_SUB_TYPE_CODES
+    is_vfcbc_xref = isinstance(xref, NOWApplicationDocumentIdentityXref)
+    sub_type_code = None if is_vfcbc_xref else xref.now_application_document_sub_type_code
+    is_application_document = is_vfcbc_xref or sub_type_code in APPLICATION_DOCUMENT_SUB_TYPE_CODES
     is_government_document = sub_type_code == GOVERNMENT_DOCUMENT_SUB_TYPE_CODE
 
     # Checked before the permit package rules, since files from other tables (e.g. System-generated) can also be added to the package

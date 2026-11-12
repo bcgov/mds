@@ -16,4 +16,5 @@ export interface IMineDocumentVersion {
   category?: string;
   category_code?: string;
   file_type?: string;
+  is_original_vfcbc_file?: boolean;
 }

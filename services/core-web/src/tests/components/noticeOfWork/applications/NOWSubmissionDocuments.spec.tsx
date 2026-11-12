@@ -342,6 +342,53 @@ describe("NOWSubmissionDocuments", () => {
       expect(screen.getByText("Archive file")).toBeInTheDocument();
     });
 
+    it("displays the Imported from vFCBC indicator on imported documents", async () => {
+      renderFileManagement({
+        documents: [importedDocument({ is_original_vfcbc_file: true, versions: [] })],
+      });
+
+      const indicator = screen.getByLabelText("Imported from vFCBC");
+      expect(indicator).toBeInTheDocument();
+      await userEvent.hover(indicator);
+      expect(await screen.findByText("Imported from vFCBC")).toBeInTheDocument();
+    });
+
+    it("displays the Imported from vFCBC indicator on the original version when replaced, but not on the replacement", async () => {
+      const { container } = renderFileManagement({
+        documents: [
+          importedDocument({
+            is_original_vfcbc_file: false,
+            versions: [
+              {
+                mine_document_version_guid: "imported-version",
+                document_manager_version_guid: "imported-doc-manager-version",
+                document_name: "application-v1.pdf",
+                is_original_vfcbc_file: true,
+              },
+            ],
+          }),
+        ],
+      });
+
+      // Replacement file (current version) does not show the indicator
+      expect(screen.queryByLabelText("Imported from vFCBC")).not.toBeInTheDocument();
+
+      // Expanding version history shows the indicator on the original vFCBC file
+      await userEvent.click(container.querySelector(".expand-row-icon"));
+      const indicator = screen.getByLabelText("Imported from vFCBC");
+      expect(indicator).toBeInTheDocument();
+      await userEvent.hover(indicator);
+      expect(await screen.findByText("Imported from vFCBC")).toBeInTheDocument();
+    });
+
+    it("does not display the Imported from vFCBC indicator on documents added in Core", () => {
+      renderFileManagement({
+        documents: [coreApplicationDocument()],
+      });
+
+      expect(screen.queryByLabelText("Imported from vFCBC")).not.toBeInTheDocument();
+    });
+
     it("doesn't offer any actions for a vFCBC document that hasn't been imported yet", () => {
       renderFileManagement({
         documents: [

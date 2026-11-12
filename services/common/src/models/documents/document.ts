@@ -1,3 +1,4 @@
+import { resolveIsOriginalVfcbcFile } from "@mds/common/utils/vfcbcFile";
 import { USER_ROLES } from "@mds/common/constants/environment";
 import { IMineDocument, IMineDocumentVersion } from "@mds/common/interfaces";
 import { isFeatureEnabled, Feature } from "@mds/common/utils";
@@ -43,6 +44,8 @@ export class MineDocumentVersion {
 
   public file_type: string;
 
+  public is_original_vfcbc_file: boolean;
+
   constructor(jsonObject: any) {
     this.mine_document_guid = jsonObject.mine_document_guid;
     this.mine_document_version_guid = jsonObject.mine_document_version_guid;
@@ -57,6 +60,7 @@ export class MineDocumentVersion {
     this.allowed_actions = jsonObject.allowed_actions;
     this.category = jsonObject.category;
     this.category_code = jsonObject.category_code;
+    this.is_original_vfcbc_file = jsonObject.is_original_vfcbc_file ?? false;
     this.file_type = this.getFileType();
   }
 
@@ -96,6 +100,8 @@ export class MineDocument implements IMineDocument {
 
   public is_archived: boolean;
 
+  public is_original_vfcbc_file: boolean;
+
   public archived_by: string;
 
   public archived_date: string;
@@ -133,6 +139,7 @@ export class MineDocument implements IMineDocument {
     this.upload_date = jsonObject.upload_date;
     this.update_timestamp = jsonObject.update_timestamp;
     this.category = jsonObject.category;
+    this.is_original_vfcbc_file = resolveIsOriginalVfcbcFile(jsonObject);
     this.is_archived = jsonObject.is_archived ?? false;
     this.archived_by = jsonObject.archived_by;
     this.archived_date = jsonObject.archived_date;
@@ -168,6 +175,7 @@ export class MineDocument implements IMineDocument {
               allowed_actions: this.getAllowedActions(jsonObject.user_roles, false).filter(Boolean),
               category: this.category,
               category_code: this.category_code,
+              is_original_vfcbc_file: version.is_original_vfcbc_file ?? false,
             },
             jsonObject
           )

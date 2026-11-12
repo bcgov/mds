@@ -63,6 +63,19 @@ describe("NOWArchivedDocuments", () => {
       expect(submission.document_name).toBe("replaced.pdf");
     });
 
+    it("preserves is_original_vfcbc_file flag on archived submission documents", () => {
+      const [core, submission] = toArchivedDocuments(
+        {
+          ...noticeOfWork,
+          archived_submission_documents: [{ ...archivedSubmissionDocument, is_original_vfcbc_file: true }],
+        },
+        documentTypeOptionsHash
+      );
+
+      expect(core.is_original_vfcbc_file).toBe(false);
+      expect(submission.is_original_vfcbc_file).toBe(true);
+    });
+
     it("only lets archived files, and their previous versions, be viewed and downloaded", () => {
       const [core, submission] = toArchivedDocuments(noticeOfWork, documentTypeOptionsHash);
 

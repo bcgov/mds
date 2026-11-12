@@ -1,4 +1,5 @@
 import React, { FC, useMemo } from "react";
+import { resolveIsOriginalVfcbcFile } from "@mds/common/utils/vfcbcFile";
 import { useSelector } from "react-redux";
 import { Typography } from "antd";
 import * as Strings from "@mds/common/constants/strings";
@@ -55,6 +56,7 @@ export const toArchivedDocuments = (
         document_name: doc.document_name || doc.filename || Strings.EMPTY_FIELD,
         mine_guid: noticeOfWork.mine_guid,
         is_imported_submission_document: true,
+        is_original_vfcbc_file: resolveIsOriginalVfcbcFile(doc, true),
         category: doc.documenttype,
       })
   );

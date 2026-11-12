@@ -12,6 +12,8 @@ import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Strings from "@mds/common/constants/strings";
 import DocumentLink from "@mds/common/components/documents/DocumentLink";
+import OriginalVfcbcFileIcon from "@mds/common/components/documents/OriginalVfcbcFileIcon";
+import { resolveIsOriginalVfcbcFile } from "@mds/common/utils/vfcbcFile";
 import { modalConfig } from "@/components/modalContent/config";
 import * as Permission from "@/constants/permissions";
 import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
@@ -180,6 +182,7 @@ const transformDocuments = (
       ...document,
       // A replaced vFCBC file keeps its original filename, document_name is its current name
       filename: document.document_name || document.filename || Strings.EMPTY_FIELD,
+      is_original_vfcbc_file: resolveIsOriginalVfcbcFile(document, !document.notForImport),
     };
   });
 
@@ -377,7 +380,11 @@ export const NOWSubmissionDocuments = (props) => {
         // Clicking a previous version's file name downloads that version, it can also be viewed from the Actions menu
         if (isVersionRow(record)) {
           return (
-            <div title="File Name" style={getFileNameOffset(record)}>
+            <div
+              title="File Name"
+              className="inline-flex flex-between file-name-container child"
+              style={getFileNameOffset(record)}
+            >
               <Button
                 type="link"
                 className="btn--inline-link"
@@ -385,6 +392,9 @@ export const NOWSubmissionDocuments = (props) => {
               >
                 {record.document_name}
               </Button>
+              {record.is_original_vfcbc_file && (
+                <OriginalVfcbcFileIcon containerClassName="file-history-container" />
+              )}
             </div>
           );
         }

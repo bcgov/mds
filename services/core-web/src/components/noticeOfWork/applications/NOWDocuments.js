@@ -9,6 +9,7 @@ import { FlagOutlined, MenuOutlined } from "@ant-design/icons";
 import CustomPropTypes from "@/customPropTypes";
 import { formatDate, formatDateTime } from "@mds/common/redux/utils/helpers";
 import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
+import OriginalVfcbcFileIcon from "@mds/common/components/documents/OriginalVfcbcFileIcon";
 import {
   getNoticeOfWorkApplicationDocumentTypeOptionsHash,
   getDropdownNoticeOfWorkApplicationDocumentTypeOptions,
@@ -479,7 +480,11 @@ export class NOWDocuments extends Component {
           // Clicking a previous version's file name downloads that version, it can also be viewed from the Actions menu
           if (isVersionRow(record)) {
             return (
-              <div title="File Name" style={getFileNameOffset(record)}>
+              <div
+                title="File Name"
+                className="inline-flex flex-between file-name-container child"
+                style={getFileNameOffset(record)}
+              >
                 <Button
                   type="link"
                   className="btn--inline-link"
@@ -487,6 +492,9 @@ export class NOWDocuments extends Component {
                 >
                   {record.document_name}
                 </Button>
+                {record.is_original_vfcbc_file && (
+                  <OriginalVfcbcFileIcon containerClassName="file-history-container" />
+                )}
               </div>
             );
           }

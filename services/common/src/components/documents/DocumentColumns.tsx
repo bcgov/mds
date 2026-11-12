@@ -12,6 +12,7 @@ import ClockCircleOutlined from "@ant-design/icons/ClockCircleOutlined";
 import DeleteOutlined from "@ant-design/icons/DeleteOutlined";
 import { downloadFileFromDocumentManager } from "@mds/common/redux/utils/actionlessNetworkCalls";
 import DocumentLink from "./DocumentLink";
+import OriginalVfcbcFileIcon from "./OriginalVfcbcFileIcon";
 import { IPermitAmendmentDocument } from "@mds/common/interfaces";
 
 export const documentWithTag = (
@@ -46,6 +47,7 @@ export const documentWithTag = (
             </Tooltip>
           </span>
         ) : null}
+        {record.is_original_vfcbc_file ? <OriginalVfcbcFileIcon /> : null}
         {record.is_archived ? <Tag className="table-tag table-tag--grey">{"Archived"}</Tag> : null}
       </span>
     </div>

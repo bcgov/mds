@@ -55,6 +55,27 @@ describe("NoWApplicationDocument model", () => {
     expect(allowedActions()).toEqual(canChangeActions);
   });
 
+  it("retains is_original_vfcbc_file flag on document and versions independently", () => {
+    const document = new NoWApplicationDocument({
+      ...mockNoWDocumentData,
+      is_original_vfcbc_file: false,
+      versions: [
+        {
+          ...mockNoWDocumentData.versions[0],
+          is_original_vfcbc_file: true,
+        },
+      ],
+    });
+    expect(document.is_original_vfcbc_file).toBe(false);
+    expect(document.versions[0].is_original_vfcbc_file).toBe(true);
+  });
+
+  it("defaults is_original_vfcbc_file to false when not provided", () => {
+    const document = new NoWApplicationDocument(mockNoWDocumentData);
+    expect(document.is_original_vfcbc_file).toBe(false);
+    expect(document.versions[0].is_original_vfcbc_file).toBe(false);
+  });
+
   it("only allows previous versions to be viewed and downloaded", () => {
     const document = new NoWApplicationDocument(mockNoWDocumentData);
 

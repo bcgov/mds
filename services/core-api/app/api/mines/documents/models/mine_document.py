@@ -32,6 +32,7 @@ class MineDocument(SoftDeleteMixin, AuditMixin, Base):
     is_archived = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
     archived_date = db.Column(db.DateTime, nullable=True)
     archived_by = db.Column(db.String(60))
+    is_original_vfcbc_file = db.Column(db.Boolean, nullable=False, default=False, server_default=FetchedValue())
     versions = db.relationship('MineDocumentVersion', lazy='joined')
 
     mine_document_bundle_id = db.Column(db.String, db.ForeignKey('mine_document_bundle.bundle_id'))
@@ -115,4 +116,5 @@ class MineDocument(SoftDeleteMixin, AuditMixin, Base):
             'upload_date': str(self.upload_date),
             'versions': self.versions or [],
             'mine_document_bundle': self.mine_document_bundle.json() if self.mine_document_bundle else None,
+            'is_original_vfcbc_file': self.is_original_vfcbc_file,
         }

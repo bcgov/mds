@@ -17,6 +17,7 @@ class Document(SoftDeleteMixin, Base):
     filename = db.Column(db.String)
     documenttype = db.Column(db.String)
     description = db.Column(db.String)
+    is_original_vfcbc_file = db.Column(db.Boolean, nullable=False, default=False, server_default=FetchedValue())
 
     def __repr__(self):
         return '<Document %r>' % self.id

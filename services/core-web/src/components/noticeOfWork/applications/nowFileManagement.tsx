@@ -1,4 +1,5 @@
 import React, { ComponentType } from "react";
+import { resolveIsOriginalVfcbcFile } from "@mds/common/utils/vfcbcFile";
 import { isEmpty } from "lodash";
 import { DownloadOutlined, FileOutlined, InboxOutlined, SyncOutlined } from "@ant-design/icons";
 import { NOTICE_OF_WORK_DOCUMENT_VERSION_UPLOAD } from "@mds/common/constants/API";
@@ -85,6 +86,7 @@ export const toFileManagementRow = (
     ...row,
     ...row.mine_document,
     document_name: row.filename,
+    is_original_vfcbc_file: resolveIsOriginalVfcbcFile(row),
     ...fileManagementContext,
   });
   // vFCBC rows also carry the raw versions from the API, keep the model's version rows (with their allowed actions) instead
