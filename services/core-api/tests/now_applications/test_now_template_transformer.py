@@ -1,8 +1,11 @@
 from datetime import datetime
+import random
+import uuid
 import pytest
 from regex import template
 from app.api.now_applications import now_template_transformer as now_template_transformer
 from app.api.now_applications.models.now_application_document_xref import NOWApplicationDocumentXref
+from app.api.now_applications.models.now_application_document_identity_xref import NOWApplicationDocumentIdentityXref
 from werkzeug.exceptions import NotFound
 
 from app.api.utils.helpers import format_currency
@@ -381,3 +384,120 @@ def test_replace_condition_value_with_data_permit_package_file_token_without_lab
     condition = "See {permit_package_file:some-guid} for details."
     result = now_template_transformer.replace_condition_value_with_data(condition, {})
     assert result == "See permit_package_file:some-guid for details."
+
+def _add_imported_permit_package_document(db_session, now_application, mine, *, preamble_title,
+                                          final_package_order, document_name='imported.pdf'):
+    xref = NOWApplicationDocumentIdentityXref(
+        messageid=random.randint(1, 2_000_000_000),
+        documenturl=f'https://vfcbc.example/{uuid.uuid4()}',
+        filename=document_name,
+        documenttype='Application',
+        now_application_id=now_application.now_application_id,
+        mine_document=MineDocumentFactory(mine=mine, document_name=document_name),
+        is_final_package=True,
+        final_package_order=final_package_order,
+        preamble_title=preamble_title)
+    db_session.add(xref)
+    db_session.flush()
+    db_session.expire(now_application, ['imported_submission_documents'])
+    return xref
+
+
+def test_get_permit_package_files_matches_issued_permit_references(db_session):
+    """Each file carries the same reference the issued permit uses, in permit order, with the
+    mine_document needed to open it."""
+    identity = NOWApplicationIdentityFactory(now_application=NOWApplicationFactory())
+    now_application = identity.now_application
+    second_document = _add_permit_package_document(
+        db_session, now_application, identity.mine, preamble_title='Reclamation Plan',
+        final_package_order=2, permit_package_document_type_code='DOCUMENT')
+    figure = _add_permit_package_document(
+        db_session, now_application, identity.mine, preamble_title='Site Plan',
+        final_package_order=1, permit_package_document_type_code='FIGURE')
+    first_document = _add_permit_package_document(
+        db_session, now_application, identity.mine, preamble_title='Water Plan',
+        final_package_order=1)
+
+    files = now_template_transformer.get_permit_package_files(now_application)
+
+    assert [f['label'] for f in files] == [
+        'Permit Document 1.2, Water Plan',
+        'Permit Document 1.3, Reclamation Plan',
+        'Figure 1, Site Plan',
+    ]
+    assert [f['now_application_document_xref_guid'] for f in files] == [
+        str(first_document.now_application_document_xref_guid),
+        str(second_document.now_application_document_xref_guid),
+        str(figure.now_application_document_xref_guid),
+    ]
+    assert files[2]['order_label'] == '1'
+    assert files[2]['permit_package_document_type_code'] == 'FIGURE'
+    assert files[2]['title'] == 'Site Plan'
+    assert files[2]['mine_document'] == figure.mine_document
+
+    label_map = now_template_transformer.build_permit_package_file_label_map(now_application)
+    assert all(label_map[f['now_application_document_xref_guid']] == f['label'] for f in files)
+
+
+def test_get_permit_package_files_includes_imported_files(db_session):
+    identity = NOWApplicationIdentityFactory(now_application=NOWApplicationFactory())
+    now_application = identity.now_application
+    _add_permit_package_document(
+        db_session, now_application, identity.mine, preamble_title='Core Doc', final_package_order=1)
+    imported = _add_imported_permit_package_document(
+        db_session, now_application, identity.mine, preamble_title='Imported Doc',
+        final_package_order=2)
+
+    files = now_template_transformer.get_permit_package_files(now_application)
+
+    assert [f['label'] for f in files] == [
+        'Permit Document 1.2, Core Doc', 'Permit Document 1.3, Imported Doc'
+    ]
+    assert files[1]['mine_document'] == imported.mine_document
+
+
+def test_get_permit_package_files_locked_ntr_row_is_1_1(db_session):
+    identity = NOWApplicationIdentityFactory(now_application=NOWApplicationFactory())
+    now_application = identity.now_application
+    identity.application_type_code = 'NOW'
+    now_application.application_progress[0].end_date = datetime.utcnow()
+    db_session.flush()
+    db_session.expire(now_application, ['now_application_identity'])
+    _add_permit_package_document(
+        db_session, now_application, identity.mine, preamble_title='Real Doc', final_package_order=1)
+    _add_permit_package_document(
+        db_session, now_application, identity.mine, preamble_title=None, final_package_order=2,
+        now_application_document_type_code='NTR', is_system_generated=True)
+
+    files = now_template_transformer.get_permit_package_files(now_application)
+
+    assert [f['label'] for f in files] == [
+        'Permit Document 1.1, Notice of Work Application', 'Permit Document 1.2, Real Doc'
+    ]
+
+
+def test_get_permit_package_files_falls_back_to_file_name_without_title(db_session):
+    identity = NOWApplicationIdentityFactory(now_application=NOWApplicationFactory())
+    now_application = identity.now_application
+    untitled = _add_permit_package_document(
+        db_session, now_application, identity.mine, preamble_title=None, final_package_order=1)
+
+    files = now_template_transformer.get_permit_package_files(now_application)
+
+    file_name = untitled.mine_document.document_name
+    assert files[0]['title'] == file_name
+    assert files[0]['label'] == f'Permit Document 1.2, {file_name}'
+
+
+def test_get_permit_package_files_excludes_files_not_in_the_package(db_session):
+    identity = NOWApplicationIdentityFactory(now_application=NOWApplicationFactory())
+    now_application = identity.now_application
+    _add_permit_package_document(
+        db_session, now_application, identity.mine, preamble_title='Not in package',
+        final_package_order=None, is_final_package=False)
+
+    assert now_template_transformer.get_permit_package_files(now_application) == []
+
+
+def test_get_permit_package_files_without_now_application(db_session):
+    assert now_template_transformer.get_permit_package_files(None) == []

@@ -232,6 +232,16 @@ PERMIT_AMENDMENT_NOW_DOCUMENT = api.model(
         'mine_document': fields.Nested(MINE_DOCUMENT_MODEL),
     })
 
+PERMIT_PACKAGE_FILE_MODEL = api.model(
+    'PermitPackageFile', {
+        'now_application_document_xref_guid': fields.String,
+        'permit_package_document_type_code': fields.String,
+        'order_label': fields.String,
+        'title': fields.String,
+        'label': fields.String,
+        'mine_document': fields.Nested(MINE_DOCUMENT_MODEL),
+    })
+
 PERMIT_AMENDMENT_DOCUMENT_MODEL = api.model(
     'PermitAmendmentDocument', {
         'permit_id': fields.Integer,
@@ -371,6 +381,8 @@ PERMIT_AMENDMENT_MODEL = api.model(
         fields.List(fields.Nested(PERMIT_AMENDMENT_NOW_DOCUMENT)),
         'imported_now_application_documents':
         fields.List(fields.Nested(IMPORTED_NOW_SUBMISSION_DOCUMENT)),
+        'permit_package_files':
+        fields.List(fields.Nested(PERMIT_PACKAGE_FILE_MODEL)),
         'related_documents':
         fields.List(fields.Nested(PERMIT_AMENDMENT_DOCUMENT_MODEL)),
         'permit_conditions_last_updated_by':
