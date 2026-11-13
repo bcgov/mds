@@ -238,6 +238,7 @@ PERMIT_PACKAGE_FILE_MODEL = api.model(
         'permit_package_document_type_code': fields.String,
         'order_label': fields.String,
         'title': fields.String,
+        'reference': fields.String,
         'label': fields.String,
         'mine_document': fields.Nested(MINE_DOCUMENT_MODEL),
     })

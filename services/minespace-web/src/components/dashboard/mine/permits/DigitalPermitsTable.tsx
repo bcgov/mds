@@ -6,6 +6,7 @@ import { truncateFilename } from "@common/utils/helpers";
 import { getDropdownPermitStatusOptions } from "@mds/common/redux/selectors/staticContentSelectors";
 import { downloadFileFromDocumentManager } from "@mds/common/redux/utils/actionlessNetworkCalls";
 import LinkButton from "@/components/common/LinkButton";
+import PermitPackageFiles from "@/components/dashboard/mine/permits/PermitPackageFiles";
 import * as Strings from "@/constants/strings";
 import CoreTable from "@mds/common/components/common/CoreTable";
 import { Badge } from "antd";
@@ -118,25 +119,12 @@ export const PermitsTable: FC<PermitsTableProps> = (props) => {
   columns.splice(3, 0, issuanceStateColumn);
   columns.push(actionColumn);
 
-  const finalApplicationPackage = (amendment) => {
-    const finalAppPackageCore =
-      amendment?.now_application_documents?.length > 0
-        ? amendment.now_application_documents.filter((doc) => doc.is_final_package)
-        : [];
-    const finalAppPackageImported =
-      amendment?.imported_now_application_documents?.length > 0
-        ? amendment.imported_now_application_documents.filter((doc) => doc.is_final_package)
-        : [];
-    return finalAppPackageCore.concat(finalAppPackageImported);
-  };
-
   const transformExpandedPermitRowData = (amendment: IPermitAmendment, amendmentNumber) => ({
     ...amendment,
     amendmentNumber,
     maps: amendment.now_application_documents?.filter(
       (doc) => doc.now_application_document_sub_type_code === "MDO"
     ),
-    permitPackage: finalApplicationPackage(amendment),
   });
 
   const transformRowData = (permit) => {
@@ -171,24 +159,9 @@ export const PermitsTable: FC<PermitsTableProps> = (props) => {
     renderTextColumn("description", "Description"),
     {
       title: "Permit Package",
-      dataIndex: "permitPackage",
-      key: "permitPackage",
-      render: (text) => (
-        <div title="Permit Package">
-          {(text &&
-            text.length > 0 &&
-            text.map((file) => (
-              <LinkButton
-                key={file.mine_document.document_manager_guid}
-                onClick={() => downloadFileFromDocumentManager(file.mine_document)}
-                title={file.mine_document.document_name}
-              >
-                <p className="wrapped-text">{truncateFilename(file.mine_document.document_name)}</p>
-              </LinkButton>
-            ))) ||
-            Strings.EMPTY_FIELD}
-        </div>
-      ),
+      dataIndex: "permit_package_files",
+      key: "permit_package_files",
+      render: (files) => <PermitPackageFiles files={files} />,
     },
     {
       title: "Permit Files",
@@ -196,17 +169,20 @@ export const PermitsTable: FC<PermitsTableProps> = (props) => {
       key: "documents",
       render: (text) => (
         <div title="Permit Files">
-          {(text &&
-            text.length > 0 &&
-            text.map((file) => (
-              <LinkButton
-                key={file.document_manager_guid}
-                onClick={() => downloadFileFromDocumentManager(file)}
-                title={file.document_name}
-              >
-                <p className="wrapped-text">{truncateFilename(file.document_name)}</p>
-              </LinkButton>
-            ))) ||
+          {(text && text.length > 0 && (
+            <ul className="permit-file-list">
+              {text.map((file) => (
+                <li key={file.document_manager_guid} className="wrapped-text">
+                  <LinkButton
+                    onClick={() => downloadFileFromDocumentManager(file)}
+                    title={file.document_name}
+                  >
+                    {truncateFilename(file.document_name)}
+                  </LinkButton>
+                </li>
+              ))}
+            </ul>
+          )) ||
             Strings.EMPTY_FIELD}
         </div>
       ),

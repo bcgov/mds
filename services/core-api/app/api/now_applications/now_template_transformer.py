@@ -171,8 +171,13 @@ def format_permit_package_file_label(order_label, title, type_code):
     "Figure N, Title" for a Figure, "Permit Document 1.N, Title" for a Document (or an untagged file).
     This is the reference text printed into issued permit conditions, so anything else showing a permit package file's reference should use it too.
     """
+    return f'{format_permit_package_file_reference(order_label, type_code)}, {title}'
+
+
+def format_permit_package_file_reference(order_label, type_code):
+    """"Figure N" for a Figure, "Permit Document 1.N" for a Document (or an untagged file)."""
     prefix = 'Figure' if type_code == 'FIGURE' else 'Permit Document'
-    return f'{prefix} {order_label}, {title}'
+    return f'{prefix} {order_label}'
 
 
 def get_permit_package_files(now_application):
@@ -200,10 +205,13 @@ def get_permit_package_files(now_application):
             'permit_package_document_type_code': type_code,
             'order_label': order_label,
             'title': display_title,
+            'reference': format_permit_package_file_reference(order_label, type_code),
             'label': format_permit_package_file_label(order_label, display_title, type_code),
             'mine_document': mine_document,
         })
-    return files
+
+    # The issued permit's preamble lists Figures before Documents, so the files are returned in that order too
+    return sorted(files, key=lambda file: file['permit_package_document_type_code'] != 'FIGURE')
 
 
 def resolve_permit_package_file_reference(guid, label_map):

@@ -52,6 +52,7 @@ def test_get_permit_amendment_includes_permit_package_files(test_client, db_sess
     assert package_file['label'] == 'Permit Document 1.2, Reclamation Plan'
     assert package_file['order_label'] == '1.2'
     assert package_file['title'] == 'Reclamation Plan'
+    assert package_file['reference'] == 'Permit Document 1.2'
     assert package_file['permit_package_document_type_code'] == 'DOCUMENT'
     assert package_file['mine_document']['document_manager_guid'] == str(mine_document.document_manager_guid)
 

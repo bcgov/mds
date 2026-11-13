@@ -12,6 +12,7 @@ import {
   resolvePermitPackageFileReference,
   shouldShowSystemGeneratedSection,
   splitPermitPackageCoreDocuments,
+  truncatePermitPackageLabel,
 } from "../../utils/permitPackageDocuments";
 
 const makeCoreDoc = (overrides = {}) => ({
@@ -534,5 +535,48 @@ describe("splitPermitPackageCoreDocuments", () => {
     ].map((doc) => doc.now_application_document_xref_guid);
     expect(allGuids).toHaveLength(documents.length);
     expect(new Set(allGuids).size).toBe(documents.length);
+  });
+});
+
+describe("truncatePermitPackageLabel", () => {
+  it("shows a label of up to 40 characters in full", () => {
+    expect(truncatePermitPackageLabel("Figure 1", "Government Figure A")).toBe(
+      "Figure 1, Government Figure A"
+    );
+  });
+
+  it("cuts only the title of a long label, keeping the whole reference", () => {
+    expect(
+      truncatePermitPackageLabel(
+        "Figure 2",
+        "Application Figure (Wildlife Management Plan) showing seasonal caribou migration corridors"
+      )
+    ).toBe("Figure 2, Application Figure (Wildlife M[...]");
+    expect(
+      truncatePermitPackageLabel("Permit Document 1.3", "Application Doc (Annual Summary)")
+    ).toBe("Permit Document 1.3, Application Doc (An[...]");
+  });
+
+  it("keeps at least 15 characters of the title when the reference is long", () => {
+    const reference = "Permit Document 1.12 With An Unusually Long Reference";
+
+    expect(truncatePermitPackageLabel(reference, "Reclamation and Closure Plan")).toBe(
+      `${reference}, Reclamation and[...]`
+    );
+  });
+
+  it("leaves the title whole when it already fits within the minimum", () => {
+    const reference = "Permit Document 1.12 With An Unusually Long Reference";
+
+    expect(truncatePermitPackageLabel(reference, "Site Plan")).toBe(`${reference}, Site Plan`);
+  });
+
+  it("does not split on dots in the reference or a file name used as the title", () => {
+    expect(
+      truncatePermitPackageLabel(
+        "Permit Document 1.4",
+        "Application_Document_Supporting_Technical_Assessment_Rev3_FINAL.pdf"
+      )
+    ).toBe("Permit Document 1.4, Application_Documen[...]");
   });
 });

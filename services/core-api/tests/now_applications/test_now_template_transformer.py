@@ -421,19 +421,21 @@ def test_get_permit_package_files_matches_issued_permit_references(db_session):
     files = now_template_transformer.get_permit_package_files(now_application)
 
     assert [f['label'] for f in files] == [
+        'Figure 1, Site Plan',
         'Permit Document 1.2, Water Plan',
         'Permit Document 1.3, Reclamation Plan',
-        'Figure 1, Site Plan',
     ]
     assert [f['now_application_document_xref_guid'] for f in files] == [
+        str(figure.now_application_document_xref_guid),
         str(first_document.now_application_document_xref_guid),
         str(second_document.now_application_document_xref_guid),
-        str(figure.now_application_document_xref_guid),
     ]
-    assert files[2]['order_label'] == '1'
-    assert files[2]['permit_package_document_type_code'] == 'FIGURE'
-    assert files[2]['title'] == 'Site Plan'
-    assert files[2]['mine_document'] == figure.mine_document
+    assert files[0]['order_label'] == '1'
+    assert files[0]['permit_package_document_type_code'] == 'FIGURE'
+    assert files[0]['title'] == 'Site Plan'
+    assert files[0]['reference'] == 'Figure 1'
+    assert files[1]['reference'] == 'Permit Document 1.2'
+    assert files[0]['mine_document'] == figure.mine_document
 
     label_map = now_template_transformer.build_permit_package_file_label_map(now_application)
     assert all(label_map[f['now_application_document_xref_guid']] == f['label'] for f in files)
@@ -487,6 +489,7 @@ def test_get_permit_package_files_falls_back_to_file_name_without_title(db_sessi
     file_name = untitled.mine_document.document_name
     assert files[0]['title'] == file_name
     assert files[0]['label'] == f'Permit Document 1.2, {file_name}'
+    assert files[0]['reference'] == 'Permit Document 1.2'
 
 
 def test_get_permit_package_files_excludes_files_not_in_the_package(db_session):
