@@ -319,7 +319,9 @@ export const truncatePermitPackageLabel = (
   }
 
   const shortTitle = fullTitle.substring(0, titleLength).trimEnd();
-  return `${reference}, ${shortTitle}${PERMIT_PACKAGE_LABEL_TRUNCATION_MARKER}`;
+  const shortLabel = `${reference}, ${shortTitle}${PERMIT_PACKAGE_LABEL_TRUNCATION_MARKER}`;
+  // A label only just over the limit would get longer once the marker is added, so it's shown in full instead
+  return shortLabel.length < label.length ? shortLabel : label;
 };
 
 export const isApplicationCoreDocument = (doc: PermitPackageDocumentRow): boolean =>

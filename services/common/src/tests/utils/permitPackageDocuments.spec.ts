@@ -545,6 +545,21 @@ describe("truncatePermitPackageLabel", () => {
     );
   });
 
+  it("shows a label just over the limit in full when shortening wouldn't make it shorter", () => {
+    // 45 characters: cutting it would also give 45 once "[...]" is added
+    expect(truncatePermitPackageLabel("Figure 1", "A".repeat(35))).toBe(`Figure 1, ${"A".repeat(35)}`);
+    expect(truncatePermitPackageLabel("Permit Document 1.4", "Application Document")).toBe(
+      "Permit Document 1.4, Application Document"
+    );
+  });
+
+  it("cuts a label once shortening makes it shorter", () => {
+    // 46 characters becomes 45
+    expect(truncatePermitPackageLabel("Figure 1", "A".repeat(36))).toBe(
+      `Figure 1, ${"A".repeat(30)}[...]`
+    );
+  });
+
   it("cuts only the title of a long label, keeping the whole reference", () => {
     expect(
       truncatePermitPackageLabel(
