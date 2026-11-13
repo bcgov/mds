@@ -152,8 +152,8 @@ def _ordered_permit_package_documents(now_application):
 
 def build_permit_package_file_label_map(now_application):
     """
-    Builds the {guid: "Permit Document 1.N, Title" | "Figure N, Title"} map once per resolution pass (one now_application), rather
-    than each {permit_package_file:<guid>} token independently recomputing
+    Builds the {guid: "Permit Document 1.N, Title" | "Figure N, Title"} map once per pass (one now_application), rather
+    than having each {permit_package_file:<guid>} token independently recomputing
     _ordered_permit_package_documents (including a call to get_filtered_submissions_documents)
     from scratch. Callers (transform_permit, the issuance status resource, the CLI export) build
     this once and pass it down through replace_condition_value_with_data.
@@ -161,9 +161,57 @@ def build_permit_package_file_label_map(now_application):
     if not now_application:
         return {}
     return {
-        guid: f'{"Figure" if type_code == "FIGURE" else "Permit Document"} {label}, {title}'
+        guid: format_permit_package_file_label(label, title, type_code)
         for label, guid, title, type_code in _ordered_permit_package_documents(now_application)
     }
+
+
+def format_permit_package_file_label(order_label, title, type_code):
+    """
+    "Figure N, Title" for a Figure, "Permit Document 1.N, Title" for a Document (or an untagged file).
+    This is the reference text printed into issued permit conditions, so anything else showing a permit package file's reference should use it too.
+    """
+    return f'{format_permit_package_file_reference(order_label, type_code)}, {title}'
+
+
+def format_permit_package_file_reference(order_label, type_code):
+    """"Figure N" for a Figure, "Permit Document 1.N" for a Document (or an untagged file)."""
+    prefix = 'Figure' if type_code == 'FIGURE' else 'Permit Document'
+    return f'{prefix} {order_label}'
+
+
+def get_permit_package_files(now_application):
+    """
+    The permit package files in the order and with the references used in the issued permit, each
+    with its mine_document so it can be opened (e.g. MineSpace's Permit Package column).
+
+    Falls back to the file name when a file has no title - Core requires a title before issuing,
+    but only for permits with conditions in Core, and only since 2021.
+    """
+    if not now_application:
+        return []
+
+    mine_documents_by_guid = {
+        str(doc.now_application_document_xref_guid): doc.mine_document
+        for doc in [*now_application.documents, *now_application.imported_submission_documents]
+    }
+
+    files = []
+    for order_label, guid, title, type_code in _ordered_permit_package_documents(now_application):
+        mine_document = mine_documents_by_guid.get(guid)
+        display_title = title or (mine_document.document_name if mine_document else None)
+        files.append({
+            'now_application_document_xref_guid': guid,
+            'permit_package_document_type_code': type_code,
+            'order_label': order_label,
+            'title': display_title,
+            'reference': format_permit_package_file_reference(order_label, type_code),
+            'label': format_permit_package_file_label(order_label, display_title, type_code),
+            'mine_document': mine_document,
+        })
+
+    # The issued permit's preamble lists Figures before Documents, so the files are returned in that order too
+    return sorted(files, key=lambda file: file['permit_package_document_type_code'] != 'FIGURE')
 
 
 def resolve_permit_package_file_reference(guid, label_map):

@@ -9,7 +9,9 @@ from app.api.mines.permits.permit.models.permit import Permit
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from app.api.mines.permits.permit_conditions.models.permit_conditions import PermitConditions
 
-from tests.factories import PermitFactory, PermitAmendmentFactory, PartyFactory, MinePartyAppointmentFactory, create_mine_and_permit
+from app.api.now_applications.models.now_application_document_xref import NOWApplicationDocumentXref
+from tests.factories import PermitFactory, PermitAmendmentFactory, PartyFactory, MinePartyAppointmentFactory, MineDocumentFactory, create_mine_and_permit
+from tests.now_application_factories import NOWApplicationIdentityFactory
 
 
 # GET
@@ -22,6 +24,37 @@ def test_get_permit_amendment_by_guid(test_client, db_session, auth_headers):
     get_data = json.loads(get_resp.data.decode())
     assert get_resp.status_code == 200, get_resp.response
     assert get_data['permit_amendment_guid'] == str(permit_amendment.permit_amendment_guid)
+
+
+def test_get_permit_amendment_includes_permit_package_files(test_client, db_session, auth_headers):
+    mine, permit = create_mine_and_permit()
+    permit_amendment = permit.permit_amendments[0]
+    now_application_identity = NOWApplicationIdentityFactory(mine=mine)
+    permit_amendment.now_application_guid = now_application_identity.now_application_guid
+    mine_document = MineDocumentFactory(mine=mine, document_name='reclamation.pdf')
+    db_session.add(NOWApplicationDocumentXref(
+        now_application_id=now_application_identity.now_application_id,
+        mine_document_guid=mine_document.mine_document_guid,
+        now_application_document_type_code='MPW',
+        is_final_package=True,
+        final_package_order=1,
+        preamble_title='Reclamation Plan'))
+    db_session.commit()
+
+    get_resp = test_client.get(
+        f'/mines/{permit_amendment.mine_guid}/permits/{permit_amendment.permit_guid}/amendments/{permit_amendment.permit_amendment_guid}',
+        headers=auth_headers['full_auth_header'])
+    get_data = json.loads(get_resp.data.decode())
+
+    assert get_resp.status_code == 200, get_resp.response
+    assert len(get_data['permit_package_files']) == 1
+    package_file = get_data['permit_package_files'][0]
+    assert package_file['label'] == 'Permit Document 1.2, Reclamation Plan'
+    assert package_file['order_label'] == '1.2'
+    assert package_file['title'] == 'Reclamation Plan'
+    assert package_file['reference'] == 'Permit Document 1.2'
+    assert package_file['permit_package_document_type_code'] == 'DOCUMENT'
+    assert package_file['mine_document']['document_manager_guid'] == str(mine_document.document_manager_guid)
 
 
 def test_get_permit_amendment_not_found(test_client, db_session, auth_headers):

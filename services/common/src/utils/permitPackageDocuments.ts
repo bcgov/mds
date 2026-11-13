@@ -299,6 +299,31 @@ export const resolvePermitPackageFileReference = (
   return { found: true, label: `${prefix} ${match.orderLabel}, ${match.preamble_title}` };
 };
 
+const PERMIT_PACKAGE_LABEL_TRUNCATION_MARKER = "[...]";
+
+/**
+ * Shortens a permit package file's "Reference, Title" label to about `max` characters, cutting only the title.
+ * The reference ("Figure 1", "Permit Document 1.2") is never cut, and at least `minTitle` characters of the title stay visible even when the reference is long.
+ */
+export const truncatePermitPackageLabel = (
+  reference: string,
+  title: string,
+  max = 40,
+  minTitle = 15
+): string => {
+  const fullTitle = title ?? "";
+  const label = `${reference}, ${fullTitle}`;
+  const titleLength = Math.max(max - reference.length - 2, minTitle);
+  if (label.length <= max || fullTitle.length <= titleLength) {
+    return label;
+  }
+
+  const shortTitle = fullTitle.substring(0, titleLength).trimEnd();
+  const shortLabel = `${reference}, ${shortTitle}${PERMIT_PACKAGE_LABEL_TRUNCATION_MARKER}`;
+  // A label only just over the limit would get longer once the marker is added, so it's shown in full instead
+  return shortLabel.length < label.length ? shortLabel : label;
+};
+
 export const isApplicationCoreDocument = (doc: PermitPackageDocumentRow): boolean =>
   APPLICATION_FILE_SUB_TYPES.includes(doc.now_application_document_sub_type_code);
 
