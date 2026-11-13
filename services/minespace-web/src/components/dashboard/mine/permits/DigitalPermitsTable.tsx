@@ -2,12 +2,8 @@ import React, { FC } from "react";
 import { connect } from "react-redux";
 
 import { openModal } from "@mds/common/redux/actions/modalActions";
-import { truncateFilename } from "@common/utils/helpers";
 import { getDropdownPermitStatusOptions } from "@mds/common/redux/selectors/staticContentSelectors";
-import { downloadFileFromDocumentManager } from "@mds/common/redux/utils/actionlessNetworkCalls";
-import LinkButton from "@/components/common/LinkButton";
-import PermitPackageFiles from "@/components/dashboard/mine/permits/PermitPackageFiles";
-import * as Strings from "@/constants/strings";
+import { permitFileColumns } from "@/components/dashboard/mine/permits/permitFileColumns";
 import CoreTable from "@mds/common/components/common/CoreTable";
 import { Badge } from "antd";
 import {
@@ -157,36 +153,7 @@ export const PermitsTable: FC<PermitsTableProps> = (props) => {
     renderDateColumn("issue_date", "Date Issued"),
     renderDateColumn("authorization_end_date", "Authorization End Date"),
     renderTextColumn("description", "Description"),
-    {
-      title: "Permit Package",
-      dataIndex: "permit_package_files",
-      key: "permit_package_files",
-      render: (files) => <PermitPackageFiles files={files} />,
-    },
-    {
-      title: "Permit Files",
-      dataIndex: "related_documents",
-      key: "documents",
-      render: (text) => (
-        <div title="Permit Files">
-          {(text && text.length > 0 && (
-            <ul className="permit-file-list">
-              {text.map((file) => (
-                <li key={file.document_manager_guid} className="wrapped-text">
-                  <LinkButton
-                    onClick={() => downloadFileFromDocumentManager(file)}
-                    title={file.document_name}
-                  >
-                    {truncateFilename(file.document_name)}
-                  </LinkButton>
-                </li>
-              ))}
-            </ul>
-          )) ||
-            Strings.EMPTY_FIELD}
-        </div>
-      ),
-    },
+    ...permitFileColumns,
   ];
 
   return (
