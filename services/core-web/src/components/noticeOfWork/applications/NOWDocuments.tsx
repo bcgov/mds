@@ -1,12 +1,9 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
+import React, { FC, useEffect, useMemo, useRef, useState } from "react";
 import { isEmpty } from "lodash";
-import { PropTypes } from "prop-types";
 import { Button, Popconfirm, Tooltip, Row, Col, Typography } from "antd";
 import moment from "moment";
 import { FlagOutlined, MenuOutlined } from "@ant-design/icons";
-import CustomPropTypes from "@/customPropTypes";
+import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 import { formatDate, formatDateTime } from "@mds/common/redux/utils/helpers";
 import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
 import OriginalVfcbcFileIcon from "@mds/common/components/documents/OriginalVfcbcFileIcon";
@@ -47,10 +44,19 @@ import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 import { EDIT_OUTLINE_VIOLET, TRASHCAN } from "@/constants/assets";
 import ReferralConsultationPackage from "@/components/noticeOfWork/applications/referals/ReferralConsultationPackage";
 import PermitPackage from "@/components/noticeOfWork/applications/PermitPackage";
-import { sortableContainer, sortableElement, sortableHandle } from "react-sortable-hoc";
+import * as SortableHOC from "react-sortable-hoc";
 import arrayMove from "array-move";
 import CoreTable from "@mds/common/components/common/CoreTable";
-import { renderPermitPackageTitleColumn } from "@/components/noticeOfWork/applications/permitPackageTitleColumn";
+import { INoWApplicationForm, IOption, IPermitAmendment } from "@mds/common/interfaces";
+import {
+  INoWCoreDocument,
+  IPermitPackageRow,
+  IPermitPackageTitles,
+  getPermitPackageExpandProps,
+  renderPermitPackageDetailsSummary,
+  renderPermitPackageTitleColumn,
+  renderPermitPackageTypeColumn,
+} from "@/components/noticeOfWork/applications/permitPackageTitleColumn";
 import NOWDownloadAllButton from "@/components/noticeOfWork/applications/NOWDownloadAllButton";
 import {
   fileManagementActionsColumn,
@@ -63,72 +69,36 @@ import {
   toFileManagementRow,
 } from "@/components/noticeOfWork/applications/nowFileManagement";
 
+// The installed typings only declare the capitalised names, the lowercase ones are what v2 exports.
+const { sortableContainer, sortableElement, sortableHandle } = SortableHOC as any;
+
 const DragHandle = sortableHandle(() => <MenuOutlined style={{ cursor: "grab", color: "#999" }} />);
 
-const propTypes = {
-  openModal: PropTypes.func.isRequired,
-  closeModal: PropTypes.func.isRequired,
-  noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
-  documents: PropTypes.arrayOf(PropTypes.any).isRequired,
-  noticeOfWorkApplicationDocumentTypeOptionsHash: PropTypes.objectOf(PropTypes.any).isRequired,
-  noticeOfWorkApplicationDocumentTypeOptions: PropTypes.objectOf(PropTypes.any).isRequired,
-  isViewMode: PropTypes.bool.isRequired,
-  selectedRows: PropTypes.objectOf(PropTypes.any),
-  categoriesToShow: PropTypes.arrayOf(PropTypes.string),
-  disclaimerText: PropTypes.string,
-  isAdminView: PropTypes.bool,
-  updateNoticeOfWorkApplication: PropTypes.func.isRequired,
-  editNoticeOfWorkDocument: PropTypes.func.isRequired,
-  sortNoticeOfWorkDocuments: PropTypes.func.isRequired,
-  fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
-  deleteNoticeOfWorkApplicationDocument: PropTypes.func.isRequired,
-  allowAfterProcess: PropTypes.bool,
-  disableCategoryFilter: PropTypes.bool,
-  isStandardDocuments: PropTypes.bool,
-  isFinalPackageTable: PropTypes.bool,
-  isRefConDocuments: PropTypes.bool,
-  isPackageModal: PropTypes.bool,
-  isSortingAllowed: PropTypes.bool,
-  showDescription: PropTypes.bool,
-  lockedRowKeys: PropTypes.arrayOf(PropTypes.string),
-  packageTitles: PropTypes.shape({
-    titles: PropTypes.objectOf(PropTypes.string),
-    onTitleChange: PropTypes.func,
-  }),
-  applicationDelay: PropTypes.objectOf(PropTypes.string).isRequired,
-  draftPermitAmendment: PropTypes.objectOf(PropTypes.any),
-  showOrderColumn: PropTypes.bool,
-  groupFiguresFirst: PropTypes.bool,
-  documentNumberFormat: PropTypes.oneOf(["decimal", "whole"]),
-  enableFileManagement: PropTypes.bool,
-  userRoles: PropTypes.arrayOf(PropTypes.string),
-  createNoticeOfWorkDocumentVersion: PropTypes.func.isRequired,
-  archiveNoticeOfWorkDocuments: PropTypes.func.isRequired,
-  openDocument: PropTypes.func.isRequired,
-};
-
-const defaultProps = {
-  selectedRows: null,
-  categoriesToShow: [],
-  draftPermitAmendment: null,
-  disclaimerText: "",
-  isAdminView: false,
-  allowAfterProcess: false,
-  disableCategoryFilter: false,
-  isFinalPackageTable: false,
-  isStandardDocuments: false,
-  isRefConDocuments: false,
-  isPackageModal: false,
-  isSortingAllowed: false,
-  showDescription: false,
-  lockedRowKeys: [],
-  packageTitles: null,
-  documentNumberFormat: "decimal",
-  showOrderColumn: false,
-  groupFiguresFirst: false,
-  enableFileManagement: false,
-  userRoles: [],
-};
+export interface NOWDocumentsProps {
+  documents: INoWCoreDocument[];
+  isViewMode: boolean;
+  selectedRows?: {
+    selectedCoreRows?: string[];
+    setSelectedCoreRows?: (keys: string[]) => void;
+  } | null;
+  categoriesToShow?: string[];
+  disclaimerText?: string;
+  isAdminView?: boolean;
+  allowAfterProcess?: boolean;
+  disableCategoryFilter?: boolean;
+  isStandardDocuments?: boolean;
+  isFinalPackageTable?: boolean;
+  isRefConDocuments?: boolean;
+  isPackageModal?: boolean;
+  isSortingAllowed?: boolean;
+  showDescription?: boolean;
+  lockedRowKeys?: string[];
+  packageTitles?: IPermitPackageTitles | null;
+  showOrderColumn?: boolean;
+  groupFiguresFirst?: boolean;
+  documentNumberFormat?: "decimal" | "whole";
+  enableFileManagement?: boolean;
+}
 
 const transformDocuments = (
   documents,
@@ -173,48 +143,100 @@ const transformDocuments = (
 const SortableItem = sortableElement((props) => <tr {...props} />);
 const SortableContainer = sortableContainer((props) => <tbody {...props} />);
 
-export class NOWDocuments extends Component {
-  getFileManagementContext = () =>
-    this.props.enableFileManagement
+export const NOWDocuments: FC<NOWDocumentsProps> = (props) => {
+  const {
+    categoriesToShow = [],
+    selectedRows = null,
+    disclaimerText = "",
+    isAdminView = false,
+    allowAfterProcess = false,
+    disableCategoryFilter = false,
+    isFinalPackageTable = false,
+    isStandardDocuments = false,
+    isRefConDocuments = false,
+    isPackageModal = false,
+    isSortingAllowed = false,
+    showDescription = false,
+    lockedRowKeys = [],
+    packageTitles = null,
+    documentNumberFormat = "decimal",
+    showOrderColumn = false,
+    groupFiguresFirst = false,
+    enableFileManagement = false,
+    isViewMode,
+  } = props;
+  const dispatch = useAppDispatch();
+  const noticeOfWork = useAppSelector(getNoticeOfWork) as INoWApplicationForm;
+  const noticeOfWorkApplicationDocumentTypeOptionsHash = useAppSelector(
+    getNoticeOfWorkApplicationDocumentTypeOptionsHash
+  );
+  const noticeOfWorkApplicationDocumentTypeOptions = useAppSelector(
+    getDropdownNoticeOfWorkApplicationDocumentTypeOptions
+  ) as IOption[];
+  const applicationDelay = useAppSelector(getApplicationDelay);
+  const draftPermitAmendment = useAppSelector(getDraftPermitAmendmentForNOW) as IPermitAmendment;
+  const userRoles = useAppSelector(getUserAccessData);
+
+  // Bound action creators
+  const openModalAction = (modalProps) => dispatch(openModal(modalProps));
+  const closeModalAction = () => dispatch(closeModal());
+  const updateApplication = (...args: Parameters<typeof updateNoticeOfWorkApplication>) =>
+    dispatch(updateNoticeOfWorkApplication(...args));
+  const fetchApplication = (applicationGuid: string) =>
+    dispatch(fetchImportedNoticeOfWorkApplication(applicationGuid));
+  const deleteDocument = (...args: Parameters<typeof deleteNoticeOfWorkApplicationDocument>) =>
+    dispatch(deleteNoticeOfWorkApplicationDocument(...args));
+  const editDocument = (...args: Parameters<typeof editNoticeOfWorkDocument>) =>
+    dispatch(editNoticeOfWorkDocument(...args));
+  const sortDocuments = (...args: Parameters<typeof sortNoticeOfWorkDocuments>) =>
+    dispatch(sortNoticeOfWorkDocuments(...args));
+  const createDocumentVersion = (...args: Parameters<typeof createNoticeOfWorkDocumentVersion>) =>
+    dispatch(createNoticeOfWorkDocumentVersion(...args));
+  const archiveDocuments = (...args: Parameters<typeof archiveNoticeOfWorkDocuments>) =>
+    dispatch(archiveNoticeOfWorkDocuments(...args));
+  const openDocumentAction = (...args: Parameters<typeof openDocument>) =>
+    dispatch(openDocument(...args));
+
+  const buildFileManagementContext = () =>
+    enableFileManagement
       ? getFileManagementContext({
-        noticeOfWork: this.props.noticeOfWork,
-        applicationDelay: this.props.applicationDelay,
-        isViewMode: this.props.isViewMode,
-        userRoles: this.props.userRoles,
+        noticeOfWork,
+        applicationDelay,
+        isViewMode,
+        userRoles,
       })
       : null;
 
-  getDataSource = () =>
+  const getDataSource = () =>
     transformDocuments(
-      this.props.documents,
-      this.props.noticeOfWork.now_application_guid,
-      this.props.noticeOfWorkApplicationDocumentTypeOptionsHash,
-      this.props.isFinalPackageTable,
-      this.props.groupFiguresFirst ? compareByTypeThenOrder : comparePermitPackageDocuments,
-      this.getFileManagementContext()
+      props.documents,
+      noticeOfWork.now_application_guid,
+      noticeOfWorkApplicationDocumentTypeOptionsHash,
+      isFinalPackageTable,
+      groupFiguresFirst ? compareByTypeThenOrder : comparePermitPackageDocuments,
+      buildFileManagementContext()
     );
 
-  state = {
-    dataSource: this.getDataSource(),
-  };
+  const [dataSource, setDataSource] = useState<IPermitPackageRow[]>(getDataSource);
 
-  componentDidUpdate = (prevProps) => {
-    const fileManagementContextChanged =
-      this.props.enableFileManagement &&
-      (prevProps.applicationDelay !== this.props.applicationDelay ||
-        prevProps.userRoles !== this.props.userRoles ||
-        prevProps.isViewMode !== this.props.isViewMode ||
-        prevProps.noticeOfWork.now_application_status_code !==
-        this.props.noticeOfWork.now_application_status_code);
-    if (prevProps.documents !== this.props.documents || fileManagementContextChanged) {
-      this.setState({
-        dataSource: this.getDataSource(),
-      });
+  // Rebuild the rows when the documents change, or (with file management on) anything the row actions depend on.
+  const isFirstRender = useRef(true);
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
     }
-  };
+    setDataSource(getDataSource());
+  }, [
+    props.documents,
+    enableFileManagement && applicationDelay,
+    enableFileManagement && userRoles,
+    enableFileManagement && isViewMode,
+    enableFileManagement && noticeOfWork.now_application_status_code,
+  ]);
 
-  renderDescriptionCaption = (record) =>
-    this.props.showDescription &&
+  const renderDescriptionCaption = (record) =>
+    showDescription &&
       record.description &&
       record.description !== Strings.EMPTY_FIELD ? (
       <Typography.Text type="secondary" style={{ fontSize: 12 }}>
@@ -222,58 +244,75 @@ export class NOWDocuments extends Component {
       </Typography.Text>
     ) : null;
 
-  onSortEnd = ({ oldIndex, newIndex }) => {
+  const onSortEnd = ({ oldIndex, newIndex }) => {
     if (oldIndex !== newIndex) {
-      const hasLockedRow = this.state.dataSource?.some((d) => d.isLockedApplicationForm);
+      const hasLockedRow = dataSource?.some((d) => d.isLockedApplicationForm);
       const targetIndex = hasLockedRow && newIndex === 0 ? 1 : newIndex;
-      const newData = arrayMove([].concat(this.state.dataSource), oldIndex, targetIndex);
+      const newData = arrayMove([...dataSource], oldIndex, targetIndex);
       newData.forEach((doc, i) => {
         if (!(hasLockedRow && doc.isLockedApplicationForm)) {
           doc.index = i;
           doc.final_package_order = i;
         }
       });
-      this.setState({ dataSource: newData });
-      this.handleSortDocument(newData);
+      setDataSource(newData);
+      handleSortDocument(newData);
     }
   };
 
-  DraggableContainer = (props) => (
-    <SortableContainer
-      useDragHandle
-      disableAutoscroll
-      helperClass="row-dragging"
-      onSortEnd={this.onSortEnd}
-      {...props}
-    />
+  // The drag components are created once, so they aren't remounted on every render.
+  // They read the latest values through a ref.
+  const dragState = useRef<{
+    dataSource: IPermitPackageRow[];
+    isSortingAllowed: boolean;
+    enableFileManagement: boolean;
+    onSortEnd: (sort: { oldIndex: number; newIndex: number }) => void;
+  }>(null);
+  dragState.current = { dataSource, isSortingAllowed, enableFileManagement, onSortEnd };
+
+  const tableComponents = useMemo(
+    () => ({
+      body: {
+        wrapper: (wrapperProps) => (
+          <SortableContainer
+            useDragHandle
+            disableAutoscroll
+            helperClass="row-dragging"
+            onSortEnd={(sort) => dragState.current.onSortEnd(sort)}
+            {...wrapperProps}
+          />
+        ),
+        row: ({ className, style, ...restProps }) => {
+          const state = dragState.current;
+          // Matches rows on "index", so this only finds the row when rowKey is "index" (see rowKey below)
+          const index =
+            state.dataSource &&
+            state.dataSource.findIndex((x) => x.index === restProps["data-row-key"]);
+          const isLockedRow = state.dataSource?.[index]?.isLockedApplicationForm;
+          // Order column can now be visible without dragging being allowed — disable the actual drag capability whenever isSortingAllowed is false.
+          return (
+            <SortableItem
+              index={index}
+              disabled={isLockedRow || !state.isSortingAllowed}
+              // Keeps the row classes that line file names up beside the version history icon
+              className={state.enableFileManagement ? className : undefined}
+              {...restProps}
+            />
+          );
+        },
+      },
+    }),
+    []
   );
 
-  DraggableBodyRow = ({ className, style, ...restProps }) => {
-    // Matches rows on "index", so this only finds the row when rowKey is "index" (see rowKey below)
-    const index =
-      this.state.dataSource &&
-      this.state.dataSource.findIndex((x) => x.index === restProps["data-row-key"]);
-    const isLockedRow = this.state.dataSource?.[index]?.isLockedApplicationForm;
-    // Order column can now be visible without dragging being allowed — disable the actual drag capability whenever isSortingAllowed is false.
-    return (
-      <SortableItem
-        index={index}
-        disabled={isLockedRow || !this.props.isSortingAllowed}
-        // Keeps the row classes that line file names up beside the version history icon
-        className={this.props.enableFileManagement ? className : undefined}
-        {...restProps}
-      />
-    );
-  };
+  const isInCompleteStatus = () =>
+    noticeOfWork.now_application_status_code === "AIA" ||
+    noticeOfWork.now_application_status_code === "WDN" ||
+    noticeOfWork.now_application_status_code === "REJ" ||
+    noticeOfWork.now_application_status_code === "NPR" ||
+    !isEmpty(applicationDelay);
 
-  isInCompleteStatus = () =>
-    this.props.noticeOfWork.now_application_status_code === "AIA" ||
-    this.props.noticeOfWork.now_application_status_code === "WDN" ||
-    this.props.noticeOfWork.now_application_status_code === "REJ" ||
-    this.props.noticeOfWork.now_application_status_code === "NPR" ||
-    !isEmpty(this.props.applicationDelay);
-
-  handleAddDocument = (values) => {
+  const handleAddDocument = (values) => {
     const documents = values.uploadedFiles.map((file) => {
       return {
         now_application_document_type_code: values.now_application_document_type_code,
@@ -284,25 +323,24 @@ export class NOWDocuments extends Component {
         preamble_author: values?.preamble_author,
         mine_document: {
           ...file,
-          mine_guid: this.props.noticeOfWork.mine_guid,
+          mine_guid: noticeOfWork.mine_guid,
         },
       };
     });
-    return this.props
-      .updateNoticeOfWorkApplication(
+    return updateApplication(
         { documents },
-        this.props.noticeOfWork.now_application_guid,
+        noticeOfWork.now_application_guid,
         "Successfully added documents to this application."
       )
       .then(() => {
-        this.props.fetchImportedNoticeOfWorkApplication(
-          this.props.noticeOfWork.now_application_guid
+        fetchApplication(
+          noticeOfWork.now_application_guid
         );
-        this.props.closeModal();
+        closeModalAction();
       });
   };
 
-  handleSortDocument = (newData) => {
+  const handleSortDocument = (newData) => {
     const sortedDocuments = newData
       .filter((document) => !document.isLockedApplicationForm)
       .map((document, index) => ({
@@ -310,101 +348,98 @@ export class NOWDocuments extends Component {
         final_package_order: index + 1,
       }));
     const values = { sorted_documents: sortedDocuments };
-    return this.props
-      .sortNoticeOfWorkDocuments(this.props.noticeOfWork.now_application_guid, values)
+    return sortDocuments(noticeOfWork.now_application_guid, values)
       .then(() =>
-        this.props.fetchImportedNoticeOfWorkApplication(
-          this.props.noticeOfWork.now_application_guid
+        fetchApplication(
+          noticeOfWork.now_application_guid
         )
       );
   };
 
-  handleEditDocument = (values) => {
-    return this.props
-      .editNoticeOfWorkDocument(
-        this.props.noticeOfWork.now_application_guid,
+  const handleEditDocument = (values) => {
+    return editDocument(
+        noticeOfWork.now_application_guid,
         values.mine_document_guid,
         values
       )
       .then(() => {
-        this.props.fetchImportedNoticeOfWorkApplication(
-          this.props.noticeOfWork.now_application_guid
+        fetchApplication(
+          noticeOfWork.now_application_guid
         );
-        this.props.closeModal();
+        closeModalAction();
       });
   };
 
-  handleDeleteDocument = (applicationGuid, mineDocumentGuid) => {
-    return this.props
-      .deleteNoticeOfWorkApplicationDocument(applicationGuid, mineDocumentGuid)
+  const handleDeleteDocument = (applicationGuid, mineDocumentGuid) => {
+    return deleteDocument(applicationGuid, mineDocumentGuid)
       .then(() => {
-        this.props.fetchImportedNoticeOfWorkApplication(
-          this.props.noticeOfWork.now_application_guid
+        fetchApplication(
+          noticeOfWork.now_application_guid
         );
       });
   };
 
-  openAddDocumentModal = () => {
-    this.props.openModal({
+  const openAddDocumentModal = () => {
+    openModalAction({
       props: {
-        onSubmit: this.handleAddDocument,
-        now_application_guid: this.props.noticeOfWork.now_application_guid,
+        onSubmit: handleAddDocument,
+        now_application_guid: noticeOfWork.now_application_guid,
         title: "Add Notice of Work document",
-        categoriesToShow: this.props.categoriesToShow,
+        categoriesToShow: categoriesToShow,
         isEditMode: false,
-        isInCompleteStatus: this.isInCompleteStatus(),
+        isInCompleteStatus: isInCompleteStatus(),
       },
       content: modalConfig.EDIT_NOTICE_OF_WORK_DOCUMENT,
     });
   };
 
-  openEditDocumentModal = (record) => {
-    this.props.openModal({
+  const openEditDocumentModal = (record) => {
+    openModalAction({
       props: {
         initialValues: record,
-        onSubmit: this.handleEditDocument,
-        now_application_guid: this.props.noticeOfWork.now_application_guid,
+        onSubmit: handleEditDocument,
+        now_application_guid: noticeOfWork.now_application_guid,
         title: "Edit Notice of Work document",
-        categoriesToShow: this.props.categoriesToShow,
+        categoriesToShow: categoriesToShow,
         isEditMode: true,
-        isInCompleteStatus: this.isInCompleteStatus(),
+        isInCompleteStatus: isInCompleteStatus(),
       },
       content: modalConfig.EDIT_NOTICE_OF_WORK_DOCUMENT,
       width: "75vw",
     });
   };
 
-  refreshApplication = () =>
-    this.props.fetchImportedNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid);
+  const refreshApplication = () =>
+    fetchApplication(noticeOfWork.now_application_guid);
 
-  openReplaceModal = (record) =>
+  const openReplaceModal = (record) =>
     openReplaceFileModal({
       record,
-      applicationGuid: this.props.noticeOfWork.now_application_guid,
-      openModal: this.props.openModal,
-      createNoticeOfWorkDocumentVersion: this.props.createNoticeOfWorkDocumentVersion,
-      onReplaced: this.refreshApplication,
+      applicationGuid: noticeOfWork.now_application_guid,
+      openModal: openModalAction,
+      createNoticeOfWorkDocumentVersion: createDocumentVersion,
+      onReplaced: refreshApplication,
     });
 
-  openArchiveModal = (record) =>
+  const openArchiveModal = (record) =>
     openArchiveFileModal({
       record,
-      applicationGuid: this.props.noticeOfWork.now_application_guid,
-      conditions: this.props.draftPermitAmendment?.conditions,
-      openModal: this.props.openModal,
-      closeModal: this.props.closeModal,
-      archiveNoticeOfWorkDocuments: this.props.archiveNoticeOfWorkDocuments,
-      onArchived: this.refreshApplication,
+      applicationGuid: noticeOfWork.now_application_guid,
+      conditions: draftPermitAmendment?.conditions,
+      openModal: openModalAction,
+      closeModal: closeModalAction,
+      archiveNoticeOfWorkDocuments: archiveDocuments,
+      onArchived: refreshApplication,
     });
 
-  fileManagementActionsColumn = () =>
+  const buildFileManagementActionsColumn = () =>
     fileManagementActionsColumn({
-      openDocument: this.props.openDocument,
-      onReplace: this.openReplaceModal,
-      onArchive: this.openArchiveModal,
+      openDocument: openDocumentAction,
+      onReplace: openReplaceModal,
+      onArchive: openArchiveModal,
     });
 
-  columns = (noticeOfWorkApplicationDocumentTypeOptions, categoriesToShow) => {
+  const columns = (noticeOfWorkApplicationDocumentTypeOptions, categoriesToShow) => {
     let tableColumns = [];
     const filtered = noticeOfWorkApplicationDocumentTypeOptions.filter(({ subType, value }) => {
       if (subType && categoriesToShow.length > 0) {
@@ -426,7 +461,7 @@ export class NOWDocuments extends Component {
       dataIndex: "index",
       className: "drag-visible",
       render: (text, record) => {
-        const hasLockedRow = this.state.dataSource?.some((d) => d.isLockedApplicationForm);
+        const hasLockedRow = dataSource?.some((d) => d.isLockedApplicationForm);
         if (record.isLockedApplicationForm) {
           // The NoW application document (NTR — system-generated Notice of Work Form) is
           // always position 1.1 in the permit; it is locked and cannot be reordered.
@@ -437,12 +472,12 @@ export class NOWDocuments extends Component {
           );
         }
         // Order column can now be visible without dragging being allowed — hide the drag handle itself whenever isSortingAllowed is false.
-        const dragHandle = this.props.isSortingAllowed ? (
+        const dragHandle = isSortingAllowed ? (
           <DragHandle />
         ) : (
           <span style={{ display: "inline-block", width: 14 }} />
         );
-        if (this.props.documentNumberFormat === "whole") {
+        if (documentNumberFormat === "whole") {
           return (
             <>
               {dragHandle}
@@ -459,17 +494,26 @@ export class NOWDocuments extends Component {
       },
     };
 
-    const fileNameColumn = this.props.selectedRows
+    const fileNameColumn = selectedRows
       ? {
         title: "File Name",
         dataIndex: "filename",
         key: "filename",
         sorter: (a, b) => (a.filename > b.filename ? -1 : 1),
-        render: (text) => <div title="File Name">{text}</div>,
+        render: (text, record) => (
+          <div title="File Name">
+            {text}
+            {renderPermitPackageDetailsSummary(
+              record,
+              selectedRows?.selectedCoreRows,
+              packageTitles
+            )}
+          </div>
+        ),
       }
       : {
         title: "File Name",
-        onHeaderCell: this.props.enableFileManagement ? fileNameHeaderCell : undefined,
+        onHeaderCell: enableFileManagement ? fileNameHeaderCell : undefined,
         dataIndex: "filename",
         key: "filename",
         sorter: (a, b) => (a.filename > b.filename ? -1 : 1),
@@ -501,17 +545,17 @@ export class NOWDocuments extends Component {
           const fileName = (
             <div
               title="File Name"
-              style={this.props.enableFileManagement ? getFileNameOffset(record) : {}}
+              style={enableFileManagement ? getFileNameOffset(record) : {}}
             >
               <DocumentLink
                 documentManagerGuid={record.document_manager_guid}
                 documentName={record.filename}
                 truncateDocumentName={false}
               />
-              {this.renderDescriptionCaption(record)}
+              {renderDescriptionCaption(record)}
             </div>
           );
-          return this.props.enableFileManagement
+          return enableFileManagement
             ? documentWithTag(record, fileName, "File Name", true)
             : fileName;
         },
@@ -552,8 +596,8 @@ export class NOWDocuments extends Component {
       title: "Category",
       dataIndex: "category",
       key: "category",
-      filters: this.props.disableCategoryFilter ? null : categoryFilters,
-      onFilter: this.props.disableCategoryFilter
+      filters: disableCategoryFilter ? null : categoryFilters,
+      onFilter: disableCategoryFilter
         ? () => { }
         : (value, record) => record.category.includes(value),
       sorter: (a, b) => (a.category > b.category ? -1 : 1),
@@ -577,23 +621,23 @@ export class NOWDocuments extends Component {
         if (record.isLockedApplicationForm || isVersionRow(record)) {
           return <div />;
         }
-        if (this.props.isFinalPackageTable && this.props.isViewMode) {
+        if (isFinalPackageTable && isViewMode) {
           return <div />;
         }
-        if (!this.isInCompleteStatus()) {
+        if (!isInCompleteStatus()) {
           if (isModificationAllowed) {
             return (
               <NOWActionWrapper
                 permission={Permission.EDIT_PERMITS}
-                tab={this.props.isAdminView ? "" : "REV"}
+                tab={isAdminView ? "" : "REV"}
                 ignoreDelay
               >
-                {!this.props.isFinalPackageTable && (
+                {!isFinalPackageTable && (
                   <Popconfirm
                     placement="topLeft"
                     title={
                       isFileReferencedInConditions(
-                        this.props.draftPermitAmendment?.conditions,
+                        draftPermitAmendment?.conditions,
                         record.now_application_document_xref_guid
                       )
                         ? "This file is currently being referenced in a permit condition. Deleting it will break that reference. Are you sure you want to delete this document?"
@@ -602,14 +646,14 @@ export class NOWDocuments extends Component {
                     okText="Delete"
                     cancelText="Cancel"
                     onConfirm={() =>
-                      this.handleDeleteDocument(
+                      handleDeleteDocument(
                         record.now_application_guid,
                         record.mine_document_guid
                       )
                     }
                   >
                     <Button className="no-margin" ghost type="primary" size="small">
-                      <img name="remove" src={TRASHCAN} alt="Remove document" />
+                      <img src={TRASHCAN} alt="Remove document" />
                     </Button>
                   </Popconfirm>
                 )}
@@ -618,18 +662,18 @@ export class NOWDocuments extends Component {
                   ghost
                   type="primary"
                   size="small"
-                  onClick={() => this.openEditDocumentModal(record)}
+                  onClick={() => openEditDocumentModal(record)}
                 >
-                  <img name="remove" src={EDIT_OUTLINE_VIOLET} alt="Edit document" />
+                  <img src={EDIT_OUTLINE_VIOLET} alt="Edit document" />
                 </Button>
               </NOWActionWrapper>
             );
           }
           return (
-            <div disabled onClick={(event) => event.stopPropagation()}>
+            <div onClick={(event) => event.stopPropagation()}>
               <NOWActionWrapper
                 permission={Permission.EDIT_PERMITS}
-                tab={this.props.isAdminView ? "" : "REV"}
+                tab={isAdminView ? "" : "REV"}
                 ignoreDelay
               >
                 <Tooltip
@@ -641,7 +685,7 @@ export class NOWDocuments extends Component {
                   <Button className="no-margin" ghost type="primary" size="small">
                     <img
                       className="lessOpacity"
-                      name="remove"
+                     
                       src={TRASHCAN}
                       alt="Remove document"
                     />
@@ -656,7 +700,7 @@ export class NOWDocuments extends Component {
                   <Button className="no-margin" ghost type="primary" size="small">
                     <img
                       className="lessOpacity"
-                      name="remove"
+                     
                       src={EDIT_OUTLINE_VIOLET}
                       alt="Edit document"
                     />
@@ -673,13 +717,13 @@ export class NOWDocuments extends Component {
     const permitPackageColumn = {
       width: 150,
       title: () => {
-        return !this.isInCompleteStatus() ? (
+        return !isInCompleteStatus() ? (
           <div className="inline-flex between">
             <div className="grid">
               <span>Permit</span>
               <span>Package</span>
             </div>
-            <PermitPackage isAdminView={this.props.isAdminView} isTableHeaderView />
+            <PermitPackage isAdminView={isAdminView} isTableHeaderView />
           </div>
         ) : (
           <div className="grid">
@@ -697,7 +741,7 @@ export class NOWDocuments extends Component {
     const consultationPackageColumn = {
       width: 150,
       title: () => {
-        return !this.isInCompleteStatus() ? (
+        return !isInCompleteStatus() ? (
           <div className="inline-flex between">
             <div className="grid">
               <span>Consultation</span>
@@ -721,7 +765,7 @@ export class NOWDocuments extends Component {
     const referralPackageColumn = {
       width: 150,
       title: () => {
-        return !this.isInCompleteStatus() ? (
+        return !isInCompleteStatus() ? (
           <div className="inline-flex between">
             <div className="grid">
               <span>Referral</span>
@@ -751,9 +795,9 @@ export class NOWDocuments extends Component {
         }
         let isPostDecision = false;
         if (
-          this.isInCompleteStatus() &&
+          isInCompleteStatus() &&
           moment(record.upload_date, "YYYY-MM-DD") >
-          moment(this.props.noticeOfWork.decision_by_user_date, "YYYY-MM-DD")
+          moment(noticeOfWork.decision_by_user_date, "YYYY-MM-DD")
         ) {
           isPostDecision = true;
         }
@@ -771,7 +815,7 @@ export class NOWDocuments extends Component {
       },
     };
 
-    if (this.props.isFinalPackageTable) {
+    if (isFinalPackageTable) {
       tableColumns = [
         ...fileMetadataColumns,
         categoryColumn,
@@ -779,15 +823,15 @@ export class NOWDocuments extends Component {
         descriptionColumn,
         deleteAndEditButtonColumn,
       ];
-      if (this.props.showOrderColumn) {
+      if (showOrderColumn) {
         tableColumns = [sortColumn, ...tableColumns];
       }
-      if (this.props.enableFileManagement) {
-        tableColumns = [...tableColumns, this.fileManagementActionsColumn()];
+      if (enableFileManagement) {
+        tableColumns = [...tableColumns, buildFileManagementActionsColumn()];
       }
-    } else if (this.props.isStandardDocuments) {
+    } else if (isStandardDocuments) {
       tableColumns = [categoryColumn, fileNameColumn, uploadDateColumn];
-      if (this.isInCompleteStatus()) {
+      if (isInCompleteStatus()) {
         tableColumns = [...tableColumns, postApprovalDocumentColumn];
       }
       tableColumns = [
@@ -797,25 +841,29 @@ export class NOWDocuments extends Component {
         consultationPackageColumn,
         permitPackageColumn,
       ];
-      if (this.props.enableFileManagement) {
-        tableColumns = [...tableColumns, this.fileManagementActionsColumn()];
+      if (enableFileManagement) {
+        tableColumns = [...tableColumns, buildFileManagementActionsColumn()];
       }
-    } else if (this.props.isRefConDocuments) {
+    } else if (isRefConDocuments) {
       tableColumns = [categoryColumn, fileNameColumn];
-      if (this.isInCompleteStatus()) {
+      if (isInCompleteStatus()) {
         tableColumns = [...tableColumns, postApprovalDocumentColumn];
       }
       tableColumns = [...tableColumns, uploadDateColumn];
-    } else if (this.props.isPackageModal) {
+    } else if (isPackageModal) {
       // The Title column is only shown in the permit package bulk modal,
       // Other bulk modals (e.g. consultation) are unchanged.
-      const titleColumns = this.props.packageTitles
+      const packageColumnProps = {
+        selectedKeys: selectedRows?.selectedCoreRows,
+        lockedRowKeys: lockedRowKeys,
+        packageTitles: packageTitles,
+      };
+      const titleColumns = packageTitles
         ? [
-          renderPermitPackageTitleColumn({
-            selectedKeys: this.props.selectedRows?.selectedCoreRows,
-            lockedRowKeys: this.props.lockedRowKeys,
-            packageTitles: this.props.packageTitles,
-          }),
+          renderPermitPackageTitleColumn(packageColumnProps),
+          ...(packageTitles.showTypeSelector
+            ? [renderPermitPackageTypeColumn(packageColumnProps)]
+            : []),
         ]
         : [];
       tableColumns = [
@@ -832,141 +880,103 @@ export class NOWDocuments extends Component {
     return tableColumns;
   };
 
-  render() {
-    const columns = this.columns(
-      this.props.noticeOfWorkApplicationDocumentTypeOptions,
-      this.props.categoriesToShow
-    );
-    const showDownloadAll =
-      this.props.enableFileManagement &&
-      !this.props.selectedRows &&
-      !this.props.isFinalPackageTable &&
-      !this.props.isRefConDocuments;
-    const addDocumentButton = !this.props.selectedRows &&
-      !this.props.isViewMode &&
-      !this.props.isRefConDocuments &&
-      !this.props.isFinalPackageTable && (
-        <NOWActionWrapper
-          permission={Permission.EDIT_PERMITS}
-          tab={this.props.isAdminView ? "" : "REV"}
-          allowAfterProcess={this.props.allowAfterProcess}
-          ignoreDelay
+  const renderedColumns = columns(noticeOfWorkApplicationDocumentTypeOptions, categoriesToShow);
+  const showDownloadAll =
+    enableFileManagement &&
+    !selectedRows &&
+    !isFinalPackageTable &&
+    !isRefConDocuments;
+  const addDocumentButton = !selectedRows &&
+    !isViewMode &&
+    !isRefConDocuments &&
+    !isFinalPackageTable && (
+      <NOWActionWrapper
+        permission={Permission.EDIT_PERMITS}
+        tab={isAdminView ? "" : "REV"}
+        allowAfterProcess={allowAfterProcess}
+        ignoreDelay
+      >
+        <AddButton
+          // Sits beside Download All when it's shown, otherwise in its usual spot
+          className={showDownloadAll ? undefined : "position-right"}
+          disabled={isViewMode}
+          style={isAdminView && !showDownloadAll ? { marginRight: "100px" } : {}}
+          onClick={openAddDocumentModal}
         >
-          <AddButton
-            // Sits beside Download All when it's shown, otherwise in its usual spot
-            className={showDownloadAll ? undefined : "position-right"}
-            disabled={this.props.isViewMode}
-            style={this.props.isAdminView && !showDownloadAll ? { marginRight: "100px" } : {}}
-            onClick={this.openAddDocumentModal}
-          >
-            Add Document
-          </AddButton>
-        </NOWActionWrapper>
-      );
-    return (
-      <div>
-        <Row className="inline-flex between">
-          <Col span={16}>
-            <p>{this.props.disclaimerText}</p>
-          </Col>
-          <Col span={6}>
-            {showDownloadAll ? (
-              <div className="now-table-header-actions">
-                <NOWDownloadAllButton
-                  rows={this.state.dataSource ?? []}
-                  mineGuid={this.props.noticeOfWork.mine_guid}
-                  documentType="government-documents"
-                />
-                {addDocumentButton}
-              </div>
-            ) : (
-              addDocumentButton
-            )}
-          </Col>
-        </Row>
-        <br />
-        <CoreTable
-          columns={columns}
-          recordType="document description"
-          dataSource={this.state.dataSource}
-          // The key must be set to "index" to allow the drag-sort to work.
-          // With file management on, rows are keyed by version guid or key instead (so version history can expand), which
-          // DraggableBodyRow can't match, so drag-sort won't work. That's fine for now, as file management is only on where sorting isn't allowed.
-          rowKey={
-            this.props.enableFileManagement
-              ? (record) => record.mine_document_version_guid ?? record.key
-              : this.props.isSortingAllowed
-                ? "index"
-                : "key"
-          }
-          expandProps={
-            this.props.enableFileManagement
-              ? {
-                childrenColumnName: "versions",
-                matchChildColumnsToParent: true,
-                recordDescription: "version history",
-                rowExpandable: (record) => record.number_prev_versions > 0,
-                // Show the expand icon beside the file name, wherever it sits in the table
-                expandIconColumnIndex: columns.findIndex((column) => column.key === "filename"),
-              }
-              : null
-          }
-          components={{
-            body: {
-              wrapper: this.DraggableContainer,
-              row: this.DraggableBodyRow,
-            },
-          }}
-          rowSelection={
-            this.props.selectedRows
-              ? {
-                selectedRowKeys: this.props.selectedRows.selectedCoreRows,
-                onChange: (selectedRowKeys) => {
-                  this.props.selectedRows.setSelectedCoreRows(selectedRowKeys);
-                },
-                getCheckboxProps: (record) => ({
-                  disabled: this.props.lockedRowKeys?.includes(record.key),
-                }),
-              }
-              : null
-          }
-        />
-      </div>
+          Add Document
+        </AddButton>
+      </NOWActionWrapper>
     );
-  }
-}
-
-const mapStateToProps = (state) => ({
-  noticeOfWorkApplicationDocumentTypeOptionsHash: getNoticeOfWorkApplicationDocumentTypeOptionsHash(
-    state
-  ),
-  noticeOfWorkApplicationDocumentTypeOptions: getDropdownNoticeOfWorkApplicationDocumentTypeOptions(
-    state
-  ),
-  noticeOfWork: getNoticeOfWork(state),
-  applicationDelay: getApplicationDelay(state),
-  draftPermitAmendment: getDraftPermitAmendmentForNOW(state),
-  userRoles: getUserAccessData(state),
-});
-
-const mapDispatchToProps = (dispatch) =>
-  bindActionCreators(
-    {
-      openModal,
-      closeModal,
-      updateNoticeOfWorkApplication,
-      fetchImportedNoticeOfWorkApplication,
-      deleteNoticeOfWorkApplicationDocument,
-      editNoticeOfWorkDocument,
-      sortNoticeOfWorkDocuments,
-      createNoticeOfWorkDocumentVersion,
-      archiveNoticeOfWorkDocuments,
-      openDocument,
-    },
-    dispatch
+  return (
+    <div>
+      <Row className="inline-flex between">
+        <Col span={16}>
+          <p>{disclaimerText}</p>
+        </Col>
+        <Col span={6}>
+          {showDownloadAll ? (
+            <div className="now-table-header-actions">
+              <NOWDownloadAllButton
+                rows={dataSource ?? []}
+                mineGuid={noticeOfWork.mine_guid}
+                documentType="government-documents"
+              />
+              {addDocumentButton}
+            </div>
+          ) : (
+            addDocumentButton
+          )}
+        </Col>
+      </Row>
+      <br />
+      <CoreTable
+        columns={renderedColumns}
+        dataSource={dataSource}
+        // The key must be set to "index" to allow the drag-sort to work.
+        // With file management on, rows are keyed by version guid or key instead (so version history can expand), which
+        // DraggableBodyRow can't match, so drag-sort won't work. That's fine for now, as file management is only on where sorting isn't allowed.
+        rowKey={
+          enableFileManagement
+            ? (record) => record.mine_document_version_guid ?? record.key
+            : isSortingAllowed
+              ? "index"
+              : "key"
+        }
+        expandProps={
+          enableFileManagement
+            ? {
+              childrenColumnName: "versions",
+              matchChildColumnsToParent: true,
+              recordDescription: "version history",
+              rowExpandable: (record) => record.number_prev_versions > 0,
+              // Show the expand icon beside the file name, wherever it sits in the table
+              expandIconColumnIndex: renderedColumns.findIndex((column) => column.key === "filename"),
+            }
+            : isPackageModal
+              ? getPermitPackageExpandProps({
+                selectedKeys: selectedRows?.selectedCoreRows,
+                lockedRowKeys: lockedRowKeys,
+                packageTitles: packageTitles,
+              })
+              : null
+        }
+        components={tableComponents}
+        rowSelection={
+          selectedRows
+            ? {
+              selectedRowKeys: selectedRows.selectedCoreRows,
+              onChange: (selectedRowKeys) => {
+                selectedRows.setSelectedCoreRows(selectedRowKeys as string[]);
+              },
+              getCheckboxProps: (record) => ({
+                disabled: lockedRowKeys?.includes(record.key),
+              }),
+            }
+            : null
+        }
+      />
+    </div>
   );
+};
 
-NOWDocuments.propTypes = propTypes;
-NOWDocuments.defaultProps = defaultProps;
-
-export default connect(mapStateToProps, mapDispatchToProps)(NOWDocuments);
+export default NOWDocuments;

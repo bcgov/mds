@@ -4,32 +4,22 @@ import userEvent from "@testing-library/user-event";
 import { USER_ROLES } from "@mds/common/constants/environment";
 import { NOWSubmissionDocuments } from "@/components/noticeOfWork/applications/NOWSubmissionDocuments";
 import * as NOWMocks from "@mds/common/tests/mocks/noticeOfWorkMock";
-import { NOTICE_OF_WORK } from "@mds/common/constants/reducerTypes";
+import { AUTHENTICATION, NOTICE_OF_WORK } from "@mds/common/constants/reducerTypes";
+import { actionMocks, installActionSpies } from "@/tests/utils/nowDocumentActionMocks";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 import { BrowserRouter } from "react-router-dom";
 
-const dispatchProps = {
-  openModal: jest.fn(),
-  closeModal: jest.fn(),
-  updateNoticeOfWorkApplication: jest.fn(),
-  editNoticeOfWorkDocument: jest.fn(),
-  fetchImportedNoticeOfWorkApplication: jest.fn(),
-  deleteNoticeOfWorkApplicationDocument: jest.fn(),
-  createNoticeOfWorkApplicationImportSubmissionDocumentsJob: jest.fn(),
-  fetchImportNoticeOfWorkSubmissionDocumentsJob: jest.fn(),
-};
+beforeAll(installActionSpies);
+afterAll(() => jest.restoreAllMocks());
+
 const props = {
-  noticeOfWork: NOWMocks.IMPORTED_NOTICE_OF_WORK,
   documents: [],
-  noticeOfWorkApplicationDocumentTypeOptions: NOWMocks.DROPDOWN_APPLICATION_DOCUMENT_TYPES,
   isViewMode: false,
   selectedRows: null,
   categoriesToShow: ["ANS", "OTH"],
   disclaimerText: "This test is explaining the purpose of this section",
   isAdminView: false,
-  addDescriptionColumn: true,
   importNowSubmissionDocumentsJob: {},
-  noticeOfWorkApplicationDocumentTypeOptionsHash: {},
   now_application_guid: "23968472346",
   displayTableDescription: true,
   tableDescription: "mock description",
@@ -40,12 +30,6 @@ const props = {
   allowAfterProcess: true,
 };
 
-const initialState = {
-  [NOTICE_OF_WORK]: {
-    noticeOfWork: NOWMocks.IMPORTED_NOTICE_OF_WORK,
-    applicationDelays: [],
-  }
-};
 const spatialDocument = (filename: string) => ({
   mine_document_guid: `guid-${filename}`,
   document_manager_guid: `dm-${filename}`,
@@ -71,11 +55,21 @@ const coreAddedDocument = (filename: string) => ({
   },
 });
 
-const renderTable = (overrides = {}) =>
+// noticeOfWork and userRoles come from the store, the rest are props.
+const renderTable = ({
+  noticeOfWork = NOWMocks.IMPORTED_NOTICE_OF_WORK,
+  userRoles = [],
+  ...overrides
+}: Record<string, any> = {}) =>
   render(
-    <ReduxWrapper initialState={initialState}>
+    <ReduxWrapper
+      initialState={{
+        [NOTICE_OF_WORK]: { noticeOfWork, applicationDelays: [] },
+        [AUTHENTICATION]: { userAccessData: userRoles },
+      }}
+    >
       <BrowserRouter>
-        <NOWSubmissionDocuments {...props} {...dispatchProps} {...overrides} />
+        <NOWSubmissionDocuments {...props} {...overrides} />
       </BrowserRouter>
     </ReduxWrapper>
   );
@@ -299,9 +293,6 @@ describe("NOWSubmissionDocuments", () => {
         userRoles: [USER_ROLES.role_edit_permits],
         documents: [importedDocument()],
         enableFileManagement: true,
-        createNoticeOfWorkDocumentVersion: jest.fn(),
-        archiveNoticeOfWorkDocuments: jest.fn().mockResolvedValue(undefined),
-        openDocument: jest.fn(),
         ...overrides,
       });
 
@@ -452,18 +443,18 @@ describe("NOWSubmissionDocuments", () => {
     });
 
     it("archives the file from Application Documents, then refreshes the application", async () => {
-      const archiveNoticeOfWorkDocuments = jest.fn().mockResolvedValue(undefined);
-      renderFileManagement({ archiveNoticeOfWorkDocuments });
+      actionMocks.archiveNoticeOfWorkDocuments.mockResolvedValue(undefined);
+      renderFileManagement();
 
       await openActionsMenu();
       await userEvent.click(screen.getByText("Archive file"));
 
-      const { props: modalProps } = dispatchProps.openModal.mock.calls[0][0];
+      const { props: modalProps } = actionMocks.openModal.mock.calls[0][0];
       expect(modalProps.alertDescription).toContain("removes this file from Application Documents");
 
       await modalProps.handleSubmit();
-      expect(archiveNoticeOfWorkDocuments).toHaveBeenCalledWith(APPLICATION_GUID, ["imported-mine-doc"]);
-      expect(dispatchProps.fetchImportedNoticeOfWorkApplication).toHaveBeenCalledWith(APPLICATION_GUID);
+      expect(actionMocks.archiveNoticeOfWorkDocuments).toHaveBeenCalledWith(APPLICATION_GUID, ["imported-mine-doc"]);
+      expect(actionMocks.fetchImportedNoticeOfWorkApplication).toHaveBeenCalledWith(APPLICATION_GUID);
     });
   });
 });

@@ -6,17 +6,17 @@ import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
 import { BrowserRouter } from "react-router-dom";
 import { NOTICE_OF_WORK } from "@mds/common/constants/reducerTypes";
 import * as documentActionCreator from "@mds/common/redux/actionCreators/documentActionCreator";
+import * as noticeOfWorkActionCreator from "@mds/common/redux/actionCreators/noticeOfWorkActionCreator";
+import * as modalActions from "@mds/common/redux/actions/modalActions";
 
-const dispatchProps = {
-  change: jest.fn(),
-  updateNoticeOfWorkApplication: jest.fn(),
-  fetchImportedNoticeOfWorkApplication: jest.fn(),
-  closeModal: jest.fn(),
-  openModal: jest.fn(),
-  setNoticeOfWorkApplicationDocumentDownloadState: jest.fn(),
-};
+// The wrapper hides actions based on permissions and progress, which isn't what these tests cover.
+jest.mock("@/components/noticeOfWork/NOWActionWrapper", () => ({
+  __esModule: true,
+  default: ({ children }) => <>{children}</>,
+}));
+
+const dispatchProps = {};
 const props = {
-  noticeOfWork: NOWMocks.IMPORTED_NOTICE_OF_WORK,
   isAdminView: true,
   isTableHeaderView: true,
   importNowSubmissionDocumentsJob: {},
@@ -56,34 +56,54 @@ describe("PermitPackage", () => {
       preamble_title: "Kept submission title",
     };
 
+    // Opens the modal through the real component and returns the onSubmit it hands to the modal.
     const createInstance = () => {
-      const saveProps = {
-        ...props,
-        ...dispatchProps,
-        noticeOfWork: {
-          now_application_guid: "now-guid",
-          documents: [{ ...coreInPackage }, { ...coreRemoved }],
-          filtered_submission_documents: [{ ...submissionInPackage }, { ...submissionRemoved }],
-        },
-        updateNoticeOfWorkApplication: jest.fn().mockResolvedValue({}),
-        fetchImportedNoticeOfWorkApplication: jest.fn().mockResolvedValue({}),
-        closeModal: jest.fn(),
+      const noticeOfWork = {
+        now_application_guid: "now-guid",
+        documents: [{ ...coreInPackage }, { ...coreRemoved }],
+        filtered_submission_documents: [{ ...submissionInPackage }, { ...submissionRemoved }],
       };
-      return { instance: new PermitPackage(saveProps), saveProps };
+      const updateSpy = jest
+        .spyOn(noticeOfWorkActionCreator, "updateNoticeOfWorkApplication")
+        .mockReturnValue((() => Promise.resolve({})) as any);
+      jest
+        .spyOn(noticeOfWorkActionCreator, "fetchImportedNoticeOfWorkApplication")
+        .mockReturnValue((() => Promise.resolve({})) as any);
+      const closeSpy = jest
+        .spyOn(modalActions, "closeModal")
+        .mockReturnValue({ type: "CLOSE_MODAL" } as any);
+      const openSpy = jest
+        .spyOn(modalActions, "openModal")
+        .mockReturnValue({ type: "OPEN_MODAL_MOCK" } as any);
+
+      render(
+        <BrowserRouter>
+          <ReduxWrapper
+            initialState={{ [NOTICE_OF_WORK]: { noticeOfWork, applicationDelays: [] } }}
+          >
+            <PermitPackage {...props} {...dispatchProps} />
+          </ReduxWrapper>
+        </BrowserRouter>
+      );
+      fireEvent.click(screen.getByRole("button", { name: /Edit/ }));
+      const { onSubmit } = openSpy.mock.calls[0][0].props;
+      return { onSubmit, updateSpy, closeSpy };
     };
+
+    afterEach(() => jest.restoreAllMocks());
 
     const findDocument = (payload, listName, guidField, guid) =>
       payload[listName].find((doc) => doc[guidField] === guid);
 
     it("saves the package selection with the titles for documents in the package", async () => {
-      const { instance, saveProps } = createInstance();
+      const { onSubmit, updateSpy } = createInstance();
 
-      await instance.createFinalDocumentPackage(["core-in"], ["sub-in"], {
+      await onSubmit(["core-in"], ["sub-in"], {
         coreTitles: { "core-in": "  New core title  " },
         submissionTitles: { "sub-in": "New submission title" },
       });
 
-      const [payload, guid] = saveProps.updateNoticeOfWorkApplication.mock.calls[0];
+      const [payload, guid] = updateSpy.mock.calls[0];
       expect(guid).toBe("now-guid");
 
       const savedCore = findDocument(payload, "documents", "now_application_document_xref_guid", "core-in");
@@ -101,14 +121,14 @@ describe("PermitPackage", () => {
     });
 
     it("keeps the saved title of documents removed from the package", async () => {
-      const { instance, saveProps } = createInstance();
+      const { onSubmit, updateSpy } = createInstance();
 
-      await instance.createFinalDocumentPackage(["core-in"], ["sub-in"], {
+      await onSubmit(["core-in"], ["sub-in"], {
         coreTitles: { "core-in": "New core title", "core-removed": "Ignored" },
         submissionTitles: { "sub-in": "New submission title", "sub-removed": "Ignored" },
       });
 
-      const [payload] = saveProps.updateNoticeOfWorkApplication.mock.calls[0];
+      const [payload] = updateSpy.mock.calls[0];
       const removedCore = findDocument(
         payload,
         "documents",
@@ -129,14 +149,14 @@ describe("PermitPackage", () => {
     });
 
     it("keeps the existing title of a package document the modal didn't track", async () => {
-      const { instance, saveProps } = createInstance();
+      const { onSubmit, updateSpy } = createInstance();
 
-      await instance.createFinalDocumentPackage(["core-in", "core-removed"], [], {
+      await onSubmit(["core-in", "core-removed"], [], {
         coreTitles: { "core-in": "New core title" },
         submissionTitles: {},
       });
 
-      const [payload] = saveProps.updateNoticeOfWorkApplication.mock.calls[0];
+      const [payload] = updateSpy.mock.calls[0];
       const untracked = findDocument(
         payload,
         "documents",
@@ -148,15 +168,15 @@ describe("PermitPackage", () => {
     });
 
     it("still saves when called without titles", async () => {
-      const { instance, saveProps } = createInstance();
+      const { onSubmit, updateSpy, closeSpy } = createInstance();
 
-      await instance.createFinalDocumentPackage(["core-in"], []);
+      await onSubmit(["core-in"], []);
 
-      const [payload] = saveProps.updateNoticeOfWorkApplication.mock.calls[0];
+      const [payload] = updateSpy.mock.calls[0];
       const savedCore = findDocument(payload, "documents", "now_application_document_xref_guid", "core-in");
       expect(savedCore.is_final_package).toBe(true);
       expect(savedCore.preamble_title).toBe("Old core title");
-      expect(saveProps.closeModal).toHaveBeenCalled();
+      expect(closeSpy).toHaveBeenCalled();
     });
   });
 
@@ -180,11 +200,12 @@ describe("PermitPackage", () => {
     const clickDownloadAll = (showDownloadWarning?: boolean) => {
       render(
         <BrowserRouter>
-          <ReduxWrapper initialState={initialState}>
+          <ReduxWrapper
+            initialState={{ [NOTICE_OF_WORK]: { noticeOfWork, applicationDelays: [] } }}
+          >
             <PermitPackage
               {...props}
               {...dispatchProps}
-              noticeOfWork={noticeOfWork}
               isTableHeaderView={false}
               showDownloadWarning={showDownloadWarning}
             />

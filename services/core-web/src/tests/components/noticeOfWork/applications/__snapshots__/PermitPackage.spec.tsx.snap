@@ -1,3 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`PermitPackage renders properly 1`] = `<div />`;
+exports[`PermitPackage renders properly 1`] = `
+<div>
+  <button
+    class="ant-btn ant-btn-primary ant-btn-sm ant-btn-background-ghost"
+    type="button"
+  >
+    <img
+      alt="Edit document"
+      src="[object Object]"
+    />
+  </button>
+</div>
+`;

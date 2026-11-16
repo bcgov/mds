@@ -1,13 +1,20 @@
-import React, { useState } from "react";
+import React, { FC, ReactNode, useState } from "react";
 import moment from "moment";
-import { PropTypes } from "prop-types";
-import { Badge, Tooltip, Button, Popconfirm, Row, Col, Typography } from "antd";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
+import { Badge, BadgeProps, Tooltip, Button, Popconfirm, Row, Col, Typography } from "antd";
+import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
 import { ImportOutlined, ReloadOutlined, FlagOutlined } from "@ant-design/icons";
 import { formatDateTime } from "@common/utils/helpers";
 import { isEmpty } from "lodash";
-import CustomPropTypes from "@/customPropTypes";
+import {
+  IImportNoWSubmissionDocumentsJob,
+  INoWApplicationForm,
+  IOption,
+  IPermitAmendment,
+} from "@mds/common/interfaces";
+import {
+  INoWSubmissionDocument,
+  IPermitPackageTitles,
+} from "@/components/noticeOfWork/applications/permitPackageTitleColumn";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Strings from "@mds/common/constants/strings";
@@ -46,10 +53,16 @@ import ReferralConsultationPackage from "@/components/noticeOfWork/applications/
 import PermitPackage from "@/components/noticeOfWork/applications/PermitPackage";
 import NOWDownloadAllButton from "@/components/noticeOfWork/applications/NOWDownloadAllButton";
 import CoreTable from "@mds/common/components/common/CoreTable";
-import { renderPermitPackageTitleColumn } from "@/components/noticeOfWork/applications/permitPackageTitleColumn";
+import {
+  getPermitPackageExpandProps,
+  renderPermitPackageDetailsSummary,
+  renderPermitPackageTitleColumn,
+  renderPermitPackageTypeColumn,
+} from "@/components/noticeOfWork/applications/permitPackageTitleColumn";
 import SpatialFilesRowLink from "@mds/common/components/documents/spatial/SpatialFilesRowLink";
 import {
   FILE_MANAGEMENT_ROW_CLASS,
+  IFileManagementRecord,
   fileManagementActionsColumn,
   fileNameHeaderCell,
   getFileManagementContext,
@@ -60,87 +73,40 @@ import {
   toFileManagementRow,
 } from "@/components/noticeOfWork/applications/nowFileManagement";
 
-const propTypes = {
-  openModal: PropTypes.func.isRequired,
-  closeModal: PropTypes.func.isRequired,
-  now_application_guid: PropTypes.string.isRequired,
-  createNoticeOfWorkApplicationImportSubmissionDocumentsJob: PropTypes.func.isRequired,
-  fetchImportNoticeOfWorkSubmissionDocumentsJob: PropTypes.func.isRequired,
-  noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
-  // eslint-disable-next-line react/no-unused-prop-types
-  noticeOfWorkApplicationDocumentTypeOptionsHash: PropTypes.objectOf(PropTypes.any).isRequired,
-  noticeOfWorkApplicationDocumentTypeOptions: PropTypes.objectOf(PropTypes.any).isRequired,
-  updateNoticeOfWorkApplication: PropTypes.func.isRequired,
-  editNoticeOfWorkDocument: PropTypes.func.isRequired,
-  fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
-  deleteNoticeOfWorkApplicationDocument: PropTypes.func.isRequired,
-  isViewMode: PropTypes.bool.isRequired,
-  documents: PropTypes.arrayOf(PropTypes.any),
-  importNowSubmissionDocumentsJob: PropTypes.objectOf(PropTypes.any),
-  selectedRows: PropTypes.objectOf(PropTypes.any),
-  categoriesToShow: PropTypes.arrayOf(PropTypes.string),
-  displayTableDescription: PropTypes.bool,
-  tableDescription: PropTypes.string,
-  hideImportStatusColumn: PropTypes.bool,
-  disableCategoryFilter: PropTypes.bool,
-  hideJobStatusColumn: PropTypes.bool,
-  showDescription: PropTypes.bool,
-  allowAfterProcess: PropTypes.bool,
-  // eslint-disable-next-line react/no-unused-prop-types
-  isFinalPackageTable: PropTypes.bool,
-  isAdminView: PropTypes.bool,
-  isPackageModal: PropTypes.bool,
-  lockedRowKeys: PropTypes.arrayOf(PropTypes.string),
-  packageTitles: PropTypes.shape({
-    titles: PropTypes.objectOf(PropTypes.string),
-    onTitleChange: PropTypes.func,
-  }),
-  preTableContent: PropTypes.node,
+export interface NOWSubmissionDocumentsProps {
+  now_application_guid: string;
+  isViewMode: boolean;
+  documents?: INoWSubmissionDocument[];
+  importNowSubmissionDocumentsJob?: IImportNoWSubmissionDocumentsJob;
+  selectedRows?: {
+    selectedSubmissionRows?: string[];
+    setSelectedSubmissionRows?: (keys: string[]) => void;
+  } | null;
+  categoriesToShow?: string[];
+  displayTableDescription?: boolean;
+  tableDescription?: string | null;
+  hideImportStatusColumn?: boolean;
+  disableCategoryFilter?: boolean;
+  hideJobStatusColumn?: boolean;
+  showDescription?: boolean;
+  allowAfterProcess?: boolean;
+  isFinalPackageTable?: boolean;
+  isAdminView?: boolean;
+  isPackageModal?: boolean;
+  lockedRowKeys?: string[];
+  packageTitles?: IPermitPackageTitles | null;
+  preTableContent?: ReactNode;
   // Only supplied where the Spatial Files panel sits above this table.
-  onSpatialFileLinkClick: PropTypes.func,
+  onSpatialFileLinkClick?: (() => void) | null;
   // Replace, Archive and version history, only on the Manage Documents page
-  enableFileManagement: PropTypes.bool,
-  applicationDelay: PropTypes.objectOf(PropTypes.any),
-  draftPermitAmendment: PropTypes.objectOf(PropTypes.any),
-  userRoles: PropTypes.arrayOf(PropTypes.string),
-  createNoticeOfWorkDocumentVersion: PropTypes.func,
-  archiveNoticeOfWorkDocuments: PropTypes.func,
-  openDocument: PropTypes.func,
-};
-
-const defaultProps = {
-  selectedRows: null,
-  importNowSubmissionDocumentsJob: {},
-  categoriesToShow: [],
-  documents: [],
-  tableDescription: null,
-  displayTableDescription: false,
-  hideImportStatusColumn: false,
-  disableCategoryFilter: false,
-  hideJobStatusColumn: false,
-  showDescription: false,
-  allowAfterProcess: false,
-  isFinalPackageTable: false,
-  isAdminView: false,
-  isPackageModal: false,
-  lockedRowKeys: [],
-  packageTitles: null,
-  preTableContent: null,
-  onSpatialFileLinkClick: null,
-  enableFileManagement: false,
-  applicationDelay: undefined,
-  draftPermitAmendment: null,
-  userRoles: [],
-  createNoticeOfWorkDocumentVersion: undefined,
-  archiveNoticeOfWorkDocuments: undefined,
-  openDocument: undefined,
-};
+  enableFileManagement?: boolean;
+}
 
 const transformDocuments = (
   documents,
   importNowSubmissionDocumentsJob,
   now_application_guid,
-  props
+  documentTypeOptionsHash
 ) =>
   documents &&
   documents.map((document) => {
@@ -163,10 +129,8 @@ const transformDocuments = (
       url: document.documenturl,
       category: document.is_imported_submission
         ? document.category
-        : (props.noticeOfWorkApplicationDocumentTypeOptionsHash &&
-          props.noticeOfWorkApplicationDocumentTypeOptionsHash[
-          document.now_application_document_type_code
-          ]) ||
+        : (documentTypeOptionsHash &&
+          documentTypeOptionsHash[document.now_application_document_type_code]) ||
         document.documenttype ||
         Strings.EMPTY_FIELD,
       description: document.description || Strings.EMPTY_FIELD,
@@ -186,13 +150,90 @@ const transformDocuments = (
     };
   });
 
-export const NOWSubmissionDocuments = (props) => {
+export const NOWSubmissionDocuments: FC<NOWSubmissionDocumentsProps> = ({
+  selectedRows = null,
+  importNowSubmissionDocumentsJob,
+  categoriesToShow = [],
+  documents = [],
+  tableDescription = null,
+  displayTableDescription = false,
+  hideImportStatusColumn = false,
+  disableCategoryFilter = false,
+  hideJobStatusColumn = false,
+  showDescription = false,
+  allowAfterProcess = false,
+  isFinalPackageTable = false,
+  isAdminView = false,
+  isPackageModal = false,
+  lockedRowKeys = [],
+  packageTitles = null,
+  preTableContent = null,
+  onSpatialFileLinkClick = null,
+  enableFileManagement = false,
+  ...rest
+}) => {
+  const props = {
+    selectedRows,
+    importNowSubmissionDocumentsJob,
+    categoriesToShow,
+    documents,
+    tableDescription,
+    displayTableDescription,
+    hideImportStatusColumn,
+    disableCategoryFilter,
+    hideJobStatusColumn,
+    showDescription,
+    allowAfterProcess,
+    isFinalPackageTable,
+    isAdminView,
+    isPackageModal,
+    lockedRowKeys,
+    packageTitles,
+    preTableContent,
+    onSpatialFileLinkClick,
+    enableFileManagement,
+    ...rest,
+  };
+  const dispatch = useAppDispatch();
+  const noticeOfWork = useAppSelector(getNoticeOfWork) as INoWApplicationForm;
+  const noticeOfWorkApplicationDocumentTypeOptions = useAppSelector(
+    getDropdownNoticeOfWorkApplicationDocumentTypeOptions
+  ) as IOption[];
+  const noticeOfWorkApplicationDocumentTypeOptionsHash = useAppSelector(
+    getNoticeOfWorkApplicationDocumentTypeOptionsHash
+  );
+  const applicationDelay = useAppSelector(getApplicationDelay);
+  const draftPermitAmendment = useAppSelector(getDraftPermitAmendmentForNOW) as IPermitAmendment;
+  const userRoles = useAppSelector(getUserAccessData);
+
+  // Bound action creators
+  const openModalAction = (modalProps) => dispatch(openModal(modalProps));
+  const closeModalAction = () => dispatch(closeModal());
+  const updateApplication = (...args: Parameters<typeof updateNoticeOfWorkApplication>) =>
+    dispatch(updateNoticeOfWorkApplication(...args));
+  const fetchApplication = (applicationGuid: string) =>
+    dispatch(fetchImportedNoticeOfWorkApplication(applicationGuid));
+  const deleteDocument = (...args: Parameters<typeof deleteNoticeOfWorkApplicationDocument>) =>
+    dispatch(deleteNoticeOfWorkApplicationDocument(...args));
+  const editDocument = (...args: Parameters<typeof editNoticeOfWorkDocument>) =>
+    dispatch(editNoticeOfWorkDocument(...args));
+  const createImportJob = (...args: Parameters<typeof createNoticeOfWorkApplicationImportSubmissionDocumentsJob>) =>
+    dispatch(createNoticeOfWorkApplicationImportSubmissionDocumentsJob(...args));
+  const fetchImportJob = (...args: Parameters<typeof fetchImportNoticeOfWorkSubmissionDocumentsJob>) =>
+    dispatch(fetchImportNoticeOfWorkSubmissionDocumentsJob(...args));
+  const createDocumentVersion = (...args: Parameters<typeof createNoticeOfWorkDocumentVersion>) =>
+    dispatch(createNoticeOfWorkDocumentVersion(...args));
+  const archiveDocuments = (...args: Parameters<typeof archiveNoticeOfWorkDocuments>) =>
+    dispatch(archiveNoticeOfWorkDocuments(...args));
+  const openDocumentAction = (...args: Parameters<typeof openDocument>) =>
+    dispatch(openDocument(...args));
+
   const [isLoaded, setIsLoaded] = useState(true);
   const isInCompleteStatus =
-    props.noticeOfWork.now_application_status_code === "AIA" ||
-    props.noticeOfWork.now_application_status_code === "WDN" ||
-    props.noticeOfWork.now_application_status_code === "REJ" ||
-    props.noticeOfWork.now_application_status_code === "NPR";
+    noticeOfWork.now_application_status_code === "AIA" ||
+    noticeOfWork.now_application_status_code === "WDN" ||
+    noticeOfWork.now_application_status_code === "REJ" ||
+    noticeOfWork.now_application_status_code === "NPR";
 
   const handleAddDocument = (values) => {
     const documents = values.uploadedFiles.map((file) => {
@@ -205,46 +246,44 @@ export const NOWSubmissionDocuments = (props) => {
         preamble_author: values?.preamble_author,
         mine_document: {
           ...file,
-          mine_guid: props.noticeOfWork.mine_guid,
+          mine_guid: noticeOfWork.mine_guid,
         },
       };
     });
-    return props
-      .updateNoticeOfWorkApplication(
+    return updateApplication(
         { documents },
-        props.noticeOfWork.now_application_guid,
+        noticeOfWork.now_application_guid,
         "Successfully added documents to this application."
       )
       .then(() => {
-        props.fetchImportedNoticeOfWorkApplication(props.noticeOfWork.now_application_guid);
-        props.closeModal();
+        fetchApplication(noticeOfWork.now_application_guid);
+        closeModalAction();
       });
   };
 
   const handleEditDocument = (values) => {
-    return props
-      .editNoticeOfWorkDocument(
-        props.noticeOfWork.now_application_guid,
+    return editDocument(
+        noticeOfWork.now_application_guid,
         values.mine_document_guid,
         values
       )
       .then(() => {
-        props.fetchImportedNoticeOfWorkApplication(props.noticeOfWork.now_application_guid);
-        props.closeModal();
+        fetchApplication(noticeOfWork.now_application_guid);
+        closeModalAction();
       });
   };
 
   const handleDeleteDocument = (applicationGuid, mineDocumentGuid) => {
-    props.deleteNoticeOfWorkApplicationDocument(applicationGuid, mineDocumentGuid).then(() => {
-      props.fetchImportedNoticeOfWorkApplication(props.noticeOfWork.now_application_guid);
+    deleteDocument(applicationGuid, mineDocumentGuid).then(() => {
+      fetchApplication(noticeOfWork.now_application_guid);
     });
   };
 
   const openAddDocumentModal = () => {
-    props.openModal({
+    openModalAction({
       props: {
         onSubmit: handleAddDocument,
-        now_application_guid: props.noticeOfWork.now_application_guid,
+        now_application_guid: noticeOfWork.now_application_guid,
         title: "Add Notice of Work document",
         categoriesToShow: props.categoriesToShow,
         isEditMode: false,
@@ -255,11 +294,11 @@ export const NOWSubmissionDocuments = (props) => {
   };
 
   const openEditDocumentModal = (record) => {
-    props.openModal({
+    openModalAction({
       props: {
         initialValues: record,
         onSubmit: handleEditDocument,
-        now_application_guid: props.noticeOfWork.now_application_guid,
+        now_application_guid: noticeOfWork.now_application_guid,
         title: "Edit Notice of Work document",
         categoriesToShow: props.categoriesToShow,
         isEditMode: true,
@@ -269,12 +308,12 @@ export const NOWSubmissionDocuments = (props) => {
     });
   };
 
-  const filtered = props.noticeOfWorkApplicationDocumentTypeOptions.filter(({ subType, value }) => {
+  const filtered = noticeOfWorkApplicationDocumentTypeOptions.filter(({ subType, value }) => {
     if (subType && props.categoriesToShow.length > 0) {
       return props.categoriesToShow.includes(subType);
     }
     if (props.categoriesToShow.length > 0) {
-      return props.categoriesToShow.includes(value);
+      return props.categoriesToShow.includes(String(value));
     }
     return true;
   });
@@ -286,10 +325,10 @@ export const NOWSubmissionDocuments = (props) => {
 
   const fileManagementContext = props.enableFileManagement
     ? getFileManagementContext({
-      noticeOfWork: props.noticeOfWork,
-      applicationDelay: props.applicationDelay,
+      noticeOfWork: noticeOfWork,
+      applicationDelay: applicationDelay,
       isViewMode: props.isViewMode,
-      userRoles: props.userRoles,
+      userRoles: userRoles,
     })
     : null;
 
@@ -297,7 +336,7 @@ export const NOWSubmissionDocuments = (props) => {
     props.documents,
     props.importNowSubmissionDocumentsJob,
     props.now_application_guid,
-    props
+    noticeOfWorkApplicationDocumentTypeOptionsHash
   );
   const dataSource = fileManagementContext
     ? transformedDocuments?.map((row) =>
@@ -313,26 +352,26 @@ export const NOWSubmissionDocuments = (props) => {
     : transformedDocuments;
 
   const refreshApplication = () =>
-    props.fetchImportedNoticeOfWorkApplication(props.noticeOfWork.now_application_guid);
+    fetchApplication(noticeOfWork.now_application_guid);
 
   const actionsColumn = fileManagementActionsColumn({
-    openDocument: props.openDocument,
+    openDocument: openDocumentAction,
     onReplace: (record) =>
       openReplaceFileModal({
         record,
-        applicationGuid: props.noticeOfWork.now_application_guid,
-        openModal: props.openModal,
-        createNoticeOfWorkDocumentVersion: props.createNoticeOfWorkDocumentVersion,
+        applicationGuid: noticeOfWork.now_application_guid,
+        openModal: openModalAction,
+        createNoticeOfWorkDocumentVersion: createDocumentVersion,
         onReplaced: refreshApplication,
       }),
     onArchive: (record) =>
       openArchiveFileModal({
         record,
-        applicationGuid: props.noticeOfWork.now_application_guid,
-        conditions: props.draftPermitAmendment?.conditions,
-        openModal: props.openModal,
-        closeModal: props.closeModal,
-        archiveNoticeOfWorkDocuments: props.archiveNoticeOfWorkDocuments,
+        applicationGuid: noticeOfWork.now_application_guid,
+        conditions: draftPermitAmendment?.conditions,
+        openModal: openModalAction,
+        closeModal: closeModalAction,
+        archiveNoticeOfWorkDocuments: archiveDocuments,
         onArchived: refreshApplication,
       }),
   });
@@ -340,7 +379,7 @@ export const NOWSubmissionDocuments = (props) => {
   // Matching on the guids the panel itself lists keeps "tinted here" and "shown in Spatial Files"
   // the same statement, and works for both imported submissions and documents added in Core.
   const spatialFileGuids = new Set(
-    (props.noticeOfWork?.spatial_document_bundles || [])
+    (noticeOfWork?.spatial_document_bundles || [])
       .flatMap((bundle) => bundle?.bundle_documents || [])
       .flatMap((document) => [document?.mine_document_guid, document?.document_manager_guid])
       .filter(Boolean)
@@ -368,7 +407,16 @@ export const NOWSubmissionDocuments = (props) => {
       dataIndex: "filename",
       key: "filename",
       sorter: (a, b) => (a.filename > b.filename ? -1 : 1),
-      render: (text) => <div title="File Name">{text}</div>,
+      render: (text, record) => (
+        <div title="File Name">
+          {text}
+          {renderPermitPackageDetailsSummary(
+            record,
+            props.selectedRows?.selectedSubmissionRows,
+            props.packageTitles
+          )}
+        </div>
+      ),
     }
     : {
       title: "File Name",
@@ -473,7 +521,7 @@ export const NOWSubmissionDocuments = (props) => {
                   }}
                 >
                   <Button className="no-margin" ghost type="primary" size="small">
-                    <img name="remove" src={TRASHCAN} alt="Remove document" />
+                    <img src={TRASHCAN} alt="Remove document" />
                   </Button>
                 </Popconfirm>
               )}
@@ -484,13 +532,13 @@ export const NOWSubmissionDocuments = (props) => {
                 className="no-margin"
                 onClick={() => openEditDocumentModal(record)}
               >
-                <img name="remove" src={EDIT_OUTLINE_VIOLET} alt="Edit document" />
+                <img src={EDIT_OUTLINE_VIOLET} alt="Edit document" />
               </Button>
             </NOWActionWrapper>
           );
         }
         return (
-          <div disabled onClick={(event) => event.stopPropagation()}>
+          <div onClick={(event) => event.stopPropagation()}>
             <NOWActionWrapper
               permission={Permission.EDIT_PERMITS}
               tab={props.isAdminView ? "" : "REV"}
@@ -503,7 +551,7 @@ export const NOWSubmissionDocuments = (props) => {
                 className="no-margin"
               >
                 <Button className="no-margin" ghost type="primary" size="small">
-                  <img className="lessOpacity" name="remove" src={TRASHCAN} alt="Remove document" />
+                  <img className="lessOpacity" src={TRASHCAN} alt="Remove document" />
                 </Button>
               </Tooltip>
               <Tooltip
@@ -515,7 +563,7 @@ export const NOWSubmissionDocuments = (props) => {
                 <Button className="no-margin" ghost type="primary" size="small">
                   <img
                     className="lessOpacity"
-                    name="remove"
+                   
                     src={EDIT_OUTLINE_VIOLET}
                     alt="Edit document"
                   />
@@ -608,7 +656,7 @@ export const NOWSubmissionDocuments = (props) => {
       if (isVersionRow(record)) {
         return null;
       }
-      let statusBadgeType = "warning";
+      let statusBadgeType: BadgeProps["status"] = "warning";
       let statusText = "Not Started";
       let error = null;
 
@@ -649,7 +697,7 @@ export const NOWSubmissionDocuments = (props) => {
         !isVersionRow(record) &&
         isInCompleteStatus &&
         moment(record.upload_date, "YYYY-MM-DD") >
-        moment(props.noticeOfWork.decision_by_user_date, "YYYY-MM-DD")
+        moment(noticeOfWork.decision_by_user_date, "YYYY-MM-DD")
       ) {
         isPostDecision = true;
       }
@@ -667,7 +715,7 @@ export const NOWSubmissionDocuments = (props) => {
     },
   };
 
-  let columns = [categoryColumn, fileNameColumn];
+  let columns: any[] = [categoryColumn, fileNameColumn];
 
   if (isInCompleteStatus) {
     columns = [...columns, postApprovalDocumentColumn];
@@ -690,13 +738,17 @@ export const NOWSubmissionDocuments = (props) => {
   }
 
   if (props.isPackageModal) {
+    const packageColumnProps = {
+      selectedKeys: props.selectedRows?.selectedSubmissionRows,
+      lockedRowKeys: props.lockedRowKeys,
+      packageTitles: props.packageTitles,
+    };
     const titleColumns = props.packageTitles
       ? [
-        renderPermitPackageTitleColumn({
-          selectedKeys: props.selectedRows?.selectedSubmissionRows,
-          lockedRowKeys: props.lockedRowKeys,
-          packageTitles: props.packageTitles,
-        }),
+        renderPermitPackageTitleColumn(packageColumnProps),
+        ...(props.packageTitles.showTypeSelector
+          ? [renderPermitPackageTypeColumn(packageColumnProps)]
+          : []),
       ]
       : [];
     columns = [
@@ -752,11 +804,10 @@ export const NOWSubmissionDocuments = (props) => {
 
     const triggerImportJob = () => {
       setIsLoaded(false);
-      return props
-        .createNoticeOfWorkApplicationImportSubmissionDocumentsJob(props.now_application_guid)
+      return createImportJob(props.now_application_guid)
         .then(() =>
           new Promise((resolve) => setTimeout(resolve, 1000)).then(() =>
-            props.fetchImportNoticeOfWorkSubmissionDocumentsJob(props.now_application_guid)
+            fetchImportJob(props.now_application_guid)
           )
         )
         .finally(() => setIsLoaded(true));
@@ -846,7 +897,7 @@ export const NOWSubmissionDocuments = (props) => {
             <div className="now-table-header-actions">
               <NOWDownloadAllButton
                 rows={dataSource ?? []}
-                mineGuid={props.noticeOfWork.mine_guid}
+                mineGuid={noticeOfWork.mine_guid}
                 documentType="application-documents"
               />
               {addDocumentButton}
@@ -862,7 +913,7 @@ export const NOWSubmissionDocuments = (props) => {
         dataSource={dataSource}
         rowKey={
           props.enableFileManagement
-            ? (record) => record.mine_document_version_guid ?? record.key
+            ? (record: IFileManagementRecord) => record.mine_document_version_guid ?? record.key
             : "key"
         }
         expandProps={
@@ -875,7 +926,13 @@ export const NOWSubmissionDocuments = (props) => {
               // Show the expand icon beside the file name, wherever it sits in the table
               expandIconColumnIndex: columns.findIndex((column) => column.key === "filename"),
             }
-            : null
+            : props.isPackageModal
+              ? getPermitPackageExpandProps({
+                selectedKeys: props.selectedRows?.selectedSubmissionRows,
+                lockedRowKeys: props.lockedRowKeys,
+                packageTitles: props.packageTitles,
+              })
+              : null
         }
         rowClassName={(record) =>
           [
@@ -891,7 +948,7 @@ export const NOWSubmissionDocuments = (props) => {
             ? {
               selectedRowKeys: props.selectedRows.selectedSubmissionRows,
               onChange: (selectedRowKeys) => {
-                props.selectedRows.setSelectedSubmissionRows(selectedRowKeys);
+                props.selectedRows.setSelectedSubmissionRows(selectedRowKeys as string[]);
               },
               getCheckboxProps: (record) => ({
                 disabled:
@@ -906,38 +963,4 @@ export const NOWSubmissionDocuments = (props) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-  noticeOfWorkApplicationDocumentTypeOptions: getDropdownNoticeOfWorkApplicationDocumentTypeOptions(
-    state
-  ),
-  noticeOfWorkApplicationDocumentTypeOptionsHash: getNoticeOfWorkApplicationDocumentTypeOptionsHash(
-    state
-  ),
-  noticeOfWork: getNoticeOfWork(state),
-  applicationDelay: getApplicationDelay(state),
-  draftPermitAmendment: getDraftPermitAmendmentForNOW(state),
-  userRoles: getUserAccessData(state),
-});
-
-const mapDispatchToProps = (dispatch) =>
-  bindActionCreators(
-    {
-      openModal,
-      closeModal,
-      updateNoticeOfWorkApplication,
-      fetchImportedNoticeOfWorkApplication,
-      deleteNoticeOfWorkApplicationDocument,
-      editNoticeOfWorkDocument,
-      createNoticeOfWorkApplicationImportSubmissionDocumentsJob,
-      fetchImportNoticeOfWorkSubmissionDocumentsJob,
-      createNoticeOfWorkDocumentVersion,
-      archiveNoticeOfWorkDocuments,
-      openDocument,
-    },
-    dispatch
-  );
-
-NOWSubmissionDocuments.propTypes = propTypes;
-NOWSubmissionDocuments.defaultProps = defaultProps;
-
-export default connect(mapStateToProps, mapDispatchToProps)(NOWSubmissionDocuments);
+export default NOWSubmissionDocuments;

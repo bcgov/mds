@@ -110,3 +110,47 @@ describe("allSelectedHaveTitles", () => {
     expect(allSelectedHaveTitles()).toBe(true);
   });
 });
+
+describe("package type, author and date", () => {
+  const {
+    renderPermitPackageTypeColumn,
+    renderPermitPackageDetailsSummary,
+    getMissingTitleKeys,
+  } = jest.requireActual("@/components/noticeOfWork/applications/permitPackageTitleColumn");
+  const record = { key: "doc-1" };
+
+  it("defaults the type to Document and reports changes", () => {
+    const onDetailChange = jest.fn();
+    const column = renderPermitPackageTypeColumn({
+      selectedKeys: ["doc-1"],
+      packageTitles: { titles: {}, onTitleChange: jest.fn(), onDetailChange, details: {} },
+    });
+    renderCell(column, record);
+    expect(screen.getByText("Document")).toBeInTheDocument();
+  });
+
+  it("summarises filled in author and date while collapsed", () => {
+    const packageTitles = {
+      titles: {},
+      onDetailChange: jest.fn(),
+      expandedKeys: [],
+      details: { "doc-1": { author: "A", date: "2024-01-01" } },
+    };
+    render(<>{renderPermitPackageDetailsSummary(record, ["doc-1"], packageTitles)}</>);
+    expect(screen.getByText("Author ✓ Date ✓")).toBeInTheDocument();
+  });
+
+  it("hides the summary while expanded", () => {
+    const packageTitles = {
+      titles: {},
+      onDetailChange: jest.fn(),
+      expandedKeys: ["doc-1"],
+      details: { "doc-1": { author: "A" } },
+    };
+    expect(renderPermitPackageDetailsSummary(record, ["doc-1"], packageTitles)).toBeNull();
+  });
+
+  it("lists selected rows missing a title in order", () => {
+    expect(getMissingTitleKeys(["a", "b", "c"], ["c"], { a: "", b: " ", c: "" })).toEqual(["a", "b"]);
+  });
+});

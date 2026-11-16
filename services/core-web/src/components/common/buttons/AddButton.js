@@ -12,6 +12,10 @@ const propTypes = {
   children: PropTypes.any,
   onClick: PropTypes.func.isRequired,
   type: PropTypes.string,
+  className: PropTypes.string,
+  disabled: PropTypes.bool,
+  // eslint-disable-next-line react/forbid-prop-types
+  style: PropTypes.object,
 };
 
 const defaultProps = {

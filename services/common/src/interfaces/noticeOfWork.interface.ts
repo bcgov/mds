@@ -1,3 +1,4 @@
+import { ISpatialBundle } from "./document/spatialBundle.interface";
 import { ICreatePermitSiteProperties, IimportedNOWApplication, IMineDocument, INoticeOfWorkApplicationProgress, INoWDocument, IParty } from "@mds/common/interfaces";
 
 export interface INoticeOfWorkContact {
@@ -124,6 +125,7 @@ export interface INoWApplicationForm extends Omit<IimportedNOWApplication, "docu
   mine_latitude: string;
   mine_longitude: string;
   permittee: IParty | {};
+  spatial_document_bundles?: ISpatialBundle[];
   documents: Array<{
     id?: number;
     messageid?: number;
@@ -146,9 +148,12 @@ export interface INoWApplicationForm extends Omit<IimportedNOWApplication, "docu
     deleted_ind?: boolean;
     create_timestamp?: string;
     mine_document?: {
+      mine_document_guid?: string;
+      document_manager_guid?: string;
+      document_name?: string;
       upload_date?: string;
     };
-    permit_package_document_type_code?: string;
+    permit_package_document_type_code?: "FIGURE" | "DOCUMENT";
   }>;
   locked_ntr_guid?: string | null;
   regional_contact: string;
@@ -164,8 +169,12 @@ export interface INoWApplicationForm extends Omit<IimportedNOWApplication, "docu
     mine_document_guid?: string;
     document_manager_guid?: string;
     is_final_package?: boolean;
-    final_package_order: number;
+    final_package_order?: number;
     is_referral_package?: boolean;
-    permit_package_document_type_code?: string;
+    now_application_document_xref_guid?: string;
+    preamble_title?: string;
+    preamble_author?: string;
+    preamble_date?: string;
+    permit_package_document_type_code?: "FIGURE" | "DOCUMENT";
   }>;
 }
