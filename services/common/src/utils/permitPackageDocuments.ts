@@ -19,6 +19,7 @@ export interface PermitPackageDocumentRow {
   preamble_date?: string | null;
   category?: string;
   description?: string;
+  document_name?: string | null;
   permit_package_document_type_code?: "FIGURE" | "DOCUMENT";
   isLockedApplicationForm?: boolean;
   mine_document?: {
@@ -269,6 +270,12 @@ export const isFileReferencedInConditions = (
     return referencedHere || isFileReferencedInConditions(condition.sub_conditions, guid);
   });
 
+/**
+ * A permit package file's title, falling back to its file name when it has no title (matches the backend's _ordered_permit_package_documents).
+ */
+export const getPermitPackageFileTitle = (doc: PermitPackageDocumentRow): string | undefined =>
+  doc.preamble_title || doc.mine_document?.document_name || doc.document_name || undefined;
+
 export interface PermitPackageFileReference {
   found: boolean;
   label?: string;
@@ -296,7 +303,7 @@ export const resolvePermitPackageFileReference = (
   }
 
   const prefix = match.permit_package_document_type_code === "FIGURE" ? "Figure" : "Permit Document";
-  return { found: true, label: `${prefix} ${match.orderLabel}, ${match.preamble_title}` };
+  return { found: true, label: `${prefix} ${match.orderLabel}, ${getPermitPackageFileTitle(match)}` };
 };
 
 const PERMIT_PACKAGE_LABEL_TRUNCATION_MARKER = "[...]";

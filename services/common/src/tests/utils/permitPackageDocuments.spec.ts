@@ -3,6 +3,7 @@ import {
   getNowApplicationDocument,
   getOrderedPermitPackageDocuments,
   getPermitPackageFilesByType,
+  getPermitPackageFileTitle,
   getPermitPackageOrderLabel,
   isApplicationCoreDocument,
   isFileReferencedInConditions,
@@ -407,6 +408,44 @@ describe("resolvePermitPackageFileReference", () => {
     expect(resolvePermitPackageFileReference("ntr-guid", noticeOfWork, {})).toEqual({
       found: false,
     });
+  });
+
+  it("falls back to the file name when a file has no title", () => {
+    const document = makeCoreDoc({
+      now_application_document_xref_guid: "doc-1",
+      preamble_title: undefined,
+      mine_document: { document_name: "untitled.pdf" },
+    });
+    const noticeOfWork = {
+      application_type_code: "NOW",
+      documents: [document],
+      filtered_submission_documents: [],
+    };
+
+    expect(resolvePermitPackageFileReference("doc-1", noticeOfWork, {})).toEqual({
+      found: true,
+      label: "Permit Document 1.2, untitled.pdf",
+    });
+  });
+});
+
+describe("getPermitPackageFileTitle", () => {
+  it("uses the title when there is one", () => {
+    expect(getPermitPackageFileTitle(makeCoreDoc({ preamble_title: "Site Map" }))).toBe("Site Map");
+  });
+
+  it("falls back to a Core file's document name", () => {
+    expect(
+      getPermitPackageFileTitle(
+        makeCoreDoc({ preamble_title: "", mine_document: { document_name: "core.pdf" } })
+      )
+    ).toBe("core.pdf");
+  });
+
+  it("falls back to an imported file's document name", () => {
+    expect(getPermitPackageFileTitle({ preamble_title: undefined, document_name: "imported.pdf" })).toBe(
+      "imported.pdf"
+    );
   });
 });
 

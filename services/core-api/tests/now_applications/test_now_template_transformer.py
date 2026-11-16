@@ -492,6 +492,23 @@ def test_get_permit_package_files_falls_back_to_file_name_without_title(db_sessi
     assert files[0]['reference'] == 'Permit Document 1.2'
 
 
+def test_build_permit_package_file_label_map_falls_back_to_file_name_without_title(db_session):
+    identity = NOWApplicationIdentityFactory(now_application=NOWApplicationFactory())
+    now_application = identity.now_application
+    untitled = _add_permit_package_document(
+        db_session, now_application, identity.mine, preamble_title=None, final_package_order=1)
+    imported = _add_imported_permit_package_document(
+        db_session, now_application, identity.mine, preamble_title=None, final_package_order=2,
+        document_name='untitled-imported.pdf')
+
+    label_map = now_template_transformer.build_permit_package_file_label_map(now_application)
+
+    assert label_map[str(untitled.now_application_document_xref_guid)] == \
+        f'Permit Document 1.2, {untitled.mine_document.document_name}'
+    assert label_map[str(imported.now_application_document_xref_guid)] == \
+        'Permit Document 1.3, untitled-imported.pdf'
+
+
 def test_get_permit_package_files_excludes_files_not_in_the_package(db_session):
     identity = NOWApplicationIdentityFactory(now_application=NOWApplicationFactory())
     now_application = identity.now_application

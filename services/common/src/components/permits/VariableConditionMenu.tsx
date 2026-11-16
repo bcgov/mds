@@ -11,7 +11,11 @@ import { QuestionCircleOutlined } from "@ant-design/icons";
 import { TextAreaRef } from "antd/lib/input/TextArea";
 import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
 import { Feature } from "@mds/common/utils/featureFlag";
-import { getPermitPackageFilesByType, resolvePermitPackageFileReference } from "@mds/common/utils/permitPackageDocuments";
+import {
+  getPermitPackageFilesByType,
+  getPermitPackageFileTitle,
+  resolvePermitPackageFileReference,
+} from "@mds/common/utils/permitPackageDocuments";
 import { insertConditionVariableIntoQuill } from "@mds/common/components/permits/quill/insertConditionVariable";
 import { PERMIT_PACKAGE_FILE_TOKEN_PREFIX, getPermitPackageFileToken } from "@mds/common/utils/conditionTokenParser";
 
@@ -175,7 +179,7 @@ const VariableConditionMenu: FC<VariableConditionMenuProps> = ({
               label: "Figures",
               children: figures.map((figure) => ({
                 key: getPermitPackageFileToken(figure.now_application_document_xref_guid),
-                label: `${figure.orderLabel} ${figure.preamble_title}`,
+                label: `${figure.orderLabel} ${getPermitPackageFileTitle(figure)}`,
               })),
             },
             {
@@ -183,7 +187,7 @@ const VariableConditionMenu: FC<VariableConditionMenuProps> = ({
               label: "Documents",
               children: documents.map((document) => ({
                 key: getPermitPackageFileToken(document.now_application_document_xref_guid),
-                label: `${document.orderLabel} ${document.preamble_title}`,
+                label: `${document.orderLabel} ${getPermitPackageFileTitle(document)}`,
               })),
             },
           ],

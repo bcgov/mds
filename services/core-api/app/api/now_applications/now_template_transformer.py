@@ -101,6 +101,9 @@ def _ordered_permit_package_documents(now_application):
     Figures and Documents are numbered as two independent sequences, not one combined list:
     final_package_order is scoped per type.
 
+    Falls back to the file name when a file has no title - Core requires a title before issuing,
+    but only for permits with conditions in Core, and only since 2021.
+
     Callers that resolve more than one token for the same now_application (nearly all of them -
     a permit condition can easily carry a dozen tokens across nested sub-conditions) should call
     this once via build_permit_package_file_label_map and reuse the result, rather than calling it
@@ -124,15 +127,16 @@ def _ordered_permit_package_documents(now_application):
         if locked_ntr_guid and str(doc.now_application_document_xref_guid) == locked_ntr_guid:
             locked = doc
             continue
+        file_name = doc.mine_document.document_name if doc.mine_document else None
         _bucket_for(doc.permit_package_document_type_code).append(
             (doc.final_package_order, str(doc.now_application_document_xref_guid),
-             doc.preamble_title))
+             doc.preamble_title or file_name))
 
     for doc in now_application.get_filtered_submissions_documents(now_application):
         if doc.get('is_final_package') and doc.get('now_application_document_xref_guid'):
             _bucket_for(doc.get('permit_package_document_type_code')).append(
                 (doc.get('final_package_order'), doc['now_application_document_xref_guid'],
-                 doc.get('preamble_title')))
+                 doc.get('preamble_title') or doc.get('document_name')))
 
     figures.sort(key=lambda entry: entry[0] if entry[0] is not None else 0)
     documents.sort(key=lambda entry: entry[0] if entry[0] is not None else 0)
@@ -184,9 +188,6 @@ def get_permit_package_files(now_application):
     """
     The permit package files in the order and with the references used in the issued permit, each
     with its mine_document so it can be opened (e.g. MineSpace's Permit Package column).
-
-    Falls back to the file name when a file has no title - Core requires a title before issuing,
-    but only for permits with conditions in Core, and only since 2021.
     """
     if not now_application:
         return []
@@ -198,16 +199,14 @@ def get_permit_package_files(now_application):
 
     files = []
     for order_label, guid, title, type_code in _ordered_permit_package_documents(now_application):
-        mine_document = mine_documents_by_guid.get(guid)
-        display_title = title or (mine_document.document_name if mine_document else None)
         files.append({
             'now_application_document_xref_guid': guid,
             'permit_package_document_type_code': type_code,
             'order_label': order_label,
-            'title': display_title,
+            'title': title,
             'reference': format_permit_package_file_reference(order_label, type_code),
-            'label': format_permit_package_file_label(order_label, display_title, type_code),
-            'mine_document': mine_document,
+            'label': format_permit_package_file_label(order_label, title, type_code),
+            'mine_document': mine_documents_by_guid.get(guid),
         })
 
     # The issued permit's preamble lists Figures before Documents, so the files are returned in that order too
