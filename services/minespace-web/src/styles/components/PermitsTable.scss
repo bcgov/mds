@@ -2,3 +2,9 @@
     text-wrap: wrap;
     max-width: "300px";
 }
+
+// Overrides the global `ul { list-style-position: inside }` so wrapped lines line up with the text, not the bullet (matches Core)
+.permit-file-list {
+    list-style-position: outside;
+    padding-inline-start: 20px;
+}

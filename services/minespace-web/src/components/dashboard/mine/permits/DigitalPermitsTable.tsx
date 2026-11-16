@@ -2,11 +2,8 @@ import React, { FC } from "react";
 import { connect } from "react-redux";
 
 import { openModal } from "@mds/common/redux/actions/modalActions";
-import { truncateFilename } from "@common/utils/helpers";
 import { getDropdownPermitStatusOptions } from "@mds/common/redux/selectors/staticContentSelectors";
-import { downloadFileFromDocumentManager } from "@mds/common/redux/utils/actionlessNetworkCalls";
-import LinkButton from "@/components/common/LinkButton";
-import * as Strings from "@/constants/strings";
+import { permitFileColumns } from "@/components/dashboard/mine/permits/permitFileColumns";
 import CoreTable from "@mds/common/components/common/CoreTable";
 import { Badge } from "antd";
 import {
@@ -118,25 +115,12 @@ export const PermitsTable: FC<PermitsTableProps> = (props) => {
   columns.splice(3, 0, issuanceStateColumn);
   columns.push(actionColumn);
 
-  const finalApplicationPackage = (amendment) => {
-    const finalAppPackageCore =
-      amendment?.now_application_documents?.length > 0
-        ? amendment.now_application_documents.filter((doc) => doc.is_final_package)
-        : [];
-    const finalAppPackageImported =
-      amendment?.imported_now_application_documents?.length > 0
-        ? amendment.imported_now_application_documents.filter((doc) => doc.is_final_package)
-        : [];
-    return finalAppPackageCore.concat(finalAppPackageImported);
-  };
-
   const transformExpandedPermitRowData = (amendment: IPermitAmendment, amendmentNumber) => ({
     ...amendment,
     amendmentNumber,
     maps: amendment.now_application_documents?.filter(
       (doc) => doc.now_application_document_sub_type_code === "MDO"
     ),
-    permitPackage: finalApplicationPackage(amendment),
   });
 
   const transformRowData = (permit) => {
@@ -169,48 +153,7 @@ export const PermitsTable: FC<PermitsTableProps> = (props) => {
     renderDateColumn("issue_date", "Date Issued"),
     renderDateColumn("authorization_end_date", "Authorization End Date"),
     renderTextColumn("description", "Description"),
-    {
-      title: "Permit Package",
-      dataIndex: "permitPackage",
-      key: "permitPackage",
-      render: (text) => (
-        <div title="Permit Package">
-          {(text &&
-            text.length > 0 &&
-            text.map((file) => (
-              <LinkButton
-                key={file.mine_document.document_manager_guid}
-                onClick={() => downloadFileFromDocumentManager(file.mine_document)}
-                title={file.mine_document.document_name}
-              >
-                <p className="wrapped-text">{truncateFilename(file.mine_document.document_name)}</p>
-              </LinkButton>
-            ))) ||
-            Strings.EMPTY_FIELD}
-        </div>
-      ),
-    },
-    {
-      title: "Permit Files",
-      dataIndex: "related_documents",
-      key: "documents",
-      render: (text) => (
-        <div title="Permit Files">
-          {(text &&
-            text.length > 0 &&
-            text.map((file) => (
-              <LinkButton
-                key={file.document_manager_guid}
-                onClick={() => downloadFileFromDocumentManager(file)}
-                title={file.document_name}
-              >
-                <p className="wrapped-text">{truncateFilename(file.document_name)}</p>
-              </LinkButton>
-            ))) ||
-            Strings.EMPTY_FIELD}
-        </div>
-      ),
-    },
+    ...permitFileColumns,
   ];
 
   return (

@@ -24,7 +24,13 @@ import CoreTable from "@mds/common/components/common/CoreTable";
 import DocumentLink from "@mds/common/components/documents/DocumentLink";
 import * as route from "@/constants/routes";
 import { VIEW_MINE_PERMIT } from "@/constants/routes";
-import { IMineDocument, IPermit, IPermitAmendment } from "@mds/common/interfaces";
+import {
+  IMineDocument,
+  IPermit,
+  IPermitAmendment,
+  IPermitPackageFile,
+} from "@mds/common/interfaces";
+import { truncatePermitPackageLabel } from "@mds/common/utils/permitPackageDocuments";
 import { ColumnsType } from "antd/lib/table";
 import {
   ITableAction,
@@ -83,18 +89,6 @@ const renderDocumentLink = (document, linkTitleOverride = null) => (
     linkTitleOverride={linkTitleOverride}
   />
 );
-
-const finalApplicationPackage = (amendment) => {
-  const finalAppPackageCore =
-    amendment?.now_application_documents?.length > 0
-      ? amendment.now_application_documents.filter((doc) => doc.is_final_package)
-      : [];
-  const finalAppPackageImported =
-    amendment?.imported_now_application_documents?.length > 0
-      ? amendment.imported_now_application_documents.filter((doc) => doc.is_final_package)
-      : [];
-  return finalAppPackageCore.concat(finalAppPackageImported);
-};
 
 const renderPermitNo = (permit) => {
   const permitNoShouldLinkToDocument =
@@ -263,7 +257,6 @@ export const MinePermitTable: React.FC<MinePermitTableProps> = ({
     authorizationEndDate: formatDate(amendment.authorization_end_date) || Strings.EMPTY_FIELD,
     description: amendment.description || Strings.EMPTY_FIELD,
     isAssociatedWithNOWApplicationImportedToCore: "",
-    finalApplicationPackage: finalApplicationPackage(amendment),
     maps: amendment.now_application_documents?.filter(
       (doc) => doc.now_application_document_sub_type_code === "MDO"
     ),
@@ -589,16 +582,26 @@ export const MinePermitTable: React.FC<MinePermitTableProps> = ({
     },
     {
       title: "Permit Package",
-      dataIndex: "finalApplicationPackage",
-      key: "finalApplicationPackage",
-      render: (text) => (
+      dataIndex: "permit_package_files",
+      key: "permit_package_files",
+      // Files arrive in issued permit order; long labels are shortened (reference always kept), with the full label on hover
+      render: (files: IPermitPackageFile[]) => (
         <div title="Permit Package">
           <ul>
-            {text?.map((file) => (
-              <li key={file.document_manager_guid} className="wrapped-text">
-                {renderDocumentLink(file.mine_document)}
-              </li>
-            ))}
+            {files?.map((file) => {
+              const displayLabel = truncatePermitPackageLabel(file.reference, file.title);
+              return (
+                <li
+                  key={file.now_application_document_xref_guid}
+                  className="wrapped-text"
+                  title={file.label}
+                >
+                  {file.mine_document
+                    ? renderDocumentLink(file.mine_document, displayLabel)
+                    : displayLabel}
+                </li>
+              );
+            })}
           </ul>
         </div>
       ),

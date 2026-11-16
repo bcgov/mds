@@ -102,3 +102,31 @@ def test_permit_amendment_model_now_application_documents_excludes_archived(db_s
     db_session.commit()
 
     assert [doc.mine_document.document_name for doc in permit_amendment.now_application_documents] == ['active-map.pdf']
+
+
+def test_permit_amendment_model_permit_package_files(db_session):
+    mine, permit = create_mine_and_permit()
+    permit_amendment = permit.permit_amendments[0]
+    now_application_identity = NOWApplicationIdentityFactory(mine=mine)
+    permit_amendment.now_application_guid = now_application_identity.now_application_guid
+    mine_document = MineDocumentFactory(mine=mine, document_name='site-plan.pdf')
+    db_session.add(NOWApplicationDocumentXref(
+        now_application_id=now_application_identity.now_application_id,
+        mine_document_guid=mine_document.mine_document_guid,
+        now_application_document_type_code='MPW',
+        is_final_package=True,
+        final_package_order=1,
+        preamble_title='Site Plan',
+        permit_package_document_type_code='FIGURE'))
+    db_session.commit()
+
+    files = permit_amendment.permit_package_files
+
+    assert [f['label'] for f in files] == ['Figure 1, Site Plan']
+    assert files[0]['mine_document'].document_name == 'site-plan.pdf'
+
+
+def test_permit_amendment_model_permit_package_files_without_now_application(db_session):
+    mine, permit = create_mine_and_permit()
+
+    assert permit.permit_amendments[0].permit_package_files == []

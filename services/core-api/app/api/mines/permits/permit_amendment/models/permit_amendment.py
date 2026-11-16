@@ -168,6 +168,15 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
             _imported_now_app_docs = self.now_application_identity.now_application.imported_submission_documents
         return _imported_now_app_docs
 
+    @property
+    def permit_package_files(self):
+        # Imported here because now_template_transformer imports PermitAmendment
+        from app.api.now_applications.now_template_transformer import get_permit_package_files
+
+        if self.now_application_identity and self.now_application_identity.now_application:
+            return get_permit_package_files(self.now_application_identity.now_application)
+        return []
+
     @hybrid_property
     def has_permit_conditions(self):
         permit_conditions = PermitConditions.query.filter_by(

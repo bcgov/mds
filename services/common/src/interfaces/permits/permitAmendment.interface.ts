@@ -1,9 +1,21 @@
 import { VC_CRED_ISSUE_STATES } from "@mds/common/constants/enums";
+import { IMineDocument } from "../mineDocument.interface";
 import { INoWDocument } from "../NoWDocument.interface";
 import { INoWImportedApplicationDocument } from "../NoWImportedApplicationDocument.interface";
 import { IMineReportPermitRequirement } from "./mineReportPermitRequirements.interface";
 import { IPermitAmendmentDocument } from "./permitAmendmentDocument.interface";
 import { IPermitCondition, IPermitConditionCategory } from "./permitCondition.interface";
+
+// A permit package file in issued permit order, with the reference used in the issued permit (e.g. "Figure 1, Site Plan")
+export interface IPermitPackageFile {
+  now_application_document_xref_guid: string;
+  permit_package_document_type_code: "FIGURE" | "DOCUMENT";
+  order_label: string;
+  title: string;
+  reference: string;
+  label: string;
+  mine_document: IMineDocument;
+}
 
 export interface IActiveOrgbookPublishStatus {
   unsigned_payload_hash: string;
@@ -39,6 +51,7 @@ export interface IPermitAmendment {
   now_application_guid: string;
   now_application_documents: INoWDocument[];
   imported_now_application_documents: INoWImportedApplicationDocument[];
+  permit_package_files: IPermitPackageFile[];
   related_documents: IPermitAmendmentDocument[];
   permit_conditions_last_updated_by: string;
   permit_conditions_last_updated_date: string;
