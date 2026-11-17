@@ -113,11 +113,9 @@ export const PermitPackage: FC<PermitPackageProps> = ({
 
     return dispatch(
       updateNoticeOfWorkApplication(payload, noticeOfWork.now_application_guid, message)
-    ).then(() =>
-      dispatch(fetchImportedNoticeOfWorkApplication(noticeOfWork.now_application_guid)).then(() =>
-        dispatch(closeModal())
-      )
-    );
+    )
+      .then(() => dispatch(fetchImportedNoticeOfWorkApplication(noticeOfWork.now_application_guid)))
+      .then(() => dispatch(closeModal()));
   };
 
   const downloadDocumentPackage = () => {
@@ -216,7 +214,7 @@ export const PermitPackage: FC<PermitPackageProps> = ({
       <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab={isAdminView ? undefined : "REV"}>
         <Button type="default" className="full-mobile" onClick={openFinalDocumentPackageModal}>
           <img src={EDIT_OUTLINE} title="Edit" alt="Edit" className="padding-md--right" />
-          Edit
+          <span>Edit</span>
         </Button>
       </NOWActionWrapper>
     </div>

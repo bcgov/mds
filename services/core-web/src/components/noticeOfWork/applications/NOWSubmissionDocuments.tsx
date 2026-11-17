@@ -11,10 +11,6 @@ import {
   IOption,
   IPermitAmendment,
 } from "@mds/common/interfaces";
-import {
-  INoWSubmissionDocument,
-  IPermitPackageTitles,
-} from "@/components/noticeOfWork/applications/permitPackageTitleColumn";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Strings from "@mds/common/constants/strings";
@@ -49,11 +45,16 @@ import {
 } from "@mds/common/redux/selectors/staticContentSelectors";
 import { EDIT_OUTLINE_VIOLET, TRASHCAN } from "@/constants/assets";
 import AddButton from "@/components/common/buttons/AddButton";
-import ReferralConsultationPackage from "@/components/noticeOfWork/applications/referals/ReferralConsultationPackage";
 import PermitPackage from "@/components/noticeOfWork/applications/PermitPackage";
+import {
+  packageFlagColumn,
+  uploadDateColumn,
+} from "@/components/noticeOfWork/applications/nowDocumentColumns";
 import NOWDownloadAllButton from "@/components/noticeOfWork/applications/NOWDownloadAllButton";
 import CoreTable from "@mds/common/components/common/CoreTable";
 import {
+  INoWSubmissionDocument,
+  IPermitPackageTitles,
   getPermitPackageExpandProps,
   renderPermitPackageDetailsSummary,
   renderPermitPackageTitleColumn,
@@ -108,8 +109,7 @@ const transformDocuments = (
   now_application_guid,
   documentTypeOptionsHash
 ) =>
-  documents &&
-  documents.map((document) => {
+  documents?.map((document) => {
     const importNowSubmissionDocument =
       !isEmpty(importNowSubmissionDocumentsJob) &&
         !isEmpty(importNowSubmissionDocumentsJob.import_now_submission_documents)
@@ -129,8 +129,7 @@ const transformDocuments = (
       url: document.documenturl,
       category: document.is_imported_submission
         ? document.category
-        : (documentTypeOptionsHash &&
-          documentTypeOptionsHash[document.now_application_document_type_code]) ||
+        : documentTypeOptionsHash?.[document.now_application_document_type_code] ||
         document.documenttype ||
         Strings.EMPTY_FIELD,
       description: document.description || Strings.EMPTY_FIELD,
@@ -485,13 +484,6 @@ export const NOWSubmissionDocuments: FC<NOWSubmissionDocumentsProps> = ({
     render: (text) => <div title="Category">{text}</div>,
   };
 
-  const uploadDateColumn = {
-    title: "Date/Time",
-    dataIndex: "upload_date",
-    key: "upload_date",
-    sorter: (a, b) => (moment(a.upload_date) > moment(b.upload_date) ? -1 : 1),
-    render: (text, record) => <div title="Due">{formatDateTime(record.upload_date)}</div>,
-  };
 
   const deleteAndEditButtonColumn = {
     title: "",
@@ -538,7 +530,7 @@ export const NOWSubmissionDocuments: FC<NOWSubmissionDocumentsProps> = ({
           );
         }
         return (
-          <div onClick={(event) => event.stopPropagation()}>
+          <div role="presentation" onClick={(event) => event.stopPropagation()}>
             <NOWActionWrapper
               permission={Permission.EDIT_PERMITS}
               tab={props.isAdminView ? "" : "REV"}
@@ -601,53 +593,19 @@ export const NOWSubmissionDocuments: FC<NOWSubmissionDocumentsProps> = ({
       isVersionRow(record) ? null : <div title="Part of Permit">{text ? "Yes" : "No"}</div>,
   };
 
-  const consultationPackageColumn = {
-    width: 150,
-    title: () => {
-      return !isInCompleteStatus ? (
-        <div className="inline-flex between">
-          <div className="grid">
-            <span>Consultation</span>
-            <span>Package</span>
-          </div>
-          <ReferralConsultationPackage type="CON" isTableHeaderView />
-        </div>
-      ) : (
-        <div className="grid">
-          <span>Consultation</span>
-          <span>Package</span>
-        </div>
-      );
-    },
+  const consultationPackageColumn = packageFlagColumn({
+    packageName: "Consultation",
+    type: "CON",
     dataIndex: "is_consultation_package",
-    key: "is_consultation_package",
-    render: (text, record) =>
-      isVersionRow(record) ? null : <div title="Consultation Package">{text ? "Yes" : "No"}</div>,
-  };
+    isInCompleteStatus: isInCompleteStatus,
+  });
 
-  const referralPackageColumn = {
-    width: 150,
-    title: () => {
-      return !isInCompleteStatus ? (
-        <div className="inline-flex between">
-          <div className="grid">
-            <span>Referral</span>
-            <span>Package</span>
-          </div>
-          <ReferralConsultationPackage type="REF" isTableHeaderView />
-        </div>
-      ) : (
-        <div className="grid">
-          <span>Referral</span>
-          <span>Package</span>
-        </div>
-      );
-    },
+  const referralPackageColumn = packageFlagColumn({
+    packageName: "Referral",
+    type: "REF",
     dataIndex: "is_referral_package",
-    key: "is_referral_package",
-    render: (text, record) =>
-      isVersionRow(record) ? null : <div title="Referral Package">{text ? "Yes" : "No"}</div>,
-  };
+    isInCompleteStatus: isInCompleteStatus,
+  });
 
   const importStatusColumn = {
     title: "Import Status",
@@ -805,11 +763,8 @@ export const NOWSubmissionDocuments: FC<NOWSubmissionDocumentsProps> = ({
     const triggerImportJob = () => {
       setIsLoaded(false);
       return createImportJob(props.now_application_guid)
-        .then(() =>
-          new Promise((resolve) => setTimeout(resolve, 1000)).then(() =>
-            fetchImportJob(props.now_application_guid)
-          )
-        )
+        .then(() => new Promise((resolve) => setTimeout(resolve, 1000)))
+        .then(() => fetchImportJob(props.now_application_guid))
         .finally(() => setIsLoaded(true));
     };
 
@@ -886,6 +841,14 @@ export const NOWSubmissionDocuments: FC<NOWSubmissionDocumentsProps> = ({
     </NOWActionWrapper>
   );
 
+  const packageExpandProps = props.isPackageModal
+    ? getPermitPackageExpandProps({
+        selectedKeys: props.selectedRows?.selectedSubmissionRows,
+        lockedRowKeys: props.lockedRowKeys,
+        packageTitles: props.packageTitles,
+      })
+    : null;
+
   return (
     <div>
       {!props.hideJobStatusColumn && !props.isPackageModal && renderImportJobStatus()}
@@ -926,13 +889,7 @@ export const NOWSubmissionDocuments: FC<NOWSubmissionDocumentsProps> = ({
               // Show the expand icon beside the file name, wherever it sits in the table
               expandIconColumnIndex: columns.findIndex((column) => column.key === "filename"),
             }
-            : props.isPackageModal
-              ? getPermitPackageExpandProps({
-                selectedKeys: props.selectedRows?.selectedSubmissionRows,
-                lockedRowKeys: props.lockedRowKeys,
-                packageTitles: props.packageTitles,
-              })
-              : null
+            : packageExpandProps
         }
         rowClassName={(record) =>
           [

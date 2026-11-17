@@ -37,7 +37,11 @@ export interface IPermitPackageTitles {
   onTitleChange?: (key: string, value: string) => void;
   // Type, author and date per row key. Optional, so the title column works on its own.
   details?: { [key: string]: IPermitPackageDetails };
-  onDetailChange?: (key: string, field: keyof IPermitPackageDetails, value: string | PermitPackageDocumentType | null) => void;
+  onDetailChange?: (
+    key: string,
+    field: keyof IPermitPackageDetails,
+    value: IPermitPackageDetails[keyof IPermitPackageDetails]
+  ) => void;
   // Only true when the permit package type selector feature flag is on
   showTypeSelector?: boolean;
   expandedKeys?: string[];

@@ -1,5 +1,7 @@
 import React from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
+import { DatePicker } from "antd";
+import moment from "moment-timezone";
 import {
   allSelectedHaveTitles,
   renderPermitPackageTitleColumn,
@@ -152,5 +154,84 @@ describe("package type, author and date", () => {
 
   it("lists selected rows missing a title in order", () => {
     expect(getMissingTitleKeys(["a", "b", "c"], ["c"], { a: "", b: " ", c: "" })).toEqual(["a", "b"]);
+  });
+});
+
+describe("getPermitPackageExpandProps", () => {
+  const { getPermitPackageExpandProps } = jest.requireActual(
+    "@/components/noticeOfWork/applications/permitPackageTitleColumn"
+  );
+  const record = { key: "doc-1" };
+
+  const build = (overrides = {}) => {
+    const packageTitles = {
+      titles: {},
+      onTitleChange: jest.fn(),
+      onDetailChange: jest.fn(),
+      onExpandedKeysChange: jest.fn(),
+      expandedKeys: ["doc-1"],
+      details: { "doc-1": { author: "Pat", date: "2024-05-01" } },
+      ...overrides,
+    };
+    return {
+      packageTitles,
+      props: getPermitPackageExpandProps({ selectedKeys: ["doc-1"], packageTitles }),
+    };
+  };
+
+  it("returns null without a detail change handler", () => {
+    expect(
+      getPermitPackageExpandProps({ selectedKeys: ["doc-1"], packageTitles: { titles: {} } })
+    ).toBeNull();
+  });
+
+  it("only expands selected, unlocked rows, and not on row click", () => {
+    const { props } = build();
+    expect(props.rowExpandable(record)).toBe(true);
+    expect(props.rowExpandable({ key: "other" })).toBe(false);
+    expect(props.expandRowByClick).toBe(false);
+    expect(props.expandedRowKeys).toEqual(["doc-1"]);
+  });
+
+  it("reports expanded keys as strings", () => {
+    const { props, packageTitles } = build();
+    props.onExpandedRowsChange([1, "doc-1"]);
+    expect(packageTitles.onExpandedKeysChange).toHaveBeenCalledWith(["1", "doc-1"]);
+  });
+
+  it("shows the saved author and date and reports edits", () => {
+    const { props, packageTitles } = build();
+    render(<>{props.expandedRowRender(record)}</>);
+    expect(screen.getByRole("textbox", { name: "Author" })).toHaveValue("Pat");
+    expect(screen.getByRole("textbox", { name: "Date" })).toHaveValue("2024-05-01");
+
+    fireEvent.change(screen.getByRole("textbox", { name: "Author" }), {
+      target: { value: "Sam" },
+    });
+    expect(packageTitles.onDetailChange).toHaveBeenCalledWith("doc-1", "author", "Sam");
+  });
+
+  it("reports the picked date as YYYY-MM-DD, or null when it is cleared", () => {
+    const { props, packageTitles } = build({ details: {} });
+    // antd's picker is awkward to drive in jsdom, so call its onChange as the picker would
+    const findDatePicker = (node) => {
+      if (!node || typeof node !== "object") return null;
+      if (node.type === DatePicker) return node;
+      return React.Children.toArray(node.props?.children)
+        .map(findDatePicker)
+        .find(Boolean);
+    };
+    const picker = findDatePicker(props.expandedRowRender(record));
+
+    picker.props.onChange(moment("2024-06-02"));
+    expect(packageTitles.onDetailChange).toHaveBeenCalledWith("doc-1", "date", "2024-06-02");
+    picker.props.onChange(null);
+    expect(packageTitles.onDetailChange).toHaveBeenCalledWith("doc-1", "date", null);
+  });
+
+  it("renders empty fields for a row with no details yet", () => {
+    const { props } = build({ details: {} });
+    render(<>{props.expandedRowRender(record)}</>);
+    expect(screen.getByRole("textbox", { name: "Author" })).toHaveValue("");
   });
 });

@@ -4,7 +4,7 @@ import { Button, Popconfirm, Tooltip, Row, Col, Typography } from "antd";
 import moment from "moment";
 import { FlagOutlined, MenuOutlined } from "@ant-design/icons";
 import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
-import { formatDate, formatDateTime } from "@mds/common/redux/utils/helpers";
+import { formatDate } from "@mds/common/redux/utils/helpers";
 import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
 import OriginalVfcbcFileIcon from "@mds/common/components/documents/OriginalVfcbcFileIcon";
 import {
@@ -42,7 +42,6 @@ import { modalConfig } from "@/components/modalContent/config";
 import * as Permission from "@/constants/permissions";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 import { EDIT_OUTLINE_VIOLET, TRASHCAN } from "@/constants/assets";
-import ReferralConsultationPackage from "@/components/noticeOfWork/applications/referals/ReferralConsultationPackage";
 import PermitPackage from "@/components/noticeOfWork/applications/PermitPackage";
 import * as SortableHOC from "react-sortable-hoc";
 import arrayMove from "array-move";
@@ -57,6 +56,10 @@ import {
   renderPermitPackageTitleColumn,
   renderPermitPackageTypeColumn,
 } from "@/components/noticeOfWork/applications/permitPackageTitleColumn";
+import {
+  packageFlagColumn,
+  uploadDateColumn,
+} from "@/components/noticeOfWork/applications/nowDocumentColumns";
 import NOWDownloadAllButton from "@/components/noticeOfWork/applications/NOWDownloadAllButton";
 import {
   fileManagementActionsColumn,
@@ -108,9 +111,8 @@ const transformDocuments = (
   compareFn = comparePermitPackageDocuments,
   fileManagementContext = null
 ) =>
-  documents &&
   documents
-    .sort(compareFn)
+    ?.sort(compareFn)
     .map((document, index) => ({
       key: document.now_application_document_xref_guid,
       now_application_document_xref_guid: document.now_application_document_xref_guid,
@@ -120,10 +122,9 @@ const transformDocuments = (
       document_manager_guid: document.mine_document.document_manager_guid,
       upload_date: document.mine_document.upload_date,
       category:
-        (noticeOfWorkApplicationDocumentTypeOptionsHash &&
-          noticeOfWorkApplicationDocumentTypeOptionsHash[
+        noticeOfWorkApplicationDocumentTypeOptionsHash?.[
           document.now_application_document_type_code
-          ]) ||
+          ] ||
         document.documenttype ||
         Strings.EMPTY_FIELD,
       description: document.description || Strings.EMPTY_FIELD,
@@ -286,8 +287,7 @@ export const NOWDocuments: FC<NOWDocumentsProps> = (props) => {
           const state = dragState.current;
           // Matches rows on "index", so this only finds the row when rowKey is "index" (see rowKey below)
           const index =
-            state.dataSource &&
-            state.dataSource.findIndex((x) => x.index === restProps["data-row-key"]);
+            state.dataSource?.findIndex((x) => x.index === restProps["data-row-key"]);
           const isLockedRow = state.dataSource?.[index]?.isLockedApplicationForm;
           // Order column can now be visible without dragging being allowed — disable the actual drag capability whenever isSortingAllowed is false.
           return (
@@ -604,13 +604,6 @@ export const NOWDocuments: FC<NOWDocumentsProps> = (props) => {
       render: (text) => <div title="Category">{text}</div>,
     };
 
-    const uploadDateColumn = {
-      title: "Date/Time",
-      dataIndex: "upload_date",
-      key: "upload_date",
-      sorter: (a, b) => (moment(a.upload_date) > moment(b.upload_date) ? -1 : 1),
-      render: (text, record) => <div title="Due">{formatDateTime(record.upload_date)}</div>,
-    };
 
     const deleteAndEditButtonColumn = {
       title: "",
@@ -670,7 +663,7 @@ export const NOWDocuments: FC<NOWDocumentsProps> = (props) => {
             );
           }
           return (
-            <div onClick={(event) => event.stopPropagation()}>
+            <div role="presentation" onClick={(event) => event.stopPropagation()}>
               <NOWActionWrapper
                 permission={Permission.EDIT_PERMITS}
                 tab={isAdminView ? "" : "REV"}
@@ -738,53 +731,19 @@ export const NOWDocuments: FC<NOWDocumentsProps> = (props) => {
         isVersionRow(record) ? null : <div title="Part of Permit">{text ? "Yes" : "No"}</div>,
     };
 
-    const consultationPackageColumn = {
-      width: 150,
-      title: () => {
-        return !isInCompleteStatus() ? (
-          <div className="inline-flex between">
-            <div className="grid">
-              <span>Consultation</span>
-              <span>Package</span>
-            </div>
-            <ReferralConsultationPackage type="CON" isTableHeaderView />
-          </div>
-        ) : (
-          <div className="grid">
-            <span>Consultation</span>
-            <span>Package</span>
-          </div>
-        );
-      },
+    const consultationPackageColumn = packageFlagColumn({
+      packageName: "Consultation",
+      type: "CON",
       dataIndex: "is_consultation_package",
-      key: "is_consultation_package",
-      render: (text, record) =>
-        isVersionRow(record) ? null : <div title="Consultation Package">{text ? "Yes" : "No"}</div>,
-    };
+      isInCompleteStatus: isInCompleteStatus(),
+    });
 
-    const referralPackageColumn = {
-      width: 150,
-      title: () => {
-        return !isInCompleteStatus() ? (
-          <div className="inline-flex between">
-            <div className="grid">
-              <span>Referral</span>
-              <span>Package</span>
-            </div>
-            <ReferralConsultationPackage type="REF" isTableHeaderView />
-          </div>
-        ) : (
-          <div className="grid">
-            <span>Referral</span>
-            <span>Package</span>
-          </div>
-        );
-      },
+    const referralPackageColumn = packageFlagColumn({
+      packageName: "Referral",
+      type: "REF",
       dataIndex: "is_referral_package",
-      key: "is_referral_package",
-      render: (text, record) =>
-        isVersionRow(record) ? null : <div title="Referral Package">{text ? "Yes" : "No"}</div>,
-    };
+      isInCompleteStatus: isInCompleteStatus(),
+    });
 
     const postApprovalDocumentColumn = {
       title: "",
@@ -907,6 +866,17 @@ export const NOWDocuments: FC<NOWDocumentsProps> = (props) => {
         </AddButton>
       </NOWActionWrapper>
     );
+
+  // The key must be "index" for the drag-sort to work, see rowKey below
+  const defaultRowKey = isSortingAllowed ? "index" : "key";
+  const packageExpandProps = isPackageModal
+    ? getPermitPackageExpandProps({
+        selectedKeys: selectedRows?.selectedCoreRows,
+        lockedRowKeys,
+        packageTitles,
+      })
+    : null;
+
   return (
     <div>
       <Row className="inline-flex between">
@@ -938,9 +908,7 @@ export const NOWDocuments: FC<NOWDocumentsProps> = (props) => {
         rowKey={
           enableFileManagement
             ? (record) => record.mine_document_version_guid ?? record.key
-            : isSortingAllowed
-              ? "index"
-              : "key"
+            : defaultRowKey
         }
         expandProps={
           enableFileManagement
@@ -952,13 +920,7 @@ export const NOWDocuments: FC<NOWDocumentsProps> = (props) => {
               // Show the expand icon beside the file name, wherever it sits in the table
               expandIconColumnIndex: renderedColumns.findIndex((column) => column.key === "filename"),
             }
-            : isPackageModal
-              ? getPermitPackageExpandProps({
-                selectedKeys: selectedRows?.selectedCoreRows,
-                lockedRowKeys: lockedRowKeys,
-                packageTitles: packageTitles,
-              })
-              : null
+            : packageExpandProps
         }
         components={tableComponents}
         rowSelection={
