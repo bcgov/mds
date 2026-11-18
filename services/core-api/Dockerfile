@@ -9,7 +9,7 @@ RUN apt-get install build-essential -y
 # Install the requirements
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
-RUN pip install watchdog
+RUN pip install "watchdog<7"
 
 COPY . .
 
