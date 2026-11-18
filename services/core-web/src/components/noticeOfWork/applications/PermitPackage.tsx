@@ -64,42 +64,42 @@ export const PermitPackage: FC<PermitPackageProps> = ({
     }: PackageSaveOptions = {}
   ) => {
     // Type, author and date are saved with the document, so they also show in the single file editor.
-    const applyDetails = (
-      document: INoWCoreDocument | INoWSubmissionDocument,
-      details?: IPermitPackageDetails) => {
-      if (!details) return;
-      if (details.type) {
-        document.permit_package_document_type_code = details.type;
-      }
-      document.preamble_author = details.author?.trim() || null;
-      document.preamble_date = details.date || null;
+    const applyDetails = <T extends INoWCoreDocument | INoWSubmissionDocument>(
+      document: T,
+      details?: IPermitPackageDetails
+    ): T => {
+      if (!details) return document;
+      return {
+        ...document,
+        ...(details.type ? { permit_package_document_type_code: details.type } : {}),
+        preamble_author: details.author?.trim() || null,
+        preamble_date: details.date || null,
+      };
     };
     const getTitle = (titles: Record<string, string>, documentGuid: string, currentTitle: string) =>
       documentGuid in titles ? titles[documentGuid]?.trim() : currentTitle;
 
     const documentsPayload = noticeOfWork.documents.map((document) => {
       const xrefGuid = document.now_application_document_xref_guid;
-      document.is_final_package = selectedCoreRows.includes(xrefGuid);
-      if (document.is_final_package) {
-        document.preamble_title = getTitle(coreTitles, xrefGuid, document.preamble_title);
-        applyDetails(document, coreDetails[xrefGuid]);
-      }
-      return document;
+      const isFinalPackage = selectedCoreRows.includes(xrefGuid);
+      const updated = { ...document, is_final_package: isFinalPackage };
+      if (!isFinalPackage) return updated;
+      updated.preamble_title = getTitle(coreTitles, xrefGuid, document.preamble_title);
+      return applyDetails(updated, coreDetails[xrefGuid]);
     });
 
     const submissionDocumentsPayload = noticeOfWork.filtered_submission_documents.map(
       (document) => {
         const mineDocumentGuid = document.mine_document_guid;
-        document.is_final_package = selectedSubmissionRows.includes(mineDocumentGuid);
-        if (document.is_final_package) {
-          document.preamble_title = getTitle(
-            submissionTitles,
-            mineDocumentGuid,
-            document.preamble_title
-          );
-          applyDetails(document, submissionDetails[mineDocumentGuid]);
-        }
-        return document;
+        const isFinalPackage = selectedSubmissionRows.includes(mineDocumentGuid);
+        const updated = { ...document, is_final_package: isFinalPackage };
+        if (!isFinalPackage) return updated;
+        updated.preamble_title = getTitle(
+          submissionTitles,
+          mineDocumentGuid,
+          document.preamble_title
+        );
+        return applyDetails(updated, submissionDetails[mineDocumentGuid]);
       }
     );
 
@@ -107,6 +107,7 @@ export const PermitPackage: FC<PermitPackageProps> = ({
       ...noticeOfWork,
       documents: documentsPayload,
       submission_documents: submissionDocumentsPayload,
+      filtered_submission_documents: submissionDocumentsPayload,
     };
 
     const message = "Successfully updated the permit package.";

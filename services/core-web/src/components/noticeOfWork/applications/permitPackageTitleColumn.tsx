@@ -76,11 +76,17 @@ export const renderPermitPackageTitleColumn = ({
   return {
     title: "Title",
     key: "package_title",
+    width: 280,
+    onCell: () => ({ style: { minWidth: 220 } }),
     render: (text: string, record) => {
       const title = packageTitles?.titles?.[record.key] ?? record.preamble_title ?? "";
 
       if (!isEditableRow(record, selectedKeys, lockedRowKeys, packageTitles)) {
-        return <div title="Title">{title}</div>;
+        return (
+          <div title={title} style={{ overflowWrap: "anywhere" }}>
+            {title}
+          </div>
+        );
       }
 
       return (

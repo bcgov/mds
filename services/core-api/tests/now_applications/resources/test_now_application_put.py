@@ -282,6 +282,74 @@ class TestNOWApplication:
 
     @patch('app.api.now_applications.resources.now_application_resource.NROSNOWStatusService.nros_now_status_update')
     @patch('app.api.now_applications.resources.now_application_resource.DocumentManagerService.importNoticeOfWorkSubmissionDocuments')
+    def test_put_documents_reassigns_order_when_type_changes(
+            self, mock_import_docs, mock_nros, test_client, db_session, auth_headers):
+        now_application = NOWApplicationFactory()
+        test_application = NOWApplicationIdentityFactory(now_application=now_application)
+        _, existing_figure = _make_bulk_document_xref(test_application)
+        existing_figure.is_final_package = True
+        existing_figure.permit_package_document_type_code = 'FIGURE'
+        existing_figure.final_package_order = 1
+        _, xref = _make_bulk_document_xref(test_application)
+        xref.is_final_package = True
+        xref.permit_package_document_type_code = 'DOCUMENT'
+        xref.final_package_order = 3
+        db_session.add_all([existing_figure, xref])
+        db_session.commit()
+
+        data = marshal(test_application.now_application, NOW_APPLICATION_MODEL)
+        doc_data = _find_document_data(data, xref.now_application_document_xref_guid)
+        doc_data['permit_package_document_type_code'] = 'FIGURE'
+
+        put_resp = test_client.put(
+            f'/now-applications/{test_application.now_application_guid}',
+            json=data,
+            headers=auth_headers['full_auth_header'])
+
+        assert put_resp.status_code == 200, put_resp.response
+        db_session.refresh(xref)
+        assert xref.permit_package_document_type_code == 'FIGURE'
+        assert xref.final_package_order == 2
+
+    @patch('app.api.now_applications.resources.now_application_resource.NROSNOWStatusService.nros_now_status_update')
+    @patch('app.api.now_applications.resources.now_application_resource.DocumentManagerService.importNoticeOfWorkSubmissionDocuments')
+    def test_put_submission_documents_saves_type_author_and_date_and_reorders(
+            self, mock_import_docs, mock_nros, test_client, db_session, auth_headers):
+        now_application = NOWApplicationFactory()
+        test_application = NOWApplicationIdentityFactory(now_application=now_application)
+        submission_doc = _make_imported_submission_document(
+            db_session,
+            test_application,
+            is_final_package=True,
+            final_package_order=3,
+            permit_package_document_type_code='DOCUMENT',
+            preamble_title='Reclamation Plan')
+
+        data = marshal(test_application.now_application, NOW_APPLICATION_MODEL)
+        data['filtered_submission_documents'] = [
+            _filtered_submission_document_data(
+                submission_doc,
+                is_final_package=True,
+                preamble_title='Reclamation Plan',
+                permit_package_document_type_code='FIGURE',
+                preamble_author=' Jane Doe ',
+                preamble_date='2026-01-15')
+        ]
+
+        put_resp = test_client.put(
+            f'/now-applications/{test_application.now_application_guid}',
+            json=data,
+            headers=auth_headers['full_auth_header'])
+
+        assert put_resp.status_code == 200, put_resp.response
+        db_session.refresh(submission_doc)
+        assert submission_doc.permit_package_document_type_code == 'FIGURE'
+        assert submission_doc.preamble_author == 'Jane Doe'
+        assert str(submission_doc.preamble_date)[:10] == '2026-01-15'
+        assert submission_doc.final_package_order == 1
+
+    @patch('app.api.now_applications.resources.now_application_resource.NROSNOWStatusService.nros_now_status_update')
+    @patch('app.api.now_applications.resources.now_application_resource.DocumentManagerService.importNoticeOfWorkSubmissionDocuments')
     def test_put_documents_clears_order_and_type_on_removal_via_bulk_modal(
             self, mock_import_docs, mock_nros, test_client, db_session, auth_headers):
         now_application = NOWApplicationFactory()

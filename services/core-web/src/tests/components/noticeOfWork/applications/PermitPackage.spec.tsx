@@ -178,6 +178,24 @@ describe("PermitPackage", () => {
       expect(savedCore.preamble_title).toBe("Old core title");
       expect(closeSpy).toHaveBeenCalled();
     });
+
+    it("sends copies and leaves the stored documents unchanged", async () => {
+      const { onSubmit, updateSpy } = createInstance();
+
+      await onSubmit(["core-in"], ["sub-in"], {
+        coreTitles: { "core-in": "New core title" },
+        coreDetails: { "core-in": { type: "FIGURE", author: "Jane", date: "2026-01-15" } },
+      });
+
+      const [payload] = updateSpy.mock.calls[0];
+      expect(coreInPackage.is_final_package).toBe(false);
+      expect(coreInPackage.preamble_title).toBe("Old core title");
+      expect(submissionInPackage.is_final_package).toBe(false);
+      expect(payload.filtered_submission_documents).toBe(payload.submission_documents);
+      const savedCore = findDocument(payload, "documents", "now_application_document_xref_guid", "core-in");
+      expect(savedCore.permit_package_document_type_code).toBe("FIGURE");
+      expect(savedCore.preamble_author).toBe("Jane");
+    });
   });
 
   describe("Download All", () => {
