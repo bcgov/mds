@@ -17,6 +17,7 @@ class NowApplicationGisExport(Base):
     now_application_status_description = db.Column(db.String)
     type_of_application = db.Column(db.String)
     application_type_code = db.Column(db.String)
+    application_type_description = db.Column(db.String)
     now_application_type_code = db.Column(db.String)
     now_application_type_description = db.Column(db.String)
     now_application_submitted_date = db.Column(db.String)

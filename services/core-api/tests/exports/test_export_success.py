@@ -38,6 +38,14 @@ def test_now_application_gis_export_success_ada_filter(test_client, db_session, 
 
     assert get_resp.status_code == 200
 
+def test_now_application_gis_export_header_includes_application_type_description(test_client, db_session, auth_headers):
+    get_resp = test_client.get('/exports/now-application-gis-export', headers=auth_headers['full_auth_header'])
+
+    # Only read the header row; the data rows need the prod-only materialized view
+    header_row = next(iter(get_resp.response)).decode().strip().split(',')
+
+    assert header_row.index('application_type_description') == header_row.index('application_type_code') + 1
+
 def test_now_application_gis_export_failure_bad_filter(test_client, db_session, auth_headers):
     get_resp = test_client.get('/exports/now-application-gis-export?application_type_code=ZZZ', headers=auth_headers['full_auth_header'])
 

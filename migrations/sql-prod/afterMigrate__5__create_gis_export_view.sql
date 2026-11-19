@@ -16,7 +16,7 @@ END $$;
 
 CREATE MATERIALIZED VIEW public.now_application_gis_export_view
     TABLESPACE pg_default
-AS select na.mine_purpose,appv.latest_response_date,nai.application_type_code,appv.regional_contact,
+AS select na.mine_purpose,appv.latest_response_date,nai.application_type_code,atc.description AS application_type_description,appv.regional_contact,
           appv.applicant_first_name,
           appv.applicant_last_name,
           appv.applicant_phone_no,
