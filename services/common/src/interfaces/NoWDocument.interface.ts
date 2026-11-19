@@ -6,7 +6,7 @@ export interface INoWDocument {
   now_application_document_sub_type_code: string;
   description: string;
   is_final_package: boolean;
-  permit_package_document_type_code?: string;
+  permit_package_document_type_code?: "FIGURE" | "DOCUMENT";
   final_package_order: number;
   mine_document: IMineDocument;
 }

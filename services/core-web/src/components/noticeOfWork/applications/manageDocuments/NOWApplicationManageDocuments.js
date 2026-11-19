@@ -163,7 +163,6 @@ export const NOWApplicationManageDocuments = (props) => {
                 : "This table shows generated Draft Permit PDFs."
             }
             categoriesToShow={["AEF"]}
-            addDescriptionColumn={false}
             isStandardDocuments
           />
         </ScrollContentWrapper>

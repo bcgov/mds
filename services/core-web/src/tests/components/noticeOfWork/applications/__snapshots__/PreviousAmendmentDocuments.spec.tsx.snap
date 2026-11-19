@@ -5,7 +5,7 @@ exports[`PermitPackage renders properly 1`] = `
   <div>
     <div />
     <button
-      class="ant-btn ant-btn-secondary full-mobile"
+      class="ant-btn ant-btn-default full-mobile"
       type="button"
     >
       <span

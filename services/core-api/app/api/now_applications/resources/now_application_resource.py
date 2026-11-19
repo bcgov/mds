@@ -16,7 +16,7 @@ from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.utils.helpers import is_permit_package_title_missing
 
 from app.api.mines.mine.models.mine import Mine
-from app.api.now_applications.models.now_application import NOWApplication
+from app.api.now_applications.models.now_application import NOWApplication, LOCKED_NTR_FINAL_PACKAGE_ORDER
 from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
 from app.api.now_applications.models.now_application_tier import NOWApplicationTier
 from app.api.now_applications.models.now_application_status import NOWApplicationStatus
@@ -183,10 +183,24 @@ class NOWApplicationResource(Resource, UserMixin):
                     if doc.is_final_package and 'preamble_title' in filtered_doc:
                         doc.preamble_title = filtered_doc['preamble_title']
                     if doc.is_final_package:
-                        if doc.final_package_order is None:
-                            doc.final_package_order = now_application_identity.now_application.next_document_final_package_order
+                        previous_type = doc.permit_package_document_type_code or 'DOCUMENT'
+                        if filtered_doc.get('permit_package_document_type_code'):
+                            doc.permit_package_document_type_code = filtered_doc['permit_package_document_type_code']
+                        new_type = doc.permit_package_document_type_code or 'DOCUMENT'
+                        if 'preamble_author' in filtered_doc:
+                            doc.preamble_author = (filtered_doc['preamble_author'] or '').strip() or None
+                        if 'preamble_date' in filtered_doc:
+                            doc.preamble_date = filtered_doc['preamble_date'] or None
+                        # A new type gets the next position in that type's list, like the single file editor
+                        if doc.final_package_order is None or new_type != previous_type:
+                            doc.final_package_order = (
+                                now_application_identity.now_application.
+                                next_document_final_package_order_for_type(new_type, exclude=doc))
                     else:
                         doc.final_package_order = None
+                        doc.permit_package_document_type_code = None
+                        doc.preamble_author = None
+                        doc.preamble_date = None
 
             data['imported_submission_documents'] = marshal(imported_documents,
                                                             IMPORTED_NOW_SUBMISSION_DOCUMENT)
@@ -280,12 +294,19 @@ class NOWApplicationResource(Resource, UserMixin):
                                                    existing and existing.is_final_package,
                                                    existing and existing.preamble_title):
                     raise BadRequest('A document in the permit package is missing a title.')
-                if doc.get('is_final_package') and doc.get('final_package_order') is None:
-                    doc_type = doc.get('permit_package_document_type_code') or 'DOCUMENT'
+                doc_type = doc.get('permit_package_document_type_code') or 'DOCUMENT'
+                # Switching an existing package document's type moves it to the end of the new type's list
+                type_changed = bool(
+                    doc.get('is_final_package') and existing and existing.is_final_package
+                    and doc.get('permit_package_document_type_code')
+                    and doc_type != (existing.permit_package_document_type_code or 'DOCUMENT')
+                    and existing.final_package_order is not None
+                    and existing.final_package_order != LOCKED_NTR_FINAL_PACKAGE_ORDER)
+                if doc.get('is_final_package') and (doc.get('final_package_order') is None or type_changed):
                     if doc_type not in next_order_by_type:
                         next_order_by_type[doc_type] = (
                             now_application_identity.now_application
-                            .next_document_final_package_order_for_type(doc_type))
+                            .next_document_final_package_order_for_type(doc_type, exclude=existing))
                     doc['final_package_order'] = next_order_by_type[doc_type]
                     next_order_by_type[doc_type] += 1
                 elif not doc.get('is_final_package'):

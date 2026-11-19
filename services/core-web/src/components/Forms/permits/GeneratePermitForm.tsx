@@ -480,7 +480,6 @@ export const GeneratePermitForm: FC<IGeneratedPermitFormProps> = (props) => {
           isViewMode={props.isViewMode}
           disclaimerText="In this table, you can see all the map-related Notice of Work documents."
           categoriesToShow={["MDO"]}
-          addDescriptionColumn={false}
           isStandardDocuments
         />
       </ScrollContentWrapper>

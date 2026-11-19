@@ -41,13 +41,24 @@ exports[`EditFinalPermitDocumentPackage renders properly 1`] = `
                   >
                     <colgroup>
                       <col
+                        class="ant-table-expand-icon-col"
+                      />
+                      <col
                         class="ant-table-selection-col"
+                      />
+                      <col />
+                      <col />
+                      <col
+                        style="width: 140px;"
                       />
                     </colgroup>
                     <thead
                       class="ant-table-thead"
                     >
                       <tr>
+                        <th
+                          class="ant-table-cell ant-table-row-expand-icon-cell"
+                        />
                         <th
                           class="ant-table-cell ant-table-selection-column"
                         >
@@ -138,6 +149,11 @@ exports[`EditFinalPermitDocumentPackage renders properly 1`] = `
                           class="ant-table-cell"
                         >
                           Title
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Type
                         </th>
                         <th
                           aria-label="Category"
@@ -365,7 +381,7 @@ exports[`EditFinalPermitDocumentPackage renders properly 1`] = `
                       >
                         <td
                           class="ant-table-cell"
-                          colspan="6"
+                          colspan="8"
                         >
                           No Data Yet
                         </td>
@@ -420,13 +436,24 @@ exports[`EditFinalPermitDocumentPackage renders properly 1`] = `
                   >
                     <colgroup>
                       <col
+                        class="ant-table-expand-icon-col"
+                      />
+                      <col
                         class="ant-table-selection-col"
+                      />
+                      <col />
+                      <col />
+                      <col
+                        style="width: 140px;"
                       />
                     </colgroup>
                     <thead
                       class="ant-table-thead"
                     >
                       <tr>
+                        <th
+                          class="ant-table-cell ant-table-row-expand-icon-cell"
+                        />
                         <th
                           class="ant-table-cell ant-table-selection-column"
                         >
@@ -517,6 +544,11 @@ exports[`EditFinalPermitDocumentPackage renders properly 1`] = `
                           class="ant-table-cell"
                         >
                           Title
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Type
                         </th>
                         <th
                           aria-label="Category"
@@ -742,7 +774,7 @@ exports[`EditFinalPermitDocumentPackage renders properly 1`] = `
                       <tr>
                         <td
                           class="ant-table-cell"
-                          colspan="6"
+                          colspan="8"
                         >
                           No Data Yet
                         </td>
@@ -797,13 +829,24 @@ exports[`EditFinalPermitDocumentPackage renders properly 1`] = `
                   >
                     <colgroup>
                       <col
+                        class="ant-table-expand-icon-col"
+                      />
+                      <col
                         class="ant-table-selection-col"
+                      />
+                      <col />
+                      <col />
+                      <col
+                        style="width: 140px;"
                       />
                     </colgroup>
                     <thead
                       class="ant-table-thead"
                     >
                       <tr>
+                        <th
+                          class="ant-table-cell ant-table-row-expand-icon-cell"
+                        />
                         <th
                           class="ant-table-cell ant-table-selection-column"
                         >
@@ -894,6 +937,11 @@ exports[`EditFinalPermitDocumentPackage renders properly 1`] = `
                           class="ant-table-cell"
                         >
                           Title
+                        </th>
+                        <th
+                          class="ant-table-cell"
+                        >
+                          Type
                         </th>
                         <th
                           aria-label="Category"
@@ -1119,7 +1167,7 @@ exports[`EditFinalPermitDocumentPackage renders properly 1`] = `
                       <tr>
                         <td
                           class="ant-table-cell"
-                          colspan="6"
+                          colspan="8"
                         >
                           No Data Yet
                         </td>

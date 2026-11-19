@@ -1,9 +1,10 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
-import { useSelector } from "react-redux";
-import { Button, Popconfirm } from "antd";
+import React, { FC, useState } from "react";
+import { Button, Popconfirm, message } from "antd";
 import { DownloadOutlined } from "@ant-design/icons";
-import CustomPropTypes from "@/customPropTypes";
+import { IImportNoWSubmissionDocumentsJob, INoWApplicationForm, IPermitAmendment } from "@mds/common/interfaces";
+import { useAppSelector } from "@mds/common/redux/rootState";
+import { useFeatureFlag } from "@mds/common/providers/featureFlags/useFeatureFlag";
+import { Feature } from "@mds/common/utils/featureFlag";
 import { getLockedSystemNtrDoc } from "@mds/common/utils/helpers";
 import { getDraftPermitAmendmentForNOW } from "@mds/common/redux/selectors/permitSelectors";
 import {
@@ -13,25 +14,40 @@ import {
 } from "@mds/common/utils/permitPackageDocuments";
 import NOWDocuments from "../noticeOfWork/applications/NOWDocuments";
 import NOWSubmissionDocuments from "../noticeOfWork/applications/NOWSubmissionDocuments";
-import { allSelectedHaveTitles } from "../noticeOfWork/applications/permitPackageTitleColumn";
+import {
+  DEFAULT_PERMIT_PACKAGE_DOCUMENT_TYPE,
+  getMissingTitleKeys,
+  INoWCoreDocument,
+  IPermitPackageDetails,
+} from "../noticeOfWork/applications/permitPackageTitleColumn";
 
-const propTypes = {
-  documents: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
-  finalDocuments: PropTypes.arrayOf(PropTypes.strings).isRequired,
-  finalSubmissionDocuments: PropTypes.arrayOf(PropTypes.strings).isRequired,
-  importNowSubmissionDocumentsJob: PropTypes.objectOf(PropTypes.any),
-  noticeOfWorkGuid: PropTypes.string.isRequired,
-  noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
-  onSubmit: PropTypes.func.isRequired,
-  closeModal: PropTypes.func.isRequired,
-};
+interface EditFinalPermitDocumentPackageProps {
+  documents: INoWCoreDocument[];
+  finalDocuments: string[];
+  finalSubmissionDocuments: string[];
+  importNowSubmissionDocumentsJob?: IImportNoWSubmissionDocumentsJob;
+  noticeOfWorkGuid: string;
+  noticeOfWork: INoWApplicationForm;
+  onSubmit: (
+    selectedCoreRows: string[],
+    selectedSubmissionRows: string[],
+    options: {
+      coreTitles: Record<string, string>;
+      submissionTitles: Record<string, string>;
+      coreDetails: Record<string, IPermitPackageDetails>;
+      submissionDetails: Record<string, IPermitPackageDetails>;
+    }
+  ) => Promise<unknown>;
+  closeModal: () => void;
+}
 
-const defaultProps = {
-  importNowSubmissionDocumentsJob: {},
-};
-
-export const EditFinalPermitDocumentPackage = (props) => {
-  const draftPermitAmendment = useSelector(getDraftPermitAmendmentForNOW);
+export const EditFinalPermitDocumentPackage: FC<EditFinalPermitDocumentPackageProps> = ({
+  importNowSubmissionDocumentsJob,
+  ...props
+}) => {
+  const { isFeatureEnabled } = useFeatureFlag();
+  const showTypeSelector = isFeatureEnabled(Feature.INSPECTOR_PERMIT_PACKAGE_TYPE_SELECTOR);
+  const draftPermitAmendment = useAppSelector(getDraftPermitAmendmentForNOW) as IPermitAmendment;
   const coreDocuments = props.documents ?? props.noticeOfWork.documents ?? [];
   const submissionDocuments = props.noticeOfWork.filtered_submission_documents ?? [];
 
@@ -133,7 +149,33 @@ export const EditFinalPermitDocumentPackage = (props) => {
       (doc) => doc.now_application_document_xref_guid
     )
   );
+  // Type, author and date are tracked per row key, shared across the tables as the keys are unique GUIDs.
+  const buildDetails = (docs, getKey) =>
+    (docs || []).reduce((acc, doc) => {
+      const key = getKey(doc);
+      if (key) {
+        acc[key] = {
+          type: doc.permit_package_document_type_code ?? DEFAULT_PERMIT_PACKAGE_DOCUMENT_TYPE,
+          author: doc.preamble_author ?? "",
+          date: doc.preamble_date ?? null,
+        };
+      }
+      return acc;
+    }, {});
+
+  const [details, setDetails] = useState(() => ({
+    ...buildDetails(applicationDocuments, (doc) => doc.mine_document_guid ?? doc.id),
+    ...buildDetails(
+      [...governmentDocs, ...systemGeneratedDocs],
+      (doc) => doc.now_application_document_xref_guid
+    ),
+  }));
+  const [expandedKeys, setExpandedKeys] = useState([]);
+  const [highlightKey, setHighlightKey] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleDetailChange = (key, field, value) =>
+    setDetails((current) => ({ ...current, [key]: { ...current[key], [field]: value } }));
 
   const handleTitleChange = (setTitles) => (key, value) =>
     setTitles((titles) => ({ ...titles, [key]: value }));
@@ -156,6 +198,16 @@ export const EditFinalPermitDocumentPackage = (props) => {
   ];
 
   const handleSubmit = () => {
+    // Only selected rows are sent, so details of rows that were deselected are left as they were
+    const applicationCoreDetails = Object.entries(applicationCoreXrefByMineGuid).reduce(
+      (acc, [mineGuid, xrefGuid]) => {
+        if (mineGuid in details) {
+          acc[xrefGuid] = details[mineGuid];
+        }
+        return acc;
+      },
+      {}
+    );
     const applicationCoreTitles = Object.entries(applicationCoreXrefByMineGuid).reduce(
       (acc, [mineGuid, xrefGuid]) => {
         if (mineGuid in submissionTitles) {
@@ -166,10 +218,20 @@ export const EditFinalPermitDocumentPackage = (props) => {
       {}
     );
     setIsSubmitting(true);
+    // With the type selector flag off, the type is left as it was
+    const withoutType = (all: Record<string, IPermitPackageDetails>) =>
+      showTypeSelector
+        ? all
+        : Object.fromEntries(
+          Object.entries(all).map(([key, { type, ...rest }]) => [key, rest])
+        );
+    const coreDetails = withoutType({ ...details, ...applicationCoreDetails });
     return props
       .onSubmit(selectedCoreRows, selectedSubmissionRows, {
         coreTitles: { ...coreTitles, ...applicationCoreTitles },
         submissionTitles,
+        coreDetails,
+        submissionDetails: withoutType(details),
       })
       .finally(() => setIsSubmitting(false));
   };
@@ -189,10 +251,42 @@ export const EditFinalPermitDocumentPackage = (props) => {
     isFileReferencedInConditions(draftPermitAmendment?.conditions, guid)
   );
 
-  const isMissingTitles =
-    !allSelectedHaveTitles(selectedSubmissionRows, [], submissionTitles) ||
-    !allSelectedHaveTitles(selectedGovernmentRows, lockedCoreRowKeys, coreTitles) ||
-    !allSelectedHaveTitles(selectedSystemGeneratedRows, lockedCoreRowKeys, coreTitles);
+  // In the order the tables appear in the modal
+  const missingTitleKeys = [
+    ...getMissingTitleKeys(selectedSubmissionRows, [], submissionTitles),
+    ...getMissingTitleKeys(selectedGovernmentRows, lockedCoreRowKeys, coreTitles),
+    ...getMissingTitleKeys(selectedSystemGeneratedRows, lockedCoreRowKeys, coreTitles),
+  ];
+
+  // Save stays enabled, a click with missing titles reports how many and jumps to the first one.
+  const attemptSave = () => {
+    if (missingTitleKeys.length === 0) {
+      setHighlightKey(null);
+      return handleSubmit();
+    }
+    const [firstKey] = missingTitleKeys;
+    const count = missingTitleKeys.length;
+    message.error(
+      `${count} ${count === 1 ? "document is" : "documents are"} missing a title. A title is required for every document in the permit package.`
+    );
+    setHighlightKey(firstKey);
+    const input = document.getElementById(`${firstKey}_package_title`);
+    if (input) {
+      input.scrollIntoView({ behavior: "smooth", block: "center" });
+      input.focus({ preventScroll: true });
+    }
+    return undefined;
+  };
+
+  const isMissingTitles = missingTitleKeys.length > 0;
+  const packageDetailProps = {
+    details,
+    onDetailChange: handleDetailChange,
+    showTypeSelector,
+    expandedKeys,
+    onExpandedKeysChange: setExpandedKeys,
+    highlightKey,
+  };
 
   return (
     <div>
@@ -200,11 +294,12 @@ export const EditFinalPermitDocumentPackage = (props) => {
       <NOWSubmissionDocuments
         now_application_guid={props.noticeOfWorkGuid}
         documents={applicationDocuments}
-        importNowSubmissionDocumentsJob={props.importNowSubmissionDocumentsJob}
+        importNowSubmissionDocumentsJob={importNowSubmissionDocumentsJob}
         selectedRows={{ selectedSubmissionRows, setSelectedSubmissionRows }}
         packageTitles={{
           titles: submissionTitles,
           onTitleChange: handleTitleChange(setSubmissionTitles),
+          ...packageDetailProps,
         }}
         isPackageModal
         isAdminView
@@ -224,6 +319,7 @@ export const EditFinalPermitDocumentPackage = (props) => {
         packageTitles={{
           titles: coreTitles,
           onTitleChange: handleTitleChange(setCoreTitles),
+          ...packageDetailProps,
         }}
         categoriesToShow={["GDO"]}
         isPackageModal
@@ -244,17 +340,13 @@ export const EditFinalPermitDocumentPackage = (props) => {
             packageTitles={{
               titles: coreTitles,
               onTitleChange: handleTitleChange(setCoreTitles),
+              ...packageDetailProps,
             }}
             categoriesToShow={["AEF"]}
             isPackageModal
           />
           <br />
         </>
-      )}
-      {isMissingTitles && (
-        <p className="right red">
-          A title is required for every document selected for the permit package.
-        </p>
       )}
       <div className="right center-mobile padding-md--top">
         <Popconfirm
@@ -282,7 +374,7 @@ export const EditFinalPermitDocumentPackage = (props) => {
               className="full-mobile"
               type="primary"
               loading={isSubmitting}
-              disabled={isMissingTitles}
+              onClick={isMissingTitles ? attemptSave : undefined}
             >
               <DownloadOutlined className="padding-sm--right icon-sm" />
               Save Application Package
@@ -292,9 +384,8 @@ export const EditFinalPermitDocumentPackage = (props) => {
           <Button
             className="full-mobile"
             type="primary"
-            onClick={() => handleSubmit()}
+            onClick={attemptSave}
             loading={isSubmitting}
-            disabled={isMissingTitles}
           >
             <DownloadOutlined className="padding-sm--right icon-sm" />
             Save Application Package
@@ -304,8 +395,5 @@ export const EditFinalPermitDocumentPackage = (props) => {
     </div>
   );
 };
-
-EditFinalPermitDocumentPackage.propTypes = propTypes;
-EditFinalPermitDocumentPackage.defaultProps = defaultProps;
 
 export default EditFinalPermitDocumentPackage;

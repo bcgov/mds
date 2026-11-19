@@ -53,4 +53,4 @@ export * from "./minespaceUser.interface";
 export * from "./noticeOfWorkApplicationReview.interface";
 export * from "./noticeOfWorkApplicationNation.interface";
 export * from "./noticeOfWorkApplicationNationEvent.interface";
-export * from "./pipConsultationArea.interface";
+export * from "./pipConsultationArea.interface";export * from "./importNoticeOfWorkSubmissionDocumentsJob.interface";

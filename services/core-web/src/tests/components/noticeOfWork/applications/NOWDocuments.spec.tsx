@@ -5,11 +5,12 @@ import { NOWDocuments } from "@/components/noticeOfWork/applications/NOWDocument
 import * as NOWMocks from "@mds/common/tests/mocks/noticeOfWorkMock";
 import { BrowserRouter } from "react-router-dom";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
-import { AUTHENTICATION, NOTICE_OF_WORK } from "@mds/common/constants/reducerTypes";
+import { AUTHENTICATION, NOTICE_OF_WORK, PERMITS } from "@mds/common/constants/reducerTypes";
 import { USER_ROLES } from "@mds/common/constants/environment";
 import ReplaceDocumentModal from "@mds/common/components/documents/ReplaceDocumentModal";
 import ArchiveDocumentModal from "@mds/common/components/documents/ArchiveDocumentModal";
 import { NOTICE_OF_WORK_DOCUMENT_VERSION_UPLOAD } from "@mds/common/constants/API";
+import { actionMocks, installActionSpies } from "@/tests/utils/nowDocumentActionMocks";
 import { downloadFileFromDocumentManager } from "@mds/common/redux/utils/actionlessNetworkCalls";
 
 jest.mock("@mds/common/redux/utils/actionlessNetworkCalls", () => ({
@@ -31,28 +32,16 @@ jest.mock("antd", () => {
   return { ...actual, Popconfirm };
 });
 
-const dispatchProps = {
-  updateNoticeOfWorkApplication: jest.fn(),
-  openModal: jest.fn(),
-  closeModal: jest.fn(),
-  fetchImportedNoticeOfWorkApplication: jest.fn(),
-  deleteNoticeOfWorkApplicationDocument: jest.fn().mockResolvedValue(undefined),
-  editNoticeOfWorkDocument: jest.fn(),
-  sortNoticeOfWorkDocuments: jest.fn(),
-  createNoticeOfWorkDocumentVersion: jest.fn(),
-  archiveNoticeOfWorkDocuments: jest.fn(),
-  openDocument: jest.fn(),
-};
+beforeAll(installActionSpies);
+afterAll(() => jest.restoreAllMocks());
+
 const props = {
-  noticeOfWork: NOWMocks.IMPORTED_NOTICE_OF_WORK,
   documents: [],
-  noticeOfWorkApplicationDocumentTypeOptions: NOWMocks.DROPDOWN_APPLICATION_DOCUMENT_TYPES,
   isViewMode: false,
   selectedRows: null,
   categoriesToShow: ["ANS", "OTH"],
   disclaimerText: "This test is explaining the purpose of this section",
   isAdminView: false,
-  addDescriptionColumn: true,
 };
 
 const initialState = {
@@ -66,7 +55,7 @@ const renderComponent = (overrides: Record<string, unknown> = {}) =>
   render(
     <ReduxWrapper initialState={initialState}>
       <BrowserRouter>
-        <NOWDocuments {...props} {...dispatchProps} {...overrides} />
+        <NOWDocuments {...props} {...overrides} />
       </BrowserRouter>
     </ReduxWrapper>
   );
@@ -223,29 +212,37 @@ describe("NOWDocuments", () => {
       },
     });
 
-    const authenticatedInitialState = {
+    const authenticatedInitialState = (referencesFile: boolean) => ({
       ...initialState,
       [AUTHENTICATION]: {
         userAccessData: [USER_ROLES.role_edit_permits],
       },
-    };
-
-    const renderWithReference = (referencesFile: boolean) =>
-      render(
-        <ReduxWrapper initialState={authenticatedInitialState}>
-          <BrowserRouter>
-            <NOWDocuments
-              {...props}
-              {...dispatchProps}
-              isAdminView
-              isStandardDocuments
-              applicationDelay={{}}
-              documents={[documentRow()]}
-              draftPermitAmendment={{
+      [PERMITS]: {
+        draftPermits: [
+          {
+            permit_amendments: [
+              {
+                now_application_guid: NOWMocks.IMPORTED_NOTICE_OF_WORK.now_application_guid,
+                permit_amendment_status_code: "DFT",
                 conditions: referencesFile
                   ? [{ condition: `See {permit_package_file:${FILE_GUID}}`, sub_conditions: [] }]
                   : [{ condition: "No reference here.", sub_conditions: [] }],
-              }}
+              },
+            ],
+          },
+        ],
+      },
+    });
+
+    const renderWithReference = (referencesFile: boolean) =>
+      render(
+        <ReduxWrapper initialState={authenticatedInitialState(referencesFile)}>
+          <BrowserRouter>
+            <NOWDocuments
+              {...props}
+              isAdminView
+              isStandardDocuments
+              documents={[documentRow()]}
             />
           </BrowserRouter>
         </ReduxWrapper>
@@ -268,7 +265,7 @@ describe("NOWDocuments", () => {
     it("still deletes the document when confirmed", async () => {
       renderWithReference(true);
       await userEvent.click(screen.getByRole("button", { name: "Delete" }));
-      expect(dispatchProps.deleteNoticeOfWorkApplicationDocument).toHaveBeenCalled();
+      expect(actionMocks.deleteNoticeOfWorkApplicationDocument).toHaveBeenCalled();
     });
   });
 
@@ -344,21 +341,43 @@ describe("NOWDocuments", () => {
       ...overrides,
     });
 
-    const renderFileManagement = (overrides: Record<string, unknown> = {}) =>
+    // noticeOfWork, applicationDelay and draftPermitAmendment come from the store, the rest are props.
+    const renderFileManagement = ({
+      noticeOfWork = { ...NOWMocks.IMPORTED_NOTICE_OF_WORK, now_application_status_code: "REC" },
+      applicationDelay = null,
+      draftPermitAmendment = null,
+      ...overrides
+    }: Record<string, any> = {}) =>
       render(
-        <ReduxWrapper initialState={initialState}>
+        <ReduxWrapper
+          initialState={{
+            [NOTICE_OF_WORK]: {
+              noticeOfWork,
+              applicationDelays: applicationDelay ? [{ end_date: null, ...applicationDelay }] : [],
+            },
+            [AUTHENTICATION]: { userAccessData: [USER_ROLES.role_edit_permits] },
+            [PERMITS]: {
+              draftPermits: draftPermitAmendment
+                ? [
+                  {
+                    permit_amendments: [
+                      {
+                        now_application_guid: noticeOfWork.now_application_guid,
+                        permit_amendment_status_code: "DFT",
+                        ...draftPermitAmendment,
+                      },
+                    ],
+                  },
+                ]
+                : [],
+            },
+          }}
+        >
           <BrowserRouter>
             <NOWDocuments
               {...props}
-              {...dispatchProps}
-              noticeOfWork={{
-                ...NOWMocks.IMPORTED_NOTICE_OF_WORK,
-                now_application_status_code: "REC",
-              }}
               isAdminView
               isStandardDocuments
-              applicationDelay={{}}
-              userRoles={[USER_ROLES.role_edit_permits]}
               documents={[governmentDocument()]}
               enableFileManagement
               {...overrides}
@@ -373,7 +392,7 @@ describe("NOWDocuments", () => {
     };
 
     const lastOpenModalCall = () =>
-      dispatchProps.openModal.mock.calls[dispatchProps.openModal.mock.calls.length - 1][0];
+      actionMocks.openModal.mock.calls[actionMocks.openModal.mock.calls.length - 1][0];
 
     beforeEach(() => {
       jest.clearAllMocks();
@@ -407,7 +426,8 @@ describe("NOWDocuments", () => {
       expect(screen.getByText("Open in document viewer")).toBeInTheDocument();
       expect(screen.getByText("Replace file")).toBeInTheDocument();
       expect(screen.getByText("Archive file")).toBeInTheDocument();
-      expect(screen.queryByText("Delete")).not.toBeInTheDocument();
+      // The row itself has a Delete button for permitted users, the Actions menu must not
+      expect(screen.queryByRole("menuitem", { name: /Delete/ })).not.toBeInTheDocument();
     });
 
     it("only offers view and download while the application is delayed", async () => {
@@ -440,7 +460,7 @@ describe("NOWDocuments", () => {
       await openActionsMenu();
       await userEvent.click(screen.getByText("Open in document viewer"));
 
-      expect(dispatchProps.openDocument).toHaveBeenCalledWith(
+      expect(actionMocks.openDocument).toHaveBeenCalledWith(
         "doc-manager-guid",
         "report-v2.pdf",
         null,
@@ -455,7 +475,7 @@ describe("NOWDocuments", () => {
       await openActionsMenu(1);
       await userEvent.click(screen.getByText("Open in document viewer"));
 
-      expect(dispatchProps.openDocument).toHaveBeenCalledWith(
+      expect(actionMocks.openDocument).toHaveBeenCalledWith(
         "doc-manager-guid",
         "report-v1.pdf",
         null,
@@ -487,18 +507,18 @@ describe("NOWDocuments", () => {
       );
 
       modalProps.createVersion("new-version-guid");
-      expect(dispatchProps.createNoticeOfWorkDocumentVersion).toHaveBeenCalledWith(
+      expect(actionMocks.createNoticeOfWorkDocumentVersion).toHaveBeenCalledWith(
         APPLICATION_GUID,
         MINE_DOCUMENT_GUID,
         "new-version-guid"
       );
 
       await modalProps.handleSubmit();
-      expect(dispatchProps.fetchImportedNoticeOfWorkApplication).toHaveBeenCalledWith(APPLICATION_GUID);
+      expect(actionMocks.fetchImportedNoticeOfWorkApplication).toHaveBeenCalledWith(APPLICATION_GUID);
     });
 
     it("archives the file, then refreshes the application and closes the modal", async () => {
-      dispatchProps.archiveNoticeOfWorkDocuments.mockResolvedValue(undefined);
+      actionMocks.archiveNoticeOfWorkDocuments.mockResolvedValue(undefined);
       renderFileManagement();
 
       await openActionsMenu();
@@ -510,23 +530,23 @@ describe("NOWDocuments", () => {
       expect(modalProps.extraWarning).toBeUndefined();
 
       await modalProps.handleSubmit();
-      expect(dispatchProps.archiveNoticeOfWorkDocuments).toHaveBeenCalledWith(APPLICATION_GUID, [
+      expect(actionMocks.archiveNoticeOfWorkDocuments).toHaveBeenCalledWith(APPLICATION_GUID, [
         MINE_DOCUMENT_GUID,
       ]);
-      expect(dispatchProps.fetchImportedNoticeOfWorkApplication).toHaveBeenCalledWith(APPLICATION_GUID);
-      expect(dispatchProps.closeModal).toHaveBeenCalled();
+      expect(actionMocks.fetchImportedNoticeOfWorkApplication).toHaveBeenCalledWith(APPLICATION_GUID);
+      expect(actionMocks.closeModal).toHaveBeenCalled();
     });
 
     it("keeps the archive modal open when archiving fails", async () => {
-      dispatchProps.archiveNoticeOfWorkDocuments.mockRejectedValue(new Error("400"));
+      actionMocks.archiveNoticeOfWorkDocuments.mockRejectedValue(new Error("400"));
       renderFileManagement();
 
       await openActionsMenu();
       await userEvent.click(screen.getByText("Archive file"));
       await lastOpenModalCall().props.handleSubmit();
 
-      expect(dispatchProps.fetchImportedNoticeOfWorkApplication).not.toHaveBeenCalled();
-      expect(dispatchProps.closeModal).not.toHaveBeenCalled();
+      expect(actionMocks.fetchImportedNoticeOfWorkApplication).not.toHaveBeenCalled();
+      expect(actionMocks.closeModal).not.toHaveBeenCalled();
     });
 
     it.each([

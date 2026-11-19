@@ -1067,7 +1067,6 @@ exports[`AdministrativeTab renders properly 1`] = `
                                             >
                                               <img
                                                 alt="Edit document"
-                                                name="remove"
                                                 src="[object Object]"
                                               />
                                             </button>
