@@ -123,7 +123,7 @@ export const DownloadDocumentPackageModal = (props) => {
             onClick={() => props.onSubmit(selectedCoreRows, selectedSubmissionRows)}
           >
             <DownloadOutlined className="padding-sm--right icon-sm" />
-            Download Referral Package
+            {`Download ${props.type === "REF" ? "Referral" : "Consultation"} Package`}
           </Button>
           <NOWActionWrapper
             permission={Permission.EDIT_PERMITS}

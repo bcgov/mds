@@ -4,6 +4,7 @@ import { Button, Popconfirm, Tooltip, Row, Col, Typography } from "antd";
 import moment from "moment";
 import { FlagOutlined, MenuOutlined } from "@ant-design/icons";
 import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
+import { isFeatureEnabled, Feature } from "@mds/common/utils/featureFlag";
 import { formatDate } from "@mds/common/redux/utils/helpers";
 import { openModal, closeModal } from "@mds/common/redux/actions/modalActions";
 import OriginalVfcbcFileIcon from "@mds/common/components/documents/OriginalVfcbcFileIcon";
@@ -25,6 +26,8 @@ import {
 } from "@mds/common/utils/permitPackageDocuments";
 import {
   fetchImportedNoticeOfWorkApplication,
+  fetchNoticeOfWorkReferralPackages,
+  fetchNoticeOfWorkConsultationPackages,
   updateNoticeOfWorkApplication,
   deleteNoticeOfWorkApplicationDocument,
   editNoticeOfWorkDocument,
@@ -409,8 +412,14 @@ export const NOWDocuments: FC<NOWDocumentsProps> = (props) => {
     });
   };
 
-  const refreshApplication = () =>
-    fetchApplication(noticeOfWork.now_application_guid);
+  // Package snapshots work out which version of a file to View when they're fetched, so they go stale once a file is replaced or archived
+  const refreshApplication = () => {
+    if (isFeatureEnabled(Feature.NOW_FILE_MANAGEMENT)) {
+      dispatch(fetchNoticeOfWorkReferralPackages(noticeOfWork.now_application_guid));
+      dispatch(fetchNoticeOfWorkConsultationPackages(noticeOfWork.now_application_guid));
+    }
+    return fetchApplication(noticeOfWork.now_application_guid);
+  };
 
   const openReplaceModal = (record) =>
     openReplaceFileModal({

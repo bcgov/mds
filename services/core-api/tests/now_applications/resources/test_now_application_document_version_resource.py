@@ -8,6 +8,7 @@ import responses
 
 from app.api.mines.documents.models.mine_document_version import MineDocumentVersion
 from app.api.now_applications.models.now_application_consultation_package import NOWApplicationConsultationPackage
+from app.api.now_applications.models.now_application_referral_package import NOWApplicationReferralPackage
 from app.api.now_applications.models.now_application_document_identity_xref import NOWApplicationDocumentIdentityXref
 from app.api.now_applications.models.now_application_document_xref import NOWApplicationDocumentXref
 from app.api.services.document_manager_service import DocumentManagerService
@@ -450,9 +451,17 @@ class TestAlwaysBlocked:
         _assert_upload_allowed(test_client, auth_headers, now_application_identity, mine_document)
 
     @responses.activate
+    def test_referral_document_without_snapshot_blocked(self, test_client, db_session, auth_headers):
+        now_application_identity = NOWApplicationIdentityFactory()
+        mine_document, _ = _make_core_document(db_session, now_application_identity, is_referral_package=True)
+
+        _assert_blocked(test_client, auth_headers, now_application_identity, mine_document, 'Referral package')
+
+    @responses.activate
     def test_referral_document_can_be_replaced(self, test_client, db_session, auth_headers):
         now_application_identity = NOWApplicationIdentityFactory()
         mine_document, _ = _make_core_document(db_session, now_application_identity, is_referral_package=True)
+        NOWApplicationReferralPackage.create(now_application_identity.now_application, [mine_document])
 
         _assert_upload_allowed(test_client, auth_headers, now_application_identity, mine_document)
 

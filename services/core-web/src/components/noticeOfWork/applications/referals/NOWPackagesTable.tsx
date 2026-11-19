@@ -2,7 +2,7 @@ import React, { FC, useState, useEffect } from "react";
 import { Button, Table } from "antd";
 import { ColumnsType } from "antd/es/table";
 import CoreTable from "@mds/common/components/common/CoreTable";
-import { formatDate, formatDateTime } from "@mds/common/redux/utils/helpers";
+import { formatUtcDate, formatUtcDateTime } from "@mds/common/redux/utils/helpers";
 import { openDocument } from "@mds/common/components/syncfusion/DocumentViewer";
 import { useAppDispatch } from "@mds/common/redux/rootState";
 
@@ -69,7 +69,7 @@ export const NOWPackagesTable: FC<NOWPackagesTableProps> = ({
       title: "Date",
       dataIndex: "create_timestamp",
       key: "create_timestamp",
-      render: (text) => <div title={formatDateTime(text)}>{formatDate(text)}</div>,
+      render: (text) => <div title={formatUtcDateTime(text)}>{formatUtcDate(text)}</div>,
     },
     {
       title: "Created By",
