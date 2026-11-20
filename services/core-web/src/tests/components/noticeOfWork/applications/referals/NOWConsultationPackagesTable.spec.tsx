@@ -1,4 +1,5 @@
 import React from "react";
+import moment from "moment";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { NOWConsultationPackagesTable } from "@/components/noticeOfWork/applications/referals/NOWConsultationPackagesTable";
 import { ReduxWrapper } from "@/tests/utils/ReduxWrapper";
@@ -47,6 +48,19 @@ describe("NOWConsultationPackagesTable", () => {
     expect(screen.getByText("idir\\testuser")).toBeInTheDocument();
     expect(screen.getByText("TestDocument.pdf")).toBeInTheDocument();
     expect(screen.getByText("v1")).toBeInTheDocument();
+  });
+
+  it("reads timezone-less API timestamps as UTC", () => {
+    const naivePackages = [{ ...mockPackages[0], create_timestamp: "2026-10-22 21:22" }];
+    render(
+      <ReduxWrapper>
+        <NOWConsultationPackagesTable isLoaded={true} consultationPackages={naivePackages} />
+      </ReduxWrapper>
+    );
+
+    // The same instant written with an explicit Z shows the same local time
+    const expected = moment("2026-10-22T21:22:00Z").format("lll");
+    expect(screen.getByTitle(expected)).toBeInTheDocument();
   });
 
   it("calls openDocument when View document button is clicked", () => {

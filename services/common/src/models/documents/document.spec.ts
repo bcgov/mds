@@ -216,6 +216,18 @@ describe("NoWApplicationDocument model", () => {
       mockIsFeatureEnabled.mockReturnValueOnce(true);
       expect(allowedActions({ is_consultation_package: true })).toEqual(canChangeActions);
     });
+
+    it.each(["is_consultation_package", "is_referral_package"])(
+      "in a package sent before versions were recorded (%s) can only be viewed and downloaded",
+      (packageFlag) => {
+        expect(allowedActions({ [packageFlag]: true, has_package_snapshot: false })).toEqual(
+          canViewActions
+        );
+        expect(allowedActions({ [packageFlag]: true, has_package_snapshot: true })).toEqual(
+          canChangeActions
+        );
+      }
+    );
   });
 
   describe("spatial files", () => {

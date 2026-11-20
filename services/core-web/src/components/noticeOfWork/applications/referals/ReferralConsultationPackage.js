@@ -270,7 +270,7 @@ export const ReferralConsultationPackage = (props) => {
           progressRef.current = false;
           setCancelDownload(true);
         },
-        title: "Download Referral Package",
+        title: `Download ${props.type === "REF" ? "Referral" : "Consultation"} Package`,
         submissionDocumentsInPackage,
         coreDocumentsInPackage,
         handleSavePackage,

@@ -2,6 +2,7 @@ import React, { FC, ReactNode, useState } from "react";
 import moment from "moment";
 import { Badge, BadgeProps, Tooltip, Button, Popconfirm, Row, Col, Typography } from "antd";
 import { useAppDispatch, useAppSelector } from "@mds/common/redux/rootState";
+import { isFeatureEnabled, Feature } from "@mds/common/utils/featureFlag";
 import { ImportOutlined, ReloadOutlined, FlagOutlined } from "@ant-design/icons";
 import { formatDateTime } from "@common/utils/helpers";
 import { isEmpty } from "lodash";
@@ -30,6 +31,8 @@ import {
   createNoticeOfWorkApplicationImportSubmissionDocumentsJob,
   fetchImportNoticeOfWorkSubmissionDocumentsJob,
   fetchImportedNoticeOfWorkApplication,
+  fetchNoticeOfWorkReferralPackages,
+  fetchNoticeOfWorkConsultationPackages,
   updateNoticeOfWorkApplication,
   deleteNoticeOfWorkApplicationDocument,
   editNoticeOfWorkDocument,
@@ -350,8 +353,14 @@ export const NOWSubmissionDocuments: FC<NOWSubmissionDocumentsProps> = ({
     )
     : transformedDocuments;
 
-  const refreshApplication = () =>
-    fetchApplication(noticeOfWork.now_application_guid);
+  // Package snapshots work out which version of a file to View when they're fetched, so they go stale once a file is replaced or archived
+  const refreshApplication = () => {
+    if (isFeatureEnabled(Feature.NOW_FILE_MANAGEMENT)) {
+      dispatch(fetchNoticeOfWorkReferralPackages(noticeOfWork.now_application_guid));
+      dispatch(fetchNoticeOfWorkConsultationPackages(noticeOfWork.now_application_guid));
+    }
+    return fetchApplication(noticeOfWork.now_application_guid);
+  };
 
   const actionsColumn = fileManagementActionsColumn({
     openDocument: openDocumentAction,

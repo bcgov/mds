@@ -783,7 +783,7 @@ exports[`DownloadDocumentPackageModal renders properly 1`] = `
           </svg>
         </span>
         <span>
-          Download Referral Package
+          Download Consultation Package
         </span>
       </button>
     </div>

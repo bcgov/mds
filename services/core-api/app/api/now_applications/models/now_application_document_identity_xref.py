@@ -55,6 +55,12 @@ class NOWApplicationDocumentIdentityXref(SoftDeleteMixin, AuditMixin, Base):
         # The file's current name. Replacing a file renames its mine_document, but filename is part of this table's primary key so it never changes
         return self.mine_document.document_name if self.mine_document else self.filename
 
+    @property
+    def has_package_snapshot(self):
+        """False for a Referral/Consultation package file sent before package versions existed."""
+        from app.api.now_applications.models.now_application_package_base import package_locked_label
+        return package_locked_label(self) is None
+
     def __repr__(self):
         return '<NOWApplicationDocumentIdentityXref %r>' % self.now_application_document_xref_guid
 

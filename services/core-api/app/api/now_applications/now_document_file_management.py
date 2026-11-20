@@ -12,7 +12,7 @@ from werkzeug.exceptions import BadRequest, NotFound
 from app.api.utils.feature_flag import Feature, is_feature_enabled
 from app.api.constants import NOW_APPLICATION_LOCKED_STATUS_CODES, NOW_SPATIAL_FILE_EXTENSIONS
 from app.api.mines.documents.models.mine_document import MineDocument
-from app.api.now_applications.models.now_application_consultation_package import NOWApplicationConsultationPackage
+from app.api.now_applications.models.now_application_package_base import package_locked_label
 from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
 from app.api.now_applications.models.now_application_document_identity_xref import NOWApplicationDocumentIdentityXref
 
@@ -86,15 +86,16 @@ def _check_file_management_rules(now_application_identity, mine_document, xref):
         raise BadRequest('System-generated documents cannot be changed.')
 
     # Referral and Consultation package files keep their existing behaviour, even when also in the permit package.
-    # Consultation packages sent before snapshots existed have no record of the version sent, so they stay locked
-    # until that specific document is in one of the application's snapshots.
-    if xref.is_consultation_package and (
-            not is_feature_enabled(Feature.NOW_FILE_MANAGEMENT)
-            or not NOWApplicationConsultationPackage.has_snapshot_of_document(
-                xref.now_application_id, mine_document.mine_document_guid)):
-        raise BadRequest('Documents in a Consultation package cannot be changed.')
-    if not is_feature_enabled(Feature.NOW_FILE_MANAGEMENT) and xref.is_referral_package:
-        raise BadRequest('Documents in a Referral package cannot be changed.')
+    # Packages sent before snapshots existed have no record of the version sent, so their files stay locked
+    # until that specific document is in one of the application's snapshots of that package type.
+    if not is_feature_enabled(Feature.NOW_FILE_MANAGEMENT):
+        if xref.is_consultation_package:
+            raise BadRequest('Documents in a Consultation package cannot be changed.')
+        if xref.is_referral_package:
+            raise BadRequest('Documents in a Referral package cannot be changed.')
+    locked_label = package_locked_label(xref)
+    if locked_label:
+        raise BadRequest(f'Documents in a {locked_label} package cannot be changed.')
 
     is_locked = now_application_identity.now_application.now_application_status_code in NOW_APPLICATION_LOCKED_STATUS_CODES
     is_delayed = any(delay.end_date is None for delay in now_application_identity.application_delays)

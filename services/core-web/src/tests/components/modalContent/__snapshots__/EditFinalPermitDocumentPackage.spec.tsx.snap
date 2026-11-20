@@ -47,7 +47,9 @@ exports[`EditFinalPermitDocumentPackage renders properly 1`] = `
                         class="ant-table-selection-col"
                       />
                       <col />
-                      <col />
+                      <col
+                        style="width: 280px;"
+                      />
                       <col
                         style="width: 140px;"
                       />
@@ -442,7 +444,9 @@ exports[`EditFinalPermitDocumentPackage renders properly 1`] = `
                         class="ant-table-selection-col"
                       />
                       <col />
-                      <col />
+                      <col
+                        style="width: 280px;"
+                      />
                       <col
                         style="width: 140px;"
                       />
@@ -835,7 +839,9 @@ exports[`EditFinalPermitDocumentPackage renders properly 1`] = `
                         class="ant-table-selection-col"
                       />
                       <col />
-                      <col />
+                      <col
+                        style="width: 280px;"
+                      />
                       <col
                         style="width: 140px;"
                       />

@@ -60,6 +60,18 @@ class PackageMixin:
         return db.Column(db.Integer, db.ForeignKey('now_application.now_application_id'), nullable=False)
 
     @classmethod
+    def has_snapshot_of_document(cls, now_application_id, mine_document_guid):
+        """True if the document is in at least one of the application's package snapshots of this type."""
+        xref = cls.documents.property.mapper.class_
+        package_id = f'{cls.__tablename__}_id'
+        return db.session.query(
+            xref.query.join(cls, getattr(cls, package_id) == getattr(xref, package_id)).filter(
+                cls.now_application_id == now_application_id,
+                cls.deleted_ind == False,
+                xref.mine_document_guid == mine_document_guid,
+                xref.deleted_ind == False).exists()).scalar()
+
+    @classmethod
     def find_by_now_application_id(cls, now_application_id):
         return cls.query.filter_by(now_application_id=now_application_id, deleted_ind=False).order_by(
             cls.package_order.desc()).all()
@@ -123,3 +135,23 @@ class PackageMixin:
                     category=category))
 
         return package
+
+
+def package_locked_label(xref):
+    """
+    Returns 'Referral' or 'Consultation' when the document is in that package type but has no recorded snapshot
+    (i.e. it was sent before package versions existed, so replacing or archiving it would lose the version sent).
+    Returns None when no snapshot lock applies.
+    """
+    # Imported here as the package modules import this one
+    from app.api.now_applications.models.now_application_referral_package import NOWApplicationReferralPackage
+    from app.api.now_applications.models.now_application_consultation_package import NOWApplicationConsultationPackage
+
+    if not xref.mine_document_guid:
+        return None
+    for flag, package_class in (('is_consultation_package', NOWApplicationConsultationPackage),
+                                ('is_referral_package', NOWApplicationReferralPackage)):
+        if getattr(xref, flag) and not package_class.has_snapshot_of_document(xref.now_application_id,
+                                                                           xref.mine_document_guid):
+            return package_class.package_label
+    return None
