@@ -1,4 +1,5 @@
-from sqlalchemy import func
+from sqlalchemy import event, func
+from sqlalchemy.orm import Session
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.declarative import declared_attr
@@ -60,16 +61,16 @@ class PackageMixin:
         return db.Column(db.Integer, db.ForeignKey('now_application.now_application_id'), nullable=False)
 
     @classmethod
-    def has_snapshot_of_document(cls, now_application_id, mine_document_guid):
-        """True if the document is in at least one of the application's package snapshots of this type."""
+    def snapshotted_mine_document_guids(cls, now_application_id):
+        """The mine_document_guids in any of the application's package snapshots of this type, in one query."""
         xref = cls.documents.property.mapper.class_
         package_id = f'{cls.__tablename__}_id'
-        return db.session.query(
-            xref.query.join(cls, getattr(cls, package_id) == getattr(xref, package_id)).filter(
+        rows = db.session.query(xref.mine_document_guid).join(
+            cls, getattr(cls, package_id) == getattr(xref, package_id)).filter(
                 cls.now_application_id == now_application_id,
                 cls.deleted_ind == False,
-                xref.mine_document_guid == mine_document_guid,
-                xref.deleted_ind == False).exists()).scalar()
+                xref.deleted_ind == False).distinct().all()
+        return {row[0] for row in rows}
 
     @classmethod
     def find_by_now_application_id(cls, now_application_id):
@@ -137,21 +138,51 @@ class PackageMixin:
         return package
 
 
-def package_locked_label(xref):
+_SNAPSHOT_CACHE_KEY = 'package_snapshot_guids'
+
+
+def _clear_snapshot_cache(session, *_):
+    session.info.pop(_SNAPSHOT_CACHE_KEY, None)
+
+
+# Packages are only written through the session, so any flush, commit or rollback may change what is snapshotted.
+for _event_name in ('after_flush', 'after_commit', 'after_rollback'):
+    event.listen(Session, _event_name, _clear_snapshot_cache)
+
+
+def get_package_snapshot_guids(now_application_id):
     """
-    Returns 'Referral' or 'Consultation' when the document is in that package type but has no recorded snapshot
-    (i.e. it was sent before package versions existed, so replacing or archiving it would lose the version sent).
-    Returns None when no snapshot lock applies.
+    The snapshotted mine_document_guids of an application, by package label (e.g. {'Referral': {...}}).
+    Looked up once per application (two queries) and reused for each of its documents, until the session next
+    flushes, commits or rolls back.
     """
     # Imported here as the package modules import this one
     from app.api.now_applications.models.now_application_referral_package import NOWApplicationReferralPackage
     from app.api.now_applications.models.now_application_consultation_package import NOWApplicationConsultationPackage
 
-    if not xref.mine_document_guid:
+    cache = db.session.info.setdefault(_SNAPSHOT_CACHE_KEY, {})
+    if now_application_id not in cache:
+        cache[now_application_id] = {
+            package_class.package_label: package_class.snapshotted_mine_document_guids(now_application_id)
+            for package_class in (NOWApplicationConsultationPackage, NOWApplicationReferralPackage)
+        }
+    return cache[now_application_id]
+
+
+def package_locked_label(xref):
+    """
+    Returns the package type(s) that lock the document, e.g. 'Referral', 'Consultation' or 'Consultation and Referral'.
+    A document is locked by a package type when it is in that type of package but has no recorded snapshot there
+    (i.e. it was sent before package versions existed, so replacing or archiving it would lose the version sent).
+    Returns None when no snapshot lock applies.
+    """
+    if not xref.mine_document_guid or not (xref.is_consultation_package or xref.is_referral_package):
         return None
-    for flag, package_class in (('is_consultation_package', NOWApplicationConsultationPackage),
-                                ('is_referral_package', NOWApplicationReferralPackage)):
-        if getattr(xref, flag) and not package_class.has_snapshot_of_document(xref.now_application_id,
-                                                                           xref.mine_document_guid):
-            return package_class.package_label
-    return None
+
+    snapshot_guids = get_package_snapshot_guids(xref.now_application_id)
+    labels = [
+        label for flag, label in (('is_consultation_package', 'Consultation'),
+                                  ('is_referral_package', 'Referral'))
+        if getattr(xref, flag) and xref.mine_document_guid not in snapshot_guids[label]
+    ]
+    return ' and '.join(labels) or None

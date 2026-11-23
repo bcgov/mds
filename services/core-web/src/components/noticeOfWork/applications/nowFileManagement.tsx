@@ -10,6 +10,7 @@ import {
 } from "@ant-design/icons";
 import { Tooltip } from "antd";
 import { NOTICE_OF_WORK_DOCUMENT_VERSION_UPLOAD } from "@mds/common/constants/API";
+import { USER_ROLES } from "@mds/common/constants/environment";
 import { FileOperations, NoWApplicationDocument } from "@mds/common/models/documents/document";
 import { IPermitCondition } from "@mds/common/interfaces";
 import { renderActionsColumn } from "@mds/common/components/common/CoreTableCommonColumns";
@@ -37,6 +38,9 @@ export interface IFileManagementRecord {
   is_referral_package?: boolean;
   is_consultation_package?: boolean;
   has_package_snapshot?: boolean;
+  package_locked_label?: string;
+  is_view_mode?: boolean;
+  user_roles?: string[];
   number_prev_versions?: number;
   allowed_actions?: string[];
   mine_document?: Record<string, unknown>;
@@ -208,8 +212,15 @@ export const getPackageLockReason = (record: IFileManagementRecord): string | un
   if (isVersionRow(record) || record.has_package_snapshot !== false) {
     return undefined;
   }
-  const packageLabel = record.is_consultation_package ? "Consultation" : "Referral";
-  return `This file is in a ${packageLabel} package that was sent before package versions were recorded, so it can't be replaced or archived. Saving the package again records its current version and unlocks the file.`;
+  // The backend names the package(s) that lock the file, which matters when a file is in both a Referral and a Consultation package
+  const packageLabel = record.package_locked_label ?? "Referral or Consultation";
+  const reason = `This file is in a ${packageLabel} package that was sent before package versions were recorded, so it can't be replaced or archived.`;
+  const canSavePackage =
+    !record.is_view_mode && Boolean(record.user_roles?.includes(USER_ROLES.role_edit_permits));
+  // Only users who can save the package are told how to unlock the file
+  return canSavePackage
+    ? `${reason} Saving the package again records its current version and unlocks the file.`
+    : reason;
 };
 
 // Shows why Replace and Archive are missing, beside the Actions menu
