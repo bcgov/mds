@@ -29,13 +29,13 @@ def test_mine_summary_export_paginated(test_client, db_session, auth_headers):
     assert get_data['total'] == MineSummaryView.query.count()
 
 def test_mine_summary_view_permittee_ignores_deleted_appointment(db_session):
-    # Prod case (e.g. CX-5-025): a deleted open-ended appointment must not beat the current one
+    # A deleted appointment must never be picked, even when it's the newest
     mine = MineFactory()
     permit = mine.mine_permit[0]
     current = MinePartyAppointmentFactory(
         permittee=True, mine=mine, permit_id=permit.permit_id, start_date=date(2024, 11, 1), end_date=None)
     MinePartyAppointmentFactory(
-        permittee=True, mine=mine, permit_id=permit.permit_id, start_date=date(2014, 10, 31), end_date=None, deleted_ind=True)
+        permittee=True, mine=mine, permit_id=permit.permit_id, start_date=date(2025, 1, 1), end_date=None, deleted_ind=True)
 
     assert _view_permittee_guids(permit.permit_id) == {str(current.party.party_guid)}
 
