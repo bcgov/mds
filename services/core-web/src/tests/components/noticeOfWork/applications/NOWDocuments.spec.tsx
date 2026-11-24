@@ -430,6 +430,75 @@ describe("NOWDocuments", () => {
       expect(screen.queryByRole("menuitem", { name: /Delete/ })).not.toBeInTheDocument();
     });
 
+    it.each([
+      ["is_referral_package", "Referral"],
+      ["is_consultation_package", "Consultation"],
+    ])(
+      "explains why a %s file sent before package versions can't be changed",
+      async (packageFlag, label) => {
+        renderFileManagement({
+          documents: [
+            governmentDocument({
+              [packageFlag]: true,
+              has_package_snapshot: false,
+              package_locked_label: label,
+            }),
+          ],
+        });
+
+        await openActionsMenu();
+        expect(screen.queryByText("Replace file")).not.toBeInTheDocument();
+        expect(screen.queryByText("Archive file")).not.toBeInTheDocument();
+
+        await userEvent.hover(screen.getByLabelText(/Locked/));
+        expect(
+          await screen.findByText(new RegExp(`in a ${label} package that was sent before`))
+        ).toBeInTheDocument();
+        expect(screen.getByText(/Saving the package again/)).toBeInTheDocument();
+      }
+    );
+
+    it("names the package the backend says is locking a file that is in both packages", async () => {
+      renderFileManagement({
+        documents: [
+          governmentDocument({
+            is_consultation_package: true,
+            is_referral_package: true,
+            has_package_snapshot: false,
+            package_locked_label: "Referral",
+          }),
+        ],
+      });
+
+      await userEvent.hover(screen.getByLabelText(/Locked/));
+      expect(await screen.findByText(/in a Referral package that was sent before/)).toBeInTheDocument();
+    });
+
+    it("doesn't tell a view-only user to save the package again", async () => {
+      renderFileManagement({
+        isViewMode: true,
+        documents: [
+          governmentDocument({
+            is_referral_package: true,
+            has_package_snapshot: false,
+            package_locked_label: "Referral",
+          }),
+        ],
+      });
+
+      await userEvent.hover(screen.getByLabelText(/Locked/));
+      expect(await screen.findByText(/in a Referral package that was sent before/)).toBeInTheDocument();
+      expect(screen.queryByText(/Saving the package again/)).not.toBeInTheDocument();
+    });
+
+    it("doesn't show the lock notice for a package file with a recorded version", async () => {
+      renderFileManagement({
+        documents: [governmentDocument({ is_referral_package: true, has_package_snapshot: true })],
+      });
+
+      expect(screen.queryByLabelText(/Locked/)).not.toBeInTheDocument();
+    });
+
     it("only offers view and download while the application is delayed", async () => {
       renderFileManagement({ applicationDelay: { start_date: "2026-01-01" } });
 

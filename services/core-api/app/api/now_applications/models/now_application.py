@@ -503,6 +503,10 @@ class NOWApplication(Base, AuditMixin):
                 doc.is_consultation_package,
                 'is_referral_package':
                 doc.is_referral_package,
+                'has_package_snapshot':
+                doc.has_package_snapshot,
+                'package_locked_label':
+                doc.package_locked_label,
                 'filename':
                 doc.filename,
                 'document_name':
@@ -555,6 +559,8 @@ class NOWApplication(Base, AuditMixin):
                     'permit_package_document_type_code': None,
                     'is_referral_package': False,
                     'is_consultation_package': False,
+                    'has_package_snapshot': True,
+                    'package_locked_label': None,
                     'filename': doc.filename,
                     'document_name': doc.filename,
                     'now_application_id': now_application.now_application_id,

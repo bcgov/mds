@@ -1,8 +1,16 @@
 import React, { ComponentType } from "react";
 import { resolveIsOriginalVfcbcFile } from "@mds/common/utils/vfcbcFile";
 import { isEmpty } from "lodash";
-import { DownloadOutlined, FileOutlined, InboxOutlined, SyncOutlined } from "@ant-design/icons";
+import {
+  DownloadOutlined,
+  FileOutlined,
+  InboxOutlined,
+  LockOutlined,
+  SyncOutlined,
+} from "@ant-design/icons";
+import { Tooltip } from "antd";
 import { NOTICE_OF_WORK_DOCUMENT_VERSION_UPLOAD } from "@mds/common/constants/API";
+import { USER_ROLES } from "@mds/common/constants/environment";
 import { FileOperations, NoWApplicationDocument } from "@mds/common/models/documents/document";
 import { IPermitCondition } from "@mds/common/interfaces";
 import { renderActionsColumn } from "@mds/common/components/common/CoreTableCommonColumns";
@@ -27,6 +35,12 @@ export interface IFileManagementRecord {
   document_name?: string;
   filename?: string;
   is_final_package?: boolean;
+  is_referral_package?: boolean;
+  is_consultation_package?: boolean;
+  has_package_snapshot?: boolean;
+  package_locked_label?: string;
+  is_view_mode?: boolean;
+  user_roles?: string[];
   number_prev_versions?: number;
   allowed_actions?: string[];
   mine_document?: Record<string, unknown>;
@@ -193,6 +207,43 @@ export const openArchiveFileModal = ({
     content: ArchiveDocumentModal,
   });
 
+// Files sent in a package before package versions were recorded can't be replaced or archived
+export const getPackageLockReason = (record: IFileManagementRecord): string | undefined => {
+  if (isVersionRow(record) || record.has_package_snapshot !== false) {
+    return undefined;
+  }
+  // The backend names the package(s) that lock the file, which matters when a file is in both a Referral and a Consultation package
+  const packageLabel = record.package_locked_label ?? "Referral or Consultation";
+  const reason = `This file is in a ${packageLabel} package that was sent before package versions were recorded, so it can't be replaced or archived.`;
+  const canSavePackage =
+    !record.is_view_mode && Boolean(record.user_roles?.includes(USER_ROLES.role_edit_permits));
+  // Only users who can save the package are told how to unlock the file
+  return canSavePackage
+    ? `${reason} Saving the package again records its current version and unlocks the file.`
+    : reason;
+};
+
+// Shows why Replace and Archive are missing, beside the Actions menu
+const withPackageLockNotice = (column: ReturnType<typeof renderActionsColumn>) => ({
+  ...column,
+  render: (record: IFileManagementRecord) => {
+    const reason = getPackageLockReason(record);
+    return reason ? (
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end" }}>
+        <Tooltip title={reason} placement="left">
+          <LockOutlined
+            aria-label="Locked: sent before package versions"
+            data-cy="package-lock-icon"
+          />
+        </Tooltip>
+        {column.render(record)}
+      </div>
+    ) : (
+      column.render(record)
+    );
+  },
+});
+
 export const fileManagementActionsColumn = ({
   openDocument,
   onReplace,
@@ -207,40 +258,42 @@ export const fileManagementActionsColumn = ({
   onReplace: (record: IFileManagementRecord) => unknown;
   onArchive: (record: IFileManagementRecord) => unknown;
 }) =>
-  renderActionsColumn({
-    actions: [
-      {
-        key: "view",
-        label: FileOperations.View,
-        icon: <FileOutlined />,
-        clickFunction: (_event, record: IFileManagementRecord) =>
-          openDocument(
-            record.document_manager_guid,
-            record.document_name,
-            null,
-            isVersionRow(record) ? record.document_manager_version_guid : null
-          ),
-      },
-      {
-        key: "download",
-        label: FileOperations.Download,
-        icon: <DownloadOutlined />,
-        clickFunction: (_event, record: IFileManagementRecord) =>
-          downloadFileFromDocumentManager(record),
-      },
-      {
-        key: "replace",
-        label: FileOperations.Replace,
-        icon: <SyncOutlined />,
-        clickFunction: (_event, record: IFileManagementRecord) => onReplace(record),
-      },
-      {
-        key: "archive",
-        label: FileOperations.Archive,
-        icon: <InboxOutlined />,
-        clickFunction: (_event, record: IFileManagementRecord) => onArchive(record),
-      },
-    ],
-    recordActionsFilter: (record: IFileManagementRecord, actions) =>
-      actions.filter((action) => record.allowed_actions?.includes(action.label)),
-  });
+  withPackageLockNotice(
+    renderActionsColumn({
+      actions: [
+        {
+          key: "view",
+          label: FileOperations.View,
+          icon: <FileOutlined />,
+          clickFunction: (_event, record: IFileManagementRecord) =>
+            openDocument(
+              record.document_manager_guid,
+              record.document_name,
+              null,
+              isVersionRow(record) ? record.document_manager_version_guid : null
+            ),
+        },
+        {
+          key: "download",
+          label: FileOperations.Download,
+          icon: <DownloadOutlined />,
+          clickFunction: (_event, record: IFileManagementRecord) =>
+            downloadFileFromDocumentManager(record),
+        },
+        {
+          key: "replace",
+          label: FileOperations.Replace,
+          icon: <SyncOutlined />,
+          clickFunction: (_event, record: IFileManagementRecord) => onReplace(record),
+        },
+        {
+          key: "archive",
+          label: FileOperations.Archive,
+          icon: <InboxOutlined />,
+          clickFunction: (_event, record: IFileManagementRecord) => onArchive(record),
+        },
+      ],
+      recordActionsFilter: (record: IFileManagementRecord, actions) =>
+        actions.filter((action) => record.allowed_actions?.includes(action.label)),
+    })
+  );

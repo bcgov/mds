@@ -102,6 +102,13 @@ export const formatTime = (timeStamp) => timeStamp && moment(timeStamp).format("
 
 export const formatDateTime = (dateTime) => dateTime && moment(dateTime).format("lll");
 
+// For API timestamps that are UTC but have no timezone (e.g. create_timestamp), which moment would otherwise read as local time
+export const formatUtcDateTime = (dateTime: string) =>
+  dateTime && moment.utc(dateTime).local().format("lll");
+
+export const formatUtcDate = (dateTime: string) =>
+  dateTime && moment.utc(dateTime).local().format("MMM DD YYYY");
+
 export const formatDateTimeTz = (
   dateTime: Date | string,
   timezone: string = DEFAULT_TIMEZONE

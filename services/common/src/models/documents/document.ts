@@ -322,6 +322,12 @@ export class NoWApplicationDocument extends MineDocument {
 
   public is_consultation_package: boolean;
 
+  // False for Referral/Consultation package files sent before package versions were recorded
+  public has_package_snapshot: boolean;
+
+  // The package type(s) whose snapshots lack this file, e.g. "Referral" or "Consultation and Referral"
+  public package_locked_label?: string;
+
   public is_system_generated: boolean;
 
   // vFCBC submission documents (now_application_document_identity_xref) have no sub type code
@@ -333,6 +339,9 @@ export class NoWApplicationDocument extends MineDocument {
 
   public is_view_mode: boolean;
 
+  // The current user's roles, kept so the UI can tell whether they could change the file
+  public user_roles: string[];
+
   constructor(jsonObject: any) {
     super(jsonObject);
     this.now_application_document_xref_guid = jsonObject.now_application_document_xref_guid;
@@ -340,11 +349,14 @@ export class NoWApplicationDocument extends MineDocument {
     this.is_final_package = jsonObject.is_final_package ?? false;
     this.is_referral_package = jsonObject.is_referral_package ?? false;
     this.is_consultation_package = jsonObject.is_consultation_package ?? false;
+    this.has_package_snapshot = jsonObject.has_package_snapshot ?? true;
+    this.package_locked_label = jsonObject.package_locked_label ?? undefined;
     this.is_system_generated = jsonObject.is_system_generated ?? false;
     this.is_imported_submission_document = jsonObject.is_imported_submission_document ?? false;
     this.now_application_status_code = jsonObject.now_application_status_code;
     this.is_delayed = jsonObject.is_delayed ?? false;
     this.is_view_mode = jsonObject.is_view_mode ?? false;
+    this.user_roles = jsonObject.user_roles ?? [];
     // MineDocument works out allowed actions inside its own constructor, before the fields above are set, so we have to work them out again
     this.setAllowedActions(jsonObject.user_roles);
   }
@@ -380,6 +392,10 @@ export class NoWApplicationDocument extends MineDocument {
       return false;
     }
     if (this.is_referral_package && !isFeatureEnabled(Feature.NOW_FILE_MANAGEMENT)) {
+      return false;
+    }
+    // Sent before package versions were recorded, so changing the file would lose the version that was sent
+    if ((this.is_consultation_package || this.is_referral_package) && !this.has_package_snapshot) {
       return false;
     }
 
