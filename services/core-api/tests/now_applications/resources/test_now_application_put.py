@@ -350,6 +350,42 @@ class TestNOWApplication:
 
     @patch('app.api.now_applications.resources.now_application_resource.NROSNOWStatusService.nros_now_status_update')
     @patch('app.api.now_applications.resources.now_application_resource.DocumentManagerService.importNoticeOfWorkSubmissionDocuments')
+    def test_put_documents_saves_author_and_date_for_new_document_added_to_package(
+            self, mock_import_docs, mock_nros, test_client, db_session, auth_headers):
+        now_application = NOWApplicationFactory()
+        test_application = NOWApplicationIdentityFactory(now_application=now_application)
+
+        # The new document as the Add Document modal sends it
+        data = {
+            'documents': [{
+                'now_application_document_type_code': 'OTH',
+                'is_final_package': True,
+                'permit_package_document_type_code': 'DOCUMENT',
+                'preamble_title': 'Reclamation Plan',
+                'preamble_author': 'Jane Doe',
+                'preamble_date': '2026-01-15',
+                'mine_document': {
+                    'document_manager_guid': '1f3c0d1e-6a2b-4c9d-8e7f-0a1b2c3d4e5f',
+                    'document_name': 'reclamation_plan.pdf',
+                    'mine_guid': str(test_application.mine_guid),
+                },
+            }]
+        }
+
+        put_resp = test_client.put(
+            f'/now-applications/{test_application.now_application_guid}',
+            json=data,
+            headers=auth_headers['full_auth_header'])
+
+        assert put_resp.status_code == 200, put_resp.response
+        new_doc = NOWApplicationDocumentXref.query.filter_by(
+            now_application_id=test_application.now_application_id,
+            preamble_title='Reclamation Plan').one()
+        assert new_doc.preamble_author == 'Jane Doe'
+        assert str(new_doc.preamble_date)[:10] == '2026-01-15'
+
+    @patch('app.api.now_applications.resources.now_application_resource.NROSNOWStatusService.nros_now_status_update')
+    @patch('app.api.now_applications.resources.now_application_resource.DocumentManagerService.importNoticeOfWorkSubmissionDocuments')
     def test_put_documents_clears_order_and_type_on_removal_via_bulk_modal(
             self, mock_import_docs, mock_nros, test_client, db_session, auth_headers):
         now_application = NOWApplicationFactory()

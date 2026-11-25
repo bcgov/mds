@@ -324,6 +324,7 @@ export const NOWDocuments: FC<NOWDocumentsProps> = (props) => {
         permit_package_document_type_code: values.permit_package_document_type_code,
         preamble_title: values?.preamble_title,
         preamble_author: values?.preamble_author,
+        preamble_date: values?.preamble_date,
         mine_document: {
           ...file,
           mine_guid: noticeOfWork.mine_guid,
