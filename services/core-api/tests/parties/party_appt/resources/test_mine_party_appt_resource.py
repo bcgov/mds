@@ -338,6 +338,20 @@ def test_put_mine_party_appt_draft(test_client, db_session, auth_headers, setup_
 
     assert str(put_data['is_draft']) == 'True'
 
+
+@pytest.mark.parametrize('is_draft_value', ['False', 'false', False])
+def test_put_mine_party_appt_is_draft_false_stays_false(test_client, db_session, auth_headers, setup_info, is_draft_value):
+    # Core's edit form resends the whole appointment, so is_draft can arrive as the string "False"
+    test_data = {'start_date': '1999-12-12', 'is_draft': is_draft_value}
+    put_resp = test_client.put(
+        f'/parties/mines/{setup_info["mine_manager_appt_guid"]}',
+        json=test_data,
+        headers=auth_headers['full_auth_header'])
+    put_data = json.loads(put_resp.data.decode())
+
+    assert put_resp.status_code == 200
+    assert put_data['is_draft'] is False
+
 def test_minespace_user_can_only_add_end_date(test_client, db_session, auth_headers, setup_info, monkeypatch):
     # Mock MineReportDefinition.find_one_by_section to always return a dummy object
     class DummyDef:

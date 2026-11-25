@@ -158,7 +158,7 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, DraftMixin, Base):
             'end_date':
             str(self.end_date) if self.end_date else None,
             'is_draft':
-            str(self.is_draft),
+            self.is_draft,
             'union_rep_company':
             self.union_rep_company,
             'documents': [doc.json() for doc in self.documents],

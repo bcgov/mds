@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 from flask import request
 from app.api.activity.models.activity_notification import ActivityType
 from app.api.utils.access_decorators import is_minespace_user
-from flask_restx import Resource
+from flask_restx import Resource, inputs
 from sqlalchemy import and_, exc as alch_exceptions
 from werkzeug.exceptions import BadRequest, NotFound, Forbidden
 
@@ -69,7 +69,7 @@ class MinePartyApptResource(Resource, UserMixin):
         store_missing=False)
     parser.add_argument(
         'is_draft',
-        type=bool,
+        type=inputs.boolean,
         store_missing=False,
         required=False,
         help="Save the Mine Party Appointment in a draft state"
